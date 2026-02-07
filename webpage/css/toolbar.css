@@ -49,6 +49,16 @@
 	color: #000000;
 }
 
+#toolbar button.toolbar-toggle-active {
+	background-color: rgba(255, 255, 255, 0.35);
+	color: #000000;
+}
+
+#toolbar button.toolbar-toggle-active:hover {
+	background-color: rgba(255, 255, 255, 0.6);
+	color: #000000;
+}
+
 #toolbar option {
 	color: #ffffff;
 	background-color: #000000;

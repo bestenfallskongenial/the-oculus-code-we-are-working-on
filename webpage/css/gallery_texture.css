@@ -36,10 +36,15 @@
 	gap: var(--texture-gallery-gap);
 	border-radius: var(--texture-gallery-radius);
 	overflow: hidden;
+	transition: background-color 500ms;	
 }
 
 #textureGallery.gallery-hidden {
 	display: none;
+}
+
+#textureGallery:hover {
+	background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* texture gallery grid */

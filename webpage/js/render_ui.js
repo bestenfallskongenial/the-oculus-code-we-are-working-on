@@ -70,19 +70,19 @@ function createToolbarControls(containers) {
 	var backLink = createToolbarLink('back', '/index.html');
 	containers.right.appendChild(backLink);
 
-	var showButton = createToolbarButton('show code');
+	var showButton = createToolbarButton('code');
 	showButton.title = 'press C';
 	containers.left.appendChild(showButton);
 
-	var galleryButton = createToolbarButton('hide gallery');
+	var galleryButton = createToolbarButton('gallery');
 	galleryButton.title = 'press P';
 	containers.left.appendChild(galleryButton);
 
-	var textureButton = createToolbarButton('show textures');
+	var textureButton = createToolbarButton('textures');
 	textureButton.title = 'press T';
 	containers.left.appendChild(textureButton);
 
-	var hardwareControlsButton = createToolbarButton('show gui');
+	var hardwareControlsButton = createToolbarButton('gui');
 	hardwareControlsButton.title = 'press G';
 	containers.left.appendChild(hardwareControlsButton);
 
@@ -262,17 +262,50 @@ function createCodeEditor() {
 	set_parent_button('hidden');
 }
 
+var overlayPolicy = {
+	code: { hides: 		[ 			'gallery', 	'textures', 'gui' ] },
+	gallery: { hides: 	[ 'code', 				'textures', 'gui' ] },
+	textures: { hides: 	[ 'code', 	'gallery', 				'gui' ] },
+	gui: { hides: 		[ 'code', 	'gallery', 	'textures'		  ] }
+};
+
+function enforceOverlayPolicy(activeOverlay) {
+	var activePolicy = overlayPolicy[activeOverlay] || {};
+	var hides = activePolicy.hides || [];
+	var overlays = {
+		code: { hide: hideCode, isVisible: isCodeVisible },
+		gallery: { hide: hideGallery, isVisible: isGalleryVisible },
+		textures: { hide: hideTextureGallery, isVisible: isTextureGalleryVisible },
+		gui: { hide: hideHardwareControls, isVisible: isHardwareControlsVisible }
+	};
+
+	hides.forEach(function (key) {
+		if (key === activeOverlay || !overlays[key]) {
+			return;
+		}
+		if (overlays[key].isVisible()) {
+			overlays[key].hide();
+		}
+	});
+}
+
+function setToolbarToggleState(button, isActive) {
+	if (!button) {
+		return;
+	}
+	button.classList.toggle('toolbar-toggle-active', isActive);
+}
+
+function updateOverlayToggleStates() {
+	setToolbarToggleState(toolbarUI.showButton, isCodeVisible());
+	setToolbarToggleState(toolbarUI.galleryButton, isGalleryVisible());
+	setToolbarToggleState(toolbarUI.textureButton, isTextureGalleryVisible());
+	setToolbarToggleState(toolbarUI.hardwareControlsButton, isHardwareControlsVisible());
+}
+
 function showCode() {
-	if (isGalleryVisible()) {
-		hideGallery();
-	}
-	if (isTextureGalleryVisible()) {
-		hideTextureGallery();
-	}
-	if (isHardwareControlsVisible()) {
-		hideHardwareControls();
-	}	
-	toolbarUI.showButton.textContent = 'hide code';
+	enforceOverlayPolicy('code');
+	setToolbarToggleState(toolbarUI.showButton, true);
 	code.getWrapperElement().style.visibility = 'visible';
 	toolbarUI.compileButton.style.visibility = 'visible';
 	set_save_button('visible');
@@ -280,7 +313,7 @@ function showCode() {
 }
 
 function hideCode() {
-	toolbarUI.showButton.textContent = 'show code';
+	setToolbarToggleState(toolbarUI.showButton, false);
 	code.getWrapperElement().style.visibility = 'hidden';
 	toolbarUI.compileButton.style.visibility = 'hidden';
 	set_save_button('hidden');
@@ -293,21 +326,13 @@ function isCodeVisible() {
 }
 
 function showGallery() {
-	if (isCodeVisible()) {
-		hideCode();
-	}
-	if (isTextureGalleryVisible()) {
-		hideTextureGallery();
-	}
-	if (isHardwareControlsVisible()) {
-		hideHardwareControls();
-	}		
-	toolbarUI.galleryButton.textContent = 'hide gallery';
+	enforceOverlayPolicy('gallery');
+	setToolbarToggleState(toolbarUI.galleryButton, true);
 	galleryOverlay.classList.remove('gallery-hidden');
 }
 
 function hideGallery() {
-	toolbarUI.galleryButton.textContent = 'show gallery';
+	setToolbarToggleState(toolbarUI.galleryButton, false);
 	galleryOverlay.classList.add('gallery-hidden');
 }
 
@@ -316,21 +341,13 @@ function isGalleryVisible() {
 }
 
 function showTextureGallery() {
-	if (isCodeVisible()) {
-		hideCode();
-	}
-	if (isGalleryVisible()) {
-		hideGallery();
-	}
-	if (isHardwareControlsVisible()) {
-		hideHardwareControls();
-	}	
-	toolbarUI.textureButton.textContent = 'hide textures';
+	enforceOverlayPolicy('textures');
+	setToolbarToggleState(toolbarUI.textureButton, true);
 	textureGalleryOverlay.classList.remove('gallery-hidden');
 }
 
 function hideTextureGallery() {
-	toolbarUI.textureButton.textContent = 'show textures';
+	setToolbarToggleState(toolbarUI.textureButton, false);
 	textureGalleryOverlay.classList.add('gallery-hidden');
 }
 
@@ -339,21 +356,13 @@ function isTextureGalleryVisible() {
 }
 
 function showHardwareControls() {
-	if (isCodeVisible()) {
-		hideCode();
-	}
-	if (isGalleryVisible()) {
-		hideGallery();
-	}
-	if (isTextureGalleryVisible()) {
-		hideTextureGallery();
-	}
-	toolbarUI.hardwareControlsButton.textContent = 'hide gui';
+	enforceOverlayPolicy('gui');
+	setToolbarToggleState(toolbarUI.hardwareControlsButton, true);
 	hardwareControlsOverlay.classList.remove('gallery-hidden');
 }
 
 function hideHardwareControls() {
-	toolbarUI.hardwareControlsButton.textContent = 'show gui';
+	setToolbarToggleState(toolbarUI.hardwareControlsButton, false);
 	hardwareControlsOverlay.classList.add('gallery-hidden');
 }
 

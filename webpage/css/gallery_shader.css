@@ -9,6 +9,8 @@
 	--gallery-opacity: 0.95;
 	--gallery-radius: 20px;
 	--gallery-gap: 12px;
+	--gallery-columns: 2;
+	--gallery-rows: 4;	
 
 	/* page label controls */
 	--gallery-page-label-display: none;
@@ -40,12 +42,16 @@
 	gap: var(--gallery-gap);
 	border-radius: var(--gallery-radius);
 	overflow: hidden;
+	transition: background-color 500ms;	
 }
 
 #gallery.gallery-hidden {
 	display: none;
 }
 
+#gallery:hover {
+	background-color: rgba(0, 0, 0, 0.5);
+}
 
 #gallery button {
 	padding: 8px 12px;
@@ -119,8 +125,8 @@
 .gallery-grid {
 	flex: 1 1 auto;
 	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	grid-template-rows: repeat(5, 1fr);
+	grid-template-columns: repeat(var(--gallery-columns), 1fr);
+	grid-template-rows: repeat(var(--gallery-rows), 1fr);
 	gap: var(--gallery-gap);
 	min-height: 0; /* important in flex column */
 }

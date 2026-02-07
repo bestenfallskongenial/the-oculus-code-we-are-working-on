@@ -1,6 +1,6 @@
 // /js/carousel.js
 (() => {
-	const PAGE_SIZE = 10;
+	const PAGE_SIZE = 8;
 	const MIN_INDEX = 1;
 	const MAX_INDEX = 40;
 
@@ -13,6 +13,11 @@
 
 	const FIRST_PAGE = MIN_INDEX;
 	const LAST_PAGE  = MIN_INDEX + Math.floor((MAX_INDEX - MIN_INDEX) / PAGE_SIZE) * PAGE_SIZE;
+
+		const GRID_COLUMNS = 2;
+	const GRID_ROWS = Math.ceil(PAGE_SIZE / GRID_COLUMNS);
+	grid.style.setProperty("--gallery-columns", GRID_COLUMNS);
+	grid.style.setProperty("--gallery-rows", GRID_ROWS);
 
 	let pageStart = FIRST_PAGE;
 

@@ -54,6 +54,7 @@
 				initGL();
 				initTextureGallery();
 				initHardwareControls();
+				updateOverlayToggleStates();				
 				setupInputHandlers();
 				setupKeyboardShortcuts();
 				

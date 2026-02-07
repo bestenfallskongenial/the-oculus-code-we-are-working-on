@@ -27,7 +27,7 @@ function loadStaticShaderSources() {
 // canonical shader loader (replaces load_url_code / readURL / setURL)
 function loadShaderByIndex(index) {
 	var s = String(index).padStart(2, "0");
-	var path = "/assets/shaders/shader" + s + ".txt";
+	var path = "/assets/shaders/shader" + s + ".fsh";
 
 	function applyShaderSource(text) {
 		compileOnChangeCode = false;
