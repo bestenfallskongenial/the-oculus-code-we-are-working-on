@@ -24,7 +24,10 @@ static void apply_mode_to_channel (int channel, int mode, unsigned long current_
                         output_float_value[channel] = adc_float_value[channel];
                         output_int_value[channel]   = adc_int_value[channel];
                     break;
-// we should have some comentary here about the functionality. what /  why
+// we should have some commentary here about the functionality. what /  why
+// also is this the place where we can call functions from the switch cases, 
+// like maybe we can have a function for each mode that handles the logic for that mode, 
+// and then we can just call those functions from the switch cases, just for clarity and separation of concerns.
                     case 1:
                         if (adc_int_value[channel] >= threshold_high[channel] && !input_threshold_flag[channel])
                             {
