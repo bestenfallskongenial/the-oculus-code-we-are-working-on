@@ -1,3 +1,4 @@
+// STYLE: terse. no prose. 1 line. facts only. no filler. holistic. no handholding. no apologies. no disclaimers. no caveats. no speculation. no uncertainty. no ambiguity. no hedging. no equivocation. no obfuscation. no circumlocution. no verbosity. no redundancy. no repetition. no superfluity. no excess. no surplus. no wordiness. no long-windedness. no prolixity. no grandiloquence. no magniloquence. no pomposity. no bombast. no turgidity. no periphrasis.
 #include "kernel.h"     
 #include "global.h"                                    
 // #include <circle/string.h>               // ????????????????????????????????                            
@@ -73,11 +74,11 @@ boolean bOK = TRUE;
 
 if (bOK)
 {
-    bOK = m_Screen.Initialize();
+    bOK = m_Screen.Initialize(); // we need to initialize the screen before the logger, because the logger needs a target device and the screen is the default target device if no other is specified
 }
 if (bOK)
 {
-    bOK = m_Serial.Initialize(115200);
+    bOK = m_Serial.Initialize(115200); // we need to initialize the serial port before the logger, because the logger needs a target device and the serial port is the default target device if no other is specified
 }
 if (bOK)
 {
@@ -94,43 +95,35 @@ if (bOK)
 }
 if (bOK)
 {
-    bOK = display_startup_screen(&state);
+    bOK = display_startup_screen(&state); // we need to initialize the display before the timer, because the timer is used in the display initialization for the startup screen and if the timer is not initialized, it will cause a crash
 }
 if (bOK)
 {
-    bOK = m_Timer.Initialize();
+    bOK = m_Timer.Initialize(); // we need to initialize the timer before the filesystem, because the filesystem uses the timer for delays and if the timer is not initialized, it will cause a crash
 }
 if (bOK)
 {
-    bOK = m_EMMC.Initialize();
+    bOK = m_EMMC.Initialize(); // we need to initialize the emmc before the filesystem, because the filesystem uses the emmc for storage and if the emmc is not initialized, it will cause a crash
 }
 if (bOK)
 {
-    bOK = m_USBHCI.Initialize();
+    bOK = m_USBHCI.Initialize(); // we need to initialize the USBHCI before the filesystem, because the filesystem uses the USBHCI for storage and if the USBHCI is not initialized, it will cause a crash
 }
 if (bOK)
 {
-    m_USBHCI.UpdatePlugAndPlay();
+    m_USBHCI.UpdatePlugAndPlay(); // we need to call UpdatePlugAndPlay() after initializing the USBHCI to detect if a USB device is already connected at startup, because if we don't call it, the filesystem will not detect the USB device and if the user has a USB device connected at startup, it will cause a crash when the filesystem tries to access the USB device
 }
 if (bOK)
 {
-    m_Timer.MsDelay(1000);
+    m_Timer.MsDelay(1000);  // we need to delay after initializing the USBHCI to give it time to detect the USB device and if we don't delay, the filesystem will not detect the USB device and if the user has a USB device connected at startup, it will cause a crash when the filesystem tries to access the USB device
 }
 if (bOK)
 {
-    bOK = memory_allocate();
+    bOK = memory_allocate(); // we need to allocate memory before the VCHIQ, because the VCHIQ uses the memory for communication and if the memory is not allocated, it will cause a crash when the VCHIQ tries to access the memory
 }
 if (bOK)
 {
-    bOK = m_VCHIQ.Initialize();
-}
-if (bOK)
-{
-    m_Timer.MsDelay(200);
-}
-if (bOK)
-{
-    bcm_host_init();
+    bOK = m_VCHIQ.Initialize(); // we need to initialize the VCHIQ before the shared memory, because the shared memory uses the VCHIQ for communication and if the VCHIQ is not initialized, it will cause a crash when the shared memory tries to access the VCHIQ
 }
 if (bOK)
 {
@@ -138,7 +131,7 @@ if (bOK)
 }
 if (bOK)
 {
-    gfx_init_OGL(&state);
+    bcm_host_init();  // we need to initialize the bcm_host before the graphics, because the graphics uses the bcm_host for initialization and if the bcm_host is not initialized, it will cause a crash when the graphics tries to access the bcm_host
 }
 if (bOK)
 {
@@ -146,11 +139,19 @@ if (bOK)
 }
 if (bOK)
 {
-    bOK = m_SharedMemory.VCSMInitialize();
+    gfx_init_OGL(&state); // we need to initialize the graphics before the shared memory, because the shared memory uses the graphics for initialization and if the graphics is not initialized, it will cause a crash when the shared memory tries to access the graphics
 }
 if (bOK)
 {
-    bOK = m_SharedMemory.VCSMimportMemory(m_videoBlockBase, m_videoBlockSize, 0);
+    m_Timer.MsDelay(200);
+}
+if (bOK)
+{
+    bOK = m_SharedMemory.VCSMInitialize(); // we need to initialize the shared memory before importing the memory, because we need to have the shared memory initialized to import the memory and if the shared memory is not initialized, it will cause a crash when we try to import the memory
+}
+if (bOK)
+{
+    bOK = m_SharedMemory.VCSMimportMemory(m_videoBlockBase, m_videoBlockSize, 0); // we can do all vcsm imports in one bOK block, dont you think?
 }
 if (bOK)
 {
@@ -244,7 +245,7 @@ TShutdownMode   CKernel::Run(void)
                 const char* cursoroff = "\x1b[?25l";
                 m_Screen.Write(cursoroff, strlen(cursoroff));
 
-                if (util_check_for_update())    // Call util_check_for_update() before entering the loop
+                if (util_check_for_update())    // Call util_check_for_update() before entering the loop this will become a menu layer entry later on
                     {
                     return ShutdownReboot;      // If the update was successful, proceed with reboot
                     }
@@ -258,7 +259,7 @@ TShutdownMode   CKernel::Run(void)
                     SCANED_FILES_VID,  VID_LOADED_BYTES, VID_SD))
                     {                   
                     // Flush CPU->RAM so the VPU sees the loaded bitstream
-                    CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize);
+                    CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // we need to flush the cache after loading the video bitstream to make sure that the VPU can see the updated data in memory, otherwise it may cause a crash when the VPU tries to access the video data and if the video data is not updated in memory, it will cause a crash when the VPU tries to access the video data
 
                     gfx_init_v_buffer(&state);
 
@@ -269,7 +270,7 @@ TShutdownMode   CKernel::Run(void)
                     gfx_init_fshaders(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
                     gfx_init_programs(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
                     gfx_init_uniforms(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
-                //  gfx_init_textures(&state, TEX_LOADED_OLD, TEX_LOADED_NEW);
+                //  gfx_init_textures(&state, TEX_LOADED_OLD, TEX_LOADED_NEW); // we commented out the texture loading for the test of the h264 decoder to texture mechanism, but we need to load the textures at least one time for the brandlogo and the ui, so we load them here from the emmc, but we will not load them again from the usb later, so that we can test the h264 decoder to texture mechanism without interference of the usb loading
 
                     m_Watchdog.Start(TIMEOUT);
 
@@ -284,7 +285,7 @@ TShutdownMode   CKernel::Run(void)
                     CString bufferVCSM = m_SharedMemory.m_DebugCharArray;
                     CString bufferMMAL =  m_H264Decoder.m_DebugCharArray;
 
-                    filesystem_save_log_file( "emmc1-1", FILENAME_VCSM_LOG, bufferVCSM);
+                    filesystem_save_log_file( "emmc1-1", FILENAME_VCSM_LOG, bufferVCSM);    // this is for debug purposes because vc4 is a blackbox we are reverse-engineering, so we need to have a log of the vcsm calls and the mmal calls to see if we can find out what is causing the crash after ~ 22 minutes of runtime, because the theory is that there is an memory violation in the vcsm or mmal code that causes the crash, so we need to have a log of the vcsm and mmal calls to see if we can find out what is causing the crash, and if we can find out what is causing the crash, we can try to fix it or work around it, but for now we just want to have a log of the vcsm and mmal calls to see if we can find out what is causing the crash
                     filesystem_save_log_file( "emmc1-1", FILENAME_MMAL_LOG, bufferMMAL);
 
             m_H264Decoder.m_CharIndex = 0; // resest the logger for the decoder
@@ -314,7 +315,7 @@ TShutdownMode   CKernel::Run(void)
                             gfx_init_fshaders(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
                             gfx_init_programs(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
                             gfx_init_uniforms(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
-                        //  gfx_init_textures(&state, TEX_LOADED_OLD, TEX_LOADED_NEW); 
+                        //  gfx_init_textures(&state, TEX_LOADED_OLD, TEX_LOADED_NEW);  // outcommented for the test of the h264 decoder to texture mechanism
 
                             filesystem_save_log_file( "umsd1-1", FILENAME_GL_LOG, g_log_string);
 
@@ -356,7 +357,7 @@ if (m_H264Decoder.m_CharIndex >= 16384 && m_runtimelog == false )
                         }
                     util_random_vec8(start_time_fps_calculation);
 
-// can one of this functions / calculations can cause a crash, especally at the very same system time since the actual gl code has variable framerates?                     
+// can one of this functions / calculations can cause a crash? especally at the very same system time since the actual gl code has variable framerates?                     
  
                     menu_general();
                     
@@ -376,7 +377,7 @@ if (m_H264Decoder.m_CharIndex >= 16384 && m_runtimelog == false )
                     util_LFO();                 
 
                     if ( is_hold_for_4_sec_a && is_hold_for_4_sec_b ) m_resetFlag = true;
-// i like to do it as function !!!
+// i like to do the fps/framerate as function !!!
                     // FPS limiting using previous swap time prediction
                     currentTime = m_Timer.GetClockTicks();
                     targetTime = start_time_fps_calculation + (1000000 / TARGET_FPS);

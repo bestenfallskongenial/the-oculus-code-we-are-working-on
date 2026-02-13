@@ -13,7 +13,8 @@ void            CKernel::gfx_shader_log             (   GLint shader, int shader
                 
                 m_shaderStatusFlags[shaderIndex] = (success == GL_TRUE); // Store status in our flags array
 }
-
+// we need to implement the same logging mechanism we wrote for the vc4 cedoder and vcsm code. 
+// clear, deterministic without extra dependencies.
 void            CKernel::gfx_program_log            (   GLint shader, int program_index) 
 {
                 int internal_index =0;
