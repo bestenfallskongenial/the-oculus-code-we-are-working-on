@@ -1,3 +1,4 @@
+// the files stays at it is - we will later change the logging to the methods we developed in vc_h264_decoder.cpp and vc_vcsm.cpp - clear, deterministic without extra dependencies.
 #undef __OLG_DEBUG__
 #undef __GL_DEBUG__
 

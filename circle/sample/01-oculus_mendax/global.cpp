@@ -121,7 +121,7 @@ bool           b_is_hold = false;
                 int                   random_int_value                          [ADC_CHANNELS]              = { 0 };
                 float                 random_float_value                        [ADC_CHANNELS]              = { 0 };                    // Array of u_seed_a values per channel
 
-                int                   g_input_mode                              [ADC_CHANNELS]              = { 0 };             // Array storing operation mode for each channel
+                int                   g_input_mode                              [ADC_CHANNELS]              = { 0 };             // Array storing operation mode for each channel - ITS A RELICT, RIGHT? NOT IN USE ANYWHERE
                 bool                  m_shaderStatusFlags                       [FSH_SD+FSH_USB]; 
                 int                   menu_pickup_buffer                        [ADC_CHANNELS+ADC_CHANNELS]              = { 0 };               // Array storing previous pot values for pickup detection
                 unsigned long         current_time_for_bpm                                                  = 0;                      // Array storing timing information per channel
@@ -133,7 +133,7 @@ bool           b_is_hold = false;
                 unsigned long         last_valid_bpm_buffer                     [2]                         = { 0 };
                 unsigned long         resultBPM                                 [2]                         = { 0 };
                 unsigned long         intervalBuffer                            [2][3]                      = { 0 };
-                int                   threshold_high                            [ADC_CHANNELS]              = {   320,  320,  320,  320,  320,  320,  320,  320 };                    // Array of upper threshold values per channel
+                int                   threshold_high                            [ADC_CHANNELS]              = {   320,  320,  320,  320,  320,  320,  320,  320 };                    // Array of upper threshold values per channel - i guess this should become a menu layer where i can set them up
                 int                   threshold_low                             [ADC_CHANNELS]              = {   128,  128,  128,  128,  128,  128,  128,  128 };                     // Array of lower threshold values per channel
                unsigned char          led_col_new                               [20][3]                     = { 0 };
 

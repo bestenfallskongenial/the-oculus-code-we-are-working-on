@@ -1,3 +1,4 @@
+// NO CHANGES HERE EVER!
 #include "kernel.h"
 #include "global.h"
 #include "wavetable.h"
@@ -261,7 +262,7 @@ void            CKernel::util_LFO                   ()
                 LFO_float_output[1] = (float)waveTable[mode_storage_buffers[LF2_WAVE][current_buffer]][sampleIndex[1]] / 1023.0f; // was 0123.0f
                 LFO_int_output  [1] =        waveTable[mode_storage_buffers[LF2_WAVE][current_buffer]][sampleIndex[1]];
 }   
-
+// we have somwhere a new audiodetection mechanism, automated but its lost between all our changes... later more
 void            CKernel::util_audio_energy          (float adcvalue) 
 {   
                 const int maxBuffer = 33;
@@ -327,7 +328,7 @@ void            CKernel::util_audio_energy          (float adcvalue)
                 indexBand2 = (indexBand2 + 1) % buffer_size_table[2][sensitivity_new];
                 indexBand3 = (indexBand3 + 1) % buffer_size_table[3][sensitivity_new];
 }
-
+// more filesystem.cpp stuff here, right?
 bool            CKernel::util_check_for_update      ()
 {
                 CString line;    
@@ -504,7 +505,7 @@ void            CKernel::util_save_modes_file       ()    // whats up here???
                     }
 }
 
-
+// helpers i didnt integrate yet, but they are here and working
 void CKernel::GenerateH264ParserInfo( int file_index)
 {
         CString bufferParser = m_H264Parser.m_DebugCharArray[file_index];

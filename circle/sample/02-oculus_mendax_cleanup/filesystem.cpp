@@ -1,3 +1,5 @@
+// the files stays at it is - filesystem related functions for loading/saving files to/from FAT filesystem - i repeat, no changes here
+
 #include "kernel.h"
 #include "global.h"
 

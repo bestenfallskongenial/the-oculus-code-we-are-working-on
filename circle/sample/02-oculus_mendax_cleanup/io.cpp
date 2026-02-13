@@ -1,3 +1,4 @@
+// the files stays at it is - later we will change the io_read_ADC() and also the event handlers for the buttons - we will also add a function to read the pickup buffer and call it in the menu loop ( why are you sugesting this ?! )
 #include "kernel.h"
 #include "global.h"
 /*  do i should call you each time i change the menu ??

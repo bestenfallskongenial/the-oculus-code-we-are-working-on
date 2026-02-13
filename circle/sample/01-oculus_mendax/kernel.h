@@ -14,7 +14,7 @@
 
 #include <circle/memory.h>										// new for dma allocated buffers!
 #include <circle/new.h>												// new for dma allocated buffers!
-
+// ironically i could remove header files without problems but im still concerned about the correct order here and in kernel.cpp ( for example the memory system must be initialized before the file system, because of the dma buffers )
 #include "/home/bestenfalls/circle/addon/SDCard/emmc.h"
 
 #include <circle/usb/usbhcidevice.h>
@@ -30,7 +30,7 @@
 
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
-
+// declutter declutter declutter
 /*
 #include "/home/bestenfalls/circle/addon/vc4/interface/khronos/include/EGL/egl.h"
 #include "/home/bestenfalls/circle/addon/vc4/interface/khronos/include/GLES/gl.h"
@@ -94,7 +94,7 @@
 #define 		G   					1  
 #define 		B    					2
 
-// possitions in my ccolor table?
+// positions in my ccolor table also better as enums?
 #define			M_1						1		// menu a
 #define			M_2						2		// menu b
 #define			M_L						3		// menu flo
@@ -111,7 +111,7 @@
 #define			A_2						14
 #define			A_3						15
 
-
+// maybe better of as enums ?!
 #define CH0_MODE 0
 #define CH1_MODE 1
 #define CH2_MODE 2
