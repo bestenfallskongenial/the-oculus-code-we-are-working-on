@@ -17,12 +17,6 @@ uniform vec4 par_b;                     // Normalised ( 0.0 to 1.0 )
 uniform sampler2D tex[8];               // Array of tex samplers
 uniform int tex_l;                      // number of loaded texures
 
-//f0:offset 1:
-//f1:offset 2:
-//f2:offset 3:
-float f0 = mix(0.05, 0.95, par_a[0]);
-float f1 = mix(0.05, 0.95, par_a[1]);
-float f2 = mix(0.05, 0.95, par_a[2]);
 
 // Helper constants
 #define F2 0.35403
@@ -43,7 +37,7 @@ vec2 grad2(vec2 p, float rot)
 
 float srdnoise(in vec2 P, in float rot, out vec2 grad)
 {
-  vec2 Ps = P + dot(P, vec2(F2));
+  vec2 Ps = P + dot(P, vec2(par_a.z));
   vec2 Pi = floor(Ps);
   vec2 P0 = Pi - dot(Pi, vec2(G2));
   vec2 v0 = P - P0;
@@ -84,22 +78,22 @@ vec2 complex_div(vec2 numerator, vec2 denominator)
 
 vec2 torus_mirror(vec2 uv)
 {
-  return vec2(1.)-abs(fract(uv*.35)*2.4 *f2-1.0);
+  return vec2(1.)-abs(fract(uv*.35)*2.4 *par_a.w-1.0);
 }
 
 void main()
 {
   vec2 aspect = vec2(1., tres.y/tres.x);
   vec2 uv = (gl_FragCoord.xy / tres.xy - 0.5)*aspect;
-  float mouseW = -atan(f1, f0);
+  float mouseW = -atan(par_a.y, par_a.x);
   vec2 mousePolar = vec2(mouseW);
-  vec2 offset = 0.25 + complex_mul((sin(time/100.)-0.5)*vec2(-1.,1.)*aspect, mousePolar)*aspect*4.;
+  vec2 offset = 0.25 + complex_mul((sin(time/1000.)-0.5)*vec2(-1.,1.)*aspect, mousePolar)*aspect*4.;
 
   vec2 p = torus_mirror(complex_div(mousePolar*vec2(.1618), uv) - offset);
   vec2 g1, g2;
-  float n1 = srdnoise(p*0.15, 0.2*time, g1);
-  float n2 = srdnoise(p*2.0 + g1*0.5, 0.51*time, g2);
-  float n3 = srdnoise(p*4.0 + g1*0.5 + g2*0.25, 0.77*time, g2);
+  float n1 = srdnoise(p*0.15, 0.02*time, g1);
+  float n2 = srdnoise(p*2.0 + g1*0.5, 0.051*time, g2);
+  float n3 = srdnoise(p*4.0 + g1*0.5 + g2*0.25, 0.077*time, g2);
   vec3 color_out = vec3(0.4, 0.5, 0.6) + vec3(n1+0.75*n2+0.5*n3);
   
   gl_FragColor = vec4(color_out, color.a );

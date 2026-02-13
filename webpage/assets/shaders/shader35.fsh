@@ -17,30 +17,24 @@ uniform vec4 par_b;                     // Normalised ( 0.0 to 1.0 )
 uniform sampler2D tex[8];               // Array of tex samplers
 uniform int tex_l;                      // number of loaded texures
 
-const float pi = 3.14159265;
-
 void main(void)
 {
-    vec2 mouse;
-    mouse.x = par_a[0];
-    mouse.y = par_a[1];
-
     vec2 p = (gl_FragCoord.xy / tres.xy) * 2.0 - 1.0;
     float a = atan(p.y, p.x);
     float r = sqrt(dot(p, p));
     vec2 uv = vec2(0.0, 0.0);
-    uv.x = mod(mouse.x * cos(a) / r + time * 500.0, 1.0);
-    uv.y = mod(mouse.y * sin(a) / r + time * 600.0, 1.0);
+    uv.x = mod(par_a.x * cos(a) / r + time * 0.2, 1.0);
+    uv.y = mod(par_a.y * sin(a) / r + time * 0.33, 1.0);
     
-    float amount = sin(time * 5000.0) * 0.01;
+    float amount = sin(time * 0.1) * par_a.z;
     vec4 color0 = texture2D(tex[0], uv);
     vec4 color1 = texture2D(tex[0], uv + vec2(0.0, -amount));
     vec4 color2 = texture2D(tex[0], uv + vec2(0.0, amount));
-    vec4 color3 = texture2D(tex[0], uv + vec2(amount, 0.0));
-    vec4 color4 = texture2D(tex[0], uv + vec2(-amount, 0.0));
-    vec4 fragColor = ((color0 + color1 + color2 + color3 + color4) / 8.0) + pow(1.0 - r, 3.0);
+    vec4 color3 = texture2D(tex[0], uv + vec2(amount, par_a.w));
+    vec4 color4 = texture2D(tex[0], uv + vec2(-amount, -par_a.w));
+    vec4 fragColor = ((color0 + color1 + color2 + color3 + color4) / 8.0) + pow(1.0 - r, 6.0);
     
-    float border = 0.95;
+    float border = 0.98;
     if (p.x < -border || p.x > border || p.y < -border || p.y > border)
 {
         fragColor = vec4(p.x + p.y);
