@@ -22,12 +22,12 @@ bool            CKernel::memory_allocate            ()
                                                                 &m_textureRawBlock,
                                                                 &m_textureBlockSize);
 
-                m_bufferKernel      = memory_init_buffer( 2, KERNEL_SIZE );
+                m_bufferKernel      = memory_init_buffer    (   2, KERNEL_SIZE );
 
-                m_bufferVshader     = memory_init_buffer( VSH_SD + VSH_USB, VSH_SIZE );
-                m_bufferFshader     = memory_init_buffer( FSH_SD + FSH_USB, VSH_SIZE );
-                if (!m_bufferVideo || !m_bufferFrameBufferA || !m_bufferFrameBufferA || !m_bufferTexture ||
-                    !m_bufferKernel || !m_bufferVshader || !m_bufferFshader)
+                m_bufferVshader     = memory_init_buffer    (   VSH_SD + VSH_USB, VSH_SIZE );
+                m_bufferFshader     = memory_init_buffer    (   FSH_SD + FSH_USB, VSH_SIZE );
+
+                if (!m_bufferVideo || !m_bufferFrameBufferA || !m_bufferFrameBufferA || !m_bufferTexture || !m_bufferKernel || !m_bufferVshader || !m_bufferFshader)
                     {
                     memory_clean_up();
                     return false;
@@ -57,8 +57,7 @@ void            CKernel::memory_clean_up            ()
                     }    
                 if (m_bufferTexture) 
                     { 
-                    memory_clear_buffer( m_bufferTexture, 
-                                        TEX_SD + TEX_USB); 
+                    memory_clear_buffer( m_bufferTexture, TEX_SD + TEX_USB); 
                     m_bufferTexture = nullptr; 
                     }
                 if (m_bufferKernel) 
@@ -68,14 +67,12 @@ void            CKernel::memory_clean_up            ()
                     }
                 if (m_bufferVshader) 
                     { 
-                    memory_clear_buffer( m_bufferVshader, 
-                                        VSH_SD + VSH_USB); 
+                    memory_clear_buffer( m_bufferVshader, VSH_SD + VSH_USB); 
                     m_bufferVshader = nullptr; 
                     }
                 if (m_bufferFshader) 
                     { 
-                    memory_clear_buffer( m_bufferFshader, 
-                                        FSH_SD + FSH_USB); 
+                    memory_clear_buffer( m_bufferFshader, FSH_SD + FSH_USB); 
                     m_bufferFshader = nullptr; 
                     }                                   
 }

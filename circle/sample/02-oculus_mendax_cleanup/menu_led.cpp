@@ -3,21 +3,21 @@
 
 namespace
 {
-void led_set_scaled (int idx, int color, int brightness)
+void CKernel::led_set_scaled (int idx, int color, int brightness)
 {
                 led_col_new[idx][R] = rgb_tab[color][R] + ((rgb_tab[color][R] != 0) * brightness);
                 led_col_new[idx][G] = rgb_tab[color][G] + ((rgb_tab[color][G] != 0) * brightness);
                 led_col_new[idx][B] = rgb_tab[color][B] + ((rgb_tab[color][B] != 0) * brightness);
 }
 
-void led_set_plain (int idx, int color)
+void CKernel::led_set_plain (int idx, int color)
 {
                 led_col_new[idx][R] = rgb_tab[color][R];
                 led_col_new[idx][G] = rgb_tab[color][G];
                 led_col_new[idx][B] = rgb_tab[color][B];
 }
 
-void led_set_white (int idx)
+void CKernel::led_set_white (int idx)
 {
                 led_col_new[idx][R] = 159;
                 led_col_new[idx][G] = 159;

@@ -110,13 +110,13 @@ void            CKernel::io_event_button_A          (   BUTTONS::TEvent Event, v
                         adc_pot_routing = true;
                     //  m_ChipSelectPin.Write(true);
                     
-                    switch (pThis->m_Button_A.GetHoldQuarterSeconds())
+                    switch (pThis->m_Button_A.GetHoldQuarterSeconds())  // we added this to the button code ourself to enable tis quirked functionality
                         {
                         case 4:
                       is_hold_for_2_sec_a = true;
                         break;     
                         case 12:    
-                    //  noTargetFPS =! noTargetFPS;  
+                    //  noTargetFPS =! noTargetFPS;  // we need to solve this, also in sync with our fps break
                         is_hold_for_4_sec_a = true;                     
                         
                         break;

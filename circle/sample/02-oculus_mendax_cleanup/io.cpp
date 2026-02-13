@@ -18,7 +18,8 @@ void            CKernel::io_init_pickup_buffer      ()
                 menu_pickup_flag[11] = m_MCP300X.DoSingleEndedConversionRaw(7);
 }
 */
-void            CKernel::io_read_ADC                () 
+void            CKernel::io_read_ADC                () // i really found no better way to read the adc, provide float and int values and also the raw value and apply the attenuation factor for the voltage divider and average the values in a buffer to get a more stable reading 
+
 {
                 const float maxA = 1023.0;
                 const int scaleFactors[3] = {   2047,       // 2.5V max (1023 * 2)
@@ -66,7 +67,6 @@ void            CKernel::io_event_button_A          (   BUTTONS::TEvent Event, v
                         is_hold_for_4_sec_a = false;
                         opaque = 0.5f; // opaque = 1.0f;
                         adc_pot_routing = false;
-                    //  m_ChipSelectPin.Write(false);
                         }
                         a_is_hold = false;
 
@@ -77,17 +77,15 @@ void            CKernel::io_event_button_A          (   BUTTONS::TEvent Event, v
                     if (g_menu_mode_new == 1) 
                         {
                         g_menu_mode_new = 3;
-                    //  g_menu_mode_old = 3;
                         }
                     else if (g_menu_mode_new == 3) 
                         {
                         g_menu_mode_new = 1;
-                    //  g_menu_mode_old = 1;
                         }
 
                     break;
 
-                    case BUTTONS::EventSwitchDoubleClick:
+                    case BUTTONS::EventSwitchDoubleClick: // we need to declutter the code here - we removed the audio mode!
                 //  if ( g_menu_mode_new == 0 ) mode_storage_buffers[FRM_MODE][current_buffer] = !mode_storage_buffers[FRM_MODE][current_buffer];;           // switch between internal time and adc time 
                     if ( g_menu_mode_new != 0 && audio_source_channel != -1 ) sensitivity_new = (sensitivity_new + 1) % 5; // activate mode for lfo 
                     if ( g_menu_mode_new != 0 && audio_source_channel == -1 ) attenuation = (attenuation + 1) % 3;
@@ -106,10 +104,8 @@ void            CKernel::io_event_button_A          (   BUTTONS::TEvent Event, v
                         a_is_hold = true;
                         g_menu_mode_new = 2;    
                         opaque = 0.5f;
-                    //  g_menu_mode_old = 2;
                         g_show_bank = 1;
                         adc_pot_routing = true;
-                    //  m_ChipSelectPin.Write(true);
                     
                     switch (pThis->m_Button_A.GetHoldQuarterSeconds())
                         {
@@ -152,7 +148,6 @@ void            CKernel::io_event_button_B          (   BUTTONS::TEvent Event, v
                         is_hold_for_4_sec_b = false;
                         opaque = 0.5f; //  opaque = 1.0f;
                         adc_pot_routing = false;
-                    //  m_ChipSelectPin.Write(false);
                         }
                     b_is_hold = false;    
 
@@ -174,12 +169,11 @@ void            CKernel::io_event_button_B          (   BUTTONS::TEvent Event, v
                     case BUTTONS::EventSwitchHold:
                     
                     b_is_hold = true;
-                    if ( g_menu_mode_new != 3 )    g_menu_mode_new = 1;    
-                //  if ( g_menu_mode_new != 3 )    g_menu_mode_old = 1;
+                    if ( g_menu_mode_new != 3 )    g_menu_mode_new = 1;    // we need an inc mechanism to circle through multiple layers of our gui
                     opaque = 0.5f;
                     g_show_bank = 0;
                     adc_pot_routing = true;
-                //  m_ChipSelectPin.Write(true);
+
 
                     switch (pThis->m_Button_B.GetHoldQuarterSeconds())
                         {
