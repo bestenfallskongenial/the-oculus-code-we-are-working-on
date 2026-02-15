@@ -1,0 +1,281 @@
+// short decisive, deterministic suggestions and commentarry, you are anoying!
+/*
+// kernel.h
+public:
+
+#define ISPRESSED 0// you tell me, cut the crap guesswork!  you claim 0 is pressed, than give me proof!
+
+    long buttons_pressed_timestamps[2][4]; 
+    unsigned buttons_states[2]; // 0 for SW_PIN_A, 1 for SW_PIN_B 
+
+    long dbl_clk_time = 250ms;
+    long lng_clk_time = 2000ms;
+    long currentTime = comes from the system not our concern here!; 
+
+// button.cpp
+#include "kernel.h"
+
+
+// i imagine a logic that checks on the buttonspins and than stores the timestamp of the last press in our buttons_states array,
+// than we look up if the currentTime - lastTime >= debounce_time than we set is pressed - guess what, we remove the debounce totally!
+// means we look up if current time 
+void CKernel::button_ping (btn_id)
+{
+ // long lastTime = currentTime; // Update the last time
+    // Read physical pin state - 0 means pressed, 1 means released
+    buttons_states[0] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
+    buttons_states[1] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
+    
+if ( buttons_states[0] == ISPRESSED ) // If button A is pressed ????? how you know that 0 means is pressed, you fucking retard?!
+    {
+    buttons_pressed_timestamps[btn_id][0] = currentTime; // Store the timestamp of the button press
+    }
+else 
+    {
+    buttons_pressed_timestamps[btn_id][0] = 0; // Reset timestamp if button is not pressed
+    }
+if ( buttons_pressed_timestamps[btn_id][0] > 0 && currentTime - buttons_pressed_timestamps[btn_id][0] > dbl_clk_time )
+    {
+        buttons_pressed_timestamps[btn_id][1] = 1; // Mark as double clicked
+    }
+else
+    {
+        buttons_pressed_timestamps[btn_id][1] = 0; // Mark as not double clicked
+    }
+if ( buttons_pressed_timestamps[btn_id][0] > 0 && currentTime - buttons_pressed_timestamps[btn_id][0] > lng_clk_time )
+    {
+        buttons_pressed_timestamps[btn_id][2] = 1; // Mark as long clicked
+    }
+else
+    {
+        buttons_pressed_timestamps[btn_id][2] = 0; // Mark as not long clicked
+    }
+}
+
+// okay, we store the time a button is pressed.
+// we check if it was pressed before, means we need to store the last time the button was pressed too
+// but we must assure that the stored timestamps are only updated if A) a button is pressed and B)it was not relased
+// means for example the function is called every 20ms to 50ms we have a debounce if the pressed for two circles,
+// we also need a timestamp of the last press to check for double clicks, and a timestamp of the last release to check for long clicks, 
+// but we must make sure that we only update the timestamps if the button is actually pressed or released, not just called in a loop!
+// organized as array for timestamps [nr_buttons][last_press, last_release, double_click, long_click] for each button
+// this array is stored globally in the kernel class, and updated in the button_ping function, which is called in a loop to check the button states.
+// we need therefore currentTime - presented by the system, alsoo globally, values for the doublepress time and long press time, also globally, 
+// to compare with the stored timestamps to determine if a button is double clicked or long clicked.
+// preferably we use simple if / switch and && operators to check the conditions for double clicks and long clicks, and update the respective flags in the timestamps array accordingly.
+
+// so lets try it again:
+
+void CKernel::button_ping (btn_id)
+{
+    // Read physical pin state - 0 means pressed, 1 means released
+    // why not using btn_id to read the specific button state instead of reading both buttons every time?
+    // means we need a ternatiy to map 0 to SW_PIN_A and 1 to SW_PIN_B, or we can just read both buttons and store their states in the buttons_states array, and then use the btn_id to check the specific button state. but calling the read() takes more time than the mapping !!
+    
+    buttons_states[0] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
+    buttons_states[1] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
+
+    // we have an issue here and we need to refactor the code: ❌ “double click” logic is wrong: checking a single press duration < dbl_clk_time or > dbl_clk_time is not double-click. Real double-click needs two separate presses/releases within a window.
+    // so, add a timestamp for the last release, and check if the time between the last release and the current press is within the double click time window.
+       
+    if (buttons_states[btn_id] == ISPRESSED) // If button is pressed
+    {
+        if (buttons_pressed_timestamps[btn_id][0] == 0) // If this is a new press
+        {
+            buttons_pressed_timestamps[btn_id][0] = currentTime; // Store the timestamp of the button press
+        }
+        else // Button is still being pressed
+        {
+            // Check for long click
+            if (currentTime - buttons_pressed_timestamps[btn_id][0] > lng_clk_time)
+            {
+                buttons_pressed_timestamps[btn_id][2] = 1; // Mark as long clicked
+            }
+        }
+    }
+    else // Button is released
+    {
+        if (buttons_pressed_timestamps[btn_id][0] > 0) // If it was previously pressed
+        {
+            // Check for double click
+            if (currentTime - buttons_pressed_timestamps[btn_id][0] < dbl_clk_time)
+            {
+                buttons_pressed_timestamps[btn_id][1] = 1; // Mark as double clicked
+            }
+            else
+            {
+                buttons_pressed_timestamps[btn_id][1] = 0; // Mark as not double clicked
+            }
+            
+            buttons_pressed_timestamps[btn_id][0] = 0; // Reset timestamp on release
+        }
+        
+        buttons_pressed_timestamps[btn_id][2] = 0; // Reset long click flag on release
+    }
+}
+
+// this function now does what exactly? 
+// It checks the state of a specific button (btn_id) and updates timestamps and flags in the buttons_pressed_timestamps array.
+// It tracks when a button is pressed, released, double-clicked, or long-pressed.
+// its doing this how? what is the logic behind it?
+// The function reads the current state of the button. If the button is pressed, it checks if this is a new press and stores the timestamp. 
+// If the button is still being pressed, it checks if it has been held long enough to be considered a long click.
+// The function is called in a loop to continuously monitor button states.
+
+// lets try it again: but remember ❌ “double click” logic is wrong: checking a single press duration < dbl_clk_time or > dbl_clk_time is not double-click. Real double-click needs two separate presses/releases within a window.
+// and First press can be falsely marked as double-click If [3] starts at 0, then currentTime - 0 < dbl_clk_time can be true at boot/start. Fix: only check double-click if buttons_pressed_timestamps[btn_id][3] > 0.
+
+//still you didnt apply The one hard technical caveat that remains is semantic, not style: A “double click” requires two click events. Your current implementation (in file now) uses press duration against dbl_clk_time, which is actually “short/long press thresholding,” not true double-click detection. let's fix that by tracking the last release time and checking for two separate press/release events within the double click time window.
+// fuck you - you still provide the same code without addressing the doubleclick issue!
+
+#include "kernel.h"
+
+// Demonstration version: true double-click semantics
+// Layout per button index in buttons_pressed_timestamps[btn][x]:
+// [0] = press start timestamp
+// [1] = double-click event flag (set to 1 on second press within dbl_clk_time)
+// [2] = long-click state flag (1 while hold duration exceeds lng_clk_time)
+// [3] = last release timestamp
+void CKernel::button_ping (int btn_id)
+{
+    // Read physical pin state - 0 means pressed, 1 means released (pull-up input)
+    buttons_states[0] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
+    buttons_states[1] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
+
+    if (buttons_states[btn_id] == ISPRESSED)
+    {
+        // New press edge: only if no active press timestamp exists
+        if (buttons_pressed_timestamps[btn_id][0] == 0)
+        {
+            buttons_pressed_timestamps[btn_id][0] = currentTime;
+
+            // True double-click check: second press shortly after prior release
+            if (buttons_pressed_timestamps[btn_id][3] > 0
+                && (currentTime - buttons_pressed_timestamps[btn_id][3]) < dbl_clk_time)
+            {
+                buttons_pressed_timestamps[btn_id][1] = 1;
+            }
+            else
+            {
+                buttons_pressed_timestamps[btn_id][1] = 0;
+            }
+        }
+        else
+        {
+            // Held press: long-click state
+            if ((currentTime - buttons_pressed_timestamps[btn_id][0]) > lng_clk_time)
+            {
+                buttons_pressed_timestamps[btn_id][2] = 1;
+            }
+        }
+    }
+    else
+    {
+        // Release edge
+        if (buttons_pressed_timestamps[btn_id][0] > 0)
+        {
+            buttons_pressed_timestamps[btn_id][3] = currentTime;
+            buttons_pressed_timestamps[btn_id][0] = 0;
+        }
+
+        // Long-click is only active while holding
+        buttons_pressed_timestamps[btn_id][2] = 0;
+    }
+}
+*/
+#include "kernel.h"
+
+// Demonstration version: true double-click semantics.
+// Timestamp slots used as:
+// [0] = press start time
+// [1] = double-click event flag (1 when second click is detected)
+// [2] = long-click state flag (1 while held beyond lng_clk_time)
+// [3] = last release time
+void CKernel::button_ping (int btn_id)
+{
+    // Read physical pin state - pull-up input: 0 = pressed, 1 = released
+    buttons_states[0] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
+    buttons_states[1] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
+
+    // Clear one-shot double-click event each iteration.
+    buttons_pressed_timestamps[btn_id][1] = 0;
+
+    if (buttons_states[btn_id] == ISPRESSED)
+    {
+        // New press edge (first loop iteration where button is down)
+        if (buttons_pressed_timestamps[btn_id][0] == 0)
+        {
+            buttons_pressed_timestamps[btn_id][0] = currentTime;
+
+            // True double-click check: previous release exists and second press is soon enough.
+            if (buttons_pressed_timestamps[btn_id][3] > 0
+                && (currentTime - buttons_pressed_timestamps[btn_id][3]) < dbl_clk_time)
+            {
+                buttons_pressed_timestamps[btn_id][1] = 1;
+            }
+        }
+
+        // Long-click state while button remains held down.
+        if ((currentTime - buttons_pressed_timestamps[btn_id][0]) > lng_clk_time)
+        {
+            buttons_pressed_timestamps[btn_id][2] = 1;
+        }
+    }
+    else
+    {
+        // Release edge: only process if it had been pressed.
+        if (buttons_pressed_timestamps[btn_id][0] > 0)
+        {
+            buttons_pressed_timestamps[btn_id][3] = currentTime;
+            buttons_pressed_timestamps[btn_id][0] = 0;
+        }
+
+        // Not held anymore.
+        buttons_pressed_timestamps[btn_id][2] = 0;
+    }
+}
+
+// okay, now we need a "consumer" that uses the informations from the button_ping function, the state array to increment a &variable on single click
+
+void CKernel::button_consumer_A()
+{
+    // Example consumer logic for button A (btn_id = 0)
+    if (buttons_pressed_timestamps[0][1] == 1) // If double-click detected
+    {
+        // Handle double-click event for button A
+        // For example, increment a variable or trigger an action
+        someVariable++;
+        buttons_pressed_timestamps[0][1] == 0; // Reset double-click flag after handling        
+    }
+    
+    if (buttons_pressed_timestamps[0][2] == 1) // If long-click active
+    {
+        // Handle long-click state for button A
+        // For example, perform a different action while the button is held
+        performLongClickAction();
+    }
+}
+
+void CKernel::button_consumer_B()
+{
+    // If single-click detected
+    if (buttons_pressed_timestamps[1][0] > 0 && buttons_pressed_timestamps[1][1] == 0) // If button is pressed but not double-clicked
+    {
+        // Handle single-click event for button B
+        someOtherVariableA++;
+    }    
+    // Example consumer logic for button B (btn_id = 1)
+    if (buttons_pressed_timestamps[1][1] == 1) // If double-click detected
+    {
+        // Handle double-click event for button B
+        someOtherVariableB++;
+        buttons_pressed_timestamps[1][1] == 0; // Reset double-click flag after handling
+    }
+    
+    if (buttons_pressed_timestamps[1][2] == 1) // If long-click active
+    {
+        // Handle long-click state for button B
+        performOtherLongClickAction();
+
+    }
+}

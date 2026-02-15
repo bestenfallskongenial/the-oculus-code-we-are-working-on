@@ -10,7 +10,7 @@ static inline bool mode_allowed (int ch, int mode)
 }
 
 
-// same here, when mode_storage_buffers is our source of truth, why 
+// same here, when mode_storage_buffers is our source of truth, why do we need helpers for helpers and wrappers for wrappers! retarded! i gave clear example haw to code!
 static void apply_mode_to_channel (int channel, int mode, unsigned long current_time)
 {
                 if (!mode_allowed(channel, mode))
@@ -65,12 +65,25 @@ void            CKernel::apply_mode_logic           ()
 {
                 unsigned long current_time = m_Timer.GetClockTicks();
                 // i explicitly stated that i want my loops unrolled, but you just had to go and make it more complicated than it needs to be.
-                for (int channel = 0; channel < ADC_CHANNELS; ++channel)
-                    {
-                    int mode = mode_storage_buffers[CH0_MODE + channel][current_buffer];
-                    apply_mode_to_channel(channel, mode, current_time);
-                    }
-
+//                for (int channel = 0; channel < ADC_CHANNELS; ++channel)
+//                    {
+                    int mode = mode_storage_buffers[CH0_MODE + 0][current_buffer];
+                    apply_mode_to_channel(0, mode, current_time);
+//                    }
+                        mode = mode_storage_buffers[CH0_MODE + 1][current_buffer];
+                    apply_mode_to_channel(1, mode, current_time);
+                        mode = mode_storage_buffers[CH0_MODE + 2][current_buffer];
+                    apply_mode_to_channel(2, mode, current_time);
+                        mode = mode_storage_buffers[CH0_MODE + 3][current_buffer];
+                    apply_mode_to_channel(3, mode, current_time);
+                        mode = mode_storage_buffers[CH0_MODE + 4][current_buffer];
+                    apply_mode_to_channel(4, mode, current_time);
+                        mode = mode_storage_buffers[CH0_MODE + 5][current_buffer];
+                    apply_mode_to_channel(5, mode, current_time);
+                        mode = mode_storage_buffers[CH0_MODE + 6][current_buffer];
+                    apply_mode_to_channel(6, mode, current_time);
+                        mode = mode_storage_buffers[CH0_MODE + 7][current_buffer];
+                    apply_mode_to_channel(7, mode, current_time);
                 // keep current special clock-trigger side effect on channel 5
                 // wtf is this? why is this here? this is so bad. this is a side effect that only applies to one channel and one mode, 
                 // a mode that we removed btw and it's just randomly tacked on here in the middle of the function. this is so bad. 
@@ -84,3 +97,5 @@ void            CKernel::apply_mode_logic           ()
                     current_time_for_bpm = current_time;
                     }
 }
+
+//show me the mode_storage array and explain its purpose and structure 
