@@ -10,7 +10,7 @@ void            CKernel::menu_reset_pickup_flags    ()
                     g_menu_mode_old = g_menu_mode_new;
                     }
 }
-
+/*
 void            CKernel::menu_mode_default_A        ()
 {
                 // Mapping phase only: no per-channel processing/output writes here.
@@ -171,6 +171,78 @@ void            CKernel::menu_mode_assign_LFO       ()  // mapping the LFO-param
                         }
                     }
 }
+*/
+// replaces menu_mode_assign_A menu_mode_assign_B and menu_mode_assign_LFO by using this array here
+
+// 0–7  : ADC modes
+// 8–9  : LFO waves
+// 10–11: LFO mult
+//        constexpr uint8_t menu_map_max[12] =
+//        {
+//            NUMBER_OF_MODES - 1, NUMBER_OF_MODES - 1,
+//            NUMBER_OF_MODES - 1, NUMBER_OF_MODES - 1,
+//            NUMBER_OF_MODES - 1, NUMBER_OF_MODES - 1,
+//            NUMBER_OF_MODES - 1, NUMBER_OF_MODES - 1,
+//            WAVEFORMS, WAVEFORMS,
+//            7, 7
+//        };
+
+uint8_t menu_map_max[12] =
+{
+    5, 5, 5, 5,
+    5, 5, 5, 5,
+    4, 4, 7, 7
+};
+
+
+void CKernel::menu_mode_assign_group(uint8_t menu_id, uint8_t base)
+{
+    if (g_menu_mode_new != menu_id)
+        return;
+
+    int v;
+
+    // slot 0
+    v = (adc_raw_value[4] * menu_map_max[base + 0]) >> 10;
+    if (!menu_pickup_flag[base + 0] &&
+        v == mode_storage_buffers[base + 0][current_buffer])
+        menu_pickup_flag[base + 0] = true;
+    else if (menu_pickup_flag[base + 0])
+        mode_storage_buffers[base + 0][current_buffer] = v;
+
+    // slot 1
+    v = (adc_raw_value[5] * menu_map_max[base + 1]) >> 10;
+    if (!menu_pickup_flag[base + 1] &&
+        v == mode_storage_buffers[base + 1][current_buffer])
+        menu_pickup_flag[base + 1] = true;
+    else if (menu_pickup_flag[base + 1])
+        mode_storage_buffers[base + 1][current_buffer] = v;
+
+    // slot 2
+    v = (adc_raw_value[6] * menu_map_max[base + 2]) >> 10;
+    if (!menu_pickup_flag[base + 2] &&
+        v == mode_storage_buffers[base + 2][current_buffer])
+        menu_pickup_flag[base + 2] = true;
+    else if (menu_pickup_flag[base + 2])
+        mode_storage_buffers[base + 2][current_buffer] = v;
+
+    // slot 3
+    v = (adc_raw_value[7] * menu_map_max[base + 3]) >> 10;
+    if (!menu_pickup_flag[base + 3] &&
+        v == mode_storage_buffers[base + 3][current_buffer])
+        menu_pickup_flag[base + 3] = true;
+    else if (menu_pickup_flag[base + 3])
+        mode_storage_buffers[base + 3][current_buffer] = v;
+}
+
+//      example calls:
+
+//      menu_mode_assign_group(1, 0);   // CH0–CH3
+//      menu_mode_assign_group(2, 4);   // CH4–CH7
+//      menu_mode_assign_group(3, 8);   // LFO
+
+
+
 
 /* per-channel, per-mode capability (boolean) */
 const bool g_channel_mode_capability[ADC_CHANNELS][NUMBER_OF_MODES] =
@@ -186,7 +258,7 @@ const bool g_channel_mode_capability[ADC_CHANNELS][NUMBER_OF_MODES] =
 };
 
 
-static CKernel::void apply_mode_to_channel(int channel)
+void CKernel::apply_mode_to_channel(int channel)
 {
 if (!g_channel_mode_capability
         [channel]
@@ -194,7 +266,7 @@ if (!g_channel_mode_capability
     return;
 
 
-    switch (mode)
+    switch (mode_storage_buffers[channel][current_buffer])
     {
         case 0:
             modeADC (channel);
@@ -267,3 +339,74 @@ void CKernel::modeLF2 ()
 
 
 // add modes as you like but dont forget to past the into the cases above in the corect order until we found an automatic way to call the correct functions
+
+// here are the "edgecases" from the original menu.cpp file in /sample/01-oculus_mendax but we resolve them differently
+
+void CKernel::modeADC(int channel)
+{
+    switch (channel)
+    {
+        /* -------- CH4 : frame / time input -------- */
+        case 4:
+            if (g_menu_mode_new == 0)
+            {
+                output_float_value[4] = adc_float_value[4];
+                output_int_value[4]   = adc_int_value[4];
+            }
+        break;
+
+        /* -------- CH6 : pickup + single_tex_mode -------- */
+        case 6:
+            if (!menu_pickup_flag[12])
+            {
+                if (adc_raw_value[6] > menu_pickup_buffer[12] - TOLERANCE &&
+                    adc_raw_value[6] < menu_pickup_buffer[12] + TOLERANCE)
+                {
+                    menu_pickup_flag[12] = true;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            if (g_menu_mode_new == 0)
+            {
+                output_float_value[6] = adc_float_value[6];
+                output_int_value[6]   = adc_int_value[6];
+
+                if (single_tex_mode)
+                    output_int_value[6] = adc_raw_value[6];
+            }
+        break;
+
+        /* -------- CH7 : pickup + shader select -------- */
+        case 7:
+            if (!menu_pickup_flag[13])
+            {
+                if (adc_raw_value[7] > menu_pickup_buffer[13] - TOLERANCE &&
+                    adc_raw_value[7] < menu_pickup_buffer[13] + TOLERANCE)
+                {
+                    menu_pickup_flag[13] = true;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            if (g_menu_mode_new == 0)
+            {
+                output_float_value[7] = adc_float_value[7];
+                output_int_value[7]   = adc_raw_value[7];
+            }
+        break;
+
+        /* -------- all other channels : normal ADC -------- */
+        default:
+            output_float_value[channel] = adc_float_value[channel];
+            output_int_value[channel]   = adc_int_value[channel];
+        break;
+    }
+}
+
