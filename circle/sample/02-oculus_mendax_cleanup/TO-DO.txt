@@ -1,0 +1,476 @@
+Got it. Here is the **balanced version**:
+**no fluff**, **no reinterpretation**, but with the **missing context restored** so it still explains *why* things are the way they are.
+
+---
+
+# CONSOLIDATED RESULT OF THE BRAINSTORMING
+
+*(context-preserving, but condensed)*
+
+---
+
+## 1. PROBLEM CONTEXT (your project reality)
+
+You have a **hardware device** that:
+
+* runs **GLES 2.0** on **Pi Zero / VC4**
+* renders **user-provided fragment shaders** (uploaded via web UI)
+* must keep **system UI logic strictly separated** from user code
+* already uses:
+
+  * a **fullscreen quad**
+  * a **fixed vertex shader**
+  * an **EGL window surface with implicit double buffering**
+
+You want a **system menu** that:
+
+* is built from a **512×512 texture atlas (8×8 tiles)**
+* contains:
+
+  * 16 mode icons
+  * 16 extra icons
+  * 16 digits / dot / symbols
+* visually looks like:
+
+```
+┌───┐      ┌───┐
+│O O│      │O O│
+│O O│      │O O│
+└───┘      └───┘
+
+┌───────┐
+│123.4 O│
+└───────┘
+```
+
+* uses:
+
+  * `mode_storage_buffers[channel][mode]`
+  * `resultBPM[0..1]`
+* has:
+
+  * **explicit tile positions relative to an origin**
+  * **scalable background tiles** (activity feedback)
+* must be:
+
+  * GPU-only (no CPU drawing)
+  * deterministic
+  * minimally invasive
+
+---
+
+## 2. HARD CONSTRAINTS (why options disappeared)
+
+From GLES 2.0 + your architecture:
+
+* Fragment shaders can only see:
+
+  * textures
+  * uniforms
+  * varyings
+* They **cannot see CPU memory** or your C++ state.
+* User fragment shaders must remain:
+
+  * untouched
+  * unaware of system uniforms/textures
+* Vertex shader is **infrastructure**, not a UI tool.
+* Extra screen buffers / surfaces are expensive on VC4.
+
+**Therefore**:
+
+* dynamic menu state **must be uploaded explicitly**
+* system UI **cannot live inside user shaders**
+* layout must not be recomputed per frame on CPU
+
+---
+
+## 3. FIRST-PRINCIPLE INSIGHT (the key realization)
+
+A texture atlas menu is **not drawing**.
+
+It is:
+
+> selecting sub-regions of a texture by normalized coordinates
+
+The GPU is already optimized for this:
+
+* no copying
+* no compositing passes
+* just texture sampling + simple math
+
+So the correct abstraction is:
+
+> “rearranging atlas regions on the GPU”
+
+---
+
+## 4. FINAL ARCHITECTURAL DECISION
+
+### **Two GPU passes, one back buffer**
+
+* **PASS 1**: user rendering
+
+  * unchanged
+  * user program + user fragment shader
+* **PASS 2**: system menu overlay
+
+  * same fullscreen quad
+  * same vertex shader
+  * **separate, system-only fragment shader**
+  * samples the atlas and overlays tiles
+
+Both passes draw into the **same back buffer**, then:
+
+```
+eglSwapBuffers()
+```
+
+No extra buffers. No FBO. No geometry changes.
+
+---
+
+## 5. DATA FLOW (concrete and minimal)
+
+### CPU side (system only)
+
+CPU does **only**:
+
+1. Read:
+
+   * `mode_storage_buffers[0..7]`
+   * `resultBPM[0..1]`
+2. Convert them into **tile indices (0–63)**
+
+Typical payload:
+
+* 8 mode indices
+* 4 digit indices
+* 1 dot index
+* 1 BPM icon index
+
+≈ **14–20 integers**
+
+That’s it.
+
+---
+
+### GPU side (menu shader only)
+
+* Tile **positions & sizes**:
+
+  * fixed
+  * relative to a common origin
+  * defined once (constants or init-time uniforms)
+* Background scaling:
+
+  * same tile index
+  * larger rect
+* Runtime work:
+
+  * sample atlas
+  * map index → UV
+  * blend over existing pixels
+
+No per-frame layout math.
+No CPU drawing.
+
+---
+
+## 6. WHY THIS WAY (and not others)
+
+* **Not inside user shader**
+  → preserves sandboxing and product safety
+
+* **No vertex / geometry changes**
+  → least invasive, no CPU overhead
+
+* **No extra screen buffer / surface**
+  → unnecessary cost on VC4
+
+* **No FBO for menu**
+  → extra bandwidth, no reuse benefit
+
+* **Uniform indices are unavoidable**
+  → GPU cannot infer dynamic state
+
+This is the **minimal solution that satisfies all constraints**.
+
+---
+
+## 7. RESULT (what you actually get)
+
+* Strict separation of system UI and user code
+* GPU-only menu composition
+* Explicit, controllable layout
+* Very small CPU→GPU bandwidth
+* Deterministic behavior
+* Clean extension path (feedback buffers later, separately)
+
+---
+
+## One-sentence anchor
+
+**Render user content as-is, then overlay a system-only, atlas-based menu in a second fullscreen GPU pass using only tile indices derived from `mode_storage_buffers` and `resultBPM`, before a single buffer swap.**
+
+---
+
+If you want, I can now:
+
+* compress this into a **design note**
+* turn it into **inline code comments**
+* or stop here and lock it as “final”
+
+Below is the **one missing piece you asked for**: a **clean, structured consolidation** of the brainstorming, using **your last input**, answering **exactly**:
+
+* **What is the plan**
+* **What are the constraints**
+* **What is the goal**
+* **Why we do it**
+* **Why we do it this way and not differently**
+
+No new ideas. No alternatives. No noise.
+
+---
+
+# RESULT OF THE BRAINSTORMING
+
+## (Consolidated, final, first-principle)
+
+---
+
+## 1. GOAL (what you actually want)
+
+You want a **system menu**:
+
+* composed from a **512×512 texture atlas (8×8 tiles, 64 total)**
+* containing:
+
+  * mode icons from `mode_storage_buffers[channel][mode]`
+  * BPM digits from `resultBPM[0..1]`
+* with:
+
+  * **explicit tile positions relative to an origin**
+  * **scalable background tiles** (activity indication)
+* rendered **entirely on the GPU**
+* **without touching or interfering with user fragment shaders**
+* **without changing the vertex shader**
+* **with minimal CPU work**
+* **deterministic, first-principle**
+
+In short:
+
+> *A system-controlled UI overlay that cannot be influenced by user code.*
+
+---
+
+## 2. HARD CONSTRAINTS (non-negotiable)
+
+From your project and code:
+
+1. **User fragment shaders must remain untouched**
+
+   * Users upload arbitrary GLSL
+   * System UI must not leak uniforms, samplers, logic
+
+2. **Vertex shader must not change**
+
+   * Your fullscreen quad + `tcoord` is fixed infrastructure
+
+3. **GLES 2.0 only**
+
+   * No compute
+   * No SSBO
+   * No instancing
+   * Limited uniform model
+
+4. **Bare-metal / Pi Zero / VC4**
+
+   * Bandwidth matters
+   * Extra buffers are expensive
+   * Determinism > abstraction
+
+5. **Menu content changes over time**
+
+   * modes change
+   * BPM changes
+     → GPU must be informed somehow
+
+---
+
+## 3. FIRST-PRINCIPLE REALITY CHECK
+
+### What a fragment shader can see (GLES2):
+
+* textures
+* uniforms
+* varyings
+
+### What it cannot see:
+
+* CPU memory
+* your C++ structs
+* `mode_storage_buffers`
+* `resultBPM`
+
+**Conclusion:**
+If the menu content changes, **some data must cross the CPU→GPU boundary**.
+There is **no zero-input solution**.
+
+---
+
+## 4. THE PLAN (what we decided to do)
+
+### Core idea (locked):
+
+> **Render the menu as a second GPU pass, using a dedicated fragment shader and a preloaded texture atlas, into the same back buffer, before `eglSwapBuffers()`.**
+
+---
+
+### Concrete plan, step by step
+
+#### A. Rendering structure (unchanged base)
+
+* Keep your existing render pass exactly as is:
+
+  * user program
+  * user fragment shader
+  * fullscreen quad
+  * draws into the EGL back buffer
+
+#### B. Add one system-only render pass (overlay)
+
+* Same fullscreen quad
+* Same vertex shader
+* **different fragment shader**
+* bound **after** user pass
+* draws into **the same back buffer**
+
+This gives:
+
+* strict separation by **program**
+* strict separation by **uniform namespace**
+* strict separation by **textures**
+
+---
+
+#### C. Texture atlas usage (why this matters)
+
+* One 512×512 atlas
+* Tiles are addressed by **normalized UV math**
+* GPU only:
+
+  * samples a sub-region
+  * no copying
+  * no CPU drawing
+
+This is exactly what GPUs are designed for.
+
+---
+
+#### D. Tile positions & scaling
+
+* Tile positions are:
+
+  * **explicit**
+  * **relative to a common origin**
+* Defined **once** (constants or init-time uniforms)
+* Background scaling = larger rect, same tile index
+
+**No per-frame layout computation.**
+
+---
+
+#### E. Dynamic content flow (minimal CPU work)
+
+CPU does **only this**:
+
+* Read `mode_storage_buffers`
+* Read `resultBPM`
+* Convert them into **tile indices** (0–63)
+
+That’s it.
+
+Typical payload:
+
+* 8 mode indices
+* 4 digit indices
+* dot index
+* BPM icon index
+
+≈ **14–20 integers total**
+
+Uploaded as uniforms **only to the menu shader**.
+
+---
+
+## 5. WHY THIS WAY (and not differently)
+
+### Why not integrate menu into user fragment shader?
+
+* Breaks isolation
+* Exposes system uniforms
+* Allows user interference
+  → **unacceptable for your product**
+
+---
+
+### Why not change vertex shader / geometry?
+
+* Adds complexity
+* Adds CPU work
+* Solves nothing fundamentally
+  → **violates “least invasive”**
+
+---
+
+### Why not an extra screen buffer / surface?
+
+* Expensive
+* Platform-dependent
+* Unnecessary
+  → **overkill**
+
+---
+
+### Why not an FBO for the menu?
+
+* Extra memory
+* Extra bandwidth
+* No reuse benefit (menu changes often)
+  → **more expensive than direct overlay**
+
+---
+
+### Why not “no uniforms at all”?
+
+* GPU cannot guess state
+* Dynamic content requires input
+  → **physically impossible**
+
+---
+
+## 6. WHAT THIS ACHIEVES (factually)
+
+* System UI is **100% GPU-driven**
+* User code is **fully sandboxed**
+* CPU load is **negligible**
+* GPU load is **minimal** (1 extra fullscreen pass)
+* Architecture is **deterministic**
+* Scales naturally to:
+
+  * more icons
+  * more indicators
+  * future feedback buffers (separately)
+
+---
+
+## 7. ONE-PARAGRAPH FINAL SUMMARY
+
+You render user content exactly as today, then render a second fullscreen pass using a system-only fragment shader that samples a 512×512 texture atlas. 
+Tile positions and sizes are fixed and defined relative to an origin; only tile indices derived from `mode_storage_buffers` and `resultBPM` are updated by the CPU. 
+Both passes draw into the same EGL back buffer before a single `eglSwapBuffers()`. 
+This keeps user shaders untouched, minimizes CPU and GPU cost, and guarantees strict separation between user code and system UI.
+
+---
+
+That is the **actual plan**, **why it exists**, and **why it is the correct choice under your constraints**.
