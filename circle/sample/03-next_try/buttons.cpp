@@ -6,7 +6,7 @@ we need a few additions here, alittle cleanup and the question what code is the 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 enum ButtonTSIndex
 {
-    BTM_STATUS      = 0,
+    BTN_STATUS      = 0,
     BTN_PRESS_START = 1,
     BTN_DOUBLE      = 2,
     BTN_LONG        = 3,
@@ -23,8 +23,8 @@ enum ButtonTSIndex
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void CKernel::button_ping(int btn_id)
 {
-    buttons_states[0][BTM_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
-    buttons_states[1][BTM_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
+    buttons_states[0][BTN_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
+    buttons_states[1][BTN_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
 
     if (buttons_states[btn_id] == ISPRESSED)
     {
@@ -89,8 +89,8 @@ void CKernel::button_ping(int btn_id)
 
 void CKernel::button_ping(int btn_id)
 {
-    buttons_states[0][BTM_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
-    buttons_states[1][BTM_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
+    buttons_states[0][BTN_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
+    buttons_states[1][BTN_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
 
     if (buttons_states[btn_id] == ISPRESSED)
     {
@@ -140,8 +140,8 @@ void CKernel::button_ping(int btn_id)
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void CKernel::button_ping(int btn_id)
 {
-    buttons_states[0][BTM_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
-    buttons_states[1][BTM_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
+    buttons_states[0][BTN_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
+    buttons_states[1][BTN_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
 
     if (buttons_states[btn_id] == ISPRESSED)
     {

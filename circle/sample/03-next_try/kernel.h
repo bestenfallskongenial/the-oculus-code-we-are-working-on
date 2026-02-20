@@ -494,25 +494,9 @@ private:
     char** 				m_bufferFshader;
 
 
-    // VideoCore handles
-    u32  m_videoBufferHandles[VID_SD + VID_USB];    // Handles for video buffers
-    u32  m_frameBufferHandlesA;                   // Handles for frame buffers
-	u32  m_frameBufferHandlesB;  
-
-	u32 m_VCSMinputHandle;
-	u32 m_VCSMoutputHandleA;
-	u32 m_VCSMoutputHandleB;
-
-	u32 m_VCSMinputPtr;
-	u32 m_VCSMoutputPtrA;
-	u32 m_VCSMoutputPtrB;
-
-                CString                 g_barsString;
                 CString                 g_log_string;
                 CString                 g_error_string;
                 CString                 g_modes;
-
-                CString                 h264_info;  // <- needs to be global, no return of this function!
 
                 unsigned                hFile                                                               =     0;  // ?? empty ??
 
@@ -524,7 +508,7 @@ private:
                 float                   opaque                                                              =  1.0f;	
 
 	bool 					m_USBhasLoadOnes;
-	bool 					m_resetFlag;
+	bool 					m_resetFlag; // SAME AS resetFlag
 	bool 					m_runtimelog = false;												// failsave for the assumed buffer overflaw that cause an crash at ~22 minutes
 
 	bool                    noTargetFPS                                                         =  true;		// is it still in use? the fps break?
@@ -536,8 +520,6 @@ private:
 	bool                    is_hold_for_2_sec_b                                                 = false;
 	bool                    is_hold_for_4_sec_a                                                 = false;
 	bool                    is_hold_for_4_sec_b                                                 = false;
-	bool                    timer_mode                                                          = false;		// obsolete, falsely used in the original menu.cpp file
-	bool                    single_tex_mode                                                     = false;		// obsolete, falsely used in the original menu.cpp file
 
 	bool           			a_is_hold 															= false;		// will be integrated in button´s buttons_pressed_timestamps[2][7] array, right?
 	bool           			b_is_hold 															= false;
@@ -562,6 +544,7 @@ private:
 	int                     VID_LOADED_NEW                                                      =     0;
 
 	int                     scanned_vsh                                                      	=     0;		// keep track of the loaded files from sd or usb!
+		
 	int                     scanned_fsh                                                      	=     0;
 	int                     scanned_tex                                                      	=     0;
 	int                     scanned_vid                                                      	=     0;
