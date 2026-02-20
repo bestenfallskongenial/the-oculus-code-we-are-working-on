@@ -9,7 +9,7 @@
 #include <circle/types.h>
 
 #define MAX_VIDEOS 8
-#define MAX_TEXTURES 8
+#define MAX_TEXTURES 16
 
 #define TEX_SIZE (1024*1024*4)  	                // 4194304 byte size of texture ( .bpm ) files
 
@@ -53,8 +53,13 @@ bool            ParseInitialize                         (       char*           
                                                                 u8              max_level);
 bool            ParseVideoAuto                          (       int             file_index, char* buffer_array[], size_t size_array[]);                                                
 bool            ParseAnnexB                             (       int             file_index, char* buffer_array[], size_t size_array[]);
+/*
 bool            ParseMP4                                (       int             file_index, char* buffer_array[], size_t size_array[]); // works also for .mov?!
+*/
 bool            ParseBPM                                (       int             file_index, char* filename_array[], char* buffer_array[], size_t size_array[]);
+
+void            ResetBPMparser();               // ??
+void            ResetH264Parser();              // ??
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              CALLBACK / HELPERS / UTILITY / WRAPPER
 //----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -76,8 +81,10 @@ bool            ParseAvcC                               (       int file_index, 
 u32             ReadBE32                                (       const u8       *p);
 size_t          FindBox                                 (       const u8 *data, size_t size, const char box_type[4]);
 size_t          FindBoxDeep                             (       const u8 *data, size_t size, const char box_type[4]);
-//size_t          FindBox                                 (       const u8       *data, size_t size, const char box_type[4]);
-//size_t          RemoveEmulationBytes                    (       const u8       *src, size_t src_len, u8 *dst);
+/*
+size_t          FindBox                                 (       const u8       *data, size_t size, const char box_type[4]);
+size_t          RemoveEmulationBytes                    (       const u8       *src, size_t src_len, u8 *dst);
+*/
 bool            ParseSPS                                (       u8*             sps_data, 
                                                                 size_t          sps_size, 
                                                                 u16*            width, 
@@ -110,7 +117,7 @@ public:
                                                                                         // Indexed by [video_index][frame_index]
         size_t  m_framelenght[MAX_VIDEOS][MAX_FRAMES];                                  // Length (in bytes) of each parsed IDR frame
                                                                                         // Indexed by [video_index][frame_index]    
-        size_t m_frameOffset[MAX_VIDEOS][MAX_FRAMES];
+        size_t  m_frameOffset[MAX_VIDEOS][MAX_FRAMES];
         size_t  m_idr_offset[MAX_VIDEOS];
         int     m_frame_count[MAX_VIDEOS];                                              // Number of IDR frames found for this video stream
         // ---------------- Extradata (SPS+PPS) per stream --------------------------------------------------------------------------------------------------------------------

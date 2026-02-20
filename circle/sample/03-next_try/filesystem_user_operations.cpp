@@ -26,9 +26,7 @@ bool            CKernel::util_check_for_update      ()
                     {
                         unsigned pinStateB = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
                         
-// we need a timing mechanism here - or we trigger the function via meny layer user interaction 
-
-                        m_Screen.Write(CLEAR_SCREEN, strlen(CLEAR_SCREEN));
+                        m_Screen.Write(CLEAR_SCREEN, strlen(CLEAR_SCREEN));                             // we need a timing mechanism here - or we trigger the function via meny layer user interaction 
                         m_Screen.Write( "\n\n  do you want to update? press X\n"
                                         "  reset in 5 Seconds\n\n"
                                         "  prepare the USB Stick with the new Firmware File\n\n",
@@ -179,16 +177,83 @@ void            CKernel::util_save_modes_file       ()    // whats up here??? we
                     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// helpers i didnt integrate yet, but they are here and working
-void CKernel::GenerateH264ParserInfo( int file_index)
+bool            CKernel::filesystem_load_kernel     (   const char* deviceName, 
+                                                        const char* filename, 
+                                                        unsigned bufferIndex)
 {
-        CString bufferParser = m_H264Parser.m_DebugCharArray[file_index];
-        filesystem_save_log_file( "emmc1-1", VID__LOG_NAMES[file_index], bufferParser);   
+                while(bufferIndex == 1 && filesystem_update_USB("umsd1") == false)
+                {
+                    m_Timer.MsDelay(100);
+                }
+
+                CDevice *pPartition = m_DeviceNameService.GetDevice(deviceName, TRUE);
+                        
+                if (pPartition != 0 && (m_pFileSystem = new CFATFileSystem) != 0 && m_pFileSystem->Mount(pPartition))
+                {
+                    if (filesystem_open_file(filename))
+                    {
+
+                        loaded_bytes_kernel[bufferIndex] = filesystem_load_file(m_bufferKernel[bufferIndex], KERNEL_SIZE, 4);
+                        if (loaded_bytes_kernel[bufferIndex] > 0)
+                        {
+                            filesystem_close_file();
+                            m_pFileSystem->UnMount();
+                            delete m_pFileSystem;
+                            m_pFileSystem = 0;
+                            return true;
+                        }
+                        filesystem_close_file();
+                    }
+                    m_pFileSystem->UnMount();
+                }
+                delete m_pFileSystem;
+                m_pFileSystem = 0;
+                return false;
 }
-void CKernel::GenerateBmpParserInfo( int file_index)
+
+bool            CKernel::filesystem_save_kernel     (   const char* deviceName, 
+                                                        const char* filename, 
+                                                        unsigned bufferIndex)
 {
-        CString bufferParser = m_H264Parser.m_DebugCharArray[file_index];
-        filesystem_save_log_file( "emmc1-1", BMP__LOG_NAMES[file_index], bufferParser);   
+                bool success = false;   
+                
+                CDevice *pPartition = m_DeviceNameService.GetDevice(deviceName, TRUE);
+                
+                if (pPartition != 0 && (m_pFileSystem = new CFATFileSystem) != 0 && m_pFileSystem->Mount(pPartition))
+                {
+                    unsigned hFile = m_pFileSystem->FileCreate(filename);
+                    if (hFile != 0)
+                    {
+                        if (m_pFileSystem->FileWrite(hFile, m_bufferKernel[bufferIndex], loaded_bytes_kernel[bufferIndex]) == loaded_bytes_kernel[bufferIndex])
+                        {
+                            success = true;
+                        }
+                        m_pFileSystem->FileClose(hFile);
+                    }
+                    m_pFileSystem->UnMount();
+                }
+                delete m_pFileSystem;
+                m_pFileSystem = 0;
+                
+                return success;
+}
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// helpers i didnt integrate yet, but they are here and working
+void            CKernel::GenerateH264ParserInfo( int file_index)
+{
+                CString bufferParser = m_H264Parser.m_DebugCharArray[file_index];
+                filesystem_save_log_file( "emmc1-1", VID__LOG_NAMES[file_index], bufferParser);   
+}
+void            CKernel::GenerateBmpParserInfo( int file_index)
+{
+                CString bufferParser = m_H264Parser.m_DebugCharArray[file_index];
+                filesystem_save_log_file( "emmc1-1", BMP__LOG_NAMES[file_index], bufferParser);   
+}
+
+void            CKernel::GenerateBmpOverlayInfo( int file_index)           // new to store the log for the system textures, here the overlay atlas
+{
+                CString bufferParser = m_H264SystemParser.m_DebugCharArray[file_index];
+                filesystem_save_log_file( "emmc1-1", OMT__LOG_NAMES[file_index], bufferParser);   // OMT__LOG_NAMES need to be created
 }
 
 void            CKernel::parser_h264               (int fromFile, int toFile)
@@ -207,5 +272,13 @@ void            CKernel::parser_bmp               (int fromFile, int toFile)
                 m_H264Parser.ParseBPM(i, SCANED_FILES_TEX, m_bufferTexture, TEX_LOADED_BYTES );
                 GenerateBmpParserInfo  (i);
         }
+}
+
+void            CKernel::parser_overlay_bmp         (int file_index)
+{        
+                m_H264SystemParser.ParseBPM(file_index , SCANED_FILES_OMT  /*"Overlay Atlas"*/ , m_BufferOverlayTexture, OMT_LOADED_BYTES );
+
+                GenerateBmpOverlayInfo  (file_index); // we keep the indexing maybe there will be more 
+        
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

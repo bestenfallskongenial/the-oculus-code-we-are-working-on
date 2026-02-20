@@ -5,328 +5,17 @@
 */
 // the files stays at it is - we will later change the logging to the methods we developed in vc_h264_decoder.cpp and vc_vcsm.cpp - clear, deterministic without extra dependencies.
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#undef __OLG_DEBUG__
-#undef __GL_DEBUG__
+                #undef __OLG_DEBUG__
+                #undef __GL_DEBUG__
 
 
-#include "kernel.h"
-#include "global.h"
-#include "bcm_host.h" 
+                #include "kernel.h"
+                #include "global.h"
+                #include "bcm_host.h" 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::gfx_shader_log             (   GLint shader, int shaderIndex)
-{
-                GLint success;
-                glGetShaderiv(shader, GL_COMPILE_STATUS, &success); // Get compilation status
-                
-                m_shaderStatusFlags[shaderIndex] = (success == GL_TRUE); // Store status in our flags array
-}
-// we need to implement the same logging mechanism we wrote for the vc4 cedoder and vcsm code. 
-// clear, deterministic without extra dependencies.
-void            CKernel::gfx_program_log            (   GLint shader, int program_index) 
-{
-                int internal_index =0;
-                if ( program_index > 0 ) 
-                    {
-                    internal_index = program_index - 1;
-                    }
 
-                GLint success;
-                glGetProgramiv(shader, GL_LINK_STATUS, &success);
-                
-                CString log_message;
-                log_message.Format( "----------------------------------------------------------------\n"
-                                    "Program %d link status: %s\n\n", 
-                                    program_index,
-                                    (success == GL_TRUE ? "Success" : "Failed"));
-                g_log_string.Append(log_message);
-
-                char name[27];  // 40 chars + null terminator
-                strncpy(name, &m_bufferFshader[program_index][2], 26);
-
-                name[26] = '\0';
-                log_message.Format( "%s Filename: %s Size %u\n"
-                                    "----------------------------------------------------------------\n", 
-                                    name, SCANED_FILES_FSH[internal_index],
-                                    FSH_LOADED_BYTES[program_index]);
-                g_log_string.Append(log_message);
-
-                char log[1024];
-                glGetProgramInfoLog(shader, sizeof(log), NULL, log);
-                
-                log_message.Format(" %s\n", log);    
-                g_log_string.Append(log_message);  // Append the u_program_handle log to the global string
-                
-                GLint numUniforms;
-                glGetProgramiv(shader, GL_ACTIVE_UNIFORMS, &numUniforms);    // Query and append active uniforms information
-                
-                for (GLint i = 0; i < numUniforms; ++i) 
-                    {
-                    char name[256];
-                    GLsizei length;
-                    GLint size;
-                    GLenum type;
-                    glGetActiveUniform(shader, i, sizeof(name), &length, &size, &type, name);
-                    
-                    GLint location = glGetUniformLocation(shader, name);
-                    
-                    log_message.Format("Uniform   #%-2d: name=%-10s, size=%-2d, type=0x%-4x, location=%-2d\n",
-                                i, name, size, type, location);
-                                
-                    g_log_string.Append(log_message);  // Append uniform info to the global string
-                    }
-                g_log_string.Append("\n");
-                
-                GLint numAttributes;
-                glGetProgramiv(shader, GL_ACTIVE_ATTRIBUTES, &numAttributes);   // Query and append active attributes information
-                
-                for (GLint i = 0; i < numAttributes; ++i) 
-                    {
-                    char name[256];
-                    GLsizei length;
-                    GLint size;
-                    GLenum type;
-                    glGetActiveAttrib(shader, i, sizeof(name), &length, &size, &type, name);
-                    
-                    GLint location = glGetAttribLocation(shader, name);
-                    
-                    log_message.Format("Attribute #%-2d: name=%-10s, size=%-2d, type=0x%-4x, location=%-2d\n\n",
-                                i, name, size, type, location);
-                    g_log_string.Append(log_message);  // Append attribute info to the global string
-                    }
-                //    g_log_string.Append("\n");
-}
-
-void            CKernel::gfx_check                  (   const char *file, unsigned line)
-{
-                static unsigned error_count = 0;
-                static bool summary_written = false;  // New static flag
-                const unsigned ERROR_THRESHOLD = 1024;
-                
-                if (resetFlag && !summary_written)
-                    {
-                    summary_written = true;  // Set flag before writing summary
-                    
-                    CTimer *pTimer = CTimer::Get();
-                    unsigned ticks = pTimer->GetTicks();
-                    CString log_message;
-                    
-                    log_message.Format("\n=== Final System Status [%5u.%02u] ===\n", ticks / HZ, ticks % HZ);
-                    g_error_string.Append(log_message);
-                    
-                    log_message.Format("Total Errors Encountered: %u\n", error_count);
-                    g_error_string.Append(log_message);
-                    
-                    GLint value;
-                    glGetIntegerv(GL_CURRENT_PROGRAM, &value);
-                    log_message.Format("Current Program: %d\n", value);
-                    g_error_string.Append(log_message);
-                    
-                    glGetIntegerv(GL_ACTIVE_TEXTURE, &value);
-                    log_message.Format("Active Texture Unit: GL_TEXTURE%d\n", value - GL_TEXTURE0);
-                    g_error_string.Append(log_message);
-                    
-                    GLint viewport[4];
-                    glGetIntegerv(GL_VIEWPORT, viewport);
-                    log_message.Format("Viewport: x=%d, y=%d, width=%d, height=%d\n", 
-                        viewport[0], viewport[1], viewport[2], viewport[3]);
-                    g_error_string.Append(log_message);
-                    
-                    GLint fb;
-                    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fb);
-                    log_message.Format("Current Framebuffer: %d\n", fb);
-                    g_error_string.Append(log_message);
-                    
-                    log_message.Format("\n=== End Status Report ===\n\n");
-                    g_error_string.Append(log_message);
-                    
-                    return;
-                    }
-
-                GLenum error = glGetError();
-                if (error != GL_NO_ERROR)
-                    {
-                    CString log_message;
-                    CTimer *pTimer = CTimer::Get();
-                    unsigned ticks = pTimer->GetTicks();
-                    
-                    const char* error_str;
-                    const char* severity;
-                    
-                    switch(error) 
-                        {
-                        case GL_INVALID_ENUM:               
-                            error_str = "GL_INVALID_ENUM"; 
-                            severity = "WARNING ";
-                            break;
-                        case GL_INVALID_VALUE:              
-                            error_str = "GL_INVALID_VALUE"; 
-                            severity = "WARNING ";
-                            break;
-                        case GL_INVALID_OPERATION:          
-                            error_str = "GL_INVALID_OPERATION"; 
-                            severity = "WARNING ";
-                            break;
-                        case GL_OUT_OF_MEMORY:              
-                            error_str = "GL_OUT_OF_MEMORY"; 
-                            severity = "CRITICAL";
-                            resetFlag = true;
-                            break;
-                        case GL_INVALID_FRAMEBUFFER_OPERATION: 
-                            error_str = "GL_INVALID_FRAMEBUFFER_OPERATION"; 
-                            severity = "CRITICAL";
-                            resetFlag = true;
-                            break;
-                        default:                            
-                            error_str = "UNKNOWN_ERROR"; 
-                            severity = "WARNING ";
-                            break;
-                        }
-                    
-                    log_message.Format("[%5u.%02u][%-8s] OpenGL Error: %-30s (0x%x) at %s:%u\n", 
-                        ticks / HZ,
-                        ticks % HZ,
-                        severity,
-                        error_str,
-                        error,
-                        file,
-                        line);
-                        
-                    g_error_string.Append(log_message);
-                    
-                    error_count++;
-                    if (error_count >= ERROR_THRESHOLD)
-                        {
-                        resetFlag = true;
-                        }
-                    }
-}
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::gfx_init_OGL               (   CUBE_STATE_T *state)
-{
-                int32_t success = 0;
-                EGLBoolean result;
-                EGLint num_config;
-
-                static EGL_DISPMANX_WINDOW_T nativewindow;
-
-                DISPMANX_UPDATE_HANDLE_T dispman_update;
-                VC_RECT_T dst_rect;
-                VC_RECT_T src_rect;
-
-                static const EGLint attribute_list[] =
-                    {
-                    EGL_RED_SIZE, 8,
-                    EGL_GREEN_SIZE, 8,
-                    EGL_BLUE_SIZE, 8,
-                    EGL_ALPHA_SIZE, 8,
-                    EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-                    EGL_NONE
-                    };
-   
-                static const EGLint context_attributes[] = 
-                    {
-                    EGL_CONTEXT_CLIENT_VERSION, 2,
-                    EGL_NONE
-                    };
-
-                EGLConfig config;
-                
-                state->display = eglGetDisplay                      (   EGL_DEFAULT_DISPLAY     );  // get an EGL display connection
-#ifdef __OLG_DEBUG__                
-                assert(state->display!=EGL_NO_DISPLAY);
-                check();
-#endif // __OLG_DEBUG__
-                result = eglInitialize                              (   state->display,         // initialize the EGL display connection
-                                                                        NULL, 
-                                                                        NULL                    );
-#ifdef __OLG_DEBUG__
-                assert(EGL_FALSE != result);//?
-                check();
-#endif // __OLG_DEBUG__
-                result = eglChooseConfig                            (   state->display,         // get an appropriate EGL frame buffer configuration 
-                                                                        attribute_list, 
-                                                                        &config, 
-                                                                        1, 
-                                                                        &num_config             );
-#ifdef __OLG_DEBUG__                
-                assert(EGL_FALSE != result); //?
-                check();
-#endif // __OLG_DEBUG__
-                result = eglBindAPI(EGL_OPENGL_ES_API);                                         // get an appropriate EGL frame buffer configuration
-#ifdef __OLG_DEBUG__
-                assert(EGL_FALSE != result);//?
-                check();
-#endif // __OLG_DEBUG__
-                state->context = eglCreateContext                   (   state->display,         // create an EGL rendering context
-                                                                        config, 
-                                                                        EGL_NO_CONTEXT, 
-                                                                        context_attributes      );
-#ifdef __OLG_DEBUG__
-                assert(state->context!=EGL_NO_CONTEXT);//?
-                check();
-#endif // __OLG_DEBUG__
-                success = graphics_get_display_size                 (   0 /* LCD */,            // create an EGL window surface
-                                                                        &state->screen_width, 
-                                                                        &state->screen_height   );
-#ifdef __OLG_DEBUG__
-                assert( success >= 0 );
-#endif // __OLG_DEBUG__
-                dst_rect.x = 0;
-                dst_rect.y = 0;
-                dst_rect.width = state->screen_width;
-                dst_rect.height = state->screen_height;
-      
-                src_rect.x = 0;
-                src_rect.y = 0;
-                src_rect.width = state->screen_width << 16;
-                src_rect.height = state->screen_height << 16;        
-
-                state->dispman_display = vc_dispmanx_display_open   (   0 /* LCD */ );
-                dispman_update = vc_dispmanx_update_start( 0 );
-      
-                state->dispman_element = vc_dispmanx_element_add    (   dispman_update, 
-                                                                        state->dispman_display,
-                                                                        0/*layer*/, 
-                                                                        &dst_rect, 
-                                                                        0/*src*/,
-                                                                        &src_rect, 
-                                                                        DISPMANX_PROTECTION_NONE, /*protection*/
-                                                                        0 /*alpha*/, 
-                                                                        0 /*clamp*/, 
-                                                                        DISPMANX_NO_ROTATE /*transform*/ );   // was 0/*transform*/ before DISPMANX_ROTATE_90 
-      
-                nativewindow.element = state->dispman_element;
-                nativewindow.width = state->screen_width;
-                nativewindow.height = state->screen_height;
-
-                vc_dispmanx_update_submit_sync                      (   dispman_update  );
-#ifdef __OLG_DEBUG__
-                check();
-#endif // __OLG_DEBUG__            
-                state->surface = eglCreateWindowSurface             (   state->display, 
-                                                                        config, 
-                                                                        &nativewindow, 
-                                                                        NULL            );
-#ifdef __OLG_DEBUG__
-                assert(state->surface != EGL_NO_SURFACE);//?
-                check();
-#endif // __OLG_DEBUG__                
-                result = eglMakeCurrent                             (   state->display,     // connect the context to the surface
-                                                                        state->surface, 
-                                                                        state->surface, 
-                                                                        state->context  );
-#ifdef __OLG_DEBUG__
-                assert(EGL_FALSE != result);//?
-                check();
-#endif // __OLG_DEBUG__
-                glClearColor(0.15f, 0.25f, 0.35f, 1.0f);                                    // Set background color and clear buffers
-                glClear( GL_COLOR_BUFFER_BIT );
-#ifdef __OLG_DEBUG__
-                check();
-#endif // __OLG_DEBUG__            
-}
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::gfx_init_vshaders          (   CUBE_STATE_T *state, int fromFile, int toFile)    // Function to initialize Vertex Shaders
 {
@@ -337,12 +26,25 @@ void            CKernel::gfx_init_vshaders          (   CUBE_STATE_T *state, int
                     state->gl_vsh_id[i] = glCreateShader(GL_VERTEX_SHADER);
                     glShaderSource(state->gl_vsh_id[i], 1, &SourcePrtVshader, 0);  // will be later maybe changed to multible instances of vshader
                     glCompileShader(state->gl_vsh_id[i]);
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                     }
 }
 
+void            CKernel::gfx_init_overlay_fshader   (   CUBE_STATE_T *state )    // Function to initialize Fragment Shaders                        <- *state should change too, right?
+{
+                    const char *SourcePrtFshader = m_bufferFoverlay[0]; // because this array is only [1] for consistency
+
+                    state->gl_oms_id[0] = glCreateShader(GL_FRAGMENT_SHADER);       // gl_oms_id is new for the overlay shader
+                    glShaderSource(state->gl_oms_id[0], 1, &SourcePrtFshader, 0);   // will state not also become a seperate struct here?!
+                    glCompileShader(state->gl_oms_id[0]);
+                    gfx_shader_log(state->gl_oms_id[0], 1);
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
+
+}
 void            CKernel::gfx_init_fshaders          (   CUBE_STATE_T *state, int fromFile, int toFile)    // Function to initialize Fragment Shaders                        <- we need a copy here for the overlay shader
 {
                 for (int i = fromFile; i < toFile; i++) 
@@ -353,12 +55,42 @@ void            CKernel::gfx_init_fshaders          (   CUBE_STATE_T *state, int
                     glShaderSource(state->gl_fsh_id[i], 1, &SourcePrtFshader, 0);
                     glCompileShader(state->gl_fsh_id[i]);
                     gfx_shader_log(state->gl_fsh_id[i], i);
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                     }
 }
+void            CKernel::gfx_init_overlay_program   (   CUBE_STATE_T *state)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+{
+                CString debug;
+                    if (m_shaderStatusFlags[i])                                     // we need to figure out from where this comes, we need also a separate method here
+                        {
+                        state->gl_omp_id[0] = glCreateProgram();
+                        glAttachShader(state->gl_omp_id[0], state->gl_vsh_id[0]);
+                        glAttachShader(state->gl_omp_id[0], state->gl_oms_id[0]);
+                        glLinkProgram(state->gl_omp_id[0]);
 
+                        GLint linkStatus;
+                        glGetProgramiv(state->gl_omp_id[0], GL_LINK_STATUS, &linkStatus);
+
+                        gfx_program_log(state->gl_omp_id[0],i);
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
+
+                        if (linkStatus == GL_FALSE) 
+                            {
+                            glDeleteProgram(state->gl_omp_id[0]);
+                            state->gl_omp_id[0] = 0;
+                            m_shaderStatusFlags[i] = false;
+                            }
+                        else
+                            {
+                        //  linked_programs++; commented out because this shader program is not part of the user pipeline! Count valid programs for util_choose_program()       ????????????
+                            }
+                        }
+                m_Watchdog.Start(TIMEOUT*3); // new watchdog        
+}
 void            CKernel::gfx_init_programs          (   CUBE_STATE_T *state, int fromFile, int toFile)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                 CString debug;
@@ -376,9 +108,9 @@ void            CKernel::gfx_init_programs          (   CUBE_STATE_T *state, int
                         glGetProgramiv(state->gl_prg_id[i], GL_LINK_STATUS, &linkStatus);
 
                         gfx_program_log(state->gl_prg_id[i],i);
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
 
                         if (linkStatus == GL_FALSE) 
                             {
@@ -394,25 +126,48 @@ void            CKernel::gfx_init_programs          (   CUBE_STATE_T *state, int
                 m_Watchdog.Start(TIMEOUT*3); // new watchdog        
                 }
 }
+void            CKernel::gfx_init_overlay_uniforms          (   CUBE_STATE_T *state)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+{
+                CString debug;  // for what reason we have you here?!?
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
+                    if (m_shaderStatusFlags[i])
+                        {
+                        glUseProgram(state->gl_omp_id[0]);
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
+                        state->gl_vtx           = glGetAttribLocation( state->gl_omp_id[0], "vertex" );
+
+                        state->u_atlas[0]       = glGetUniformLocation(state->gl_omp_id[0], "u_menu_atlas" );
+                        state->u_tile_count[0]  = glGetUniformLocation(state->gl_omp_id[0], "u_menu_tile_count" );
+                        state->u_tile_rect[0]   = glGetUniformLocation(state->gl_omp_id[0], "u_menu_tile_rect" );
+                        state->u_tile_index[0]  = glGetUniformLocation(state->gl_omp_id[0], "u_menu_tile_index" );
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
+                        }
+}
 
 void            CKernel::gfx_init_uniforms          (   CUBE_STATE_T *state, int fromFile, int toFile)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
-                CString debug;
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                CString debug;  // for what reason we have you here?!?
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                 for (int i = fromFile; i < toFile; i++) 
                     {
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                     if (m_shaderStatusFlags[i])
                         {
-                        glUseProgram(state->gl_prg_id[i]); // NEW FOR DEBUG!!
+                        glUseProgram(state->gl_prg_id[i]);
 
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                         state->gl_vtx           = glGetAttribLocation( state->gl_prg_id[i], "vertex" );
 
                         state->u_time[i]        = glGetUniformLocation(state->gl_prg_id[i], "time" );
@@ -436,13 +191,53 @@ void            CKernel::gfx_init_uniforms          (   CUBE_STATE_T *state, int
                         state->u_tex_id[i][7]   = glGetUniformLocation(state->gl_prg_id[i], "tex[7]" );
                         state->u_tex_id[i][8]   = glGetUniformLocation(state->gl_prg_id[i], "tex[8]" );
                         state->u_tex_id[i][9]   = glGetUniformLocation(state->gl_prg_id[i], "tex[9]" );
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                         }
                     }
 }
 
+void            CKernel::gfx_init_overlay_texture          (   CUBE_STATE_T *state)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+{
+                // m_validTextureCount = 0;  // Counter for valid textures only
+
+                    if(m_H264SystemParser.m_tex_valid[0] == true) // do we really need this too? - yes, otherwise we never know the size of it!! 
+                        {
+                        glGenTextures(1, &state->gl_omt_id[0]);  // Use counter instead of i - no in this case we use not this one
+                        glBindTexture(GL_TEXTURE_2D, state->gl_omt_id[0]);
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
+                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
+                        GLvoid* bitmapData = &m_BufferOverlayTexture[0][m_H264SystemParser.m_tex_data_offset[0]]; // oh, we need to figure out how we do the bmp parsing for only the atlas!!
+
+                        glTexImage2D(GL_TEXTURE_2D, 
+                                   0, 
+                                   GL_RGB, 
+                                   m_H264SystemParser.m_tex_width[0], // oh, we need to figure out how we do the bmp parsing for only the atlas!!
+                                   m_H264SystemParser.m_tex_height[0], 
+                                   0, 
+                                   GL_RGB, 
+                                   GL_UNSIGNED_BYTE, 
+                                   bitmapData);
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
+                        glBindTexture(GL_TEXTURE_2D, 0);
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
+                    //  m_validTextureCount++;  the texture atlas is not part of the user pipeline ! Increment only after successful texture creation
+                        }
+                    m_Watchdog.Start(TIMEOUT);       // new watchdog
+}
 void            CKernel::gfx_init_textures          (   CUBE_STATE_T *state, int fromFile, int toFile)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                 // m_validTextureCount = 0;  // Counter for valid textures only
@@ -453,16 +248,16 @@ void            CKernel::gfx_init_textures          (   CUBE_STATE_T *state, int
                         {
                         glGenTextures(1, &state->gl_tex_id[m_validTextureCount]);  // Use counter instead of i
                         glBindTexture(GL_TEXTURE_2D, state->gl_tex_id[m_validTextureCount]);
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                         GLvoid* bitmapData = &m_bufferTexture[i][m_H264Parser.m_tex_data_offset[i]];
 
                         glTexImage2D(GL_TEXTURE_2D, 
@@ -474,13 +269,13 @@ void            CKernel::gfx_init_textures          (   CUBE_STATE_T *state, int
                                    GL_RGB, 
                                    GL_UNSIGNED_BYTE, 
                                    bitmapData);
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                         glBindTexture(GL_TEXTURE_2D, 0);
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                         m_validTextureCount++;  // Increment only after successful texture creation
                         }
                     m_Watchdog.Start(TIMEOUT);       // new watchdog
@@ -498,46 +293,47 @@ void            CKernel::gfx_init_v_buffer          (   CUBE_STATE_T *state)    
                 glClearColor(0.0, 1.0, 1.0, 1.0);
 
                 glGenBuffers(1, &state->gl_buf);
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
 
                 glBindFramebuffer(GL_FRAMEBUFFER, 0);
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                 
                 glViewport(0, 0, state->screen_width, state->screen_height);                        // Prepare viewport
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                 
                 glBindBuffer(GL_ARRAY_BUFFER, state->gl_buf);                                          // Upload vertex data to a buffer
                 glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_data), vertex_data, GL_STATIC_DRAW);
                 glVertexAttribPointer(state->gl_vtx, 4, GL_FLOAT, 0, 16, 0);
                 glEnableVertexAttribArray(state->gl_vtx);
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
 }
+
 void            CKernel::gfx_render_shader_a        (   CUBE_STATE_T *state)
 {
                 glBindFramebuffer(GL_FRAMEBUFFER,0);    // Now render to the main frame buffer
         
                 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);   // Clear the background (not really necessary I suppose)
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                 glBindBuffer(GL_ARRAY_BUFFER, state->gl_buf);
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
 
                 glUseProgram ( state->gl_prg_id[gl_current_prg] );
 
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
 
                 GLuint cx = state->screen_width;
                 GLuint cy = state->screen_height;
@@ -578,9 +374,9 @@ void            CKernel::gfx_render_shader_a        (   CUBE_STATE_T *state)
                                 {
                                 glUniform1i(state->u_tex_id[gl_current_prg][i], i);
                                 }
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                             }
                         break;
 
@@ -595,9 +391,9 @@ void            CKernel::gfx_render_shader_a        (   CUBE_STATE_T *state)
                                 glBindTexture(GL_TEXTURE_2D, state->gl_tex_id[gl_current_tex]);
                                 if (state->u_tex_id[gl_current_prg][0] != -1)
                                     glUniform1i(state->u_tex_id[gl_current_prg][0], 0);
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                                 break;
                                 
                             default:    // Two or more textures - bind current and next
@@ -605,17 +401,17 @@ void            CKernel::gfx_render_shader_a        (   CUBE_STATE_T *state)
                                 glBindTexture(GL_TEXTURE_2D, state->gl_tex_id[gl_current_tex]);
                                 if (state->u_tex_id[gl_current_prg][0] != -1)
                                     glUniform1i(state->u_tex_id[gl_current_prg][0], 0);
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                                 
                                 glActiveTexture(GL_TEXTURE1);
                                 glBindTexture(GL_TEXTURE_2D, state->gl_tex_id[gl_current_tex + 1]);
                                 if (state->u_tex_id[gl_current_prg][1] != -1)
                                     glUniform1i(state->u_tex_id[gl_current_prg][1], 1);
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                                 break;
                             }
                         break;
@@ -632,9 +428,9 @@ void            CKernel::gfx_render_shader_a        (   CUBE_STATE_T *state)
  */
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 glDrawArrays( GL_TRIANGLE_FAN, 0, 4 );
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
 
                 glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
@@ -643,17 +439,17 @@ void            CKernel::gfx_render_shader_a        (   CUBE_STATE_T *state)
                 if (noTargetFPS==true)
                     {
                     glFinish();
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
                     }
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::gfx_render_shader_b        (   CUBE_STATE_T* state)
 {
                 eglSwapBuffers(state->display, state->surface);
-#ifdef __GL_DEBUG__
-                    check();
-#endif // __GL_DEBUG__
+                #ifdef __GL_DEBUG__
+                        check();
+                #endif // __GL_DEBUG__
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

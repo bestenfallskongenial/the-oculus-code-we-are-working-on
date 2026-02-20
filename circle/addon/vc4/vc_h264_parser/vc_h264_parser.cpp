@@ -19,9 +19,10 @@ CH264Parser::~CH264Parser(void)
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              USER API
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool    CH264Parser::ParseInitialize (  char*      blockBase,
+bool    CH264Parser::ParseInitialize (  u32         max_tex_size,
                                         int         max_textures,
-                                        u32         max_tex_size,
+                                        
+                                        char*       blockBase,
                                         int         max_videos,  
                                         int         max_frames,
                                         u16         max_width,
@@ -29,16 +30,17 @@ bool    CH264Parser::ParseInitialize (  char*      blockBase,
                                         u8          max_profile,
                                         u8          max_level)
 {
-    m_videoBlockBase = blockBase;
-    m_max_textures = max_textures;
-    m_max_tex_size = max_tex_size;
+    
+    m_max_textures      = max_textures;
+    m_max_tex_size      = max_tex_size;
 
-    m_max_videos  = max_videos;
-    m_max_frames  = max_frames;
-    m_max_width   = max_width;
-    m_max_height  = max_height;
-    m_max_profile = max_profile;
-    m_max_level   = max_level;
+    m_videoBlockBase    = blockBase; // this is the size, right? no, needed to provide the actual address in the memspace
+    m_max_videos        = max_videos;
+    m_max_frames        = max_frames;
+    m_max_width         = max_width;
+    m_max_height        = max_height;
+    m_max_profile       = max_profile;
+    m_max_level         = max_level;
 
     if ( max_videos != MAX_VIDEOS ) return false;
 

@@ -261,6 +261,48 @@ struct CUBE_STATE_T									// we will  rework this here! seperation of the disp
 	GLint u_par_b[FSH_SD+FSH_USB];
     GLint u_tex_l[FSH_SD+FSH_USB];
 	};
+// like this?!?
+struct OGL_STATE
+{
+   	uint32_t screen_width;
+   	uint32_t screen_height;
+ 
+   	DISPMANX_ELEMENT_HANDLE_T dispman_element;
+   	DISPMANX_DISPLAY_HANDLE_T dispman_display;
+
+   	EGLDisplay display;
+   	EGLSurface surface;
+   	EGLContext context;
+};
+struct BUF_STATE
+{
+   	GLuint gl_buf; // buffer
+};
+
+struct GL_STATE
+{
+   	GLuint gl_vsh_id[VSH_SD+VSH_USB];
+   	GLuint gl_fsh_id[FSH_SD+FSH_USB];
+
+   	GLuint gl_prg_id[FSH_SD+FSH_USB];
+
+	GLuint gl_tex_id[TEX_SD+TEX_USB];
+	GLint  u_tex_id[FSH_SD+FSH_USB][TEX_SD+TEX_USB];
+};
+struct USER_UNIFORM_STATE
+{
+	GLuint gl_vtx; // vertex
+
+	GLint u_time[FSH_SD+FSH_USB];
+	GLint u_tres[FSH_SD+FSH_USB];
+	GLint u_seed[FSH_SD+FSH_USB];	
+	GLint u_aud[FSH_SD+FSH_USB];
+	GLint u_col[FSH_SD+FSH_USB];
+
+	GLint u_par_a[FSH_SD+FSH_USB];
+	GLint u_par_b[FSH_SD+FSH_USB];
+    GLint u_tex_l[FSH_SD+FSH_USB];
+};
 
 	bool 			memory_allocate				();											// 
     void 			memory_clean_up				();
@@ -323,20 +365,36 @@ public:
                  
 	void 			util_save_modes_file		();
 
-	void   			gfx_check					(	const char *file, unsigned line);
-	void			gfx_shader_log				(	GLint shader, int shaderIndex);
+	void   			gfx_check					(	const char *file, unsigned line);		// what do i need to refactor here? and what needs a string in the caller?
+	void			gfx_shader_log				(	GLint shader, int shaderIndex);			// what can i replace with my other logger?
 	void 			gfx_program_log				(	GLint shader, int program_index) ;				// is to change / remove
+
 	void 			gfx_init_OGL				(	CUBE_STATE_T *state);  		// ****
 	void 			gfx_init_vshaders			(	CUBE_STATE_T *state, int fromFile, int toFile);	// ****
+
+	void 			gfx_init_overlay_fshader    (   CUBE_STATE_T *state ); // NEW OVERLAY MENU
+
 	void 			gfx_init_fshaders			(	CUBE_STATE_T *state, int fromFile, int toFile);	// ****
+	
+	void			gfx_init_overlay_program    (   CUBE_STATE_T *state);  // NEW OVERLAY MENU
+
 	void 			gfx_init_programs			(	CUBE_STATE_T *state, int fromFile, int toFile);	// ****
+
+	void			gfx_init_overlay_uniforms   (   CUBE_STATE_T *state);  // NEW OVERLAY MENU
+
 	void 			gfx_init_uniforms			(	CUBE_STATE_T *state, int fromFile, int toFile);	// ****
+
+	void			gfx_init_overlay_texture    (   CUBE_STATE_T *state);  // NEW OVERLAY MENU  
+
 	void 			gfx_init_textures			(	CUBE_STATE_T *state, int fromFile, int toFile);	// possible change 
 	void 			gfx_init_v_buffer			(	CUBE_STATE_T *state);							// possible change
 	void 			gfx_render_shader_a			(	CUBE_STATE_T *state);							// possible change
+
+	void			gfx_render_overlay_a		(   CUBE_STATE_T *state);  // NEW OVERLAY, I ASSUME WE NEED TO CALL THE OVERLAY DRAW AFTER THE EFX CALL?!
+
 	void 			gfx_render_shader_b			(	CUBE_STATE_T *state);	
 
-	bool			display_startup_screen		(	CUBE_STATE_T *state);
+	bool			display_startup_screen		(	CUBE_STATE_T *state); // where do we use state here? for the xy dimensions? impossible!
 	void			display_LoadScreenTexVidShd ( int mode );
 	void 			display_debug				( 	CUBE_STATE_T *state, int level );					// display_debug menu 
 	void 			display_append_modes		(); // display_debug output
@@ -374,9 +432,12 @@ private:
 // my Video Player
     CVCSharedMemory 	m_SharedMemory;
     CH264Decoder 		m_H264Decoder;
+
+	CH264Parser 		m_H264SystemParser; // <-- new and only for the overlay... 
+
     CH264Parser 		m_H264Parser;
 
-	volatile boolean	m_bStorageAttached;
+		volatile boolean	m_bStorageAttached;
 	CFATFileSystem		*m_pFileSystem;
 
   	CScheduler		    m_Scheduler;
@@ -396,6 +457,7 @@ private:
 	BUTTONS				m_Button_B;
 
 	CUBE_STATE_T  		state;
+	
 // buffers in order of allocation
 // DMA buffers
 	char** 				m_bufferVideo;
@@ -507,7 +569,7 @@ private:
 	int                     gl_current_prg                                                      =     0; 		// GLOBAL INDEX FOR THE SHADER PROGRAM IN USE
 	int                     last_gl_current_prg 												= 	 -1;  		// GLOBAL INDEX FOR THE LAST SHADER PROGRAM IN USE - needed to Store last active shader program parameters!
 
-	int                     current_buffer 														= 	  0;
+	int                     current_buffer 														= 	  0;		// CENTRAL GLOBAL VARIABLE
 
 
 	int                     gl_current_tex                                                      =     0;

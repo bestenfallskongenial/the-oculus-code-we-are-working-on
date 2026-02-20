@@ -1,11 +1,6 @@
 #include "kernel.h"
 #include "global.h"
 #include "wavetable.h"
-/*
-extern "C" {
-    void vc_host_get_vchi_state(VCHI_INSTANCE_T *initialise_instance, VCHI_CONNECTION_T **connection);
-}
-*/
 
 void            CKernel::util_prep_parameters       ()
 {
@@ -17,6 +12,7 @@ void            CKernel::util_prep_parameters       ()
     mode_storage_buffers[LF2_MULT][i] = 3;
     }
 }
+
 int             CKernel::util_choose_program        ()
 {
                 static int usedShader = 0;  // Static variable to maintain value between function calls

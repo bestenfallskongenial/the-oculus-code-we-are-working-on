@@ -75,6 +75,11 @@ int             CKernel::filesystem_process_files   (   char* fileNameArray[],
                     }   
                 return successfulLoaded;
 }
+
+/*
+    what we need to do here - add the new calls to load the overlay fragment shader and overlay texture atlas 
+
+*/
 bool            CKernel::filesystem_mount           (   const char* deviceName, 
 
                                                         char* vshaderFileNames[], 
@@ -110,24 +115,26 @@ bool            CKernel::filesystem_mount           (   const char* deviceName,
                     && m_pFileSystem->Mount(pPartition))
                     {
                     scanned_vsh = filesystem_ScanRootDir(vshaderFileNames, vhsExtensions, VSH_VALID_SUFFIX_COUNT, maxVshaderFiles);
+                // we dont scan for the filenames of the overlay shader, we have one and we prep the array with this single name    
                     scanned_fsh = filesystem_ScanRootDir(fshaderFileNames, fhsExtensions, FSH_VALID_SUFFIX_COUNT, maxFshaderFiles);
+                // we dont scan for the filenames of the overlay texture atlas, we have one and we prep the array with this single name     
                     scanned_tex = filesystem_ScanRootDir(textureFileNames, texExtensions, TEX_VALID_SUFFIX_COUNT, maxTextureFiles);
                     scanned_vid = filesystem_ScanRootDir(videoFileNames,   vidExtensions, VID_VALID_SUFFIX_COUNT, maxVideoFiles);
 
                     m_Watchdog.Start(8);
                     VSH_LOADED_NEW = filesystem_process_files(  vshaderFileNames, vStotalLoadedBytes, m_bufferVshader, 
                                                                 scanned_vsh, VSH_LOADED_NEW, VSH_SIZE, 0);  // The file system was mounted successfully                 
-
+                //  we need to know if we have done this correct - correct and all arrays and variables?  
                     m_Watchdog.Start(8);                                                                                
-                    FSH_LOADED_NEW = filesystem_process_files(  fOverlayFileNames, foverlayLoadedBytes, m_bufferFshader,          // <-the loader for the single overlay shader! - i could indeed use filesystem_load_file directly but... consistency, right?!
-                                                                scanned_fsh, FSH_LOADED_NEW, FSH_SIZE, 1);                        // we need to define and assign the correct variables and arrays here and in global.* dont forget!
-
+                    OMS_LOADED_NEW = filesystem_process_files(  fOverlayFileNames, foverlayLoadedBytes, m_bufferFoverlay,          // <-the loader for the single overlay shader! - i could indeed use filesystem_load_file directly but... consistency, right?!
+                                                                1/*or 0?*/, OMS_LOADED_NEW, FSH_SIZE, 1);                        // we need to define and assign the correct variables and arrays here and in global.* dont forget!
                     m_Watchdog.Start(8);        
                     FSH_LOADED_NEW = filesystem_process_files(  fshaderFileNames, fStotalLoadedBytes, m_bufferFshader, 
                                                                 scanned_fsh, FSH_LOADED_NEW, FSH_SIZE, 1);                           
+                               
                     m_Watchdog.Start(8);    
-                    TEX_LOADED_NEW = filesystem_process_files(  textureFileNames, tXtotalLoadedBytes, m_bufferTexture,            // same shit, now for the overlay texture!!!
-                                                                scanned_tex, TEX_LOADED_NEW, TEX_SIZE, 2);                                                                                          
+                    OMT_LOADED_NEW = filesystem_process_files(  texOverlayFileNames, tXoverlayLoadedBytes, m_BufferOverlayTexture,            // same shit, now for the overlay texture!!!
+                                                                1/*or 0?*/, OMT_LOADED_NEW, TEX_SIZE, 2);                                                                                          
                     m_Watchdog.Start(8);    
                     TEX_LOADED_NEW = filesystem_process_files(  textureFileNames, tXtotalLoadedBytes, m_bufferTexture, 
                                                                 scanned_tex, TEX_LOADED_NEW, TEX_SIZE, 2);                                   
@@ -236,66 +243,5 @@ void            CKernel::filesystem_remove_USB      (   CDevice *pDevice, void *
 	            assert (pThis != 0);
 	        //  assert (pThis->m_bStorageAttached);
 	            pThis->m_bStorageAttached = FALSE;
-}
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::filesystem_load_kernel     (   const char* deviceName, 
-                                                        const char* filename, 
-                                                        unsigned bufferIndex)
-{
-                while(bufferIndex == 1 && filesystem_update_USB("umsd1") == false)
-                {
-                    m_Timer.MsDelay(100);
-                }
-
-                CDevice *pPartition = m_DeviceNameService.GetDevice(deviceName, TRUE);
-                        
-                if (pPartition != 0 && (m_pFileSystem = new CFATFileSystem) != 0 && m_pFileSystem->Mount(pPartition))
-                {
-                    if (filesystem_open_file(filename))
-                    {
-
-                        loaded_bytes_kernel[bufferIndex] = filesystem_load_file(m_bufferKernel[bufferIndex], KERNEL_SIZE, 4);
-                        if (loaded_bytes_kernel[bufferIndex] > 0)
-                        {
-                            filesystem_close_file();
-                            m_pFileSystem->UnMount();
-                            delete m_pFileSystem;
-                            m_pFileSystem = 0;
-                            return true;
-                        }
-                        filesystem_close_file();
-                    }
-                    m_pFileSystem->UnMount();
-                }
-                delete m_pFileSystem;
-                m_pFileSystem = 0;
-                return false;
-}
-
-bool            CKernel::filesystem_save_kernel     (   const char* deviceName, 
-                                                        const char* filename, 
-                                                        unsigned bufferIndex)
-{
-                bool success = false;   
-                
-                CDevice *pPartition = m_DeviceNameService.GetDevice(deviceName, TRUE);
-                
-                if (pPartition != 0 && (m_pFileSystem = new CFATFileSystem) != 0 && m_pFileSystem->Mount(pPartition))
-                {
-                    unsigned hFile = m_pFileSystem->FileCreate(filename);
-                    if (hFile != 0)
-                    {
-                        if (m_pFileSystem->FileWrite(hFile, m_bufferKernel[bufferIndex], loaded_bytes_kernel[bufferIndex]) == loaded_bytes_kernel[bufferIndex])
-                        {
-                            success = true;
-                        }
-                        m_pFileSystem->FileClose(hFile);
-                    }
-                    m_pFileSystem->UnMount();
-                }
-                delete m_pFileSystem;
-                m_pFileSystem = 0;
-                
-                return success;
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
