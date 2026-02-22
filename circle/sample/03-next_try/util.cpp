@@ -146,33 +146,21 @@ void            CKernel::io_read_ADC                ()
  inOutMatrixInt[channels][lf1_out_int] 3 
  inOutMatrixInt[channels][lf2_out_int] 4 
 
- inOutMatrixInt[channels][  rnd_int_0] 9  
- inOutMatrixInt[channels][  rnd_int_1] 10 
- inOutMatrixInt[channels][  rnd_int_2] 11 
- inOutMatrixInt[channels][  rnd_int_3] 12 
- inOutMatrixInt[channels][  rnd_int_4] 13 
- inOutMatrixInt[channels][  rnd_int_5] 14 
- inOutMatrixInt[channels][  rnd_int_6] 15 
- inOutMatrixInt[channels][  rnd_int_7] 16 
+ inOutMatrixInt[channels][    rnd_int] 5 
 
  inOutMatrixFlt[channels][ adc_in_flt] 1 
  inOutMatrixFlt[channels][adc_out_flt] 2 
  inOutMatrixFlt[channels][lf1_out_flt] 3 
- inOutMatrixFlt[channels][lf2_out_flt] 4 
+ inOutMatrixFlt[channels][lf2_out_flt] 4
+ 
+ inOutMatrixFlt[channels][    rnd_flt] 5
   ????
- inOutMatrixFlt[channels][ aud_band_0] 5  
- inOutMatrixFlt[channels][ aud_band_1] 6 
- inOutMatrixFlt[channels][ aud_band_2] 7 
- inOutMatrixFlt[channels][ aud_band_3] 8 
+ inOutMatrixFlt[channels][ aud_band_0] 6  
+ inOutMatrixFlt[channels][ aud_band_1] 7
+ inOutMatrixFlt[channels][ aud_band_2] 8
+ inOutMatrixFlt[channels][ aud_band_3] 9 
   ????
- inOutMatrixFlt[channels][  rnd_flt_0] 9  
- inOutMatrixFlt[channels][  rnd_flt_1] 10 
- inOutMatrixFlt[channels][  rnd_flt_2] 11  
- inOutMatrixFlt[channels][  rnd_flt_3] 12  
- inOutMatrixFlt[channels][  rnd_flt_4] 13  
- inOutMatrixFlt[channels][  rnd_flt_5] 14 
- inOutMatrixFlt[channels][  rnd_flt_6] 15 
- inOutMatrixFlt[channels][  rnd_flt_7] 16 
+
 
   than we need an enum io_types = {}, like this right?
 
@@ -198,7 +186,7 @@ enum io_types
 };
 
   than - shouldt we do the same for the many lfo arrays?
-  
+
 */
 
 void            CKernel::util_random_vec8           (uint32_t p_seed)                                               // create 8 unique normalised to 1.0 float and to 1024 int values
