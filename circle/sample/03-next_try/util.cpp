@@ -139,8 +139,8 @@ void            CKernel::io_read_ADC                ()
  the list of globals shrink, the code is theoretical simpler to read...
  and we have many of our uniforms at one place for the glsl code
 
- inOutMatrixInt[channels][ adc_in_raw] 0    how can i "cramp" in the raw? a seperate array? use the indexes over 4 ( 3 ?)?
-                                            i wonder because like to have the same indexing for both io arrays, meakes sense right? 
+ inOutMatrixInt[channels][ adc_in_raw] 0    how can i "cramp" in the raw? a separate array? use the indexes over 4 ( 3 ?)?
+                                            i wonder because like to have the same indexing for both io arrays, makes sense right? 
  inOutMatrixInt[channels][adc_out_int] 1 
  inOutMatrixInt[channels][adc_out_int] 2 
  inOutMatrixInt[channels][lf1_out_int] 3 
@@ -160,9 +160,7 @@ void            CKernel::io_read_ADC                ()
  inOutMatrixFlt[channels][ aud_band_2] 8
  inOutMatrixFlt[channels][ aud_band_3] 9 
   ????
-
-
-  than we need an enum io_types = {}, like this right?
+ than we need an enum io_types = {}, like this right?
 
 enum io_types
 {
@@ -191,41 +189,41 @@ enum io_types
 
 void            CKernel::util_random_vec8           (uint32_t p_seed)                                               // create 8 unique normalised to 1.0 float and to 1024 int values
 {
-                const int       f_max_int   = 1024;
+                const int       f_max_int   = 1023; // 1024;
                 const float     f_scale     = 1.0f / 4294967295.0f;
                 uint32_t        f_x         = p_seed;
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[0]   = (float)f_x * f_scale;
-                g_randomIntegerValue[0] = (uint32_t)(g_randomFloatValue[0] * f_max_int);
+            /*  g_randomFloatValue[0] */    inOutMatrixFlt[0][] = /* (float) */ f_x * f_scale; // is this correct without float?
+            /*  g_randomIntegerValue[0] */  inOutMatrixInt[0][] = ( /* uint32_t)(g_randomFloatValue[0] */ inOutMatrixFlt[0][] * f_max_int); // really? the int arrays are usually int, not uint32_t?!
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[1]   = (float)f_x * f_scale;
-                g_randomIntegerValue[1] = (uint32_t)(g_randomFloatValue[1] * f_max_int);
+            /*  g_randomFloatValue[1] */    inOutMatrixFlt[1][] = /* (float) */ f_x * f_scale;
+            /*  g_randomIntegerValue[1] */  inOutMatrixInt[1][] = ( /* uint32_t)(g_randomFloatValue[1] */ inOutMatrixFlt[1][] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[2]   = (float)f_x * f_scale;
-                g_randomIntegerValue[2] = (uint32_t)(g_randomFloatValue[2] * f_max_int);
+            /*  g_randomFloatValue[2] */    inOutMatrixFlt[2][] = /* (float) */ f_x * f_scale;
+            /*  g_randomIntegerValue[2] */  inOutMatrixInt[2][] = ( /* uint32_t)(g_randomFloatValue[2] */ inOutMatrixFlt[2][] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[3]   = (float)f_x * f_scale;
-                g_randomIntegerValue[3] = (uint32_t)(g_randomFloatValue[3] * f_max_int);
+            /*  g_randomFloatValue[3] */    inOutMatrixFlt[3][] = /* (float) */ f_x * f_scale;
+            /*  g_randomIntegerValue[3] */  inOutMatrixInt[3][] = ( /* uint32_t)(g_randomFloatValue[3] */ inOutMatrixFlt[3][] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[4]   = (float)f_x * f_scale;
-                g_randomIntegerValue[4] = (uint32_t)(g_randomFloatValue[4] * f_max_int);
+            /*  g_randomFloatValue[4] */    inOutMatrixFlt[4][] = /* (float) */ f_x * f_scale;
+            /*  g_randomIntegerValue[4] */  inOutMatrixInt[4][] = ( /* uint32_t)(g_randomFloatValue[4] */ inOutMatrixFlt[4][] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[5]   = (float)f_x * f_scale;
-                g_randomIntegerValue[5] = (uint32_t)(g_randomFloatValue[5] * f_max_int);
+            /*  g_randomFloatValue[5] */    inOutMatrixFlt[5][] = /* (float) */ f_x * f_scale;
+            /*  g_randomIntegerValue[5] */  inOutMatrixInt[5][] = ( /* uint32_t)(g_randomFloatValue[5] */ inOutMatrixFlt[5][] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[6]   = (float)f_x * f_scale;
-                g_randomIntegerValue[6] = (uint32_t)(g_randomFloatValue[6] * f_max_int);
+            /*  g_randomFloatValue[6] */    inOutMatrixFlt[6][] = /* (float) */ f_x * f_scale;
+            /*  g_randomIntegerValue[6] */  inOutMatrixInt[6][] = ( /* uint32_t)(g_randomFloatValue[6] */ inOutMatrixFlt[6][] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[7]   = (float)f_x * f_scale;
-                g_randomIntegerValue[7] = (uint32_t)(g_randomFloatValue[7] * f_max_int);
+            /*  g_randomFloatValue[7] */    inOutMatrixFlt[7][] = /* (float) */ f_x * f_scale;
+            /*  g_randomIntegerValue[7] */  inOutMatrixInt[7][] = ( /* uint32_t)(g_randomFloatValue[7] */ inOutMatrixFlt[7][] * f_max_int);
 }
 
 void            CKernel::util_calculate_BPM         (unsigned long p_triggerTimeClockA, unsigned long p_triggerTimeClockB) 
@@ -365,9 +363,9 @@ void            CKernel::util_LFO                   ()
                 int f_indexA              = (g_elapsedMicroseconds[0] * 255) / g_cycleLength[0];
                 g_sampleIndex[0]          = f_indexA > 255 ? 255 : f_indexA;
 
-
-                g_lfoFltOut[0]     = (float)g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]] / 1023.0f;
-                g_lfoIntOut[0]       =        g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]];
+// here i am confused! the lfo gives out two "channels" my new matrix has channels ( [8] ) and than the "purpose" ( []), what is the solution?
+                inOutMatrixFlt[0][] /* g_lfoFltOut[0] */  = (float)g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]] / 1023.0f;
+                inOutMatrixInt[0][] /* g_lfoIntOut[0] */  =        g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]];
 
                 g_elapsedMicroseconds[1]  = currentTime - g_lastCircleBuffer[1];
                 g_cycleLength[1]          = g_nextCircleBuffer[1] - g_lastCircleBuffer[1]; // Total length of the current cycle
@@ -375,8 +373,8 @@ void            CKernel::util_LFO                   ()
                 int f_indexB              = (g_elapsedMicroseconds[1] * 255) / g_cycleLength[1];
                 g_sampleIndex[1]          = f_indexB > 255 ? 255 : f_indexB;
 
-                g_lfoFltOut[1]     = (float)g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]] / 1023.0f; // was 0123.0f
-                g_lfoIntOut[1]       =        g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]];
+                inOutMatrixFlt[1][] /* g_lfoFltOut[1] */  = (float)g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]] / 1023.0f; // was 0123.0f
+                inOutMatrixInt[1][] /* g_lfoIntOut[1] */  =        g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]];
 }   
 
 void            CKernel::util_audio_energy          (float p_adcvalue) 
