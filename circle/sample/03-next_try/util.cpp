@@ -100,7 +100,7 @@ void            CKernel::io_init_pickup_buffer      ()
 */
 void            CKernel::io_read_ADC                () 
 {
-                const float f_max_adc = 1023.0;
+                const float f_max_adc = 1023.0f;
                 const int scaleFactors[3] = {   2047,       // 2.5V max (1023 * 2)
                                                 1551,       // 3.3V max (1023 * 1.515555...)
                                                 1023    };  // 5.0V max       
@@ -114,7 +114,7 @@ void            CKernel::io_read_ADC                ()
                     f_ring_buffer[channel][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(channel);  // or 1023?!
                     if(f_ring_buffer[channel][f_index_ring_buffer] > 1023) f_ring_buffer[channel][f_index_ring_buffer] = 1023;
           
-                        g_inOutMatrixInt[channel][0]    = ( f_ring_buffer[channel][0] +
+                        g_inOutMatrixInt[channel][raw]  = ( f_ring_buffer[channel][0] +
                                                             f_ring_buffer[channel][1] +
                                                             f_ring_buffer[channel][2] +
                                                             f_ring_buffer[channel][3]) >>2 ; 
@@ -124,9 +124,9 @@ void            CKernel::io_read_ADC                ()
                                                             f_ring_buffer[channel][2] +
                                                             f_ring_buffer[channel][3]) >>2 ; 
 */
-                        g_inOutMatrixInt[channel][1]    = ( g_inOutMatrixInt[channel][0] * scaleFactors[g_attenuation] ) /1023;
+                        g_inOutMatrixInt[channel][val]    = ( g_inOutMatrixInt[channel][raw] * scaleFactors[g_attenuation] ) /1023;
                     //  adc_int_value[channel]          = ( adc_raw_value[channel] * scaleFactors[g_attenuation] ) / 1023;                                
-                        g_inOutMatrixFlt[channel][1]    = ( g_inOutMatrixInt[channel][1] /1024.0f );
+                        g_inOutMatrixFlt[channel][val]    = ( g_inOutMatrixInt[channel][val] /1024.0f );
                     //  adc_float_value[channel] 	    = (	adc_int_value[channel]) / (1024.0f);    // f_max_adc +1 or GLfloat normalize the raw value to GLfloat 0.0 to 1.0
                     }
                 f_index_ring_buffer = (f_index_ring_buffer + 1) & 3;
@@ -183,7 +183,7 @@ enum io_types
     IO_TYPE_COUNT
 };
 
-  than - shouldt we do the same for the many lfo arrays?
+  than - shouldn we not do the same for the many lfo arrays?
 
 */
 
@@ -194,36 +194,36 @@ void            CKernel::util_random_vec8           (uint32_t p_seed)           
                 uint32_t        f_x         = p_seed;
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[0] */    inOutMatrixFlt[0][] = /* (float) */ f_x * f_scale; // is this correct without float?
-            /*  g_randomIntegerValue[0] */  inOutMatrixInt[0][] = ( /* uint32_t)(g_randomFloatValue[0] */ inOutMatrixFlt[0][] * f_max_int); // really? the int arrays are usually int, not uint32_t?!
+            /*  g_randomFloatValue[0] */    inOutMatrixFlt[0][rnd] = /* (float) */ f_x * f_scale;                                               // the cast is, i assume in this place pure cosmetics
+            /*  g_randomIntegerValue[0] */  inOutMatrixInt[0][rnd] = ( /* uint32_t)(g_randomFloatValue[0] */ inOutMatrixFlt[0][rnd] * f_max_int);  // the cast is, i assume in this place pure cosmetics
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[1] */    inOutMatrixFlt[1][] = /* (float) */ f_x * f_scale;
-            /*  g_randomIntegerValue[1] */  inOutMatrixInt[1][] = ( /* uint32_t)(g_randomFloatValue[1] */ inOutMatrixFlt[1][] * f_max_int);
+            /*  g_randomFloatValue[1] */    inOutMatrixFlt[1][rnd] = /* (float) */ f_x * f_scale;
+            /*  g_randomIntegerValue[1] */  inOutMatrixInt[1][rnd] = ( /* uint32_t)(g_randomFloatValue[1] */ inOutMatrixFlt[1][rnd] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[2] */    inOutMatrixFlt[2][] = /* (float) */ f_x * f_scale;
-            /*  g_randomIntegerValue[2] */  inOutMatrixInt[2][] = ( /* uint32_t)(g_randomFloatValue[2] */ inOutMatrixFlt[2][] * f_max_int);
+            /*  g_randomFloatValue[2] */    inOutMatrixFlt[2][rnd] = /* (float) */ f_x * f_scale;
+            /*  g_randomIntegerValue[2] */  inOutMatrixInt[2][rnd] = ( /* uint32_t)(g_randomFloatValue[2] */ inOutMatrixFlt[2][rnd] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[3] */    inOutMatrixFlt[3][] = /* (float) */ f_x * f_scale;
-            /*  g_randomIntegerValue[3] */  inOutMatrixInt[3][] = ( /* uint32_t)(g_randomFloatValue[3] */ inOutMatrixFlt[3][] * f_max_int);
+            /*  g_randomFloatValue[3] */    inOutMatrixFlt[3][rnd] = /* (float) */ f_x * f_scale;
+            /*  g_randomIntegerValue[3] */  inOutMatrixInt[3][rnd] = ( /* uint32_t)(g_randomFloatValue[3] */ inOutMatrixFlt[3][rnd] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[4] */    inOutMatrixFlt[4][] = /* (float) */ f_x * f_scale;
-            /*  g_randomIntegerValue[4] */  inOutMatrixInt[4][] = ( /* uint32_t)(g_randomFloatValue[4] */ inOutMatrixFlt[4][] * f_max_int);
+            /*  g_randomFloatValue[4] */    inOutMatrixFlt[4][rnd] = /* (float) */ f_x * f_scale;
+            /*  g_randomIntegerValue[4] */  inOutMatrixInt[4][rnd] = ( /* uint32_t)(g_randomFloatValue[4] */ inOutMatrixFlt[4][rnd] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[5] */    inOutMatrixFlt[5][] = /* (float) */ f_x * f_scale;
-            /*  g_randomIntegerValue[5] */  inOutMatrixInt[5][] = ( /* uint32_t)(g_randomFloatValue[5] */ inOutMatrixFlt[5][] * f_max_int);
+            /*  g_randomFloatValue[5] */    inOutMatrixFlt[5][rnd] = /* (float) */ f_x * f_scale;
+            /*  g_randomIntegerValue[5] */  inOutMatrixInt[5][rnd] = ( /* uint32_t)(g_randomFloatValue[5] */ inOutMatrixFlt[5][rnd] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[6] */    inOutMatrixFlt[6][] = /* (float) */ f_x * f_scale;
-            /*  g_randomIntegerValue[6] */  inOutMatrixInt[6][] = ( /* uint32_t)(g_randomFloatValue[6] */ inOutMatrixFlt[6][] * f_max_int);
+            /*  g_randomFloatValue[6] */    inOutMatrixFlt[6][rnd] = /* (float) */ f_x * f_scale;
+            /*  g_randomIntegerValue[6] */  inOutMatrixInt[6][rnd] = ( /* uint32_t)(g_randomFloatValue[6] */ inOutMatrixFlt[6][rnd] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[7] */    inOutMatrixFlt[7][] = /* (float) */ f_x * f_scale;
-            /*  g_randomIntegerValue[7] */  inOutMatrixInt[7][] = ( /* uint32_t)(g_randomFloatValue[7] */ inOutMatrixFlt[7][] * f_max_int);
+            /*  g_randomFloatValue[7] */    inOutMatrixFlt[7][rnd] = /* (float) */ f_x * f_scale;
+            /*  g_randomIntegerValue[7] */  inOutMatrixInt[7][rnd] = ( /* uint32_t)(g_randomFloatValue[7] */ inOutMatrixFlt[7][rnd] * f_max_int);
 }
 
 void            CKernel::util_calculate_BPM         (unsigned long p_triggerTimeClockA, unsigned long p_triggerTimeClockB) 
@@ -236,7 +236,7 @@ void            CKernel::util_calculate_BPM         (unsigned long p_triggerTime
                     {
                     f_timeBuffer[0][f_timeIndex[0]] = p_triggerTimeClockA;
         
-                    g_intervalBuffer[0][0] = f_timeBuffer[0][1] - f_timeBuffer[0][0];   // ne need to make this global?
+                    g_intervalBuffer[0][0] = f_timeBuffer[0][1] - f_timeBuffer[0][0];   // no need to make this global, global right i mean the content is consumed in sito or do i need a static local array?
                     g_intervalBuffer[0][1] = f_timeBuffer[0][2] - f_timeBuffer[0][1];
                     g_intervalBuffer[0][2] = f_timeBuffer[0][3] - f_timeBuffer[0][2];
                 if(     g_intervalBuffer[0][1] < g_intervalBuffer[0][0] * 1.25f 
@@ -357,24 +357,24 @@ void            CKernel::util_LFO                   ()
 {
                 unsigned long currentTime = m_Timer.GetClockTicks(); // Get the current u_time in clock ticks why not the start_time_fps_calculation or currentTime from Run()??
 
-                g_elapsedMicroseconds[0]  = currentTime - g_lastCircleBuffer[0];
-                g_cycleLength[0]          = g_nextCircleBuffer[0] - g_lastCircleBuffer[0]; // Total length of the current cycle
+                g_elapsedMicroseconds[0]                    =               currentTime - g_lastCircleBuffer[0];
+                g_cycleLength[0]                            =               g_nextCircleBuffer[0] - g_lastCircleBuffer[0]; // Total length of the current cycle
 
-                int f_indexA              = (g_elapsedMicroseconds[0] * 255) / g_cycleLength[0];
-                g_sampleIndex[0]          = f_indexA > 255 ? 255 : f_indexA;
+                int f_indexA                                =               (g_elapsedMicroseconds[0] * 255) / g_cycleLength[0];
+                g_sampleIndex[0]                            =               f_indexA > 255 ? 255 : f_indexA;            // ! i like to get rid of this saveguard !
 
-// here i am confused! the lfo gives out two "channels" my new matrix has channels ( [8] ) and than the "purpose" ( []), what is the solution?
-                inOutMatrixFlt[0][] /* g_lfoFltOut[0] */  = (float)g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]] / 1023.0f;
-                inOutMatrixInt[0][] /* g_lfoIntOut[0] */  =        g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]];
 
-                g_elapsedMicroseconds[1]  = currentTime - g_lastCircleBuffer[1];
-                g_cycleLength[1]          = g_nextCircleBuffer[1] - g_lastCircleBuffer[1]; // Total length of the current cycle
+                inOutMatrixFlt[0][lf1] /* g_lfoFltOut[0] */ = /* (float) */ g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
+                inOutMatrixInt[0][lf1] /* g_lfoIntOut[0] */ =               g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]];
 
-                int f_indexB              = (g_elapsedMicroseconds[1] * 255) / g_cycleLength[1];
-                g_sampleIndex[1]          = f_indexB > 255 ? 255 : f_indexB;
+                g_elapsedMicroseconds[1]                    =               currentTime - g_lastCircleBuffer[1];
+                g_cycleLength[1]                            =               g_nextCircleBuffer[1] - g_lastCircleBuffer[1]; // Total length of the current cycle
 
-                inOutMatrixFlt[0][] /* g_lfoFltOut[1] */  = (float)g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]] / 1023.0f; // was 0123.0f
-                inOutMatrixInt[0][] /* g_lfoIntOut[1] */  =        g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]];
+                int f_indexB              =                                 (g_elapsedMicroseconds[1] * 255) / g_cycleLength[1];
+                g_sampleIndex[1]          =                                 f_indexB > 255 ? 255 : f_indexB;            // ! i like to get rid of this saveguard !
+
+                inOutMatrixFlt[0][lf2] /* g_lfoFltOut[1] */ = /* (float) */ g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
+                inOutMatrixInt[0][lf2] /* g_lfoIntOut[1] */ =               g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]];
 }   
 
 void            CKernel::util_audio_energy          (float p_adcvalue) 
@@ -400,10 +400,10 @@ void            CKernel::util_audio_energy          (float p_adcvalue)
 
                 if ( g_sensitivityNew != g_sensitivityOld )
                     {
-                    /* u_audioSmoothBand */[0] = 0;
-                    /* u_audioSmoothBand */[1] = 0;
-                    /* u_audioSmoothBand */[2] = 0;
-                    /* u_audioSmoothBand */[3] = 0;
+                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au0] = 0;
+                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au1] = 0;
+                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au2] = 0;
+                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au3] = 0;
 
                     f_indexBand0 = 0;    // Reset ring buffer indices too
                     f_indexBand1 = 0;
@@ -416,29 +416,46 @@ void            CKernel::util_audio_energy          (float p_adcvalue)
                 f_band1[f_indexBand1] = p_adcvalue;
                 f_band2[f_indexBand2] = p_adcvalue;
                 f_band3[f_indexBand3] = p_adcvalue;
+
                 for (unsigned char i = 0; i < f_averageBufferSizeTable[0][g_sensitivityNew]; ++i)     // Averaging the buffer contents
                     {
-                    /* u_audioSmoothBand */[0] += f_band0[i];
+                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au0] += f_band0[i];
                     }
                 for (unsigned char i = 0; i < f_averageBufferSizeTable[1][g_sensitivityNew]; ++i) 
                     {
-                    /* u_audioSmoothBand */[1] += f_band1[i];
+                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au1] += f_band1[i];
                     }
                 for (unsigned char i = 0; i < f_averageBufferSizeTable[2][g_sensitivityNew]; ++i) 
                     {
-                    /* u_audioSmoothBand */[2] += f_band2[i];
+                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au2] += f_band2[i];
                     }
                 for (unsigned char i = 0; i < f_averageBufferSizeTable[3][g_sensitivityNew]; ++i) 
                     {
-                    /* u_audioSmoothBand */[3] += f_band3[i];
+                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au3] += f_band3[i];
                     }
-                /* u_audioSmoothBand */[0] /= f_averageBufferSizeTable[0][g_sensitivityNew];
-                /* u_audioSmoothBand */[1] /= f_averageBufferSizeTable[1][g_sensitivityNew];
-                /* u_audioSmoothBand */[2] /= f_averageBufferSizeTable[2][g_sensitivityNew];
-                /* u_audioSmoothBand */[3] /= f_averageBufferSizeTable[3][g_sensitivityNew];
+                /* u_audioSmoothBand */ inOutMatrixFlt[0][au0] /= f_averageBufferSizeTable[0][g_sensitivityNew];
+                /* u_audioSmoothBand */ inOutMatrixFlt[0][au1] /= f_averageBufferSizeTable[1][g_sensitivityNew];
+                /* u_audioSmoothBand */ inOutMatrixFlt[0][au2] /= f_averageBufferSizeTable[2][g_sensitivityNew];
+                /* u_audioSmoothBand */ inOutMatrixFlt[0][au3] /= f_averageBufferSizeTable[3][g_sensitivityNew];
 
                 f_indexBand0 = (f_indexBand0 + 1) % f_averageBufferSizeTable[0][g_sensitivityNew];        // Update indices
                 f_indexBand1 = (f_indexBand1 + 1) % f_averageBufferSizeTable[1][g_sensitivityNew];
                 f_indexBand2 = (f_indexBand2 + 1) % f_averageBufferSizeTable[2][g_sensitivityNew];
                 f_indexBand3 = (f_indexBand3 + 1) % f_averageBufferSizeTable[3][g_sensitivityNew];
+}
+
+enum io_types
+{
+    raw = 0,        //  the position the dampened adc values per channels are stored *
+     in,            //  either the calculated int or flt value *
+    out,            //  here lands the processed ( after mode ) for the glsl uniforms      
+    rnd,            //  either the per-channel random int or flt value *
+    lf1,            //  either the lfo one int or flt value
+    lf2,            //  either the lfo two int or flt value
+    au0,            //  the audio band 0 flt value
+    au1,            //  the audio band 1 flt value
+    au2,            //  the audio band 2 flt value
+    au3,            //  the audio band 3 flt value
+                    // *means i have a unique value for each channel - the other values are singular, and/or only int/flt
+    io_type_count
 }
