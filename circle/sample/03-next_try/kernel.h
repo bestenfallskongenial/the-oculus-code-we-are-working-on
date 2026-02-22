@@ -508,7 +508,7 @@ private:
 
                 float                   current_fps                                                         =     0.0; // for our display / menu for the fps break mechanism                
                 
-                float                   u_audioSmoothBand                  [4]                         =  {0.0f};		// buffer to smooth out the audio detection 
+                float                   /* u_audioSmoothBand */                  [4]                         =  {0.0f};		// buffer to smooth out the audio detection 
 
                 float                   GLtime                                                              =  0.0f;
                 float                   g_opaque                                                              =  1.0f;	

@@ -373,8 +373,8 @@ void            CKernel::util_LFO                   ()
                 int f_indexB              = (g_elapsedMicroseconds[1] * 255) / g_cycleLength[1];
                 g_sampleIndex[1]          = f_indexB > 255 ? 255 : f_indexB;
 
-                inOutMatrixFlt[1][] /* g_lfoFltOut[1] */  = (float)g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]] / 1023.0f; // was 0123.0f
-                inOutMatrixInt[1][] /* g_lfoIntOut[1] */  =        g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]];
+                inOutMatrixFlt[0][] /* g_lfoFltOut[1] */  = (float)g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]] / 1023.0f; // was 0123.0f
+                inOutMatrixInt[0][] /* g_lfoIntOut[1] */  =        g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]];
 }   
 
 void            CKernel::util_audio_energy          (float p_adcvalue) 
@@ -400,10 +400,10 @@ void            CKernel::util_audio_energy          (float p_adcvalue)
 
                 if ( g_sensitivityNew != g_sensitivityOld )
                     {
-                    u_audioSmoothBand[0] = 0;
-                    u_audioSmoothBand[1] = 0;
-                    u_audioSmoothBand[2] = 0;
-                    u_audioSmoothBand[3] = 0;
+                    /* u_audioSmoothBand */[0] = 0;
+                    /* u_audioSmoothBand */[1] = 0;
+                    /* u_audioSmoothBand */[2] = 0;
+                    /* u_audioSmoothBand */[3] = 0;
 
                     f_indexBand0 = 0;    // Reset ring buffer indices too
                     f_indexBand1 = 0;
@@ -418,24 +418,24 @@ void            CKernel::util_audio_energy          (float p_adcvalue)
                 f_band3[f_indexBand3] = p_adcvalue;
                 for (unsigned char i = 0; i < f_averageBufferSizeTable[0][g_sensitivityNew]; ++i)     // Averaging the buffer contents
                     {
-                    u_audioSmoothBand[0] += f_band0[i];
+                    /* u_audioSmoothBand */[0] += f_band0[i];
                     }
                 for (unsigned char i = 0; i < f_averageBufferSizeTable[1][g_sensitivityNew]; ++i) 
                     {
-                    u_audioSmoothBand[1] += f_band1[i];
+                    /* u_audioSmoothBand */[1] += f_band1[i];
                     }
                 for (unsigned char i = 0; i < f_averageBufferSizeTable[2][g_sensitivityNew]; ++i) 
                     {
-                    u_audioSmoothBand[2] += f_band2[i];
+                    /* u_audioSmoothBand */[2] += f_band2[i];
                     }
                 for (unsigned char i = 0; i < f_averageBufferSizeTable[3][g_sensitivityNew]; ++i) 
                     {
-                    u_audioSmoothBand[3] += f_band3[i];
+                    /* u_audioSmoothBand */[3] += f_band3[i];
                     }
-                u_audioSmoothBand[0] /= f_averageBufferSizeTable[0][g_sensitivityNew];
-                u_audioSmoothBand[1] /= f_averageBufferSizeTable[1][g_sensitivityNew];
-                u_audioSmoothBand[2] /= f_averageBufferSizeTable[2][g_sensitivityNew];
-                u_audioSmoothBand[3] /= f_averageBufferSizeTable[3][g_sensitivityNew];
+                /* u_audioSmoothBand */[0] /= f_averageBufferSizeTable[0][g_sensitivityNew];
+                /* u_audioSmoothBand */[1] /= f_averageBufferSizeTable[1][g_sensitivityNew];
+                /* u_audioSmoothBand */[2] /= f_averageBufferSizeTable[2][g_sensitivityNew];
+                /* u_audioSmoothBand */[3] /= f_averageBufferSizeTable[3][g_sensitivityNew];
 
                 f_indexBand0 = (f_indexBand0 + 1) % f_averageBufferSizeTable[0][g_sensitivityNew];        // Update indices
                 f_indexBand1 = (f_indexBand1 + 1) % f_averageBufferSizeTable[1][g_sensitivityNew];

@@ -29,15 +29,15 @@ void            CKernel::menu_mode_default_A        ()  // default function for 
                 if ( g_audio_source_channel != -1 )                                               // lets create an additional function to do this 
                     {                                                                           // what are we doing here? when we in aud mode we display the energy
                         util_audio_energy(adc_float_value[g_audio_source_channel]);
-                        output_float_value[0] = u_audioSmoothBand[0];
-                        output_float_value[1] = u_audioSmoothBand[1];
-                        output_float_value[2] = u_audioSmoothBand[2];
-                        output_float_value[3] = u_audioSmoothBand[3];
+                        output_float_value[0] = /* u_audioSmoothBand */[0];
+                        output_float_value[1] = /* u_audioSmoothBand */[1];
+                        output_float_value[2] = /* u_audioSmoothBand */[2];
+                        output_float_value[3] = /* u_audioSmoothBand */[3];
 
-                        brightnessA = (u_audioSmoothBand[0] * 63) + 1;  // gives 1-63
-                        brightnessB = (u_audioSmoothBand[1] * 63) + 1;
-                        brightnessC = (u_audioSmoothBand[2] * 63) + 1;
-                        brightnessD = (u_audioSmoothBand[3] * 63) + 1;
+                        brightnessA = (/* u_audioSmoothBand */[0] * 63) + 1;  // gives 1-63
+                        brightnessB = (/* u_audioSmoothBand */[1] * 63) + 1;
+                        brightnessC = (/* u_audioSmoothBand */[2] * 63) + 1;
+                        brightnessD = (/* u_audioSmoothBand */[3] * 63) + 1;
 
                                 led_col_new[0][R] = g_rgb_color_table[A_0 + g_sensitivityNew][R] + ((g_rgb_color_table[A_0 + g_sensitivityNew][R] != 0) * brightnessA);
                                 led_col_new[0][G] = g_rgb_color_table[A_0 + g_sensitivityNew][G] + ((g_rgb_color_table[A_0 + g_sensitivityNew][G] != 0) * brightnessA);

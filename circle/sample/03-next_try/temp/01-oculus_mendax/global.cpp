@@ -65,7 +65,7 @@ bool           b_is_hold = false;
                 unsigned long           targetTime = 0;
                 unsigned long           delayTime = 0;
                 
-                float                   u_audioSmoothBand                  [4]                         =  {0.0f};
+                float                   /* u_audioSmoothBand */                  [4]                         =  {0.0f};
 
                 float                   GLtime                                                              =  0.0f;
                 float                   g_opaque                                                              =  1.0f;

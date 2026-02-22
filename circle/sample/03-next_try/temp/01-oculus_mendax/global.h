@@ -67,7 +67,7 @@ extern          unsigned long           targetTime;
 extern          unsigned long           delayTime;
 
 
-extern          float                   u_audioSmoothBand[4]; 
+extern          float                   /* u_audioSmoothBand */[4]; 
 extern          float                   GLtime;
 extern          float                   g_opaque;
 
