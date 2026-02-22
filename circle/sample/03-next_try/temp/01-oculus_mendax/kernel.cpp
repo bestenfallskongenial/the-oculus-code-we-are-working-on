@@ -24,7 +24,6 @@
 	                m_VCHIQ (CMemorySystem::Get (), &m_Interrupt),
                     m_SharedMemory(),
                     m_H264Decoder(),
-                    m_H264SystemParser(),
                     m_H264Parser(),
                     m_bStorageAttached (FALSE),
 	                m_pFileSystem (0),
@@ -153,32 +152,17 @@ boolean bOK = TRUE;
                     bOK = m_SharedMemory.VCSMimportMemory(m_frameBlockBaseB, m_frameBlockSizeB, 2);
                     bOK = m_SharedMemory.VCSMLockMemory(2);
                     }
-                if (bOK)// new only for the system texture, the overlay atlas, i guess i will rework the parser too, a dedicated bpm parser, one for h264
-                    {
-                    bOK = m_H264SystemParser.ParseInitialize(   TEX_FILE_SIZE,           // max_tex_size
-                                                                8,                  // max_textures
-                                                                
-                                                                m_videoBlockBase,   // aka max vid_size ??
-                                                                8,                  // max_videos   h264
-                                                                MAX_FRAMES,         // max_frames   h264
-                                                                VIDEO_WIDTH,        // max_width    h264
-                                                                VIDEO_HEIGHT,       // max_height   h264
-                                                                BASELINE_PROFILE,   // max_profile  h264
-                                                                41                  // max_level    h264
-                                                            );
-                    }                    
                 if (bOK)
                     {
-                    bOK = m_H264Parser.ParseInitialize      (   TEX_FILE_SIZE,
-                                                                8,
-                                                                
-                                                                m_videoBlockBase,
-                                                                8,
-                                                                MAX_FRAMES,
-                                                                VIDEO_WIDTH,
-                                                                VIDEO_HEIGHT,
-                                                                BASELINE_PROFILE,
-                                                                41
+                    bOK = m_H264Parser.ParseInitialize(     m_videoBlockBase,
+                                                            8,
+                                                            TEX_FILE_SIZE,
+                                                            8,
+                                                            MAX_FRAMES,
+                                                            VIDEO_WIDTH,
+                                                            VIDEO_HEIGHT,
+                                                            BASELINE_PROFILE,
+                                                            41
                                                             );
                     }
                 if (bOK)
@@ -250,8 +234,6 @@ TShutdownMode   CKernel::Run(void)
                     CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // we need to flush the cache after loading the video bitstream to make sure that the VPU can see the updated data in memory, otherwise it may cause a crash when the VPU tries to access the video data and if the video data is not updated in memory, it will cause a crash when the VPU tries to access the video data
 
                     gfx_init_v_buffer(&state);
-
-                    parser_overlay_bmp();   // this is my "only for the overlay" parser instance wrapper call...
 
                     parser_bmp(g_loaded_tex_old,g_loaded_tex_new);
                     parser_h264(g_loaded_vid_old,g_loaded_vid_new);

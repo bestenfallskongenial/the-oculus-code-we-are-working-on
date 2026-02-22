@@ -2,145 +2,141 @@
 #include "kernel.h"
 #include "global.h"
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::filesystem_open_file       (   const char *pTitle)		                        // Open File by passing pTitle via pointer 
+bool            CKernel::filesystem_open_file       (   const char         *p_fileName)		                        // Open File by passing p_fileName via pointer 
 {   
-	            hFile = m_pFileSystem->FileOpen (pTitle);                               // !!! hFile has to be defined globally !!!
-	            if (hFile == 0)
+	            g_hFile = m_pFileSystem->FileOpen (p_fileName);
+	            if (g_hFile == 0)
 		            {
-		            return false;							                                    // Cannot open file
+		            return false;
 		            }	
-                return true;								                                    // file opened successful
+                return true;
 }
-unsigned        CKernel::filesystem_load_file       (   char *buffer, 
-                                                        unsigned bufferSize, 
-                                                        int mode)
+unsigned        CKernel::filesystem_load_file       (   char               *p_buffer, 
+                                                        unsigned            p_bufferSize, 
+                                                        int                 p_display_load_mode)
 {
-                unsigned totalBytesRead = 0;
-                unsigned bytesRead;
+                unsigned f_totalBytesRead = 0;
+                unsigned f_bytesRead;
     
-                while (totalBytesRead < bufferSize)
+                while (f_totalBytesRead < p_bufferSize)
                     {
-                    opaque = 0.5f;
-                    unsigned currentChunkSize = (bufferSize - totalBytesRead < CHUNK_SIZE) ? 
-                                                (bufferSize - totalBytesRead) : CHUNK_SIZE;
-                    bytesRead = m_pFileSystem->FileRead(hFile, buffer + totalBytesRead, currentChunkSize);
+                    g_opaque = 0.5f;                                                                    // this is here to make the load display text visible
+                    unsigned f_currentChunkSize = (p_bufferSize - f_totalBytesRead < CHUNK_SIZE) ? 
+                                                (p_bufferSize - f_totalBytesRead) : CHUNK_SIZE;
+                    f_bytesRead = m_pFileSystem->FileRead(g_hFile, p_buffer + f_totalBytesRead, f_currentChunkSize);
 
-                    if (bytesRead == FS_ERROR)
+                    if (f_bytesRead == FS_ERROR)
                         {
-                        opaque = 1.0f;    
-                        return 0;  // Read error
+                        g_opaque = 1.0f;                                                                // this is here to make the load display text visible
+                        return 0;                                                                       // Read error
                         }
-                    if (bytesRead == 0)
+                    if (f_bytesRead == 0)
                         {
-                        opaque = 1.0f;    
-                        return totalBytesRead;  // EOF reached, return total bytes read
+                        g_opaque = 1.0f;                                                                // this is here to make the load display text visible
+                        return f_totalBytesRead;                                                        // EOF reached, return total bytes read
                         }
-                    totalBytesRead += bytesRead;
+                    f_totalBytesRead += f_bytesRead;
 
-                        display_LoadScreenTexVidShd(mode);
+                        display_LoadScreenTexVidShd(p_display_load_mode);
 
                     m_Watchdog.Start(TIMEOUT);         // new watchdog    
                     }
-                opaque = 1.0f;    
+                g_opaque = 1.0f;    
                 return 0;  // Buffer full, EOF not reached - this is NOT a success - 0 is equal to false
 }
-bool            CKernel::filesystem_close_file      ()	                                                 // close file ( release hFile handle ) 
+bool            CKernel::filesystem_close_file      ()	                                                 // close file ( release g_hFile handle ) 
 {
-	            if (!m_pFileSystem->FileClose (hFile))		                                    // Close File
+	            if (!m_pFileSystem->FileClose (g_hFile))		                                    // Close File
 		            {
 		            return false;							                                    // Cannot close file
 		            }
                 return true;								                                    // file has closed successful
 }
-int             CKernel::filesystem_process_files   (   char* fileNameArray[], 
-                                                        unsigned totalLoadedBytes[], 
-                                                        char** bufferArray, 
-                                                        int maxFiles, 
-                                                        int successfulLoaded, 
-                                                        unsigned fileSize, 
-                                                        int mode)
+int             CKernel::filesystem_process_files   (   char*               p_fileNameArray[], 
+                                                        unsigned            p_loadedBytes[], 
+                                                        char**              p_bufferArray, 
+                                                        int                 p_maxFiles, 
+                                                        int                 p_validFiles, 
+                                                        unsigned            p_fileSize, 
+                                                        int                 p_display_load_mode)
 {
-                for (int i = 0; i < maxFiles; ++i) 
+                for (int i = 0; i < p_maxFiles; ++i) 
                     {
-                    if (filesystem_open_file(fileNameArray[i]))
+                    if (filesystem_open_file(p_fileNameArray[i]))
                         {
-                        unsigned bytesRead = filesystem_load_file(bufferArray[successfulLoaded], fileSize, mode);
-                        if (bytesRead)
+                        unsigned f_bytesRead = filesystem_load_file(p_bufferArray[p_validFiles], p_fileSize, p_display_load_mode);
+                        if (f_bytesRead)
                             {
-                            totalLoadedBytes[successfulLoaded] = bytesRead;
-                            successfulLoaded++;   
+                            p_loadedBytes[p_validFiles] = f_bytesRead;
+                            p_validFiles++;   
                             }
                         filesystem_close_file();
                         }
                     }   
-                return successfulLoaded;
+                return p_validFiles;
 }
 
-/*
-    what we need to do here - add the new calls to load the overlay fragment shader and overlay texture atlas 
+bool            CKernel::filesystem_mount           (   const char*         p_deviceName, 
 
-*/
-bool            CKernel::filesystem_mount           (   const char* deviceName, 
+                                                        char*               vshaderFileNames[], 
+                                                        unsigned            vStotalLoadedBytes[], 
+                                                        int                 maxVshaderFiles,
 
-                                                        char* vshaderFileNames[], 
-                                                        unsigned vStotalLoadedBytes[], 
-                                                        int maxVshaderFiles,
+                                                        char*               fOverlayFileNames[],          // <- new, we need to pass a single name and skip somehow the scanfile mechanism
+                                                        unsigned            foverlayLoadedBytes[], 
+                                                        int                 maxFoverlayFiles,               // <- is one but i still want the new loaders here!
 
-                                                        char* fOverlayFileNames[],          // <- new, we need to pass a single name and skip somehow the scanfile mechanism
-                                                        unsigned foverlayLoadedBytes[], 
-                                                        int maxFoverlayFiles,               // <- is one but i still want the new loaders here!
+                                                        char*               fshaderFileNames[], 
+                                                        unsigned            fStotalLoadedBytes[], 
+                                                        int                 maxFshaderFiles,
 
-                                                        char* fshaderFileNames[], 
-                                                        unsigned fStotalLoadedBytes[], 
-                                                        int maxFshaderFiles,
+                                                        char*               texOverlayFileNames[],       // <- same here, means also that we need the correct variables/arrays in global.h/cpp !
+                                                        unsigned            tXoverlayLoadedBytes[], 
+                                                        int                 maxTexOverlayFiles,
 
-                                                        char* texOverlayFileNames[],       // <- same here, means also that we need the correct variables/arrays in global.h/cpp !
-                                                        unsigned tXoverlayLoadedBytes[], 
-                                                        int maxTexOverlayFiles,
+                                                        char*               textureFileNames[], 
+                                                        unsigned            tXtotalLoadedBytes[], 
+                                                        int                 maxTextureFiles,
 
-                                                        char* textureFileNames[], 
-                                                        unsigned tXtotalLoadedBytes[], 
-                                                        int maxTextureFiles,
-
-                                                        char* videoFileNames[]  , 
-                                                        unsigned vItotalLoadedBytes[], 
-                                                        int maxVideoFiles)
+                                                        char*               videoFileNames[]  , 
+                                                        unsigned            vItotalLoadedBytes[], 
+                                                        int                 maxVideoFiles)
 {
                 bool success = false;
                 
-                CDevice *pPartition = m_DeviceNameService.GetDevice(deviceName, TRUE);      // Retrieve a partition device
+                CDevice *f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);      // Retrieve a partition device
 
-                if (pPartition != 0
+                if (f_partitionName != 0
                     && (m_pFileSystem = new CFATFileSystem) != 0
-                    && m_pFileSystem->Mount(pPartition))
+                    && m_pFileSystem->Mount(f_partitionName))
                     {
-                    scanned_vsh = filesystem_ScanRootDir(vshaderFileNames, vhsExtensions, VSH_VALID_SUFFIX_COUNT, maxVshaderFiles);
+                    g_scanned_vsh = filesystem_ScanRootDir(vshaderFileNames, g_vhsExtensions, VSH_VALID_SUFFIX_COUNT, maxVshaderFiles);
                 // we dont scan for the filenames of the overlay shader, we have one and we prep the array with this single name    
-                    scanned_fsh = filesystem_ScanRootDir(fshaderFileNames, fhsExtensions, FSH_VALID_SUFFIX_COUNT, maxFshaderFiles);
+                    g_scanned_fsh = filesystem_ScanRootDir(fshaderFileNames, g_fhsExtensions, FSH_VALID_SUFFIX_COUNT, maxFshaderFiles);
                 // we dont scan for the filenames of the overlay texture atlas, we have one and we prep the array with this single name     
-                    scanned_tex = filesystem_ScanRootDir(textureFileNames, texExtensions, TEX_VALID_SUFFIX_COUNT, maxTextureFiles);
-                    scanned_vid = filesystem_ScanRootDir(videoFileNames,   vidExtensions, VID_VALID_SUFFIX_COUNT, maxVideoFiles);
+                    g_scanned_tex = filesystem_ScanRootDir(textureFileNames, g_texExtensions, TEX_VALID_SUFFIX_COUNT, maxTextureFiles);
+                    g_scanned_vid = filesystem_ScanRootDir(videoFileNames,   g_vidExtensions, VID_VALID_SUFFIX_COUNT, maxVideoFiles);
 
                     m_Watchdog.Start(8);
-                    VSH_LOADED_NEW = filesystem_process_files(  vshaderFileNames, vStotalLoadedBytes, m_bufferVshader, 
-                                                                scanned_vsh, VSH_LOADED_NEW, VSH_SIZE, 0);  // The file system was mounted successfully                 
+                    g_loaded_vsh_new = filesystem_process_files(  vshaderFileNames, vStotalLoadedBytes, m_bufferVshader, 
+                                                                g_scanned_vsh, g_loaded_vsh_new, VSH_FILE_SIZE, 0);  // The file system was mounted successfully                 
                 //  we need to know if we have done this correct - correct and all arrays and variables?  
                     m_Watchdog.Start(8);                                                                                
                     OMS_LOADED_NEW = filesystem_process_files(  fOverlayFileNames, foverlayLoadedBytes, m_bufferFoverlay,          // <-the loader for the single overlay shader! - i could indeed use filesystem_load_file directly but... consistency, right?!
-                                                                1/*or 0?*/, OMS_LOADED_NEW, FSH_SIZE, 1);                        // we need to define and assign the correct variables and arrays here and in global.* dont forget!
+                                                                1/*or 0?*/, OMS_LOADED_NEW, FSH_FILE_SIZE, 1);                        // we need to define and assign the correct variables and arrays here and in global.* dont forget!
                     m_Watchdog.Start(8);        
-                    FSH_LOADED_NEW = filesystem_process_files(  fshaderFileNames, fStotalLoadedBytes, m_bufferFshader, 
-                                                                scanned_fsh, FSH_LOADED_NEW, FSH_SIZE, 1);                           
+                    g_loaded_fsh_new = filesystem_process_files(  fshaderFileNames, fStotalLoadedBytes, m_bufferFshader, 
+                                                                g_scanned_fsh, g_loaded_fsh_new, FSH_FILE_SIZE, 1);                           
                                
                     m_Watchdog.Start(8);    
                     OMT_LOADED_NEW = filesystem_process_files(  texOverlayFileNames, tXoverlayLoadedBytes, m_BufferOverlayTexture,            // same shit, now for the overlay texture!!!
-                                                                1/*or 0?*/, OMT_LOADED_NEW, TEX_SIZE, 2);                                                                                          
+                                                                1/*or 0?*/, OMT_LOADED_NEW, TEX_FILE_SIZE, 2);                                                                                          
                     m_Watchdog.Start(8);    
-                    TEX_LOADED_NEW = filesystem_process_files(  textureFileNames, tXtotalLoadedBytes, m_bufferTexture, 
-                                                                scanned_tex, TEX_LOADED_NEW, TEX_SIZE, 2);                                   
+                    g_loaded_tex_new = filesystem_process_files(  textureFileNames, tXtotalLoadedBytes, m_bufferTexture, 
+                                                                g_scanned_tex, g_loaded_tex_new, TEX_FILE_SIZE, 2);                                   
                     m_Watchdog.Start(8);    
-                    VID_LOADED_NEW = filesystem_process_files(  videoFileNames  , vItotalLoadedBytes, m_bufferVideo  , 
-                                                                scanned_vid  , VID_LOADED_NEW , VID_SIZE  , 3);                                
+                    g_loaded_vid_new = filesystem_process_files(  videoFileNames  , vItotalLoadedBytes, m_bufferVideo  , 
+                                                                g_scanned_vid  , g_loaded_vid_new , VID_FILE_SIZE  , 3);                                
                     m_Watchdog.Start(8);    
                     m_pFileSystem->UnMount();
                     success = true;
@@ -151,25 +147,25 @@ bool            CKernel::filesystem_mount           (   const char* deviceName,
                 return success;   // Handle the case where no partition device was found or mounting failed
 }
 
-bool            CKernel::filesystem_save_log_file   (   const char* deviceName, 
-                                                        const char* filename, 
-                                                        const CString& str_to_save)
+bool            CKernel::filesystem_save_log_file   (   const char*         p_deviceName, 
+                                                        const char*         p_fileName, 
+                                                        const CString&      p_str_to_save)
 {
                 bool success = false;   
                 
-                CDevice *pPartition = m_DeviceNameService.GetDevice(deviceName, TRUE);  // Get partition device
+                CDevice *f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);  // Get partition device
                 
-                if (pPartition != 0 && (m_pFileSystem = new CFATFileSystem) != 0  && m_pFileSystem->Mount(pPartition))
+                if (f_partitionName != 0 && (m_pFileSystem = new CFATFileSystem) != 0  && m_pFileSystem->Mount(f_partitionName))
                 {
-                    unsigned hFile = m_pFileSystem->FileCreate(filename);   // Create and write shader log file
-                    if (hFile != 0)
+                    unsigned g_hFile = m_pFileSystem->FileCreate(p_fileName);   // Create and write shader log file
+                    if (g_hFile != 0)
                     {
                         
-                        if (m_pFileSystem->FileWrite(hFile, (const char*)str_to_save, str_to_save.GetLength()) == str_to_save.GetLength())   // Write the shader log
+                        if (m_pFileSystem->FileWrite(g_hFile, (const char*)p_str_to_save, p_str_to_save.GetLength()) == p_str_to_save.GetLength())   // Write the shader log
                         {
                             success = true;
                         }
-                        m_pFileSystem->FileClose(hFile);
+                        m_pFileSystem->FileClose(g_hFile);
                     }
                     m_pFileSystem->UnMount();   // Unmount filesystem
                 }
@@ -179,67 +175,76 @@ bool            CKernel::filesystem_save_log_file   (   const char* deviceName,
                 return success;
 }
 
-bool            CKernel::filesystem_IsValidFileType (   const char* pFileName, const char* extension)
+bool            CKernel::filesystem_IsValidFileType (   const char*         p_fileName, 
+                                                        const char*         p_fileExtension)
 {
-                CString fileName(pFileName);
-                int dotPos = fileName.Find('.');
-                if (dotPos == -1 || dotPos == 0 || dotPos > 8) 
+                CString             f_fileName(p_fileName);
+                int                 f_dotPos = f_fileName.Find('.');
+
+                if (f_dotPos == -1 || f_dotPos == 0 || f_dotPos > 8) 
                     {
                     return FALSE;
                     }
-                CString suffix((const char*)fileName + dotPos + 1);
-                return suffix.Compare(extension) == 0;
+                CString             f_suffix((const char*)f_fileName + f_dotPos + 1);
+
+                return f_suffix.Compare(p_fileExtension) == 0;
 }
-unsigned        CKernel::filesystem_ScanRootDir     ( char** fileArray, const char* exts[], int extCount, unsigned maxFiles )
+unsigned        CKernel::filesystem_ScanRootDir     (   char**              p_fileNameArray, 
+                                                        const char*         p_fileExtension[], 
+                                                        int                 p_extentionCount, 
+                                                        unsigned            p_maxFiles )
 {
-                TDirentry Direntry;
-                TFindCurrentEntry CurrentEntry;
-                unsigned count = 0;
+                TDirentry           f_directoryEntry;
+                TFindCurrentEntry   f_currentDirectoryEntry;
+
+                unsigned            f_counter                   = 0;
                 
-                unsigned nEntry = m_pFileSystem->RootFindFirst(&Direntry, &CurrentEntry);
-                if(nEntry == 0)  // Initial directory access failed
+                unsigned            f_nextEntry                 = m_pFileSystem->RootFindFirst(&f_directoryEntry, &f_currentDirectoryEntry);
+
+                if(f_nextEntry == 0)  // Initial directory access failed
                     {
                     return 0;    // Return 0 to indicate failure/no files found
                     }
 
-                while (nEntry != 0 && count < maxFiles) 
+                while (f_nextEntry != 0 && f_counter < p_maxFiles) 
                     {
-                    if (!(Direntry.nAttributes & FS_ATTRIB_SYSTEM)) 
+                    if (!(f_directoryEntry.nAttributes & FS_ATTRIB_SYSTEM)) 
                     {
-                        for (int i = 0; i < extCount; ++i)
+                        for (int i = 0; i < p_extentionCount; ++i)
                         {
-                            if (filesystem_IsValidFileType(Direntry.chTitle, exts[i])) 
+                            if (filesystem_IsValidFileType(f_directoryEntry.chTitle, p_fileExtension[i])) 
                             {
-                                fileArray[count] = new char[strlen(Direntry.chTitle) + 1];
-                                strcpy(fileArray[count], Direntry.chTitle);
-                                count++;
+                                p_fileNameArray[f_counter] = new char[strlen(f_directoryEntry.chTitle) + 1];
+                                strcpy(p_fileNameArray[f_counter], f_directoryEntry.chTitle);
+                                f_counter++;
                                 break;
                             }
                         }
                     }
-                    nEntry = m_pFileSystem->RootFindNext(&Direntry, &CurrentEntry);
+                    f_nextEntry = m_pFileSystem->RootFindNext(&f_directoryEntry, &f_currentDirectoryEntry);
                     }
-                return count;    // Return actual number of files found and loaded
+                return f_counter;    // Return actual number of files found and loaded
 }
 
-bool            CKernel::filesystem_update_USB      (   const char* deviceType)
+bool            CKernel::filesystem_update_USB      (   const char*         p_deviceName)
 {
                 if (m_USBHCI.UpdatePlugAndPlay())   // Update the tree of connected USB devices
                     {
-                    CDevice *pDevice = m_DeviceNameService.GetDevice(deviceType, TRUE);
-                    if (pDevice != nullptr)
+                    CDevice *f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);
+                    if (f_partitionName != nullptr)
                         {
-                        m_bStorageAttached = true;
+                        m_bStorageAttached = true; // this is a global, volatile variable! 
 
-                        pDevice->RegisterRemovedHandler(filesystem_remove_USB, this);
+                        f_partitionName->RegisterRemovedHandler(filesystem_remove_USB, this);
                         return true;
                         }
                     }
                 return false;
 }
-void            CKernel::filesystem_remove_USB      (   CDevice *pDevice, void *pContext)
+void            CKernel::filesystem_remove_USB      (   CDevice            *f_partitionName, 
+                                                        void               *p_pContext)
 {
-	            CKernel *pThis = (CKernel *) pContext;
+	            CKernel *pThis = (CKernel *) p_pContext;
 	            assert (pThis != 0);
 	        //  assert (pThis->m_bStorageAttached);
 	            pThis->m_bStorageAttached = FALSE;

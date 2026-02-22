@@ -1,13 +1,6 @@
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include "kernel.h"
 #include "global.h"
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
 
-        my new memory.cpp with added dma memory allocation for the texture atlas and the overlay fragment shader - also i found some strange errors here.
-
-*/
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool            CKernel::memory_allocate            ()
 {
                 // Video and frame buffers need DMA memory
@@ -23,10 +16,6 @@ bool            CKernel::memory_allocate            ()
                                                                 &m_frameBlockBaseB,
                                                                 &m_frameRawBlockB,
                                                                 &m_frameBlockSizeB);
-                m_BufferOverlayTexture= memory_init_dma_buffer(   1, TEX_FILE_SIZE,                    // <- need to be adapted !!
-                                                                &m_overlyBlockBase,             // <- need to be adapted !!
-                                                                &m_overlayRawBlock,             // <- need to be adapted !!
-                                                                &m_overlyBlockSize);            // <- need to be adapted !!                                                
                 m_bufferTexture     = memory_init_dma_buffer(   TEX_FILES_ON_SD + TEX_FILES_ON_USB, TEX_FILE_SIZE,
                                                                 &m_textureBlockBase,
                                                                 &m_textureRawBlock,
@@ -35,10 +24,9 @@ bool            CKernel::memory_allocate            ()
                 m_bufferKernel      = memory_init_buffer( 2, KRL_FILE_SIZE );
 
                 m_bufferVshader     = memory_init_buffer( VSH_FILES_ON_SD + VSH_FILES_ON_USB, VSH_FILE_SIZE );
-                m_bufferFoverlay    = memory_init_buffer( 1,                FSH_FILE_SIZE );         // <- new        
-                m_bufferFshader     = memory_init_buffer( FSH_FILES_ON_SD + FSH_FILES_ON_USB, FSH_FILE_SIZE );
-
-                if (!m_bufferVideo || !m_bufferFrameBufferA || !m_bufferFrameBufferB || !m_BufferOverlayTexture || !m_bufferTexture || !m_bufferKernel || !m_bufferVshader || !m_bufferFoverlay || !m_bufferFshader)
+                m_bufferFshader     = memory_init_buffer( FSH_FILES_ON_SD + FSH_FILES_ON_USB, VSH_FILE_SIZE );
+                if (!m_bufferVideo || !m_bufferFrameBufferA || !m_bufferFrameBufferA || !m_bufferTexture ||
+                    !m_bufferKernel || !m_bufferVshader || !m_bufferFshader)
                     {
                     memory_clean_up();
                     return false;
@@ -65,18 +53,12 @@ void            CKernel::memory_clean_up            ()
                     memory_clear_dma_buffer( m_bufferFrameBufferB, m_frameRawBlockB); 
                     m_bufferFrameBufferB = nullptr; 
                     m_frameRawBlockB = nullptr;
-                    }
-                if (m_bufferTexture)                                                            // <- was memory_clear_buffer!!! wonder why the code even worked ?! oh jeah, i never cleaned
+                    }    
+                if (m_bufferTexture) 
                     { 
-                    memory_clear_dma_buffer( m_bufferTexture, m_textureRawBlock); 
+                    memory_clear_buffer( m_bufferTexture, 
+                                        TEX_FILES_ON_SD + TEX_FILES_ON_USB); 
                     m_bufferTexture = nullptr; 
-                    m_textureRawBlock = nullptr;
-                    }
-                if (m_BufferOverlayTexture)                                                           // <- my new overlay texture atlas
-                    { 
-                    memory_clear_dma_buffer( m_BufferOverlayTexture, m_overlayRawBlock); 
-                    m_BufferOverlayTexture = nullptr; 
-                    m_overlayRawBlock = nullptr;
                     }
                 if (m_bufferKernel) 
                     { 
@@ -89,12 +71,6 @@ void            CKernel::memory_clean_up            ()
                                         VSH_FILES_ON_SD + VSH_FILES_ON_USB); 
                     m_bufferVshader = nullptr; 
                     }
-                if (m_bufferFoverlay)                                                           // <- my new overlay shader!
-                    { 
-                    memory_clear_buffer( m_bufferFoverlay, 
-                                        1 ); 
-                    m_bufferFoverlay = nullptr; 
-                    }                          
                 if (m_bufferFshader) 
                     { 
                     memory_clear_buffer( m_bufferFshader, 
@@ -181,4 +157,4 @@ void            CKernel::memory_clear_dma_buffer    (   char** buffers, char* ra
                 delete[] rawBlock;  // Raw block from new[]
                 delete[] buffers;   // Slice table
 }
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+

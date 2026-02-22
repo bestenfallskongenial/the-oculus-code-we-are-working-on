@@ -30,7 +30,7 @@
         menu_mode_assign_group(1,  0);   // CH0–CH3
         menu_mode_assign_group(2,  4);   // CH4–CH7
         menu_mode_assign_group(3,  8);   // LFO
-        menu_mode_assign_group(4, 12);   // potential new menu layers for attenuation
+        menu_mode_assign_group(4, 12);   // potential new menu layers for g_attenuation
 
         apply_mode_to_channel(0);
         apply_mode_to_channel(1);
@@ -68,45 +68,45 @@ void CKernel::menu_mode_assign_group(uint8_t menu_id, uint8_t base)
     // slot 0
     v = (adc_raw_value[4] * menu_map_max[base + 0]) >> 10;
     if (!menu_pickup_flag[base + 0] &&
-        v == mode_storage_buffers[base + 0][current_buffer])
+        v == g_centralModeBuffer[base + 0][g_currentProgramBuffer])
         menu_pickup_flag[base + 0] = true;
     else if (menu_pickup_flag[base + 0])
-        mode_storage_buffers[base + 0][current_buffer] = v;
+        g_centralModeBuffer[base + 0][g_currentProgramBuffer] = v;
 
     // slot 1
     v = (adc_raw_value[5] * menu_map_max[base + 1]) >> 10;
     if (!menu_pickup_flag[base + 1] &&
-        v == mode_storage_buffers[base + 1][current_buffer])
+        v == g_centralModeBuffer[base + 1][g_currentProgramBuffer])
         menu_pickup_flag[base + 1] = true;
     else if (menu_pickup_flag[base + 1])
-        mode_storage_buffers[base + 1][current_buffer] = v;
+        g_centralModeBuffer[base + 1][g_currentProgramBuffer] = v;
 
     // slot 2
     v = (adc_raw_value[6] * menu_map_max[base + 2]) >> 10;
     if (!menu_pickup_flag[base + 2] &&
-        v == mode_storage_buffers[base + 2][current_buffer])
+        v == g_centralModeBuffer[base + 2][g_currentProgramBuffer])
         menu_pickup_flag[base + 2] = true;
     else if (menu_pickup_flag[base + 2])
-        mode_storage_buffers[base + 2][current_buffer] = v;
+        g_centralModeBuffer[base + 2][g_currentProgramBuffer] = v;
 
     // slot 3
     v = (adc_raw_value[7] * menu_map_max[base + 3]) >> 10;
     if (!menu_pickup_flag[base + 3] &&
-        v == mode_storage_buffers[base + 3][current_buffer])
+        v == g_centralModeBuffer[base + 3][g_currentProgramBuffer])
         menu_pickup_flag[base + 3] = true;
     else if (menu_pickup_flag[base + 3])
-        mode_storage_buffers[base + 3][current_buffer] = v;
+        g_centralModeBuffer[base + 3][g_currentProgramBuffer] = v;
 }
 
 void CKernel::apply_mode_to_channel(int channel)
 {
 if (!g_channel_mode_capability
         [channel]
-        [mode_storage_buffers[channel][current_buffer]])
+        [g_centralModeBuffer[channel][g_currentProgramBuffer]])
     return;
 
 
-    switch (mode_storage_buffers[channel][current_buffer])
+    switch (g_centralModeBuffer[channel][g_currentProgramBuffer])
     {
         case 0:
             modeADC (channel);
@@ -152,7 +152,7 @@ void CKernel::modeADC(int channel)
         case 6:                                                 /* -------- CH6 : pickup + single_tex_mode -------- */
             if (!menu_pickup_flag[12])
             {
-                if (adc_raw_value[6] > menu_pickup_buffer[12] - TOLERANCE && adc_raw_value[6] < menu_pickup_buffer[12] + TOLERANCE)
+                if (adc_raw_value[6] > g_menu_pickup_buffer[12] - ADC_TOLERANCE && adc_raw_value[6] < g_menu_pickup_buffer[12] + ADC_TOLERANCE)
                 {
                     menu_pickup_flag[12] = true;
                 }
@@ -176,7 +176,7 @@ void CKernel::modeADC(int channel)
         case 7:                                                 /* -------- CH7 : pickup + shader select -------- */
             if (!menu_pickup_flag[13])
             {
-                if (adc_raw_value[7] > menu_pickup_buffer[13] - TOLERANCE && adc_raw_value[7] < menu_pickup_buffer[13] + TOLERANCE)
+                if (adc_raw_value[7] > g_menu_pickup_buffer[13] - ADC_TOLERANCE && adc_raw_value[7] < g_menu_pickup_buffer[13] + ADC_TOLERANCE)
                 {
                     menu_pickup_flag[13] = true;
                 }
@@ -202,14 +202,14 @@ void CKernel::modeADC(int channel)
 
 void CKernel::modeTRG (int channel)
 {
-            if (adc_int_value[channel] >= threshold_high[channel] &&
+            if (adc_int_value[channel] >= g_threshold_high[channel] &&
                 !input_threshold_flag[channel])
             {
-                output_float_value[channel] = random_float_value[channel];
-                output_int_value[channel]   = random_int_value[channel];
+                output_float_value[channel] = g_randomFloatValue[channel];
+                output_int_value[channel]   = g_randomIntegerValue[channel];
                 input_threshold_flag[channel] = true;
             }
-            else if (adc_int_value[channel] < threshold_low[channel])
+            else if (adc_int_value[channel] < g_threshold_low[channel])
             {
                 input_threshold_flag[channel] = false;
             }
@@ -217,10 +217,10 @@ void CKernel::modeTRG (int channel)
 void CKernel::modeBPM (int channel) 
 { 
 // i just realised now that you piece of shit removed the bpm logic !
-if (current_time >= next_beat_time[active_bpm_channel])
+if (current_time >= g_nextBeatTime[g_activeBpmChannel])
             {
-                output_float_value[channel] = random_float_value[channel];
-                output_int_value[channel]   = random_int_value[channel];
+                output_float_value[channel] = g_randomFloatValue[channel];
+                output_int_value[channel]   = g_randomIntegerValue[channel];
             }
 }
 
@@ -230,11 +230,11 @@ void CKernel::modePOT ()
 }
 void CKernel::modeLF1 ()
 {
-            output_float_value[channel] = LFO_float_output[0];
-            output_int_value[channel]   = LFO_int_output[0];
+            output_float_value[channel] = g_lfoFltOut[0];
+            output_int_value[channel]   = g_lfoIntOut[0];
 }
 void CKernel::modeLF2 ()
 {
-            output_float_value[channel] = LFO_float_output[1];
-            output_int_value[channel]   = LFO_int_output[1];    
+            output_float_value[channel] = g_lfoFltOut[1];
+            output_int_value[channel]   = g_lfoIntOut[1];    
 }

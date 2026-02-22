@@ -32,8 +32,8 @@ void            CKernel::gfx_program_log            (   GLint shader, int progra
                 name[26] = '\0';
                 log_message.Format( "%s Filename: %s Size %u\n"
                                     "----------------------------------------------------------------\n", 
-                                    name, SCANED_FILES_FSH[internal_index],
-                                    FSH_LOADED_BYTES[program_index]);
+                                    name, g_fshScannedFileNames[internal_index],
+                                    g_fshLoadedBytes[program_index]);
                 g_log_string.Append(log_message);
 
                 char log[1024];

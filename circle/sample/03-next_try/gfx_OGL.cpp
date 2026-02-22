@@ -32,14 +32,14 @@ void            CKernel::gfx_init_OGL               (   CUBE_STATE_T *state)
                 state->display = eglGetDisplay                      (   EGL_DEFAULT_DISPLAY     );  // get an EGL display connection
 #ifdef __OLG_DEBUG__                
                 assert(state->display!=EGL_NO_DISPLAY);
-                check();
+                glslCheck();
 #endif // __OLG_DEBUG__
                 result = eglInitialize                              (   state->display,         // initialize the EGL display connection
                                                                         NULL, 
                                                                         NULL                    );
 #ifdef __OLG_DEBUG__
                 assert(EGL_FALSE != result);//?
-                check();
+                glslCheck();
 #endif // __OLG_DEBUG__
                 result = eglChooseConfig                            (   state->display,         // get an appropriate EGL frame buffer configuration 
                                                                         attribute_list, 
@@ -48,12 +48,12 @@ void            CKernel::gfx_init_OGL               (   CUBE_STATE_T *state)
                                                                         &num_config             );
 #ifdef __OLG_DEBUG__                
                 assert(EGL_FALSE != result); //?
-                check();
+                glslCheck();
 #endif // __OLG_DEBUG__
                 result = eglBindAPI(EGL_OPENGL_ES_API);                                         // get an appropriate EGL frame buffer configuration
 #ifdef __OLG_DEBUG__
                 assert(EGL_FALSE != result);//?
-                check();
+                glslCheck();
 #endif // __OLG_DEBUG__
                 state->context = eglCreateContext                   (   state->display,         // create an EGL rendering context
                                                                         config, 
@@ -61,7 +61,7 @@ void            CKernel::gfx_init_OGL               (   CUBE_STATE_T *state)
                                                                         context_attributes      );
 #ifdef __OLG_DEBUG__
                 assert(state->context!=EGL_NO_CONTEXT);//?
-                check();
+                glslCheck();
 #endif // __OLG_DEBUG__
                 success = graphics_get_display_size                 (   0 /* LCD */,            // create an EGL window surface
                                                                         &state->screen_width, 
@@ -99,7 +99,7 @@ void            CKernel::gfx_init_OGL               (   CUBE_STATE_T *state)
 
                 vc_dispmanx_update_submit_sync                      (   dispman_update  );
 #ifdef __OLG_DEBUG__
-                check();
+                glslCheck();
 #endif // __OLG_DEBUG__            
                 state->surface = eglCreateWindowSurface             (   state->display, 
                                                                         config, 
@@ -107,7 +107,7 @@ void            CKernel::gfx_init_OGL               (   CUBE_STATE_T *state)
                                                                         NULL            );
 #ifdef __OLG_DEBUG__
                 assert(state->surface != EGL_NO_SURFACE);//?
-                check();
+                glslCheck();
 #endif // __OLG_DEBUG__                
                 result = eglMakeCurrent                             (   state->display,     // connect the context to the surface
                                                                         state->surface, 
@@ -115,12 +115,12 @@ void            CKernel::gfx_init_OGL               (   CUBE_STATE_T *state)
                                                                         state->context  );
 #ifdef __OLG_DEBUG__
                 assert(EGL_FALSE != result);//?
-                check();
+                glslCheck();
 #endif // __OLG_DEBUG__
                 glClearColor(0.15f, 0.25f, 0.35f, 1.0f);                                    // Set background color and clear buffers
                 glClear( GL_COLOR_BUFFER_BIT );
 #ifdef __OLG_DEBUG__
-                check();
+                glslCheck();
 #endif // __OLG_DEBUG__            
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

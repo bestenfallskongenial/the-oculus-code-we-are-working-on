@@ -2,7 +2,7 @@
 #include "global.h"
 //#include "wavetable.h"
 
-//#include <circle/string.h>  why we outcommented this? because we don't need it, and it causes a dependency on the circle library, which we want to avoid in this sample.
+//#include <circle/string.h> 
 //#include <stdint.h>
 
 unsigned long           g_waveTable                               [WAVEFORMS][WAVESAMPLES]    = 

@@ -41,7 +41,7 @@ bool            CKernel::util_check_for_update      ()
                             m_Screen.Write("  okay, lets do it\n\n", strlen("okay, lets do it\n\n"));
 
                             
-                            if (!filesystem_load_kernel(PARTITIONSD, FILENAME_KERNEL, 0))   // Load current firmware from SD to buffer 0
+                            if (!filesystem_load_kernel(PARTITION_NAME_SD, FILENAME_KERNEL, 0))   // Load current firmware from SD to buffer 0
                             {
                                 m_Screen.Write("  problem with the old firmware file / sd card - please try again\n", 
                                         strlen("  problem with the old firmware file / sd card - please try again\n"));
@@ -55,7 +55,7 @@ bool            CKernel::util_check_for_update      ()
                             m_Screen.Write("  insert USB stick\n\n", 
                                     strlen("  insert USB stick\n\n"));
                             
-                            if (!filesystem_load_kernel(PARTITIONUSB, FILENAME_KERNEL, 1))  // Load new firmware from USB to buffer 1
+                            if (!filesystem_load_kernel(PARTITION_NAME_USB, FILENAME_KERNEL, 1))  // Load new firmware from USB to buffer 1
                             {
                                 m_Screen.Write("  problem with the new firmware file / USB stick - please try again\n", 
                                         strlen("  problem with the old firmware file / USB stick - please try again\n"));            
@@ -66,11 +66,11 @@ bool            CKernel::util_check_for_update      ()
                             line.Format ("  %u Byte loaded from USB\n\n",  loaded_bytes_kernel[1]);
                             m_Screen.Write(line, strlen(line));
                             
-                            if (!filesystem_save_kernel(PARTITIONSD, FILENAME_KERNEL, 1))   // Write new firmware from buffer 1 to SD
+                            if (!filesystem_save_kernel(PARTITION_NAME_SD, FILENAME_KERNEL, 1))   // Write new firmware from buffer 1 to SD
                                 {
                                 m_Screen.Write("  Error ! Restoring the firmware\n", 
                                         strlen("  Error ! Restoring the firmware\n"));             
-                                if (!filesystem_save_kernel(PARTITIONSD, FILENAME_KERNEL, 0))
+                                if (!filesystem_save_kernel(PARTITION_NAME_SD, FILENAME_KERNEL, 0))
                                     {
                                     m_Screen.Write("  Writing / Restoring the Firmware Failed - you need to restore it manually !!!\n", 
                                             strlen("  Writing / Restoring the Firmware Failed - you need to restore it manually !!!\n"));             
@@ -125,76 +125,76 @@ void            CKernel::util_save_modes_file       ()    // whats up here??? we
                                     "  CLK:                 %-3u\n\n"
                                     "  CV-Attenuation:      %s Volt\n"
                                     "  Audio-Sensisitivity: %s\n",
-                                    resultBPM[0], 
-                                    resultBPM[1],
-                                    table_attenuator[attenuation],
-                                    table_intensity[sensitivity_new]);
+                                    g_resultBPM[0], 
+                                    g_resultBPM[1],
+                                    table_attenuator[g_attenuation],
+                                    table_intensity[g_sensitivityNew]);
 
                 g_modes.Append(temp_string);
 
-                for(int i = 0; i < linked_programs; i++) 
+                for(int i = 0; i < g_linked_programs_counter; i++) 
                     {
                     temp_string.Format( "# --------------------------------------------------------------------------------\n"
-                                        "#  filename: %s\n"
-                                        "# --------------------------------------------------------------------------------\n", SCANED_FILES_FSH[i+1]);
+                                        "#  p_fileName: %s\n"
+                                        "# --------------------------------------------------------------------------------\n", g_fshScannedFileNames[i+1]);
                     g_modes.Append(temp_string);
                     g_modes.Append("\n");
 
                     temp_string.Format( "  CV A0: %s\n"
                                         "  CV A1: %s\n"
                                         "  CV A2: %s\n"
-                                        "  CV A3: %s\n\n",table_menu[mode_storage_buffers[CH0_MODE][i]],
-                                                        table_menu[mode_storage_buffers[CH1_MODE][i]],
-                                                        table_menu[mode_storage_buffers[CH2_MODE][i]],
-                                                        table_menu[mode_storage_buffers[CH3_MODE][i]]);
+                                        "  CV A3: %s\n\n",table_menu[g_centralModeBuffer[CH0_MODE][i]],
+                                                        table_menu[g_centralModeBuffer[CH1_MODE][i]],
+                                                        table_menu[g_centralModeBuffer[CH2_MODE][i]],
+                                                        table_menu[g_centralModeBuffer[CH3_MODE][i]]);
                     g_modes.Append(temp_string);
 
                     temp_string.Format( "  CV B0: %s\n"
                                         "  CV B1: %s\n"
                                         "  CV B2: %s\n"
-                                        "  CV B3: %s\n\n",table_menu[mode_storage_buffers[CH4_MODE][i]],
-                                                        table_menu[mode_storage_buffers[CH5_MODE][i]],
-                                                        table_menu[mode_storage_buffers[CH6_MODE][i]],
-                                                        table_menu[mode_storage_buffers[CH7_MODE][i]]);
+                                        "  CV B3: %s\n\n",table_menu[g_centralModeBuffer[CH4_MODE][i]],
+                                                        table_menu[g_centralModeBuffer[CH5_MODE][i]],
+                                                        table_menu[g_centralModeBuffer[CH6_MODE][i]],
+                                                        table_menu[g_centralModeBuffer[CH7_MODE][i]]);
                     g_modes.Append(temp_string);       
 
                     temp_string.Format( "  Wave    LFO 1: %s\n"
                                         "  Divider LFO 1: %d\n\n"
                                         "  Wave    LFO 2: %s\n"
-                                        "  Divider LFO 2: %d\n\n",table_waveform[mode_storage_buffers[LF1_WAVE][i]],
-                                                                    multiplier[mode_storage_buffers[LF1_MULT][i]],
-                                                                table_waveform[mode_storage_buffers[LF2_WAVE][i]],
-                                                                    multiplier[mode_storage_buffers[LF2_MULT][i]]);
+                                        "  Divider LFO 2: %d\n\n",table_waveform[g_centralModeBuffer[LF1_WAVE][i]],
+                                                                    g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][i]],
+                                                                table_waveform[g_centralModeBuffer[LF2_WAVE][i]],
+                                                                    g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][i]]);
                     g_modes.Append(temp_string);  
                     
-                    temp_string.Format("  Frame   Mode: %s\n", (mode_storage_buffers[FRM_MODE][i] ? "ON" : "OFF"));
+                    temp_string.Format("  Frame   Mode: %s\n", (g_centralModeBuffer[FRM_MODE][i] ? "ON" : "OFF"));
                     g_modes.Append(temp_string);
             
-                    temp_string.Format("  Texture Mode: %s\n", (mode_storage_buffers[TEX_MODE][i] ? "ON" : "OFF"));
+                    temp_string.Format("  Texture Mode: %s\n", (g_centralModeBuffer[TEX_MODE][i] ? "ON" : "OFF"));
                     g_modes.Append(temp_string);
 
                     g_modes.Append("\n");
                     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::filesystem_load_kernel     (   const char* deviceName, 
-                                                        const char* filename, 
-                                                        unsigned bufferIndex)
+bool            CKernel::filesystem_load_kernel     (   const char* p_deviceName, 
+                                                        const char* p_fileName, 
+                                                        unsigned p_fileIndex)
 {
-                while(bufferIndex == 1 && filesystem_update_USB("umsd1") == false)
+                while(p_fileIndex == 1 && filesystem_update_USB("umsd1") == false)
                 {
                     m_Timer.MsDelay(100);
                 }
 
-                CDevice *pPartition = m_DeviceNameService.GetDevice(deviceName, TRUE);
+                CDevice *f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);
                         
-                if (pPartition != 0 && (m_pFileSystem = new CFATFileSystem) != 0 && m_pFileSystem->Mount(pPartition))
+                if (f_partitionName != 0 && (m_pFileSystem = new CFATFileSystem) != 0 && m_pFileSystem->Mount(f_partitionName))
                 {
-                    if (filesystem_open_file(filename))
+                    if (filesystem_open_file(p_fileName))
                     {
 
-                        loaded_bytes_kernel[bufferIndex] = filesystem_load_file(m_bufferKernel[bufferIndex], KERNEL_SIZE, 4);
-                        if (loaded_bytes_kernel[bufferIndex] > 0)
+                        loaded_bytes_kernel[p_fileIndex] = filesystem_load_file(m_bufferKernel[p_fileIndex], KRL_FILE_SIZE, 4);
+                        if (loaded_bytes_kernel[p_fileIndex] > 0)
                         {
                             filesystem_close_file();
                             m_pFileSystem->UnMount();
@@ -211,74 +211,74 @@ bool            CKernel::filesystem_load_kernel     (   const char* deviceName,
                 return false;
 }
 
-bool            CKernel::filesystem_save_kernel     (   const char* deviceName, 
-                                                        const char* filename, 
-                                                        unsigned bufferIndex)
+bool            CKernel::filesystem_save_kernel     (   const char* p_deviceName, 
+                                                        const char* p_fileName, 
+                                                        unsigned p_fileIndex)
 {
-                bool success = false;   
+                bool f_write_success = false;   
                 
-                CDevice *pPartition = m_DeviceNameService.GetDevice(deviceName, TRUE);
+                CDevice *f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);
                 
-                if (pPartition != 0 && (m_pFileSystem = new CFATFileSystem) != 0 && m_pFileSystem->Mount(pPartition))
+                if (f_partitionName != 0 && (m_pFileSystem = new CFATFileSystem) != 0 && m_pFileSystem->Mount(f_partitionName))
                 {
-                    unsigned hFile = m_pFileSystem->FileCreate(filename);
-                    if (hFile != 0)
+                    unsigned g_hFile = m_pFileSystem->FileCreate(p_fileName);
+                    if (g_hFile != 0)
                     {
-                        if (m_pFileSystem->FileWrite(hFile, m_bufferKernel[bufferIndex], loaded_bytes_kernel[bufferIndex]) == loaded_bytes_kernel[bufferIndex])
+                        if (m_pFileSystem->FileWrite(g_hFile, m_bufferKernel[p_fileIndex], loaded_bytes_kernel[p_fileIndex]) == loaded_bytes_kernel[p_fileIndex])
                         {
-                            success = true;
+                            f_write_success = true;
                         }
-                        m_pFileSystem->FileClose(hFile);
+                        m_pFileSystem->FileClose(g_hFile);
                     }
                     m_pFileSystem->UnMount();
                 }
                 delete m_pFileSystem;
                 m_pFileSystem = 0;
                 
-                return success;
+                return f_write_success;
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // helpers i didnt integrate yet, but they are here and working
-void            CKernel::GenerateH264ParserInfo( int file_index)
+void            CKernel::GenerateH264ParserInfo( int p_fileIndex)
 {
-                CString bufferParser = m_H264Parser.m_DebugCharArray[file_index];
-                filesystem_save_log_file( "emmc1-1", VID__LOG_NAMES[file_index], bufferParser);   
+                CString f_bufferParser = m_H264Parser.m_DebugCharArray[p_fileIndex];
+                filesystem_save_log_file( "emmc1-1", g_vidLogNames[p_fileIndex], f_bufferParser);   
 }
-void            CKernel::GenerateBmpParserInfo( int file_index)
+void            CKernel::GenerateBmpParserInfo( int p_fileIndex)
 {
-                CString bufferParser = m_H264Parser.m_DebugCharArray[file_index];
-                filesystem_save_log_file( "emmc1-1", BMP__LOG_NAMES[file_index], bufferParser);   
-}
-
-void            CKernel::GenerateBmpOverlayInfo( int file_index)           // new to store the log for the system textures, here the overlay atlas
-{
-                CString bufferParser = m_H264SystemParser.m_DebugCharArray[file_index];
-                filesystem_save_log_file( "emmc1-1", OMT__LOG_NAMES[file_index], bufferParser);   // OMT__LOG_NAMES need to be created
+                CString f_bufferParser = m_H264Parser.m_DebugCharArray[p_fileIndex];
+                filesystem_save_log_file( "emmc1-1", g_texLogNames[p_fileIndex], f_bufferParser);   
 }
 
-void            CKernel::parser_h264               (int fromFile, int toFile)
+void            CKernel::GenerateBmpOverlayInfo( int p_fileIndex)           // new to store the log for the system textures, here the overlay atlas
 {
-    for (int i = fromFile; i < toFile; i++) 
+                CString f_bufferParser = m_H264SystemParser.m_DebugCharArray[p_fileIndex];
+                filesystem_save_log_file( "emmc1-1", OMT__LOG_NAMES[p_fileIndex], f_bufferParser);   // OMT__LOG_NAMES need to be created
+}
+
+void            CKernel::parser_h264               (int p_fromFile, int p_toFile)
+{
+    for (int i = p_fromFile; i < p_toFile; i++) 
         {
-                m_H264Parser.ParseVideoAuto(i, m_bufferVideo, VID_LOADED_BYTES );
+                m_H264Parser.ParseVideoAuto(i, m_bufferVideo, g_vidLoadedBytes );
                 GenerateH264ParserInfo  (i);
         }
 }
 
-void            CKernel::parser_bmp               (int fromFile, int toFile)
+void            CKernel::parser_bmp               (int p_fromFile, int p_toFile)
 {
-    for (int i = fromFile; i < toFile; i++) 
+    for (int i = p_fromFile; i < p_toFile; i++) 
         {
-                m_H264Parser.ParseBPM(i, SCANED_FILES_TEX, m_bufferTexture, TEX_LOADED_BYTES );
+                m_H264Parser.ParseBPM(i, g_texScannedFileNames, m_bufferTexture, g_texLoadedBytes );
                 GenerateBmpParserInfo  (i);
         }
 }
 
-void            CKernel::parser_overlay_bmp         (int file_index)
+void            CKernel::parser_overlay_bmp         (int p_fileIndex)
 {        
-                m_H264SystemParser.ParseBPM(file_index , SCANED_FILES_OMT  /*"Overlay Atlas"*/ , m_BufferOverlayTexture, OMT_LOADED_BYTES );
+                m_H264SystemParser.ParseBPM(p_fileIndex , g_omtScannedFileNames  /*"Overlay Atlas"*/ , m_BufferOverlayTexture, g_omtLoadedBytes );
 
-                GenerateBmpOverlayInfo  (file_index); // we keep the indexing maybe there will be more 
+                GenerateBmpOverlayInfo  (p_fileIndex); // we keep the indexing maybe there will be more 
         
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -4,7 +4,7 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // we need to add commentary here that we understand how the mapping is applied, 
 // also because we will add more modes later on, alignment is paramount
-const unsigned char rgb_tab[49][3] = {
+const unsigned char g_rgb_color_table[49][3] = {
 
 // first four colors are mapped to the different attenuations for the adc mode, i know the math looks chaotic here
 { 0, 0, 0},

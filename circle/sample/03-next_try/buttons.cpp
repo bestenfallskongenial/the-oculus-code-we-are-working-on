@@ -4,6 +4,8 @@ we need a few additions here, alittle cleanup and the question what code is the 
 
 */
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#define BTN_PRESSED 0 // correct??
+
 enum ButtonTSIndex
 {
     BTN_STATUS      = 0,
@@ -14,122 +16,124 @@ enum ButtonTSIndex
     BTN_SINGLE      = 5,
     BTN_HOLD_TICK   = 6   // COUNTER: increases while held
 };
-// buttons_states[2][6]
+// g_buttons_states[2][7]
 
 
 // version a
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+// g_ for global-variable       g_buttons_states[2][7], g_long_click_time*, g_double_click_time*            * also possible macro definition? 
+// p_for signature-parameter    p_btn_id
+// f_ for function-variable     f_held_time, 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void CKernel::button_ping(int btn_id)
+void CKernel::button_ping(int p_btn_id)
 {
-    buttons_states[0][BTN_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
-    buttons_states[1][BTN_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
+    g_buttons_states[0][BTN_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
+    g_buttons_states[1][BTN_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
 
-    if (buttons_states[btn_id] == ISPRESSED)
+    if (g_buttons_states[p_btn_id] == BTN_PRESSED)
     {
-        if (buttons_states[btn_id][BTN_PRESS_START] == 0)
+        if (g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
         {
-            buttons_states[btn_id][BTN_PRESS_START] = currentTime;
+            g_buttons_states[p_btn_id][BTN_PRESS_START] = g_currentTime;
 
-            if (buttons_states[btn_id][BTN_RELEASE] > 0 &&
-                (currentTime - buttons_states[btn_id][BTN_RELEASE]) < dbl_clk_time)
+            if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 &&
+                (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) < g_double_click_time)
             {
-                buttons_states[btn_id][BTN_DOUBLE]  = 1;
-                buttons_states[btn_id][BTN_RELEASE] = 0;
+                g_buttons_states[p_btn_id][BTN_DOUBLE]  = 1;
+                g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
             }
         }
 
-        unsigned held_time =
-            currentTime - buttons_states[btn_id][BTN_PRESS_START];
+        unsigned f_held_time =
+            g_currentTime - g_buttons_states[p_btn_id][BTN_PRESS_START];
 
-        if (held_time >= lng_clk_time)
+        if (f_held_time >= g_long_click_time)
         {
-            if (buttons_states[btn_id][BTN_LONG] == 0)
+            if (g_buttons_states[p_btn_id][BTN_LONG] == 0)
             {
-                buttons_states[btn_id][BTN_HOLD_NEXT] = currentTime + hold_tick_time;
-                buttons_states[btn_id][BTN_HOLD_TICK] = 0;
+                g_buttons_states[p_btn_id][BTN_HOLD_NEXT] = g_currentTime + f_hold_tick_time;
+                g_buttons_states[p_btn_id][BTN_HOLD_TICK] = 0;
             }
 
-            buttons_states[btn_id][BTN_LONG] = 1;
+            g_buttons_states[p_btn_id][BTN_LONG] = 1;
 
             // ---- COUNTER INCREMENT ----
-            while (currentTime >= buttons_states[btn_id][BTN_HOLD_NEXT])
+            while (g_currentTime >= g_buttons_states[p_btn_id][BTN_HOLD_NEXT])
             {
-                buttons_states[btn_id][BTN_HOLD_TICK]++;   // COUNT
-                buttons_states[btn_id][BTN_HOLD_NEXT] += hold_tick_time;
+                g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;   // COUNT
+                g_buttons_states[p_btn_id][BTN_HOLD_NEXT] += f_hold_tick_time;
             }
         }
     }
     else
     {
-        if (buttons_states[btn_id][BTN_PRESS_START] > 0)
+        if (g_buttons_states[p_btn_id][BTN_PRESS_START] > 0)
         {
-            buttons_states[btn_id][BTN_RELEASE]     = currentTime;
-            buttons_states[btn_id][BTN_PRESS_START] = 0;
+            g_buttons_states[p_btn_id][BTN_RELEASE]     = g_currentTime;
+            g_buttons_states[p_btn_id][BTN_PRESS_START] = 0;
         }
 
-        buttons_states[btn_id][BTN_LONG]      = 0;
-        buttons_states[btn_id][BTN_HOLD_TICK] = 0;   // reset counter
-        buttons_states[btn_id][BTN_HOLD_NEXT] = 0;
+        g_buttons_states[p_btn_id][BTN_LONG]      = 0;
+        g_buttons_states[p_btn_id][BTN_HOLD_TICK] = 0;   // reset counter
+        g_buttons_states[p_btn_id][BTN_HOLD_NEXT] = 0;
     }
 
-    if (buttons_states[btn_id][BTN_RELEASE] > 0 &&
-        (currentTime - buttons_states[btn_id][BTN_RELEASE]) >= dbl_clk_time &&
-        buttons_states[btn_id][BTN_DOUBLE] == 0)
+    if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 &&
+        (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) >= g_double_click_time &&
+        g_buttons_states[p_btn_id][BTN_DOUBLE] == 0)
     {
-        buttons_states[btn_id][BTN_SINGLE]  = 1;
-        buttons_states[btn_id][BTN_RELEASE] = 0;
+        g_buttons_states[p_btn_id][BTN_SINGLE]  = 1;
+        g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+// DO WE HAVE AN INDICATOR / TIMESTAMP FOR THE LAST SIGLE PRESS EVENT HERE?!?! IMPORTANT FOR OUR TAB-BPM MECHANISM!!
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // version b increment the is hold counter each loop
 
-void CKernel::button_ping(int btn_id)
+void CKernel::button_ping(int p_btn_id)
 {
-    buttons_states[0][BTN_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
-    buttons_states[1][BTN_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
+    g_buttons_states[0][BTN_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
+    g_buttons_states[1][BTN_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
 
-    if (buttons_states[btn_id] == ISPRESSED)
+    if (g_buttons_states[p_btn_id] == BTN_PRESSED)
     {
-        if (buttons_states[btn_id][BTN_PRESS_START] == 0)
+        if (g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
         {
-            buttons_states[btn_id][BTN_PRESS_START] = currentTime;
+            g_buttons_states[p_btn_id][BTN_PRESS_START] = g_currentTime;
 
-            if (buttons_states[btn_id][BTN_RELEASE] > 0 &&
-                (currentTime - buttons_states[btn_id][BTN_RELEASE]) < dbl_clk_time)
+            if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 &&
+                (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) < g_double_click_time)
             {
-                buttons_states[btn_id][BTN_DOUBLE]  = 1;
-                buttons_states[btn_id][BTN_RELEASE] = 0;
+                g_buttons_states[p_btn_id][BTN_DOUBLE]  = 1;
+                g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
             }
         }
 
-        if ((currentTime - buttons_states[btn_id][BTN_PRESS_START]) >= lng_clk_time)
+        if ((g_currentTime - g_buttons_states[p_btn_id][BTN_PRESS_START]) >= g_long_click_time)
         {
-            buttons_states[btn_id][BTN_LONG] = 1;
-            buttons_states[btn_id][BTN_HOLD_TICK]++; // increase while held
+            g_buttons_states[p_btn_id][BTN_LONG] = 1;
+            g_buttons_states[p_btn_id][BTN_HOLD_TICK]++; // increase while held
         }
     }
     else
     {
-        if (buttons_states[btn_id][BTN_PRESS_START] > 0)
+        if (g_buttons_states[p_btn_id][BTN_PRESS_START] > 0)
         {
-            buttons_states[btn_id][BTN_RELEASE]     = currentTime;
-            buttons_states[btn_id][BTN_PRESS_START] = 0;
+            g_buttons_states[p_btn_id][BTN_RELEASE]     = g_currentTime;
+            g_buttons_states[p_btn_id][BTN_PRESS_START] = 0;
         }
 
-        buttons_states[btn_id][BTN_LONG]      = 0;
-        buttons_states[btn_id][BTN_HOLD_TICK] = 0;
+        g_buttons_states[p_btn_id][BTN_LONG]      = 0;
+        g_buttons_states[p_btn_id][BTN_HOLD_TICK] = 0;
     }
 
-    if (buttons_states[btn_id][BTN_RELEASE] > 0 &&
-        (currentTime - buttons_states[btn_id][BTN_RELEASE]) >= dbl_clk_time &&
-        buttons_states[btn_id][BTN_DOUBLE] == 0)
+    if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 &&
+        (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) >= g_double_click_time &&
+        g_buttons_states[p_btn_id][BTN_DOUBLE] == 0)
     {
-        buttons_states[btn_id][BTN_SINGLE]  = 1;
-        buttons_states[btn_id][BTN_RELEASE] = 0;
+        g_buttons_states[p_btn_id][BTN_SINGLE]  = 1;
+        g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
     }
 }
 
@@ -138,108 +142,108 @@ void CKernel::button_ping(int btn_id)
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void CKernel::button_ping(int btn_id)
+void CKernel::button_ping(int p_btn_id)
 {
-    buttons_states[0][BTN_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
-    buttons_states[1][BTN_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
+    g_buttons_states[0][BTN_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
+    g_buttons_states[1][BTN_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
 
-    if (buttons_states[btn_id] == ISPRESSED)
+    if (g_buttons_states[p_btn_id] == BTN_PRESSED)
     {
-        if (buttons_states[btn_id][BTN_PRESS_START] == 0)
+        if (g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
         {
-            buttons_states[btn_id][BTN_PRESS_START] = currentTime;
+            g_buttons_states[p_btn_id][BTN_PRESS_START] = g_currentTime;
 
-            if (buttons_states[btn_id][BTN_RELEASE] > 0 &&
-                (currentTime - buttons_states[btn_id][BTN_RELEASE]) < dbl_clk_time)
+            if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 &&
+                (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) < g_double_click_time)
             {
-                buttons_states[btn_id][BTN_DOUBLE]  = 1;
-                buttons_states[btn_id][BTN_RELEASE] = 0;
+                g_buttons_states[p_btn_id][BTN_DOUBLE]  = 1;
+                g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
             }
         }
 
-        if ((currentTime - buttons_states[btn_id][BTN_PRESS_START]) >= lng_clk_time)
+        if ((g_currentTime - g_buttons_states[p_btn_id][BTN_PRESS_START]) >= g_long_click_time)
         {
-            if (buttons_states[btn_id][BTN_LONG] == 0)
+            if (g_buttons_states[p_btn_id][BTN_LONG] == 0)
             {
-                buttons_states[btn_id][BTN_HOLD_TICK] = 0;
+                g_buttons_states[p_btn_id][BTN_HOLD_TICK] = 0;
             }
 
-            buttons_states[btn_id][BTN_LONG] = 1;
-            buttons_states[btn_id][BTN_HOLD_TICK]++;
+            g_buttons_states[p_btn_id][BTN_LONG] = 1;
+            g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
         }
     }
     else
     {
-        if (buttons_states[btn_id][BTN_PRESS_START] > 0)
+        if (g_buttons_states[p_btn_id][BTN_PRESS_START] > 0)
         {
-            buttons_states[btn_id][BTN_RELEASE]     = currentTime;
-            buttons_states[btn_id][BTN_PRESS_START] = 0;
+            g_buttons_states[p_btn_id][BTN_RELEASE]     = g_currentTime;
+            g_buttons_states[p_btn_id][BTN_PRESS_START] = 0;
         }
 
-        buttons_states[btn_id][BTN_LONG]      = 0;
-        buttons_states[btn_id][BTN_HOLD_TICK] = 0;
+        g_buttons_states[p_btn_id][BTN_LONG]      = 0;
+        g_buttons_states[p_btn_id][BTN_HOLD_TICK] = 0;
     }
 
-    if (buttons_states[btn_id][BTN_RELEASE] > 0 &&
-        (currentTime - buttons_states[btn_id][BTN_RELEASE]) >= dbl_clk_time &&
-        buttons_states[btn_id][BTN_DOUBLE] == 0)
+    if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 &&
+        (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) >= g_double_click_time &&
+        g_buttons_states[p_btn_id][BTN_DOUBLE] == 0)
     {
-        buttons_states[btn_id][BTN_SINGLE]  = 1;
-        buttons_states[btn_id][BTN_RELEASE] = 0;
+        g_buttons_states[p_btn_id][BTN_SINGLE]  = 1;
+        g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // consume button version a
 
-void CKernel::consume_button(int btn_id, int &var)
+void CKernel::consume_button(int p_btn_id, int &var)
 {
-    if (buttons_states[btn_id][BTN_DOUBLE])
+    if (g_buttons_states[p_btn_id][BTN_DOUBLE])
     {
         var = 0;
-        buttons_states[btn_id][BTN_DOUBLE]    = 0;
-        buttons_states[btn_id][BTN_SINGLE]    = 0;
-        buttons_states[btn_id][BTN_HOLD_TICK] = 0;
+        g_buttons_states[p_btn_id][BTN_DOUBLE]    = 0;
+        g_buttons_states[p_btn_id][BTN_SINGLE]    = 0;
+        g_buttons_states[p_btn_id][BTN_HOLD_TICK] = 0;
         return;
     }
 
-    if (buttons_states[btn_id][BTN_SINGLE])
+    if (g_buttons_states[p_btn_id][BTN_SINGLE])
     {
         ++var;
-        buttons_states[btn_id][BTN_SINGLE] = 0;
+        g_buttons_states[p_btn_id][BTN_SINGLE] = 0;
         return;
     }
 
-    if (buttons_states[btn_id][BTN_HOLD_TICK] > 0)
+    if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] > 0)
     {
-        var -= buttons_states[btn_id][BTN_HOLD_TICK];
-        buttons_states[btn_id][BTN_HOLD_TICK] = 0; // consume count
+        var -= g_buttons_states[p_btn_id][BTN_HOLD_TICK];
+        g_buttons_states[p_btn_id][BTN_HOLD_TICK] = 0; // consume count
     }
 }
 
 // version b
 
-void CKernel::consume_button(int btn_id, int &var)
+void CKernel::consume_button(int p_btn_id, int &var)
 {
-    if (buttons_states[btn_id][BTN_DOUBLE])
+    if (g_buttons_states[p_btn_id][BTN_DOUBLE])
     {
         var = 0;
-        buttons_states[btn_id][BTN_DOUBLE]    = 0;
-        buttons_states[btn_id][BTN_SINGLE]    = 0;
-        buttons_states[btn_id][BTN_HOLD_TICK] = 0;
+        g_buttons_states[p_btn_id][BTN_DOUBLE]    = 0;
+        g_buttons_states[p_btn_id][BTN_SINGLE]    = 0;
+        g_buttons_states[p_btn_id][BTN_HOLD_TICK] = 0;
         return;
     }
 
-    if (buttons_states[btn_id][BTN_SINGLE])
+    if (g_buttons_states[p_btn_id][BTN_SINGLE])
     {
         ++var;
-        buttons_states[btn_id][BTN_SINGLE] = 0;
+        g_buttons_states[p_btn_id][BTN_SINGLE] = 0;
         return;
     }
 
-    if (buttons_states[btn_id][BTN_HOLD_TICK] > 0)
+    if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] > 0)
     {
-        var -= buttons_states[btn_id][BTN_HOLD_TICK];
-        buttons_states[btn_id][BTN_HOLD_TICK] = 0;
+        var -= g_buttons_states[p_btn_id][BTN_HOLD_TICK];
+        g_buttons_states[p_btn_id][BTN_HOLD_TICK] = 0;
     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

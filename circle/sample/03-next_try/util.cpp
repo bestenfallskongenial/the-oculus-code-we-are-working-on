@@ -6,172 +6,301 @@ void            CKernel::util_prep_parameters       ()
 {
     for ( int i=0; i <= DEFAULT_SLOT; i++)
     {
-    mode_storage_buffers[LF1_WAVE][i] = 0;
-    mode_storage_buffers[LF2_WAVE][i] = 1;
-    mode_storage_buffers[LF1_MULT][i] = 3;
-    mode_storage_buffers[LF2_MULT][i] = 3;
+    g_centralModeBuffer[LF1_WAVE][i] = 0;
+    g_centralModeBuffer[LF2_WAVE][i] = 1;
+    g_centralModeBuffer[LF1_MULT][i] = 3;
+    g_centralModeBuffer[LF2_MULT][i] = 3;
     }
 }
 
-int             CKernel::util_choose_program        ()
+int             CKernel::util_choose_program        ( int p_channel )
 {
-                static int usedShader = 0;  // Static variable to maintain value between function calls
-                int calculated = adc_raw_value[ADC_SELECT_PRG] * FSH_LOADED_NEW / 1024;  // *** was adc_int_value but that is effected by the attenuation
-                // Only update if the calculated index points to a valid u_program_handle
-                if (m_shaderStatusFlags[calculated ]==true /*&& g_menu_mode_new == 0*/) usedShader = calculated;
+                static int f_activeShader = 0;  // Static variable to maintain value between function calls
+                int f_calculated = adc_raw_value[/*ADC_SELECT_PRG*/ p_channel] * g_loaded_fsh_new / 1024;  // *** was adc_int_value but that is effected by the g_attenuation
+                // Only update if the f_calculated index points to a valid u_program_handle
+                if (m_shaderStatusFlags[f_calculated ]==true /*&& g_menu_mode_new == 0*/) f_activeShader = f_calculated;
 
-                return usedShader;
+                return f_activeShader;
 }
 
-int             CKernel::util_choose_texture        ()
+int             CKernel::util_choose_texture        ( int p_channel ) // i have three possible ways here! i can a) invent a mechanism to get the is valid table for the vids - i can also draw from parser.is_valid[x] 
 {
-                static int usedTexture = 0;
-                if (m_validTextureCount != 0) 
+                static int f_activeTexture = 0;
+                if (g_validTextureCount != 0) 
                     {
-                    int calculated = adc_raw_value[ADC_SELECT_TEX] * (m_validTextureCount ) / 1024; // *** was adc_int_value but that is effected by the attenuation
-                    usedTexture = calculated;
+                    int f_calculated = adc_raw_value[/*ADC_SELECT_TEX*/ p_channel] * (g_validTextureCount ) / 1024; // *** was adc_int_value but that is effected by the g_attenuation
+                    f_activeTexture = f_calculated;
                     }
-                return usedTexture;
+                return f_activeTexture;
 }
-
+int             CKernel::util_choose_video        ( int p_channel )
+{
+                static int f_activeVideo = 0;
+                if (g_validVideoCount != 0) 
+                    {
+                    int f_calculated = adc_raw_value[/*ADC_SELECT_VID*/ p_channel] * (g_validVideoCount ) / 1024; // *** was adc_int_value but that is effected by the g_attenuation
+                    f_activeVideo = f_calculated;
+                    }
+                return f_activeVideo;
+}
 
 
 void            CKernel::util_store_program         () 
 {
                 // 1. SHADER CHANGE CHECK
-                if (gl_current_prg != last_gl_current_prg) 
+                if (g_current_gl_program != g_last_gl_program) 
                     {    
                     // SIMPLE: Use program slot if stored, otherwise DEFAULT_SLOT
-                    current_buffer = shader_has_stored_params[gl_current_prg] ?
-                                    gl_current_prg : DEFAULT_SLOT;
-                    last_gl_current_prg = gl_current_prg;
+                    g_currentProgramBuffer = shader_has_stored_params[g_current_gl_program] ?
+                                    g_current_gl_program : DEFAULT_SLOT;
+                    g_last_gl_program = g_current_gl_program;
                     }
 
                 // 2. STORE PARAMETERS
-                if (shader_has_stored_params[gl_current_prg] == false && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true )
+                if (shader_has_stored_params[g_current_gl_program] == false && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true )
                     {  
                     // SIMPLE: Copy DEFAULT_SLOT contents to this program's slot
-                    memcpy(&mode_storage_buffers[0][gl_current_prg],
-                        &mode_storage_buffers[0][DEFAULT_SLOT],
+                    memcpy(&g_centralModeBuffer[0][g_current_gl_program],
+                        &g_centralModeBuffer[0][DEFAULT_SLOT],
                         16 * sizeof(int));
                     
-                    shader_has_stored_params[gl_current_prg] = true;
-                    current_buffer = gl_current_prg;  // Now use program's slot
+                    shader_has_stored_params[g_current_gl_program] = true;
+                    g_currentProgramBuffer = g_current_gl_program;  // Now use program's slot
                     is_hold_for_2_sec_a = false;
                     is_hold_for_2_sec_b = false;
                     }
 
                 // 3. DELETE STORED PARAMETERS
                 
-        else  if (shader_has_stored_params[gl_current_prg] == true && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true ) // -really else and not only if??
+        else  if (shader_has_stored_params[g_current_gl_program] == true && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true ) // -really else and not only if??
                     {  
-                    shader_has_stored_params[gl_current_prg] = false;
-                    current_buffer = DEFAULT_SLOT;  // Back to default
+                    shader_has_stored_params[g_current_gl_program] = false;
+                    g_currentProgramBuffer = DEFAULT_SLOT;  // Back to default
                     is_hold_for_2_sec_a = false;
                     is_hold_for_2_sec_b = false;
                     }
 }
 
-void            CKernel::util_random_vec8           (uint32_t seed)                                               // create 8 unique normalised to 1.0 float and to 1024 int values
+/*  do f_index_ring_buffer should call you each time f_index_ring_buffer change the menu ??
+void            CKernel::io_init_pickup_buffer      ()
 {
-                const int max_int = 1024;
-                const float scale = 1.0f / 4294967295.0f;
-                uint32_t x = seed;
+                menu_pickup_flag[0]  = m_MCP300X.DoSingleEndedConversionRaw(4);
+                menu_pickup_flag[1]  = m_MCP300X.DoSingleEndedConversionRaw(5);
+                menu_pickup_flag[2]  = m_MCP300X.DoSingleEndedConversionRaw(6);
+                menu_pickup_flag[3]  = m_MCP300X.DoSingleEndedConversionRaw(7);
+                menu_pickup_flag[4]  = m_MCP300X.DoSingleEndedConversionRaw(4);
+                menu_pickup_flag[5]  = m_MCP300X.DoSingleEndedConversionRaw(5);
+                menu_pickup_flag[6]  = m_MCP300X.DoSingleEndedConversionRaw(6);
+                menu_pickup_flag[7]  = m_MCP300X.DoSingleEndedConversionRaw(7);
+                menu_pickup_flag[8]  = m_MCP300X.DoSingleEndedConversionRaw(4);
+                menu_pickup_flag[9]  = m_MCP300X.DoSingleEndedConversionRaw(5);
+                menu_pickup_flag[10] = m_MCP300X.DoSingleEndedConversionRaw(6);
+                menu_pickup_flag[11] = m_MCP300X.DoSingleEndedConversionRaw(7);
+}
+*/
+void            CKernel::io_read_ADC                () 
+{
+                const float f_max_adc = 1023.0;
+                const int scaleFactors[3] = {   2047,       // 2.5V max (1023 * 2)
+                                                1551,       // 3.3V max (1023 * 1.515555...)
+                                                1023    };  // 5.0V max       
 
-                x ^= x << 13; x ^= x >> 17; x ^= x << 5;
-                random_float_value[0] = (float)x * scale;
-                random_int_value[0] = (uint32_t)(random_float_value[0] * max_int);
+                static int  f_ring_buffer[ADC_CHANNELS][ADC_BUFFER] = { 0 };
+                        
+                static int f_index_ring_buffer;
 
-                x ^= x << 13; x ^= x >> 17; x ^= x << 5;
-                random_float_value[1] = (float)x * scale;
-                random_int_value[1] = (uint32_t)(random_float_value[1] * max_int);
-
-                x ^= x << 13; x ^= x >> 17; x ^= x << 5;
-                random_float_value[2] = (float)x * scale;
-                random_int_value[2] = (uint32_t)(random_float_value[2] * max_int);
-
-                x ^= x << 13; x ^= x >> 17; x ^= x << 5;
-                random_float_value[3] = (float)x * scale;
-                random_int_value[3] = (uint32_t)(random_float_value[3] * max_int);
-
-                x ^= x << 13; x ^= x >> 17; x ^= x << 5;
-                random_float_value[4] = (float)x * scale;
-                random_int_value[4] = (uint32_t)(random_float_value[4] * max_int);
-
-                x ^= x << 13; x ^= x >> 17; x ^= x << 5;
-                random_float_value[5] = (float)x * scale;
-                random_int_value[5] = (uint32_t)(random_float_value[5] * max_int);
-
-                x ^= x << 13; x ^= x >> 17; x ^= x << 5;
-                random_float_value[6] = (float)x * scale;
-                random_int_value[6] = (uint32_t)(random_float_value[6] * max_int);
-
-                x ^= x << 13; x ^= x >> 17; x ^= x << 5;
-                random_float_value[7] = (float)x * scale;
-                random_int_value[7] = (uint32_t)(random_float_value[7] * max_int);
+                for (unsigned channel = 0; channel < ADC_CHANNELS; ++channel)  // Loop through each channel and read its raw value 
+                    {
+                    f_ring_buffer[channel][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(channel);  // or 1023?!
+                    if(f_ring_buffer[channel][f_index_ring_buffer] > 1023) f_ring_buffer[channel][f_index_ring_buffer] = 1023;
+          
+                        g_inOutMatrixInt[channel][0]    = ( f_ring_buffer[channel][0] +
+                                                            f_ring_buffer[channel][1] +
+                                                            f_ring_buffer[channel][2] +
+                                                            f_ring_buffer[channel][3]) >>2 ; 
+/*                                                          
+                               adc_raw_value[channel]   = ( f_ring_buffer[channel][0] +
+                                                            f_ring_buffer[channel][1] +
+                                                            f_ring_buffer[channel][2] +
+                                                            f_ring_buffer[channel][3]) >>2 ; 
+*/
+                        g_inOutMatrixInt[channel][1]    = ( g_inOutMatrixInt[channel][0] * scaleFactors[g_attenuation] ) /1023;
+                    //  adc_int_value[channel]          = ( adc_raw_value[channel] * scaleFactors[g_attenuation] ) / 1023;                                
+                        g_inOutMatrixFlt[channel][1]    = ( g_inOutMatrixInt[channel][1] /1024.0f );
+                    //  adc_float_value[channel] 	    = (	adc_int_value[channel]) / (1024.0f);    // f_max_adc +1 or GLfloat normalize the raw value to GLfloat 0.0 to 1.0
+                    }
+                f_index_ring_buffer = (f_index_ring_buffer + 1) & 3;
 }
 
-void            CKernel::util_calculate_BPM         (unsigned long buttonTime, unsigned long clockTime) 
+/*
+
+ lets see. lets put all adc out -> modificator -> uniform out in one single matrix like inOutMatrix[channels][types]
+ the idea is simple, have everything in one place, right? 
+ the list of globals shrink, the code is theoretical simpler to read...
+ and we have many of our uniforms at one place for the glsl code
+
+ inOutMatrixInt[channels][ adc_in_raw] 0    how can i "cramp" in the raw? a seperate array? use the indexes over 4 ( 3 ?)?
+                                            i wonder because like to have the same indexing for both io arrays, meakes sense right? 
+ inOutMatrixInt[channels][adc_out_int] 1 
+ inOutMatrixInt[channels][adc_out_int] 2 
+ inOutMatrixInt[channels][lf1_out_int] 3 
+ inOutMatrixInt[channels][lf2_out_int] 4 
+
+ inOutMatrixInt[channels][  rnd_int_0] 9  
+ inOutMatrixInt[channels][  rnd_int_1] 10 
+ inOutMatrixInt[channels][  rnd_int_2] 11 
+ inOutMatrixInt[channels][  rnd_int_3] 12 
+ inOutMatrixInt[channels][  rnd_int_4] 13 
+ inOutMatrixInt[channels][  rnd_int_5] 14 
+ inOutMatrixInt[channels][  rnd_int_6] 15 
+ inOutMatrixInt[channels][  rnd_int_7] 16 
+
+ inOutMatrixFlt[channels][ adc_in_flt] 1 
+ inOutMatrixFlt[channels][adc_out_flt] 2 
+ inOutMatrixFlt[channels][lf1_out_flt] 3 
+ inOutMatrixFlt[channels][lf2_out_flt] 4 
+  ????
+ inOutMatrixFlt[channels][ aud_band_0] 5  
+ inOutMatrixFlt[channels][ aud_band_1] 6 
+ inOutMatrixFlt[channels][ aud_band_2] 7 
+ inOutMatrixFlt[channels][ aud_band_3] 8 
+  ????
+ inOutMatrixFlt[channels][  rnd_flt_0] 9  
+ inOutMatrixFlt[channels][  rnd_flt_1] 10 
+ inOutMatrixFlt[channels][  rnd_flt_2] 11  
+ inOutMatrixFlt[channels][  rnd_flt_3] 12  
+ inOutMatrixFlt[channels][  rnd_flt_4] 13  
+ inOutMatrixFlt[channels][  rnd_flt_5] 14 
+ inOutMatrixFlt[channels][  rnd_flt_6] 15 
+ inOutMatrixFlt[channels][  rnd_flt_7] 16 
+
+  than we need an enum io_types = {}, like this right?
+
+enum io_types
 {
-                static unsigned long lastTime[2];
-                static unsigned long timeBuffer[2][4] = {{0}};  
-                static int timeIndex[2] = {0};
+    IO_ADC_RAW = 0,
+    IO_ADC_INT,
+    IO_ADC_FLT,
 
-                if (buttonTime != lastTime[0])                                                          // Process button u_time (instance 0)
+    IO_ADC_OUT_INT,
+    IO_ADC_OUT_FLT,
+
+    IO_RND_INT,
+    IO_RND_FLT,
+
+    IO_LF1_INT,
+    IO_LF1_FLT,
+
+    IO_LF2_INT,
+    IO_LF2_FLT,
+
+    IO_TYPE_COUNT
+};
+
+  than - shouldt we do the same for the many lfo arrays?
+  
+*/
+
+void            CKernel::util_random_vec8           (uint32_t p_seed)                                               // create 8 unique normalised to 1.0 float and to 1024 int values
+{
+                const int       f_max_int   = 1024;
+                const float     f_scale     = 1.0f / 4294967295.0f;
+                uint32_t        f_x         = p_seed;
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                g_randomFloatValue[0]   = (float)f_x * f_scale;
+                g_randomIntegerValue[0] = (uint32_t)(g_randomFloatValue[0] * f_max_int);
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                g_randomFloatValue[1]   = (float)f_x * f_scale;
+                g_randomIntegerValue[1] = (uint32_t)(g_randomFloatValue[1] * f_max_int);
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                g_randomFloatValue[2]   = (float)f_x * f_scale;
+                g_randomIntegerValue[2] = (uint32_t)(g_randomFloatValue[2] * f_max_int);
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                g_randomFloatValue[3]   = (float)f_x * f_scale;
+                g_randomIntegerValue[3] = (uint32_t)(g_randomFloatValue[3] * f_max_int);
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                g_randomFloatValue[4]   = (float)f_x * f_scale;
+                g_randomIntegerValue[4] = (uint32_t)(g_randomFloatValue[4] * f_max_int);
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                g_randomFloatValue[5]   = (float)f_x * f_scale;
+                g_randomIntegerValue[5] = (uint32_t)(g_randomFloatValue[5] * f_max_int);
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                g_randomFloatValue[6]   = (float)f_x * f_scale;
+                g_randomIntegerValue[6] = (uint32_t)(g_randomFloatValue[6] * f_max_int);
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                g_randomFloatValue[7]   = (float)f_x * f_scale;
+                g_randomIntegerValue[7] = (uint32_t)(g_randomFloatValue[7] * f_max_int);
+}
+
+void            CKernel::util_calculate_BPM         (unsigned long p_triggerTimeClockA, unsigned long p_triggerTimeClockB) 
+{
+                static unsigned long f_lastTime[2];
+                static unsigned long f_timeBuffer[2][4] = {{0}};  
+                static int f_timeIndex[2] = {0};
+
+                if (p_triggerTimeClockA != f_lastTime[0])                                                          // Process button u_time (instance 0)
                     {
-                    timeBuffer[0][timeIndex[0]] = buttonTime;
+                    f_timeBuffer[0][f_timeIndex[0]] = p_triggerTimeClockA;
         
-                    intervalBuffer[0][0] = timeBuffer[0][1] - timeBuffer[0][0];
-                    intervalBuffer[0][1] = timeBuffer[0][2] - timeBuffer[0][1];
-                    intervalBuffer[0][2] = timeBuffer[0][3] - timeBuffer[0][2];
-                if(     intervalBuffer[0][1] < intervalBuffer[0][0] * 1.25f 
-                    &&  intervalBuffer[0][2] < intervalBuffer[0][0] * 1.25f
-                    &&  intervalBuffer[0][0] < intervalBuffer[0][2] * 1.25f ) 
+                    g_intervalBuffer[0][0] = f_timeBuffer[0][1] - f_timeBuffer[0][0];   // ne need to make this global?
+                    g_intervalBuffer[0][1] = f_timeBuffer[0][2] - f_timeBuffer[0][1];
+                    g_intervalBuffer[0][2] = f_timeBuffer[0][3] - f_timeBuffer[0][2];
+                if(     g_intervalBuffer[0][1] < g_intervalBuffer[0][0] * 1.25f 
+                    &&  g_intervalBuffer[0][2] < g_intervalBuffer[0][0] * 1.25f
+                    &&  g_intervalBuffer[0][0] < g_intervalBuffer[0][2] * 1.25f ) 
                         {
-                        unsigned long averageInterval = (intervalBuffer[0][0] + intervalBuffer[0][1] + intervalBuffer[0][2]) / 3;
+                        unsigned long f_intervalAverage = (g_intervalBuffer[0][0] + g_intervalBuffer[0][1] + g_intervalBuffer[0][2]) / 3;
             
-                        resultBPM[0] = 60000000 / averageInterval;
+                        g_resultBPM[0] = 60000000 / f_intervalAverage;
             
-                        buffer_interval[0] = averageInterval;
-                        last_valid_bpm_calculation[0]  = m_Timer.GetClockTicks();
+                        g_intervalCalculated[0] = f_intervalAverage;
+                        g_lastBpmCalculation[0]  = m_Timer.GetClockTicks();
                         }
-                    lastTime[0] = buttonTime;
+                    f_lastTime[0] = p_triggerTimeClockA;
 
-                    timeIndex[0] = (timeIndex[0] + 1) % 4;    
+                    f_timeIndex[0] = (f_timeIndex[0] + 1) % 4;    
                     }
-                if (clockTime != lastTime[1])                                                           // Process clock u_time (instance 1)
+                if (p_triggerTimeClockB != f_lastTime[1])                                                           // Process clock u_time (instance 1)
                     {
-                    timeBuffer[1][timeIndex[1]] = clockTime;
+                    f_timeBuffer[1][f_timeIndex[1]] = p_triggerTimeClockB;
         
-                    intervalBuffer[1][0] = timeBuffer[1][1] - timeBuffer[1][0];
-                    intervalBuffer[1][1] = timeBuffer[1][2] - timeBuffer[1][1];
-                    intervalBuffer[1][2] = timeBuffer[1][3] - timeBuffer[1][2];
-                    if(     intervalBuffer[1][1] < intervalBuffer[1][0] * 1.25f 
-                        &&  intervalBuffer[1][2] < intervalBuffer[1][0] * 1.25f
-                        &&  intervalBuffer[1][0] < intervalBuffer[1][2] * 1.25f ) 
+                    g_intervalBuffer[1][0] = f_timeBuffer[1][1] - f_timeBuffer[1][0];       // takes the intervals
+                    g_intervalBuffer[1][1] = f_timeBuffer[1][2] - f_timeBuffer[1][1];
+                    g_intervalBuffer[1][2] = f_timeBuffer[1][3] - f_timeBuffer[1][2];
+                    if(     g_intervalBuffer[1][1] < g_intervalBuffer[1][0] * 1.25f         // calculates an average and allows 25% play ( quite high right ) 
+                        &&  g_intervalBuffer[1][2] < g_intervalBuffer[1][0] * 1.25f
+                        &&  g_intervalBuffer[1][0] < g_intervalBuffer[1][2] * 1.25f ) 
                         {
-                        unsigned long averageInterval = (intervalBuffer[1][0] + intervalBuffer[1][1] + intervalBuffer[1][2]) / 3;
+                        unsigned long f_intervalAverage = (g_intervalBuffer[1][0] + g_intervalBuffer[1][1] + g_intervalBuffer[1][2]) / 3;
             
-                        resultBPM[1] = 60000000 / averageInterval;
+                        g_resultBPM[1] = 60000000 / f_intervalAverage;
             
-                        buffer_interval[1] = averageInterval;
-                        last_valid_bpm_calculation[1]  = m_Timer.GetClockTicks();
+                        g_intervalCalculated[1] = f_intervalAverage;
+                        g_lastBpmCalculation[1]  = m_Timer.GetClockTicks();
                         }
-                    lastTime[1] = clockTime;
+                    f_lastTime[1] = p_triggerTimeClockB;
 
-                    timeIndex[1] = (timeIndex[1] + 1) % 4;    
+                    f_timeIndex[1] = (f_timeIndex[1] + 1) % 4;    
                     }
 }
 
-void            CKernel::util_determine_bpm_source  ()
+void            CKernel::util_determine_bpm_source  () // i can make this an "inline" ternaty statement, right?
 {
-                if (last_valid_bpm_calculation[0] > last_valid_bpm_calculation[1])                                              // Compare last_valid_bpm_calculation[0] and last_valid_bpm_calculation[1] to decide which one is newer
+                if (g_lastBpmCalculation[0] > g_lastBpmCalculation[1])                                              // Compare g_lastBpmCalculation[0] and g_lastBpmCalculation[1] to decide which one is newer
                     {
-                    active_bpm_channel = 0;                                                             // Choose channel 0 as the active BPM source
+                    g_activeBpmChannel = 0;                                                             // Choose channel 0 as the active BPM source
                     }
-                    if (last_valid_bpm_calculation[1] > last_valid_bpm_calculation[0] /* && g_input_mode[5] == 2 */ ) 
+                    if (g_lastBpmCalculation[1] > g_lastBpmCalculation[0] /* && g_input_mode[5] == 2 */ ) 
                     {
-                    active_bpm_channel = 1;                                                             // Choose channel 1 as the active BPM source
+                    g_activeBpmChannel = 1;                                                             // Choose channel 1 as the active BPM source
                     }
 }
 
@@ -180,60 +309,60 @@ void            CKernel::util_update_predicted_beat ()
                 unsigned long currentTime = m_Timer.GetClockTicks(); // Get the current u_time in clock ticks
 
                 // Update for instance 0
-                if (currentTime >= next_beat_time[0]) 
+                if (currentTime >= g_nextBeatTime[0]) 
                 {
-                    next_beat_time[0] += buffer_interval[0]; // Predict the next beat u_time
+                    g_nextBeatTime[0] += g_intervalCalculated[0]; // Predict the next beat u_time
                 }
-                if (currentTime >= next_circle_buffer[0]) 
+                if (currentTime >= g_nextCircleBuffer[0]) 
                     {
-                    last_circle_buffer[0]       = next_circle_buffer[0];
-                    next_circle_buffer[0]       = next_circle_buffer[0] + 
-                                                  (buffer_interval[active_bpm_channel] * last_multiplier[0]); // multiplier[mode_storage_buffers[LF1_MULT][current_buffer]]);
+                    g_lastCircleBuffer[0]       = g_nextCircleBuffer[0];
+                    g_nextCircleBuffer[0]       = g_nextCircleBuffer[0] + 
+                                                  (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[0]); // g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]]);
                     
-                    last_multiplier[0]          = multiplier[mode_storage_buffers[LF1_MULT][current_buffer]];
+                    g_lfoMltTmp[0]          = g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]];
                     }
                 // Handle BPM changes for instance 0
-                if ((last_valid_bpm_buffer[0] != last_valid_bpm_calculation[0]))
+                if ((g_lastValidCalculationBuffer[0] != g_lastBpmCalculation[0]))
                     {
-                    next_beat_time[0]           = last_valid_bpm_calculation[0]; // Reset to current time for new BPM
+                    g_nextBeatTime[0]           = g_lastBpmCalculation[0]; // Reset to current time for new BPM
 
-                    last_valid_bpm_buffer[0]    = last_valid_bpm_calculation[0];
+                    g_lastValidCalculationBuffer[0]    = g_lastBpmCalculation[0];
                     }
-                if (last_multiplier[0] != multiplier[mode_storage_buffers[LF1_MULT][current_buffer]])
+                if (g_lfoMltTmp[0] != g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]])
                     {
-                    last_circle_buffer[0]       = last_valid_bpm_calculation[active_bpm_channel];
-                    next_circle_buffer[0]       = last_valid_bpm_calculation[active_bpm_channel] + 
-                                                            (buffer_interval[active_bpm_channel] * last_multiplier[0]); // multiplier[mode_storage_buffers[LF1_MULT][current_buffer]]);
+                    g_lastCircleBuffer[0]       = g_lastBpmCalculation[g_activeBpmChannel];
+                    g_nextCircleBuffer[0]       = g_lastBpmCalculation[g_activeBpmChannel] + 
+                                                            (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[0]); // g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]]);
                     
-                    last_multiplier[0]          = multiplier[mode_storage_buffers[LF1_MULT][current_buffer]];
+                    g_lfoMltTmp[0]          = g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]];
                     }
                 // Update for instance 1
-                if (currentTime >= next_beat_time[1]) 
+                if (currentTime >= g_nextBeatTime[1]) 
                     {
-                    next_beat_time[1] += buffer_interval[1]; // Predict the next beat u_time
+                    g_nextBeatTime[1] += g_intervalCalculated[1]; // Predict the next beat u_time
                     }
-                if (currentTime >= next_circle_buffer[1]) 
+                if (currentTime >= g_nextCircleBuffer[1]) 
                     {
-                    last_circle_buffer[1]       = next_circle_buffer[1];
-                    next_circle_buffer[1]       = next_circle_buffer[1] + 
-                                                  (buffer_interval[active_bpm_channel] * last_multiplier[1] ); // multiplier[mode_storage_buffers[LF2_MULT][current_buffer]]);
+                    g_lastCircleBuffer[1]       = g_nextCircleBuffer[1];
+                    g_nextCircleBuffer[1]       = g_nextCircleBuffer[1] + 
+                                                  (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[1] ); // g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]]);
 
-                    last_multiplier[1]          = multiplier[mode_storage_buffers[LF2_MULT][current_buffer]];
+                    g_lfoMltTmp[1]          = g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]];
                     }
                 // Handle BPM changes for instance 1
-                if ((last_valid_bpm_buffer[1] != last_valid_bpm_calculation[1]))
+                if ((g_lastValidCalculationBuffer[1] != g_lastBpmCalculation[1]))
                     {
-                    next_beat_time[1]           = last_valid_bpm_calculation[1]; // Reset to current time for new BPM
+                    g_nextBeatTime[1]           = g_lastBpmCalculation[1]; // Reset to current time for new BPM
 
-                    last_valid_bpm_buffer[1]    = last_valid_bpm_calculation[1];
+                    g_lastValidCalculationBuffer[1]    = g_lastBpmCalculation[1];
                     }
-                if (last_multiplier[1] != multiplier[mode_storage_buffers[LF2_MULT][current_buffer]])
+                if (g_lfoMltTmp[1] != g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]])
                     {
-                    last_circle_buffer[1]       = last_valid_bpm_calculation[active_bpm_channel];
-                    next_circle_buffer[1]       = last_valid_bpm_calculation[active_bpm_channel] + 
-                                                            (buffer_interval[active_bpm_channel] * last_multiplier[1]); // multiplier[mode_storage_buffers[LF2_MULT][current_buffer]]);
+                    g_lastCircleBuffer[1]       = g_lastBpmCalculation[g_activeBpmChannel];
+                    g_nextCircleBuffer[1]       = g_lastBpmCalculation[g_activeBpmChannel] + 
+                                                            (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[1]); // g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]]);
                     
-                    last_multiplier[1]          = multiplier[mode_storage_buffers[LF2_MULT][current_buffer]];
+                    g_lfoMltTmp[1]          = g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]];
                     }
 
 }
@@ -242,31 +371,31 @@ void            CKernel::util_LFO                   ()
 {
                 unsigned long currentTime = m_Timer.GetClockTicks(); // Get the current u_time in clock ticks why not the start_time_fps_calculation or currentTime from Run()??
 
-                elapsedMicroseconds[0]  = currentTime - last_circle_buffer[0];
-                cycleLength[0]          = next_circle_buffer[0] - last_circle_buffer[0]; // Total length of the current cycle
+                g_elapsedMicroseconds[0]  = currentTime - g_lastCircleBuffer[0];
+                g_cycleLength[0]          = g_nextCircleBuffer[0] - g_lastCircleBuffer[0]; // Total length of the current cycle
 
-                int indexA              = (elapsedMicroseconds[0] * 255) / cycleLength[0];
-                sampleIndex[0]          = indexA > 255 ? 255 : indexA;
+                int f_indexA              = (g_elapsedMicroseconds[0] * 255) / g_cycleLength[0];
+                g_sampleIndex[0]          = f_indexA > 255 ? 255 : f_indexA;
 
 
-                LFO_float_output[0]     = (float)waveTable[mode_storage_buffers[LF1_WAVE][current_buffer]][sampleIndex[0]] / 1023.0f;
-                LFO_int_output[0]       =        waveTable[mode_storage_buffers[LF1_WAVE][current_buffer]][sampleIndex[0]];
+                g_lfoFltOut[0]     = (float)g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]] / 1023.0f;
+                g_lfoIntOut[0]       =        g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]];
 
-                elapsedMicroseconds[1]  = currentTime - last_circle_buffer[1];
-                cycleLength[1]          = next_circle_buffer[1] - last_circle_buffer[1]; // Total length of the current cycle
+                g_elapsedMicroseconds[1]  = currentTime - g_lastCircleBuffer[1];
+                g_cycleLength[1]          = g_nextCircleBuffer[1] - g_lastCircleBuffer[1]; // Total length of the current cycle
 
-                int indexB              = (elapsedMicroseconds[1] * 255) / cycleLength[1];
-                sampleIndex[1]          = indexB > 255 ? 255 : indexB;
+                int f_indexB              = (g_elapsedMicroseconds[1] * 255) / g_cycleLength[1];
+                g_sampleIndex[1]          = f_indexB > 255 ? 255 : f_indexB;
 
-                LFO_float_output[1]     = (float)waveTable[mode_storage_buffers[LF2_WAVE][current_buffer]][sampleIndex[1]] / 1023.0f; // was 0123.0f
-                LFO_int_output[1]       =        waveTable[mode_storage_buffers[LF2_WAVE][current_buffer]][sampleIndex[1]];
+                g_lfoFltOut[1]     = (float)g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]] / 1023.0f; // was 0123.0f
+                g_lfoIntOut[1]       =        g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]];
 }   
 
-void            CKernel::util_audio_energy          (float adcvalue) 
+void            CKernel::util_audio_energy          (float p_adcvalue) 
 {   
-                const int maxBuffer = 33;
+                const int f_maxBuffer = 33;
 
-                const int buffer_size_table[4][5] = 
+                const int f_averageBufferSizeTable[4][5] = 
                     {
                     {33, 25, 17,  9,  5},  // Channel 0 (lowest frequency)  
                     {25, 19, 13,  7,  4},  // Channel 1
@@ -274,56 +403,56 @@ void            CKernel::util_audio_energy          (float adcvalue)
                     { 9,  7,  5,  3,  2}   // Channel 3 (highest frequency)
                     };
                     
-                static float band0[maxBuffer] = {0};                    // Static ring buffers for each frequency band
-                static float band1[maxBuffer] = {0};
-                static float band2[maxBuffer] = {0};
-                static float band3[maxBuffer] = {0};
-                static unsigned char indexBand0 = 0;                    // Static indices for ring buffers
-                static unsigned char indexBand1 = 0;
-                static unsigned char indexBand2 = 0;
-                static unsigned char indexBand3 = 0;
+                static float f_band0[f_maxBuffer] = {0};                    // Static ring buffers for each frequency band
+                static float f_band1[f_maxBuffer] = {0};
+                static float f_band2[f_maxBuffer] = {0};
+                static float f_band3[f_maxBuffer] = {0};
+                static unsigned char f_indexBand0 = 0;                    // Static indices for ring buffers
+                static unsigned char f_indexBand1 = 0;
+                static unsigned char f_indexBand2 = 0;
+                static unsigned char f_indexBand3 = 0;
 
-                if ( sensitivity_new != sensitivity_old )
+                if ( g_sensitivityNew != g_sensitivityOld )
                     {
-                    util_audio_smooth_band[0] = 0;
-                    util_audio_smooth_band[1] = 0;
-                    util_audio_smooth_band[2] = 0;
-                    util_audio_smooth_band[3] = 0;
+                    u_audioSmoothBand[0] = 0;
+                    u_audioSmoothBand[1] = 0;
+                    u_audioSmoothBand[2] = 0;
+                    u_audioSmoothBand[3] = 0;
 
-                    indexBand0 = 0;    // Reset ring buffer indices too
-                    indexBand1 = 0;
-                    indexBand2 = 0;
-                    indexBand3 = 0;
+                    f_indexBand0 = 0;    // Reset ring buffer indices too
+                    f_indexBand1 = 0;
+                    f_indexBand2 = 0;
+                    f_indexBand3 = 0;
 
-                    sensitivity_old = sensitivity_new;
+                    g_sensitivityOld = g_sensitivityNew;
                     }   
-                band0[indexBand0] = adcvalue;                           // Update ring buffers with the new ADC value
-                band1[indexBand1] = adcvalue;
-                band2[indexBand2] = adcvalue;
-                band3[indexBand3] = adcvalue;
-                for (unsigned char i = 0; i < buffer_size_table[0][sensitivity_new]; ++i)     // Averaging the buffer contents
+                f_band0[f_indexBand0] = p_adcvalue;                           // Update ring buffers with the new ADC value
+                f_band1[f_indexBand1] = p_adcvalue;
+                f_band2[f_indexBand2] = p_adcvalue;
+                f_band3[f_indexBand3] = p_adcvalue;
+                for (unsigned char i = 0; i < f_averageBufferSizeTable[0][g_sensitivityNew]; ++i)     // Averaging the buffer contents
                     {
-                    util_audio_smooth_band[0] += band0[i];
+                    u_audioSmoothBand[0] += f_band0[i];
                     }
-                for (unsigned char i = 0; i < buffer_size_table[1][sensitivity_new]; ++i) 
+                for (unsigned char i = 0; i < f_averageBufferSizeTable[1][g_sensitivityNew]; ++i) 
                     {
-                    util_audio_smooth_band[1] += band1[i];
+                    u_audioSmoothBand[1] += f_band1[i];
                     }
-                for (unsigned char i = 0; i < buffer_size_table[2][sensitivity_new]; ++i) 
+                for (unsigned char i = 0; i < f_averageBufferSizeTable[2][g_sensitivityNew]; ++i) 
                     {
-                    util_audio_smooth_band[2] += band2[i];
+                    u_audioSmoothBand[2] += f_band2[i];
                     }
-                for (unsigned char i = 0; i < buffer_size_table[3][sensitivity_new]; ++i) 
+                for (unsigned char i = 0; i < f_averageBufferSizeTable[3][g_sensitivityNew]; ++i) 
                     {
-                    util_audio_smooth_band[3] += band3[i];
+                    u_audioSmoothBand[3] += f_band3[i];
                     }
-                util_audio_smooth_band[0] /= buffer_size_table[0][sensitivity_new];
-                util_audio_smooth_band[1] /= buffer_size_table[1][sensitivity_new];
-                util_audio_smooth_band[2] /= buffer_size_table[2][sensitivity_new];
-                util_audio_smooth_band[3] /= buffer_size_table[3][sensitivity_new];
+                u_audioSmoothBand[0] /= f_averageBufferSizeTable[0][g_sensitivityNew];
+                u_audioSmoothBand[1] /= f_averageBufferSizeTable[1][g_sensitivityNew];
+                u_audioSmoothBand[2] /= f_averageBufferSizeTable[2][g_sensitivityNew];
+                u_audioSmoothBand[3] /= f_averageBufferSizeTable[3][g_sensitivityNew];
 
-                indexBand0 = (indexBand0 + 1) % buffer_size_table[0][sensitivity_new];        // Update indices
-                indexBand1 = (indexBand1 + 1) % buffer_size_table[1][sensitivity_new];
-                indexBand2 = (indexBand2 + 1) % buffer_size_table[2][sensitivity_new];
-                indexBand3 = (indexBand3 + 1) % buffer_size_table[3][sensitivity_new];
+                f_indexBand0 = (f_indexBand0 + 1) % f_averageBufferSizeTable[0][g_sensitivityNew];        // Update indices
+                f_indexBand1 = (f_indexBand1 + 1) % f_averageBufferSizeTable[1][g_sensitivityNew];
+                f_indexBand2 = (f_indexBand2 + 1) % f_averageBufferSizeTable[2][g_sensitivityNew];
+                f_indexBand3 = (f_indexBand3 + 1) % f_averageBufferSizeTable[3][g_sensitivityNew];
 }

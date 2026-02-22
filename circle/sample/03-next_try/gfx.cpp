@@ -17,9 +17,9 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::gfx_init_vshaders          (   CUBE_STATE_T *state, int fromFile, int toFile)    // Function to initialize Vertex Shaders
+void            CKernel::gfx_init_vshaders          (   CUBE_STATE_T *state, int p_fromFile, int p_toFile)    // Function to initialize Vertex Shaders
 {
-                for (int i = fromFile; i < toFile; i++) 
+                for (int i = p_fromFile; i < p_toFile; i++) 
                     {
                     const char *SourcePrtVshader = m_bufferVshader[0]; // will be later maybe changed to multible instances of vshader
 
@@ -27,7 +27,7 @@ void            CKernel::gfx_init_vshaders          (   CUBE_STATE_T *state, int
                     glShaderSource(state->gl_vsh_id[i], 1, &SourcePrtVshader, 0);  // will be later maybe changed to multible instances of vshader
                     glCompileShader(state->gl_vsh_id[i]);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                     }
 }
@@ -41,13 +41,13 @@ void            CKernel::gfx_init_overlay_fshader   (   CUBE_STATE_T *state )   
                     glCompileShader(state->gl_oms_id[0]);
                     gfx_shader_log(state->gl_oms_id[0], 1);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
 
 }
-void            CKernel::gfx_init_fshaders          (   CUBE_STATE_T *state, int fromFile, int toFile)    // Function to initialize Fragment Shaders                        <- we need a copy here for the overlay shader
+void            CKernel::gfx_init_fshaders          (   CUBE_STATE_T *state, int p_fromFile, int p_toFile)    // Function to initialize Fragment Shaders                        <- we need a copy here for the overlay shader
 {
-                for (int i = fromFile; i < toFile; i++) 
+                for (int i = p_fromFile; i < p_toFile; i++) 
                     {
                     const char *SourcePrtFshader = m_bufferFshader[i];
 
@@ -56,7 +56,7 @@ void            CKernel::gfx_init_fshaders          (   CUBE_STATE_T *state, int
                     glCompileShader(state->gl_fsh_id[i]);
                     gfx_shader_log(state->gl_fsh_id[i], i);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                     }
 }
@@ -75,7 +75,7 @@ void            CKernel::gfx_init_overlay_program   (   CUBE_STATE_T *state)    
 
                         gfx_program_log(state->gl_omp_id[0],i);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
 
                         if (linkStatus == GL_FALSE) 
@@ -86,16 +86,16 @@ void            CKernel::gfx_init_overlay_program   (   CUBE_STATE_T *state)    
                             }
                         else
                             {
-                        //  linked_programs++; commented out because this shader program is not part of the user pipeline! Count valid programs for util_choose_program()       ????????????
+                        //  g_linked_programs_counter++; commented out because this shader program is not part of the user pipeline! Count valid programs for util_choose_program()       ????????????
                             }
                         }
                 m_Watchdog.Start(TIMEOUT*3); // new watchdog        
 }
-void            CKernel::gfx_init_programs          (   CUBE_STATE_T *state, int fromFile, int toFile)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+void            CKernel::gfx_init_programs          (   CUBE_STATE_T *state, int p_fromFile, int p_toFile)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                 CString debug;
                 
-                for (int i = fromFile; i < toFile; i++) 
+                for (int i = p_fromFile; i < p_toFile; i++) 
                 {
                     if (m_shaderStatusFlags[i]) 
                         {
@@ -109,7 +109,7 @@ void            CKernel::gfx_init_programs          (   CUBE_STATE_T *state, int
 
                         gfx_program_log(state->gl_prg_id[i],i);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
 
                         if (linkStatus == GL_FALSE) 
@@ -120,23 +120,23 @@ void            CKernel::gfx_init_programs          (   CUBE_STATE_T *state, int
                             }
                         else
                             {
-                            linked_programs++;  // Count valid programs for util_choose_program()       ????????????
+                            g_linked_programs_counter++;  // Count valid programs for util_choose_program()       ????????????
                             }
                         }
                 m_Watchdog.Start(TIMEOUT*3); // new watchdog        
                 }
 }
-void            CKernel::gfx_init_overlay_uniforms          (   CUBE_STATE_T *state)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+void            CKernel::gfx_init_overlay_uniforms  (   CUBE_STATE_T *state)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                 CString debug;  // for what reason we have you here?!?
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                     if (m_shaderStatusFlags[i])
                         {
                         glUseProgram(state->gl_omp_id[0]);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                         state->gl_vtx           = glGetAttribLocation( state->gl_omp_id[0], "vertex" );
 
@@ -145,34 +145,34 @@ void            CKernel::gfx_init_overlay_uniforms          (   CUBE_STATE_T *st
                         state->u_tile_rect[0]   = glGetUniformLocation(state->gl_omp_id[0], "u_menu_tile_rect" );
                         state->u_tile_index[0]  = glGetUniformLocation(state->gl_omp_id[0], "u_menu_tile_index" );
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                         }
 }
 
-void            CKernel::gfx_init_uniforms          (   CUBE_STATE_T *state, int fromFile, int toFile)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+void            CKernel::gfx_init_uniforms          (   CUBE_STATE_T *state, int p_fromFile, int p_toFile)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                 CString debug;  // for what reason we have you here?!?
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
-                for (int i = fromFile; i < toFile; i++) 
+                for (int i = p_fromFile; i < p_toFile; i++) 
                     {
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                     if (m_shaderStatusFlags[i])
                         {
                         glUseProgram(state->gl_prg_id[i]);
 
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                         state->gl_vtx           = glGetAttribLocation( state->gl_prg_id[i], "vertex" );
 
                         state->u_time[i]        = glGetUniformLocation(state->gl_prg_id[i], "time" );
                         state->u_tres[i]        = glGetUniformLocation(state->gl_prg_id[i], "tres" );
-                        state->u_seed[i]        = glGetUniformLocation(state->gl_prg_id[i], "seed" );
+                        state->u_seed[i]        = glGetUniformLocation(state->gl_prg_id[i], "p_seed" );
                         state->u_aud[i]         = glGetUniformLocation(state->gl_prg_id[i], "audio" );
                         state->u_col[i]         = glGetUniformLocation(state->gl_prg_id[i], "color" );
                         state->u_par_a[i]       = glGetUniformLocation(state->gl_prg_id[i], "par_a" );
@@ -192,7 +192,7 @@ void            CKernel::gfx_init_uniforms          (   CUBE_STATE_T *state, int
                         state->u_tex_id[i][8]   = glGetUniformLocation(state->gl_prg_id[i], "tex[8]" );
                         state->u_tex_id[i][9]   = glGetUniformLocation(state->gl_prg_id[i], "tex[9]" );
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                         }
                     }
@@ -200,21 +200,21 @@ void            CKernel::gfx_init_uniforms          (   CUBE_STATE_T *state, int
 
 void            CKernel::gfx_init_overlay_texture          (   CUBE_STATE_T *state)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
-                // m_validTextureCount = 0;  // Counter for valid textures only
+                // g_validTextureCount = 0;  // Counter for valid textures only
 
                     if(m_H264SystemParser.m_tex_valid[0] == true) // do we really need this too? - yes, otherwise we never know the size of it!! 
                         {
                         glGenTextures(1, &state->gl_omt_id[0]);  // Use counter instead of i - no in this case we use not this one
                         glBindTexture(GL_TEXTURE_2D, state->gl_omt_id[0]);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                         GLvoid* bitmapData = &m_BufferOverlayTexture[0][m_H264SystemParser.m_tex_data_offset[0]]; // oh, we need to figure out how we do the bmp parsing for only the atlas!!
 
@@ -228,35 +228,35 @@ void            CKernel::gfx_init_overlay_texture          (   CUBE_STATE_T *sta
                                    GL_UNSIGNED_BYTE, 
                                    bitmapData);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                         glBindTexture(GL_TEXTURE_2D, 0);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
-                    //  m_validTextureCount++;  the texture atlas is not part of the user pipeline ! Increment only after successful texture creation
+                    //  g_validTextureCount++;  the texture atlas is not part of the user pipeline ! Increment only after successful texture creation
                         }
                     m_Watchdog.Start(TIMEOUT);       // new watchdog
 }
-void            CKernel::gfx_init_textures          (   CUBE_STATE_T *state, int fromFile, int toFile)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+void            CKernel::gfx_init_textures          (   CUBE_STATE_T *state, int p_fromFile, int p_toFile)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
-                // m_validTextureCount = 0;  // Counter for valid textures only
+                // g_validTextureCount = 0;  // Counter for valid textures only
 
-                for (int i = fromFile; i < toFile; i++)
+                for (int i = p_fromFile; i < p_toFile; i++)
                     {
                     if(m_H264Parser.m_tex_valid[i] == true)
                         {
-                        glGenTextures(1, &state->gl_tex_id[m_validTextureCount]);  // Use counter instead of i
-                        glBindTexture(GL_TEXTURE_2D, state->gl_tex_id[m_validTextureCount]);
+                        glGenTextures(1, &state->gl_tex_id[g_validTextureCount]);  // Use counter instead of i
+                        glBindTexture(GL_TEXTURE_2D, state->gl_tex_id[g_validTextureCount]);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                         GLvoid* bitmapData = &m_bufferTexture[i][m_H264Parser.m_tex_data_offset[i]];
 
@@ -270,13 +270,13 @@ void            CKernel::gfx_init_textures          (   CUBE_STATE_T *state, int
                                    GL_UNSIGNED_BYTE, 
                                    bitmapData);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                         glBindTexture(GL_TEXTURE_2D, 0);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
-                        m_validTextureCount++;  // Increment only after successful texture creation
+                        g_validTextureCount++;  // Increment only after successful texture creation
                         }
                     m_Watchdog.Start(TIMEOUT);       // new watchdog
                     }
@@ -294,17 +294,17 @@ void            CKernel::gfx_init_v_buffer          (   CUBE_STATE_T *state)    
 
                 glGenBuffers(1, &state->gl_buf);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
 
                 glBindFramebuffer(GL_FRAMEBUFFER, 0);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                 
                 glViewport(0, 0, state->screen_width, state->screen_height);                        // Prepare viewport
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                 
                 glBindBuffer(GL_ARRAY_BUFFER, state->gl_buf);                                          // Upload vertex data to a buffer
@@ -312,7 +312,7 @@ void            CKernel::gfx_init_v_buffer          (   CUBE_STATE_T *state)    
                 glVertexAttribPointer(state->gl_vtx, 4, GL_FLOAT, 0, 16, 0);
                 glEnableVertexAttribArray(state->gl_vtx);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
 }
 
@@ -322,66 +322,66 @@ void            CKernel::gfx_render_shader_a        (   CUBE_STATE_T *state)
         
                 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);   // Clear the background (not really necessary I suppose)
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                 glBindBuffer(GL_ARRAY_BUFFER, state->gl_buf);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
 
-                glUseProgram ( state->gl_prg_id[gl_current_prg] );
+                glUseProgram ( state->gl_prg_id[g_current_gl_program] );
 
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
 
                 GLuint cx = state->screen_width;
                 GLuint cy = state->screen_height;
 
-                if(state->u_time[gl_current_prg] != -1) glUniform1f(    state->u_time[gl_current_prg], GLtime);
-                if(state->u_tres[gl_current_prg]!= -1 ) glUniform2f(    state->u_tres[gl_current_prg], cx, cy);
-                if(state->u_seed[gl_current_prg] != -1) glUniform4f(    state->u_seed[gl_current_prg], 
-                                                                        random_float_value[0], 
-                                                                        random_float_value[1], 
-                                                                        random_float_value[2], 
-                                                                        random_float_value[3]);
-                if(state->u_aud[gl_current_prg]!= -1 ) glUniform4f(     state->u_aud[gl_current_prg], 
-                                                                        util_audio_smooth_band[0], 
-                                                                        util_audio_smooth_band[1], 
-                                                                        util_audio_smooth_band[2], 
-                                                                        util_audio_smooth_band[3]);
-                if(state->u_col[gl_current_prg] != -1) glUniform4f(     state->u_col[gl_current_prg], 0.0f, 0.0f, 0.0f, opaque);
-                if(state->u_par_a[gl_current_prg] != -1 ) glUniform4f(  state->u_par_a[gl_current_prg], 
+                if(state->u_time[g_current_gl_program] != -1) glUniform1f(    state->u_time[g_current_gl_program], GLtime);
+                if(state->u_tres[g_current_gl_program]!= -1 ) glUniform2f(    state->u_tres[g_current_gl_program], cx, cy);
+                if(state->u_seed[g_current_gl_program] != -1) glUniform4f(    state->u_seed[g_current_gl_program], 
+                                                                        g_randomFloatValue[0], 
+                                                                        g_randomFloatValue[1], 
+                                                                        g_randomFloatValue[2], 
+                                                                        g_randomFloatValue[3]);
+                if(state->u_aud[g_current_gl_program]!= -1 ) glUniform4f(     state->u_aud[g_current_gl_program], 
+                                                                        u_audioSmoothBand[0], 
+                                                                        u_audioSmoothBand[1], 
+                                                                        u_audioSmoothBand[2], 
+                                                                        u_audioSmoothBand[3]);
+                if(state->u_col[g_current_gl_program] != -1) glUniform4f(     state->u_col[g_current_gl_program], 0.0f, 0.0f, 0.0f, g_opaque);
+                if(state->u_par_a[g_current_gl_program] != -1 ) glUniform4f(  state->u_par_a[g_current_gl_program], 
                                                                         output_float_value[0], 
                                                                         output_float_value[1], 
                                                                         output_float_value[2], 
                                                                         output_float_value[3]);
-                if(state->u_par_b[gl_current_prg] != -1 ) glUniform4f(  state->u_par_b[gl_current_prg], 
+                if(state->u_par_b[g_current_gl_program] != -1 ) glUniform4f(  state->u_par_b[g_current_gl_program], 
                                                                         output_float_value[4], 
                                                                         output_float_value[5], 
                                                                         output_float_value[6], 
                                                                         output_float_value[7]);
-                if(state->u_tex_l[gl_current_prg] != -1) glUniform1i(   state->u_tex_l[gl_current_prg], m_validTextureCount);
+                if(state->u_tex_l[g_current_gl_program] != -1) glUniform1i(   state->u_tex_l[g_current_gl_program], g_validTextureCount);
 
-                switch(mode_storage_buffers[TEX_MODE][current_buffer]) 
+                switch(g_centralModeBuffer[TEX_MODE][g_currentProgramBuffer]) 
                     {
                     case false:     // Original mode
-                        for (int i = 0; i < m_validTextureCount; i++) 
+                        for (int i = 0; i < g_validTextureCount; i++) 
                             {
                             glActiveTexture(GL_TEXTURE0+i);
                             glBindTexture(GL_TEXTURE_2D, state->gl_tex_id[i]);
-                            if (state->u_tex_id[gl_current_prg][i] != -1)
+                            if (state->u_tex_id[g_current_gl_program][i] != -1)
                                 {
-                                glUniform1i(state->u_tex_id[gl_current_prg][i], i);
+                                glUniform1i(state->u_tex_id[g_current_gl_program][i], i);
                                 }
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                             }
                         break;
 
                     case true:      // Single texture mode
-                        switch(m_validTextureCount) 
+                        switch(g_validTextureCount) 
                             {
                             case 0:     // No textures - skip entirely
                                 break;
@@ -389,28 +389,28 @@ void            CKernel::gfx_render_shader_a        (   CUBE_STATE_T *state)
                             case 1:     // Single texture - only bind one
                                 glActiveTexture(GL_TEXTURE0);
                                 glBindTexture(GL_TEXTURE_2D, state->gl_tex_id[gl_current_tex]);
-                                if (state->u_tex_id[gl_current_prg][0] != -1)
-                                    glUniform1i(state->u_tex_id[gl_current_prg][0], 0);
+                                if (state->u_tex_id[g_current_gl_program][0] != -1)
+                                    glUniform1i(state->u_tex_id[g_current_gl_program][0], 0);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                                 break;
                                 
                             default:    // Two or more textures - bind current and next
                                 glActiveTexture(GL_TEXTURE0);
                                 glBindTexture(GL_TEXTURE_2D, state->gl_tex_id[gl_current_tex]);
-                                if (state->u_tex_id[gl_current_prg][0] != -1)
-                                    glUniform1i(state->u_tex_id[gl_current_prg][0], 0);
+                                if (state->u_tex_id[g_current_gl_program][0] != -1)
+                                    glUniform1i(state->u_tex_id[g_current_gl_program][0], 0);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                                 
                                 glActiveTexture(GL_TEXTURE1);
                                 glBindTexture(GL_TEXTURE_2D, state->gl_tex_id[gl_current_tex + 1]);
-                                if (state->u_tex_id[gl_current_prg][1] != -1)
-                                    glUniform1i(state->u_tex_id[gl_current_prg][1], 1);
+                                if (state->u_tex_id[g_current_gl_program][1] != -1)
+                                    glUniform1i(state->u_tex_id[g_current_gl_program][1], 1);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                                 break;
                             }
@@ -422,14 +422,14 @@ void            CKernel::gfx_render_shader_a        (   CUBE_STATE_T *state)
  
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, m_H264Decoder.m_TextureA);
-        if (state->u_tex_id[gl_current_prg][0] != -1)
-            glUniform1i(state->u_tex_id[gl_current_prg][0], 0);
+        if (state->u_tex_id[g_current_gl_program][0] != -1)
+            glUniform1i(state->u_tex_id[g_current_gl_program][0], 0);
  debug code end 
  */
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 glDrawArrays( GL_TRIANGLE_FAN, 0, 4 );
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
 
                 glBindBuffer( GL_ARRAY_BUFFER, 0 );
@@ -440,7 +440,7 @@ void            CKernel::gfx_render_shader_a        (   CUBE_STATE_T *state)
                     {
                     glFinish();
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
                     }
 }
@@ -449,7 +449,7 @@ void            CKernel::gfx_render_shader_b        (   CUBE_STATE_T* state)
 {
                 eglSwapBuffers(state->display, state->surface);
                 #ifdef __GL_DEBUG__
-                        check();
+                        glslCheck();
                 #endif // __GL_DEBUG__
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
