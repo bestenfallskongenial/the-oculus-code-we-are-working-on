@@ -457,5 +457,8 @@ enum io_types
     au2,            //  the audio band 2 flt value
     au3,            //  the audio band 3 flt value
                     // *means i have a unique value for each channel - the other values are singular, and/or only int/flt
+    trL,            //  per channel threshold low
+    trH,            //  per channel threshold high
+    trF,            //  per channel threshold "flag"
     io_type_count
 }

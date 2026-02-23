@@ -132,9 +132,8 @@ if (!g_channel_mode_capability
 /*
 void CKernel::modeADC (int channel) 
 {
-            output_float_value[channel] = adc_float_value[channel];
-            output_int_value[channel]   = adc_int_value[channel];
-
+            inOutMatrixFlt[channel][out] = inOutMatrixFlt[channel][ in] // adc_float_value[channel];
+            inOutMatrixInt[channel][out] = inOutMatrixInt[channel][ in] // adc_int_value[channel];            
 }
 */
 void CKernel::modeADC(int channel)
@@ -144,15 +143,15 @@ void CKernel::modeADC(int channel)
         case 4:                                                 /* -------- CH4 : frame / time input -------- */
             if (g_menu_mode_new == 0)
             {
-                output_float_value[4] = adc_float_value[4];
-                output_int_value[4]   = adc_int_value[4];
+                inOutMatrixFlt[4][out] = inOutMatrixFlt[4][ in] // adc_float_value[4];
+                inOutMatrixInt[4][out] = inOutMatrixInt[4][ in] // adc_int_value[4];
             }
         break;
 
         case 6:                                                 /* -------- CH6 : pickup + single_tex_mode -------- */
             if (!menu_pickup_flag[12])
             {
-                if (adc_raw_value[6] > g_menu_pickup_buffer[12] - ADC_TOLERANCE && adc_raw_value[6] < g_menu_pickup_buffer[12] + ADC_TOLERANCE)
+                if (inOutMatrixInt[6][raw] > g_menu_pickup_buffer[12] - ADC_TOLERANCE && inOutMatrixInt[6][raw] < g_menu_pickup_buffer[12] + ADC_TOLERANCE)
                 {
                     menu_pickup_flag[12] = true;
                 }
@@ -163,12 +162,12 @@ void CKernel::modeADC(int channel)
             }
             if (g_menu_mode_new == 0)
             {
-                output_float_value[6] = adc_float_value[6];
-                output_int_value[6]   = adc_int_value[6];
+                inOutMatrixFlt[6][out] = inOutMatrixFlt[6][ in] // adc_float_value[6];
+                inOutMatrixInt[6][out] = inOutMatrixInt[6][ in] // adc_int_value[6];
 
                 if (single_tex_mode)                    // this is an error, we integrated this in our mode_storage_buffer ! 
                     {
-                    output_int_value[6] = adc_raw_value[6];
+                    inOutMatrixInt[6][out] = inOutMatrixInt[6][raw] // adc_raw_value[6];
                     }
             }
         break;
@@ -176,7 +175,7 @@ void CKernel::modeADC(int channel)
         case 7:                                                 /* -------- CH7 : pickup + shader select -------- */
             if (!menu_pickup_flag[13])
             {
-                if (adc_raw_value[7] > g_menu_pickup_buffer[13] - ADC_TOLERANCE && adc_raw_value[7] < g_menu_pickup_buffer[13] + ADC_TOLERANCE)
+                if (inOutMatrixInt[7][raw] > g_menu_pickup_buffer[13] - ADC_TOLERANCE && inOutMatrixInt[7][raw] < g_menu_pickup_buffer[13] + ADC_TOLERANCE)
                 {
                     menu_pickup_flag[13] = true;
                 }
@@ -188,30 +187,31 @@ void CKernel::modeADC(int channel)
 
             if (g_menu_mode_new == 0)
             {
-                output_float_value[7] = adc_float_value[7];
-                output_int_value[7]   = adc_raw_value[7];
+                inOutMatrixFlt[7][out] = inOutMatrixFlt[7][ in] // adc_float_value[7];
+                inOutMatrixInt[7][out] = inOutMatrixInt[7][raw] // adc_raw_value[7];
             }
         break;
 
         default:                                                /* -------- all other channels : normal ADC -------- */
-            output_float_value[channel] = adc_float_value[channel];
-            output_int_value[channel]   = adc_int_value[channel];
+            inOutMatrixFlt[channel][out] = inOutMatrixFlt[channel][ in] // adc_float_value[channel];
+            inOutMatrixInt[channel][out] = inOutMatrixInt[channel][ in] // adc_int_value[channel];
         break;
     }
 }
 
 void CKernel::modeTRG (int channel)
 {
-            if (adc_int_value[channel] >= g_threshold_high[channel] &&
-                !input_threshold_flag[channel])
+            if (  /* adc_int_value[channel] */          inOutMatrixInt[channel][ in] >= /* g_threshold_high[channel] */ inOutMatrixInt[channel][trh] &&
+                ! /* input_threshold_flag[channel] */   inOutMatrixInt[channel][trF])
             {
-                output_float_value[channel] = g_randomFloatValue[channel];
-                output_int_value[channel]   = g_randomIntegerValue[channel];
-                input_threshold_flag[channel] = true;
+                inOutMatrixFlt[channel][out] = inOutMatrixFlt[channel][rnd] // g_randomFloatValue[channel];
+                inOutMatrixInt[channel][out] = inOutMatrixInt[channel][rnd] // g_randomIntegerValue[channel];
+
+                 /* input_threshold_flag[channel] */    inOutMatrixInt[channel][trF] = true;
             }
-            else if (adc_int_value[channel] < g_threshold_low[channel])
+            else if ( /* adc_int_value[channel] */      inOutMatrixInt[channel][ in] <  /* g_threshold_low[channel] */  inOutMatrixInt[channel][trl])
             {
-                input_threshold_flag[channel] = false;
+                 /* input_threshold_flag[channel] */    inOutMatrixInt[channel][trF] = false;
             }
 }
 void CKernel::modeBPM (int channel) 
@@ -219,8 +219,8 @@ void CKernel::modeBPM (int channel)
 // i just realised now that you piece of shit removed the bpm logic !
 if (current_time >= g_nextBeatTime[g_activeBpmChannel])
             {
-                output_float_value[channel] = g_randomFloatValue[channel];
-                output_int_value[channel]   = g_randomIntegerValue[channel];
+                inOutMatrixFlt[channel][out] = inOutMatrixFlt[channel][rnd] // g_randomFloatValue[channel];
+                inOutMatrixInt[channel][out] = inOutMatrixInt[channel][rnd] // g_randomIntegerValue[channel];
             }
 }
 
@@ -230,11 +230,11 @@ void CKernel::modePOT ()
 }
 void CKernel::modeLF1 ()
 {
-            output_float_value[channel] = g_lfoFltOut[0];
-            output_int_value[channel]   = g_lfoIntOut[0];
+            inOutMatrixFlt[channel][out] = inOutMatrixFlt[channel][lf1] // g_lfoFltOut[0];
+            inOutMatrixInt[channel][out] = inOutMatrixInt[channel][lf1] // g_lfoIntOut[0];
 }
 void CKernel::modeLF2 ()
 {
-            output_float_value[channel] = g_lfoFltOut[1];
-            output_int_value[channel]   = g_lfoIntOut[1];    
+            inOutMatrixFlt[channel][out] = inOutMatrixFlt[channel][lf2] // g_lfoFltOut[1];
+            inOutMatrixInt[channel][out] = inOutMatrixInt[channel][lf2] // g_lfoIntOut[1];    
 }

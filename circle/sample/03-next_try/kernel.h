@@ -536,7 +536,6 @@ private:
 	bool                  	m_shaderStatusFlags[FSH_FILES_ON_SD+FSH_FILES_ON_USB]; // we need this here to ensure that we not try to link/compile damaged glsl code, right? 
 
 	bool                  	menu_pickup_flag[ADC_CHANNELS+ADC_CHANNELS]              			= { 0 };                 // Array tracking if pot value has been "picked up"
-	bool                  	input_threshold_flag[ADC_CHANNELS]              					= { 0 };             // Array tracking threshold state per channel
 
 	int                     g_loaded_vsh_old                                                      =     0;		// counter to ensure that we can load shaders and textures etc from sd and usb
 	int                     g_loaded_omf_old                                                      =     0;
@@ -552,48 +551,48 @@ private:
 	int                     g_loaded_tex_new                                                      =     0;
 	int                     g_loaded_vid_new                                                      =     0;
 
-	int                     g_scanned_vsh                                                      	=     0;		// keep track of the loaded files from sd or usb!
-	int                     g_scanned_omf                                                     	=     0;		
-	int                     g_scanned_fsh                                                      	=     0;
-	int                     g_scanned_omt                                                      	=     0;
-	int                     g_scanned_tex                                                      	=     0;
-	int                     g_scanned_vid                                                      	=     0;
+	int                     g_scanned_vsh                                                      	  =     0;		// keep track of the loaded files from sd or usb!
+	int                     g_scanned_omf                                                     	  =     0;		
+	int                     g_scanned_fsh                                                      	  =     0;
+	int                     g_scanned_omt                                                      	  =     0;
+	int                     g_scanned_tex                                                      	  =     0;
+	int                     g_scanned_vid                                                      	  =     0;
 
-	int                     g_current_gl_program                                                      =     0; 		// GLOBAL INDEX FOR THE SHADER PROGRAM IN USE
-	int                     g_last_gl_program 												= 	 -1;  		// GLOBAL INDEX FOR THE LAST SHADER PROGRAM IN USE - needed to Store last active shader program parameters!
+	int                     g_current_gl_program                                                  =     0; 		// GLOBAL INDEX FOR THE SHADER PROGRAM IN USE
+	int                     g_last_gl_program 													  =    -1;  		// GLOBAL INDEX FOR THE LAST SHADER PROGRAM IN USE - needed to Store last active shader program parameters!
 
-	int                     g_currentProgramBuffer 														= 	  0;		// CENTRAL GLOBAL VARIABLE
+	int                     g_currentProgramBuffer 												  = 	0;		// CENTRAL GLOBAL VARIABLE
 
-	int                     gl_current_tex                                                      =     0;
-	int                     g_linked_programs_counter                                                     =     0;		// used for display to display the number 
+	int                     gl_current_tex                                                        =     0;
+	int                     g_linked_programs_counter                                             =     0;		// used for display to display the number 
 	int                     g_audio_source_channel                                                =    -1;      	// Tracks which channel is audio source (-1 if none) OBSOLETE!?
 
-	int                     g_activeBpmChannel                                                  =     0;		// AS LONG WE HAVE TAB AND CLOCK IN BPM RIGHT?
-	int                     g_menu_mode_new                                                     =     0;        // GLOBAL INDEX FOR THE MENU LAYER -WE WILL EXPAND HERE FOR SYSTEM SETINGS ETC - Current menu mode (0, 1, or 2)
-	int                     g_menu_mode_old                                                     =     0;
-	int                     g_current_texture                                                   =     0;
+	int                     g_activeBpmChannel                                                    =     0;		// AS LONG WE HAVE TAB AND CLOCK IN BPM RIGHT?
+	int                     g_menu_mode_new                                                       =     0;        // GLOBAL INDEX FOR THE MENU LAYER -WE WILL EXPAND HERE FOR SYSTEM SETINGS ETC - Current menu mode (0, 1, or 2)
+	int                     g_menu_mode_old                                                       =     0;
+	int                     g_current_texture                                                     =     0;
 	int                     g_attenuation                                                         =     2;		// nifty little mechanism - what shall we do about you?!?
 
-	int                     g_lfoMultiplier[7]                         								= {   64, 32, 16, 8, 4, 2, 1 };
+	int                     g_lfoMultiplier[7]                         							  = {   64, 32, 16, 8, 4, 2, 1 };
 
 	int 					g_sampleIndex[LFO_INSTANCES];
 
-	int 					LFO_mode[LFO_PARAMETERS] 											= { 0,3,3,3 };
+	int 					LFO_mode[LFO_PARAMETERS] 											  = { 0,3,3,3 };
 
-	int 					g_sensitivityNew 													= 0;
-	int 					g_sensitivityOld 													= 0;	
+	int 					g_sensitivityNew 													 = 0;
+	int 					g_sensitivityOld 													 = 0;	
 
-	int 					g_centralModeBuffer[16][33] 										= {0};               // array to store the modes and specials for all loaded fshaders?
-	int 					shader_has_stored_params[33] 										= { 0 };
-	int 					audio_sample[2] 													= { 0,0};
+	int 					g_centralModeBuffer[16][33] 										 = {0};               // array to store the modes and specials for all loaded fshaders?
+	int 					shader_has_stored_params[33] 										 = { 0 };
+	int 					audio_sample[2] 													 = { 0,0};
 
-	int 					g_validTextureCount													=	0;
+	int 					g_validTextureCount													 =	0;
 
-    int                   	g_input_mode[ADC_CHANNELS]              							= { 0 };             // Array storing operation mode for each channel - ITS A RELICT, RIGHT? NOT IN USE ANYWHERE
+//  int                   	g_input_mode[ADC_CHANNELS]              							 = { 0 };             // Array storing operation mode for each channel - ITS A RELICT, RIGHT? NOT IN USE ANYWHERE
 
-	int                   	g_menu_pickup_buffer[ADC_CHANNELS+ADC_CHANNELS]              			= { 0 };               // Array storing previous pot values for pickup detection	
+	int                   	g_menu_pickup_buffer[ADC_CHANNELS+ADC_CHANNELS]              		 = { 0 };               // Array storing previous pot values for pickup detection	
 
-	unsigned long           last_swap_duration                                                  =     0;
+	unsigned long           last_swap_duration                                                   =     0;
 
 	unsigned long           start_time_fps_calculation                                          =     0;				// shall tis be system main time??
 	unsigned long           end_time_fps_calculation                                            =     0;
@@ -650,22 +649,27 @@ private:
                 unsigned                g_texLoadedBytes[TEX_FILES_ON_SD + TEX_FILES_ON_USB]        		= {   0    };
                 unsigned                g_vidLoadedBytes[VID_FILES_ON_SD + VID_FILES_ON_USB]          	= {   0    };
 
-                float                   g_lfoFltOut[LFO_INSTANCES]             = {   0    };
-                int                     g_lfoIntOut[LFO_INSTANCES]             = {   0    };
+
                 int                     g_lfoMltTmp[LFO_INSTANCES]             = {   0    };
 
+//				NOW PART OF inOutMatrixFlt and inOutMatrixInt !!
 
-				int                   	g_threshold_high[ADC_CHANNELS]              							= {   320,  320,  320,  320,  320,  320,  320,  320 };                    // Array of upper threshold values per channel - i guess this should become a menu layer where i can set them up
-				int                   	g_threshold_low[ADC_CHANNELS]              							= {   128,  128,  128,  128,  128,  128,  128,  128 };                     // Array of lower threshold values per channel	
+//              float                   g_lfoFltOut[LFO_INSTANCES]             									= {   0    };
+//              int                     g_lfoIntOut[LFO_INSTANCES]             									= {   0    };
+
+//  			bool                  	input_threshold_flag[ADC_CHANNELS]              						= { 0 };             // Array tracking threshold state per channel
+
+//  			int                   	g_threshold_high[ADC_CHANNELS]              							= {   320,  320,  320,  320,  320,  320,  320,  320 };                    // Array of upper threshold values per channel - i guess this should become a menu layer where i can set them up
+//  			int                   	g_threshold_low[ADC_CHANNELS]              								= {   128,  128,  128,  128,  128,  128,  128,  128 };                     // Array of lower threshold values per channel	
 
 
-                int                   	adc_raw_value                             [ADC_CHANNELS]              = { 0 };
-                int                   	adc_int_value                             [ADC_CHANNELS]              = { 0 };
-                float                 	adc_float_value                           [ADC_CHANNELS]              = { 0 };
-                int                   	output_int_value                          [ADC_CHANNELS]              = { 0 };
-                float                 	output_float_value                        [ADC_CHANNELS]              = { 0 };                    // Array of output values per channel
-                int                   	g_randomIntegerValue                          [ADC_CHANNELS]              = { 0 };
-                float                 	g_randomFloatValue                        [ADC_CHANNELS]              = { 0 };                    // Array of u_seed_a values per channel
+//              int                   	adc_raw_value                             [ADC_CHANNELS]              	= { 0 };
+//              int                   	adc_int_value                             [ADC_CHANNELS]              	= { 0 };
+//              float                 	adc_float_value                           [ADC_CHANNELS]              	= { 0 };
+//              int                   	output_int_value                          [ADC_CHANNELS]              	= { 0 };
+//              float                 	output_float_value                        [ADC_CHANNELS]              	= { 0 };                    // Array of output values per channel
+//              int                   	g_randomIntegerValue                      [ADC_CHANNELS]        		= { 0 };
+//              float                 	g_randomFloatValue                        [ADC_CHANNELS]              	= { 0 };                    // Array of u_seed_a values per channel
 
 extern  const   unsigned char           g_rgb_color_table                                 [49][3]; 
 

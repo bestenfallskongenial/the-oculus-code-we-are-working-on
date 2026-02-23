@@ -179,7 +179,7 @@ void            CKernel::util_save_modes_file       ()    // whats up here??? we
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool            CKernel::filesystem_load_kernel     (   const char* p_deviceName, 
                                                         const char* p_fileName, 
-                                                        unsigned p_fileIndex)
+                                                        unsigned    p_fileIndex)
 {
                 while(p_fileIndex == 1 && filesystem_update_USB("umsd1") == false)
                 {
