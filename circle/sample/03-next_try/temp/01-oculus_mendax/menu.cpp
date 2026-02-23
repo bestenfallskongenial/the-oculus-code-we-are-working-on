@@ -75,7 +75,7 @@ void            CKernel::menu_mode_default_A        ()  // default function for 
                         case 1:  // g_input_mode = 1 - Threshold trigger
                         if ( adc_int_value[0] >= g_threshold_high[0] && !input_threshold_flag[0]) 
                             {
-                            output_float_value[0] = g_randomFloatValue[0];
+                            output_float_value[0] = /* g_randomFloatValue */[0];
                             output_int_value[0]   = g_randomIntegerValue[0];
 
                                 brightness = output_int_value[0]>> 4;       // and trigger mode?
@@ -95,7 +95,7 @@ void            CKernel::menu_mode_default_A        ()  // default function for 
                         case 2:  // BPM trigger
                         if (current_time >= g_nextBeatTime[g_activeBpmChannel]) 
                             {
-                            output_float_value[0] = g_randomFloatValue[0];
+                            output_float_value[0] = /* g_randomFloatValue */[0];
                             output_int_value[0]   = g_randomIntegerValue[0];
 
                                 led_col_new[chn][R] = 159;                  // and bpm mode?
@@ -151,7 +151,7 @@ void            CKernel::menu_mode_default_A        ()  // default function for 
                         case 1:  // g_input_mode = 1 - Threshold trigger
                         if ( adc_int_value[1] >= g_threshold_high[1] && !input_threshold_flag[1]) 
                             {
-                            output_float_value[1] = g_randomFloatValue[1];
+                            output_float_value[1] = /* g_randomFloatValue */[1];
                             output_int_value[1]   = g_randomIntegerValue[1];
 
                                 brightness = output_int_value[1]>> 4;
@@ -171,7 +171,7 @@ void            CKernel::menu_mode_default_A        ()  // default function for 
                         case 2:  // BPM trigger
                         if (current_time >= g_nextBeatTime[g_activeBpmChannel]) 
                             {
-                            output_float_value[1] = g_randomFloatValue[1];
+                            output_float_value[1] = /* g_randomFloatValue */[1];
                             output_int_value[1]   = g_randomIntegerValue[1];
 
                                 led_col_new[chn][R] = 159;
@@ -227,7 +227,7 @@ void            CKernel::menu_mode_default_A        ()  // default function for 
                         case 1:  // g_input_mode = 1 - Threshold trigger
                         if ( adc_int_value[2] >= g_threshold_high[2] && !input_threshold_flag[2]) 
                             {
-                            output_float_value[2] = g_randomFloatValue[2];
+                            output_float_value[2] = /* g_randomFloatValue */[2];
                             output_int_value[2]   = g_randomIntegerValue[2];
 
                                 brightness = output_int_value[2]>> 4;
@@ -247,7 +247,7 @@ void            CKernel::menu_mode_default_A        ()  // default function for 
                         case 2:  // BPM trigger
                         if (current_time >= g_nextBeatTime[g_activeBpmChannel]) 
                             {
-                            output_float_value[2] = g_randomFloatValue[2];
+                            output_float_value[2] = /* g_randomFloatValue */[2];
                             output_int_value[2]   = g_randomIntegerValue[2];
 
                                 led_col_new[chn][R] = 159;
@@ -303,7 +303,7 @@ void            CKernel::menu_mode_default_A        ()  // default function for 
                         case 1:  // g_input_mode = 1 - Threshold trigger
                         if ( adc_int_value[3] >= g_threshold_high[3] && !input_threshold_flag[3]) 
                             {
-                            output_float_value[3] = g_randomFloatValue[3];
+                            output_float_value[3] = /* g_randomFloatValue */[3];
                             output_int_value[3]   = g_randomIntegerValue[3];
 
                                 brightness = output_int_value[3]>> 4;
@@ -323,7 +323,7 @@ void            CKernel::menu_mode_default_A        ()  // default function for 
                         case 2:  // BPM trigger
                         if (current_time >= g_nextBeatTime[g_activeBpmChannel]) 
                             {
-                            output_float_value[3] = g_randomFloatValue[3];
+                            output_float_value[3] = /* g_randomFloatValue */[3];
                             output_int_value[3]   = g_randomIntegerValue[3];
 
                                 led_col_new[chn][R] = 159;
@@ -391,7 +391,7 @@ void            CKernel::menu_mode_default_B        ()  // default function for 
                     case 1:  // g_input_mode = 1 - Threshold trigger
                     if ( adc_int_value[4] >= g_threshold_high[4] && !input_threshold_flag[4]) 
                         {
-                        output_float_value[4] = g_randomFloatValue[4];
+                        output_float_value[4] = /* g_randomFloatValue */[4];
                         output_int_value[4]   = g_randomIntegerValue[4];
 
                             brightness = output_int_value[4]>> 4;
@@ -411,7 +411,7 @@ void            CKernel::menu_mode_default_B        ()  // default function for 
                     case 2:  // BPM trigger
                     if (current_time >= g_nextBeatTime[g_activeBpmChannel]) 
                         {
-                        output_float_value[4] = g_randomFloatValue[4];
+                        output_float_value[4] = /* g_randomFloatValue */[4];
                         output_int_value[4]   = g_randomIntegerValue[4];
 
                             led_col_new[chn][R] = 159;
@@ -467,7 +467,7 @@ void            CKernel::menu_mode_default_B        ()  // default function for 
                     case 1:  // g_input_mode = 1 - Threshold trigger special clk input
                     if ( adc_int_value[5] >= g_threshold_high[5] && !input_threshold_flag[5]) 
                         {
-                        output_float_value[5] = g_randomFloatValue[5];
+                        output_float_value[5] = /* g_randomFloatValue */[5];
                         output_int_value[5]   = g_randomIntegerValue[5];
 
                             led_col_new[chn][R] = 223;
@@ -495,7 +495,7 @@ void            CKernel::menu_mode_default_B        ()  // default function for 
                     case 2:  // BPM trigger
                     if (current_time >= g_nextBeatTime[g_activeBpmChannel]) 
                         {
-                        output_float_value[5] = g_randomFloatValue[5];
+                        output_float_value[5] = /* g_randomFloatValue */[5];
                         output_int_value[5]   = g_randomIntegerValue[5];
 
                             led_col_new[chn][R] = 159;
@@ -560,7 +560,7 @@ void            CKernel::menu_mode_default_B        ()  // default function for 
                         case 1:  // g_input_mode = 1 - Threshold trigger
                         if ( adc_int_value[6] >= g_threshold_high[6] && !input_threshold_flag[6]) 
                             {
-                            output_float_value[6] = g_randomFloatValue[6];
+                            output_float_value[6] = /* g_randomFloatValue */[6];
                             output_int_value[6]   = g_randomIntegerValue[6];
 
                                 brightness = output_int_value[6]>> 4;
@@ -580,7 +580,7 @@ void            CKernel::menu_mode_default_B        ()  // default function for 
                         case 2:  // BPM trigger
                         if (current_time >= g_nextBeatTime[g_activeBpmChannel]) 
                             {
-                            output_float_value[6] = g_randomFloatValue[6];
+                            output_float_value[6] = /* g_randomFloatValue */[6];
                             output_int_value[6]   = g_randomIntegerValue[6];
 
                                 led_col_new[chn][R] = 159;
@@ -655,7 +655,7 @@ void            CKernel::menu_mode_default_B        ()  // default function for 
                         case 1:  // g_input_mode = 1 - Threshold trigger
                         if ( adc_int_value[7] >= g_threshold_high[7] && !input_threshold_flag[7]) 
                             {
-                            output_float_value[7] = g_randomFloatValue[7];
+                            output_float_value[7] = /* g_randomFloatValue */[7];
                                 output_int_value[7] = g_randomIntegerValue[7];
 
                                 brightness = output_int_value[7]>> 4;
@@ -675,7 +675,7 @@ void            CKernel::menu_mode_default_B        ()  // default function for 
                         case 2:  // BPM trigger
                         if (current_time >= g_nextBeatTime[g_activeBpmChannel]) 
                             {
-                            output_float_value[7] = g_randomFloatValue[7];
+                            output_float_value[7] = /* g_randomFloatValue */[7];
                             output_int_value[7]   = g_randomIntegerValue[7];
 
                                 led_col_new[chn][R] = 159;

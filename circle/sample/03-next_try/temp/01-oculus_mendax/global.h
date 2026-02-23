@@ -109,7 +109,7 @@ extern          float                   adc_float_value                         
 extern          int                     output_int_value                        [ADC_CHANNELS];
 extern          float                   output_float_value                      [ADC_CHANNELS];                    // Array of output values per channel
 extern          int                     g_randomIntegerValue                        [ADC_CHANNELS];
-extern          float                   g_randomFloatValue                      [ADC_CHANNELS];                    // Array of u_seed_a values per channel
+extern          float                   /* g_randomFloatValue */                      [ADC_CHANNELS];                    // Array of u_seed_a values per channel
 
 //extern          float                   float_lfo_output                        [LFO_INSTANCES];         // realtime output for 2 x 4 lfo waves ( sine, saw, tri, ... )
 extern          int                     g_lfoIntOut                          [LFO_INSTANCES];

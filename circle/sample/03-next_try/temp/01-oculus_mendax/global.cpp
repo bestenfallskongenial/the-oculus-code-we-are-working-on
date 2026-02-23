@@ -104,7 +104,7 @@ bool           b_is_hold = false;
                 int                   output_int_value                          [ADC_CHANNELS]              = { 0 };
                 float                 output_float_value                        [ADC_CHANNELS]              = { 0 };                    // Array of output values per channel
                 int                   g_randomIntegerValue                          [ADC_CHANNELS]              = { 0 };
-                float                 g_randomFloatValue                        [ADC_CHANNELS]              = { 0 };                    // Array of u_seed_a values per channel
+                float                 /* g_randomFloatValue */                        [ADC_CHANNELS]              = { 0 };                    // Array of u_seed_a values per channel
 
                 int                   g_input_mode                              [ADC_CHANNELS]              = { 0 };             // Array storing operation mode for each channel - ITS A RELICT, RIGHT? NOT IN USE ANYWHERE
                 bool                  m_shaderStatusFlags                       [FSH_FILES_ON_SD+FSH_FILES_ON_USB]; 

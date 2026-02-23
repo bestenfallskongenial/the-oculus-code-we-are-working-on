@@ -15,8 +15,21 @@ void            CKernel::util_prep_parameters       ()
 
 int             CKernel::util_choose_program        ( int p_channel )
 {
-                static int f_activeShader = 0;  // Static variable to maintain value between function calls
-                int f_calculated = adc_raw_value[/*ADC_SELECT_PRG*/ p_channel] * g_loaded_fsh_new / 1024;  // *** was adc_int_value but that is effected by the g_attenuation
+/*
+                static int f_activeShader = 0;
+
+                int f_calculated = g_inOutMatrixInt[p_channel][raw] * g_loaded_fsh_new / 1024;
+
+                if (m_shaderStatusFlags[f_calculated])
+                {
+                    f_activeShader = f_calculated;
+                }
+
+                return f_activeShader;
+*/
+                static int f_activeShader = 0;
+
+                int f_calculated = g_inOutMatrixInt[p_channel][raw] * g_loaded_fsh_new / 1024;
                 // Only update if the f_calculated index points to a valid u_program_handle
                 if (m_shaderStatusFlags[f_calculated ]==true /*&& g_menu_mode_new == 0*/) f_activeShader = f_calculated;
 
@@ -28,7 +41,8 @@ int             CKernel::util_choose_texture        ( int p_channel ) // i have 
                 static int f_activeTexture = 0;
                 if (g_validTextureCount != 0) 
                     {
-                    int f_calculated = adc_raw_value[/*ADC_SELECT_TEX*/ p_channel] * (g_validTextureCount ) / 1024; // *** was adc_int_value but that is effected by the g_attenuation
+
+                    int f_calculated = g_inOutMatrixInt[p_channel][raw] * (g_validTextureCount ) / 1024;
                     f_activeTexture = f_calculated;
                     }
                 return f_activeTexture;
@@ -38,7 +52,8 @@ int             CKernel::util_choose_video        ( int p_channel )
                 static int f_activeVideo = 0;
                 if (g_validVideoCount != 0) 
                     {
-                    int f_calculated = adc_raw_value[/*ADC_SELECT_VID*/ p_channel] * (g_validVideoCount ) / 1024; // *** was adc_int_value but that is effected by the g_attenuation
+
+                    int f_calculated = g_inOutMatrixInt[p_channel][raw] * (g_validVideoCount ) / 1024;
                     f_activeVideo = f_calculated;
                     }
                 return f_activeVideo;
@@ -118,74 +133,13 @@ void            CKernel::io_read_ADC                ()
                                                             f_ring_buffer[channel][1] +
                                                             f_ring_buffer[channel][2] +
                                                             f_ring_buffer[channel][3]) >>2 ; 
-/*                                                          
-                               adc_raw_value[channel]   = ( f_ring_buffer[channel][0] +
-                                                            f_ring_buffer[channel][1] +
-                                                            f_ring_buffer[channel][2] +
-                                                            f_ring_buffer[channel][3]) >>2 ; 
-*/
+
                         g_inOutMatrixInt[channel][val]    = ( g_inOutMatrixInt[channel][raw] * scaleFactors[g_attenuation] ) /1023;
-                    //  adc_int_value[channel]          = ( adc_raw_value[channel] * scaleFactors[g_attenuation] ) / 1023;                                
+                          
                         g_inOutMatrixFlt[channel][val]    = ( g_inOutMatrixInt[channel][val] /1024.0f );
-                    //  adc_float_value[channel] 	    = (	adc_int_value[channel]) / (1024.0f);    // f_max_adc +1 or GLfloat normalize the raw value to GLfloat 0.0 to 1.0
                     }
                 f_index_ring_buffer = (f_index_ring_buffer + 1) & 3;
 }
-
-/*
-
- lets see. lets put all adc out -> modificator -> uniform out in one single matrix like inOutMatrix[channels][types]
- the idea is simple, have everything in one place, right? 
- the list of globals shrink, the code is theoretical simpler to read...
- and we have many of our uniforms at one place for the glsl code
-
- inOutMatrixInt[channels][ adc_in_raw] 0    how can i "cramp" in the raw? a separate array? use the indexes over 4 ( 3 ?)?
-                                            i wonder because like to have the same indexing for both io arrays, makes sense right? 
- inOutMatrixInt[channels][adc_out_int] 1 
- inOutMatrixInt[channels][adc_out_int] 2 
- inOutMatrixInt[channels][lf1_out_int] 3 
- inOutMatrixInt[channels][lf2_out_int] 4 
-
- inOutMatrixInt[channels][    rnd_int] 5 
-
- inOutMatrixFlt[channels][ adc_in_flt] 1 
- inOutMatrixFlt[channels][adc_out_flt] 2 
- inOutMatrixFlt[channels][lf1_out_flt] 3 
- inOutMatrixFlt[channels][lf2_out_flt] 4
- 
- inOutMatrixFlt[channels][    rnd_flt] 5
-  ????
- inOutMatrixFlt[channels][ aud_band_0] 6  
- inOutMatrixFlt[channels][ aud_band_1] 7
- inOutMatrixFlt[channels][ aud_band_2] 8
- inOutMatrixFlt[channels][ aud_band_3] 9 
-  ????
- than we need an enum io_types = {}, like this right?
-
-enum io_types
-{
-    IO_ADC_RAW = 0,
-    IO_ADC_INT,
-    IO_ADC_FLT,
-
-    IO_ADC_OUT_INT,
-    IO_ADC_OUT_FLT,
-
-    IO_RND_INT,
-    IO_RND_FLT,
-
-    IO_LF1_INT,
-    IO_LF1_FLT,
-
-    IO_LF2_INT,
-    IO_LF2_FLT,
-
-    IO_TYPE_COUNT
-};
-
-  than - shouldn we not do the same for the many lfo arrays?
-
-*/
 
 void            CKernel::util_random_vec8           (uint32_t p_seed)                                               // create 8 unique normalised to 1.0 float and to 1024 int values
 {
@@ -194,36 +148,36 @@ void            CKernel::util_random_vec8           (uint32_t p_seed)           
                 uint32_t        f_x         = p_seed;
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[0] */    inOutMatrixFlt[0][rnd] = /* (float) */ f_x * f_scale;                                               // the cast is, i assume in this place pure cosmetics
-            /*  g_randomIntegerValue[0] */  inOutMatrixInt[0][rnd] = ( /* uint32_t)(g_randomFloatValue[0] */ inOutMatrixFlt[0][rnd] * f_max_int);  // the cast is, i assume in this place pure cosmetics
+                inOutMatrixFlt[0][rnd] = / f_x * f_scale;                                               // the cast is, i assume in this place pure cosmetics
+                inOutMatrixInt[0][rnd] = ( inOutMatrixFlt[0][rnd] * f_max_int);  // the cast is, i assume in this place pure cosmetics
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[1] */    inOutMatrixFlt[1][rnd] = /* (float) */ f_x * f_scale;
-            /*  g_randomIntegerValue[1] */  inOutMatrixInt[1][rnd] = ( /* uint32_t)(g_randomFloatValue[1] */ inOutMatrixFlt[1][rnd] * f_max_int);
+                inOutMatrixFlt[1][rnd] = f_x * f_scale;
+                inOutMatrixInt[1][rnd] = ( inOutMatrixFlt[1][rnd] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[2] */    inOutMatrixFlt[2][rnd] = /* (float) */ f_x * f_scale;
-            /*  g_randomIntegerValue[2] */  inOutMatrixInt[2][rnd] = ( /* uint32_t)(g_randomFloatValue[2] */ inOutMatrixFlt[2][rnd] * f_max_int);
+                inOutMatrixFlt[2][rnd] = f_x * f_scale;
+                inOutMatrixInt[2][rnd] = ( inOutMatrixFlt[2][rnd] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[3] */    inOutMatrixFlt[3][rnd] = /* (float) */ f_x * f_scale;
-            /*  g_randomIntegerValue[3] */  inOutMatrixInt[3][rnd] = ( /* uint32_t)(g_randomFloatValue[3] */ inOutMatrixFlt[3][rnd] * f_max_int);
+                inOutMatrixFlt[3][rnd] = f_x * f_scale;
+                inOutMatrixInt[3][rnd] = ( inOutMatrixFlt[3][rnd] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[4] */    inOutMatrixFlt[4][rnd] = /* (float) */ f_x * f_scale;
-            /*  g_randomIntegerValue[4] */  inOutMatrixInt[4][rnd] = ( /* uint32_t)(g_randomFloatValue[4] */ inOutMatrixFlt[4][rnd] * f_max_int);
+                inOutMatrixFlt[4][rnd] = /* (float) */ f_x * f_scale;
+                inOutMatrixInt[4][rnd] = ( inOutMatrixFlt[4][rnd] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[5] */    inOutMatrixFlt[5][rnd] = /* (float) */ f_x * f_scale;
-            /*  g_randomIntegerValue[5] */  inOutMatrixInt[5][rnd] = ( /* uint32_t)(g_randomFloatValue[5] */ inOutMatrixFlt[5][rnd] * f_max_int);
+                inOutMatrixFlt[5][rnd] = /* (float) */ f_x * f_scale;
+                inOutMatrixInt[5][rnd] = ( inOutMatrixFlt[5][rnd] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[6] */    inOutMatrixFlt[6][rnd] = /* (float) */ f_x * f_scale;
-            /*  g_randomIntegerValue[6] */  inOutMatrixInt[6][rnd] = ( /* uint32_t)(g_randomFloatValue[6] */ inOutMatrixFlt[6][rnd] * f_max_int);
+                inOutMatrixFlt[6][rnd] = /* (float) */ f_x * f_scale;
+                inOutMatrixInt[6][rnd] = ( inOutMatrixFlt[6][rnd] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-            /*  g_randomFloatValue[7] */    inOutMatrixFlt[7][rnd] = /* (float) */ f_x * f_scale;
-            /*  g_randomIntegerValue[7] */  inOutMatrixInt[7][rnd] = ( /* uint32_t)(g_randomFloatValue[7] */ inOutMatrixFlt[7][rnd] * f_max_int);
+                inOutMatrixFlt[7][rnd] = f_x * f_scale;
+                inOutMatrixInt[7][rnd] = ( inOutMatrixFlt[7][rnd] * f_max_int);
 }
 
 void            CKernel::util_calculate_BPM         (unsigned long p_triggerTimeClockA, unsigned long p_triggerTimeClockB) 
@@ -364,17 +318,17 @@ void            CKernel::util_LFO                   ()
                 g_sampleIndex[0]                            =               f_indexA > 255 ? 255 : f_indexA;            // ! i like to get rid of this saveguard !
 
 
-                inOutMatrixFlt[0][lf1] /* g_lfoFltOut[0] */ = /* (float) */ g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
-                inOutMatrixInt[0][lf1] /* g_lfoIntOut[0] */ =               g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]];
+                inOutMatrixFlt[0][lf1] =                g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
+                inOutMatrixInt[0][lf1] =               g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]];
 
-                g_elapsedMicroseconds[1]                    =               currentTime - g_lastCircleBuffer[1];
-                g_cycleLength[1]                            =               g_nextCircleBuffer[1] - g_lastCircleBuffer[1]; // Total length of the current cycle
+                g_elapsedMicroseconds[1] =               currentTime - g_lastCircleBuffer[1];
+                g_cycleLength[1]        =               g_nextCircleBuffer[1] - g_lastCircleBuffer[1]; // Total length of the current cycle
 
                 int f_indexB              =                                 (g_elapsedMicroseconds[1] * 255) / g_cycleLength[1];
                 g_sampleIndex[1]          =                                 f_indexB > 255 ? 255 : f_indexB;            // ! i like to get rid of this saveguard !
 
-                inOutMatrixFlt[0][lf2] /* g_lfoFltOut[1] */ = /* (float) */ g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
-                inOutMatrixInt[0][lf2] /* g_lfoIntOut[1] */ =               g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]];
+                inOutMatrixFlt[0][lf2] =                g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
+                inOutMatrixInt[0][lf2] =               g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]];
 }   
 
 void            CKernel::util_audio_energy          (float p_adcvalue) 
@@ -400,10 +354,10 @@ void            CKernel::util_audio_energy          (float p_adcvalue)
 
                 if ( g_sensitivityNew != g_sensitivityOld )
                     {
-                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au0] = 0;
-                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au1] = 0;
-                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au2] = 0;
-                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au3] = 0;
+                    inOutMatrixFlt[0][au0] = 0;
+                    inOutMatrixFlt[0][au1] = 0;
+                    inOutMatrixFlt[0][au2] = 0;
+                    inOutMatrixFlt[0][au3] = 0;
 
                     f_indexBand0 = 0;    // Reset ring buffer indices too
                     f_indexBand1 = 0;
@@ -419,24 +373,24 @@ void            CKernel::util_audio_energy          (float p_adcvalue)
 
                 for (unsigned char i = 0; i < f_averageBufferSizeTable[0][g_sensitivityNew]; ++i)     // Averaging the buffer contents
                     {
-                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au0] += f_band0[i];
+                    inOutMatrixFlt[0][au0] += f_band0[i];
                     }
                 for (unsigned char i = 0; i < f_averageBufferSizeTable[1][g_sensitivityNew]; ++i) 
                     {
-                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au1] += f_band1[i];
+                    inOutMatrixFlt[0][au1] += f_band1[i];
                     }
                 for (unsigned char i = 0; i < f_averageBufferSizeTable[2][g_sensitivityNew]; ++i) 
                     {
-                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au2] += f_band2[i];
+                    inOutMatrixFlt[0][au2] += f_band2[i];
                     }
                 for (unsigned char i = 0; i < f_averageBufferSizeTable[3][g_sensitivityNew]; ++i) 
                     {
-                    /* u_audioSmoothBand */ inOutMatrixFlt[0][au3] += f_band3[i];
+                    inOutMatrixFlt[0][au3] += f_band3[i];
                     }
-                /* u_audioSmoothBand */ inOutMatrixFlt[0][au0] /= f_averageBufferSizeTable[0][g_sensitivityNew];
-                /* u_audioSmoothBand */ inOutMatrixFlt[0][au1] /= f_averageBufferSizeTable[1][g_sensitivityNew];
-                /* u_audioSmoothBand */ inOutMatrixFlt[0][au2] /= f_averageBufferSizeTable[2][g_sensitivityNew];
-                /* u_audioSmoothBand */ inOutMatrixFlt[0][au3] /= f_averageBufferSizeTable[3][g_sensitivityNew];
+                inOutMatrixFlt[0][au0] /= f_averageBufferSizeTable[0][g_sensitivityNew];
+                inOutMatrixFlt[0][au1] /= f_averageBufferSizeTable[1][g_sensitivityNew];
+                inOutMatrixFlt[0][au2] /= f_averageBufferSizeTable[2][g_sensitivityNew];
+                inOutMatrixFlt[0][au3] /= f_averageBufferSizeTable[3][g_sensitivityNew];
 
                 f_indexBand0 = (f_indexBand0 + 1) % f_averageBufferSizeTable[0][g_sensitivityNew];        // Update indices
                 f_indexBand1 = (f_indexBand1 + 1) % f_averageBufferSizeTable[1][g_sensitivityNew];
@@ -457,8 +411,8 @@ enum io_types
     au2,            //  the audio band 2 flt value
     au3,            //  the audio band 3 flt value
                     // *means i have a unique value for each channel - the other values are singular, and/or only int/flt
-    trL,            //  per channel threshold low
-    trH,            //  per channel threshold high
+    trL,            //  per channel threshold low !!! dont forget to copy the values in here    128
+    trH,            //  per channel threshold high                                              320
     trF,            //  per channel threshold "flag"
     io_type_count
 }

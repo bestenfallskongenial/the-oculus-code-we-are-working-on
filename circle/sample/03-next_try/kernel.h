@@ -669,7 +669,7 @@ private:
 //              int                   	output_int_value                          [ADC_CHANNELS]              	= { 0 };
 //              float                 	output_float_value                        [ADC_CHANNELS]              	= { 0 };                    // Array of output values per channel
 //              int                   	g_randomIntegerValue                      [ADC_CHANNELS]        		= { 0 };
-//              float                 	g_randomFloatValue                        [ADC_CHANNELS]              	= { 0 };                    // Array of u_seed_a values per channel
+//              float                 	/* g_randomFloatValue */                        [ADC_CHANNELS]              	= { 0 };                    // Array of u_seed_a values per channel
 
 extern  const   unsigned char           g_rgb_color_table                                 [49][3]; 
 

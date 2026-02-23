@@ -341,26 +341,26 @@ void            CKernel::gfx_render_shader_a        (   CUBE_STATE_T *state)
                 if(state->u_time[g_current_gl_program] != -1) glUniform1f(    state->u_time[g_current_gl_program], GLtime);
                 if(state->u_tres[g_current_gl_program]!= -1 ) glUniform2f(    state->u_tres[g_current_gl_program], cx, cy);
                 if(state->u_seed[g_current_gl_program] != -1) glUniform4f(    state->u_seed[g_current_gl_program], 
-                                                                        g_randomFloatValue[0], 
-                                                                        g_randomFloatValue[1], 
-                                                                        g_randomFloatValue[2], 
-                                                                        g_randomFloatValue[3]);
+                                                                                inOutMatrixFlt[0][rnd], 
+                                                                                inOutMatrixFlt[1][rnd], 
+                                                                                inOutMatrixFlt[2][rnd], 
+                                                                                inOutMatrixFlt[3][rnd]);
                 if(state->u_aud[g_current_gl_program]!= -1 ) glUniform4f(     state->u_aud[g_current_gl_program], 
-                                                                        /* u_audioSmoothBand */[0], 
-                                                                        /* u_audioSmoothBand */[1], 
-                                                                        /* u_audioSmoothBand */[2], 
-                                                                        /* u_audioSmoothBand */[3]);
+                                                                                inOutMatrixFlt[0][au0], 
+                                                                                inOutMatrixFlt[0][au1], 
+                                                                                inOutMatrixFlt[0][au2], 
+                                                                                inOutMatrixFlt[0][au3]);
                 if(state->u_col[g_current_gl_program] != -1) glUniform4f(     state->u_col[g_current_gl_program], 0.0f, 0.0f, 0.0f, g_opaque);
                 if(state->u_par_a[g_current_gl_program] != -1 ) glUniform4f(  state->u_par_a[g_current_gl_program], 
-                                                                        output_float_value[0], 
-                                                                        output_float_value[1], 
-                                                                        output_float_value[2], 
-                                                                        output_float_value[3]);
+                                                                                inOutMatrixFlt[0][out], 
+                                                                                inOutMatrixFlt[1][out], 
+                                                                                inOutMatrixFlt[2][out], 
+                                                                                inOutMatrixFlt[3][out]);
                 if(state->u_par_b[g_current_gl_program] != -1 ) glUniform4f(  state->u_par_b[g_current_gl_program], 
-                                                                        output_float_value[4], 
-                                                                        output_float_value[5], 
-                                                                        output_float_value[6], 
-                                                                        output_float_value[7]);
+                                                                                inOutMatrixFlt[4][out], 
+                                                                                inOutMatrixFlt[5][out], 
+                                                                                inOutMatrixFlt[6][out], 
+                                                                                inOutMatrixFlt[7][out]);
                 if(state->u_tex_l[g_current_gl_program] != -1) glUniform1i(   state->u_tex_l[g_current_gl_program], g_validTextureCount);
 
                 switch(g_centralModeBuffer[TEX_MODE][g_currentProgramBuffer]) 

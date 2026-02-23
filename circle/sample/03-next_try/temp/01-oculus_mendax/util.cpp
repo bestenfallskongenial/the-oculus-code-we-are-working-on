@@ -81,36 +81,36 @@ void            CKernel::util_random_vec8           (uint32_t p_seed)           
                 uint32_t f_x = p_seed;
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[0] = (float)f_x * f_scale;
-                g_randomIntegerValue[0] = (uint32_t)(g_randomFloatValue[0] * f_max_int);
+                /* g_randomFloatValue */[0] = (float)f_x * f_scale;
+                g_randomIntegerValue[0] = (uint32_t)(/* g_randomFloatValue */[0] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[1] = (float)f_x * f_scale;
-                g_randomIntegerValue[1] = (uint32_t)(g_randomFloatValue[1] * f_max_int);
+                /* g_randomFloatValue */[1] = (float)f_x * f_scale;
+                g_randomIntegerValue[1] = (uint32_t)(/* g_randomFloatValue */[1] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[2] = (float)f_x * f_scale;
-                g_randomIntegerValue[2] = (uint32_t)(g_randomFloatValue[2] * f_max_int);
+                /* g_randomFloatValue */[2] = (float)f_x * f_scale;
+                g_randomIntegerValue[2] = (uint32_t)(/* g_randomFloatValue */[2] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[3] = (float)f_x * f_scale;
-                g_randomIntegerValue[3] = (uint32_t)(g_randomFloatValue[3] * f_max_int);
+                /* g_randomFloatValue */[3] = (float)f_x * f_scale;
+                g_randomIntegerValue[3] = (uint32_t)(/* g_randomFloatValue */[3] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[4] = (float)f_x * f_scale;
-                g_randomIntegerValue[4] = (uint32_t)(g_randomFloatValue[4] * f_max_int);
+                /* g_randomFloatValue */[4] = (float)f_x * f_scale;
+                g_randomIntegerValue[4] = (uint32_t)(/* g_randomFloatValue */[4] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[5] = (float)f_x * f_scale;
-                g_randomIntegerValue[5] = (uint32_t)(g_randomFloatValue[5] * f_max_int);
+                /* g_randomFloatValue */[5] = (float)f_x * f_scale;
+                g_randomIntegerValue[5] = (uint32_t)(/* g_randomFloatValue */[5] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[6] = (float)f_x * f_scale;
-                g_randomIntegerValue[6] = (uint32_t)(g_randomFloatValue[6] * f_max_int);
+                /* g_randomFloatValue */[6] = (float)f_x * f_scale;
+                g_randomIntegerValue[6] = (uint32_t)(/* g_randomFloatValue */[6] * f_max_int);
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_randomFloatValue[7] = (float)f_x * f_scale;
-                g_randomIntegerValue[7] = (uint32_t)(g_randomFloatValue[7] * f_max_int);
+                /* g_randomFloatValue */[7] = (float)f_x * f_scale;
+                g_randomIntegerValue[7] = (uint32_t)(/* g_randomFloatValue */[7] * f_max_int);
 }
 
 void            CKernel::util_calculate_BPM         (unsigned long p_triggerTimeClockA, unsigned long p_triggerTimeClockB) 

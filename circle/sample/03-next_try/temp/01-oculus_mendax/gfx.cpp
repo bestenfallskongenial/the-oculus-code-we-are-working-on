@@ -535,10 +535,10 @@ void            CKernel::gfx_render_shader_a        (   CUBE_STATE_T *state)
                 if(state->u_time[g_current_gl_program] != -1) glUniform1f(    state->u_time[g_current_gl_program], GLtime);
                 if(state->u_tres[g_current_gl_program]!= -1 ) glUniform2f(    state->u_tres[g_current_gl_program], cx, cy);
                 if(state->u_seed[g_current_gl_program] != -1) glUniform4f(    state->u_seed[g_current_gl_program], 
-                                                                        g_randomFloatValue[0], 
-                                                                        g_randomFloatValue[1], 
-                                                                        g_randomFloatValue[2], 
-                                                                        g_randomFloatValue[3]);
+                                                                        /* g_randomFloatValue */[0], 
+                                                                        /* g_randomFloatValue */[1], 
+                                                                        /* g_randomFloatValue */[2], 
+                                                                        /* g_randomFloatValue */[3]);
                 if(state->u_aud[g_current_gl_program]!= -1 ) glUniform4f(     state->u_aud[g_current_gl_program], 
                                                                         /* u_audioSmoothBand */[0], 
                                                                         /* u_audioSmoothBand */[1], 
