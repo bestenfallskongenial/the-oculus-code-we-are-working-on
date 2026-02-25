@@ -267,7 +267,7 @@ bool            CKernel::filesystem_save_log_file   (   const char*         p_de
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// helpers i didnt integrate yet, but they are here and working
+// helpers i didnt integrate yet, but they are here and working why not using the actual filename array? i mean the log is .txt
 void            CKernel::GenerateH264ParserInfo( int p_fileIndex)
 {
                 CString f_bufferParser = m_H264Parser.m_DebugCharArray[p_fileIndex];

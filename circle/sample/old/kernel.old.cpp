@@ -241,7 +241,7 @@ TShutdownMode   CKernel::Run(void)
                 m_Timer.MsDelay(500);
 
                 if( filesystem_mount("emmc1-1", 
-                    g_SufVsh,  g_bytVsh, VSH_FILES_ON_SD,
+                    g_ScnVsh,  g_bytVsh, VSH_FILES_ON_SD,
                     g_ScnFsh,  g_bytFsh, FSH_FILES_ON_SD,
                     g_ScnTex,  g_bytTex, TEX_FILES_ON_SD,
                     g_ScnVid,  g_bytVid, VID_FILES_ON_SD))
@@ -294,7 +294,7 @@ TShutdownMode   CKernel::Run(void)
                     if(filesystem_update_USB("umsd1") == true && m_USBhasLoadOnes == false)         // checks and loads from usb
                         {
                         if( filesystem_mount("umsd1-1",                                                 // 1. scan the filenames!
-                            g_SufVsh, g_bytVsh, VSH_FILES_ON_USB,
+                            g_ScnVsh, g_bytVsh, VSH_FILES_ON_USB,
                             g_ScnFsh, g_bytFsh, FSH_FILES_ON_USB,
                             g_ScnTex, g_bytTex, TEX_FILES_ON_USB, 
                             g_ScnVid, g_bytVid, VID_FILES_ON_USB))

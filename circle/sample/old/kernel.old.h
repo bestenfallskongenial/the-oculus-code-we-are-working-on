@@ -1,75 +1,4 @@
-#ifndef _kernel_h
-#define _kernel_h
 
-#include <circle/string.h> 
-#include <stdint.h>
-
-#include <circle/actled.h>                                  // onboard LED
-#include <circle/koptions.h>                                // rasppi hardware options
-#include <circle/machineinfo.h>
-#include <circle/devicenameservice.h>						
-#include <circle/screen.h>
-#include <circle/serial.h>
-#include <circle/exceptionhandler.h>
-//#include <circle/interrupt.h>								// ????????????????????????????????
-#include <circle/timer.h>
-// #include <circle/logger.h>
-
-#include <circle/memory.h>										// new for dma allocated buffers!
-#include <circle/new.h>												// new for dma allocated buffers!
-// ironically i could remove header files without problems but im still concerned about the correct order here and in kernel.cpp ( for example the memory system must be initialized before the file system, because of the dma buffers )
-#include "/home/bestenfalls/circle/addon/SDCard/emmc.h"
-
-#include <circle/usb/usbhcidevice.h>
-#include <circle/fs/fat/fatfs.h>
-
-#include "bcm_host.h"
-
-#include <EGL/egl.h>
-#include <EGL/eglext.h>
-
-#include <GLES/gl.h>
-#include <GLES/glext.h>
-
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
-// declutter declutter declutter
-/*
-#include "/home/bestenfalls/circle/addon/vc4/interface/khronos/include/EGL/egl.h"
-#include "/home/bestenfalls/circle/addon/vc4/interface/khronos/include/GLES/gl.h"
-#include "/home/bestenfalls/circle/addon/vc4/interface/khronos/include/GLES2/gl2.h"
-
-#include "/home/bestenfalls/circle/addon/vc4/interface/khronos/include/EGL/eglext.h"
-#include "/home/bestenfalls/circle/addon/vc4/interface/khronos/include/GLES/glext.h"
-#include "/home/bestenfalls/circle/addon/vc4/interface/khronos/include/GLES2/gl2ext.h"
-*/
-#include <circle/sched/scheduler.h>                         // multitasking ?!
-#include <vc4/vchiq/vchiqdevice.h>
-#include "vc4/vchiq/vchiq_arm.h"
-// my video player
-#include <interface/vcos/vcos.h>  // For VCHI_INSTANCE_T
-#include <vc4/vchi/vchi.h>       // For VCHI_CONNECTION_T
-/*
-// Add the external function declaration
-
-*/
-#include <vc4/vc_sm/vc_sm_class.h>							// VideoCore Shared Memory							
-#include <vc4/h264_decoder/VersionA/vc_h264_decoder.h>					// VideoCore H.264 Decoder for fiexd Resolution Annex B Raw H.264 Videos
-#include <vc4/h264_parser/VersionA/vc_h264_parser.h>					// Parser for the H.264 Files
-
-#include <circle/types.h>                                   // 
-
-#include <circle/bcmwatchdog.h> // new watchdog
-
-#include <circle/spimaster.h>
-
-#include <sensor/mcp300x.h>									// adc
-
-#include <WS28XX/ws2812oversmi.h> 
-
-#include <circle/gpiomanager.h>
-#include <circle/gpiopin.h>
-#include <sensor/buttons.h>  // integrated now !!
 
 // #define 		DEBUGMODE              false    // enables verbose 
 
@@ -97,82 +26,8 @@
 #define 		G   					1  
 #define 		B    					2
 
-// positions in my ccolor table also better as enums?
-/*
-#define			M_1						1		// menu a
-#define			M_2						2		// menu b
-#define			M_L						3		// menu flo
-#define			A25						4		// attenuator 2.5v
-#define			A33						5		// attenuator 3.3v
-#define			A50  					6		// attenuator 5.0v
-#define			TRG						7		// trigger mode
-#define			BPM						8		// bmp mode
-#define			LF1						9		// lfo mode 1
-#define			LF2						10		// lfo mode 2
-#define			CLK						11		// clock mode? do we have one ?!
-#define			A_0						12		
-#define			A_1						13
-#define			A_2						14
-#define			A_3						15
-*/
-enum colorindex
-{
-	M_1 = 0,		// menu a
-	M_2,			// menu b
-	M_L,			// menu flo
-	A25,			// attenuator 2.5v
-	A33,			// attenuator 3.3v
-	A50,  			// attenuator 5.0v
-	TRG,			// trigger mode
-	BPM,			// bmp mode
-	LF1,			// lfo mode 1
-	LF2,			// lfo mode 2
-	CLK,			// clock mode? do we have one ?!
-	A_0,		
-	A_1,
-	A_2,
-	A_3,
-	colorindexcount
-};
-// maybe better of as enums ?! table positions in the global mode storage
-/*
-#define CH0_MODE 0
-#define CH1_MODE 1
-#define CH2_MODE 2
-#define CH3_MODE 3
-#define CH4_MODE 4
-#define CH5_MODE 5
-#define CH6_MODE 6
-#define CH7_MODE 7
 
-#define LF1_WAVE 8
-#define LF2_WAVE 9
-#define LF1_MULT 10
-#define LF2_MULT 11
-#define FRM_MODE 12
-#define TEX_MODE 13 
-#define CLK_MODE 14
-#define DMY_MODE 15
-*/
-enum modetable
-{
-	CH0_MODE = 0,
-	CH1_MODE,
-	CH2_MODE,
-	CH3_MODE,
-	CH4_MODE,
-	CH5_MODE,
-	CH6_MODE,
-	CH7_MODE,
-	LF1_WAVE,
-	LF2_WAVE,
-	LF1_MULT,
-	LF2_MULT,
-	FRM_MODE,
-	TEX_MODE,
-	CLK_MODE,
-	modetablecount
-}
+
 
 #define AUD_MODE 5
 
@@ -196,18 +51,6 @@ enum modetable
 
 #define         PARTITION_NAME_SD	            "emmc1-1"	// partition sd
 #define         PARTITION_NAME_USB	        "umsd1-1"	// partition usb
-
-
-// valid fileneme suffixes is now part of enum filecount or enum fileindex, right?
-/*
-#define 		SUFFIX_VSH 1		// .vsh for vertex shader ( one for all this far )
-#define			SUFFIX_OMF 1		// NEW
-#define 		SUFFIX_FSH 1		// .fsh for my fragment shaders ( 32 + 1 default )
-#define			SUFFIX_OMT 1		// NEW
-#define 		SUFFIX_TEX 1		// .bmp for textures ( 2+ 8 i guess ) 
-#define 		SUFFIX_VID 1		// .264 / .mov / .mp4 ( what we can parse )
-*/
-// LOGFILE NAMES 
 
 #define 		FILENAME_GL_LOG			"LOG-GLES.txt"
 #define 		FILENAME_GLERROR		"LOG-GLER.txt"
@@ -295,48 +138,6 @@ struct CUBE_STATE_T									// we will  rework this here! seperation of the disp
 	GLint u_par_b[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
     GLint u_tex_l[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
 	};
-// like this?!?
-struct OGL_STATE
-{
-   	uint32_t screen_width;
-   	uint32_t screen_height;
- 
-   	DISPMANX_ELEMENT_HANDLE_T dispman_element;
-   	DISPMANX_DISPLAY_HANDLE_T dispman_display;
-
-   	EGLDisplay display;
-   	EGLSurface surface;
-   	EGLContext context;
-};
-struct BUF_STATE
-{
-   	GLuint gl_buf; // buffer
-};
-
-struct GL_STATE
-{
-   	GLuint gl_vsh_id[VSH_FILES_ON_SD+VSH_FILES_ON_USB];
-   	GLuint gl_fsh_id[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
-
-   	GLuint gl_prg_id[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
-
-	GLuint gl_tex_id[TEX_FILES_ON_SD+TEX_FILES_ON_USB];
-	GLint  u_tex_id[FSH_FILES_ON_SD+FSH_FILES_ON_USB][TEX_FILES_ON_SD+TEX_FILES_ON_USB];
-};
-struct USER_UNIFORM_STATE
-{
-	GLuint gl_vtx; // vertex
-
-	GLint u_time[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
-	GLint u_tres[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
-	GLint u_seed[FSH_FILES_ON_SD+FSH_FILES_ON_USB];	
-	GLint u_aud[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
-	GLint u_col[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
-
-	GLint u_par_a[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
-	GLint u_par_b[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
-    GLint u_tex_l[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
-};
 
 	bool 			memory_allocate				();											// 
     void 			memory_clean_up				();
@@ -587,45 +388,6 @@ enum fileindex
 
 int filecounter[fileindexcount][filetypescount] = { {0} };	// 2 for sd and usb, filetypescount for the different file types ( vsh, omf, fsh, omt, tex, vid ) 
 // 															// [0] is g_loaded_*_old and [1] is g_loaded_*_new, i love to have also g_scanned_vsh here
-
-/*
-	int                     g_loaded_vsh_old                                                      =     0;		// counter to ensure that we can load shaders and textures etc from sd and usb
-	int                     g_loaded_omf_old                                                      =     0;
-	int                     g_loaded_fsh_old                                                      =     0;
-	int                     g_loaded_omt_old                                                      =     0;
-	int                     g_loaded_tex_old                                                      =     0;
-	int                     g_loaded_vid_old                                                      =     0;
-
-	int                     g_loaded_vsh_new                                                      =     0;
-	int                     g_loaded_omf_new                                                      =     0;
-	int                     g_loaded_fsh_new                                                      =     0;
-	int                     g_loaded_omt_new                                                      =     0;
-	int                     g_loaded_tex_new                                                      =     0;
-	int                     g_loaded_vid_new                                                      =     0;
-
-	int                     g_scanned_vsh                                                      	  =     0;		// keep track of the loaded files from sd or usb!
-	int                     g_scanned_omf                                                     	  =     0;		
-	int                     g_scanned_fsh                                                      	  =     0;
-	int                     g_scanned_omt                                                      	  =     0;
-	int                     g_scanned_tex                                                      	  =     0;
-	int                     g_scanned_vid                                                      	  =     0;
-
-#define         VSH_FILES_ON_SD             		1	// max number of u_vertex shader on sd
-#define         OMF_FILES_ON_SD             		1	// overlay shader program!
-#define         FSH_FILES_ON_SD             		2	// max number of fragment shader on sd
-#define         OMT_FILES_ON_SD             		1	// overlay texture atlas!
-#define         TEX_FILES_ON_SD             		2	// max number of textures on sd should be one or zero? can be zero?!
-#define         VID_FILES_ON_SD             		2	// max number of videos on sd should be zero? can be zero?!
-
-#define         VSH_FILES_ON_USB            		0	// max number of u_vertex shader on usb
-#define			OMF_FILES_ON_USB					0
-#define         FSH_FILES_ON_USB           		32	// max number of fragment shader on usb
-#define			OMT_FILES_ON_USB					0
-#define         TEX_FILES_ON_USB            		8	// max number of textures on usb
-#define         VID_FILES_ON_USB            		8	// max number of videos on usb
-
-*/
-
 	int                     g_current_gl_program                                                  =     0; 		// GLOBAL INDEX FOR THE SHADER PROGRAM IN USE
 	int                     g_last_gl_program 													  =    -1;  		// GLOBAL INDEX FOR THE LAST SHADER PROGRAM IN USE - needed to Store last active shader program parameters!
 
@@ -655,8 +417,6 @@ int filecounter[fileindexcount][filetypescount] = { {0} };	// 2 for sd and usb, 
 	int 					audio_sample[2] 													 = { 0,0};
 
 	int 					g_validTextureCount													 =	0;
-
-//  int                   	g_input_mode[ADC_CHANNELS]              							 = { 0 };             // Array storing operation mode for each channel - ITS A RELICT, RIGHT? NOT IN USE ANYWHERE
 
 	int                   	g_menu_pickup_buffer[ADC_CHANNELS+ADC_CHANNELS]              		 = { 0 };               // Array storing previous pot values for pickup detection	
 
@@ -689,55 +449,13 @@ int filecounter[fileindexcount][filetypescount] = { {0} };	// 2 for sd and usb, 
 
 	unsigned long     		loaded_bytes_kernel[2] = { 0 };	// little confusing aye? 
 
-
-
 // for the log files of my classes
         const   char                    *g_texLogNames                          [TEX_FILES_ON_SD+TEX_FILES_ON_USB]                   = { "BMPLOG00.TXT",   "BMPLOG01.TXT",  "BMPLOG02.TXT",   "BMPLOG03.TXT", "BMPLOG04.TXT",   "BMPLOG05.TXT",  "BMPLOG06.TXT",   "BMPLOG07.TXT",  "BMPLOG08.TXT",   "BMPLOG09.TXT" };
         const   char                    *g_vidLogNames                          [VID_FILES_ON_SD+VID_FILES_ON_USB]                   = { "VIDLOG00.TXT",   "VIDLOG01.TXT",  "VIDLOG02.TXT",   "VIDLOG03.TXT", "VIDLOG04.TXT",   "VIDLOG05.TXT",  "VIDLOG06.TXT",   "VIDLOG07.TXT",  "VIDLOG08.TXT",   "VIDLOG09.TXT" };
-// list of extensions used in my scanroot directory function per filetype 
-        const   char                   *g_SufVsh[SUFFIX_VSH]			= { "vsh" }; 
-        const   char                   *g_SufOmf[SUFFIX_FSH]			= { "omf" };	// is a fsh file but used for the overlay atlas
-        const   char                   *g_SufFsh[SUFFIX_FSH]			= { "fsh" };
-        const   char                   *g_SufOmt[SUFFIX_TEX]			= { "omt" }; // is a bpm file but used for the overlay atlas
-        const   char                   *g_SufTex[SUFFIX_TEX]			= { "bmp" };
-        const   char                   *g_SufVid[SUFFIX_VID]			= { "264" }; // i guess i will remove the whole parse code for anything but h264
-
-// array to store the scanned filenames?
-                char                   *g_ScnVsh[VSH_FILES_ON_SD + VSH_FILES_ON_USB]     	= { 0 };
-        		char				   *g_ScnOmf[OMF_FILES_ON_SD + OMF_FILES_ON_USB] 		= { 0 };
-                char                   *g_ScnFsh[FSH_FILES_ON_SD + FSH_FILES_ON_USB]     	= { 0 };
-        		char				   *g_ScnOmt[OMT_FILES_ON_SD + OMT_FILES_ON_USB] 		= { 0 };
-                char                   *g_ScnTex[TEX_FILES_ON_SD + TEX_FILES_ON_USB]     	= { 0 };
-                char                   *g_ScnVid[VID_FILES_ON_SD + VID_FILES_ON_USB]     	= { 0 };
-// array to store the length of the loased files
-                unsigned                g_bytVsh[VSH_FILES_ON_SD + VSH_FILES_ON_USB]          = { 0 };
-                unsigned                g_bytOmf[OMF_FILES_ON_SD + OMF_FILES_ON_USB]          = { 0 };
-                unsigned                g_bytFsh[FSH_FILES_ON_SD + FSH_FILES_ON_USB]          = { 0 };
-                unsigned                g_bytOmt[OMT_FILES_ON_SD + OMT_FILES_ON_USB]          = { 0 };
-                unsigned                g_bytTex[TEX_FILES_ON_SD + TEX_FILES_ON_USB]        	= { 0 };
-                unsigned                g_bytVid[VID_FILES_ON_SD + VID_FILES_ON_USB]          = { 0 };
 
 
                 int                     g_lfoMltTmp[LFO_INSTANCES]             = {   0    };
 
-//				NOW PART OF inOutMatrixFlt and inOutMatrixInt !!
-
-//              float                   g_lfoFltOut[LFO_INSTANCES]             									= {   0    };
-//              int                     g_lfoIntOut[LFO_INSTANCES]             									= {   0    };
-
-//  			bool                  	input_threshold_flag[ADC_CHANNELS]              						= { 0 };             // Array tracking threshold state per channel
-
-//  			int                   	g_threshold_high[ADC_CHANNELS]              							= {   320,  320,  320,  320,  320,  320,  320,  320 };                    // Array of upper threshold values per channel - i guess this should become a menu layer where i can set them up
-//  			int                   	g_threshold_low[ADC_CHANNELS]              								= {   128,  128,  128,  128,  128,  128,  128,  128 };                     // Array of lower threshold values per channel	
-
-
-//              int                   	adc_raw_value                             [ADC_CHANNELS]              	= { 0 };
-//              int                   	adc_int_value                             [ADC_CHANNELS]              	= { 0 };
-//              float                 	adc_float_value                           [ADC_CHANNELS]              	= { 0 };
-//              int                   	output_int_value                          [ADC_CHANNELS]              	= { 0 };
-//              float                 	output_float_value                        [ADC_CHANNELS]              	= { 0 };                    // Array of output values per channel
-//              int                   	g_randomIntegerValue                      [ADC_CHANNELS]        		= { 0 };
-//              float                 	/* g_randomFloatValue */                        [ADC_CHANNELS]              	= { 0 };                    // Array of u_seed_a values per channel
 
 extern  const   unsigned char           g_rgb_color_table                                 [49][3]; 
 

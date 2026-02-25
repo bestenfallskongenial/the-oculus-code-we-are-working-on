@@ -197,7 +197,8 @@ enum ButtonTSIndex
     BTN_LONG        = 3,
     BTN_RELEASE     = 4,
     BTN_SINGLE      = 5,
-    BTN_HOLD_TICK   = 6   // COUNTER: increases while held
+    BTN_HOLD_TICK   = 6,   // COUNTER: increases while held
+    BTN_INDEX_COUNT 
 };
 
 enum colorindex
@@ -217,7 +218,7 @@ enum colorindex
 	A_1,
 	A_2,
 	A_3,
-	colorindexcount
+	colorindexcount // to define the array size, must be last
 };
 
 // list of extensions used in my scanroot directory function per filetype 
