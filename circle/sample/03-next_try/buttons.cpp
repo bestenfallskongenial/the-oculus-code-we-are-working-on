@@ -31,7 +31,7 @@ void CKernel::button_ping(int p_btn_id)
     g_buttons_states[0][BTN_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
     g_buttons_states[1][BTN_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
 
-    if (g_buttons_states[p_btn_id] == BTN_PRESSED)
+    if (g_buttons_states[p_btn_id][BTN_STATUS] == BTN_PRESSED)
     {
         if (g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
         {
@@ -97,7 +97,7 @@ void CKernel::button_ping(int p_btn_id)
     g_buttons_states[0][BTN_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
     g_buttons_states[1][BTN_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
 
-    if (g_buttons_states[p_btn_id] == BTN_PRESSED)
+    if (g_buttons_states[p_btn_id][BTN_STATUS] == BTN_PRESSED)
     {
         if (g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
         {
@@ -148,7 +148,7 @@ void CKernel::button_ping(int p_btn_id)
     g_buttons_states[0][BTN_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
     g_buttons_states[1][BTN_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
 
-    if (g_buttons_states[p_btn_id] == BTN_PRESSED)
+    if (g_buttons_states[p_btn_id][BTN_STATUS] == BTN_PRESSED)
     {
         if (g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
         {
