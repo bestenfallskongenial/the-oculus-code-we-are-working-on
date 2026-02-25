@@ -20,6 +20,124 @@ enum ButtonTSIndex
 // g_buttons_states[2][7]
 
 
+// version a
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// g_ for global-variable       g_buttons_states[2][7], g_long_click_time*, g_double_click_time*            * also possible macro definition? 
+// p_for signature-parameter    p_btn_id
+// f_ for function-variable     f_held_time, 
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void CKernel::button_ping(int p_btn_id)
+{
+    g_buttons_states[0][BTN_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
+    g_buttons_states[1][BTN_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
+
+    if (g_buttons_states[p_btn_id][BTN_STATUS] == BTN_PRESSED)
+    {
+        if (g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
+        {
+            g_buttons_states[p_btn_id][BTN_PRESS_START] = g_currentTime;
+
+            if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 &&
+                (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) < g_double_click_time)
+            {
+                g_buttons_states[p_btn_id][BTN_DOUBLE]  = 1;
+                g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
+            }
+        }
+
+        unsigned f_held_time =
+            g_currentTime - g_buttons_states[p_btn_id][BTN_PRESS_START];
+
+        if (f_held_time >= g_long_click_time)
+        {
+            if (g_buttons_states[p_btn_id][BTN_LONG] == 0)
+            {
+                g_buttons_states[p_btn_id][BTN_HOLD_NEXT] = g_currentTime + f_hold_tick_time;
+                g_buttons_states[p_btn_id][BTN_HOLD_TICK] = 0;
+            }
+
+            g_buttons_states[p_btn_id][BTN_LONG] = 1;
+
+            // ---- COUNTER INCREMENT ----
+            while (g_currentTime >= g_buttons_states[p_btn_id][BTN_HOLD_NEXT])
+            {
+                g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;   // COUNT
+                g_buttons_states[p_btn_id][BTN_HOLD_NEXT] += f_hold_tick_time;
+            }
+        }
+    }
+    else
+    {
+        if (g_buttons_states[p_btn_id][BTN_PRESS_START] > 0)
+        {
+            g_buttons_states[p_btn_id][BTN_RELEASE]     = g_currentTime;
+            g_buttons_states[p_btn_id][BTN_PRESS_START] = 0;
+        }
+
+        g_buttons_states[p_btn_id][BTN_LONG]      = 0;
+        g_buttons_states[p_btn_id][BTN_HOLD_TICK] = 0;   // reset counter
+        g_buttons_states[p_btn_id][BTN_HOLD_NEXT] = 0;
+    }
+
+    if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 &&
+        (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) >= g_double_click_time &&
+        g_buttons_states[p_btn_id][BTN_DOUBLE] == 0)
+    {
+        g_buttons_states[p_btn_id][BTN_SINGLE]  = 1;
+        g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
+    }
+}
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// DO WE HAVE AN INDICATOR / TIMESTAMP FOR THE LAST SIGLE PRESS EVENT HERE?!?! IMPORTANT FOR OUR TAB-BPM MECHANISM!!
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// version b increment the is hold counter each loop
+
+void CKernel::button_ping(int p_btn_id)
+{
+    g_buttons_states[0][BTN_STATUS] = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
+    g_buttons_states[1][BTN_STATUS] = CGPIOPin(SW_PIN_B, GPIOModeInputPullUp).Read();
+
+    if (g_buttons_states[p_btn_id][BTN_STATUS] == BTN_PRESSED)
+    {
+        if (g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
+        {
+            g_buttons_states[p_btn_id][BTN_PRESS_START] = g_currentTime;
+
+            if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 &&
+                (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) < g_double_click_time)
+            {
+                g_buttons_states[p_btn_id][BTN_DOUBLE]  = 1;
+                g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
+            }
+        }
+
+        if ((g_currentTime - g_buttons_states[p_btn_id][BTN_PRESS_START]) >= g_long_click_time)
+        {
+            g_buttons_states[p_btn_id][BTN_LONG] = 1;
+            g_buttons_states[p_btn_id][BTN_HOLD_TICK]++; // increase while held
+        }
+    }
+    else
+    {
+        if (g_buttons_states[p_btn_id][BTN_PRESS_START] > 0)
+        {
+            g_buttons_states[p_btn_id][BTN_RELEASE]     = g_currentTime;
+            g_buttons_states[p_btn_id][BTN_PRESS_START] = 0;
+        }
+
+        g_buttons_states[p_btn_id][BTN_LONG]      = 0;
+        g_buttons_states[p_btn_id][BTN_HOLD_TICK] = 0;
+    }
+
+    if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 &&
+        (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) >= g_double_click_time &&
+        g_buttons_states[p_btn_id][BTN_DOUBLE] == 0)
+    {
+        g_buttons_states[p_btn_id][BTN_SINGLE]  = 1;
+        g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
+    }
+}
+
 
 // version 3 shall fix an issue i cant see after extreme scrutiny
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

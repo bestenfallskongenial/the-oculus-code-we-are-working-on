@@ -397,23 +397,3 @@ void            CKernel::util_audio_energy          (float p_adcvalue)
                 f_indexBand2 = (f_indexBand2 + 1) % f_averageBufferSizeTable[2][g_sensitivityNew];
                 f_indexBand3 = (f_indexBand3 + 1) % f_averageBufferSizeTable[3][g_sensitivityNew];
 }
-/*
-enum io_types
-{
-    raw = 0,        //  the position the dampened adc values per channels are stored *
-     in,            //  either the calculated int or flt value *
-    out,            //  here lands the processed ( after mode ) for the glsl uniforms      
-    rnd,            //  either the per-channel random int or flt value *
-    lf1,            //  either the lfo one int or flt value
-    lf2,            //  either the lfo two int or flt value
-    au0,            //  the audio band 0 flt value
-    au1,            //  the audio band 1 flt value
-    au2,            //  the audio band 2 flt value
-    au3,            //  the audio band 3 flt value
-                    // *means i have a unique value for each channel - the other values are singular, and/or only int/flt
-    trL,            //  per channel threshold low !!! dont forget to copy the values in here    128
-    trH,            //  per channel threshold high                                              320
-    trF,            //  per channel threshold "flag"
-    io_type_count
-}
-*/
