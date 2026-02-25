@@ -180,7 +180,8 @@ void            CKernel::util_random_vec8           (uint32_t p_seed)           
                 inOutMatrixInt[7][rnd] = ( inOutMatrixFlt[7][rnd] * f_max_int);
 }
 
-void            CKernel::util_calculate_BPM         (unsigned long p_triggerTimeClockA, unsigned long p_triggerTimeClockB) 
+void            CKernel::util_calculate_BPM         (   unsigned long   p_triggerTimeClockA, 
+                                                        unsigned long   p_triggerTimeClockB) 
 {
                 static unsigned long f_lastTime[2];
                 static unsigned long f_timeBuffer[2][4] = {{0}};  

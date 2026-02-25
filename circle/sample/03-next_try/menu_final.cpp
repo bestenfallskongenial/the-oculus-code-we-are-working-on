@@ -231,12 +231,12 @@ void CKernel::modePOT ()
 {
 // lets see later ... 
 }
-void CKernel::modeLF1 ()
+void CKernel::modeLF1 (int channel)
 {
             inOutMatrixFlt[channel][out] = inOutMatrixFlt[channel][lf1] // g_lfoFltOut[0];
             inOutMatrixInt[channel][out] = inOutMatrixInt[channel][lf1] // g_lfoIntOut[0];
 }
-void CKernel::modeLF2 ()
+void CKernel::modeLF2 (int channel)
 {
             inOutMatrixFlt[channel][out] = inOutMatrixFlt[channel][lf2] // g_lfoFltOut[1];
             inOutMatrixInt[channel][out] = inOutMatrixInt[channel][lf2] // g_lfoIntOut[1];    

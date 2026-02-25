@@ -1,5 +1,6 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::gfx_shader_log             (   GLint shader, int shaderIndex)
+void            CKernel::gfx_shader_log             (   GLint   shader, 
+                                                        int     shaderIndex)
 {
                 GLint success;
                 glGetShaderiv(shader, GL_COMPILE_STATUS, &success); // Get compilation status
@@ -8,7 +9,8 @@ void            CKernel::gfx_shader_log             (   GLint shader, int shader
 }
 // we need to implement the same logging mechanism we wrote for the vc4 cedoder and vcsm code. 
 // clear, deterministic without extra dependencies.
-void            CKernel::gfx_program_log            (   GLint shader, int program_index) 
+void            CKernel::gfx_program_log            (   GLint   shader, 
+                                                        int     program_index) 
 {
                 int internal_index =0;
                 if ( program_index > 0 ) 
@@ -82,7 +84,8 @@ void            CKernel::gfx_program_log            (   GLint shader, int progra
                 //    g_log_string.Append("\n");
 }
 
-void            CKernel::gfx_check                  (   const char *file, unsigned line)
+void            CKernel::gfx_check                  (   const char     *file, 
+                                                        unsigned        line)
 {
                 static unsigned error_count = 0;
                 static bool summary_written = false;  // New static flag
