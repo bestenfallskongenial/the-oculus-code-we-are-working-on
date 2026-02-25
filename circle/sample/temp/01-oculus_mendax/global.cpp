@@ -73,20 +73,20 @@ bool           b_is_hold = false;
         const   char                    *g_vidLogNames                          [VID_FILES_ON_SD+VID_FILES_ON_USB+4]                   = { "VIDLOG00.TXT",   "VIDLOG01.TXT",  "VIDLOG02.TXT",   "VIDLOG03.TXT", "VIDLOG04.TXT",   "VIDLOG05.TXT",  "VIDLOG06.TXT",   "VIDLOG07.TXT",  "VIDLOG08.TXT",   "VIDLOG09.TXT",   "VIDLOG10.TXT",   "VIDLOG11.TXT",   "VIDLOG12.TXT",   "VIDLOG13.TXT"    };
         const   char                    *g_texLogNames                          [TEX_FILES_ON_SD+TEX_FILES_ON_USB+4]                   = { "BMPLOG00.TXT",   "BMPLOG01.TXT",  "BMPLOG02.TXT",   "BMPLOG03.TXT", "BMPLOG04.TXT",   "BMPLOG05.TXT",  "BMPLOG06.TXT",   "BMPLOG07.TXT",  "BMPLOG08.TXT",   "BMPLOG09.TXT",   "BMPLOG10.TXT",   "BMPLOG11.TXT",   "BMPLOG12.TXT",   "BMPLOG14.TXT"    };
 // list of extensions used in my scanroot directory function
-        const   char                    *g_vhsExtensions[VSH_VALID_SUFFIX_COUNT]={ "vsh" }; 
-        const   char                    *g_fhsExtensions[FSH_VALID_SUFFIX_COUNT]={ "fsh" };
-        const   char                    *g_texExtensions[TEX_VALID_SUFFIX_COUNT]={ "bmp" };
-        const   char                    *g_vidExtensions[VID_VALID_SUFFIX_COUNT]={ "mp4"/*, "264", "mov"*/ };
+        const   char                    *g_SufVsh[SUFFIX_VSH]={ "vsh" }; 
+        const   char                    *g_SufFsh[SUFFIX_FSH]={ "fsh" };
+        const   char                    *g_SufTex[SUFFIX_TEX]={ "bmp" };
+        const   char                    *g_SufVid[SUFFIX_VID]={ "mp4"/*, "264", "mov"*/ };
 // array to store the scanned filenames?
-                char                   *g_vshScannedFileNames                         [40]                       = {   0    };
-                char                   *g_fshScannedFileNames                         [40]                       = {   0    };
-                char                   *g_texScannedFileNames                         [40]                       = {   0    };
-                char                   *g_vidScannedFileNames                         [40]                       = {   0    };
+                char                   *g_ScnVsh                         [40]                       = {   0    };
+                char                   *g_ScnFsh                         [40]                       = {   0    };
+                char                   *g_ScnTex                         [40]                       = {   0    };
+                char                   *g_ScnVid                         [40]                       = {   0    };
 // array to store the length of the loased files
-                unsigned                g_vshLoadedBytes                        [VSH_FILES_ON_SD + VSH_FILES_ON_USB]          = {   0    };
-                unsigned                g_fshLoadedBytes                        [FSH_FILES_ON_SD + FSH_FILES_ON_USB]          = {   0    };
-                unsigned                g_texLoadedBytes                        [TEX_FILES_ON_SD + TEX_FILES_ON_USB+4]          = {   0    };
-                unsigned                g_vidLoadedBytes                        [VID_FILES_ON_SD + VID_FILES_ON_USB]          = {   0    }; 
+                unsigned                g_bytVsh                        [VSH_FILES_ON_SD + VSH_FILES_ON_USB]          = {   0    };
+                unsigned                g_bytFsh                        [FSH_FILES_ON_SD + FSH_FILES_ON_USB]          = {   0    };
+                unsigned                g_bytTex                        [TEX_FILES_ON_SD + TEX_FILES_ON_USB+4]          = {   0    };
+                unsigned                g_bytVid                        [VID_FILES_ON_SD + VID_FILES_ON_USB]          = {   0    }; 
 
 // multipliers for the lfo´s */
 

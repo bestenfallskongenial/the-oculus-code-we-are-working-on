@@ -144,7 +144,7 @@
 #define         TEX_FILES_ON_USB            		8	// max number of textures on usb
 #define         VID_FILES_ON_USB            		8	// max number of videos on usb
 
-#define			KRL_FILE_SIZE				(1024*1024*2) 	// 2mb must be sufficient here ( i confused the kernel size by the factor 10 )
+#define			KNL_FILE_SIZE				(1024*1024*2) 	// 2mb must be sufficient here ( i confused the kernel size by the factor 10 )
 #define         VSH_FILE_SIZE                (1024*32) 		// 32768 size of u_vertex shader files
 #define         FSH_FILE_SIZE                (1024*32) 		// 32768 size of fragment shader files
 #define         TEX_FILE_SIZE                (1024*1024*4)  	// 4194304	// size of texture ( .bpm ) files
@@ -163,10 +163,10 @@
 
 // valid fileneme suffixes
 
-#define 		VSH_VALID_SUFFIX_COUNT 1		// .vsh for vertex shader ( one for all this far )
-#define 		FSH_VALID_SUFFIX_COUNT 1		// .fsh for my fragment shaders ( 32 + 1 default )
-#define 		TEX_VALID_SUFFIX_COUNT 1		// .bmp for textures ( 2+ 8 i guess ) 
-#define 		VID_VALID_SUFFIX_COUNT 1		// .264 / .mov / .mp4 ( what we can parse )
+#define 		SUFFIX_VSH 1		// .vsh for vertex shader ( one for all this far )
+#define 		SUFFIX_FSH 1		// .fsh for my fragment shaders ( 32 + 1 default )
+#define 		SUFFIX_TEX 1		// .bmp for textures ( 2+ 8 i guess ) 
+#define 		SUFFIX_VID 1		// .264 / .mov / .mp4 ( what we can parse )
 
 // LOGFILE NAMES 
 
@@ -278,13 +278,13 @@ struct CUBE_STATE_T
 	bool 			filesystem_save_log_file	(	const char* p_deviceName, const char* p_fileName, const CString& p_str_to_save);
 	bool 			filesystem_update_USB		(	const char* deviceType);
 	bool 			filesystem_mount			(	const char* p_deviceName, 
-                              						char* vshaderFileNames[], 
+                              						char* fileNamesVsh[], 
 													unsigned vStotalLoadedBytes[], int maxVshaderFiles,
-                              						char* fshaderFileNames[], 
+                              						char* fileNamesFsh[], 
 													unsigned fStotalLoadedBytes[], int maxFshaderFiles,
-                              						char* textureFileNames[], 
+                              						char* fileNamesTex[], 
 													unsigned tXtotalLoadedBytes[], int maxTextureFiles,
-                                            		char* videoFileNames[]  , 
+                                            		char* fileNamesVid[]  , 
 													unsigned vItotalLoadedBytes[], int maxVideoFiles);
 	bool			filesystem_IsValidFileType	(const char* p_fileName, const char* p_fileExtension);
 	unsigned 		filesystem_ScanRootDir     	( char** fileArray, const char* p_fileExtension[], int p_extentionCount, unsigned p_maxFiles );
@@ -393,29 +393,29 @@ private:
 
 	CUBE_STATE_T  		state;
 
-	char** 				m_bufferVideo;
+	char** 				m_bufferVid;
 	char* 				m_videoBlockBase;
 	char* 				m_videoRawBlock;
     size_t 				m_videoBlockSize;
 
-	char**				m_bufferFrameBufferA;
+	char**				m_bufferFrA;
 	char* 				m_frameBlockBaseA;
 	char* 				m_frameRawBlockA;
     size_t 				m_frameBlockSizeA;
 
-	char**				m_bufferFrameBufferB;
+	char**				m_bufferFrB;
 	char* 				m_frameBlockBaseB;
 	char* 				m_frameRawBlockB;
     size_t 				m_frameBlockSizeB;	
 
-    char** 				m_bufferTexture;
+    char** 				m_bufferTex;
 	char* 				m_textureBlockBase;
 	char* 				m_textureRawBlock;
     size_t 				m_textureBlockSize;
 
-	char**				m_bufferKernel;
-	char** 				m_bufferVshader;
-    char** 				m_bufferFshader;
+	char**				m_bufferKnl;
+	char** 				m_bufferVsh;
+    char** 				m_bufferFsh;
 
 
     // VideoCore handles

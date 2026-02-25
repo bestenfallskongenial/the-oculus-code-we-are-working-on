@@ -75,20 +75,20 @@ extern          float                   g_opaque;
 extern  const   char                    *g_vidLogNames                          [VID_FILES_ON_SD+VID_FILES_ON_USB+4];
 extern  const   char                    *g_texLogNames                          [TEX_FILES_ON_SD+TEX_FILES_ON_USB+4];
 
-extern  const   char                    *g_vhsExtensions[VSH_VALID_SUFFIX_COUNT]; 
-extern  const   char                    *g_fhsExtensions[FSH_VALID_SUFFIX_COUNT];
-extern  const   char                    *g_texExtensions[TEX_VALID_SUFFIX_COUNT];
-extern  const   char                    *g_vidExtensions[VID_VALID_SUFFIX_COUNT];
+extern  const   char                    *g_SufVsh[SUFFIX_VSH]; 
+extern  const   char                    *g_SufFsh[SUFFIX_FSH];
+extern  const   char                    *g_SufTex[SUFFIX_TEX];
+extern  const   char                    *g_SufVid[SUFFIX_VID];
 
-extern          char                   *g_vshScannedFileNames[40];
-extern          char                   *g_fshScannedFileNames[40];
-extern          char                   *g_texScannedFileNames[40];
-extern          char                   *g_vidScannedFileNames[40];
+extern          char                   *g_ScnVsh[40];
+extern          char                   *g_ScnFsh[40];
+extern          char                   *g_ScnTex[40];
+extern          char                   *g_ScnVid[40];
 
-extern          unsigned                g_vshLoadedBytes[VSH_FILES_ON_SD + VSH_FILES_ON_USB];
-extern          unsigned                g_fshLoadedBytes[FSH_FILES_ON_SD + FSH_FILES_ON_USB];
-extern          unsigned                g_texLoadedBytes[TEX_FILES_ON_SD + TEX_FILES_ON_USB+4];
-extern          unsigned                g_vidLoadedBytes[VID_FILES_ON_SD + VID_FILES_ON_USB]; 
+extern          unsigned                g_bytVsh[VSH_FILES_ON_SD + VSH_FILES_ON_USB];
+extern          unsigned                g_bytFsh[FSH_FILES_ON_SD + FSH_FILES_ON_USB];
+extern          unsigned                g_bytTex[TEX_FILES_ON_SD + TEX_FILES_ON_USB+4];
+extern          unsigned                g_bytVid[VID_FILES_ON_SD + VID_FILES_ON_USB]; 
 /* Define arrays for bitmap metadata
 extern          bool                    TEX_FILE_STATUS                         [TEX_FILES_ON_SD + TEX_FILES_ON_USB];                                
 extern          uint32_t                TEX_FILE_SIZE                           [TEX_FILES_ON_SD + TEX_FILES_ON_USB];           // File size 

@@ -463,7 +463,7 @@ void            CKernel::util_save_modes_file       ()    // whats up here???
                     {
                     temp_string.Format( "# --------------------------------------------------------------------------------\n"
                                         "#  p_fileName: %s\n"
-                                        "# --------------------------------------------------------------------------------\n", g_fshScannedFileNames[i+1]);
+                                        "# --------------------------------------------------------------------------------\n", g_ScnFsh[i+1]);
                     g_modes.Append(temp_string);
                     g_modes.Append("\n");
 
@@ -519,7 +519,7 @@ void            CKernel::parser_h264               (int p_fromFile, int p_toFile
 {
     for (int i = p_fromFile; i < p_toFile; i++) 
         {
-                m_H264Parser.ParseVideoAuto(i, m_bufferVideo, g_vidLoadedBytes );
+                m_H264Parser.ParseVideoAuto(i, m_bufferVid, g_bytVid );
                 GenerateH264ParserInfo  (i);
         }
 }
@@ -528,14 +528,14 @@ void            CKernel::parser_bmp               (int p_fromFile, int p_toFile)
 {
     for (int i = p_fromFile; i < p_toFile; i++) 
         {
-                m_H264Parser.ParseBPM(i, g_texScannedFileNames, m_bufferTexture, g_texLoadedBytes );
+                m_H264Parser.ParseBPM(i, g_ScnTex, m_bufferTex, g_bytTex );
                 GenerateBmpParserInfo  (i);
         }
 }
 
 void            CKernel::parser_overlay_bmp               (int index)
 {        
-                m_H264Parser.ParseBPM(0 , g_omtScannedFileNames  /*"Overlay Atlas"*/ , m_BufferOverlayTexture, g_omtLoadedBytes );
+                m_H264Parser.ParseBPM(0 , g_ScnOmt  /*"Overlay Atlas"*/ , m_BufferOmt, g_bytOmt );
 
                 // okay, as far as i see i must store the parser results locally because my later code will start at the index 0, too
                 // i might not need a m_H264Parser.reset() 

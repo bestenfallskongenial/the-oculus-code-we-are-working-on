@@ -70,7 +70,7 @@ void            CKernel::display_append_modes()
 
                 char tempBuffer[27];
 
-                memcpy(tempBuffer, &m_bufferFshader[g_current_gl_program][2], 26);
+                memcpy(tempBuffer, &m_bufferFsh[g_current_gl_program][2], 26);
 
                 tempBuffer[26] = '\0';
 

@@ -397,7 +397,7 @@ void            CKernel::util_audio_energy          (float p_adcvalue)
                 f_indexBand2 = (f_indexBand2 + 1) % f_averageBufferSizeTable[2][g_sensitivityNew];
                 f_indexBand3 = (f_indexBand3 + 1) % f_averageBufferSizeTable[3][g_sensitivityNew];
 }
-
+/*
 enum io_types
 {
     raw = 0,        //  the position the dampened adc values per channels are stored *
@@ -416,3 +416,4 @@ enum io_types
     trF,            //  per channel threshold "flag"
     io_type_count
 }
+*/

@@ -41,27 +41,27 @@ filesystem.cpp
                                                             int mode)
 !!!!!
                         -   filesystem_mount            (   const char* p_deviceName,             OKAY, here is where the "magic" happens!!!
-                                                            char* vshaderFileNames[],           
+                                                            char* fileNamesVsh[],           
                                                             unsigned vStotalLoadedBytes[], 
                                                             int maxVshaderFiles,
 
-                                                            char* fOverlayFileNames[],          *   NEW
+                                                            char* fileNamesOmf[],          *   NEW
                                                             unsigned foverlayLoadedBytes[],     *   NEW
                                                             int maxFoverlayFiles,               *   NEW
 
-                                                            char* fshaderFileNames[], 
+                                                            char* fileNamesFsh[], 
                                                             unsigned fStotalLoadedBytes[], 
                                                             int maxFshaderFiles,
 
-                                                            char* texOverlayFileNames[],        *   NEW            
+                                                            char* fileNamesOmt[],        *   NEW            
                                                             unsigned tXoverlayLoadedBytes[],    *   NEW
                                                             int maxTexOverlayFiles,             *   NEW
 
-                                                            char* textureFileNames[], 
+                                                            char* fileNamesTex[], 
                                                             unsigned tXtotalLoadedBytes[], 
                                                             int maxTextureFiles,
 
-                                                            char* videoFileNames[]  , 
+                                                            char* fileNamesVid[]  , 
                                                             unsigned vItotalLoadedBytes[], 
                                                             int maxVideoFiles)
 !!!!!

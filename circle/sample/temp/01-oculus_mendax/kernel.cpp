@@ -37,27 +37,27 @@
 
                     state{},
 
-                    m_bufferVideo(nullptr),
+                    m_bufferVid(nullptr),
                     m_videoBlockBase(nullptr),
                     m_videoRawBlock(nullptr),
                     m_videoBlockSize(0),
 
-                    m_bufferFrameBufferA(nullptr),
+                    m_bufferFrA(nullptr),
                     m_frameBlockBaseA(nullptr),
                     m_frameRawBlockA(nullptr),
                     m_frameBlockSizeA(0),
 
-                    m_bufferFrameBufferB(nullptr),
+                    m_bufferFrB(nullptr),
                     m_frameBlockBaseB(nullptr),
                     m_frameRawBlockB(nullptr),
                     m_frameBlockSizeB(0),
 
-                    m_bufferTexture(nullptr),
+                    m_bufferTex(nullptr),
 
-                    m_bufferKernel(nullptr),
+                    m_bufferKnl(nullptr),
 
-                    m_bufferVshader(nullptr), 
-                    m_bufferFshader(nullptr),
+                    m_bufferVsh(nullptr), 
+                    m_bufferFsh(nullptr),
 
                     m_USBhasLoadOnes(false),                                // we load only one time from usb, sorry user!
                     m_resetFlag(false)
@@ -225,10 +225,10 @@ TShutdownMode   CKernel::Run(void)
                 m_Timer.MsDelay(500);
 
                 if( filesystem_mount("emmc1-1", 
-                    g_vshScannedFileNames,  g_vshLoadedBytes, VSH_FILES_ON_SD,
-                    g_fshScannedFileNames,  g_fshLoadedBytes, FSH_FILES_ON_SD,
-                    g_texScannedFileNames,  g_texLoadedBytes, TEX_FILES_ON_SD,
-                    g_vidScannedFileNames,  g_vidLoadedBytes, VID_FILES_ON_SD))
+                    g_SufVsh,  g_bytVsh, VSH_FILES_ON_SD,
+                    g_ScnFsh,  g_bytFsh, FSH_FILES_ON_SD,
+                    g_ScnTex,  g_bytTex, TEX_FILES_ON_SD,
+                    g_ScnVid,  g_bytVid, VID_FILES_ON_SD))
                     {                   
                     // Flush CPU->RAM so the VPU sees the loaded bitstream
                     CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // we need to flush the cache after loading the video bitstream to make sure that the VPU can see the updated data in memory, otherwise it may cause a crash when the VPU tries to access the video data and if the video data is not updated in memory, it will cause a crash when the VPU tries to access the video data
@@ -273,10 +273,10 @@ TShutdownMode   CKernel::Run(void)
                     //  g_loaded_tex_new = 0;     // that the brandlogo is removed
 
                         if( filesystem_mount("umsd1-1",                                                 // 1. scan the filenames!
-                            g_vshScannedFileNames, g_vshLoadedBytes, VSH_FILES_ON_USB,
-                            g_fshScannedFileNames, g_fshLoadedBytes, FSH_FILES_ON_USB,
-                            g_texScannedFileNames, g_texLoadedBytes, TEX_FILES_ON_USB, 
-                            g_vidScannedFileNames, g_vidLoadedBytes, VID_FILES_ON_USB))
+                            g_SufVsh, g_bytVsh, VSH_FILES_ON_USB,
+                            g_ScnFsh, g_bytFsh, FSH_FILES_ON_USB,
+                            g_ScnTex, g_bytTex, TEX_FILES_ON_USB, 
+                            g_ScnVid, g_bytVid, VID_FILES_ON_USB))
                             {
                             // Flush CPU->RAM so the VPU sees the loaded bitstream
                             CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize);

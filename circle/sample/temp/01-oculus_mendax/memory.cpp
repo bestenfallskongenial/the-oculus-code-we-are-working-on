@@ -4,29 +4,29 @@
 bool            CKernel::memory_allocate            ()
 {
                 // Video and frame buffers need DMA memory
-                m_bufferVideo       = memory_init_dma_buffer(   VID_FILES_ON_SD + VID_FILES_ON_USB, VID_FILE_SIZE,
+                m_bufferVid       = memory_init_dma_buffer(   VID_FILES_ON_SD + VID_FILES_ON_USB, VID_FILE_SIZE,
                                                                 &m_videoBlockBase,
                                                                 &m_videoRawBlock,
                                                                 &m_videoBlockSize);
-                m_bufferFrameBufferA= memory_init_dma_buffer(   1, FRAME_SIZE,
+                m_bufferFrA= memory_init_dma_buffer(   1, FRAME_SIZE,
                                                                 &m_frameBlockBaseA,
                                                                 &m_frameRawBlockA,
                                                                 &m_frameBlockSizeA);
-                m_bufferFrameBufferB= memory_init_dma_buffer(   1, FRAME_SIZE,
+                m_bufferFrB= memory_init_dma_buffer(   1, FRAME_SIZE,
                                                                 &m_frameBlockBaseB,
                                                                 &m_frameRawBlockB,
                                                                 &m_frameBlockSizeB);
-                m_bufferTexture     = memory_init_dma_buffer(   TEX_FILES_ON_SD + TEX_FILES_ON_USB, TEX_FILE_SIZE,
+                m_bufferTex     = memory_init_dma_buffer(   TEX_FILES_ON_SD + TEX_FILES_ON_USB, TEX_FILE_SIZE,
                                                                 &m_textureBlockBase,
                                                                 &m_textureRawBlock,
                                                                 &m_textureBlockSize);
 
-                m_bufferKernel      = memory_init_buffer( 2, KRL_FILE_SIZE );
+                m_bufferKnl      = memory_init_buffer( 2, KNL_FILE_SIZE );
 
-                m_bufferVshader     = memory_init_buffer( VSH_FILES_ON_SD + VSH_FILES_ON_USB, VSH_FILE_SIZE );
-                m_bufferFshader     = memory_init_buffer( FSH_FILES_ON_SD + FSH_FILES_ON_USB, VSH_FILE_SIZE );
-                if (!m_bufferVideo || !m_bufferFrameBufferA || !m_bufferFrameBufferA || !m_bufferTexture ||
-                    !m_bufferKernel || !m_bufferVshader || !m_bufferFshader)
+                m_bufferVsh     = memory_init_buffer( VSH_FILES_ON_SD + VSH_FILES_ON_USB, VSH_FILE_SIZE );
+                m_bufferFsh     = memory_init_buffer( FSH_FILES_ON_SD + FSH_FILES_ON_USB, VSH_FILE_SIZE );
+                if (!m_bufferVid || !m_bufferFrA || !m_bufferFrA || !m_bufferTex ||
+                    !m_bufferKnl || !m_bufferVsh || !m_bufferFsh)
                     {
                     memory_clean_up();
                     return false;
@@ -36,46 +36,46 @@ bool            CKernel::memory_allocate            ()
 
 void            CKernel::memory_clean_up            ()
 {
-                if (m_bufferVideo) 
+                if (m_bufferVid) 
                     { 
-                    memory_clear_dma_buffer( m_bufferVideo, m_videoRawBlock); 
-                    m_bufferVideo = nullptr; 
+                    memory_clear_dma_buffer( m_bufferVid, m_videoRawBlock); 
+                    m_bufferVid = nullptr; 
                     m_videoRawBlock = nullptr;
                     }
-                if (m_bufferFrameBufferA) 
+                if (m_bufferFrA) 
                     { 
-                    memory_clear_dma_buffer( m_bufferFrameBufferA, m_frameRawBlockA); 
-                    m_bufferFrameBufferA = nullptr; 
+                    memory_clear_dma_buffer( m_bufferFrA, m_frameRawBlockA); 
+                    m_bufferFrA = nullptr; 
                     m_frameRawBlockA = nullptr;
                     }
-                if (m_bufferFrameBufferB) 
+                if (m_bufferFrB) 
                     { 
-                    memory_clear_dma_buffer( m_bufferFrameBufferB, m_frameRawBlockB); 
-                    m_bufferFrameBufferB = nullptr; 
+                    memory_clear_dma_buffer( m_bufferFrB, m_frameRawBlockB); 
+                    m_bufferFrB = nullptr; 
                     m_frameRawBlockB = nullptr;
                     }    
-                if (m_bufferTexture) 
+                if (m_bufferTex) 
                     { 
-                    memory_clear_buffer( m_bufferTexture, 
+                    memory_clear_buffer( m_bufferTex, 
                                         TEX_FILES_ON_SD + TEX_FILES_ON_USB); 
-                    m_bufferTexture = nullptr; 
+                    m_bufferTex = nullptr; 
                     }
-                if (m_bufferKernel) 
+                if (m_bufferKnl) 
                     { 
-                    memory_clear_buffer( m_bufferKernel, 2 ); 
-                    m_bufferKernel = nullptr; 
+                    memory_clear_buffer( m_bufferKnl, 2 ); 
+                    m_bufferKnl = nullptr; 
                     }
-                if (m_bufferVshader) 
+                if (m_bufferVsh) 
                     { 
-                    memory_clear_buffer( m_bufferVshader, 
+                    memory_clear_buffer( m_bufferVsh, 
                                         VSH_FILES_ON_SD + VSH_FILES_ON_USB); 
-                    m_bufferVshader = nullptr; 
+                    m_bufferVsh = nullptr; 
                     }
-                if (m_bufferFshader) 
+                if (m_bufferFsh) 
                     { 
-                    memory_clear_buffer( m_bufferFshader, 
+                    memory_clear_buffer( m_bufferFsh, 
                                         FSH_FILES_ON_SD + FSH_FILES_ON_USB); 
-                    m_bufferFshader = nullptr; 
+                    m_bufferFsh = nullptr; 
                     }                                   
 }
 

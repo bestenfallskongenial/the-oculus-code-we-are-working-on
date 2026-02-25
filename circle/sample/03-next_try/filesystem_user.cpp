@@ -136,7 +136,7 @@ void            CKernel::util_save_modes_file       ()    // whats up here??? we
                     {
                     temp_string.Format( "# --------------------------------------------------------------------------------\n"
                                         "#  p_fileName: %s\n"
-                                        "# --------------------------------------------------------------------------------\n", g_fshScannedFileNames[i+1]);
+                                        "# --------------------------------------------------------------------------------\n", g_ScnFsh[i+1]);
                     g_modes.Append(temp_string);
                     g_modes.Append("\n");
 
@@ -193,7 +193,7 @@ bool            CKernel::filesystem_load_kernel     (   const char* p_deviceName
                     if (filesystem_open_file(p_fileName))
                     {
 
-                        loaded_bytes_kernel[p_fileIndex] = filesystem_load_file(m_bufferKernel[p_fileIndex], KRL_FILE_SIZE, 4);
+                        loaded_bytes_kernel[p_fileIndex] = filesystem_load_file(m_bufferKnl[p_fileIndex], KNL_FILE_SIZE, 4);
                         if (loaded_bytes_kernel[p_fileIndex] > 0)
                         {
                             filesystem_close_file();
@@ -224,7 +224,7 @@ bool            CKernel::filesystem_save_kernel     (   const char* p_deviceName
                     unsigned g_hFile = m_pFileSystem->FileCreate(p_fileName);
                     if (g_hFile != 0)
                     {
-                        if (m_pFileSystem->FileWrite(g_hFile, m_bufferKernel[p_fileIndex], loaded_bytes_kernel[p_fileIndex]) == loaded_bytes_kernel[p_fileIndex])
+                        if (m_pFileSystem->FileWrite(g_hFile, m_bufferKnl[p_fileIndex], loaded_bytes_kernel[p_fileIndex]) == loaded_bytes_kernel[p_fileIndex])
                         {
                             f_write_success = true;
                         }
@@ -237,6 +237,35 @@ bool            CKernel::filesystem_save_kernel     (   const char* p_deviceName
                 
                 return f_write_success;
 }
+
+bool            CKernel::filesystem_save_log_file   (   const char*         p_deviceName, 
+                                                        const char*         p_fileName, 
+                                                        const CString&      p_str_to_save)
+{
+                bool success = false;   
+                
+                CDevice *f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);  // Get partition device
+                
+                if (f_partitionName != 0 && (m_pFileSystem = new CFATFileSystem) != 0  && m_pFileSystem->Mount(f_partitionName))
+                {
+                    unsigned g_hFile = m_pFileSystem->FileCreate(p_fileName);   // Create and write shader log file
+                    if (g_hFile != 0)
+                    {
+                        
+                        if (m_pFileSystem->FileWrite(g_hFile, (const char*)p_str_to_save, p_str_to_save.GetLength()) == p_str_to_save.GetLength())   // Write the shader log
+                        {
+                            success = true;
+                        }
+                        m_pFileSystem->FileClose(g_hFile);
+                    }
+                    m_pFileSystem->UnMount();   // Unmount filesystem
+                }
+                delete m_pFileSystem;           // Cleanup filesystem object
+                m_pFileSystem = 0;
+                
+                return success;
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // helpers i didnt integrate yet, but they are here and working
 void            CKernel::GenerateH264ParserInfo( int p_fileIndex)
@@ -260,7 +289,7 @@ void            CKernel::parser_h264               (int p_fromFile, int p_toFile
 {
     for (int i = p_fromFile; i < p_toFile; i++) 
         {
-                m_H264Parser.ParseVideoAuto(i, m_bufferVideo, g_vidLoadedBytes );
+                m_H264Parser.ParseVideoAuto(i, m_bufferVid, g_bytVid );
                 GenerateH264ParserInfo  (i);
         }
 }
@@ -269,14 +298,14 @@ void            CKernel::parser_bmp               (int p_fromFile, int p_toFile)
 {
     for (int i = p_fromFile; i < p_toFile; i++) 
         {
-                m_H264Parser.ParseBPM(i, g_texScannedFileNames, m_bufferTexture, g_texLoadedBytes );
+                m_H264Parser.ParseBPM(i, g_ScnTex, m_bufferTex, g_bytTex );
                 GenerateBmpParserInfo  (i);
         }
 }
 
 void            CKernel::parser_overlay_bmp         (int p_fileIndex)
 {        
-                m_H264SystemParser.ParseBPM(p_fileIndex , g_omtScannedFileNames  /*"Overlay Atlas"*/ , m_BufferOverlayTexture, g_omtLoadedBytes );
+                m_H264SystemParser.ParseBPM(p_fileIndex , g_ScnOmt  /*"Overlay Atlas"*/ , m_BufferOmt, g_bytOmt );
 
                 GenerateBmpOverlayInfo  (p_fileIndex); // we keep the indexing maybe there will be more 
         

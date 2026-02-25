@@ -27,13 +27,13 @@ void            CKernel::gfx_program_log            (   GLint shader, int progra
                 g_log_string.Append(log_message);
 
                 char name[27];  // 40 chars + null terminator
-                strncpy(name, &m_bufferFshader[program_index][2], 26);
+                strncpy(name, &m_bufferFsh[program_index][2], 26);
 
                 name[26] = '\0';
                 log_message.Format( "%s Filename: %s Size %u\n"
                                     "----------------------------------------------------------------\n", 
-                                    name, g_fshScannedFileNames[internal_index],
-                                    g_fshLoadedBytes[program_index]);
+                                    name, g_ScnFsh[internal_index],
+                                    g_bytFsh[program_index]);
                 g_log_string.Append(log_message);
 
                 char log[1024];

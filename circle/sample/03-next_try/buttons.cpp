@@ -5,7 +5,7 @@ we need a few additions here, alittle cleanup and the question what code is the 
 */
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define BTN_PRESSED 0 // correct??
-
+/*
 enum ButtonTSIndex
 {
     BTN_STATUS      = 0,
@@ -16,6 +16,7 @@ enum ButtonTSIndex
     BTN_SINGLE      = 5,
     BTN_HOLD_TICK   = 6   // COUNTER: increases while held
 };
+*/
 // g_buttons_states[2][7]
 
 

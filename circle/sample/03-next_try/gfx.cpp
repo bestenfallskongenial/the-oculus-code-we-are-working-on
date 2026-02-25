@@ -21,7 +21,7 @@ void            CKernel::gfx_init_vshaders          (   CUBE_STATE_T *state, int
 {
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
-                    const char *SourcePrtVshader = m_bufferVshader[0]; // will be later maybe changed to multible instances of vshader
+                    const char *SourcePrtVshader = m_bufferVsh[0]; // will be later maybe changed to multible instances of vshader
 
                     state->gl_vsh_id[i] = glCreateShader(GL_VERTEX_SHADER);
                     glShaderSource(state->gl_vsh_id[i], 1, &SourcePrtVshader, 0);  // will be later maybe changed to multible instances of vshader
@@ -34,7 +34,7 @@ void            CKernel::gfx_init_vshaders          (   CUBE_STATE_T *state, int
 
 void            CKernel::gfx_init_overlay_fshader   (   CUBE_STATE_T *state )    // Function to initialize Fragment Shaders                        <- *state should change too, right?
 {
-                    const char *SourcePrtFshader = m_bufferFoverlay[0]; // because this array is only [1] for consistency
+                    const char *SourcePrtFshader = m_bufferOmf[0]; // because this array is only [1] for consistency
 
                     state->gl_oms_id[0] = glCreateShader(GL_FRAGMENT_SHADER);       // gl_oms_id is new for the overlay shader
                     glShaderSource(state->gl_oms_id[0], 1, &SourcePrtFshader, 0);   // will state not also become a seperate struct here?!
@@ -49,7 +49,7 @@ void            CKernel::gfx_init_fshaders          (   CUBE_STATE_T *state, int
 {
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
-                    const char *SourcePrtFshader = m_bufferFshader[i];
+                    const char *SourcePrtFshader = m_bufferFsh[i];
 
                     state->gl_fsh_id[i] = glCreateShader(GL_FRAGMENT_SHADER);
                     glShaderSource(state->gl_fsh_id[i], 1, &SourcePrtFshader, 0);
@@ -216,7 +216,7 @@ void            CKernel::gfx_init_overlay_texture          (   CUBE_STATE_T *sta
                 #ifdef __GL_DEBUG__
                         glslCheck();
                 #endif // __GL_DEBUG__
-                        GLvoid* bitmapData = &m_BufferOverlayTexture[0][m_H264SystemParser.m_tex_data_offset[0]]; // oh, we need to figure out how we do the bmp parsing for only the atlas!!
+                        GLvoid* bitmapData = &m_BufferOmt[0][m_H264SystemParser.m_tex_data_offset[0]]; // oh, we need to figure out how we do the bmp parsing for only the atlas!!
 
                         glTexImage2D(GL_TEXTURE_2D, 
                                    0, 
@@ -258,7 +258,7 @@ void            CKernel::gfx_init_textures          (   CUBE_STATE_T *state, int
                 #ifdef __GL_DEBUG__
                         glslCheck();
                 #endif // __GL_DEBUG__
-                        GLvoid* bitmapData = &m_bufferTexture[i][m_H264Parser.m_tex_data_offset[i]];
+                        GLvoid* bitmapData = &m_bufferTex[i][m_H264Parser.m_tex_data_offset[i]];
 
                         glTexImage2D(GL_TEXTURE_2D, 
                                    0, 

@@ -74,17 +74,34 @@ int             CKernel::filesystem_process_files   (   char* p_fileNameArray[],
                     }   
                 return p_validFiles;
 }
+
+bool            Ckernel::Mount                      (   const char* p_deviceName)
+{
+                CDevice* f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);
+
+                if (f_partitionName != 0 && (m_pFileSystem = new CFATFileSystem) != 0 && m_pFileSystem->Mount(f_partitionName))
+                {
+                    return true;
+                }
+                else
+                {
+                    delete m_pFileSystem;
+                    m_pFileSystem = 0;
+                    return false;
+                }
+}
+
 bool            CKernel::filesystem_mount           (   const char* p_deviceName, 
-                                                        char* vshaderFileNames[], 
+                                                        char* fileNamesVsh[], 
                                                         unsigned vStotalLoadedBytes[], 
                                                         int maxVshaderFiles,
-                                                        char* fshaderFileNames[], 
+                                                        char* fileNamesFsh[], 
                                                         unsigned fStotalLoadedBytes[], 
                                                         int maxFshaderFiles,
-                                                        char* textureFileNames[], 
+                                                        char* fileNamesTex[], 
                                                         unsigned tXtotalLoadedBytes[], 
                                                         int maxTextureFiles,
-                                                        char* videoFileNames[]  , 
+                                                        char* fileNamesVid[]  , 
                                                         unsigned vItotalLoadedBytes[], 
                                                         int maxVideoFiles)
 {
@@ -96,21 +113,21 @@ bool            CKernel::filesystem_mount           (   const char* p_deviceName
                     && (m_pFileSystem = new CFATFileSystem) != 0
                     && m_pFileSystem->Mount(f_partitionName))
                     {
-                    g_scanned_vsh = filesystem_ScanRootDir(vshaderFileNames, g_vhsExtensions, VSH_VALID_SUFFIX_COUNT, maxVshaderFiles);
-                    g_scanned_fsh = filesystem_ScanRootDir(fshaderFileNames, g_fhsExtensions, FSH_VALID_SUFFIX_COUNT, maxFshaderFiles);
-                    g_scanned_tex = filesystem_ScanRootDir(textureFileNames, g_texExtensions, TEX_VALID_SUFFIX_COUNT, maxTextureFiles);
-                    g_scanned_vid = filesystem_ScanRootDir(videoFileNames,   g_vidExtensions, VID_VALID_SUFFIX_COUNT, maxVideoFiles);
+                    g_scanned_vsh = filesystem_ScanRootDir(fileNamesVsh, g_SufVsh, SUFFIX_VSH, maxVshaderFiles);
+                    g_scanned_fsh = filesystem_ScanRootDir(fileNamesFsh, g_SufFsh, SUFFIX_FSH, maxFshaderFiles);
+                    g_scanned_tex = filesystem_ScanRootDir(fileNamesTex, g_SufTex, SUFFIX_TEX, maxTextureFiles);
+                    g_scanned_vid = filesystem_ScanRootDir(fileNamesVid,   g_SufVid, SUFFIX_VID, maxVideoFiles);
 
-                    g_loaded_vsh_new = filesystem_process_files(  vshaderFileNames, vStotalLoadedBytes, m_bufferVshader, 
+                    g_loaded_vsh_new = filesystem_process_files(  fileNamesVsh, vStotalLoadedBytes, m_bufferVsh, 
                                                                 g_scanned_vsh, g_loaded_vsh_new, VSH_FILE_SIZE, 0);  // The file system was mounted successfully                 
                     m_Watchdog.Start(8);        
-                    g_loaded_fsh_new = filesystem_process_files(  fshaderFileNames, fStotalLoadedBytes, m_bufferFshader, 
+                    g_loaded_fsh_new = filesystem_process_files(  fileNamesFsh, fStotalLoadedBytes, m_bufferFsh, 
                                                                 g_scanned_fsh, g_loaded_fsh_new, FSH_FILE_SIZE, 1);                               
                     m_Watchdog.Start(8);    
-                    g_loaded_tex_new = filesystem_process_files(  textureFileNames, tXtotalLoadedBytes, m_bufferTexture, 
+                    g_loaded_tex_new = filesystem_process_files(  fileNamesTex, tXtotalLoadedBytes, m_bufferTex, 
                                                                 g_scanned_tex, g_loaded_tex_new, TEX_FILE_SIZE, 2);                                   
                     m_Watchdog.Start(8);    
-                    g_loaded_vid_new = filesystem_process_files(  videoFileNames  , vItotalLoadedBytes, m_bufferVideo  , 
+                    g_loaded_vid_new = filesystem_process_files(  fileNamesVid  , vItotalLoadedBytes, m_bufferVid  , 
                                                                 g_scanned_vid  , g_loaded_vid_new , VID_FILE_SIZE  , 3);                                
                     m_Watchdog.Start(8);    
                     m_pFileSystem->UnMount();
@@ -262,7 +279,7 @@ bool            CKernel::filesystem_load_kernel     (   const char* p_deviceName
                     if (filesystem_open_file(p_fileName))
                     {
 
-                        loaded_bytes_kernel[p_fileIndex] = filesystem_load_file(m_bufferKernel[p_fileIndex], KRL_FILE_SIZE, 4);
+                        loaded_bytes_kernel[p_fileIndex] = filesystem_load_file(m_bufferKnl[p_fileIndex], KNL_FILE_SIZE, 4);
                         if (loaded_bytes_kernel[p_fileIndex] > 0)
                         {
                             filesystem_close_file();
@@ -293,7 +310,7 @@ bool            CKernel::filesystem_save_kernel     (   const char* p_deviceName
                     unsigned g_hFile = m_pFileSystem->FileCreate(p_fileName);
                     if (g_hFile != 0)
                     {
-                        if (m_pFileSystem->FileWrite(g_hFile, m_bufferKernel[p_fileIndex], loaded_bytes_kernel[p_fileIndex]) == loaded_bytes_kernel[p_fileIndex])
+                        if (m_pFileSystem->FileWrite(g_hFile, m_bufferKnl[p_fileIndex], loaded_bytes_kernel[p_fileIndex]) == loaded_bytes_kernel[p_fileIndex])
                         {
                             success = true;
                         }

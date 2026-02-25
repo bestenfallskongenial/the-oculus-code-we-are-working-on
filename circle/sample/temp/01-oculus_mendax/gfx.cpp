@@ -33,13 +33,13 @@ void            CKernel::gfx_program_log            (   GLint shader, int progra
                 g_log_string.Append(log_message);
 
                 char name[27];  // 40 chars + null terminator
-                strncpy(name, &m_bufferFshader[program_index][2], 26);
+                strncpy(name, &m_bufferFsh[program_index][2], 26);
 
                 name[26] = '\0';
                 log_message.Format( "%s Filename: %s Size %u\n"
                                     "----------------------------------------------------------------\n", 
-                                    name, g_fshScannedFileNames[internal_index],
-                                    g_fshLoadedBytes[program_index]);
+                                    name, g_ScnFsh[internal_index],
+                                    g_bytFsh[program_index]);
                 g_log_string.Append(log_message);
 
                 char log[1024];
@@ -322,7 +322,7 @@ void            CKernel::gfx_init_vshaders          (   CUBE_STATE_T *state, int
 {
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
-                    const char *SourcePrtVshader = m_bufferVshader[0]; // will be later maybe changed to multible instances of vshader
+                    const char *SourcePrtVshader = m_bufferVsh[0]; // will be later maybe changed to multible instances of vshader
 
                     state->gl_vsh_id[i] = glCreateShader(GL_VERTEX_SHADER);
                     glShaderSource(state->gl_vsh_id[i], 1, &SourcePrtVshader, 0);  // will be later maybe changed to multible instances of vshader
@@ -337,7 +337,7 @@ void            CKernel::gfx_init_fshaders          (   CUBE_STATE_T *state, int
 {
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
-                    const char *SourcePrtFshader = m_bufferFshader[i];
+                    const char *SourcePrtFshader = m_bufferFsh[i];
 
                     state->gl_fsh_id[i] = glCreateShader(GL_FRAGMENT_SHADER);
                     glShaderSource(state->gl_fsh_id[i], 1, &SourcePrtFshader, 0);
@@ -453,7 +453,7 @@ void            CKernel::gfx_init_textures          (   CUBE_STATE_T *state, int
 #ifdef __GL_DEBUG__
                     glslCheck();
 #endif // __GL_DEBUG__
-                        GLvoid* bitmapData = &m_bufferTexture[i][m_H264Parser.m_tex_data_offset[i]];
+                        GLvoid* bitmapData = &m_bufferTex[i][m_H264Parser.m_tex_data_offset[i]];
 
                         glTexImage2D(GL_TEXTURE_2D, 
                                    0, 
