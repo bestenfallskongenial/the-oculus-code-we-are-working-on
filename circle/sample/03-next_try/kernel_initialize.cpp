@@ -27,7 +27,7 @@ boolean bOK = TRUE;
                     }
                 if (bOK)
                     {
-                    bOK = display_startup_screen(&state); // we need to initialize the display before the timer, because the timer is used in the display initialization for the startup screen and if the timer is not initialized, it will cause a crash
+                    bOK = display_startup_screen(&m_glsl); // we need to initialize the display before the timer, because the timer is used in the display initialization for the startup screen and if the timer is not initialized, it will cause a crash
                     }
                 if (bOK)
                     {
@@ -62,7 +62,7 @@ boolean bOK = TRUE;
                 }
                 if (bOK)
                 {
-                    gfx_init_OGL(&state); // we need to initialize the graphics before the shared memory, because the shared memory uses the graphics for initialization and if the graphics is not initialized, it will cause a crash when the shared memory tries to access the graphics
+                    gfx_init_OGL(&m_glsl); // we need to initialize the graphics before the shared memory, because the shared memory uses the graphics for initialization and if the graphics is not initialized, it will cause a crash when the shared memory tries to access the graphics
                     m_Timer.MsDelay(200);
                 }
                 if (bOK)
@@ -124,8 +124,8 @@ boolean bOK = TRUE;
                                                             m_frameBlockSizeA,
                                                             VIDEO_WIDTH,
                                                             VIDEO_HEIGHT,
-                                                            state.display,
-                                                            state.context
+                                                            m_glsl.display,
+                                                            m_glsl.context
                                                             );
                     }
                 if (bOK)

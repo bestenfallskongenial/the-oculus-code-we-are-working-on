@@ -1,5 +1,5 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::gfx_init_OGL               (   CUBE_STATE_T *state)
+void            CKernel::gfx_init_OGL               (   glsl_states *m_glsl)
 {
                 int32_t success = 0;
                 EGLBoolean result;
@@ -29,19 +29,19 @@ void            CKernel::gfx_init_OGL               (   CUBE_STATE_T *state)
 
                 EGLConfig config;
                 
-                state->display = eglGetDisplay                      (   EGL_DEFAULT_DISPLAY     );  // get an EGL display connection
+                m_glsl->display = eglGetDisplay                      (   EGL_DEFAULT_DISPLAY     );  // get an EGL display connection
 #ifdef __OLG_DEBUG__                
-                assert(state->display!=EGL_NO_DISPLAY);
+                assert(m_glsl->display!=EGL_NO_DISPLAY);
                 glslCheck();
 #endif // __OLG_DEBUG__
-                result = eglInitialize                              (   state->display,         // initialize the EGL display connection
+                result = eglInitialize                              (   m_glsl->display,         // initialize the EGL display connection
                                                                         NULL, 
                                                                         NULL                    );
 #ifdef __OLG_DEBUG__
                 assert(EGL_FALSE != result);//?
                 glslCheck();
 #endif // __OLG_DEBUG__
-                result = eglChooseConfig                            (   state->display,         // get an appropriate EGL frame buffer configuration 
+                result = eglChooseConfig                            (   m_glsl->display,         // get an appropriate EGL frame buffer configuration 
                                                                         attribute_list, 
                                                                         &config, 
                                                                         1, 
@@ -55,35 +55,35 @@ void            CKernel::gfx_init_OGL               (   CUBE_STATE_T *state)
                 assert(EGL_FALSE != result);//?
                 glslCheck();
 #endif // __OLG_DEBUG__
-                state->context = eglCreateContext                   (   state->display,         // create an EGL rendering context
+                m_glsl->context = eglCreateContext                   (   m_glsl->display,         // create an EGL rendering context
                                                                         config, 
                                                                         EGL_NO_CONTEXT, 
                                                                         context_attributes      );
 #ifdef __OLG_DEBUG__
-                assert(state->context!=EGL_NO_CONTEXT);//?
+                assert(m_glsl->context!=EGL_NO_CONTEXT);//?
                 glslCheck();
 #endif // __OLG_DEBUG__
                 success = graphics_get_display_size                 (   0 /* LCD */,            // create an EGL window surface
-                                                                        &state->screen_width, 
-                                                                        &state->screen_height   );
+                                                                        &m_glsl->screen_width, 
+                                                                        &m_glsl->screen_height   );
 #ifdef __OLG_DEBUG__
                 assert( success >= 0 );
 #endif // __OLG_DEBUG__
                 dst_rect.x = 0;
                 dst_rect.y = 0;
-                dst_rect.width = state->screen_width;
-                dst_rect.height = state->screen_height;
+                dst_rect.width = m_glsl->screen_width;
+                dst_rect.height = m_glsl->screen_height;
       
                 src_rect.x = 0;
                 src_rect.y = 0;
-                src_rect.width = state->screen_width << 16;
-                src_rect.height = state->screen_height << 16;        
+                src_rect.width = m_glsl->screen_width << 16;
+                src_rect.height = m_glsl->screen_height << 16;        
 
-                state->dispman_display = vc_dispmanx_display_open   (   0 /* LCD */ );
+                m_glsl->dispman_display = vc_dispmanx_display_open   (   0 /* LCD */ );
                 dispman_update = vc_dispmanx_update_start( 0 );
       
-                state->dispman_element = vc_dispmanx_element_add    (   dispman_update, 
-                                                                        state->dispman_display,
+                m_glsl->dispman_element = vc_dispmanx_element_add    (   dispman_update, 
+                                                                        m_glsl->dispman_display,
                                                                         0/*layer*/, 
                                                                         &dst_rect, 
                                                                         0/*src*/,
@@ -93,26 +93,26 @@ void            CKernel::gfx_init_OGL               (   CUBE_STATE_T *state)
                                                                         0 /*clamp*/, 
                                                                         DISPMANX_NO_ROTATE /*transform*/ );   // was 0/*transform*/ before DISPMANX_ROTATE_90 
       
-                nativewindow.element = state->dispman_element;
-                nativewindow.width = state->screen_width;
-                nativewindow.height = state->screen_height;
+                nativewindow.element = m_glsl->dispman_element;
+                nativewindow.width = m_glsl->screen_width;
+                nativewindow.height = m_glsl->screen_height;
 
                 vc_dispmanx_update_submit_sync                      (   dispman_update  );
 #ifdef __OLG_DEBUG__
                 glslCheck();
 #endif // __OLG_DEBUG__            
-                state->surface = eglCreateWindowSurface             (   state->display, 
+                m_glsl->surface = eglCreateWindowSurface             (   m_glsl->display, 
                                                                         config, 
                                                                         &nativewindow, 
                                                                         NULL            );
 #ifdef __OLG_DEBUG__
-                assert(state->surface != EGL_NO_SURFACE);//?
+                assert(m_glsl->surface != EGL_NO_SURFACE);//?
                 glslCheck();
 #endif // __OLG_DEBUG__                
-                result = eglMakeCurrent                             (   state->display,     // connect the context to the surface
-                                                                        state->surface, 
-                                                                        state->surface, 
-                                                                        state->context  );
+                result = eglMakeCurrent                             (   m_glsl->display,     // connect the context to the surface
+                                                                        m_glsl->surface, 
+                                                                        m_glsl->surface, 
+                                                                        m_glsl->context  );
 #ifdef __OLG_DEBUG__
                 assert(EGL_FALSE != result);//?
                 glslCheck();

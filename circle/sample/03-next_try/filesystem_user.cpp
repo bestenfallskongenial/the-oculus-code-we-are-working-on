@@ -12,7 +12,7 @@ bool            CKernel::util_check_for_update      ()
 {
                 CString line;    
 
-                // Read physical pin state - 0 means pressed, 1 means released
+                // Read physical pin status - 0 means pressed, 1 means released
                 unsigned pinStateA = CGPIOPin(SW_PIN_A, GPIOModeInputPullUp).Read();
 
                 // If button A is pressed (pinStateA == 0)  

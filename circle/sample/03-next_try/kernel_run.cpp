@@ -23,16 +23,17 @@ TShutdownMode   CKernel::Run(void)
                     }
 }
 
+// i have some confusion about the array filecounter and what field ocupies what here!?
 
                 CKernel::wrapper_load_from_sd()
 {
                 if(Mount( PARTITION_NAME_SD ))
                     {
-                    filesystem_ScanRootDir(     g_ScnVsh, 
-                                                g_SufVsh, 
-                                                SUFFIX_VSH, 
-                                                filecounter[scanned][vsh], 
-                                                filecounter[maxSD][vsh]);
+                    filesystem_ScanRootDir(     g_ScnVsh,                           // where we store the valid filenames we find
+                                                g_SufVsh,                           // the array of valid file extensions for this type of file
+                                                SUFFIX_VSH,                         // how many valid file extensions we have in the array above also part of filecounter?
+                                                filecounter[scanned][vsh],          // <- has to be initialised with 0 before calling this function
+                                                filecounter[maxSD][vsh]);           // how many files are allowed to scan and stored in the array
                     filesystem_ScanRootDir(     g_ScnOmf, 
                                                 g_SufOmf, 
                                                 SUFFIX_OMF, 
@@ -60,12 +61,12 @@ TShutdownMode   CKernel::Run(void)
                                                 filecounter[maxSD][vid]);
 
                     m_Watchdog.Start(8);
-                    filesystem_process_files(   g_ScnVsh, 
-                                                g_bytVsh, 
-                                                m_bufferVsh, 
-                                                filecounter[scanned][vsh], 
-                                                filecounter[count][vsh], 
-                                                VSH_FILE_SIZE, 
+                    filesystem_process_files(   g_ScnVsh,                           // where we have stored the filenames 
+                                                g_bytVsh,                           // where we store the loaded bytes for each file 
+                                                m_bufferVsh,                        // where we store the loaded file data for each file
+                                                filecounter[scanned][vsh],          // how many files we are allowed to process
+                                                filecounter[count][vsh],            // <- is directly modified in the function, we dont need to return it
+                                                VSH_FILE_SIZE,                      // maximum size for each file
                                                 0);              
                     m_Watchdog.Start(8);                                                                                
                     filesystem_process_files(   g_ScnOmf, 
@@ -120,32 +121,32 @@ TShutdownMode   CKernel::Run(void)
                                                 g_SufVsh, 
                                                 SUFFIX_VSH, 
                                                 filecounter[scanned][vsh], 
-                                                filecounter[maxSD][vsh]);
+                                                filecounter[maxUsb][vsh]);
                     filesystem_ScanRootDir(     g_ScnOmf, 
                                                 g_SufOmf, 
                                                 SUFFIX_OMF, 
                                                 filecounter[scanned][omf], 
-                                                filecounter[maxSD][omf]);                
+                                                filecounter[maxUsb][omf]);                
                     filesystem_ScanRootDir(     g_ScnFsh, 
                                                 g_SufFsh, 
                                                 SUFFIX_FSH, 
                                                 filecounter[scanned][fsh], 
-                                                filecounter[maxSD][fsh]);
+                                                filecounter[maxUsb][fsh]);
                     filesystem_ScanRootDir(     g_ScnOmt, 
                                                 g_SufOmt, 
                                                 SUFFIX_OMT, 
                                                 filecounter[scanned][omt], 
-                                                filecounter[maxSD][omt]);                
+                                                filecounter[maxUsb][omt]);                
                     filesystem_ScanRootDir(     g_ScnTex, 
                                                 g_SufTex, 
                                                 SUFFIX_TEX, 
                                                 filecounter[scanned][tex], 
-                                                filecounter[maxSD][tex]);
+                                                filecounter[maxUsb][tex]);
                     filesystem_ScanRootDir(     g_ScnVid, 
                                                 g_SufVid, 
                                                 SUFFIX_VID, 
                                                 filecounter[scanned][vid], 
-                                                filecounter[maxSD][vid]);
+                                                filecounter[maxUsb][vid]);
 
                     m_Watchdog.Start(8);
                     filesystem_process_files(   g_ScnVsh, 

@@ -1,6 +1,6 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
-we need a few additions here, alittle cleanup and the question what code is the best for my need, i tend for  b but maybe c, there should be a clearer state differentiation and also a click reset?!
+we need a few additions here, alittle cleanup and the question what code is the best for my need, i tend for  b but maybe c, there should be a clearer status differentiation and also a click reset?!
 
 */
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

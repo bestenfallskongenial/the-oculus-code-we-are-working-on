@@ -1,8 +1,9 @@
 // STYLE: stop auto completion! STOP IT!
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include "kernel.h"     
 
-#include <linux/kernel.h> // here or in the kernel.h?
-
+// #include <linux/kernel.h> // here or in the kernel.h? i move it to kernel.h, seems to be an artifact
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define LOG_NAME "VCSM"
 
                 static  const char              FromKernel[] = "kernel";                                // for logging? here not in kernel.h?
@@ -29,9 +30,18 @@
                     m_ChipSelectPin(CS_PIN, GPIOModeOutput),                                            // the same again?
 	                m_Button_A (SW_PIN_A), m_Button_B (SW_PIN_B),                                       // the two buttons i have
 
-                    state{},                                                                            // an instance of the glsl parameter struct - but i a) tend to use simple global variables or b) split state into more structs
+                    m_glsl{},                                                                            // an instance of the glsl parameter struct - but i a) tend to use simple global variables or b) split m_glsl into more structs
 
-                    m_bufferVid(nullptr),                                                               // love to have a struc that also covers the non-dma buffers
+                    m_videoBuffer{},                                                                    // use the struct bufferInfo instead of multiple variables for the video buffer
+                    m_bufferFrameA{},
+                    m_bufferFrameB{},
+                    m_bufferTexture{},
+                    m_bufferTex{};                                                                      // i assume i can use it for the non dma buffers too
+                    m_bufferKnl{},
+                    m_bufferVsh{},
+                    m_bufferFsh{},
+/*
+                    m_bufferVid(nullptr),                                                               
                     m_videoBlockBase(nullptr),
                     m_videoRawBlock(nullptr),
                     m_videoBlockSize(0),
@@ -50,13 +60,15 @@
                     m_bufferKnl(nullptr),
                     m_bufferVsh(nullptr), 
                     m_bufferFsh(nullptr),
-
+*/
                     m_USBhasLoadOnes(false),                                                            // we load only one time from usb, sorry user!
                     m_resetFlag(false)                                                                  // determine if the main while loop runs
                     {
 	                m_ActLED.Blink (5);	                                                                // blink blink - show we are alive can i remove it and m_ActLED ??
                     }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                    
                 CKernel::~CKernel (void)                                                                // my deconstructor
                     {
                     memory_clean_up();                                                                  // despite the fact that i dont use it anyway dont i need also a glsl cleanup for example?
                     }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

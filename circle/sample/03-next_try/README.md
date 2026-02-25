@@ -112,46 +112,46 @@ filesystem_user.cpp
 
 gfx.cpp                                                                                         *   look up circle/sample/03-next_try/temp/the functions.cpp!!!
 
-                        -   gfx_init_vshaders           (   CUBE_STATE_T *state, 
+                        -   gfx_init_vshaders           (   glsl_states *m_glsl, 
                                                             int p_fromFile, 
                                                             int p_toFile) 
 
-                        -   gfx_init_overlay_fshader    (   CUBE_STATE_T *state )               *   NEW
+                        -   gfx_init_overlay_fshader    (   glsl_states *m_glsl )               *   NEW
 
-                        -   gfx_init_fshaders           (   CUBE_STATE_T *state, 
+                        -   gfx_init_fshaders           (   glsl_states *m_glsl, 
                                                             int p_fromFile, 
                                                             int p_toFile) 
 
-                        -   gfx_init_overlay_program    (   CUBE_STATE_T *state)                *   NEW
+                        -   gfx_init_overlay_program    (   glsl_states *m_glsl)                *   NEW
 
-                        -   gfx_init_programs           (   CUBE_STATE_T *state, 
+                        -   gfx_init_programs           (   glsl_states *m_glsl, 
                                                             int p_fromFile, 
                                                             int p_toFile)       
 
-                        -   gfx_init_overlay_uniforms   (   CUBE_STATE_T *state)                *   NEW
+                        -   gfx_init_overlay_uniforms   (   glsl_states *m_glsl)                *   NEW
 
-                        -   gfx_init_uniforms           (   CUBE_STATE_T *state, 
+                        -   gfx_init_uniforms           (   glsl_states *m_glsl, 
                                                             int p_fromFile, 
                                                             int p_toFile)
 
-                        -   gfx_init_overlay_texture    (   CUBE_STATE_T *state)                *   NEW
+                        -   gfx_init_overlay_texture    (   glsl_states *m_glsl)                *   NEW
 
-                        -   gfx_init_textures           (   CUBE_STATE_T *state, 
+                        -   gfx_init_textures           (   glsl_states *m_glsl, 
                                                             int p_fromFile, 
                                                             int p_toFile)       
 
-                        -   gfx_init_v_buffer           (   CUBE_STATE_T *state) 
+                        -   gfx_init_v_buffer           (   glsl_states *m_glsl) 
 
-                        -   gfx_render_shader_a         (   CUBE_STATE_T *state)
+                        -   gfx_render_shader_a         (   glsl_states *m_glsl)
 
                         /   we need the "render the overlay display fragment shader"!!!         *   look up circle/sample/03-next_try/temp/the functions.cpp!!!
 
-                        -   gfx_render_shader_b         (   CUBE_STATE_T* state)
+                        -   gfx_render_shader_b         (   glsl_states* m_glsl)
 
 
 gfx_OGL.cpp                         
 
-                        -   gfx_init_OGL                (   CUBE_STATE_T *state)
+                        -   gfx_init_OGL                (   glsl_states *m_glsl)
 
 gfx_debug.cpp                       
 

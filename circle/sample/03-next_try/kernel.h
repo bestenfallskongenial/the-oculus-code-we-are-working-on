@@ -221,6 +221,50 @@ enum colorindex
 	colorindexcount // to define the array size, must be last
 };
 
+struct bufferInfo {
+    void* buffer;
+    void* blockBase;
+    void* blockRaw;
+    uint32_t blockSize;
+}; // answer, can i use it also for m_bufferTex? 
+
+struct glsl_states									// we will  rework this here! seperation of the dispmax/egl - the user shader / overlay shader, vertex, buffer?? means 5 instead of one?
+	{
+	// EGL Window
+   	uint32_t screen_width;
+   	uint32_t screen_height;
+ 
+   	DISPMANX_ELEMENT_HANDLE_T dispman_element;
+   	DISPMANX_DISPLAY_HANDLE_T dispman_display;
+
+   	EGLDisplay display;
+   	EGLSurface surface;
+   	EGLContext context;
+	// GL Handles
+   	GLuint gl_vsh_id[VSH_FILES_ON_SD+VSH_FILES_ON_USB];
+   	GLuint gl_fsh_id[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
+
+   	GLuint gl_prg_id[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
+
+	GLuint gl_tex_id[TEX_FILES_ON_SD+TEX_FILES_ON_USB];
+	GLint  u_tex_id[FSH_FILES_ON_SD+FSH_FILES_ON_USB][TEX_FILES_ON_SD+TEX_FILES_ON_USB];
+
+   	GLuint gl_buf; // buffer
+	GLuint gl_vtx; // vertex
+
+	GLint u_time[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
+	GLint u_tres[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
+	GLint u_seed[FSH_FILES_ON_SD+FSH_FILES_ON_USB];	
+	GLint u_aud[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
+	GLint u_col[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
+
+	GLint u_par_a[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
+	GLint u_par_b[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
+    GLint u_tex_l[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
+	};
+
+
+
 // list of extensions used in my scanroot directory function per filetype 
         const   char                   *g_SufVsh[SUFFIX_VSH]			= { "vsh" }; 
         const   char                   *g_SufOmf[SUFFIX_FSH]			= { "omf" };	// is a fsh file but used for the overlay atlas
@@ -244,6 +288,17 @@ enum colorindex
                 unsigned                g_bytTex[TEX_FILES_ON_SD + TEX_FILES_ON_USB]        	= { 0 };
                 unsigned                g_bytVid[VID_FILES_ON_SD + VID_FILES_ON_USB]          = { 0 };
 
+
+	glsl_states  		m_glsl;
+	bufferInfo			m_videoBuffer;
+	bufferInfo			m_bufferFameA;
+	bufferInfo			m_bufferFameB;
+	bufferInfo			m_bufferTex;
+	bufferInfo			m_bufferVsh;
+	bufferInfo			m_bufferFsh;
+	bufferInfo			m_bufferOmt;
+	bufferInfo			m_bufferOmf;
+	bufferInfo			m_bufferKnl;
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #endif // _kernel_h
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
