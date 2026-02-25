@@ -89,7 +89,7 @@ bool            CKernel::util_check_for_update      ()
                 return false;      
 }
 
-void            CKernel::util_save_modes_file       ()    // whats up here??? we will need to rewite this - also do we need a parser and a loader for this file!
+void            CKernel::util_save_modes_file       ()    // whats up here??? we will need to rewrite this - also do we need a parser and a loader for this file!
 {
                 CString temp_string;
 

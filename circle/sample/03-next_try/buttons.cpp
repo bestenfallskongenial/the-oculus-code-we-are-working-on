@@ -168,3 +168,43 @@ void CKernel::button_ping(int p_btn_id)
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// okay i need a consumer that processes the output from the g_buttons_states menu.
+// here the menu functionality:
+// no button pressed means i am in menu_layer 0, i will keep track of the last of menu_layer 1 or 2 for my leds, indicating the last "group" i modified
+// only single presses ( beneath the long / double click threshold ) will store a global timestamp variable g_for_my_bpm_function
+// hold the upper button will enter the menu_layer 1, 
+// hold the lower button will enter the menu_layer 2,
+// hold the lower button and single press the upper button will enter the menu_layer 3, 
+// than when i press the upper button again while still holding the lower button, and so on, until i release the lower button 
+// there will be a global wrapp around variable for the menu_layer g_max_layers
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+void consumer()
+{
+    if (g_buttons_states[0][BTN_SINGLE] == 1)
+    {
+        g_buttons_states[0][BTN_SINGLE] = 0; // consume event
+        g_for_my_bpm_function = g_currentTime; // store timestamp for bpm function
+    }
+
+    if (g_buttons_states[1][BTN_SINGLE] == 1)
+    {
+        g_buttons_states[1][BTN_SINGLE] = 0;            // consume event
+        g_for_my_bpm_function = g_currentTime;          // store timestamp for bpm function
+    }
+
+    if (g_buttons_states[0][BTN_LONG] == 1 && g_buttons_states[1][BTN_STATUS] == BTN_PRESSED)
+    {
+        
+        g_buttons_states[0][BTN_SINGLE] = 0;            // consume single event to prevent re-entry until next single press        
+        menu_layer = (menu_layer + 1) % g_max_layers;   // we inc menu_layer here, we wrapp around max_layers
+    }
+    else if (g_buttons_states[0][BTN_LONG] == 1)
+    {
+        menu_layer = 1;                                 // enter menu_layer 1 - what happens here when i consume the long event? that does button_ping right?
+    }
+    else if (g_buttons_states[1][BTN_LONG] == 1)
+    {
+        menu_layer = 2;                                 // enter menu_layer 2 - what happens here when i consume the long event? that does button_ping right?
+    }
+}

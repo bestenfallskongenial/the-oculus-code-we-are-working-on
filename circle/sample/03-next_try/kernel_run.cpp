@@ -200,3 +200,35 @@ TShutdownMode   CKernel::Run(void)
                     CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
                     }
 }
+
+CKernel::wrapper_modes ()
+{
+        menu_reset_pickup_flags();
+
+        switch (current_menu_layer)
+            {
+            case 0:
+                menu_mode_assign_group(1,  0);   // CH0–CH3
+                break;
+            case 1:
+                menu_mode_assign_group(2,  4);   // CH4–CH7
+                break;
+            case 2:
+                menu_mode_assign_group(3,  8);   // LFO
+                break;
+            default:
+                break;
+            }
+            
+        apply_mode_to_channel(0);
+        apply_mode_to_channel(1);
+        apply_mode_to_channel(2);
+        apply_mode_to_channel(3);
+        apply_mode_to_channel(4);
+        apply_mode_to_channel(5);
+        apply_mode_to_channel(6);
+        apply_mode_to_channel(7);
+
+        apply_state_to_led();    // we have to write this function 
+}        
+

@@ -77,7 +77,10 @@
 #define         SD_LINE_TO_MASK(line)	(1 << (line))						// dont touch!
 #define         SD_LINES_MASK		 	(  SD_LINE_TO_MASK (SD_LINE1) )		// dont touch!
 
-#define         ADC_CHANNEL			    7		                    // 7 ( for mcp3008 ) - is never nowhere used?!
+#define			TIMEOUT					10
+#define         ADC_CHANNELS         	8
+#define 		ADC_BUFFER				4
+// #define         ADC_CHANNEL			    7		                    // 7 ( for mcp3008 ) - is never nowhere used?!
 #define         ADC_VOLT_REF		    5.0f	                    // Reference voltage 5 Volt
 #define         SPI_MASTER_DEVICE	 	0		                    // 0
 #define         SPI_CHIP_SELECT		 	0		                    // 0
@@ -98,6 +101,11 @@
 #define 		CHUNK_SIZE				1024
 
 #define 		ADC_TOLERANCE 		    8
+
+#define 		ADC_SELECT_PRG			7	// adc channel to choose the glsl-u_program_handle
+#define			ADC_SELECT_TEX			6	// adc channel to choose the texture
++define			ADC_SELECT_VID   		4	// adc channel to choose the video ! BIGGER THAN 3 !
+#define			ADC_INPUT_CLK			5	// adc channel use as clock ! BIGGER THAN 3 !
 
 #define			KNL_FILE_SIZE		    (1024*1024*2) 	// 2mb must be sufficient here ( i confused the kernel size by the factor 10 )
 #define         VSH_FILE_SIZE           (1024*32) 		// 32768 size of u_vertex shader files
@@ -129,7 +137,28 @@ enum TShutdownMode
 	ShutdownReboot
 };
 
-enum modetable
+    uint8_t menu_map_max[12] =	// this is need because the common map function need uper limits depending on g_channel_mode_capability, otherwhise we map to much / less
+        {
+            5, 5, 5, 5,
+            5, 5, 5, 5,
+            4, 4, 7, 7
+        };
+
+    // per-channel, per-mode capability (boolean) 
+
+    const bool g_channel_mode_capability[ADC_CHANNELS][NUMBER_OF_MODES] = // we need this to keep track what channel can use what mode in apply_mode_to_channel
+        {
+            { true, true, true, true, true, false },
+            { true, true, true, true, true, false },
+            { true, true, true, true, true, false },
+            { true, true, true, true, true, false },
+            { true, true, true, true, true, false },
+            { true, true, true, true, true, false },
+            { true, true, true, true, true, false },
+            { true, true, true, true, true, false }
+        };
+
+enum modetable		// for the g_centralModeBuffer array
 {
 	CH0_MODE = 0,
 	CH1_MODE,
@@ -146,6 +175,7 @@ enum modetable
 	FRM_MODE,
 	TEX_MODE,
 	CLK_MODE,
+	VID_MODE,
 	modetablecount
 }
 
@@ -214,7 +244,7 @@ enum colorindex
 	LF1,			// lfo mode 1
 	LF2,			// lfo mode 2
 	CLK,			// clock mode? do we have one ?!
-	A_0,		
+	A_0,			// for the old audio 
 	A_1,
 	A_2,
 	A_3,
@@ -227,6 +257,13 @@ struct bufferInfo {
     void* blockRaw;
     uint32_t blockSize;
 }; // answer, can i use it also for m_bufferTex? 
+
+struct RGB
+{
+	uint8_t red;
+	uint8_t grn;
+	uint8_t blu;
+};
 
 struct glsl_states									// we will  rework this here! seperation of the dispmax/egl - the user shader / overlay shader, vertex, buffer?? means 5 instead of one?
 	{

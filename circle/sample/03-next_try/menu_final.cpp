@@ -2,26 +2,6 @@
 /*
     for kernel.h // global.* - but i like to move global back to kernel.h
 
-    uint8_t menu_map_max[12] =
-        {
-            5, 5, 5, 5,
-            5, 5, 5, 5,
-            4, 4, 7, 7
-        };
-
-    // per-channel, per-mode capability (boolean) 
-
-    const bool g_channel_mode_capability[ADC_CHANNELS][NUMBER_OF_MODES] =
-        {
-            { true, true, true, true, true, false },
-            { true, true, true, true, true, false },
-            { true, true, true, true, true, false },
-            { true, true, true, true, true, false },
-            { true, true, true, true, true, false },
-            { true, true, true, true, true, false },
-            { true, true, true, true, true, false },
-            { true, true, true, true, true, false }
-        };
 
     //  this is how we do it calls:
 
@@ -104,9 +84,7 @@ void CKernel::menu_mode_assign_group(uint8_t menu_id, uint8_t base)
 
 void CKernel::apply_mode_to_channel(int channel)
 {
-if (!g_channel_mode_capability
-        [channel]
-        [g_centralModeBuffer[channel][g_currentProgramBuffer]])
+if (!g_channel_mode_capability[channel][g_centralModeBuffer[channel][g_currentProgramBuffer]])
     return;
 
 
@@ -125,11 +103,11 @@ if (!g_channel_mode_capability
         break;
 
         case 3:
-            modeLF1 ();
+            modeLF1 (channel);
         break;
 
         case 4:
-            modeLF2 ();
+            modeLF2 (channel);
         break;
     }
 }
