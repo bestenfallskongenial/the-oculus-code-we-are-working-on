@@ -398,3 +398,73 @@ void            CKernel::util_audio_energy          (float p_adcvalue)
                 f_indexBand2 = (f_indexBand2 + 1) % f_averageBufferSizeTable[2][g_sensitivityNew];
                 f_indexBand3 = (f_indexBand3 + 1) % f_averageBufferSizeTable[3][g_sensitivityNew];
 }
+
+// after getting fucked in my head we finally found the deterministic function i am looking for!
+
+#define BTN_PRESSED 0
+
+enum ButtonTSIndex
+{
+    BTN_PRESS_START = 0, // timestamp when press starts, 0 = currently up
+    BTN_RELEASE     = 1, // timestamp of last release (double-click window anchor)
+    BTN_HOLD_TICK   = 2, // increments while held after long threshold
+    BTN_SINGLE      = 3, // one-cycle pulse on press edge
+    BTN_DOUBLE      = 4  // one-cycle pulse on second press edge in double window
+};
+
+// 2 buttons, 5 fields each (no BTN_STATUS needed)
+unsigned int g_buttons_states[2][5] = {0};
+
+void CKernel::button_ping(int p_btn_id, int pin)
+{
+    g_buttons_states[p_btn_id][BTN_SINGLE] = 0;
+    g_buttons_states[p_btn_id][BTN_DOUBLE] = 0;
+
+//  g_buttons_states[p_btn_id][BTN_STATUS] = CGPIOPin(pin, GPIOModeInputPullUp).Read();    
+
+     if (CGPIOPin(pin, GPIOModeInputPullUp).Read() == BTN_PRESSED &&
+//   if (g_buttons_states[p_btn_id][BTN_STATUS] == BTN_PRESSED &&     
+        g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
+    {
+        g_buttons_states[p_btn_id][BTN_PRESS_START] = g_currentTime;
+        g_buttons_states[p_btn_id][BTN_SINGLE] = 1;
+
+        if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 &&
+            (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) < g_double_click_time)
+            g_buttons_states[p_btn_id][BTN_DOUBLE] = 1;
+
+        g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
+    }
+
+    if (CGPIOPin(pin, GPIOModeInputPullUp).Read() != BTN_PRESSED &&
+//  if (g_buttons_states[p_btn_id][BTN_STATUS] != BTN_PRESSED &&    
+        g_buttons_states[p_btn_id][BTN_PRESS_START] != 0)
+    {
+        g_buttons_states[p_btn_id][BTN_RELEASE]     = g_currentTime;
+        g_buttons_states[p_btn_id][BTN_PRESS_START] = 0;
+        g_buttons_states[p_btn_id][BTN_HOLD_TICK]   = 0;
+    }
+
+    if (g_buttons_states[p_btn_id][BTN_PRESS_START] != 0 &&
+        (g_currentTime - g_buttons_states[p_btn_id][BTN_PRESS_START]) >= g_long_click_time)
+    {
+        g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
+    }
+}
+
+void CKernel::button_consumer(int p_btn_id)
+{
+    if (g_buttons_states[p_btn_id][BTN_SINGLE]) counter += 1;
+    if (g_buttons_states[p_btn_id][BTN_DOUBLE]) counter -= 1;
+
+    // long-entry edge (once)
+    if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] == 1)
+        counter += 5;
+
+    // periodic hold event (once per threshold)
+    if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] =10)
+        longhold += 1;
+    if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] =20)
+        longhold += 2;
+
+}
