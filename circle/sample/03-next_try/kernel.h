@@ -251,12 +251,29 @@ enum colorindex
 	colorindexcount // to define the array size, must be last
 };
 
-struct bufferInfo {
-    void* buffer;
-    void* blockBase;
-    void* blockRaw;
-    uint32_t blockSize;
-}; // answer, can i use it also for m_bufferTex? 
+	char** 				m_bufferVideo;
+	char* 				m_videoBlockBase;
+	char* 				m_videoRawBlock;
+    size_t 				m_videoBlockSize;
+
+	char**				m_bufferFrameBufferA;
+	char* 				m_frameBlockBaseA;
+	char* 				m_frameRawBlockA;
+    size_t 				m_frameBlockSizeA;
+
+	char**				m_bufferFrameBufferB;
+	char* 				m_frameBlockBaseB;
+	char* 				m_frameRawBlockB;
+    size_t 				m_frameBlockSizeB;	
+
+    char** 				m_bufferTexture;
+	char* 				m_textureBlockBase;
+	char* 				m_textureRawBlock;
+    size_t 				m_textureBlockSize;
+
+	char**				m_bufferKernel;
+	char** 				m_bufferVshader;
+    char** 				m_bufferFshader;
 
 struct RGB
 {

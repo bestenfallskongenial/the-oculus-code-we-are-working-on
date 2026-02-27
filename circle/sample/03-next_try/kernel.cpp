@@ -32,15 +32,6 @@
 
                     m_glsl{},                                                                            // an instance of the glsl parameter struct - but i a) tend to use simple global variables or b) split m_glsl into more structs
 
-                    m_videoBuffer{},                                                                    // use the struct bufferInfo instead of multiple variables for the video buffer
-                    m_bufferFrameA{},
-                    m_bufferFrameB{},
-                    m_bufferTexture{},
-                    m_bufferTex{};                                                                      // i assume i can use it for the non dma buffers too
-                    m_bufferKnl{},
-                    m_bufferVsh{},
-                    m_bufferFsh{},
-/*
                     m_bufferVid(nullptr),                                                               
                     m_videoBlockBase(nullptr),
                     m_videoRawBlock(nullptr),
@@ -60,7 +51,7 @@
                     m_bufferKnl(nullptr),
                     m_bufferVsh(nullptr), 
                     m_bufferFsh(nullptr),
-*/
+
                     m_USBhasLoadOnes(false),                                                            // we load only one time from usb, sorry user!
                     m_resetFlag(false)                                                                  // determine if the main while loop runs
                     {

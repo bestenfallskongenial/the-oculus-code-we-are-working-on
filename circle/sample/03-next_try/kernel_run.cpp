@@ -205,7 +205,7 @@ CKernel::wrapper_modes ()
 {
         menu_reset_pickup_flags();
 
-        switch (current_menu_layer)
+        switch (g_current_menu_layer)
             {
             case 0:
                 menu_mode_assign_group(1,  0);   // CH0–CH3

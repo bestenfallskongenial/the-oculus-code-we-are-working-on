@@ -1,29 +1,6 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-    for kernel.h // global.* - but i like to move global back to kernel.h
+// globals and variables in used here:
 
-
-    //  this is how we do it calls:
-
-        menu_reset_pickup_flags
-
-        menu_mode_assign_group(1,  0);   // CH0–CH3
-        menu_mode_assign_group(2,  4);   // CH4–CH7
-        menu_mode_assign_group(3,  8);   // LFO
-        menu_mode_assign_group(4, 12);   // potential new menu layers for g_attenuation
-
-        apply_mode_to_channel(0);
-        apply_mode_to_channel(1);
-        apply_mode_to_channel(2);
-        apply_mode_to_channel(3);
-        apply_mode_to_channel(4);
-        apply_mode_to_channel(5);
-        apply_mode_to_channel(6);
-        apply_mode_to_channel(7);
-
-        apply_state_to_led();
-
-*/
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::menu_reset_pickup_flags    ()
 {
@@ -211,11 +188,11 @@ void CKernel::modePOT ()
 }
 void CKernel::modeLF1 (int channel)
 {
-            inOutMatrixFlt[channel][out] = inOutMatrixFlt[channel][lf1] // g_lfoFltOut[0];
-            inOutMatrixInt[channel][out] = inOutMatrixInt[channel][lf1] // g_lfoIntOut[0];
+            inOutMatrixFlt[channel][out] = inOutMatrixFlt[0][lf1] // g_lfoFltOut[0];
+            inOutMatrixInt[channel][out] = inOutMatrixInt[0][lf1] // g_lfoIntOut[0];
 }
 void CKernel::modeLF2 (int channel)
 {
-            inOutMatrixFlt[channel][out] = inOutMatrixFlt[channel][lf2] // g_lfoFltOut[1];
-            inOutMatrixInt[channel][out] = inOutMatrixInt[channel][lf2] // g_lfoIntOut[1];    
+            inOutMatrixFlt[channel][out] = inOutMatrixFlt[1][lf2] // g_lfoFltOut[1];
+            inOutMatrixInt[channel][out] = inOutMatrixInt[1][lf2] // g_lfoIntOut[1];    
 }
