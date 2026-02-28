@@ -127,7 +127,8 @@ void            CKernel::io_read_ADC                ()
                 for (unsigned channel = 0; channel < ADC_CHANNELS; ++channel)  // Loop through each channel and read its raw value 
                     {
                     f_ring_buffer[channel][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(channel);  // or 1023?!
-                    if(f_ring_buffer[channel][f_index_ring_buffer] > 1023) f_ring_buffer[channel][f_index_ring_buffer] = 1023;
+                    
+                    if(f_ring_buffer[channel][f_index_ring_buffer] > 1023) f_ring_buffer[channel][f_index_ring_buffer] = 1023; // ??
           
                         g_inOutMatrixInt[channel][raw]  = ( f_ring_buffer[channel][0] +
                                                             f_ring_buffer[channel][1] +
@@ -232,22 +233,25 @@ void            CKernel::util_calculate_BPM         (   unsigned long   p_trigge
                     f_timeIndex[1] = (f_timeIndex[1] + 1) % 4;    
                     }
 }
-
+/*
 void            CKernel::util_determine_bpm_source  () // i can make this an "inline" ternaty statement, right?
 {
                 if (g_lastBpmCalculation[0] > g_lastBpmCalculation[1])                                              // Compare g_lastBpmCalculation[0] and g_lastBpmCalculation[1] to decide which one is newer
                     {
                     g_activeBpmChannel = 0;                                                             // Choose channel 0 as the active BPM source
                     }
-                    if (g_lastBpmCalculation[1] > g_lastBpmCalculation[0] /* && g_input_mode[5] == 2 */ ) 
+                    if (g_lastBpmCalculation[1] > g_lastBpmCalculation[0] ) 
+//                  if (g_lastBpmCalculation[1] > g_lastBpmCalculation[0] && g_input_mode[5] == 2 )                     
                     {
                     g_activeBpmChannel = 1;                                                             // Choose channel 1 as the active BPM source
                     }
 }
-
+*/
 void            CKernel::util_update_predicted_beat ()
 {
                 unsigned long currentTime = m_Timer.GetClockTicks(); // Get the current u_time in clock ticks
+
+                g_activeBpmChannel = (g_lastBpmCalculation[0] > g_lastBpmCalculation[1]) ? 0 : 1;
 
                 // Update for instance 0
                 if (currentTime >= g_nextBeatTime[0]) 
@@ -400,7 +404,7 @@ void            CKernel::util_audio_energy          (float p_adcvalue)
 }
 
 // after getting fucked in my head we finally found the deterministic function i am looking for!
-
+/*
 #define BTN_PRESSED 0
 
 enum ButtonTSIndex
@@ -411,7 +415,7 @@ enum ButtonTSIndex
     BTN_SINGLE      = 3, // one-cycle pulse on press edge
     BTN_DOUBLE      = 4  // one-cycle pulse on second press edge in double window
 };
-
+*/
 // 2 buttons, 5 fields each (no BTN_STATUS needed)
 unsigned int g_buttons_states[2][5] = {0};
 
@@ -451,7 +455,7 @@ void CKernel::button_ping(int p_btn_id, int pin)
         g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
     }
 }
-
+/*
 void CKernel::button_consumer(int p_btn_id)
 {
     if (g_buttons_states[p_btn_id][BTN_SINGLE]) counter += 1;
@@ -468,3 +472,4 @@ void CKernel::button_consumer(int p_btn_id)
         longhold += 2;
 
 }
+*/
