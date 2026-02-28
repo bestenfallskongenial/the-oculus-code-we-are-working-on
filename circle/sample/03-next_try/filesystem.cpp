@@ -82,6 +82,32 @@ unsigned        CKernel::filesystem_load_file       (   char               *p_bu
                 g_opaque = 1.0f;    
                 return 0;  // Buffer full, EOF not reached - this is NOT a success - 0 is equal to false
 }
+
+bool            CKernel::filesystem_save_buffer     (   const char*         p_fileName,
+                                                        const char*         p_buffer,
+                                                        unsigned            p_bufferSize)
+{
+                if (m_pFileSystem == 0 || p_fileName == 0 || p_buffer == 0 || p_bufferSize == 0)
+                    {
+                    return false;
+                    }
+
+                unsigned f_hFile = m_pFileSystem->FileCreate(p_fileName);
+                if (f_hFile == 0)
+                    {
+                    return false;
+                    }
+
+                bool f_success = false;
+                if (m_pFileSystem->FileWrite(f_hFile, p_buffer, p_bufferSize) == p_bufferSize)
+                    {
+                    f_success = true;
+                    }
+
+                m_pFileSystem->FileClose(f_hFile);
+                return f_success;
+}
+
 bool            CKernel::filesystem_close_file      ()	                                                            // close file ( release g_hFile handle ) 
 {
 	            if (!m_pFileSystem->FileClose (g_hFile))
@@ -91,7 +117,7 @@ bool            CKernel::filesystem_close_file      ()	                         
                 return true;								                                                        // success closing file
 }
 
-void            CKernel::filesystem_process_files   (   char*               p_fileNameArray[],                      // where we have stored the filenames from the root directory scan
+void            CKernel::filesystem_bulk_load       (   char*               p_fileNameArray[],                      // where we have stored the filenames from the root directory scan
                                                         unsigned            p_loadedBytes[],                        // where we store the size in bytes for each file 
                                                         char**              p_bufferArray,                          // where we store the loaded file data for each file ( or dma/non-dma buffers )
                                                         int                 p_maxFiles,                             // how many files we are allowed to process ( os limitations )

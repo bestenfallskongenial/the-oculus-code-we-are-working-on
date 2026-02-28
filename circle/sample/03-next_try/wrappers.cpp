@@ -34,7 +34,7 @@
                                                 filecounter[maxSD][vid]);
 
                     m_Watchdog.Start(8);
-                    filesystem_process_files(   g_ScnVsh,                           // where we have stored the filenames 
+                    filesystem_bulk_load    (   g_ScnVsh,                           // where we have stored the filenames 
                                                 g_bytVsh,                           // where we store the loaded bytes for each file 
                                                 m_bufferVsh,                        // where we store the loaded file data for each file
                                                 filecounter[scanned][vsh],          // how many files we are allowed to process
@@ -42,7 +42,7 @@
                                                 VSH_FILE_SIZE,                      // maximum size for each file
                                                 0);              
                     m_Watchdog.Start(8);                                                                                
-                    filesystem_process_files(   g_ScnOmf, 
+                    filesystem_bulk_load    (   g_ScnOmf, 
                                                 g_bytOmf, 
                                                 m_bufferOmf, 
                                                 filecounter[scanned][omf], 
@@ -50,7 +50,7 @@
                                                 FSH_FILE_SIZE, 
                                                 1);
                     m_Watchdog.Start(8);        
-                    filesystem_process_files(   g_ScnFsh, 
+                    filesystem_bulk_load    (   g_ScnFsh, 
                                                 g_bytFsh, 
                                                 m_bufferFsh, 
                                                 filecounter[scanned][fsh], 
@@ -58,7 +58,7 @@
                                                 FSH_FILE_SIZE, 
                                                 1);                           
                     m_Watchdog.Start(8);    
-                    filesystem_process_files(   g_ScnOmt, 
+                    filesystem_bulk_load    (   g_ScnOmt, 
                                                 g_bytOmt, 
                                                 m_BufferOmt, 
                                                 filecounter[scanned][omt], 
@@ -66,14 +66,14 @@
                                                 TEX_FILE_SIZE, 
                                                 2);                                                                                          
                     m_Watchdog.Start(8);    
-                    filesystem_process_files(   g_ScnTex, 
+                    filesystem_bulk_load    (   g_ScnTex, 
                                                 g_bytTex, 
                                                 m_bufferTex, 
                                                 filecounter[scanned][tex], 
                                                 filecounter[count][tex], 
                                                 TEX_FILE_SIZE, 2);                                   
                     m_Watchdog.Start(8);    
-                    filesystem_process_files(   g_ScnVid, 
+                    filesystem_bulk_load    (   g_ScnVid, 
                                                 g_bytVid, 
                                                 m_bufferVid, 
                                                 filecounter[scanned][vid], 
@@ -122,7 +122,7 @@
                                                 filecounter[maxUsb][vid]);
 
                     m_Watchdog.Start(8);
-                    filesystem_process_files(   g_ScnVsh, 
+                    filesystem_bulk_load    (   g_ScnVsh, 
                                                 g_bytVsh, 
                                                 m_bufferVsh, 
                                                 filecounter[scanned][vsh], 
@@ -130,7 +130,7 @@
                                                 VSH_FILE_SIZE, 
                                                 0);              
                     m_Watchdog.Start(8);                                                                                
-                    filesystem_process_files(   g_ScnOmf, 
+                    filesystem_bulk_load    (   g_ScnOmf, 
                                                 g_bytOmf, 
                                                 m_bufferOmf, 
                                                 filecounter[scanned][omf], 
@@ -138,7 +138,7 @@
                                                 FSH_FILE_SIZE, 
                                                 1);
                     m_Watchdog.Start(8);        
-                    filesystem_process_files(   g_ScnFsh, 
+                    filesystem_bulk_load    (   g_ScnFsh, 
                                                 g_bytFsh, 
                                                 m_bufferFsh, 
                                                 filecounter[scanned][fsh], 
@@ -146,7 +146,7 @@
                                                 FSH_FILE_SIZE, 
                                                 1);                           
                     m_Watchdog.Start(8);    
-                    filesystem_process_files(   g_ScnOmt, 
+                    filesystem_bulk_load    (   g_ScnOmt, 
                                                 g_bytOmt, 
                                                 m_BufferOmt, 
                                                 filecounter[scanned][omt], 
@@ -154,14 +154,14 @@
                                                 TEX_FILE_SIZE, 
                                                 2);                                                                                          
                     m_Watchdog.Start(8);    
-                    filesystem_process_files(   g_ScnTex, 
+                    filesystem_bulk_load    (   g_ScnTex, 
                                                 g_bytTex, 
                                                 m_bufferTex, 
                                                 filecounter[scanned][tex], 
                                                 filecounter[count][tex], 
                                                 TEX_FILE_SIZE, 2);                                   
                     m_Watchdog.Start(8);    
-                    filesystem_process_files(   g_ScnVid, 
+                    filesystem_bulk_load    (   g_ScnVid, 
                                                 g_bytVid, 
                                                 m_bufferVid, 
                                                 filecounter[scanned][vid], 
@@ -172,6 +172,47 @@
                     // Flush CPU->RAM so the VPU sees the loaded bitstream
                     CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
                     }
+}
+
+CKernel::wrapper_init_gl_sd()
+{
+        parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
+        parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
+
+        gfx_init_v_buffer(&state);
+
+        gfx_init_vshaders(&state, VSH_LOADED_OLD, VSH_LOADED_NEW);
+        gfx_init_overlay_fshader();             
+        gfx_init_fshaders(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
+        gfx_init_overlay_program();
+        gfx_init_programs(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
+        gfx_init_overlay_uniforms();
+        gfx_init_uniforms(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
+        gfx_init_overlay_texture();
+        gfx_init_textures(&state, TEX_LOADED_OLD, TEX_LOADED_NEW); 
+}
+CKernel::wrapper_init_gl_usb()
+{
+        parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
+        parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
+
+        gfx_init_fshaders(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
+        gfx_init_programs(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
+        gfx_init_uniforms(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
+        gfx_init_textures(&state, TEX_LOADED_OLD, TEX_LOADED_NEW); 
+}
+
+CKernel::wrapper_io()
+{
+        io_read_ADC();
+
+        util_choose_program();
+        util_choose_texture();
+        util_choose_video();
+
+        button_ping();
+        button_ping();
+        button_consume();
 }
 
 CKernel::wrapper_modes()
@@ -203,32 +244,4 @@ CKernel::wrapper_modes()
         apply_mode_to_channel(7);
 
         apply_state_to_led();    // we have to write this function 
-}        
-
-CKernel::wrapper_init_gl_sd()
-{
-        parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
-        parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
-
-        gfx_init_v_buffer(&state);
-
-        gfx_init_vshaders(&state, VSH_LOADED_OLD, VSH_LOADED_NEW);
-        gfx_init_fshaders(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
-        gfx_init_programs(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
-        gfx_init_uniforms(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
-        gfx_init_textures(&state, TEX_LOADED_OLD, TEX_LOADED_NEW); 
-}
-CKernel::wrapper_init_gl_usb()
-{
-        parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
-        parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
-
-        gfx_init_fshaders(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
-        gfx_init_programs(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
-        gfx_init_uniforms(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
-        gfx_init_textures(&state, TEX_LOADED_OLD, TEX_LOADED_NEW); 
-}
-CKernel::wrapper_io()
-{
-    
 }

@@ -311,3 +311,87 @@ void            CKernel::parser_overlay_bmp         (int p_fileIndex)
         
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/*
+filesystem_save_buffer_to_file( "my_file.xyz", m_bufferKnl[1], g_bytKnl[1])
+
+where g_byKnl is the array i store the actual filesize returned from filesystem_process_files() - p_loadedBytes[]
+
+filesystem_save_buffer_to_file("my_file.xyz", m_bufferKnl[1], g_bytKnl[1]);
+
+
+bool            CKernel::util_check_for_update      ()
+{
+                // try writing "new" kernel from buffer 1
+                if (filesystem_save_buffer_to_file(FILENAME_KERNEL,
+                                                   m_bufferKnl[1],
+                                                   loaded_bytes_kernel[1]))
+                    {
+                    return true;
+                    }
+
+                // fallback: restore "old" kernel from buffer 0
+                // fallback failure is tolerated
+                filesystem_save_buffer_to_file(FILENAME_KERNEL,
+                                               m_bufferKnl[0],
+                                               loaded_bytes_kernel[0]);
+
+                return false;
+}
+
+bool            CKernel::util_check_for_update      ()
+{
+                if (filesystem_save_buffer_to_file(FILENAME_KERNEL,
+                                                   m_bufferKnl[1],
+                                                   loaded_bytes_kernel[1]))
+                    {
+                    return true;
+                    }
+
+                // fallback restore attempt from startup copy (failure tolerated)
+                filesystem_save_buffer_to_file(FILENAME_KERNEL,
+                                               m_bufferKnl[0],
+                                               loaded_bytes_kernel[0]);
+
+                return false;
+}
+
+bool            CKernel::util_check_for_update      ()
+{
+                // assumes:
+                // - m_bufferKnl[1] + loaded_bytes_kernel[1] already contain the "new" kernel
+                // - m_bufferKnl[0] + loaded_bytes_kernel[0] already contain the fallback kernel
+                // - filesystem is already mounted by caller
+
+                if (filesystem_save_buffer_to_file(FILENAME_KERNEL,
+                                                   m_bufferKnl[1],
+                                                   loaded_bytes_kernel[1]))
+                    {
+                    return true;
+                    }
+
+                // fallback attempt (allowed to fail)
+                filesystem_save_buffer_to_file(FILENAME_KERNEL,
+                                               m_bufferKnl[0],
+                                               loaded_bytes_kernel[0]);
+
+                return false;
+}
+
+bool            CKernel::util_check_for_update()
+{
+                bool f_write_success = filesystem_save_buffer_to_file(FILENAME_KERNEL,
+                                                                      m_bufferKnl[1],
+                                                                      loaded_bytes_kernel[1]);
+
+                if (!f_write_success)
+                    {
+                    filesystem_save_buffer_to_file(FILENAME_KERNEL,
+                                                   m_bufferKnl[0],
+                                                   loaded_bytes_kernel[0]);   // fallback failure tolerated
+                    return false;
+                    }
+
+                return true;
+}
+*/
