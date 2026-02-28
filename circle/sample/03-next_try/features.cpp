@@ -1,3 +1,42 @@
+void            CKernel::util_random_vec8           (uint32_t p_seed)                                               // create 8 unique normalised to 1.0 float and to 1024 int values
+{
+                const int       f_max_int   = 1023; // 1024;
+                const float     f_scale     = 1.0f / 4294967295.0f;
+                uint32_t        f_x         = p_seed;
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                inOutMatrixFlt[0][rnd] = / f_x * f_scale;                                               // the cast is, i assume in this place pure cosmetics
+                inOutMatrixInt[0][rnd] = ( inOutMatrixFlt[0][rnd] * f_max_int);  // the cast is, i assume in this place pure cosmetics
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                inOutMatrixFlt[1][rnd] = f_x * f_scale;
+                inOutMatrixInt[1][rnd] = ( inOutMatrixFlt[1][rnd] * f_max_int);
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                inOutMatrixFlt[2][rnd] = f_x * f_scale;
+                inOutMatrixInt[2][rnd] = ( inOutMatrixFlt[2][rnd] * f_max_int);
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                inOutMatrixFlt[3][rnd] = f_x * f_scale;
+                inOutMatrixInt[3][rnd] = ( inOutMatrixFlt[3][rnd] * f_max_int);
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                inOutMatrixFlt[4][rnd] = /* (float) */ f_x * f_scale;
+                inOutMatrixInt[4][rnd] = ( inOutMatrixFlt[4][rnd] * f_max_int);
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                inOutMatrixFlt[5][rnd] = /* (float) */ f_x * f_scale;
+                inOutMatrixInt[5][rnd] = ( inOutMatrixFlt[5][rnd] * f_max_int);
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                inOutMatrixFlt[6][rnd] = /* (float) */ f_x * f_scale;
+                inOutMatrixInt[6][rnd] = ( inOutMatrixFlt[6][rnd] * f_max_int);
+
+                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
+                inOutMatrixFlt[7][rnd] = f_x * f_scale;
+                inOutMatrixInt[7][rnd] = ( inOutMatrixFlt[7][rnd] * f_max_int);
+}
+
 void            CKernel::util_calculate_BPM         (   unsigned long   p_triggerTimeClockA, 
                                                         unsigned long   p_triggerTimeClockB) 
 {
