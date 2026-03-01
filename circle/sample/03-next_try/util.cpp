@@ -115,8 +115,6 @@ void            CKernel::io_read_ADC                ()
                 f_index_ring_buffer = (f_index_ring_buffer + 1) & 3;
 }
 
-
-
 // after getting fucked in my head we finally found the deterministic function i am looking for!
 /*
 #define BTN_PRESSED 0

@@ -161,6 +161,8 @@ bool            CKernel::filesystem_IsValidFileType (   const char* pFileName, c
                 CString suffix((const char*)fileName + dotPos + 1);
                 return suffix.Compare(extension) == 0;
 }
+
+
 unsigned        CKernel::filesystem_ScanRootDir     ( char** fileArray, const char* exts[], int extCount, unsigned maxFiles )
 {
                 TDirentry Direntry;
