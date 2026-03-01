@@ -154,6 +154,101 @@ bool            CKernel::filesystem_IsValidFileType (   const char*         p_fi
 
                 return f_suffix.Compare(p_fileExtension) == 0;                                                      // Return true if the file extension matches, false otherwise
 }
+
+/*
+bool CKernel::filesystem_IsValidFileType(const char* pFileName,
+                                         const char* extension)
+{
+    if (!pFileName || !extension)
+        return false;
+
+    const char* dot = 0;
+    const char* p = pFileName;
+
+    int index = 0;
+
+    // find last dot and track position
+    while (*p)
+    {
+        if (*p == '.')
+            dot = p;
+
+        p++;
+        index++;
+    }
+
+    if (!dot)
+        return false;
+
+    int dotPos = dot - pFileName;
+
+    if (dotPos == 0 || dotPos > 8)
+        return false;
+
+    const char* suffix = dot + 1;
+
+    // compare extension
+    while (*suffix && *extension)
+    {
+        if (*suffix != *extension)
+            return false;
+
+        suffix++;
+        extension++;
+    }
+
+    // both must end at same time
+    return (*suffix == '\0' && *extension == '\0');
+}
+
+static inline char toLowerAscii(char c)
+{
+    if (c >= 'A' && c <= 'Z')
+        return c + ('a' - 'A');
+    return c;
+}
+// Case-insensitive version
+
+bool CKernel::filesystem_IsValidFileType(const char* pFileName,
+                                         const char* extension)
+{
+    if (!pFileName || !extension)
+        return false;
+
+    const char* dot = 0;
+    const char* p = pFileName;
+
+    // find last '.'
+    while (*p)
+    {
+        if (*p == '.')
+            dot = p;
+        ++p;
+    }
+
+    if (!dot)
+        return false;
+
+    int dotPos = (int)(dot - pFileName);
+
+    if (dotPos == 0 || dotPos > 8)
+        return false;
+
+    const char* suffix = dot + 1;
+
+    // case-insensitive compare
+    while (*suffix && *extension)
+    {
+        if (toLowerAscii(*suffix) != toLowerAscii(*extension))
+            return false;
+
+        ++suffix;
+        ++extension;
+    }
+
+    return (*suffix == '\0' && *extension == '\0');
+}
+*/
 bool            CKernel::filesystem_ScanRootDir     (   char**              p_fileNameArray,                        // where we store the valid filenames we find
                                                         const char*         p_fileExtension[],                      // the array of valid file extensions for this type of file
                                                         int                 p_extentionCount,                       // how many valid file extensions we have in the array above
