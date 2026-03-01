@@ -204,25 +204,25 @@ CKernel::wrapper_init_gl_usb()
 
 CKernel::wrapper_io()
 {
-        io_read_ADC();
+        io_read_ADC();                  //  we read and dampen the adc each loop
 
-        util_choose_program();
-        util_choose_texture();
-        util_choose_video();
+        util_choose_program();          // determine the shader
+        util_choose_texture();          // texture 
+        util_choose_video();            // video each loop
 
-        button_ping();
-        button_ping();
-        button_consume();
+        button_ping();                  // check button A
+        button_ping();                  // and B
+        button_consume();               // and transpose the button input in menulayer information each time
 }
 
 CKernel::wrapper_modes()
 {
-        menu_reset_pickup_flags();
+        menu_reset_pickup_flags();                              // we need to reset the threshold flags each loop - why again?!
 
-        switch (g_current_menu_layer)
+        switch (g_current_menu_layer)                           // use than the menylayer variable the 
             {
             case 0:
-                menu_mode_assign_group(1,  0);   // CH0–CH3
+                menu_mode_assign_group(1,  0);                  // CH0–CH3 parameters in our global array depending on the menulayer
                 break;
             case 1:
                 menu_mode_assign_group(2,  4);   // CH4–CH7
@@ -234,8 +234,8 @@ CKernel::wrapper_modes()
                 break;
             }
             
-        apply_mode_to_channel(0);
-        apply_mode_to_channel(1);
+        apply_mode_to_channel(0);                               // than we apply the mapped modes for the 8 channels
+        apply_mode_to_channel(1);                               // other menulayer modes are handled in the background
         apply_mode_to_channel(2);
         apply_mode_to_channel(3);
         apply_mode_to_channel(4);
@@ -243,5 +243,5 @@ CKernel::wrapper_modes()
         apply_mode_to_channel(6);
         apply_mode_to_channel(7);
 
-        apply_state_to_led();    // we have to write this function 
+        apply_state_to_led();                                   // than we update the 4 leds depending on the modes - we have to write this function 
 }
