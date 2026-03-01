@@ -10,7 +10,6 @@ bool            CKernel::Mount                      (   const char*         p_de
                     {
                     return false;
                     }
-
                 m_pFileSystem = new CFATFileSystem;
                 if (m_pFileSystem == 0)
                     {
@@ -33,14 +32,13 @@ bool            CKernel::UnMount                    ()                          
                     {
                     return false;
                     }
-
                 m_pFileSystem->UnMount();
                 delete m_pFileSystem;
                 m_pFileSystem = 0;
                 return true;
 }
 
-bool            CKernel::filesystem_open_file       (   const char         *p_fileName)		                        // Open File by passing p_fileName via pointer 
+bool            CKernel::openFile       (   const char         *p_fileName)		                        // Open File by passing p_fileName via pointer 
 {   
 	            g_hFile = m_pFileSystem->FileOpen (p_fileName);
 	            if (g_hFile == 0)
@@ -49,66 +47,55 @@ bool            CKernel::filesystem_open_file       (   const char         *p_fi
 		            }	
                 return true;
 }
-unsigned        CKernel::filesystem_load_file       (   char               *p_buffer,                               // destination buffer for the file data
-                                                        unsigned            p_bufferSize,                           // maximum number of bytes to read into the buffer
-                                                        int                 p_display_load_mode)                    // helper for the display load screen, used to determine which message to display on the screen while loading, presumably obsolete
+unsigned        CKernel::loadFile       (   char               *p_buffer,                               // destination buffer for the file data
+                                                        unsigned            p_bufferSize)                           // maximum number of bytes to read into the buffer
 {
                 unsigned f_totalBytesRead = 0;
                 unsigned f_bytesRead;
     
                 while (f_totalBytesRead < p_bufferSize)
                     {
-                    g_opaque = 0.5f;                                                                                // this is here to make the load display text visible its obsolete in the new version
-                    unsigned f_currentChunkSize = (p_bufferSize - f_totalBytesRead < CHUNK_SIZE) ? 
-                                                (p_bufferSize - f_totalBytesRead) : CHUNK_SIZE;
+                    unsigned f_currentChunkSize = (p_bufferSize - f_totalBytesRead < CHUNK_SIZE) ? (p_bufferSize - f_totalBytesRead) : CHUNK_SIZE;
+
                     f_bytesRead = m_pFileSystem->FileRead(g_hFile, p_buffer + f_totalBytesRead, f_currentChunkSize);
 
                     if (f_bytesRead == FS_ERROR)
                         {
-                        g_opaque = 1.0f;                                                                            // this is here to make the load display text visible its obsolete in the new version
                         return 0;                                                                                   // Read error
                         }
                     if (f_bytesRead == 0)
                         {
-                        g_opaque = 1.0f;                                                                            // this is here to make the load display text visible its obsolete in the new version
                         return f_totalBytesRead;                                                                    // EOF reached, return total bytes read
                         }
                     f_totalBytesRead += f_bytesRead;
 
-                        display_LoadScreenTexVidShd(p_display_load_mode);
-
                     m_Watchdog.Start(TIMEOUT);         // new watchdog    
                     }
-                g_opaque = 1.0f;    
                 return 0;  // Buffer full, EOF not reached - this is NOT a success - 0 is equal to false
 }
 
-bool            CKernel::filesystem_save_buffer     (   const char*         p_fileName,
-                                                        const char*         p_buffer,
-                                                        unsigned            p_bufferSize)
+bool            CKernel::saveBuffer (   const char*     p_fileName,
+                                                    const char*     p_buffer,
+                                                    unsigned        p_bufferSize)
 {
-                if (m_pFileSystem == 0 || p_fileName == 0 || p_buffer == 0 || p_bufferSize == 0)
+                if (m_pFileSystem == 0 || p_fileName == 0 || p_buffer == 0 || p_bufferSize  == 0)
                     {
                     return false;
                     }
-
-                unsigned f_hFile = m_pFileSystem->FileCreate(p_fileName);
-                if (f_hFile == 0)
+                g_hFile = m_pFileSystem->FileCreate(p_fileName);
+                if (g_hFile == 0)
                     {
                     return false;
                     }
-
-                bool f_success = false;
-                if (m_pFileSystem->FileWrite(f_hFile, p_buffer, p_bufferSize) == p_bufferSize)
+                if (m_pFileSystem->FileWrite(g_hFile, p_buffer, p_bufferSize) != p_bufferSize)
                     {
-                    f_success = true;
+                    return false;
                     }
-
-                m_pFileSystem->FileClose(f_hFile);
-                return f_success;
+                closeFile();
+                return true;
 }
 
-bool            CKernel::filesystem_close_file      ()	                                                            // close file ( release g_hFile handle ) 
+bool            CKernel::closeFile      ()	                                                            // close file ( release g_hFile handle ) 
 {
 	            if (!m_pFileSystem->FileClose (g_hFile))
 		            {
@@ -117,139 +104,63 @@ bool            CKernel::filesystem_close_file      ()	                         
                 return true;								                                                        // success closing file
 }
 
-void            CKernel::filesystem_bulk_load       (   char*               p_fileNameArray[],                      // where we have stored the filenames from the root directory scan
+void            CKernel::bulkLoad       (   char*               p_fileNameArray[],                      // where we have stored the filenames from the root directory scan
                                                         unsigned            p_loadedBytes[],                        // where we store the size in bytes for each file 
                                                         char**              p_bufferArray,                          // where we store the loaded file data for each file ( or dma/non-dma buffers )
                                                         int                 p_maxFiles,                             // how many files we are allowed to process ( os limitations )
                                                         int                &p_validFiles,                           // counts successful loads - we need to keep track here <- directly modified in the function, we dont need to return it
-                                                        unsigned            p_fileSize,                             // maximum size for each file
-                                                        int                 p_display_load_mode)                    // the display load mode is used to determine which message to display on the screen while loading  
+                                                        unsigned            p_fileSize)                             // maximum size for each file
 {
                 for (int i = 0; i < p_maxFiles; ++i) 
                     {
-                    if (filesystem_open_file(p_fileNameArray[i]))                                                   // returns true if the file was opened successfully
+                    if (openFile(p_fileNameArray[i]))                                                   // returns true if the file was opened successfully
                         {
-                        unsigned f_bytesRead = filesystem_load_file(p_bufferArray[p_validFiles], p_fileSize, p_display_load_mode);
+                        unsigned f_bytesRead = loadFile(p_bufferArray[p_validFiles], p_fileSize);
                         if (f_bytesRead)
                             {
                             p_loadedBytes[p_validFiles] = f_bytesRead;
                             p_validFiles++;   
                             }
-                        filesystem_close_file();
+                        closeFile();
                         }                                                                                           // a false on open file will simply skip the file and move on to the next one, which is fine for our purposes
                     }   
 }
 
-bool            CKernel::filesystem_IsValidFileType (   const char*         p_fileName,                             // helper to check if the file we found in the root directory has a valid file extension, we pass the filename and the file extension we want to compare 
-                                                        const char*         p_fileExtension)
+bool            CKernel::IsValidFile(                   const char*         pFileName,
+                                                        const char*         extension)
 {
-                CString             f_fileName(p_fileName);
-                int                 f_dotPos = f_fileName.Find('.');
-
-                if (f_dotPos == -1 || f_dotPos == 0 || f_dotPos > 8) 
+                if (!pFileName || !extension)
+                    return false;
+                const char* dot = 0;
+                const char* p = pFileName;
+                int index = 0;
+                
+                while (*p)                                          // find last dot and track position
                     {
-                    return FALSE;
+                    if (*p == '.')
+                        dot = p;
+                    p++;
+                    index++;
                     }
-                CString             f_suffix((const char*)f_fileName + f_dotPos + 1);
-
-                return f_suffix.Compare(p_fileExtension) == 0;                                                      // Return true if the file extension matches, false otherwise
+                if (!dot)
+                    return false;
+                int dotPos = dot - pFileName;
+                if (dotPos == 0 || dotPos > 8)
+                    return false;
+                const char* suffix = dot + 1;
+                
+                while (*suffix && *extension)                       // compare extension
+                    {
+                    if (*suffix != *extension)
+                        return false;
+                    suffix++;
+                    extension++;
+                    }
+                
+                return (*suffix == '\0' && *extension == '\0');     // both must end at same time
 }
 
-/*
-bool CKernel::filesystem_IsValidFileType(const char* pFileName,
-                                         const char* extension)
-{
-    if (!pFileName || !extension)
-        return false;
-
-    const char* dot = 0;
-    const char* p = pFileName;
-
-    int index = 0;
-
-    // find last dot and track position
-    while (*p)
-    {
-        if (*p == '.')
-            dot = p;
-
-        p++;
-        index++;
-    }
-
-    if (!dot)
-        return false;
-
-    int dotPos = dot - pFileName;
-
-    if (dotPos == 0 || dotPos > 8)
-        return false;
-
-    const char* suffix = dot + 1;
-
-    // compare extension
-    while (*suffix && *extension)
-    {
-        if (*suffix != *extension)
-            return false;
-
-        suffix++;
-        extension++;
-    }
-
-    // both must end at same time
-    return (*suffix == '\0' && *extension == '\0');
-}
-
-static inline char toLowerAscii(char c)
-{
-    if (c >= 'A' && c <= 'Z')
-        return c + ('a' - 'A');
-    return c;
-}
-// Case-insensitive version
-
-bool CKernel::filesystem_IsValidFileType(const char* pFileName,
-                                         const char* extension)
-{
-    if (!pFileName || !extension)
-        return false;
-
-    const char* dot = 0;
-    const char* p = pFileName;
-
-    // find last '.'
-    while (*p)
-    {
-        if (*p == '.')
-            dot = p;
-        ++p;
-    }
-
-    if (!dot)
-        return false;
-
-    int dotPos = (int)(dot - pFileName);
-
-    if (dotPos == 0 || dotPos > 8)
-        return false;
-
-    const char* suffix = dot + 1;
-
-    // case-insensitive compare
-    while (*suffix && *extension)
-    {
-        if (toLowerAscii(*suffix) != toLowerAscii(*extension))
-            return false;
-
-        ++suffix;
-        ++extension;
-    }
-
-    return (*suffix == '\0' && *extension == '\0');
-}
-*/
-bool            CKernel::filesystem_ScanRootDir     (   char**              p_fileNameArray,                        // where we store the valid filenames we find
+bool            CKernel::scanRoot     (   char**              p_fileNameArray,                        // where we store the valid filenames we find
                                                         const char*         p_fileExtension[],                      // the array of valid file extensions for this type of file
                                                         int                 p_extentionCount,                       // how many valid file extensions we have in the array above
                                                         int                &p_scannedFiles,                         // our counter of found files, important - but we can reset it between calls / devices <- has to be initialised with 0 before calling this function
@@ -264,14 +175,13 @@ bool            CKernel::filesystem_ScanRootDir     (   char**              p_fi
                         {
                     return false;    // Return false to indicate failure to access the directory
                         }
-
                 while (f_nextEntry != 0 && p_scannedFiles < p_maxFiles) 
                     {
                     if (!(f_directoryEntry.nAttributes & FS_ATTRIB_SYSTEM)) 
                         {
                         for (int i = 0; i < p_extentionCount; ++i)
                             {
-                            if (filesystem_IsValidFileType(f_directoryEntry.chTitle, p_fileExtension[i])) 
+                            if (IsValidFile(f_directoryEntry.chTitle, p_fileExtension[i])) 
                                 {
                                 p_fileNameArray[p_scannedFiles] = new char[strlen(f_directoryEntry.chTitle) + 1];
                                 strcpy(p_fileNameArray[p_scannedFiles], f_directoryEntry.chTitle);
@@ -285,7 +195,7 @@ bool            CKernel::filesystem_ScanRootDir     (   char**              p_fi
                 return true;                                                                                        // Return true to indicate successful scan (even if no valid files were found, as long as the directory was accessed successfully)               
 }
 
-bool            CKernel::filesystem_update_USB      (   const char*         p_deviceName)                           // this is called when we get a plug and play event for the USB, we check if the device is already in our tree of connected devices,
+bool            CKernel::updateUSB      (   const char*         p_deviceName)                           // this is called when we get a plug and play event for the USB, we check if the device is already in our tree of connected devices,
 {                                                                                                                   //  if not we update the tree and check again, if we find it this means we can now access the filesystem on the USB and we register a handler for when the USB gets removed so we can update our state accordingly 
                 if (m_USBHCI.UpdatePlugAndPlay())                                                                   // Update the tree of connected USB devices
                     {
@@ -294,13 +204,13 @@ bool            CKernel::filesystem_update_USB      (   const char*         p_de
                         {
                         m_bStorageAttached = true;                                                                  // this is a global, volatile variable! 
 
-                        f_partitionName->RegisterRemovedHandler(filesystem_remove_USB, this);
+                        f_partitionName->RegisterRemovedHandler(removeUSB, this);
                         return true;
                         }
                     }
                 return false;
 }
-void            CKernel::filesystem_remove_USB      (   CDevice            *f_partitionName,                        // this is the handler we register for when the USB gets removed, we set our state to reflect that the storage is no longer attached, we could also unmount the filesystem here if we wanted to be extra safe?
+void            CKernel::removeUSB      (   CDevice            *f_partitionName,                        // this is the handler we register for when the USB gets removed, we set our state to reflect that the storage is no longer attached, we could also unmount the filesystem here if we wanted to be extra safe?
                                                         void               *p_pContext)
 {
 	            CKernel *pThis = (CKernel *) p_pContext;

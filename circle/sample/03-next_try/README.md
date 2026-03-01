@@ -16,7 +16,7 @@ README.md               -   this file here
 
 buttons.cpp                         
 
-                        -   button_ping                 (int btn_id)                            one of the 3 versions 
+                        -   buttonPing                 (int btn_id)                            one of the 3 versions 
 
                         /   consume_button              (int btn_id, int &var)                  is mute / demo / concept
 
@@ -24,13 +24,13 @@ color_table.cpp         -   contains the color table for the ws2812 leds
 
 filesystem.cpp                      
 
-                        -   filesystem_open_file        (   const char *p_fileName)
+                        -   openFile        (   const char *p_fileName)
  
-                        -   filesystem_load_file        (   char *buffer, 
+                        -   loadFile        (   char *buffer, 
                                                             unsigned bufferSize, 
                                                             int mode)
 
-                        -   filesystem_close_file       ()
+                        -   closeFile       ()
  
                         -   filesystem_process_files    (   char* p_fileNameArray[], 
                                                             unsigned p_loadedBytes[], 
@@ -69,22 +69,22 @@ filesystem.cpp
                                                             const char* p_fileName, 
                                                             const CString& p_str_to_save)
 
-                        -   filesystem_IsValidFileType  (   const char* p_fileName, 
+                        -   IsValidFile  (   const char* p_fileName, 
                                                             const char* p_fileExtension)
 
-                        -   filesystem_ScanRootDir      (   char** fileArray, 
+                        -   scanRoot      (   char** fileArray, 
                                                             const char* p_fileExtension[], 
                                                             int p_extentionCount, 
                                                             unsigned p_maxFiles )
 
-                        -   filesystem_update_USB       (   const char* deviceType)
+                        -   updateUSB       (   const char* deviceType)
 
-                        -   filesystem_remove_USB       (   CDevice *pDevice, 
+                        -   removeUSB       (   CDevice *pDevice, 
                                                             void *p_pContext)
 
 filesystem_user.cpp      
 
-                        -   util_check_for_update       ()
+                        -   checkUpdate       ()
 
                         -   util_save_modes_file        ()
 
@@ -112,35 +112,35 @@ filesystem_user.cpp
 
 gfx.cpp                                                                                         *   look up circle/sample/03-next_try/temp/the functions.cpp!!!
 
-                        -   gfx_init_vshaders           (   glsl_states *m_glsl, 
+                        -   initVshaders           (   glsl_states *m_glsl, 
                                                             int p_fromFile, 
                                                             int p_toFile) 
 
-                        -   gfx_init_overlay_fshader    (   glsl_states *m_glsl )               *   NEW
+                        -   initOshader    (   glsl_states *m_glsl )               *   NEW
 
-                        -   gfx_init_fshaders           (   glsl_states *m_glsl, 
+                        -   initFshaders           (   glsl_states *m_glsl, 
                                                             int p_fromFile, 
                                                             int p_toFile) 
 
-                        -   gfx_init_overlay_program    (   glsl_states *m_glsl)                *   NEW
+                        -   initOprogram    (   glsl_states *m_glsl)                *   NEW
 
-                        -   gfx_init_programs           (   glsl_states *m_glsl, 
+                        -   initFprograms           (   glsl_states *m_glsl, 
                                                             int p_fromFile, 
                                                             int p_toFile)       
 
-                        -   gfx_init_overlay_uniforms   (   glsl_states *m_glsl)                *   NEW
+                        -   initOuniforms   (   glsl_states *m_glsl)                *   NEW
 
-                        -   gfx_init_uniforms           (   glsl_states *m_glsl, 
+                        -   initFuniforms           (   glsl_states *m_glsl, 
                                                             int p_fromFile, 
                                                             int p_toFile)
 
-                        -   gfx_init_overlay_texture    (   glsl_states *m_glsl)                *   NEW
+                        -   initOtexture    (   glsl_states *m_glsl)                *   NEW
 
-                        -   gfx_init_textures           (   glsl_states *m_glsl, 
+                        -   initUtextures           (   glsl_states *m_glsl, 
                                                             int p_fromFile, 
                                                             int p_toFile)       
 
-                        -   gfx_init_v_buffer           (   glsl_states *m_glsl) 
+                        -   initVbuffer           (   glsl_states *m_glsl) 
 
                         -   gfx_render_shader_a         (   glsl_states *m_glsl)
 
@@ -155,10 +155,10 @@ gfx_OGL.cpp
 
 gfx_debug.cpp                       
 
-                        -   gfx_shader_log              (   GLint shader, 
+                        -   shaderLog              (   GLint shader, 
                                                             int shaderIndex)
 
-                        -   gfx_program_log             (   GLint shader, 
+                        -   programLog             (   GLint shader, 
                                                             int program_index) 
 
                         -   gfx_check                   (   const char *file, 
@@ -172,7 +172,7 @@ io.cpp
                             
                         /   io_init_pickup_buffer       ()
 
-                        -   io_read_ADC                 () 
+                        -   readADC                 () 
 
                         -   io_event_button_A           (   BUTTONS::TEvent Event, 
                                                             void *pParam)
@@ -192,23 +192,23 @@ kernel.h                *
 
 memory.cpp                          
 !!!!!
-                        -   memory_allocate             ()                                      * we add here the new buffers for the overlay menu code
+                        -   wrapperMemoryAllocate             ()                                      * we add here the new buffers for the overlay menu code
 
-                        -   memory_clean_up             ()                                      *
+                        -   wrapperMemoryCleanUp             ()                                      *
 !!!!!
-                        -   memory_init_buffer          (   size_t count, 
+                        -   initMEMbuffer          (   size_t count, 
                                                             size_t bufferSize) 
 
-                        -   memory_init_dma_buffer      (   size_t count, 
+                        -   initDMAbuffer      (   size_t count, 
                                                             size_t bufferSize,
                                                             char** blockBaseOut,
                                                             char** rawBlockOut,
                                                             size_t* alignedSizeOut)
 
-                        -   memory_clear_buffer         (   char** buffers, 
+                        -   clearMEMbuffer         (   char** buffers, 
                                                             size_t count) 
 
-                        -   memory_clear_dma_buffer     (   char** buffers, 
+                        -   clearDMAbuffer     (   char** buffers, 
                                                             char* rawBlock)
 
                                     
@@ -216,12 +216,12 @@ menu.fsh                *   this is the new shader for my overly texture atlas d
                                     
 menu_final.cpp         we created a new clean menu functions, separate into different smaller functions 
 
-                        +   menu_reset_pickup_flags     ()                                      *
+                        +   resetMenuPickupFlags     ()                                      *
 
-                        +   menu_mode_assign_group      (   uint8_t menu_id,                    *
+                        +   modeMenuAssignGroup      (   uint8_t menu_id,                    *
                                                             uint8_t base)
 
-                        +   apply_mode_to_channel       (   int channel)                        *
+                        +   applyModeToChannel       (   int channel)                        *
 
                         *   here we need the function that maps the g_centralModeBuffer content depending on the button input and choosen menu layer
 
@@ -251,26 +251,26 @@ menu_final.cpp         we created a new clean menu functions, separate into diff
                                     
 util.cpp                            
 
-                        -   util_prep_parameters        ()
+                        -   prepParameters        ()
 
-                        -   util_choose_program         ()                                      
+                        -   chooseProgram         ()                                      
 
-                        -   util_choose_texture         ()
+                        -   chooseTexture         ()
 
-                        -   util_store_program          () 
+                        -   storeModes          () 
 
-                        -   util_random_vec8            (   uint32_t p_seed)           
+                        -   randomVec8            (   uint32_t p_seed)           
 
-                        -   util_calculate_BPM          (   unsigned long p_triggerTimeClockA, 
+                        -   calculateBPM          (   unsigned long p_triggerTimeClockA, 
                                                             unsigned long p_triggerTimeClockB) 
 
                         -   util_determine_bpm_source   ()
 
-                        -   util_update_predicted_beat  ()
+                        -   predictedNextBeat  ()
 
-                        -   util_LFO                    ()
+                        -   sampleWaveTable                    ()
 
-                        ?   util_audio_energy           (   float p_adcvalue)                     <-- the old audio engine - i MUST FIND THE REWORK!!!
+                        ?   audioEnergy           (   float p_adcvalue)                     <-- the old audio engine - i MUST FIND THE REWORK!!!
 
 wavetable.cpp                       -   contains the wave tables for the lfo´s 
 

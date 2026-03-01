@@ -1,4 +1,4 @@
-void            CKernel::util_random_vec8           (uint32_t p_seed)                                               // create 8 unique normalised to 1.0 float and to 1024 int values
+void            CKernel::randomVec8           (uint32_t p_seed)                                               // create 8 unique normalised to 1.0 float and to 1024 int values
 {
                 const int       f_max_int   = 1023; // 1024;
                 const float     f_scale     = 1.0f / 4294967295.0f;
@@ -7,37 +7,30 @@ void            CKernel::util_random_vec8           (uint32_t p_seed)           
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
                 inOutMatrixFlt[0][rnd] = / f_x * f_scale;                                               // the cast is, i assume in this place pure cosmetics
                 inOutMatrixInt[0][rnd] = ( inOutMatrixFlt[0][rnd] * f_max_int);  // the cast is, i assume in this place pure cosmetics
-
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
                 inOutMatrixFlt[1][rnd] = f_x * f_scale;
                 inOutMatrixInt[1][rnd] = ( inOutMatrixFlt[1][rnd] * f_max_int);
-
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
                 inOutMatrixFlt[2][rnd] = f_x * f_scale;
                 inOutMatrixInt[2][rnd] = ( inOutMatrixFlt[2][rnd] * f_max_int);
-
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
                 inOutMatrixFlt[3][rnd] = f_x * f_scale;
                 inOutMatrixInt[3][rnd] = ( inOutMatrixFlt[3][rnd] * f_max_int);
-
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
                 inOutMatrixFlt[4][rnd] = /* (float) */ f_x * f_scale;
                 inOutMatrixInt[4][rnd] = ( inOutMatrixFlt[4][rnd] * f_max_int);
-
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
                 inOutMatrixFlt[5][rnd] = /* (float) */ f_x * f_scale;
                 inOutMatrixInt[5][rnd] = ( inOutMatrixFlt[5][rnd] * f_max_int);
-
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
                 inOutMatrixFlt[6][rnd] = /* (float) */ f_x * f_scale;
                 inOutMatrixInt[6][rnd] = ( inOutMatrixFlt[6][rnd] * f_max_int);
-
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
                 inOutMatrixFlt[7][rnd] = f_x * f_scale;
                 inOutMatrixInt[7][rnd] = ( inOutMatrixFlt[7][rnd] * f_max_int);
 }
 
-void            CKernel::util_calculate_BPM         (   unsigned long   p_triggerTimeClockA, 
+void            CKernel::calculateBPM         (   unsigned long   p_triggerTimeClockA, 
                                                         unsigned long   p_triggerTimeClockB) 
 {
                 static unsigned long f_lastTime[2];
@@ -97,7 +90,7 @@ void            CKernel::util_calculate_BPM         (   unsigned long   p_trigge
                     }
 }
 
-void            CKernel::util_update_predicted_beat ()
+void            CKernel::predictedNextBeat ()
 {
                 unsigned long currentTime           = m_Timer.GetClockTicks();                                                                      // Get the current u_time in clock ticks
 
@@ -110,23 +103,18 @@ void            CKernel::util_update_predicted_beat ()
                 if (currentTime >= g_nextCircleBuffer[0]) 
                     {
                     g_lastCircleBuffer[0]           = g_nextCircleBuffer[0];
-                    g_nextCircleBuffer[0]           = g_nextCircleBuffer[0] + 
-                                                     (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[0]);                                   // g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]]);
-                    
+                    g_nextCircleBuffer[0]           = g_nextCircleBuffer[0] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[0]);                                   // g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]]);
                     g_lfoMltTmp[0]                  = g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]];
                     }
                 if ((g_lastValidCalculationBuffer[0] != g_lastBpmCalculation[0]))                                                                   // Handle BPM changes for instance 0
                     {
                     g_nextBeatTime[0]               = g_lastBpmCalculation[0];                                                                      // Reset to current time for new BPM
-
                     g_lastValidCalculationBuffer[0] = g_lastBpmCalculation[0];
                     }
                 if (g_lfoMltTmp[0] != g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]])
                     {
                     g_lastCircleBuffer[0]           = g_lastBpmCalculation[g_activeBpmChannel];
-                    g_nextCircleBuffer[0]           = g_lastBpmCalculation[g_activeBpmChannel] + 
-                                                     (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[0]);                                   // g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]]);
-                    
+                    g_nextCircleBuffer[0]           = g_lastBpmCalculation[g_activeBpmChannel] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[0]);                                   // g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]]);
                     g_lfoMltTmp[0]                  = g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]];
                     }
                 if (currentTime >= g_nextBeatTime[1])                                                                                               // Update for instance 1
@@ -136,53 +124,42 @@ void            CKernel::util_update_predicted_beat ()
                 if (currentTime >= g_nextCircleBuffer[1]) 
                     {
                     g_lastCircleBuffer[1]           = g_nextCircleBuffer[1];
-                    g_nextCircleBuffer[1]           = g_nextCircleBuffer[1] + 
-                                                     (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[1] );                                  // g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]]);
-
+                    g_nextCircleBuffer[1]           = g_nextCircleBuffer[1] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[1] );                                  // g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]]);
                     g_lfoMltTmp[1]                  = g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]];
                     }
                 if ((g_lastValidCalculationBuffer[1] != g_lastBpmCalculation[1]))                                                                   // Handle BPM changes for instance 1
                     {
                     g_nextBeatTime[1]               = g_lastBpmCalculation[1];                                                                      // Reset to current time for new BPM
-
                     g_lastValidCalculationBuffer[1] = g_lastBpmCalculation[1];
                     }
                 if (g_lfoMltTmp[1] != g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]])
                     {
                     g_lastCircleBuffer[1]           = g_lastBpmCalculation[g_activeBpmChannel];
-                    g_nextCircleBuffer[1]           = g_lastBpmCalculation[g_activeBpmChannel] + 
-                                                     (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[1]);                                   // g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]]);
-                    
+                    g_nextCircleBuffer[1]           = g_lastBpmCalculation[g_activeBpmChannel] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[1]);                                   // g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]]);
                     g_lfoMltTmp[1]                  = g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]];
                     }
-
 }
 
-void            CKernel::util_LFO                   ()
+void            CKernel::sampleWaveTable                   ()
 {
                 unsigned long currentTime       = m_Timer.GetClockTicks();                                                                          // Get the current u_time in clock ticks why not the start_time_fps_calculation or currentTime from Run()??
 
                 g_elapsedMicroseconds[0]        = currentTime - g_lastCircleBuffer[0];
                 g_cycleLength[0]                = g_nextCircleBuffer[0] - g_lastCircleBuffer[0];                                                    // Total length of the current cycle
-
                 int f_indexA                    = (g_elapsedMicroseconds[0] * 255) / g_cycleLength[0];
                 g_sampleIndex[0]                = f_indexA > 255 ? 255 : f_indexA;                                                                  // ! i like to get rid of this saveguard !
-
-
                 inOutMatrixFlt[0][lf1]          = g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
                 inOutMatrixInt[0][lf1]          = g_waveTable[g_centralModeBuffer[LF1_WAVE][g_currentProgramBuffer]][g_sampleIndex[0]];
 
                 g_elapsedMicroseconds[1]        =  currentTime - g_lastCircleBuffer[1];
                 g_cycleLength[1]                =  g_nextCircleBuffer[1] - g_lastCircleBuffer[1];                                                   // Total length of the current cycle
-
                 int f_indexB                    = (g_elapsedMicroseconds[1] * 255) / g_cycleLength[1];
                 g_sampleIndex[1]                = f_indexB > 255 ? 255 : f_indexB;                                                                  // ! i like to get rid of this saveguard !
-
                 inOutMatrixFlt[0][lf2]          = g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
                 inOutMatrixInt[0][lf2]          = g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]];
 }   
 
-void            CKernel::util_audio_energy          (float p_adcvalue) 
+void            CKernel::audioEnergy          (float p_adcvalue) 
 {   
                 const int f_maxBuffer = 33;
 

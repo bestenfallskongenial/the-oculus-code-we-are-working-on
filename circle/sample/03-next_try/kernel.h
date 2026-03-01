@@ -104,7 +104,7 @@
 
 #define 		ADC_SELECT_PRG			7	// adc channel to choose the glsl-u_program_handle
 #define			ADC_SELECT_TEX			6	// adc channel to choose the texture
-+define			ADC_SELECT_VID   		4	// adc channel to choose the video ! BIGGER THAN 3 !
+#define			ADC_SELECT_VID   		4	// adc channel to choose the video ! BIGGER THAN 3 !
 #define			ADC_INPUT_CLK			5	// adc channel use as clock ! BIGGER THAN 3 !
 
 #define			KNL_FILE_SIZE		    (1024*1024*2) 	// 2mb must be sufficient here ( i confused the kernel size by the factor 10 )
@@ -130,6 +130,8 @@
 #define 		FILENAME_PARSER3		"FRMT-3.txt"
 #define 		FILENAME_KERNEL			"kernel.img"
 
+#define         check() 				gfx_check(__FILE__, __LINE__) 	// my own assertiion implimentation
+
 enum TShutdownMode
 {
 	ShutdownNone,
@@ -146,7 +148,7 @@ enum TShutdownMode
 
     // per-channel, per-mode capability (boolean) 
 
-    const bool g_channel_mode_capability[ADC_CHANNELS][NUMBER_OF_MODES] = // we need this to keep track what channel can use what mode in apply_mode_to_channel
+    const bool g_channel_mode_capability[ADC_CHANNELS][NUMBER_OF_MODES] = // we need this to keep track what channel can use what mode in applyModeToChannel
         {
             { true, true, true, true, true, false },
             { true, true, true, true, true, false },

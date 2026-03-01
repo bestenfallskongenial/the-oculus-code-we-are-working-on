@@ -2,7 +2,7 @@
 #include "global.h"
 #include "wavetable.h"
 
-void            CKernel::util_prep_parameters       ()
+void            CKernel::prepParameters       ()        // i guess here we need much more to do!
 {
     for ( int i=0; i <= DEFAULT_SLOT; i++)
     {
@@ -13,7 +13,7 @@ void            CKernel::util_prep_parameters       ()
     }
 }
 
-int             CKernel::util_choose_program        ( int p_channel )
+int             CKernel::chooseProgram        ( int p_channel )
 {
                 static int f_activeShader = 0;
 
@@ -27,7 +27,7 @@ int             CKernel::util_choose_program        ( int p_channel )
                 return f_activeShader;
 }
 
-int             CKernel::util_choose_texture        ( int p_channel ) // i have three possible ways here! i can a) invent a mechanism to get the is valid table for the vids - i can also draw from parser.is_valid[x] 
+int             CKernel::chooseTexture        ( int p_channel ) // i have three possible ways here! i can a) invent a mechanism to get the is valid table for the vids - i can also draw from parser.is_valid[x] 
 {
                 static int f_activeTexture = 0;
                 if (g_validTextureCount != 0) 
@@ -38,7 +38,7 @@ int             CKernel::util_choose_texture        ( int p_channel ) // i have 
                     }
                 return f_activeTexture;
 }
-int             CKernel::util_choose_video        ( int p_channel )
+int             CKernel::chooseVideo        ( int p_channel )
 {
                 static int f_activeVideo = 0;
                 if (g_validVideoCount != 0) 
@@ -50,7 +50,7 @@ int             CKernel::util_choose_video        ( int p_channel )
                 return f_activeVideo;
 }
 
-void            CKernel::util_store_program         () 
+void            CKernel::storeModes         () 
 {
                 // 1. SHADER CHANGE CHECK
                 if (g_current_gl_program != g_last_gl_program) 
@@ -77,7 +77,7 @@ void            CKernel::util_store_program         ()
 
                 // 3. DELETE STORED PARAMETERS
                 
-        else  if (shader_has_stored_params[g_current_gl_program] == true && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true ) // -really else and not only if??
+                else  if (shader_has_stored_params[g_current_gl_program] == true && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true ) // -really else and not only if??
                     {  
                     shader_has_stored_params[g_current_gl_program] = false;
                     g_currentProgramBuffer = DEFAULT_SLOT;  // Back to default
@@ -86,7 +86,7 @@ void            CKernel::util_store_program         ()
                     }
 }
 
-void            CKernel::io_read_ADC                () 
+void            CKernel::readADC                () 
 {
                 const float f_max_adc = 1023.0f;
                 const int scaleFactors[3] = {   2047,       // 2.5V max (1023 * 2)
@@ -101,8 +101,10 @@ void            CKernel::io_read_ADC                ()
                     {
                     f_ring_buffer[channel][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(channel);  // or 1023?!
                     
-                    if(f_ring_buffer[channel][f_index_ring_buffer] > 1023) f_ring_buffer[channel][f_index_ring_buffer] = 1023; // ??
-          
+                    if(f_ring_buffer[channel][f_index_ring_buffer] > 1023) 
+                        {
+                        f_ring_buffer[channel][f_index_ring_buffer] = 1023; // ??
+                        }
                         g_inOutMatrixInt[channel][raw]  = ( f_ring_buffer[channel][0] +
                                                             f_ring_buffer[channel][1] +
                                                             f_ring_buffer[channel][2] +
@@ -131,41 +133,41 @@ enum ButtonTSIndex
 // 2 buttons, 5 fields each (no BTN_STATUS needed)
 unsigned int g_buttons_states[2][5] = {0};
 
-void CKernel::button_ping(int p_btn_id, int pin)
+void            CKernel::buttonPing(int p_btn_id, int pin)
 {
-    g_buttons_states[p_btn_id][BTN_SINGLE] = 0;
-    g_buttons_states[p_btn_id][BTN_DOUBLE] = 0;
+                g_buttons_states[p_btn_id][BTN_SINGLE] = 0;
+                g_buttons_states[p_btn_id][BTN_DOUBLE] = 0;
 
-//  g_buttons_states[p_btn_id][BTN_STATUS] = CGPIOPin(pin, GPIOModeInputPullUp).Read();    
+            //  g_buttons_states[p_btn_id][BTN_STATUS] = CGPIOPin(pin, GPIOModeInputPullUp).Read();    
 
-     if (CGPIOPin(pin, GPIOModeInputPullUp).Read() == BTN_PRESSED &&
-//   if (g_buttons_states[p_btn_id][BTN_STATUS] == BTN_PRESSED &&     
-        g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
-    {
-        g_buttons_states[p_btn_id][BTN_PRESS_START] = g_currentTime;
-        g_buttons_states[p_btn_id][BTN_SINGLE] = 1;
+                if (CGPIOPin(pin, GPIOModeInputPullUp).Read() == BTN_PRESSED &&
+            //   if (g_buttons_states[p_btn_id][BTN_STATUS] == BTN_PRESSED &&     
+                    g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
+                {
+                    g_buttons_states[p_btn_id][BTN_PRESS_START] = g_currentTime;
+                    g_buttons_states[p_btn_id][BTN_SINGLE] = 1;
 
-        if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 &&
-            (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) < g_double_click_time)
-            g_buttons_states[p_btn_id][BTN_DOUBLE] = 1;
+                    if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 &&
+                        (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) < g_double_click_time)
+                        g_buttons_states[p_btn_id][BTN_DOUBLE] = 1;
 
-        g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
-    }
+                    g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
+                }
 
-    if (CGPIOPin(pin, GPIOModeInputPullUp).Read() != BTN_PRESSED &&
-//  if (g_buttons_states[p_btn_id][BTN_STATUS] != BTN_PRESSED &&    
-        g_buttons_states[p_btn_id][BTN_PRESS_START] != 0)
-    {
-        g_buttons_states[p_btn_id][BTN_RELEASE]     = g_currentTime;
-        g_buttons_states[p_btn_id][BTN_PRESS_START] = 0;
-        g_buttons_states[p_btn_id][BTN_HOLD_TICK]   = 0;
-    }
+                if (CGPIOPin(pin, GPIOModeInputPullUp).Read() != BTN_PRESSED &&
+            //  if (g_buttons_states[p_btn_id][BTN_STATUS] != BTN_PRESSED &&    
+                    g_buttons_states[p_btn_id][BTN_PRESS_START] != 0)
+                {
+                    g_buttons_states[p_btn_id][BTN_RELEASE]     = g_currentTime;
+                    g_buttons_states[p_btn_id][BTN_PRESS_START] = 0;
+                    g_buttons_states[p_btn_id][BTN_HOLD_TICK]   = 0;
+                }
 
-    if (g_buttons_states[p_btn_id][BTN_PRESS_START] != 0 &&
-        (g_currentTime - g_buttons_states[p_btn_id][BTN_PRESS_START]) >= g_long_click_time)
-    {
-        g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
-    }
+                if (g_buttons_states[p_btn_id][BTN_PRESS_START] != 0 &&
+                    (g_currentTime - g_buttons_states[p_btn_id][BTN_PRESS_START]) >= g_long_click_time)
+                {
+                    g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
+                }
 }
 /*
 void CKernel::button_consumer(int p_btn_id)
@@ -187,251 +189,140 @@ void CKernel::button_consumer(int p_btn_id)
 */
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-#ifdef __H264_DECODER_DEBUG_INIT__
-void            CKernel::storeLog              (   const char* label, u32 value1, u32 value2, u32 value3, u32 value4 )
+void            CKernel::storeLog   (       char* buffer, u32& index,
+                                            const char* label,
+                                            u32 value1, u32 value2,
+                                            u32 value3, u32 value4)
 {
-                /* always write the label */
-                for (const char* p = label; *p; ++p)
-                    m_DebugCharArray[m_CharIndex++] = *p;
-
-                /* if all values are placeholders, finish */
-                if ( value1 == EMPTYLOG &&
+                for (const char* p = label; *p; ++p)                    // always write the label
+                    {
+                    buffer[index] = *p;
+                    index++;
+                    }
+                if (value1 == EMPTYLOG &&                              // if all values are placeholders, finish
                     value2 == EMPTYLOG &&
                     value3 == EMPTYLOG &&
                     value4 == EMPTYLOG )
-                {
-                    m_DebugCharArray[m_CharIndex++] = '\n';
-                    m_DebugCharArray[m_CharIndex]   = '\0';
-                    return;
-                }
-                /* write first value if valid */
-                if (value1 != EMPTYLOG) {
-                    m_DebugCharArray[m_CharIndex++] = ' ';
-                    m_DebugCharArray[m_CharIndex++] = '0';
-                    m_DebugCharArray[m_CharIndex++] = 'x';
-                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) {
+                        {
+                        buffer[index] = '\n';
+                        index++;
+                        buffer[index]   = '\0';
+                        return;
+                        }
+                if (value1 != EMPTYLOG)                                 // write first value if valid
+                    {
+                    buffer[index] = ' ';
+                    index++;
+                    buffer[index] = '0';
+                    index++;
+                    buffer[index] = 'x';
+                    index++;
+                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) 
+                        {
                         char hex = "0123456789ABCDEF"[(value1 >> (i * 4)) & 0xF];
-                        m_DebugCharArray[m_CharIndex++] = hex;
+                        buffer[index] = hex;
+                        index++;
+                        }
                     }
-                }
-                /* write second value if valid */
-                if (value2 != EMPTYLOG) {
-                    m_DebugCharArray[m_CharIndex++] = ' ';
-                    m_DebugCharArray[m_CharIndex++] = '0';
-                    m_DebugCharArray[m_CharIndex++] = 'x';
-                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) {
+                if (value2 != EMPTYLOG)                                 // write second value if valid
+                    {
+                    buffer[index] = ' ';
+                    index++;
+                    buffer[index] = '0';
+                    index++;
+                    buffer[index] = 'x';
+                    index++;
+                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) 
+                        {
                         char hex = "0123456789ABCDEF"[(value2 >> (i * 4)) & 0xF];
-                        m_DebugCharArray[m_CharIndex++] = hex;
+                        buffer[index] = hex;
+                        index++;
+                        }
                     }
-                }
-                /* write third value if valid */
-                if (value3 != EMPTYLOG) {
-                    m_DebugCharArray[m_CharIndex++] = ' ';
-                    m_DebugCharArray[m_CharIndex++] = '0';
-                    m_DebugCharArray[m_CharIndex++] = 'x';
-                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) {
+                if (value3 != EMPTYLOG)                                 // write third value if valid
+                    {
+                    buffer[index] = ' ';
+                    index++;
+                    buffer[index] = '0';
+                    index++;
+                    buffer[index] = 'x';
+                    index++;
+                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) 
+                        {
                         char hex = "0123456789ABCDEF"[(value3 >> (i * 4)) & 0xF];
-                        m_DebugCharArray[m_CharIndex++] = hex;
+                        buffer[index] = hex;
+                        index++;
+                        }
                     }
-                }
-                /* write fourth value if valid */
-                if (value4 != EMPTYLOG) {
-                    m_DebugCharArray[m_CharIndex++] = ' ';
-                    m_DebugCharArray[m_CharIndex++] = '0';
-                    m_DebugCharArray[m_CharIndex++] = 'x';
-                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) {
+                if (value4 != EMPTYLOG)                                 // write fourth value if valid
+                    {
+                    buffer[index] = ' ';
+                    index++;
+                    buffer[index] = '0';
+                    index++;
+                    buffer[index] = 'x';
+                    index++;
+                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) 
+                        {
                         char hex = "0123456789ABCDEF"[(value4 >> (i * 4)) & 0xF];
-                        m_DebugCharArray[m_CharIndex++] = hex;
-                    }
+                        buffer[index] = hex;
+                        index++;
+                        }
                 }
-                /* terminate line */
-                m_DebugCharArray[m_CharIndex++] = '\n';
-                m_DebugCharArray[m_CharIndex]   = '\0';
+                buffer[index] = '\n';                                 // terminate line
+                index++;
+                buffer[index]   = '\0';
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::storeMsg              ( const char* label, const void* tx_msg, u32 total_size)
-{   
-                // insert leading newline
-                m_DebugCharArray[m_CharIndex] = '\n';
-                m_CharIndex++;
-                // copy label
-                for (const char* p = label; *p; ++p) 
+void            CKernel::storeMsg       (   char* buffer,
+                                            u32& index,
+                                            const char* label,
+                                            const void* tx_msg,
+                                            u32 total_size)
+{
+                buffer[index] = '\n';                                   // insert leading newline
+                index++;
+
+                for (const char* p = label; *p; ++p)                    // copy label
                     {
-                    m_DebugCharArray[m_CharIndex] = *p;
-                    m_CharIndex++;
+                    buffer[index] = *p;
+                    index++;
                     }
-                // next line please
-                m_DebugCharArray[m_CharIndex] = '\n';
-                m_CharIndex++;
-                // hex dump, 16 bytes per line
-                const unsigned char* b = (const unsigned char*)tx_msg;
-                for (u32 i = 0; i < total_size; ++i) {
-                    if (i && (i % 16) == 0) 
+                buffer[index] = '\n';                                   // next line please
+                index++;
+
+                const unsigned char* b = (const unsigned char*)tx_msg;  // hex dump, 16 bytes per line
+
+                for (u32 i = 0; i < total_size; ++i) 
+                    {
+                    if (i && (i % 16) == 0)
                         {
-                        m_DebugCharArray[m_CharIndex] = '\n';
-                        m_CharIndex++;
+                        buffer[index] = '\n';
+                        index++;
                         }
                     unsigned char v = b[i];
 
                     char hi = "0123456789ABCDEF"[v >> 4];
-                    m_DebugCharArray[m_CharIndex] = hi;
-                    m_CharIndex++;
-
+                    buffer[index] = hi;
+                    index++;
                     char lo = "0123456789ABCDEF"[v & 0xF];
-                    m_DebugCharArray[m_CharIndex] = lo;
-                    m_CharIndex++;
-
-                    m_DebugCharArray[m_CharIndex] = ' ';
-                    m_CharIndex++;
-                }
-                // newline + terminator
-                m_DebugCharArray[m_CharIndex] = '\n';
-                m_CharIndex++;
-                m_DebugCharArray[m_CharIndex] = '\n';
-                m_CharIndex++;    
-                m_DebugCharArray[m_CharIndex] = '\0';
+                    buffer[index] = lo;
+                    index++;
+                    buffer[index] = ' ';
+                    index++;
+                    }
+                buffer[index] = '\n';                                   // newline + terminator
+                index++;
+                buffer[index] = '\n';
+                index++;
+                buffer[index] = '\0';
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-inline void CH264Decoder::nextline()
+void            CH264Decoder::nextline(char* buffer,
+                                   u32& index)
 {
-    m_DebugCharArray[m_CharIndex++] = '\n';
-    m_DebugCharArray[m_CharIndex]   = '\0';
+                buffer[index] = '\n';
+                index++;
+                buffer[index] = '\0';
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-void CKernel::bindLogBuffer(u32 index)
-{
-    m_DebugCharArray = m_bufferLog[index];
-    m_CharIndex = 0;
-}
-/*
-Usage:
-
-m_bufferLog = memory_init_buffer(2, 1024 * 64);
-bindLogBuffer(0);
-*/
-// or use the m_buffer via argument of 
-
-void CKernel::storeLog(char* buffer,
-                       u32& index,
-                       const char* label,
-                       u32 value1, u32 value2,
-                       u32 value3, u32 value4)
-{
-    /* always write the label */
-    for (const char* p = label; *p; ++p)
-        buffer[index++] = *p;
-
-    /* if all values are placeholders, finish */
-    if ( value1 == EMPTYLOG &&
-         value2 == EMPTYLOG &&
-         value3 == EMPTYLOG &&
-         value4 == EMPTYLOG )
-    {
-        buffer[index++] = '\n';
-        buffer[index]   = '\0';
-        return;
-    }
-
-    /* write first value if valid */
-    if (value1 != EMPTYLOG) {
-        buffer[index++] = ' ';
-        buffer[index++] = '0';
-        buffer[index++] = 'x';
-        for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) {
-            char hex = "0123456789ABCDEF"[(value1 >> (i * 4)) & 0xF];
-            buffer[index++] = hex;
-        }
-    }
-
-    /* write second value if valid */
-    if (value2 != EMPTYLOG) {
-        buffer[index++] = ' ';
-        buffer[index++] = '0';
-        buffer[index++] = 'x';
-        for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) {
-            char hex = "0123456789ABCDEF"[(value2 >> (i * 4)) & 0xF];
-            buffer[index++] = hex;
-        }
-    }
-
-    /* write third value if valid */
-    if (value3 != EMPTYLOG) {
-        buffer[index++] = ' ';
-        buffer[index++] = '0';
-        buffer[index++] = 'x';
-        for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) {
-            char hex = "0123456789ABCDEF"[(value3 >> (i * 4)) & 0xF];
-            buffer[index++] = hex;
-        }
-    }
-
-    /* write fourth value if valid */
-    if (value4 != EMPTYLOG) {
-        buffer[index++] = ' ';
-        buffer[index++] = '0';
-        buffer[index++] = 'x';
-        for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) {
-            char hex = "0123456789ABCDEF"[(value4 >> (i * 4)) & 0xF];
-            buffer[index++] = hex;
-        }
-    }
-
-    /* terminate line */
-    buffer[index++] = '\n';
-    buffer[index]   = '\0';
-}
-
-
-void CKernel::storeMsg(char* buffer,
-                       u32& index,
-                       const char* label,
-                       const void* tx_msg,
-                       u32 total_size)
-{
-    // insert leading newline
-    buffer[index] = '\n';
-    index++;
-
-    // copy label
-    for (const char* p = label; *p; ++p)
-    {
-        buffer[index] = *p;
-        index++;
-    }
-
-    // next line please
-    buffer[index] = '\n';
-    index++;
-
-    // hex dump, 16 bytes per line
-    const unsigned char* b = (const unsigned char*)tx_msg;
-
-    for (u32 i = 0; i < total_size; ++i) {
-        if (i && (i % 16) == 0)
-        {
-            buffer[index] = '\n';
-            index++;
-        }
-
-        unsigned char v = b[i];
-
-        char hi = "0123456789ABCDEF"[v >> 4];
-        buffer[index] = hi;
-        index++;
-
-        char lo = "0123456789ABCDEF"[v & 0xF];
-        buffer[index] = lo;
-        index++;
-
-        buffer[index] = ' ';
-        index++;
-    }
-
-    // newline + terminator
-    buffer[index] = '\n';
-    index++;
-    buffer[index] = '\n';
-    index++;
-    buffer[index] = '\0';
-}
-

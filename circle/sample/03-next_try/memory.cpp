@@ -8,63 +8,63 @@
 
 */
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::memory_allocate            ()
+bool            CKernel::wrapperMemoryAllocate            ()
 {
-                m_bufferVid         = memory_init_dma_buffer(   VID_FILES_ON_SD + VID_FILES_ON_USB, VID_FILE_SIZE,                      // Video and frame buffers need DMA memory
+                m_bufferVid         = initDMAbuffer(   VID_FILES_ON_SD + VID_FILES_ON_USB, VID_FILE_SIZE,                      // Video and frame buffers need DMA memory
                                                                 &m_videoBlockBase,
                                                                 &m_videoRawBlock,
                                                                 &m_videoBlockSize);
-                m_bufferFrA         = memory_init_dma_buffer(   1, FRAME_SIZE,
+                m_bufferFrA         = initDMAbuffer(   1, FRAME_SIZE,
                                                                 &m_frameBlockBaseA,
                                                                 &m_frameRawBlockA,
                                                                 &m_frameBlockSizeA);
-                m_bufferFrB         = memory_init_dma_buffer(   1, FRAME_SIZE,
+                m_bufferFrB         = initDMAbuffer(   1, FRAME_SIZE,
                                                                 &m_frameBlockBaseB,
                                                                 &m_frameRawBlockB,
                                                                 &m_frameBlockSizeB);
-                m_BufferOmt         = memory_init_dma_buffer(   1, TEX_FILE_SIZE,                    // <- need to be adapted !!
+                m_BufferOmt         = initDMAbuffer(   1, TEX_FILE_SIZE,                    // <- need to be adapted !!
                                                                 &m_overlyBlockBase,             // <- need to be adapted !!
                                                                 &m_overlayRawBlock,             // <- need to be adapted !!
                                                                 &m_overlyBlockSize);            // <- need to be adapted !!                                                
-                m_bufferTex         = memory_init_dma_buffer(   TEX_FILES_ON_SD + TEX_FILES_ON_USB, TEX_FILE_SIZE,
+                m_bufferTex         = initDMAbuffer(   TEX_FILES_ON_SD + TEX_FILES_ON_USB, TEX_FILE_SIZE,
                                                                 &m_textureBlockBase,
                                                                 &m_textureRawBlock,
                                                                 &m_textureBlockSize);
-                m_bufferKnl         = memory_init_buffer    (   2                                 , KNL_FILE_SIZE );
-                m_bufferVsh         = memory_init_buffer    (   VSH_FILES_ON_SD + VSH_FILES_ON_USB, VSH_FILE_SIZE );
-                m_bufferOmf         = memory_init_buffer    (   1                                 , FSH_FILE_SIZE );         // <- new        
-                m_bufferFsh         = memory_init_buffer    (   FSH_FILES_ON_SD + FSH_FILES_ON_USB, FSH_FILE_SIZE );
+                m_bufferKnl         = initMEMbuffer    (   2                                 , KNL_FILE_SIZE );
+                m_bufferVsh         = initMEMbuffer    (   VSH_FILES_ON_SD + VSH_FILES_ON_USB, VSH_FILE_SIZE );
+                m_bufferOmf         = initMEMbuffer    (   1                                 , FSH_FILE_SIZE );         // <- new        
+                m_bufferFsh         = initMEMbuffer    (   FSH_FILES_ON_SD + FSH_FILES_ON_USB, FSH_FILE_SIZE );
 
                 if (!m_bufferVid || !m_bufferFrA || !m_bufferFrB || !m_BufferOmt || !m_bufferTex || !m_bufferKnl || !m_bufferVsh || !m_bufferOmf || !m_bufferFsh)
                     {
-                    memory_clean_up();
+                    wrapperMemoryCleanUp();
                     return false;
                     }
                 return true;
 }
 
-void            CKernel::memory_clean_up            ()
+void            CKernel::wrapperMemoryCleanUp            ()
 {
-                    memory_clear_dma_buffer( m_bufferVid, m_videoRawBlock); 
+                    clearDMAbuffer( m_bufferVid, m_videoRawBlock); 
 
-                    memory_clear_dma_buffer( m_bufferFrA, m_frameRawBlockA); 
+                    clearDMAbuffer( m_bufferFrA, m_frameRawBlockA); 
 
-                    memory_clear_dma_buffer( m_bufferFrB, m_frameRawBlockB); 
+                    clearDMAbuffer( m_bufferFrB, m_frameRawBlockB); 
 
-                    memory_clear_dma_buffer( m_bufferTex, m_textureRawBlock); 
+                    clearDMAbuffer( m_bufferTex, m_textureRawBlock); 
 
-                    memory_clear_dma_buffer( m_BufferOmt, m_overlayRawBlock); 
+                    clearDMAbuffer( m_BufferOmt, m_overlayRawBlock); 
 
-                    memory_clear_buffer( m_bufferKnl, 2 ); 
+                    clearMEMbuffer( m_bufferKnl, 2 ); 
 
-                    memory_clear_buffer( m_bufferVsh, VSH_FILES_ON_SD + VSH_FILES_ON_USB); 
+                    clearMEMbuffer( m_bufferVsh, VSH_FILES_ON_SD + VSH_FILES_ON_USB); 
 
-                    memory_clear_buffer( m_bufferOmf, 1 ); 
+                    clearMEMbuffer( m_bufferOmf, 1 ); 
 
-                    memory_clear_buffer( m_bufferFsh, FSH_FILES_ON_SD + FSH_FILES_ON_USB);    
+                    clearMEMbuffer( m_bufferFsh, FSH_FILES_ON_SD + FSH_FILES_ON_USB);    
 }
 
-char**          CKernel::memory_init_buffer         (   size_t count, size_t bufferSize) 
+char**          CKernel::initMEMbuffer         (   size_t count, size_t bufferSize) 
 {
             //  #define LOG_NAME "ALLOC-STD"
 
@@ -87,7 +87,7 @@ char**          CKernel::memory_init_buffer         (   size_t count, size_t buf
                 return buffers;
 }
 
-char**          CKernel::memory_init_dma_buffer     (   size_t count, 
+char**          CKernel::initDMAbuffer     (   size_t count, 
                                                         size_t bufferSize,
                                                         char** blockBaseOut,
                                                         char** rawBlockOut,
@@ -128,7 +128,7 @@ char**          CKernel::memory_init_dma_buffer     (   size_t count,
                 return buffers;
 }
 
-void            CKernel::memory_clear_buffer        (   char** buffers, size_t count) 
+void            CKernel::clearMEMbuffer        (   char** buffers, size_t count) 
 {
                 for (size_t i = 0; i < count; ++i) 
                     {
@@ -139,7 +139,7 @@ void            CKernel::memory_clear_buffer        (   char** buffers, size_t c
                 buffers = nullptr;                
 }
 
-void            CKernel::memory_clear_dma_buffer    (   char** buffers, char* rawBlock)
+void            CKernel::clearDMAbuffer    (   char** buffers, char* rawBlock)
 {
                 delete[] rawBlock;  // Raw block from new[]
                 delete[] buffers;   // Slice table

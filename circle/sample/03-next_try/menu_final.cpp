@@ -1,12 +1,10 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // globals and variables in used here:
-
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::menu_reset_pickup_flags    ()
+void            CKernel::resetMenuPickupFlags    ()
 {
                 if (g_menu_mode_new != g_menu_mode_old) 
                     {
-
                     for(int i = 0; i < 16; i++) 
                         {
                         menu_pickup_flag[i] = false;
@@ -15,184 +13,124 @@ void            CKernel::menu_reset_pickup_flags    ()
                     }
 }
 
-void CKernel::menu_mode_assign_group(uint8_t menu_id, uint8_t base)
+void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
 {
-    if (g_menu_mode_new != menu_id)
-        return;
-
-    int v;
-
-    // slot 0
-    v = (inOutMatrixInt[4][raw] * menu_map_max[base + 0]) >> 10;
-
-    if (!menu_pickup_flag[base + 0] &&
-        v == g_centralModeBuffer[base + 0][g_currentProgramBuffer])
-        menu_pickup_flag[base + 0] = true;
-    else if (menu_pickup_flag[base + 0])
-        g_centralModeBuffer[base + 0][g_currentProgramBuffer] = v;
-
-    // slot 1
-    v = (inOutMatrixInt[5][raw] * menu_map_max[base + 1]) >> 10;
-
-    if (!menu_pickup_flag[base + 1] &&
-        v == g_centralModeBuffer[base + 1][g_currentProgramBuffer])
-        menu_pickup_flag[base + 1] = true;
-    else if (menu_pickup_flag[base + 1])
-        g_centralModeBuffer[base + 1][g_currentProgramBuffer] = v;
-
-    // slot 2
-    v = (inOutMatrixInt[6][raw] * menu_map_max[base + 2]) >> 10;
-
-    if (!menu_pickup_flag[base + 2] &&
-        v == g_centralModeBuffer[base + 2][g_currentProgramBuffer])
-        menu_pickup_flag[base + 2] = true;
-    else if (menu_pickup_flag[base + 2])
-        g_centralModeBuffer[base + 2][g_currentProgramBuffer] = v;
-
-    // slot 3
-    v = (inOutMatrixInt[7][raw] * menu_map_max[base + 3]) >> 10;
-
-    if (!menu_pickup_flag[base + 3] &&
-        v == g_centralModeBuffer[base + 3][g_currentProgramBuffer])
-        menu_pickup_flag[base + 3] = true;
-    else if (menu_pickup_flag[base + 3])
-        g_centralModeBuffer[base + 3][g_currentProgramBuffer] = v;
-}
-
-void CKernel::apply_mode_to_channel(int channel)
-{
-if (!g_channel_mode_capability[channel][g_centralModeBuffer[channel][g_currentProgramBuffer]])
-    return;
-
-
-    switch (g_centralModeBuffer[channel][g_currentProgramBuffer])
-    {
-        case 0:
-            modeADC (channel);
-        break;
-
-        case 1:
-            modeTRG (channel);
-        break;
-
-        case 2:
-            modeBPM (channel);
-        break;
-
-        case 3:
-            modeLF1 (channel);
-        break;
-
-        case 4:
-            modeLF2 (channel);
-        break;
-    }
-}
-/*
-void CKernel::modeADC (int channel) 
-{
-            inOutMatrixFlt[channel][out] = inOutMatrixFlt[channel][ in] // adc_float_value[channel];
-            inOutMatrixInt[channel][out] = inOutMatrixInt[channel][ in] // adc_int_value[channel];            
-}
-*/
-void CKernel::modeADC(int channel)
-{
-    switch (channel)
-    {
-        case 4:                                                 /* -------- CH4 : frame / time input -------- */
-            if (g_menu_mode_new == 0)
-            {
-                inOutMatrixFlt[4][out] = inOutMatrixFlt[4][ in] // adc_float_value[4];
-                inOutMatrixInt[4][out] = inOutMatrixInt[4][ in] // adc_int_value[4];
-            }
-        break;
-
-        case 6:                                                 /* -------- CH6 : pickup + single_tex_mode -------- */
-            if (!menu_pickup_flag[12])
-            {
-                if (inOutMatrixInt[6][raw] > g_menu_pickup_buffer[12] - ADC_TOLERANCE && inOutMatrixInt[6][raw] < g_menu_pickup_buffer[12] + ADC_TOLERANCE)
-                {
-                    menu_pickup_flag[12] = true;
-                }
-                else
-                {
-                    return;
-                }
-            }
-            if (g_menu_mode_new == 0)
-            {
-                inOutMatrixFlt[6][out] = inOutMatrixFlt[6][ in] // adc_float_value[6];
-                inOutMatrixInt[6][out] = inOutMatrixInt[6][ in] // adc_int_value[6];
-
-                if (single_tex_mode)                    // this is an error, we integrated this in our mode_storage_buffer ! 
+                if (g_menu_mode_new != menu_id)
                     {
-                    inOutMatrixInt[6][out] = inOutMatrixInt[6][raw] // adc_raw_value[6];
-                    }
-            }
-        break;
-
-        case 7:                                                 /* -------- CH7 : pickup + shader select -------- */
-            if (!menu_pickup_flag[13])
-            {
-                if (inOutMatrixInt[7][raw] > g_menu_pickup_buffer[13] - ADC_TOLERANCE && inOutMatrixInt[7][raw] < g_menu_pickup_buffer[13] + ADC_TOLERANCE)
-                {
-                    menu_pickup_flag[13] = true;
-                }
-                else
-                {
                     return;
-                }
-            }
+                    }
+                int v;
 
-            if (g_menu_mode_new == 0)
-            {
-                inOutMatrixFlt[7][out] = inOutMatrixFlt[7][ in] // adc_float_value[7];
-                inOutMatrixInt[7][out] = inOutMatrixInt[7][raw] // adc_raw_value[7];
-            }
-        break;
+                v = (inOutMatrixInt[4][raw] * menu_map_max[base + 0]) >> 10;        // slot 0
 
-        default:                                                /* -------- all other channels : normal ADC -------- */
-            inOutMatrixFlt[channel][out] = inOutMatrixFlt[channel][ in] // adc_float_value[channel];
-            inOutMatrixInt[channel][out] = inOutMatrixInt[channel][ in] // adc_int_value[channel];
-        break;
-    }
+                if (!menu_pickup_flag[base + 0] && v == g_centralModeBuffer[base + 0][g_currentProgramBuffer])
+                    {
+                    menu_pickup_flag[base + 0] = true;
+                    }
+                else if (menu_pickup_flag[base + 0])
+                    {
+                    g_centralModeBuffer[base + 0][g_currentProgramBuffer] = v;
+                    }
+                v = (inOutMatrixInt[5][raw] * menu_map_max[base + 1]) >> 10;        // slot 1
+
+                if (!menu_pickup_flag[base + 1] && v == g_centralModeBuffer[base + 1][g_currentProgramBuffer])
+                    {
+                    menu_pickup_flag[base + 1] = true;
+                    }
+                else if (menu_pickup_flag[base + 1])
+                    {
+                    g_centralModeBuffer[base + 1][g_currentProgramBuffer] = v;
+                    }
+                v = (inOutMatrixInt[6][raw] * menu_map_max[base + 2]) >> 10;        // slot 2
+
+                if (!menu_pickup_flag[base + 2] && v == g_centralModeBuffer[base + 2][g_currentProgramBuffer])
+                    {
+                    menu_pickup_flag[base + 2] = true;
+                    }
+                else if (menu_pickup_flag[base + 2])
+                    {
+                    g_centralModeBuffer[base + 2][g_currentProgramBuffer] = v;
+                    }
+                v = (inOutMatrixInt[7][raw] * menu_map_max[base + 3]) >> 10;        // slot 3
+
+                if (!menu_pickup_flag[base + 3] && v == g_centralModeBuffer[base + 3][g_currentProgramBuffer])
+                    {
+                    menu_pickup_flag[base + 3] = true;
+                    }
+                else if (menu_pickup_flag[base + 3])
+                    {
+                    g_centralModeBuffer[base + 3][g_currentProgramBuffer] = v;
+                    }
 }
 
-void CKernel::modeTRG (int channel)
+void            CKernel::applyModeToChannel(int channel)
 {
-            if (  inOutMatrixInt[channel][ in] >= inOutMatrixInt[channel][trh] &&
-                ! inOutMatrixInt[channel][trF])
-                {
-                inOutMatrixFlt[channel][out]    = inOutMatrixFlt[channel][rnd] // /* g_randomFloatValue */[channel];
-                inOutMatrixInt[channel][out]    = inOutMatrixInt[channel][rnd] // g_randomIntegerValue[channel];
+                if (!g_channel_mode_capability[channel][g_centralModeBuffer[channel][g_currentProgramBuffer]])
+                    {
+                    return;
+                    }
+                switch (g_centralModeBuffer[channel][g_currentProgramBuffer])
+                    {
+                    case 0:
+                        modeADC (channel);
+                    break;
 
-                inOutMatrixInt[channel][trF]    = true;
-                }
-            else if ( inOutMatrixInt[channel][ in] <= inOutMatrixInt[channel][trl])
-                {
-                inOutMatrixInt[channel][trF] = false;
-                }
+                    case 1:
+                        modeTRG (channel);
+                    break;
+
+                    case 2:
+                        modeBPM (channel);
+                    break;
+
+                    case 3:
+                        modeLF1 (channel);
+                    break;
+
+                    case 4:
+                        modeLF2 (channel);
+                    break;
+                    }
 }
-void CKernel::modeBPM (int channel) 
+
+void            CKernel::modeADC (int channel) 
+{
+                inOutMatrixFlt[channel][out] = inOutMatrixFlt[channel][ in] // adc_float_value[channel];
+                inOutMatrixInt[channel][out] = inOutMatrixInt[channel][ in] // adc_int_value[channel];            
+}
+
+void            CKernel::modeTRG (int channel)
+{
+                if (  inOutMatrixInt[channel][ in] >= inOutMatrixInt[channel][trh] &&
+                    ! inOutMatrixInt[channel][trF])
+                    {
+                    inOutMatrixFlt[channel][out]    = inOutMatrixFlt[channel][rnd] // /* g_randomFloatValue */[channel];
+                    inOutMatrixInt[channel][out]    = inOutMatrixInt[channel][rnd] // g_randomIntegerValue[channel];
+
+                    inOutMatrixInt[channel][trF]    = true;
+                    }
+                else if ( inOutMatrixInt[channel][ in] <= inOutMatrixInt[channel][trl])
+                    {
+                    inOutMatrixInt[channel][trF] = false;
+                    }
+}
+void            CKernel::modeBPM (int channel) 
 { 
-            if (current_time >= g_nextBeatTime[g_activeBpmChannel])
-                {
-                inOutMatrixFlt[channel][out] = inOutMatrixFlt[channel][rnd] // /* g_randomFloatValue */[channel];
-                inOutMatrixInt[channel][out] = inOutMatrixInt[channel][rnd] // g_randomIntegerValue[channel];
-                }
+                if (current_time >= g_nextBeatTime[g_activeBpmChannel])
+                    {
+                    inOutMatrixFlt[channel][out] = inOutMatrixFlt[channel][rnd] // /* g_randomFloatValue */[channel];
+                    inOutMatrixInt[channel][out] = inOutMatrixInt[channel][rnd] // g_randomIntegerValue[channel];
+                    }
 }
 
-void CKernel::modePOT ()
+void            CKernel::modeLF1 (int channel)
 {
-// lets see later ... 
+                inOutMatrixFlt[channel][out] = inOutMatrixFlt[0][lf1] // g_lfoFltOut[0];
+                inOutMatrixInt[channel][out] = inOutMatrixInt[0][lf1] // g_lfoIntOut[0];
 }
-void CKernel::modeLF1 (int channel)
+void            CKernel::modeLF2 (int channel)
 {
-            inOutMatrixFlt[channel][out] = inOutMatrixFlt[0][lf1] // g_lfoFltOut[0];
-            inOutMatrixInt[channel][out] = inOutMatrixInt[0][lf1] // g_lfoIntOut[0];
+                inOutMatrixFlt[channel][out] = inOutMatrixFlt[1][lf2] // g_lfoFltOut[1];
+                inOutMatrixInt[channel][out] = inOutMatrixInt[1][lf2] // g_lfoIntOut[1];    
 }
-void CKernel::modeLF2 (int channel)
-{
-            inOutMatrixFlt[channel][out] = inOutMatrixFlt[1][lf2] // g_lfoFltOut[1];
-            inOutMatrixInt[channel][out] = inOutMatrixInt[1][lf2] // g_lfoIntOut[1];    
-}
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

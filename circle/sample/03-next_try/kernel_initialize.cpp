@@ -48,7 +48,7 @@ boolean bOK = TRUE;
                     }
                 if (bOK)
                     {
-                    bOK = memory_allocate(); // we need to allocate memory before the VCHIQ, because the VCHIQ uses the memory for communication and if the memory is not allocated, it will cause a crash when the VCHIQ tries to access the memory
+                    bOK = wrapperMemoryAllocate(); // we need to allocate memory before the VCHIQ, because the VCHIQ uses the memory for communication and if the memory is not allocated, it will cause a crash when the VCHIQ tries to access the memory
                     }
                 if (bOK)
                     {
