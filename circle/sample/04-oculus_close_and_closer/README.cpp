@@ -178,3 +178,44 @@ wrappers.cpp                wrapper_from_sd                                 ()
                             wrapper_io                                      ()
                             wrapper_modes                                   ()
 
+okay, here now the plan - we need to connect the loose ends
+- there was the plan to get rid of CString ( #include <circle/string.h> ) screen ( #include <circle/screen.h>) and the logger ( #include <circle/logger.h> )
+- to replace it with a mechanism that logs into a buffer and either write it to a file or show it on screen
+new functions here are:
+
+saveBuffer() and buffer_to_screen_*()
+
+- to integrate a texture atlas driven menu running as a second pass fragment shader:
+
+menu.fsh
+initOshader()
+initOprogram()
+initOuniforms()
+initOtexture() 
+
+with an independent set of uniforms and parameters, look at the file circle/sample/04-oculus_close_and_closer/the functions.cpp 
+
+driven by an unified array g_centralModeBuffer[][] ( the old mode_storage_buffers ) where we store all variables/modes/settings for each channel
+
+- i also combined the input/mode/output values into a single matrix inOutMatrixInt[][] and inOutMatrixFlt[][]
+
+and i want to do it with the timing related arrays from circle/sample/01-oculus_mendax/global.h too, like in features.cpp
+
+also do i create wrappers for the different steps inside of the CKernel::Run() to organise the steps load - init and io - apply modes - render  better
+i have also restructure some of the functions ( i guess i can do more in filesystem.cpp and init_gfx.cpp that i ay not need to pass as much parameters )
+
+as said in  need to get this all together, means for example create the propper kernel.h - arrays variables etc, check for consistency 
+create the logic how to navigate the menus circle/sample/04-oculus_close_and_closer/menu_final.cpp - mainly menu_id and buttonPing
+
+the idea is to have my two buttons as followed ( important note here! when no button is pressed the physical input goes into the adc, 
+    
+is a button pressed long the four pots are routed into the first four adc channels, look at circle/sample/01-oculus_mendax/io.cpp how i did it in the past ):
+
+on single tab event on the upper button is counted as potential tab bpm, means we need to store it,
+a hold opens up "menu layer A" ( upper button ) and "menu layer B" ( lower button ) means modeMenuAssignGroup() will map the adc to this group of parameters ( for A and B its the modes )
+hold the lower button and single press the upper one will circle through additional menu layers like lfo settings, 
+attenuation and sensitivity settings, filesystem operations ( i need a flag base mechanism for load setup data or initialise the firmware update here )
+
+the loop pipeline is something like
+
+read adc -> 

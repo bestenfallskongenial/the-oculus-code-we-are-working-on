@@ -122,6 +122,10 @@ bool CKernel::wrapperMEMallocate()
         }
     if (bOK)
         {
+        bOK = (m_bufferLog = initMEMbuffer( 8, LOG_SIZE));      // 1024 *64 <- the new buffer for log/text files <- saveBuffer() <-
+        }                   
+    if (bOK)
+        {
         bOK = (m_bufferVsh = initMEMbuffer( VSH_FILES_ON_SD + VSH_FILES_ON_USB, VSH_FILE_SIZE));
         }
     if (bOK)
@@ -152,6 +156,8 @@ void            CKernel::wrapperDMAcleanUp            ()
 void            CKernel::wrapperMEMcleanUp            ()
 {
                     clearMEMbuffer( m_bufferKnl, 2 ); 
+
+                    clearMEMbuffer( m_bufferLog, 8 ); 
 
                     clearMEMbuffer( m_bufferVsh, VSH_FILES_ON_SD + VSH_FILES_ON_USB); 
 
