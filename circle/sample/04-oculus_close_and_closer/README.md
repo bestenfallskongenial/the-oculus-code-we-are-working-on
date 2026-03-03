@@ -1,10 +1,10 @@
-Makefile                    
+Makefile                                                                                                            // ***** !!!!! *****
 
 
 README.md                   
 
 
-bufferToScreen.cpp          buffer_to_screen_plot                           (   unsigned        x, 
+bufferToScreen.cpp          buffer_to_screen_plot                           (   unsigned        x,                  // !!! not tested !!!
                                                                                 unsigned        y, 
                                                                                 u32 color )
                             buffer_to_screen_draw_char                      (   char            ch,
@@ -24,7 +24,7 @@ bufferToScreen.cpp          buffer_to_screen_plot                           (   
                             buffer_to_screen_get_grid                       (   unsigned       &cols, 
                                                                                 unsigned       &rows )
 
-color_table.cpp             const unsigned char g_rgb_color_table[49][3]
+color_table.cpp             const unsigned char g_rgb_color_table[49][3]                                            // ***** !!!!! *****
 
 
 features.cpp                randomVec8                                      (   uint32_t        p_seed )
@@ -74,22 +74,22 @@ gfx_debug.cpp               shaderLog                                       (   
                                                                                 unsigned        line )
 
 
-gfx_init.cpp                initVshaders                                    (   glsl_states    *m_glsl, 
+gfx_init.cpp                initVshaders                                    (   glsl_states    *m_glsl,             // ***** !!!!! *****
                                                                                 int             p_fromFile, 
                                                                                 int             p_toFile)
                             initOshader                                     (   glsl_states    *m_glsl )
                             initFshaders                                    (   glsl_states    *m_glsl, 
                                                                                 int             p_fromFile, 
                                                                                 int             p_toFile) 
-                            initOprogram                                    (   glsl_states    *m_glsl)
+                            initOprogram                                    (   glsl_states    *m_glsl)             // ***** !!!!! *****
                             initFprograms                                   (   glsl_states    *m_glsl, 
                                                                                 int             p_fromFile, 
                                                                                 int             p_toFile)  
-                            initOuniforms                                   (   glsl_states    *m_glsl) 
+                            initOuniforms                                   (   glsl_states    *m_glsl)             // ***** !!!!! *****
                             initFuniforms                                   (   glsl_states    *m_glsl, 
                                                                                 int             p_fromFile, 
                                                                                 int             p_toFile) 
-                            initOtexture                                    (   glsl_states     *m_glsl)  
+                            initOtexture                                    (   glsl_states     *m_glsl)            // ***** !!!!! *****
                             initUtextures                                   (   glsl_states    *m_glsl, 
                                                                                 int             p_fromFile, 
                                                                                 int             p_toFile)  
@@ -101,26 +101,26 @@ gfx_render.cpp              gfx_render_shader_a                             (   
 helpers.cpp                 checkUpdate                                     ()                                      // ***** !!!!! *****
 
 
-kernel.cpp                  CKernel::CKernel                                (   void )
+kernel.cpp                  CKernel::CKernel                                (   void )                              // ***** !!!!! *****
                             CKernel::~CKernel                               (   void )
 
 
-kernel.h
+kernel.h                                                                                                            // ***** !!!!! *****
 
 
-kernel_initialize.cpp       Initialize                                      (   void )
+kernel_initialize.cpp       Initialize                                      (   void )                              // ***** !!!!! *****
 
 
-kernel_run.cpp              Run                                             (   void )
+kernel_run.cpp              Run                                             (   void )                              // ***** !!!!! *****
 
 
 memory.cpp                  wrapperDMAallocate                              ()
                             wrapperMEMallocate                              ()
                             wrapperDMAcleanUp                               ()
                             wrapperMEMcleanUp                               ()
-                            initMEMbuffer                                   (   size_t          count, 
+                            initMEMbuffer                                   (   size_t          count,              // ***** !!!!! *****
                                                                                 size_t          bufferSize ) 
-                            initDMAbuffer                                   (   size_t          count, 
+                            initDMAbuffer                                   (   size_t          count,              // ***** !!!!! *****
                                                                                 size_t          bufferSize,
                                                                                 char**          blockBaseOut,
                                                                                 char**          rawBlockOut,
@@ -134,10 +134,10 @@ memory.cpp                  wrapperDMAallocate                              ()
 menu.fsh                    GLSL for my overlay texture atlas menu
 
 
-menu_final.cpp              resetMenuPickupFlags                            ()
+menu_final.cpp              resetMenuPickupFlags                            ()                                      // ***** !!!!! *****
                             modeMenuAssignGroup                             (   uint8_t         menu_id, 
                                                                                 uint8_t         base)
-                            applyModeToChannel                              (   int             channel)
+                            applyModeToChannel                              (   int             channel)            // ***** !!!!! *****
                             modeADC                                         (   int             channel) 
                             modeTRG                                         (   int             channel)
                             modeBPM                                         (   int             channel)
@@ -149,9 +149,9 @@ util.cpp                    prepParameters                                  ()
                             chooseProgram                                   (   int             p_channel )
                             chooseTexture                                   (   int             p_channel )
                             chooseVideo                                     (   int             p_channel )
-                            storeModes                                      ()
+                            storeModes                                      ()                                      // ***** !!!!! *****
                             readADC                                         () 
-                            buttonPing                                      (   int             p_btn_id, 
+                            buttonPing                                      (   int             p_btn_id,           // ***** !!!!! *****
                                                                                 int             pin )
                             storeLog                                        (   char*           buffer, 
                                                                                 u32&            index,
