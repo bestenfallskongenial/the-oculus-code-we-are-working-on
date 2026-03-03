@@ -56,7 +56,7 @@
 
                     bulkLoad                (   g_ScnOmt, 
                                                 g_bytOmt, 
-                                                m_BufferOmt, 
+                                                m_bufferOmt, 
                                                 filecounter[scanned][omt], 
                                                 filecounter[count][omt], 
                                                 TEX_FILE_SIZE);                                                                                          

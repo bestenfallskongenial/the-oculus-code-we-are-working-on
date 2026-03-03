@@ -30,3 +30,4 @@ TShutdownMode   CKernel::Run(void)
                     wrapper_render();
                     }
 }
+

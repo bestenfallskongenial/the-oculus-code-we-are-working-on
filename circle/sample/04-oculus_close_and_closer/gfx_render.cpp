@@ -38,26 +38,26 @@ void            CKernel::gfx_render_shader_a        (   glsl_states    *m_glsl)
                 if(m_glsl->u_time[g_current_gl_program] != -1) glUniform1f(    m_glsl->u_time[g_current_gl_program], GLtime);
                 if(m_glsl->u_tres[g_current_gl_program]!= -1 ) glUniform2f(    m_glsl->u_tres[g_current_gl_program], cx, cy);
                 if(m_glsl->u_seed[g_current_gl_program] != -1) glUniform4f(     m_glsl->u_seed[g_current_gl_program], 
-                                                                                                inOutMatrixFlt[0][rnd], 
-                                                                                                inOutMatrixFlt[1][rnd], 
-                                                                                                inOutMatrixFlt[2][rnd], 
-                                                                                                inOutMatrixFlt[3][rnd]);
+                                                                                                g_inOutMatrixFlt[0][rnd], 
+                                                                                                g_inOutMatrixFlt[1][rnd], 
+                                                                                                g_inOutMatrixFlt[2][rnd], 
+                                                                                                g_inOutMatrixFlt[3][rnd]);
                 if(m_glsl->u_aud[g_current_gl_program]!= -1 ) glUniform4f(     m_glsl->u_aud[g_current_gl_program], 
-                                                                                                inOutMatrixFlt[0][au0], 
-                                                                                                inOutMatrixFlt[0][au1], 
-                                                                                                inOutMatrixFlt[0][au2], 
-                                                                                                inOutMatrixFlt[0][au3]);
+                                                                                                g_inOutMatrixFlt[0][au0], 
+                                                                                                g_inOutMatrixFlt[0][au1], 
+                                                                                                g_inOutMatrixFlt[0][au2], 
+                                                                                                g_inOutMatrixFlt[0][au3]);
                 if(m_glsl->u_col[g_current_gl_program] != -1) glUniform4f(     m_glsl->u_col[g_current_gl_program], 0.0f, 0.0f, 0.0f, g_opaque);
                 if(m_glsl->u_par_a[g_current_gl_program] != -1 ) glUniform4f(  m_glsl->u_par_a[g_current_gl_program], 
-                                                                                                inOutMatrixFlt[0][out], 
-                                                                                                inOutMatrixFlt[1][out], 
-                                                                                                inOutMatrixFlt[2][out], 
-                                                                                                inOutMatrixFlt[3][out]);
+                                                                                                g_inOutMatrixFlt[0][out], 
+                                                                                                g_inOutMatrixFlt[1][out], 
+                                                                                                g_inOutMatrixFlt[2][out], 
+                                                                                                g_inOutMatrixFlt[3][out]);
                 if(m_glsl->u_par_b[g_current_gl_program] != -1 ) glUniform4f(  m_glsl->u_par_b[g_current_gl_program], 
-                                                                                                inOutMatrixFlt[4][out], 
-                                                                                                inOutMatrixFlt[5][out], 
-                                                                                                inOutMatrixFlt[6][out], 
-                                                                                                inOutMatrixFlt[7][out]);
+                                                                                                g_inOutMatrixFlt[4][out], 
+                                                                                                g_inOutMatrixFlt[5][out], 
+                                                                                                g_inOutMatrixFlt[6][out], 
+                                                                                                g_inOutMatrixFlt[7][out]);
                 if(m_glsl->u_tex_l[g_current_gl_program] != -1) glUniform1i(   m_glsl->u_tex_l[g_current_gl_program], g_validTextureCount);
 
                 switch(g_centralModeBuffer[TEX_MODE][g_currentProgramBuffer]) 

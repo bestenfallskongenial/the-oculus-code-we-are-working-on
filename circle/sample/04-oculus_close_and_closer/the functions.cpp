@@ -245,17 +245,17 @@ bool CKernel::gpu_render_menu_init(GLuint shared_vertex_shader, char *menu_fsh_s
         g_menu_state.tile_rect[i].h = sy * th;
     }
 
-    g_menu_state.tile_index[0] = mode_storage_buffers[CH0_MODE][current_buffer];
-    g_menu_state.tile_index[1] = mode_storage_buffers[CH1_MODE][current_buffer];
-    g_menu_state.tile_index[2] = mode_storage_buffers[CH2_MODE][current_buffer];
-    g_menu_state.tile_index[3] = mode_storage_buffers[CH3_MODE][current_buffer];
-    g_menu_state.tile_index[4] = mode_storage_buffers[CH4_MODE][current_buffer];
-    g_menu_state.tile_index[5] = mode_storage_buffers[CH5_MODE][current_buffer];
-    g_menu_state.tile_index[6] = mode_storage_buffers[CH6_MODE][current_buffer];
-    g_menu_state.tile_index[7] = mode_storage_buffers[CH7_MODE][current_buffer];
+    g_menu_state.tile_index[0] = g_centralModeBuffer[CH0_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[1] = g_centralModeBuffer[CH1_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[2] = g_centralModeBuffer[CH2_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[3] = g_centralModeBuffer[CH3_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[4] = g_centralModeBuffer[CH4_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[5] = g_centralModeBuffer[CH5_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[6] = g_centralModeBuffer[CH6_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[7] = g_centralModeBuffer[CH7_MODE][g_currentProgramBuffer];
 
-    unsigned long bpm0 = resultBPM[0] % 10000UL;
-    unsigned long bpm1 = resultBPM[1] % 10UL;
+    unsigned long bpm0 = g_resultBPM[0] % 10000UL;
+    unsigned long bpm1 = g_resultBPM[1] % 10UL;
 
     g_menu_state.tile_index[8] = (int) ((bpm0 / 1000UL) % 10UL);
     g_menu_state.tile_index[9] = (int) ((bpm0 / 100UL) % 10UL);
@@ -299,17 +299,17 @@ void CKernel::gpu_render_menu_rebuild_layout()
 // rebuild dynamic indices from mode buffers and bpm values
 void CKernel::gpu_render_menu_update_indices()
 {
-    g_menu_state.tile_index[0] = mode_storage_buffers[CH0_MODE][current_buffer];
-    g_menu_state.tile_index[1] = mode_storage_buffers[CH1_MODE][current_buffer];
-    g_menu_state.tile_index[2] = mode_storage_buffers[CH2_MODE][current_buffer];
-    g_menu_state.tile_index[3] = mode_storage_buffers[CH3_MODE][current_buffer];
-    g_menu_state.tile_index[4] = mode_storage_buffers[CH4_MODE][current_buffer];
-    g_menu_state.tile_index[5] = mode_storage_buffers[CH5_MODE][current_buffer];
-    g_menu_state.tile_index[6] = mode_storage_buffers[CH6_MODE][current_buffer];
-    g_menu_state.tile_index[7] = mode_storage_buffers[CH7_MODE][current_buffer];
+    g_menu_state.tile_index[0] = g_centralModeBuffer[CH0_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[1] = g_centralModeBuffer[CH1_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[2] = g_centralModeBuffer[CH2_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[3] = g_centralModeBuffer[CH3_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[4] = g_centralModeBuffer[CH4_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[5] = g_centralModeBuffer[CH5_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[6] = g_centralModeBuffer[CH6_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[7] = g_centralModeBuffer[CH7_MODE][g_currentProgramBuffer];
 
-    unsigned long bpm0 = resultBPM[0] % 10000UL;
-    unsigned long bpm1 = resultBPM[1] % 10UL;
+    unsigned long bpm0 = g_resultBPM[0] % 10000UL;
+    unsigned long bpm1 = g_resultBPM[1] % 10UL;
 
     g_menu_state.tile_index[8] = (int) ((bpm0 / 1000UL) % 10UL);
     g_menu_state.tile_index[9] = (int) ((bpm0 / 100UL) % 10UL);

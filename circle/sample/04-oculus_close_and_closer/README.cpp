@@ -195,9 +195,9 @@ initOtexture()
 
 with an independent set of uniforms and parameters, look at the file circle/sample/04-oculus_close_and_closer/the functions.cpp 
 
-driven by an unified array g_centralModeBuffer[][] ( the old mode_storage_buffers ) where we store all variables/modes/settings for each channel
+driven by an unified array g_centralModeBuffer[][] ( the old g_centralModeBuffer ) where we store all variables/modes/settings for each channel
 
-- i also combined the input/mode/output values into a single matrix inOutMatrixInt[][] and inOutMatrixFlt[][]
+- i also combined the input/mode/output values into a single matrix g_inOutMatrixInt[][] and g_inOutMatrixFlt[][]
 
 and i want to do it with the timing related arrays from circle/sample/01-oculus_mendax/global.h too, like in features.cpp
 

@@ -23,7 +23,7 @@ bool            CKernel::wrapperDMAallocate            ()
                                                                 &m_frameBlockBaseB,
                                                                 &m_frameRawBlockB,
                                                                 &m_frameBlockSizeB);
-                m_BufferOmt         = initDMAbuffer(   1, TEX_FILE_SIZE,                    // <- need to be adapted !!
+                m_bufferOmt         = initDMAbuffer(   1, TEX_FILE_SIZE,                    // <- need to be adapted !!
                                                                 &m_overlyBlockBase,             // <- need to be adapted !!
                                                                 &m_overlayRawBlock,             // <- need to be adapted !!
                                                                 &m_overlyBlockSize);            // <- need to be adapted !!                                                
@@ -32,7 +32,7 @@ bool            CKernel::wrapperDMAallocate            ()
                                                                 &m_textureRawBlock,
                                                                 &m_textureBlockSize);
 
-                if (!m_bufferVid || !m_bufferFrA || !m_bufferFrB || !m_BufferOmt || !m_bufferTex)
+                if (!m_bufferVid || !m_bufferFrA || !m_bufferFrB || !m_bufferOmt || !m_bufferTex)
                     {
                     wrapperDMAcleanUp();
                     return false;
@@ -76,7 +76,7 @@ bool CKernel::wrapperDMAallocate()
 
     if (bOK)
         {
-        bOK = (m_BufferOmt = initDMAbuffer(
+        bOK = (m_bufferOmt = initDMAbuffer(
                     1,
                     TEX_FILE_SIZE,
                     &m_overlyBlockBase,
@@ -149,7 +149,7 @@ void            CKernel::wrapperDMAcleanUp            ()
 
                     clearDMAbuffer( m_bufferTex, m_textureRawBlock); 
 
-                    clearDMAbuffer( m_BufferOmt, m_overlayRawBlock); 
+                    clearDMAbuffer( m_bufferOmt, m_overlayRawBlock); 
 
 
 }

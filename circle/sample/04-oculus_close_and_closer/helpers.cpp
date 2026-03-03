@@ -37,7 +37,7 @@ void            CKernel::parser_bmp               (int p_fromFile, int p_toFile)
 
 void            CKernel::parser_overlay_bmp         (int p_fileIndex)
 {        
-                m_H264SystemParser.ParseBPM(p_fileIndex , g_ScnOmt  /*"Overlay Atlas"*/ , m_BufferOmt, g_bytOmt );
+                m_H264SystemParser.ParseBPM(p_fileIndex , g_ScnOmt  /*"Overlay Atlas"*/ , m_bufferOmt, g_bytOmt );
 
                 GenerateBmpOverlayInfo  (p_fileIndex); // we keep the indexing maybe there will be more 
         

@@ -200,7 +200,7 @@ glslCheck();
 #ifdef __GL_DEBUG__
 glslCheck();
 #endif // __GL_DEBUG__
-                        GLvoid* bitmapData = &m_BufferOmt[0][m_H264SystemParser.m_tex_data_offset[0]]; // oh, we need to figure out how we do the bmp parsing for only the atlas!!
+                        GLvoid* bitmapData = &m_bufferOmt[0][m_H264SystemParser.m_tex_data_offset[0]]; // oh, we need to figure out how we do the bmp parsing for only the atlas!!
 
                         glTexImage2D(GL_TEXTURE_2D, 
                                    0, 

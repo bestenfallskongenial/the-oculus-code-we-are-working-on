@@ -18,6 +18,7 @@
 //#include <circle/interrupt.h>								// ????????????????????????????????
 #include <circle/timer.h>
 
+// #include <circle/logger.h>
 
 #include <circle/memory.h>										// new for dma allocated buffers!
 #include <circle/new.h>												// new for dma allocated buffers!
@@ -214,7 +215,7 @@ enum filecount
 enum fileindex
 {
 	maxSD = 0,
-	maxUSB,
+	maxUsb,
 	oldcount, // ? i mean the function now & the counterm no old-new thing neccesary
 	count,
 	scanned,
@@ -253,7 +254,7 @@ enum colorindex
 	colorindexcount // to define the array size, must be last
 };
 
-	char** 				m_bufferVideo;
+	char** 				m_bufferVid;
 	char* 				m_videoBlockBase;
 	char* 				m_videoRawBlock;
     size_t 				m_videoBlockSize;
