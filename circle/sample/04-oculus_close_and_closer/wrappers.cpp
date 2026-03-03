@@ -171,7 +171,7 @@ CKernel::wrapper_modes()
 {
         resetMenuPickupFlags();                              // we need to reset the threshold flags each loop - why again?!
 
-        switch (g_current_menu_layer)                           // use than the menylayer variable the 
+        switch (g_current_menu_layer)                           // use than the menulayer variable the 
             {
             case 0:
                 modeMenuAssignGroup(1,  0);                  // CH0–CH3 parameters in our global array depending on the menulayer

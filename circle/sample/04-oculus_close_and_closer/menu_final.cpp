@@ -125,7 +125,7 @@ void            CKernel::modeBPM (int channel)
 
 void            CKernel::modeLF1 (int channel)
 {
-                inOutMatrixFlt[channel][out] = inOutMatrixFlt[0][lf1] // g_lfoFltOut[0];
+                inOutMatrixFlt[channel][out] = inOutMatrixFlt[0][lf1] // g_lfoFltOut[0] <- lfo comes always from [0] since it is global
                 inOutMatrixInt[channel][out] = inOutMatrixInt[0][lf1] // g_lfoIntOut[0];
 }
 void            CKernel::modeLF2 (int channel)

@@ -1,283 +1,180 @@
-here the attempt to create a clean and extended version of my oculus mendax code.
-some changes :
+Makefile                    
+
+
+README.md                   
+
+
+bufferToScreen.cpp          buffer_to_screen_plot                           (   unsigned        x, 
+                                                                                unsigned        y, 
+                                                                                u32 color )
+                            buffer_to_screen_draw_char                      (   char            ch,
+                                                                                unsigned        charCol,
+                                                                                unsigned        charRow,
+                                                                                u32             fgColor,
+                                                                                u32             bgColor )
+                            buffer_to_screen_init                           (   void )
+                            buffer_to_screen_clear_screen                   (   u32 bgColor)
+                            buffer_to_screen_draw_buffer_segment_to_screen  (   const char     *pSourceBuffer,
+                                                                                u32             startIndex,
+                                                                                u32             endIndex,
+                                                                                unsigned        startCol,
+                                                                                unsigned        startRow,
+                                                                                u32             fgColor,
+                                                                                u32             bgColor )
+                            buffer_to_screen_get_grid                       (   unsigned       &cols, 
+                                                                                unsigned       &rows )
+
+color_table.cpp             const unsigned char g_rgb_color_table[49][3]
+
+
+features.cpp                randomVec8                                      (   uint32_t        p_seed )
+                            calculateBPM                                    (   unsigned long   p_triggerTimeClockA, 
+                                                                                unsigned long   p_triggerTimeClockB )
+                            predictedNextBeat                               ()
+                            sampleWaveTable                                 ()
+                            audioEnergy                                     (   float           p_adcvalue    ) // shall i pass the channel instead?
+
+filesystem.cpp              Mount                                           (   const char*     p_deviceName )
+                            UnMount                                         ()
+                            openFile                                        (   const char     *p_fileName )
+                            loadFile                                        (   char           *p_buffer,       // destination buffer for the file data
+                                                                                unsigned        p_bufferSize )
+                            saveBuffer                                      (   const char*     p_fileName,
+                                                                                const char*     p_buffer,
+                                                                                unsigned        p_bufferSize )
+                            closeFile                                       ()
+                            bulkLoad                                        (   char*           p_fileNameArray[],  // where we have stored the filenames from the root directory scan
+                                                                                unsigned        p_loadedBytes[],    // where we store the size in bytes for each file 
+                                                                                char**          p_bufferArray,      // where we store the loaded file data for each file ( or dma/non-dma buffers )
+                                                                                int             p_maxFiles,         // how many files we are allowed to process ( os limitations )
+                                                                                int            &p_validFiles,       // counts successful loads <- directly modified in the function, we dont need to return it
+                                                                                unsigned        p_fileSize )        // maximum size for each file
+                            IsValidFile(                                        const char*     pFileName,
+                                                                                const char*     extension )
+                            scanRoot                                        (   char**          p_fileNameArray,    // where we store the valid filenames we find
+                                                                                const char*     p_fileExtension[],  // the array of valid file extensions for this type of file
+                                                                                int             p_extentionCount,   // how many valid file extensions we have in the array above
+                                                                                int            &p_scannedFiles,     // our counter of found files, important <- has to be initialised with 0
+                                                                                unsigned        p_maxFiles )  
+                            updateUSB                                       (   const char*     p_deviceName )
+                            removeUSB                                       (   CDevice        *f_partitionName,    // we could also unmount the filesystem here if we wanted to be extra safe,right?
+                                                                                void           *p_pContext )
+
+filesystem_user.cpp         util_save_modes_file                            ()                                      // this is not wanted/needed anymore
+
+
+gfx_OGL.cpp                 gfx_init_OGL                                    (   glsl_states    *m_glsl )
+
+
+gfx_debug.cpp               shaderLog                                       (   GLint           shader, 
+                                                                                int             shaderIndex )
+                            programLog                                      (   GLint           shader, 
+                                                                                int             program_index )
+                            gfx_check                                       (   const char*     file,
+                                                                                unsigned        line )
+
+
+gfx_init.cpp                initVshaders                                    (   glsl_states    *m_glsl, 
+                                                                                int             p_fromFile, 
+                                                                                int             p_toFile)
+                            initOshader                                     (   glsl_states    *m_glsl )
+                            initFshaders                                    (   glsl_states    *m_glsl, 
+                                                                                int             p_fromFile, 
+                                                                                int             p_toFile) 
+                            initOprogram                                    (   glsl_states    *m_glsl)
+                            initFprograms                                   (   glsl_states    *m_glsl, 
+                                                                                int             p_fromFile, 
+                                                                                int             p_toFile)  
+                            initOuniforms                                   (   glsl_states    *m_glsl) 
+                            initFuniforms                                   (   glsl_states    *m_glsl, 
+                                                                                int             p_fromFile, 
+                                                                                int             p_toFile) 
+                            initOtexture                                    (   glsl_states     *m_glsl)  
+                            initUtextures                                   (   glsl_states    *m_glsl, 
+                                                                                int             p_fromFile, 
+                                                                                int             p_toFile)  
+                            initVbuffer                                     (   glsl_states    *m_glsl) 
+
+gfx_render.cpp              gfx_render_shader_a                             (   glsl_states    *m_glsl)             // ***** !!!!! *****
+                            gfx_render_shader_b                             (   glsl_states    *m_glsl)
+
+helpers.cpp                 checkUpdate                                     ()                                      // ***** !!!!! *****
 
-clean up and separation of the menu.cpp means we need to rework the 
-new integrated button code
-addition of an overlay texture atlas based means we need to rework  
-the filesystem, the global variables etc,
-i also need to init a second parser instance not to confuse my code that much
 
+kernel.cpp                  CKernel::CKernel                                (   void )
+                            CKernel::~CKernel                               (   void )
 
-FILENAME                |      FUNCTIONS / CONTENT                                              |  REMARKS DESCIPTION
 
-Makefile
+kernel.h
 
-README.md               -   this file here
 
-buttons.cpp                         
+kernel_initialize.cpp       Initialize                                      (   void )
 
-                        -   buttonPing                 (int btn_id)                            one of the 3 versions 
 
-                        /   consume_button              (int btn_id, int &var)                  is mute / demo / concept
+kernel_run.cpp              Run                                             (   void )
 
-color_table.cpp         -   contains the color table for the ws2812 leds
 
-filesystem.cpp                      
+memory.cpp                  wrapperDMAallocate                              ()
+                            wrapperMEMallocate                              ()
+                            wrapperDMAcleanUp                               ()
+                            wrapperMEMcleanUp                               ()
+                            initMEMbuffer                                   (   size_t          count, 
+                                                                                size_t          bufferSize ) 
+                            initDMAbuffer                                   (   size_t          count, 
+                                                                                size_t          bufferSize,
+                                                                                char**          blockBaseOut,
+                                                                                char**          rawBlockOut,
+                                                                                size_t*         alignedSizeOut )
+                            clearMEMbuffer                                  (   char**          buffers, 
+                                                                                size_t          count ) 
+                            clearDMAbuffer                                  (   char**          buffers, 
+                                                                                char*           rawBlock )
 
-                        -   openFile        (   const char *p_fileName)
- 
-                        -   loadFile        (   char *buffer, 
-                                                            unsigned bufferSize, 
-                                                            int mode)
 
-                        -   closeFile       ()
- 
-                        -   filesystem_process_files    (   char* p_fileNameArray[], 
-                                                            unsigned p_loadedBytes[], 
-                                                            char** p_bufferArray, 
-                                                            int p_maxFiles, 
-                                                            int p_validFiles, 
-                                                            unsigned p_fileSize, 
-                                                            int mode)
-!!!!!
-                        -   filesystem_mount            (   const char* p_deviceName,             OKAY, here is where the "magic" happens!!!
-                                                            char* fileNamesVsh[],           
-                                                            unsigned vStotalLoadedBytes[], 
-                                                            int maxVshaderFiles,
+menu.fsh                    GLSL for my overlay texture atlas menu
 
-                                                            char* fileNamesOmf[],          *   NEW
-                                                            unsigned foverlayLoadedBytes[],     *   NEW
-                                                            int maxFoverlayFiles,               *   NEW
 
-                                                            char* fileNamesFsh[], 
-                                                            unsigned fStotalLoadedBytes[], 
-                                                            int maxFshaderFiles,
+menu_final.cpp              resetMenuPickupFlags                            ()
+                            modeMenuAssignGroup                             (   uint8_t         menu_id, 
+                                                                                uint8_t         base)
+                            applyModeToChannel                              (   int             channel)
+                            modeADC                                         (   int             channel) 
+                            modeTRG                                         (   int             channel)
+                            modeBPM                                         (   int             channel)
+                            modeLF1                                         (   int             channel)
+                            modeLF2                                         (   int             channel)
 
-                                                            char* fileNamesOmt[],        *   NEW            
-                                                            unsigned tXoverlayLoadedBytes[],    *   NEW
-                                                            int maxTexOverlayFiles,             *   NEW
 
-                                                            char* fileNamesTex[], 
-                                                            unsigned tXtotalLoadedBytes[], 
-                                                            int maxTextureFiles,
+util.cpp                    prepParameters                                  ()
+                            chooseProgram                                   (   int             p_channel )
+                            chooseTexture                                   (   int             p_channel )
+                            chooseVideo                                     (   int             p_channel )
+                            storeModes                                      ()
+                            readADC                                         () 
+                            buttonPing                                      (   int             p_btn_id, 
+                                                                                int             pin )
+                            storeLog                                        (   char*           buffer, 
+                                                                                u32&            index,
+                                                                                const char*     label,
+                                                                                u32             value1, 
+                                                                                u32             value2,
+                                                                                u32             value3, 
+                                                                                u32             value4 )
+                            storeMsg                                        (   char*           buffer,
+                                                                                u32&            index,
+                                                                                const char*     label,
+                                                                                const void*     tx_msg,
+                                                                                u32             total_size)
+                            nextline                                        (   char*           buffer,
+                                                                                u32&            index )
 
-                                                            char* fileNamesVid[]  , 
-                                                            unsigned vItotalLoadedBytes[], 
-                                                            int maxVideoFiles)
-!!!!!
-                        -   filesystem_save_log_file    (   const char* p_deviceName, 
-                                                            const char* p_fileName, 
-                                                            const CString& p_str_to_save)
+wavetable.cpp               unsigned long g_waveTable[WAVEFORMS][WAVESAMPLES] 
 
-                        -   IsValidFile  (   const char* p_fileName, 
-                                                            const char* p_fileExtension)
 
-                        -   scanRoot      (   char** fileArray, 
-                                                            const char* p_fileExtension[], 
-                                                            int p_extentionCount, 
-                                                            unsigned p_maxFiles )
+wrappers.cpp                wrapper_from_sd                                 ()
+                            wrapper_load_usb                                ()
+                            wrapper_init_gl_sd                              ()
+                            wrapper_init_gl_usb                             ()
+                            wrapper_io                                      ()
+                            wrapper_modes                                   ()
 
-                        -   updateUSB       (   const char* deviceType)
-
-                        -   removeUSB       (   CDevice *pDevice, 
-                                                            void *p_pContext)
-
-filesystem_user.cpp      
-
-                        -   checkUpdate       ()
-
-                        -   util_save_modes_file        ()
-
-                        -   filesystem_load_kernel      (   const char* p_deviceName, 
-                                                            const char* p_fileName, 
-                                                            unsigned p_fileIndex)
-
-                        -   filesystem_save_kernel      (   const char* p_deviceName, 
-                                                            const char* p_fileName, 
-                                                            unsigned p_fileIndex)
-
-                        -   GenerateH264ParserInfo      (   int p_fileIndex)
-
-                        -   GenerateBmpParserInfo       (   int p_fileIndex)
-
-                        -   GenerateBmpOverlayInfo      (   int p_fileIndex)                     *   NEW
-
-                        -   parser_h264                 (   int p_fromFile, 
-                                                            int p_toFile)
-
-                        -   parser_bmp                  (   int p_fromFile, 
-                                                            int p_toFile)
-
-                        -   parser_overlay_bmp          (   int p_fileIndex)                     *   NEW
-
-gfx.cpp                                                                                         *   look up circle/sample/03-next_try/temp/the functions.cpp!!!
-
-                        -   initVshaders           (   glsl_states *m_glsl, 
-                                                            int p_fromFile, 
-                                                            int p_toFile) 
-
-                        -   initOshader    (   glsl_states *m_glsl )               *   NEW
-
-                        -   initFshaders           (   glsl_states *m_glsl, 
-                                                            int p_fromFile, 
-                                                            int p_toFile) 
-
-                        -   initOprogram    (   glsl_states *m_glsl)                *   NEW
-
-                        -   initFprograms           (   glsl_states *m_glsl, 
-                                                            int p_fromFile, 
-                                                            int p_toFile)       
-
-                        -   initOuniforms   (   glsl_states *m_glsl)                *   NEW
-
-                        -   initFuniforms           (   glsl_states *m_glsl, 
-                                                            int p_fromFile, 
-                                                            int p_toFile)
-
-                        -   initOtexture    (   glsl_states *m_glsl)                *   NEW
-
-                        -   initUtextures           (   glsl_states *m_glsl, 
-                                                            int p_fromFile, 
-                                                            int p_toFile)       
-
-                        -   initVbuffer           (   glsl_states *m_glsl) 
-
-                        -   gfx_render_shader_a         (   glsl_states *m_glsl)
-
-                        /   we need the "render the overlay display fragment shader"!!!         *   look up circle/sample/03-next_try/temp/the functions.cpp!!!
-
-                        -   gfx_render_shader_b         (   glsl_states* m_glsl)
-
-
-gfx_OGL.cpp                         
-
-                        -   gfx_init_OGL                (   glsl_states *m_glsl)
-
-gfx_debug.cpp                       
-
-                        -   shaderLog              (   GLint shader, 
-                                                            int shaderIndex)
-
-                        -   programLog             (   GLint shader, 
-                                                            int program_index) 
-
-                        -   gfx_check                   (   const char *file, 
-                                                            unsigned line)
-
-global.cpp                          
-
-                        - contains the global variables BUT i decided to "re-migrate" them into the kernel.h file ( where there where before )
-
-io.cpp                              
-                            
-                        /   io_init_pickup_buffer       ()
-
-                        -   readADC                 () 
-
-                        -   io_event_button_A           (   BUTTONS::TEvent Event, 
-                                                            void *pParam)
-
-                        -   io_event_button_B           (   BUTTONS::TEvent Event, 
-                                                            void *pParam)
-
-kernel.cpp                          
-
-                        *   CKernel                     (void)
-
-                        -   Initialize                  (void)
-
-                        -   Run                         (void)
-                                    
-kernel.h                * 
-
-memory.cpp                          
-!!!!!
-                        -   wrapperMemoryAllocate             ()                                      * we add here the new buffers for the overlay menu code
-
-                        -   wrapperMemoryCleanUp             ()                                      *
-!!!!!
-                        -   initMEMbuffer          (   size_t count, 
-                                                            size_t bufferSize) 
-
-                        -   initDMAbuffer      (   size_t count, 
-                                                            size_t bufferSize,
-                                                            char** blockBaseOut,
-                                                            char** rawBlockOut,
-                                                            size_t* alignedSizeOut)
-
-                        -   clearMEMbuffer         (   char** buffers, 
-                                                            size_t count) 
-
-                        -   clearDMAbuffer     (   char** buffers, 
-                                                            char* rawBlock)
-
-                                    
-menu.fsh                *   this is the new shader for my overly texture atlas driven menu!!   
-                                    
-menu_final.cpp         we created a new clean menu functions, separate into different smaller functions 
-
-                        +   resetMenuPickupFlags     ()                                      *
-
-                        +   modeMenuAssignGroup      (   uint8_t menu_id,                    *
-                                                            uint8_t base)
-
-                        +   applyModeToChannel       (   int channel)                        *
-
-                        *   here we need the function that maps the g_centralModeBuffer content depending on the button input and choosen menu layer
-
-                        /   modeADC                     (   int channel)                        simple version
-
-                        +   modeADC                     (   int channel)
-
-                        +   modeTRG                     (   int channel)
-
-                        +   modeBPM                     (   int channel) 
-
-                        /   modePOT                     ()                                      not implemented jet
-
-                        +   modeLF1                     ()
-
-                        +   modeLF2                     ()
-
-                        ?   frameVIDEO                                                          new potential modes
-
-                        ?   indexVIDEO
-
-                        ?   singleSHADER
-
-                        ?   extTIME
-
-                        ?   extCLK
-                                    
-util.cpp                            
-
-                        -   prepParameters        ()
-
-                        -   chooseProgram         ()                                      
-
-                        -   chooseTexture         ()
-
-                        -   storeModes          () 
-
-                        -   randomVec8            (   uint32_t p_seed)           
-
-                        -   calculateBPM          (   unsigned long p_triggerTimeClockA, 
-                                                            unsigned long p_triggerTimeClockB) 
-
-                        -   util_determine_bpm_source   ()
-
-                        -   predictedNextBeat  ()
-
-                        -   sampleWaveTable                    ()
-
-                        ?   audioEnergy           (   float p_adcvalue)                     <-- the old audio engine - i MUST FIND THE REWORK!!!
-
-wavetable.cpp                       -   contains the wave tables for the lfo´s 
-
-
-there are still functions missing here, whole files too!
-
-menu_led.cpp                        *   concerned with the ws2812 leds
-
-okay, we should start to to name variables i a REALLY clean and deterministic way,
-like prefixes for them g_for global, p_ for parameter ( in functions ), also 
