@@ -30,6 +30,12 @@ void            CKernel::randomVec8           (uint32_t p_seed)                 
                 inOutMatrixInt[7][rnd] = ( inOutMatrixFlt[7][rnd] * f_max_int);
 }
 
+
+/*
+g_resultBPM g_nextBeatTime  g_intervalCalculated    g_elapsedMicroseconds   g_sampleIndex   g_cycleLength   g_lfoMultiplier g_lfoMultiplierTMP   g_lastBpmCalculation   g_lastBpmCalculationTMP g_lastCircleBuffer  g_nextCircleBuffer      
+
+i love to have a similar array i i have for the in/output matrix
+*/
 void            CKernel::calculateBPM         (   unsigned long   p_triggerTimeClockA, 
                                                         unsigned long   p_triggerTimeClockB) 
 {
@@ -94,7 +100,7 @@ void            CKernel::predictedNextBeat ()
 {
                 unsigned long currentTime           = m_Timer.GetClockTicks();                                                                      // Get the current u_time in clock ticks
 
-                g_activeBpmChannel                  = (g_lastBpmCalculation[0] > g_lastBpmCalculation[1]) ? 0 : 1;                                  // what was the last bpm input? 
+                int f_activeInput                  = (g_lastBpmCalculation[0] > g_lastBpmCalculation[1]) ? 0 : 1;                                  // what was the last bpm input? 
 
                 if (currentTime >= g_nextBeatTime[0])                                                                                               // Update for instance 0
                 {
@@ -103,19 +109,19 @@ void            CKernel::predictedNextBeat ()
                 if (currentTime >= g_nextCircleBuffer[0]) 
                     {
                     g_lastCircleBuffer[0]           = g_nextCircleBuffer[0];
-                    g_nextCircleBuffer[0]           = g_nextCircleBuffer[0] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[0]);                                   // g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]]);
-                    g_lfoMltTmp[0]                  = g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]];
+                    g_nextCircleBuffer[0]           = g_nextCircleBuffer[0] + (g_intervalCalculated[f_activeInput] * g_lfoMultiplierTMP[0]);                                   // g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]]);
+                    g_lfoMultiplierTMP[0]                  = g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]];
                     }
-                if ((g_lastValidCalculationBuffer[0] != g_lastBpmCalculation[0]))                                                                   // Handle BPM changes for instance 0
+                if ((g_lastBpmCalculationTMP[0] != g_lastBpmCalculation[0]))                                                                   // Handle BPM changes for instance 0
                     {
                     g_nextBeatTime[0]               = g_lastBpmCalculation[0];                                                                      // Reset to current time for new BPM
-                    g_lastValidCalculationBuffer[0] = g_lastBpmCalculation[0];
+                    g_lastBpmCalculationTMP[0] = g_lastBpmCalculation[0];
                     }
-                if (g_lfoMltTmp[0] != g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]])
+                if (g_lfoMultiplierTMP[0] != g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]])
                     {
-                    g_lastCircleBuffer[0]           = g_lastBpmCalculation[g_activeBpmChannel];
-                    g_nextCircleBuffer[0]           = g_lastBpmCalculation[g_activeBpmChannel] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[0]);                                   // g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]]);
-                    g_lfoMltTmp[0]                  = g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]];
+                    g_lastCircleBuffer[0]           = g_lastBpmCalculation[f_activeInput];
+                    g_nextCircleBuffer[0]           = g_lastBpmCalculation[f_activeInput] + (g_intervalCalculated[f_activeInput] * g_lfoMultiplierTMP[0]);                                   // g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]]);
+                    g_lfoMultiplierTMP[0]                  = g_lfoMultiplier[g_centralModeBuffer[LF1_MULT][g_currentProgramBuffer]];
                     }
                 if (currentTime >= g_nextBeatTime[1])                                                                                               // Update for instance 1
                     {
@@ -124,19 +130,19 @@ void            CKernel::predictedNextBeat ()
                 if (currentTime >= g_nextCircleBuffer[1]) 
                     {
                     g_lastCircleBuffer[1]           = g_nextCircleBuffer[1];
-                    g_nextCircleBuffer[1]           = g_nextCircleBuffer[1] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[1] );                                  // g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]]);
-                    g_lfoMltTmp[1]                  = g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]];
+                    g_nextCircleBuffer[1]           = g_nextCircleBuffer[1] + (g_intervalCalculated[f_activeInput] * g_lfoMultiplierTMP[1] );                                  // g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]]);
+                    g_lfoMultiplierTMP[1]                  = g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]];
                     }
-                if ((g_lastValidCalculationBuffer[1] != g_lastBpmCalculation[1]))                                                                   // Handle BPM changes for instance 1
+                if ((g_lastBpmCalculationTMP[1] != g_lastBpmCalculation[1]))                                                                   // Handle BPM changes for instance 1
                     {
                     g_nextBeatTime[1]               = g_lastBpmCalculation[1];                                                                      // Reset to current time for new BPM
-                    g_lastValidCalculationBuffer[1] = g_lastBpmCalculation[1];
+                    g_lastBpmCalculationTMP[1] = g_lastBpmCalculation[1];
                     }
-                if (g_lfoMltTmp[1] != g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]])
+                if (g_lfoMultiplierTMP[1] != g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]])
                     {
-                    g_lastCircleBuffer[1]           = g_lastBpmCalculation[g_activeBpmChannel];
-                    g_nextCircleBuffer[1]           = g_lastBpmCalculation[g_activeBpmChannel] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMltTmp[1]);                                   // g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]]);
-                    g_lfoMltTmp[1]                  = g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]];
+                    g_lastCircleBuffer[1]           = g_lastBpmCalculation[f_activeInput];
+                    g_nextCircleBuffer[1]           = g_lastBpmCalculation[f_activeInput] + (g_intervalCalculated[f_activeInput] * g_lfoMultiplierTMP[1]);                                   // g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]]);
+                    g_lfoMultiplierTMP[1]                  = g_lfoMultiplier[g_centralModeBuffer[LF2_MULT][g_currentProgramBuffer]];
                     }
 }
 
