@@ -259,12 +259,12 @@ enum colorindex
 	char* 				m_videoRawBlock;
     size_t 				m_videoBlockSize;
 
-	char**				m_bufferFrameBufferA;
+	char**				m_bufferFrA;
 	char* 				m_frameBlockBaseA;
 	char* 				m_frameRawBlockA;
     size_t 				m_frameBlockSizeA;
 
-	char**				m_bufferFrameBufferB;
+	char**				m_bufferFrB;
 	char* 				m_frameBlockBaseB;
 	char* 				m_frameRawBlockB;
     size_t 				m_frameBlockSizeB;	

@@ -155,7 +155,7 @@ extern int g_centralModeBuffer[16][33];
 extern int g_currentProgramBuffer;
 extern unsigned long g_resultBPM[2];
 extern unsigned long currentTime;
-extern unsigned long current_time;
+extern unsigned long currentTime;
 extern int shader_has_stored_params[33];
 extern bool is_hold_for_2_sec_a;
 extern bool is_hold_for_2_sec_b;

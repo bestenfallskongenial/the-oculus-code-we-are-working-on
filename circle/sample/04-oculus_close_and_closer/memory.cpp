@@ -1,172 +1,110 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include "kernel.h"
-#include "global.h"
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-
-        my new memory.cpp with added dma memory allocation for the texture atlas and the overlay fragment shader - also i found some strange errors here.
-
-*/
+//  my new memory.cpp with added dma memory allocation for the texture atlas and the overlay fragment shader - also i found some strange errors here.
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-bool            CKernel::wrapperDMAallocate            ()
-{
-                m_bufferVid         = initDMAbuffer(   VID_FILES_ON_SD + VID_FILES_ON_USB, VID_FILE_SIZE,                      // Video and frame buffers need DMA memory <- lets use the Bok style here too!
-                                                                &m_videoBlockBase,
-                                                                &m_videoRawBlock,
-                                                                &m_videoBlockSize);
-                m_bufferFrA         = initDMAbuffer(   1, FRAME_SIZE,
-                                                                &m_frameBlockBaseA,
-                                                                &m_frameRawBlockA,
-                                                                &m_frameBlockSizeA);
-                m_bufferFrB         = initDMAbuffer(   1, FRAME_SIZE,
-                                                                &m_frameBlockBaseB,
-                                                                &m_frameRawBlockB,
-                                                                &m_frameBlockSizeB);
-                m_bufferOmt         = initDMAbuffer(   1, TEX_FILE_SIZE,                    // <- need to be adapted !!
-                                                                &m_overlyBlockBase,             // <- need to be adapted !!
-                                                                &m_overlayRawBlock,             // <- need to be adapted !!
-                                                                &m_overlyBlockSize);            // <- need to be adapted !!                                                
-                m_bufferTex         = initDMAbuffer(   TEX_FILES_ON_SD + TEX_FILES_ON_USB, TEX_FILE_SIZE,
-                                                                &m_textureBlockBase,
-                                                                &m_textureRawBlock,
-                                                                &m_textureBlockSize);
-
-                if (!m_bufferVid || !m_bufferFrA || !m_bufferFrB || !m_bufferOmt || !m_bufferTex)
-                    {
-                    wrapperDMAcleanUp();
-                    return false;
-                    }
-                return true;
-}
-*/
-bool CKernel::wrapperDMAallocate()
+bool CKernel::wrapperInitDMA()
 {
     bool bOK = true;
 
     if (bOK)
         {
-        bOK = (m_bufferVid = initDMAbuffer(
-                    VID_FILES_ON_SD + VID_FILES_ON_USB,
-                    VID_FILE_SIZE,
-                    &m_videoBlockBase,
-                    &m_videoRawBlock,
-                    &m_videoBlockSize));
+        bOK = (m_bufferVid = alllocateBufferDMA  (  filecounter[FT_VID][FLD_MAXSD]+filecounter[FT_VID][FLD_MAXUSB],
+                                                    filecounter[FT_VID][FLD_SIZE],
+                                                   &m_videoBlockBase,
+                                                   &m_videoRawBlock,
+                                                   &m_videoBlockSize));
         }
-
     if (bOK)
         {
-        bOK = (m_bufferFrA = initDMAbuffer(
-                    1,
-                    FRAME_SIZE,
-                    &m_frameBlockBaseA,
-                    &m_frameRawBlockA,
-                    &m_frameBlockSizeA));
+        bOK = (m_bufferFrA = alllocateBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB],
+                                                    filecounter[FRM_BF][FLD_SIZE],
+                                                   &m_frameBlockBaseA,
+                                                   &m_frameRawBlockA,
+                                                   &m_frameBlockSizeA));
         }
-
     if (bOK)
         {
-        bOK = (m_bufferFrB = initDMAbuffer(
-                    1,
-                    FRAME_SIZE,
-                    &m_frameBlockBaseB,
-                    &m_frameRawBlockB,
-                    &m_frameBlockSizeB));
+        bOK = (m_bufferFrB = alllocateBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB],
+                                                    filecounter[FRM_BF][FLD_SIZE],
+                                                   &m_frameBlockBaseB,
+                                                   &m_frameRawBlockB,
+                                                   &m_frameBlockSizeB));
         }
-
     if (bOK)
         {
-        bOK = (m_bufferOmt = initDMAbuffer(
-                    1,
-                    TEX_FILE_SIZE,
-                    &m_overlyBlockBase,
-                    &m_overlayRawBlock,
-                    &m_overlyBlockSize));
+        bOK = (m_bufferOmt = alllocateBufferDMA  (  filecounter[FT_OMT][FLD_MAXSD]+filecounter[FT_OMT][FLD_MAXUSB],
+                                                    filecounter[FT_OMT][FLD_SIZE],
+                                                   &m_overlyBlockBase,
+                                                   &m_overlayRawBlock,
+                                                   &m_overlyBlockSize));
         }
-
     if (bOK)
         {
-        bOK = (m_bufferTex = initDMAbuffer(
-                    TEX_FILES_ON_SD + TEX_FILES_ON_USB,
-                    TEX_FILE_SIZE,
-                    &m_textureBlockBase,
-                    &m_textureRawBlock,
-                    &m_textureBlockSize));
+        bOK = (m_bufferTex = alllocateBufferDMA  (  filecounter[FT_TEX][FLD_MAXSD]+filecounter[FT_TEX][FLD_MAXUSB],
+                                                    filecounter[FT_TEX][FLD_SIZE],
+                                                   &m_textureBlockBase,
+                                                   &m_textureRawBlock,
+                                                   &m_textureBlockSize));
         }
-
     return bOK;
 }
-/*
-bool            CKernel::wrapperMEMallocate            ()
-{
-                m_bufferKnl         = initMEMbuffer    (   2                                 , KNL_FILE_SIZE );
-                m_bufferVsh         = initMEMbuffer    (   VSH_FILES_ON_SD + VSH_FILES_ON_USB, VSH_FILE_SIZE );
-                m_bufferOmf         = initMEMbuffer    (   1                                 , FSH_FILE_SIZE );         // <- new        
-                m_bufferFsh         = initMEMbuffer    (   FSH_FILES_ON_SD + FSH_FILES_ON_USB, FSH_FILE_SIZE );
 
-                if (!m_bufferKnl || !m_bufferVsh || !m_bufferOmf || !m_bufferFsh)
-                    {
-                    wrapperMEMcleanUp();
-                    return false;
-                    }
-                return true;                
-}
-*/
-bool CKernel::wrapperMEMallocate()
+bool CKernel::wrapperInitMEM()
 {
     bool bOK = true;
 
     if (bOK)
         {
-        bOK = (m_bufferKnl = initMEMbuffer( 2, KNL_FILE_SIZE));
+        bOK = (m_bufferKnl = alllocateBufferMEM( filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], filecounter[FT_KLN][FLD_SIZE]));
         }
     if (bOK)
         {
-        bOK = (m_bufferLog = initMEMbuffer( 8, LOG_SIZE));      // 1024 *64 <- the new buffer for log/text files <- saveBuffer() <-
+        bOK = (m_bufferLog = alllocateBufferMEM( filecounter[LOGGER][FLD_MAXSD]+filecounter[LOGGER][FLD_MAXUSB], filecounter[LOGGER][FLD_SIZE]));      // 1024 *64 <- the new buffer for log/text files <- saveBuffer() <-
         }                   
     if (bOK)
         {
-        bOK = (m_bufferVsh = initMEMbuffer( VSH_FILES_ON_SD + VSH_FILES_ON_USB, VSH_FILE_SIZE));
+        bOK = (m_bufferVsh = alllocateBufferMEM( filecounter[FT_VSH][FLD_MAXSD]+filecounter[FT_VSH][FLD_MAXUSB], filecounter[FT_VSH][FLD_SIZE]));
         }
     if (bOK)
         {
-        bOK = (m_bufferOmf = initMEMbuffer( 1, FSH_FILE_SIZE));
+        bOK = (m_bufferOmf = alllocateBufferMEM( filecounter[FT_OMF][FLD_MAXSD]+filecounter[FT_OMF][FLD_MAXUSB], filecounter[FT_OMF][FLD_SIZE]));
         }
     if (bOK)
         {
-        bOK = (m_bufferFsh = initMEMbuffer( FSH_FILES_ON_SD + FSH_FILES_ON_USB, FSH_FILE_SIZE));
+        bOK = (m_bufferFsh = alllocateBufferMEM( filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB], filecounter[FT_FSH][FLD_SIZE]));
         }
     return bOK;
 }
 
 void            CKernel::wrapperDMAcleanUp            ()
 {
-                    clearDMAbuffer( m_bufferVid, m_videoRawBlock); 
+                    clearBufferDMA( m_bufferVid, m_videoRawBlock); 
 
-                    clearDMAbuffer( m_bufferFrA, m_frameRawBlockA); 
+                    clearBufferDMA( m_bufferFrA, m_frameRawBlockA); 
 
-                    clearDMAbuffer( m_bufferFrB, m_frameRawBlockB); 
+                    clearBufferDMA( m_bufferFrB, m_frameRawBlockB); 
 
-                    clearDMAbuffer( m_bufferTex, m_textureRawBlock); 
+                    clearBufferDMA( m_bufferTex, m_textureRawBlock); 
 
-                    clearDMAbuffer( m_bufferOmt, m_overlayRawBlock); 
+                    clearBufferDMA( m_bufferOmt, m_overlayRawBlock); 
 
 
 }
 void            CKernel::wrapperMEMcleanUp            ()
 {
-                    clearMEMbuffer( m_bufferKnl, 2 ); 
+                    clearBufferMEM( m_bufferKnl, filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB] ); 
 
-                    clearMEMbuffer( m_bufferLog, 8 ); 
+                    clearBufferMEM( m_bufferLog, filecounter[LOGGER][FLD_MAXSD]+filecounter[LOGGER][FLD_MAXUSB] ); 
 
-                    clearMEMbuffer( m_bufferVsh, VSH_FILES_ON_SD + VSH_FILES_ON_USB); 
+                    clearBufferMEM( m_bufferVsh, filecounter[FT_VSH][FLD_MAXSD]+filecounter[FT_VSH][FLD_MAXUSB] ); 
 
-                    clearMEMbuffer( m_bufferOmf, 1 ); 
+                    clearBufferMEM( m_bufferOmf, filecounter[FT_OMF][FLD_MAXSD]+filecounter[FT_OMF][FLD_MAXUSB] ); 
 
-                    clearMEMbuffer( m_bufferFsh, FSH_FILES_ON_SD + FSH_FILES_ON_USB);        
+                    clearBufferMEM( m_bufferFsh, filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB] );        
 }
 
-char**          CKernel::initMEMbuffer         (   size_t count, size_t bufferSize) 
+char**          CKernel::alllocateBufferMEM         (   size_t count, size_t bufferSize) 
 {
                 char** buffers = (char**)malloc(count * sizeof(char*));
 #ifdef ALLOC_DEBUG                   
@@ -187,7 +125,7 @@ CLogger::Get()->Write("ALLOC-DMA", LogDebug, "final buffers = 0x%p count = %u bu
                 return buffers;
 }
 
-char**          CKernel::initDMAbuffer     (   size_t count, 
+char**          CKernel::alllocateBufferDMA     (   size_t count, 
                                                         size_t bufferSize,
                                                         char** blockBaseOut,
                                                         char** rawBlockOut,
@@ -226,7 +164,7 @@ CLogger::Get()->Write("ALLOC-STD", LogDebug, "raw = 0x%p dma_block = 0x%p aligne
                 return buffers;
 }
 
-void            CKernel::clearMEMbuffer        (   char** buffers, size_t count) 
+void            CKernel::clearBufferMEM        (   char** buffers, size_t count) 
 {
                 for (size_t i = 0; i < count; ++i)                              // why the elements and than all? why not just all?!
                     {
@@ -237,7 +175,7 @@ void            CKernel::clearMEMbuffer        (   char** buffers, size_t count)
                 buffers = nullptr;                
 }
 
-void            CKernel::clearDMAbuffer    (   char** buffers, char* rawBlock)
+void            CKernel::clearBufferDMA    (   char** buffers, char* rawBlock)
 {
                 delete[] rawBlock;  // Raw block from new[]
                 delete[] buffers;   // Slice table

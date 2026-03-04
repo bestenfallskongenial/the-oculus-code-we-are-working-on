@@ -104,11 +104,11 @@ bool            CKernel::closeFile      ()	                                     
                 return true;								                                                        // success closing file
 }
 
-void            CKernel::bulkLoad       (   char*               p_fileNameArray[],                      // where we have stored the filenames from the root directory scan
+void            CKernel::bulkLoad                   (   char*               p_fileNameArray[],                      // where we have stored the filenames from the root directory scan
                                                         unsigned            p_loadedBytes[],                        // where we store the size in bytes for each file 
                                                         char**              p_bufferArray,                          // where we store the loaded file data for each file ( or dma/non-dma buffers )
                                                         int                 p_maxFiles,                             // how many files we are allowed to process ( os limitations )
-                                                        int                &p_validFiles,                           // counts successful loads - we need to keep track here <- directly modified in the function, we dont need to return it
+                                                        int                &p_validFiles,                           // counts successful loads - we need to keep track here <- MUST initialised with 0
                                                         unsigned            p_fileSize)                             // maximum size for each file
 {
                 for (int i = 0; i < p_maxFiles; ++i) 
@@ -219,3 +219,5 @@ void            CKernel::removeUSB      (   CDevice            *f_partitionName,
 	            pThis->m_bStorageAttached = FALSE;
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// i need to create the array filecounter[][] containing the max on file, max to load, scanned ang so on values unsing an enum here!

@@ -114,20 +114,20 @@ kernel_initialize.cpp       Initialize                                      (   
 kernel_run.cpp              Run                                             (   void )                              // ***** !!!!! *****
 
 
-memory.cpp                  wrapperDMAallocate                              ()
-                            wrapperMEMallocate                              ()
+memory.cpp                  wrapperInitDMA                              ()
+                            wrapperInitMEM                              ()
                             wrapperDMAcleanUp                               ()
                             wrapperMEMcleanUp                               ()
-                            initMEMbuffer                                   (   size_t          count,              // ***** !!!!! *****
+                            alllocateBufferMEM                                   (   size_t          count,              // ***** !!!!! *****
                                                                                 size_t          bufferSize ) 
-                            initDMAbuffer                                   (   size_t          count,              // ***** !!!!! *****
+                            alllocateBufferDMA                                   (   size_t          count,              // ***** !!!!! *****
                                                                                 size_t          bufferSize,
                                                                                 char**          blockBaseOut,
                                                                                 char**          rawBlockOut,
                                                                                 size_t*         alignedSizeOut )
-                            clearMEMbuffer                                  (   char**          buffers, 
+                            clearBufferMEM                                  (   char**          buffers, 
                                                                                 size_t          count ) 
-                            clearDMAbuffer                                  (   char**          buffers, 
+                            clearBufferDMA                                  (   char**          buffers, 
                                                                                 char*           rawBlock )
 
 
@@ -219,3 +219,146 @@ attenuation and sensitivity settings, filesystem operations ( i need a flag base
 the loop pipeline is something like
 
 read adc -> 
+
+// the array for the loader constance - i think its better than scatter the values / constants everywhere around
+// still need
+
+#define         VSH_SD             		1	// max number of u_vertex shader on sd
+#define         OMF_SD             		1	// max number of fragment shader on sd
+#define         FSH_SD             		1	// max number of fragment shader on sd
+#define         OMT_SD             		1	// max number of fragment shader on sd
+#define         TEX_SD             		0	// max number of textures on sd
+#define         VID_SD             		0	// max number of videos on sd
+#define         KLN_SD                  1
+
+#define         FRM_SD                  1
+
+#define         LOG_SD                  8
+
+
+#define         VSH_USB                 0	// max number of u_vertex shader on sd
+#define         OMF_USB            		0	// max number of fragment shader on sd
+#define         FSH_USB            		32	// max number of fragment shader on sd
+#define         OMT_USB            		0	// max number of fragment shader on sd
+#define         TEX_USB            		8	// max number of textures on sd
+#define         VID_USB            		8	// max number of videos on sd
+#define         KLN_USB                 1
+
+#define         FRM_USB                 1
+
+#define         LOG_USB                 1
+
+#define         VSH_EXT                 1
+#define         OMF_EXT                 1
+#define         FSH_EXT                 1
+#define         OMT_EXT                 1
+#define         TEX_EXT                 1
+#define         VID_EXT                 1
+#define         KLN_EXT                 1
+
+#define         VSH_SIZ                 (1024*32)
+#define         OMF_SIZ                 (1024*32)
+#define         FSH_SIZ                 (1024*32)
+#define         OMT_SIZ                 (1024*1024*4)
+#define         TEX_SIZ                 (1024*1024*4)
+#define         VID_SIZ                 (1024*1024*8)
+#define         KLN_SIZ                 (1024*1024*2)
+
+#define         FRM_SIZ                 (1024*1024)
+
+#define         LOG_SIZ                 (1024*64)
+
+// because i need to declare my other arrays right?
+
+enum FileType
+{
+    FT_VSH = 0,
+    FT_OMF,
+    FT_FSH,
+    FT_OMT,
+    FT_TEX,
+    FT_VID,
+    FT_KLN,
+    FRM_BF,         // i decided to add the output-frames A & B
+    LOGGER,         // and logger buffer information here
+    FT_COUNT
+};
+
+enum FileField
+{
+    FLD_MAXSD = 0,
+    FLD_MAXUSB,
+    FLD_EXTCNT,
+    FLD_LOADED,
+    FLD_SIZE,
+    FLD_COUNT
+};
+
+int filecounter[FT_COUNT][FLD_COUNT] =
+{
+    /* VSH */ { VSH_SD, VSH_USB, VSH_EXT, 0, VSH_SIZ },
+    /* OMF */ { OMF_SD, OMF_USB, OMF_EXT, 0, OMF_SIZ },
+    /* FSH */ { FSH_SD, FSH_USB, FSH_EXT, 0, FSH_SIZ },
+    /* OMT */ { OMT_SD, OMT_USB, OMT_EXT, 0, OMT_SIZ },
+    /* TEX */ { TEX_SD, TEX_USB, TEX_EXT, 0, TEX_SIZ },
+    /* VID */ { VID_SD, VID_USB, VID_EXT, 0, VID_SIZ },
+    /* KLN */ { KLN_SD, KLN_USB, KLN_EXT, 0, KLN_SIZ },
+    /* FRM */ { FRM_SD, FRM_USB,       0, 0, FRM_SIZ },     // i decided to add the output-frames A & B
+    /* LOG */ { LOG_SD, LOG_USB,       0, 0, LOG_SIZ }      // and logger buffer information here      
+};
+
+// list of extensions used in my scanroot directory function per filetype 
+        const   char                   *g_SufVsh[VSH_EXT]			    = { "vsh" }; 
+        const   char                   *g_SufOmf[OMF_EXT]			    = { "omf" };	// is a fsh file but used for the overlay atlas
+        const   char                   *g_SufFsh[FSH_EXT]			    = { "fsh" };
+        const   char                   *g_SufOmt[OMT_EXT]			    = { "omt" }; // is a bpm file but used for the overlay atlas
+        const   char                   *g_SufTex[TEX_EXT]			    = { "bmp" };
+        const   char                   *g_SufVid[VID_EXT]			    = { "264" }; // i guess i will remove the whole parse code for anything but h264
+        const   char                   *g_SufKln[KLN_EXT]			    = { "img" };
+// array to store the scanned filenames?
+                char                   *g_ScnVsh[VSH_SD + VSH_USB]     	= { 0 };
+        		char				   *g_ScnOmf[OMF_SD + OMF_USB] 		= { 0 };
+                char                   *g_ScnFsh[FSH_SD + FSH_USB]     	= { 0 };
+        		char				   *g_ScnOmt[OMT_SD + OMT_USB] 		= { 0 };
+                char                   *g_ScnTex[TEX_SD + TEX_USB]     	= { 0 };
+                char                   *g_ScnVid[VID_SD + VID_USB]     	= { 0 };
+                char                   *g_ScnKln[KLM_SD + KLN_USB]     	= { 0 };
+// array to store the length of the loased files
+                unsigned                g_bytVsh[VSH_SD + VSH_USB]      = { 0 };
+                unsigned                g_bytOmf[OMF_SD + OMF_USB]      = { 0 };
+                unsigned                g_bytFsh[FSH_SD + FSH_USB]      = { 0 };
+                unsigned                g_bytOmt[OMT_SD + OMT_USB]      = { 0 };
+                unsigned                g_bytTex[TEX_SD + TEX_USB]      = { 0 };
+                unsigned                g_bytVid[VID_SD + VID_USB]      = { 0 };
+                unsigned                g_bytKln[KLM_SD + KLN_USB]      = { 0 };
+
+                char** 				    m_bufferVid;
+                char* 				    m_videoBlockBase;
+                char* 				    m_videoRawBlock;
+                size_t 				    m_videoBlockSize;
+
+                char**				    m_bufferFrA;
+                char* 				    m_frameBlockBaseA;
+                char* 				    m_frameRawBlockA;
+                size_t 				    m_frameBlockSizeA;
+
+                char**				    m_bufferFrB;
+                char* 				    m_frameBlockBaseB;
+                char* 				    m_frameRawBlockB;
+                size_t 				    m_frameBlockSizeB;	
+
+                char** 				    m_bufferOmt;
+                char* 				    m_overlyBlockBase;
+                char* 				    m_overlayRawBlock;
+                size_t 				    m_overlyBlockSize;
+
+                char** 				    m_bufferTex;
+                char* 				    m_textureBlockBase;
+                char* 				    m_textureRawBlock;
+                size_t 				    m_textureBlockSize;
+
+                char**				    m_bufferKnl;
+                char**				    m_bufferLog;
+                char** 				    m_bufferVsh;
+                char** 				    m_bufferOmf;                
+                char** 				    m_bufferFsh;

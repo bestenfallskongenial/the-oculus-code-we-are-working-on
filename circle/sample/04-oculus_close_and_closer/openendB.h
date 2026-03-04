@@ -275,8 +275,8 @@ extern MenuGpuState g_menu_state;
 // - m_bufferFameB
 // - m_bufferFrA
 // - m_bufferFrB
-// - m_bufferFrameBufferA
-// - m_bufferFrameBufferB
+// - m_bufferFrA
+// - m_bufferFrB
 // - m_bufferFsh
 // - m_bufferFshader
 // - m_bufferKernel

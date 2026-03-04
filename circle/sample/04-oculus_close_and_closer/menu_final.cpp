@@ -116,7 +116,7 @@ void            CKernel::modeTRG (int channel)
 }
 void            CKernel::modeBPM (int channel) 
 { 
-                if (current_time >= g_nextBeatTime[g_activeBpmChannel])
+                if (currentTime >= g_nextBeatTime[g_activeBpmChannel])
                     {
                     g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[channel][rnd] // /* g_randomFloatValue */[channel];
                     g_inOutMatrixInt[channel][out] = g_inOutMatrixInt[channel][rnd] // g_randomIntegerValue[channel];
@@ -134,3 +134,39 @@ void            CKernel::modeLF2 (int channel)
                 g_inOutMatrixInt[channel][out] = g_inOutMatrixInt[1][lf2] // g_lfoIntOut[1];    
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// need to figure out the enums here again!
+
+// raw  = from the 3008 adc      0 to 1023 - needed because i may have attenuation but the mapping must cover the whole range, right
+// val  = is the raw but attenuation is applied <- from the adc read function ( int / flt ) 
+// in   = adc_float_value[channel] / adc_int_value[channel] <- could replace by val, since it is also buffered and int, right?
+// out  = what goes to the glsl code
+// rnd  = from random generator
+// lf1  = from lfo 1
+// lf2  = from lfo 2
+// trL  = threshold low
+// trH  = threshold high
+
+INT	    ADC_RAW  	    SCALED_IN   SCALED_OUT  RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
+ch0	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
+ch1	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
+ch2	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
+ch3	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
+ch4	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
+ch5	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
+ch6	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
+ch7	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
+
+
+FLT	    ADC_RAW 	    SCALED_IN   SCALED_OUT  RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
+ch0	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
+ch1	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
+ch2	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
+ch3	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
+ch4	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
+ch5	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
+ch6	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
+ch7	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
+
+enum    raw             in          out         rnd         lf1         lf2         au0         au1         au2         au3         trL         trH
+
