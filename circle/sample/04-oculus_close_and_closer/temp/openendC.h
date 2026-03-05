@@ -126,7 +126,7 @@ static const char *g_SufVid[] = { "264" };
 // MENU_GPU_REL_POS, MENU_GPU_REL_SIZE, MENU_GPU_TILE_COUNT
 // MenuGpuState g_menu_state
 
-// bufferToScreen.cpp (file-local static render text state)
+// bufferToScreen.cpp (file-local static render text m_glsl)
 // gE_FrameBuffer, gE_CharGenerator, gE_PixelBuffer,
 // gE_PitchBytes, gE_ScreenWidth, gE_ScreenHeight,
 // gE_CharWidth, gE_CharHeight, gE_Cols, gE_Rows
@@ -135,7 +135,7 @@ static const char *g_SufVid[] = { "264" };
 // 3) Referenced globals that look owned by global.h / other modules
 // ============================================================================
 
-// Matrix/state
+// Matrix/m_glsl
 // g_centralModeBuffer
 // g_inOutMatrixInt / g_inOutMatrixFlt
 // g_inOutMatrixInt / g_inOutMatrixFlt   <-- legacy/non-prefixed variant also used
@@ -146,12 +146,12 @@ static const char *g_SufVid[] = { "264" };
 // g_loaded_fsh_new
 // g_validTextureCount, g_validVideoCount
 
-// Menu runtime state
+// Menu runtime m_glsl
 // g_current_menu_layer
 // g_menu_mode_new, g_menu_mode_old
-// menu_pickup_flag
+// g_menuPickUpFlag
 
-// Feature/timing state
+// Feature/timing m_glsl
 // g_resultBPM, g_nextBeatTime, g_activeBpmChannel
 // g_intervalCalculated
 // g_lastBpmCalculation, g_lastBpmCalculationTMP

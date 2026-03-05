@@ -51,31 +51,31 @@ struct MenuGpuState
 // File scan / file load globals
 // ---------------------------------------------------------------------------------------------------------------------
 
-extern const char *g_SufVsh[SUFFIX_VSH];
-extern const char *g_SufOmf[SUFFIX_OMF];
-extern const char *g_SufFsh[SUFFIX_FSH];
+extern const char *g_SufVsh[VSH_EXT];
+extern const char *g_SufOmf[OMF_EXT];
+extern const char *g_SufFsh[FSH_EXT];
 extern const char *g_SufOmt[SUFFIX_OMT];
 extern const char *g_SufTex[SUFFIX_TEX];
 extern const char *g_SufVid[SUFFIX_VID];
 
-extern char *g_ScnVsh[VSH_FILES_ON_SD + VSH_FILES_ON_USB];
-extern char *g_ScnOmf[OMF_FILES_ON_SD + OMF_FILES_ON_USB];
-extern char *g_ScnFsh[FSH_FILES_ON_SD + FSH_FILES_ON_USB];
-extern char *g_ScnOmt[OMT_FILES_ON_SD + OMT_FILES_ON_USB];
-extern char *g_ScnTex[TEX_FILES_ON_SD + TEX_FILES_ON_USB];
-extern char *g_ScnVid[VID_FILES_ON_SD + VID_FILES_ON_USB];
+extern char *g_ScnVsh[VSH_SD + VSH_USB];
+extern char *g_ScnOmf[OMF_SD + OMF_USB];
+extern char *g_ScnFsh[FSH_SD + FSH_USB];
+extern char *g_ScnOmt[OMT_SD + OMT_USB];
+extern char *g_ScnTex[TEX_SD + TEX_USB];
+extern char *g_ScnVid[VID_SD + VID_USB];
 
-extern unsigned g_bytVsh[VSH_FILES_ON_SD + VSH_FILES_ON_USB];
-extern unsigned g_bytOmf[OMF_FILES_ON_SD + OMF_FILES_ON_USB];
-extern unsigned g_bytFsh[FSH_FILES_ON_SD + FSH_FILES_ON_USB];
-extern unsigned g_bytOmt[OMT_FILES_ON_SD + OMT_FILES_ON_USB];
-extern unsigned g_bytTex[TEX_FILES_ON_SD + TEX_FILES_ON_USB];
-extern unsigned g_bytVid[VID_FILES_ON_SD + VID_FILES_ON_USB];
+extern unsigned g_bytVsh[VSH_SD + VSH_USB];
+extern unsigned g_bytOmf[OMF_SD + OMF_USB];
+extern unsigned g_bytFsh[FSH_SD + FSH_USB];
+extern unsigned g_bytOmt[OMT_SD + OMT_USB];
+extern unsigned g_bytTex[TEX_SD + TEX_USB];
+extern unsigned g_bytVid[VID_SD + VID_USB];
 
 extern unsigned g_hFile;
 
 // ---------------------------------------------------------------------------------------------------------------------
-// Mode + IO + timing state (new model)
+// Mode + IO + timing m_glsl (new model)
 // ---------------------------------------------------------------------------------------------------------------------
 
 extern uint8_t menu_map_max[12];
@@ -111,7 +111,7 @@ extern int g_activeBpmChannel;
 extern int g_attenuation;
 
 // ---------------------------------------------------------------------------------------------------------------------
-// Runtime selection and menu/button state
+// Runtime selection and menu/button m_glsl
 // ---------------------------------------------------------------------------------------------------------------------
 
 extern int g_current_gl_program;
@@ -137,11 +137,11 @@ extern unsigned int g_buttons_states[2][5];
 extern CString g_log_string;
 extern CString g_modes;
 
-extern const char *g_texLogNames[TEX_FILES_ON_SD + TEX_FILES_ON_USB + 4];
-extern const char *g_vidLogNames[VID_FILES_ON_SD + VID_FILES_ON_USB + 4];
+extern const char *g_texLogNames[TEX_SD + TEX_USB + 4];
+extern const char *g_vidLogNames[VID_SD + VID_USB + 4];
 
 // ---------------------------------------------------------------------------------------------------------------------
-// Overlay menu pass state
+// Overlay menu pass m_glsl
 // ---------------------------------------------------------------------------------------------------------------------
 
 extern MenuGpuState g_menu_state;

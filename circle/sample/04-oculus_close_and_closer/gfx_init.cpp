@@ -1,8 +1,8 @@
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::initVshaders          (   glsl_states    *m_glsl, 
-                                                        int             p_fromFile, 
-                                                        int             p_toFile)    // Function to initialize Vertex Shaders
+void            CKernel::initVshaders   (   glsl_state* m_glsl, 
+                                            int         p_fromFile, 
+                                            int         p_toFile)    // Function to initialize Vertex Shaders
 {
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
@@ -17,7 +17,7 @@ glslCheck();
                     }
 }
 
-void            CKernel::initOshader   (   glsl_states    *m_glsl )    // Function to initialize Fragment Shaders                        <- *m_glsl should change too, right?
+void            CKernel::initOshader    (   glsl_state* m_glsl )    // Function to initialize Fragment Shaders                        <- *m_glsl should change too, right?
 {
                     const char *SourcePrtFshader = m_bufferOmf[0]; // because this array is only [1] for consistency
 
@@ -30,9 +30,9 @@ glslCheck();
 #endif // __GL_DEBUG__
 
 }
-void            CKernel::initFshaders          (   glsl_states    *m_glsl, 
-                                                        int             p_fromFile, 
-                                                        int             p_toFile)    // Function to initialize Fragment Shaders                        <- we need a copy here for the overlay shader
+void            CKernel::initFshaders   (   glsl_state* m_glsl, 
+                                            int         p_fromFile, 
+                                            int         p_toFile)    // Function to initialize Fragment Shaders                        <- we need a copy here for the overlay shader
 {
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
@@ -47,7 +47,7 @@ glslCheck();
 #endif // __GL_DEBUG__
                     }
 }
-void            CKernel::initOprogram   (   glsl_states    *m_glsl)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+void            CKernel::initOprogram   (   glsl_state* m_glsl)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                     if (m_shaderStatusFlags[i])                                     // we need to figure out from where this comes, we need also a separate method here
                         {
@@ -77,9 +77,9 @@ glslCheck();
                         }
                 m_Watchdog.Start(TIMEOUT*3); // new watchdog        
 }
-void            CKernel::initFprograms          (   glsl_states    *m_glsl, 
-                                                        int             p_fromFile, 
-                                                        int             p_toFile)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+void            CKernel::initFprograms  (   glsl_state* m_glsl, 
+                                            int         p_fromFile, 
+                                            int         p_toFile)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
@@ -112,7 +112,7 @@ glslCheck();
                     m_Watchdog.Start(TIMEOUT*3); // new watchdog        
                     }
 }
-void            CKernel::initOuniforms  (   glsl_states    *m_glsl)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+void            CKernel::initOuniforms  (   glsl_state* m_glsl)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
 #ifdef __GL_DEBUG__
 glslCheck();
@@ -135,9 +135,9 @@ glslCheck();
                     }
 }
 
-void            CKernel::initFuniforms          (   glsl_states    *m_glsl, 
-                                                        int             p_fromFile, 
-                                                        int             p_toFile)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+void            CKernel::initFuniforms  (   glsl_state* m_glsl, 
+                                            int         p_fromFile, 
+                                            int         p_toFile)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
 #ifdef __GL_DEBUG__
 glslCheck();
@@ -182,7 +182,7 @@ glslCheck();
                     }
 }
 
-void            CKernel::initOtexture       (   glsl_states     *m_glsl)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+void            CKernel::initOtexture   (   glsl_state* m_glsl)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                 // g_validTextureCount = 0;  // Counter for valid textures only
 
@@ -222,9 +222,9 @@ glslCheck();
                         }
                     m_Watchdog.Start(TIMEOUT);       // new watchdog
 }
-void            CKernel::initUtextures              (   glsl_states    *m_glsl, 
-                                                            int             p_fromFile, 
-                                                            int             p_toFile)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+void            CKernel::initUtextures  (   glsl_state* m_glsl, 
+                                            int         p_fromFile, 
+                                            int         p_toFile)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                 // g_validTextureCount = 0;  // Counter for valid textures only
 
@@ -268,7 +268,7 @@ glslCheck();
                     }
 }
 
-void            CKernel::initVbuffer          (   glsl_states    *m_glsl)                              // Function to initialize Buffers 
+void            CKernel::initVbuffer    (   glsl_state* m_glsl)                              // Function to initialize Buffers 
 {
                 static const GLfloat vertex_data[] = 
                     {  -1.0,-1.0, 1.0, 1.0,

@@ -17,7 +17,8 @@ void            CKernel::GenerateBmpOverlayInfo( int p_fileIndex)               
                 filesystem_save_log_file( "emmc1-1", OMT__LOG_NAMES[p_fileIndex], f_bufferParser);      // <---- is now saveBuffer we need to refactor!    
 }
 */
-void            CKernel::parser_h264               (int p_fromFile, int p_toFile)
+void            CKernel::parser_h264    (   int         p_fromFile, 
+                                            int         p_toFile)
 {
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
@@ -26,7 +27,8 @@ void            CKernel::parser_h264               (int p_fromFile, int p_toFile
                     }
 }
 
-void            CKernel::parser_bmp               (int p_fromFile, int p_toFile)
+void            CKernel::parser_bmp     (   int         p_fromFile, 
+                                            int         p_toFile)
 {
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
@@ -35,7 +37,7 @@ void            CKernel::parser_bmp               (int p_fromFile, int p_toFile)
                     }
 }
 
-void            CKernel::parser_overlay_bmp         (int p_fileIndex)
+void            CKernel::parser_o_bmp   (   int         p_fileIndex)
 {        
                 m_H264SystemParser.ParseBPM(p_fileIndex , g_ScnOmt  /*"Overlay Atlas"*/ , m_bufferOmt, g_bytOmt );
 
@@ -43,7 +45,19 @@ void            CKernel::parser_overlay_bmp         (int p_fileIndex)
         
 }
 
-bool            CKernel::checkUpdate      ()
+bool            CKernel::checkUpdate    () // aka is a new firmware present?!
+{
+                if (filecounter[FT_KLN][FLD_LOADED] == 2 ) // or is 1 correct? 
+                    {
+                    return true;    // there is the second ( usb ) firmware
+                    }
+                else
+                    {
+                    return false;    
+                    }
+}
+
+bool            CKernel::Update         ()
 {
                 // assumes:
                 // - m_bufferKnl[1] + loaded_bytes_kernel[1] already contain the "new" kernel
@@ -59,4 +73,9 @@ bool            CKernel::checkUpdate      ()
                 filesystem_save_buffer_to_file(FILENAME_KERNEL, m_bufferKnl[0], loaded_bytes_kernel[0]);
 
                 return false;
+}
+
+void            set_pot_routing         (   bool        adc_pot_routing)
+{
+                m_ChipSelectPin.Write(adc_pot_routing);
 }

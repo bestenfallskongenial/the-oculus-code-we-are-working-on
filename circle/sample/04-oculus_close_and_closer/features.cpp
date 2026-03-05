@@ -240,3 +240,6 @@ void            CKernel::audioEnergy          (float p_adcvalue)
                 f_indexBand3 = (f_indexBand3 + 1) % f_averageBufferSizeTable[3][g_sensitivityNew];
 }
 
+/*
+    we need a combined array for the bpm/lfo timing stuff here, same as in circle/sample/04-oculus_close_and_closer/menu_final.cpp
+*/

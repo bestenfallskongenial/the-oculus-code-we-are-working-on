@@ -4,76 +4,102 @@
                     {
                     scanRoot                (   g_ScnVsh,                           // where we store the valid filenames we find
                                                 g_SufVsh,                           // the array of valid file extensions for this type of file
-                                                SUFFIX_VSH,                         // how many valid file extensions we have in the array above also part of filecounter?
-                                                filecounter[scanned][vsh],          // <- has to be initialised with 0 before calling this function
-                                                filecounter[maxSD][vsh]);           // how many files are allowed to scan and stored in the array
+                                                filecounter[FT_VSH][FLD_EXTCNT],                         // how many valid file extensions we have in the array above also part of filecounter?
+                                                filecounter[FT_VSH][FLD_SCANNED],         
+                                                filecounter[FT_VSH][FLD_MAXSD]);           // how many files are allowed to scan and stored in the array
+                    
                     scanRoot                (   g_ScnOmf, 
                                                 g_SufOmf, 
-                                                SUFFIX_OMF, 
-                                                filecounter[scanned][omf], 
-                                                filecounter[maxSD][omf]);                
+                                                filecounter[FT_OMF][FLD_EXTCNT], 
+                                                filecounter[FT_OMF][FLD_SCANNED], 
+                                                filecounter[FT_OMF][FLD_MAXSD]);                
+                    
                     scanRoot                (   g_ScnFsh, 
                                                 g_SufFsh, 
-                                                SUFFIX_FSH, 
-                                                filecounter[scanned][fsh], 
-                                                filecounter[maxSD][fsh]);
+                                                filecounter[FT_FSH][FLD_EXTCNT], 
+                                                filecounter[FT_FSH][FLD_SCANNED], 
+                                                filecounter[FT_FSH][FLD_MAXSD]);
+                    
                     scanRoot                (   g_ScnOmt, 
                                                 g_SufOmt, 
-                                                SUFFIX_OMT, 
-                                                filecounter[scanned][omt], 
-                                                filecounter[maxSD][omt]);                
+                                                filecounter[FT_OMT][FLD_EXTCNT], 
+                                                filecounter[FT_OMT][FLD_SCANNED], 
+                                                filecounter[FT_OMT][FLD_MAXSD]);                
+/*                    
                     scanRoot                (   g_ScnTex, 
                                                 g_SufTex, 
-                                                SUFFIX_TEX, 
-                                                filecounter[scanned][tex], 
-                                                filecounter[maxSD][tex]);
+                                                filecounter[FT_TEX][FLD_EXTCNT], 
+                                                filecounter[FT_TEX][FLD_SCANNED], 
+                                                filecounter[FT_TEX][FLD_MAXSD]);
+                   
                     scanRoot                (   g_ScnVid, 
                                                 g_SufVid, 
-                                                SUFFIX_VID, 
-                                                filecounter[scanned][vid], 
-                                                filecounter[maxSD][vid]);
+                                                filecounter[FT_VID][FLD_EXTCNT], 
+                                                filecounter[FT_VID][FLD_SCANNED], 
+                                                filecounter[FT_VID][FLD_MAXSD]);
+*/ 
+                    scanRoot                (   g_ScnKln, 
+                                                g_SufKln, 
+                                                filecounter[FT_KLN][FLD_EXTCNT], 
+                                                filecounter[FT_KLN][FLD_SCANNED], 
+                                                filecounter[FT_KLN][FLD_MAXSD]);    
 
                     bulkLoad                (   g_ScnVsh,                           // where we have stored the filenames 
                                                 g_bytVsh,                           // where we store the loaded bytes for each file 
                                                 m_bufferVsh,                        // where we store the loaded file data for each file
-                                                filecounter[scanned][vsh],          // how many files we are allowed to process
-                                                filecounter[count][vsh],            // <- is directly modified in the function, we dont need to return it
-                                                VSH_FILE_SIZE);                     // maximum size for each file
+                                                filecounter[FT_VSH][FLD_SCANNED],          // how many files we are allowed to process
+                                                filecounter[FT_VSH][FLD_LOADED],            // <- is directly modified in the function, we dont need to return it
+                                                filecounter[FT_VSH][FLD_PREV],
+                                                filecounter[FT_VSH][FLD_SIZE]);                     // maximum size for each file
                                                                             
                     bulkLoad                (   g_ScnOmf, 
                                                 g_bytOmf, 
                                                 m_bufferOmf, 
-                                                filecounter[scanned][omf], 
-                                                filecounter[count][omf], 
-                                                FSH_FILE_SIZE);
+                                                filecounter[FT_OMF][FLD_SCANNED], 
+                                                filecounter[FT_OMF][FLD_LOADED], 
+                                                filecounter[FT_OMF][FLD_PREV],
+                                                filecounter[FT_OMF][FLD_SIZE]);
     
                     bulkLoad                (   g_ScnFsh, 
                                                 g_bytFsh, 
                                                 m_bufferFsh, 
-                                                filecounter[scanned][fsh], 
-                                                filecounter[count][fsh], 
-                                                FSH_FILE_SIZE);                           
+                                                filecounter[FT_FSH][FLD_SCANNED], 
+                                                filecounter[FT_FSH][FLD_LOADED], 
+                                                filecounter[FT_FSH][FLD_PREV],
+                                                filecounter[FT_FSH][FLD_SIZE]);                           
 
                     bulkLoad                (   g_ScnOmt, 
                                                 g_bytOmt, 
                                                 m_bufferOmt, 
-                                                filecounter[scanned][omt], 
-                                                filecounter[count][omt], 
-                                                TEX_FILE_SIZE);                                                                                          
- 
+                                                filecounter[FT_OMT][FLD_SCANNED], 
+                                                filecounter[FT_OMT][FLD_LOADED], 
+                                                filecounter[FT_OMT][FLD_PREV],
+                                                filecounter[FT_OMT][FLD_SIZE]);                                                                                          
+ /*
                     bulkLoad                (   g_ScnTex, 
                                                 g_bytTex, 
                                                 m_bufferTex, 
-                                                filecounter[scanned][tex], 
-                                                filecounter[count][tex], 
-                                                TEX_FILE_SIZE);                                   
+                                                filecounter[FT_TEX][FLD_SCANNED], 
+                                                filecounter[FT_TEX][FLD_LOADED], 
+                                                filecounter[FT_TEX][FLD_PREV],
+                                                filecounter[FT_TEX][FLD_SIZE]);                                   
  
                     bulkLoad                (   g_ScnVid, 
                                                 g_bytVid, 
                                                 m_bufferVid, 
-                                                filecounter[scanned][vid], 
-                                                filecounter[count][vid], 
-                                                VID_FILE_SIZE);   
+                                                filecounter[FT_VID][FLD_SCANNED], 
+                                                filecounter[FT_VID][FLD_LOADED], 
+                                                filecounter[FT_VID][FLD_PREV],
+                                                filecounter[FT_VID][FLD_SIZE]);   
+*/
+                    bulkLoad                (   g_ScnKln, 
+                                                g_bytKln, 
+                                                m_bufferKnl, 
+                                                filecounter[FT_KLN][FLD_SCANNED], 
+                                                filecounter[FT_KLN][FLD_LOADED], 
+                                                filecounter[FT_KLN][FLD_PREV],
+                                                filecounter[FT_KLN][FLD_SIZE]); 
+
                     UnMount();   
                     }
                 // Flush CPU->RAM so the VPU sees the loaded bitstream
@@ -86,40 +112,55 @@
                     {
                     scanRoot                (   g_ScnFsh, 
                                                 g_SufFsh, 
-                                                SUFFIX_FSH, 
-                                                filecounter[scanned][fsh], 
-                                                filecounter[maxUsb][fsh]);   
+                                                filecounter[FT_FSH][FLD_EXTCNT], 
+                                                filecounter[FT_FSH][FLD_SCANNED], 
+                                                filecounter[FT_FSH][FLD_MAXUSB]);   
                     scanRoot                (   g_ScnTex, 
                                                 g_SufTex, 
-                                                SUFFIX_TEX, 
-                                                filecounter[scanned][tex], 
-                                                filecounter[maxUsb][tex]);
+                                                filecounter[FT_TEX][FLD_EXTCNT], 
+                                                filecounter[FT_TEX][FLD_SCANNED], 
+                                                filecounter[FT_TEX][FLD_MAXUSB]);
                     scanRoot                (   g_ScnVid, 
                                                 g_SufVid, 
-                                                SUFFIX_VID, 
-                                                filecounter[scanned][vid], 
-                                                filecounter[maxUsb][vid]);
+                                                filecounter[FT_VID][FLD_EXTCNT], 
+                                                filecounter[FT_VID][FLD_SCANNED], 
+                                                filecounter[FT_VID][FLD_MAXUSB]);
+                    scanRoot                (   g_ScnKln, 
+                                                g_SufKln, 
+                                                filecounter[FT_KLN][FLD_EXTCNT], 
+                                                filecounter[FT_KLN][FLD_SCANNED], 
+                                                filecounter[FT_KLN][FLD_MAXUSB]);                                                  
      
                     bulkLoad                (   g_ScnFsh, 
                                                 g_bytFsh, 
                                                 m_bufferFsh, 
-                                                filecounter[scanned][fsh], 
-                                                filecounter[count][fsh], 
-                                                FSH_FILE_SIZE);                           
+                                                filecounter[FT_FSH][FLD_SCANNED], 
+                                                filecounter[FT_FSH][FLD_LOADED], 
+                                                filecounter[FT_FSH][FLD_PREV],
+                                                filecounter[FT_FSH][FLD_SIZE]);                           
     
                     bulkLoad                (   g_ScnTex, 
                                                 g_bytTex, 
                                                 m_bufferTex, 
-                                                filecounter[scanned][tex], 
-                                                filecounter[count][tex], 
-                                                TEX_FILE_SIZE);                                   
+                                                filecounter[FT_TEX][FLD_SCANNED], 
+                                                filecounter[FT_TEX][FLD_LOADED], 
+                                                filecounter[FT_TEX][FLD_PREV],
+                                                filecounter[FT_TEX][FLD_SIZE]);                                   
   
                     bulkLoad                (   g_ScnVid, 
                                                 g_bytVid, 
                                                 m_bufferVid, 
-                                                filecounter[scanned][vid], 
-                                                filecounter[count][vid], 
-                                                VID_FILE_SIZE);    
+                                                filecounter[FT_VID][FLD_SCANNED], 
+                                                filecounter[FT_VID][FLD_LOADED], 
+                                                filecounter[FT_VID][FLD_PREV],
+                                                filecounter[FT_VID][FLD_SIZE]);    
+                    bulkLoad                (   g_ScnKln, 
+                                                g_bytKln, 
+                                                m_bufferKnl, 
+                                                filecounter[FT_KLN][FLD_SCANNED], 
+                                                filecounter[FT_KLN][FLD_LOADED], 
+                                                filecounter[FT_KLN][FLD_PREV],
+                                                filecounter[FT_KLN][FLD_SIZE]);                                                 
                     UnMount();   
                     }
                 // Flush CPU->RAM so the VPU sees the loaded bitstream
@@ -131,27 +172,39 @@ CKernel::wrapper_init_gl_sd()
         parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
         parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
 
-        initVbuffer(&state);
+        initVbuffer(&m_glsl);
 
-        initVshaders(&state, VSH_LOADED_OLD, VSH_LOADED_NEW);
-        initOshader();             
-        initFshaders(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
-        initOprogram();
-        initFprograms(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
-        initOuniforms();
-        initFuniforms(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
-        initOtexture();
-        initUtextures(&state, TEX_LOADED_OLD, TEX_LOADED_NEW); 
+        initVshaders    (&m_glsl, filecounter[FT_VSH][FLD_PREV], filecounter[FT_VSH][FLD_LOADED]);
+
+        initOshader     (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);  
+
+        initFshaders    (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+
+        initOprogram    (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);
+
+        initFprograms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+
+        initOuniforms   (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);
+
+        initFuniforms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+
+        initOtexture    (&m_glsl, filecounter[FT_OMT][FLD_PREV], filecounter[FT_OMT][FLD_LOADED]);
+/*
+        initUtextures   (&m_glsl, filecounter[FT_TEX][FLD_PREV], filecounter[FT_TEX][FLD_LOADED]); 
+*/
 }
 CKernel::wrapper_init_gl_usb()
 {
         parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
         parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
 
-        initFshaders(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
-        initFprograms(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
-        initFuniforms(&state, FSH_LOADED_OLD, FSH_LOADED_NEW);
-        initUtextures(&state, TEX_LOADED_OLD, TEX_LOADED_NEW); 
+        initFshaders    (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+
+        initFprograms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+
+        initFuniforms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+
+        initUtextures   (&m_glsl, filecounter[FT_TEX][FLD_PREV], filecounter[FT_TEX][FLD_LOADED]); 
 }
 
 CKernel::wrapper_io()
@@ -162,9 +215,11 @@ CKernel::wrapper_io()
         chooseTexture(ADC_SELECT_TEX);          // texture 
         chooseVideo(ADC_SELECT_VID);            // video each loop
 
-        buttonPing();                  // check button A
-        buttonPing();                  // and B
-        button_consume();               // and transpose the button input in menulayer information each time
+        buttonPing( 0, SW_PIN_A);                  // check button A
+        buttonPing( 1, SW_PIN_B);                  // and B
+
+        button_consume(0);               // and transpose the button input in menulayer information each time
+        button_consume(1);
 }
 
 CKernel::wrapper_modes()
@@ -182,6 +237,11 @@ CKernel::wrapper_modes()
             case 2:
                 modeMenuAssignGroup(3,  8);   // LFO
                 break;
+/*
+            case 3:
+                modeMenuAssignGroup(4, 12);   // <- additional menu layers here -> brainstorm
+                break;
+*/
             default:
                 break;
             }

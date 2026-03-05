@@ -156,7 +156,7 @@ bool CKernel::gpu_render_helper_upload_menu_atlas_rgb24(void *rgb_pixels, unsign
     return true;
 }
 
-// initialize menu render state and build static rectangles + current indices
+// initialize menu render states and build static rectangles + current indices
 bool CKernel::gpu_render_menu_init(GLuint shared_vertex_shader, char *menu_fsh_source, GLuint atlas_texture)
 {
     GLuint fsh = gpu_render_helper_compile_shader(GL_FRAGMENT_SHADER, menu_fsh_source, 0);
@@ -273,7 +273,7 @@ void CKernel::gpu_render_menu_update_indices()
     g_menu_state.tile_index[15] = 49;
 }
 
-// draw menu layer using current menu state arrays
+// draw menu layer using current menu states arrays
 void CKernel::gpu_render_menu_draw(GLuint fullscreen_vbo)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -302,7 +302,7 @@ void CKernel::gpu_render_menu_draw(GLuint fullscreen_vbo)
     glDisable(GL_BLEND);
 }
 
-// shutdown menu render program and reset cached state
+// shutdown menu render program and reset cached states
 void CKernel::gpu_render_menu_shutdown()
 {
     glDeleteProgram(g_menu_state.program);

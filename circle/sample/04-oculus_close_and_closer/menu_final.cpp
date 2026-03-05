@@ -7,7 +7,7 @@ void            CKernel::resetMenuPickupFlags    ()
                     {
                     for(int i = 0; i < 16; i++) 
                         {
-                        menu_pickup_flag[i] = false;
+                        g_menuPickUpFlag[i] = false;
                         }
                     g_menu_mode_old = g_menu_mode_new;
                     }
@@ -23,41 +23,41 @@ void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
 
                 v = (g_inOutMatrixInt[4][raw] * menu_map_max[base + 0]) >> 10;        // slot 0
 
-                if (!menu_pickup_flag[base + 0] && v == g_centralModeBuffer[base + 0][g_currentProgramBuffer])
+                if (!g_menuPickUpFlag[base + 0] && v == g_centralModeBuffer[base + 0][g_currentProgramBuffer])
                     {
-                    menu_pickup_flag[base + 0] = true;
+                    g_menuPickUpFlag[base + 0] = true;
                     }
-                else if (menu_pickup_flag[base + 0])
+                else if (g_menuPickUpFlag[base + 0])
                     {
                     g_centralModeBuffer[base + 0][g_currentProgramBuffer] = v;
                     }
                 v = (g_inOutMatrixInt[5][raw] * menu_map_max[base + 1]) >> 10;        // slot 1
 
-                if (!menu_pickup_flag[base + 1] && v == g_centralModeBuffer[base + 1][g_currentProgramBuffer])
+                if (!g_menuPickUpFlag[base + 1] && v == g_centralModeBuffer[base + 1][g_currentProgramBuffer])
                     {
-                    menu_pickup_flag[base + 1] = true;
+                    g_menuPickUpFlag[base + 1] = true;
                     }
-                else if (menu_pickup_flag[base + 1])
+                else if (g_menuPickUpFlag[base + 1])
                     {
                     g_centralModeBuffer[base + 1][g_currentProgramBuffer] = v;
                     }
                 v = (g_inOutMatrixInt[6][raw] * menu_map_max[base + 2]) >> 10;        // slot 2
 
-                if (!menu_pickup_flag[base + 2] && v == g_centralModeBuffer[base + 2][g_currentProgramBuffer])
+                if (!g_menuPickUpFlag[base + 2] && v == g_centralModeBuffer[base + 2][g_currentProgramBuffer])
                     {
-                    menu_pickup_flag[base + 2] = true;
+                    g_menuPickUpFlag[base + 2] = true;
                     }
-                else if (menu_pickup_flag[base + 2])
+                else if (g_menuPickUpFlag[base + 2])
                     {
                     g_centralModeBuffer[base + 2][g_currentProgramBuffer] = v;
                     }
                 v = (g_inOutMatrixInt[7][raw] * menu_map_max[base + 3]) >> 10;        // slot 3
 
-                if (!menu_pickup_flag[base + 3] && v == g_centralModeBuffer[base + 3][g_currentProgramBuffer])
+                if (!g_menuPickUpFlag[base + 3] && v == g_centralModeBuffer[base + 3][g_currentProgramBuffer])
                     {
-                    menu_pickup_flag[base + 3] = true;
+                    g_menuPickUpFlag[base + 3] = true;
                     }
-                else if (menu_pickup_flag[base + 3])
+                else if (g_menuPickUpFlag[base + 3])
                     {
                     g_centralModeBuffer[base + 3][g_currentProgramBuffer] = v;
                     }
@@ -135,38 +135,73 @@ void            CKernel::modeLF2 (int channel)
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// need to figure out the enums here again!
+/* 
+                        need to figure out the enums here again!
 
-// raw  = from the 3008 adc      0 to 1023 - needed because i may have attenuation but the mapping must cover the whole range, right
-// val  = is the raw but attenuation is applied <- from the adc read function ( int / flt ) 
-// in   = adc_float_value[channel] / adc_int_value[channel] <- could replace by val, since it is also buffered and int, right?
-// out  = what goes to the glsl code
-// rnd  = from random generator
-// lf1  = from lfo 1
-// lf2  = from lfo 2
-// trL  = threshold low
-// trH  = threshold high
-
-INT	    ADC_RAW  	    SCALED_IN   SCALED_OUT  RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
-ch0	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
-ch1	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
-ch2	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
-ch3	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
-ch4	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
-ch5	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
-ch6	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
-ch7	    U	            U	        U           U	        G	        G	        - / opt	    - / opt	    - / opt	    - / opt     U           U
+g_inOutMatrixInt[CHANNEL][ENUM_SOURCE]
+g_inOutMatrixFlt[CHANNEL][ENUM_SOURCE]
+g_menuPickUpFlag[4*menu_layers]
 
 
-FLT	    ADC_RAW 	    SCALED_IN   SCALED_OUT  RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
-ch0	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
-ch1	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
-ch2	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
-ch3	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
-ch4	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
-ch5	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
-ch6	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
-ch7	    - / opt         U	        U           U	        G	        G	        G	        G	        G	        G           - / opt     - / opt
+INT	    ADC_RAW     (SCALED)IN  (SCALED)OUT RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
+ch0	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
+ch1	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
+ch2	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
+ch3	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
+ch4	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
+ch5	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
+ch6	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
+ch7	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
 
-enum    raw             in          out         rnd         lf1         lf2         au0         au1         au2         au3         trL         trH
 
+FLT	    ADC_RAW     (SCALED)IN  (SCALED)OUT RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
+ch0	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
+ch1	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
+ch2	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
+ch3	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
+ch4	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
+ch5	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
+ch6	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
+ch7	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
+
+enum:   raw             in          out         rnd         lf1         lf2         au0         au1         au2         au3         trL         trH
+
+
+all the G ( global ) sit in channel 0 - U are unique values per channel 
+*/
+
+enum io_types
+{
+int raw = 0,        //  the position the dampened adc values per channels are stored *
+int  in,            //  either the calculated int or flt value *
+int out,            //  here lands the processed ( after mode ) for the glsl uniforms      
+int rnd,            //  either the per-channel random int or flt value *
+int lf1,            //  either the lfo one int or flt value
+int lf2,            //  either the lfo two int or flt value
+int au0,            //  the audio band 0 flt value
+int au1,            //  the audio band 1 flt value
+int au2,            //  the audio band 2 flt value
+int au3,            //  the audio band 3 flt value
+                    // *means i have a unique value for each channel - the other values are singular, and/or only int/flt
+int trL,            //  per channel threshold low !!! dont forget to copy the values in here    128
+int trH,            //  per channel threshold high                                              320
+//  trF,            //  per channel threshold "flag"
+int io_type_count
+}
+
+
+/*
+Discrete/equality pickup
+
+Pattern: compute quantized value (new_mode, waveform, multiply) and arm when it equals stored value.
+
+Example:
+new_mode = ...; if (!flag && new_mode == stored)
+
+Analog/tolerance pickup with bypass (only CH6/CH7 runtime path)
+
+Pattern: arm when raw ADC enters buffer ± TOLERANCE, else allow processing if flag or mode is non-zero.
+
+Example CH6: if (!flag12 && raw6 in window) ... else if (flag12 || CH6_MODE != 0)
+
+*/

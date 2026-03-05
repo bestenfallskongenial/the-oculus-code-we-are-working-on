@@ -4,24 +4,24 @@ Makefile                                                                        
 README.md                   
 
 
-bufferToScreen.cpp          buffer_to_screen_plot                           (   unsigned        x,                  // !!! not tested !!!
+bufferToScreen.cpp          screen_plot                           (   unsigned        x,                  // !!! not tested !!!
                                                                                 unsigned        y, 
                                                                                 u32 color )
-                            buffer_to_screen_draw_char                      (   char            ch,
+                            screen_draw_char                      (   char            ch,
                                                                                 unsigned        charCol,
                                                                                 unsigned        charRow,
                                                                                 u32             fgColor,
                                                                                 u32             bgColor )
-                            buffer_to_screen_init                           (   void )
-                            buffer_to_screen_clear_screen                   (   u32 bgColor)
-                            buffer_to_screen_draw_buffer_segment_to_screen  (   const char     *pSourceBuffer,
+                            screen_init                           (   void )
+                            screen_clear_screen                   (   u32 bgColor)
+                            screen_draw_buffer_segment  (   const char     *pSourceBuffer,
                                                                                 u32             startIndex,
                                                                                 u32             endIndex,
                                                                                 unsigned        startCol,
                                                                                 unsigned        startRow,
                                                                                 u32             fgColor,
                                                                                 u32             bgColor )
-                            buffer_to_screen_get_grid                       (   unsigned       &cols, 
+                            screen_get_grid                       (   unsigned       &cols, 
                                                                                 unsigned       &rows )
 
 color_table.cpp             const unsigned char g_rgb_color_table[49][3]                                            // ***** !!!!! *****
@@ -63,7 +63,7 @@ filesystem.cpp              Mount                                           (   
 filesystem_user.cpp         util_save_modes_file                            ()                                      // this is not wanted/needed anymore
 
 
-gfx_OGL.cpp                 gfx_init_OGL                                    (   glsl_states    *m_glsl )
+gfx_OGL.cpp                 gfx_init_OGL                                    (   glsl_state    *m_glsl )
 
 
 gfx_debug.cpp               shaderLog                                       (   GLint           shader, 
@@ -74,29 +74,29 @@ gfx_debug.cpp               shaderLog                                       (   
                                                                                 unsigned        line )
 
 
-gfx_init.cpp                initVshaders                                    (   glsl_states    *m_glsl,             // ***** !!!!! *****
+gfx_init.cpp                initVshaders                                    (   glsl_state    *m_glsl,             // ***** !!!!! *****
                                                                                 int             p_fromFile, 
                                                                                 int             p_toFile)
-                            initOshader                                     (   glsl_states    *m_glsl )
-                            initFshaders                                    (   glsl_states    *m_glsl, 
+                            initOshader                                     (   glsl_state    *m_glsl )
+                            initFshaders                                    (   glsl_state    *m_glsl, 
                                                                                 int             p_fromFile, 
                                                                                 int             p_toFile) 
-                            initOprogram                                    (   glsl_states    *m_glsl)             // ***** !!!!! *****
-                            initFprograms                                   (   glsl_states    *m_glsl, 
+                            initOprogram                                    (   glsl_state    *m_glsl)             // ***** !!!!! *****
+                            initFprograms                                   (   glsl_state    *m_glsl, 
                                                                                 int             p_fromFile, 
                                                                                 int             p_toFile)  
-                            initOuniforms                                   (   glsl_states    *m_glsl)             // ***** !!!!! *****
-                            initFuniforms                                   (   glsl_states    *m_glsl, 
+                            initOuniforms                                   (   glsl_state    *m_glsl)             // ***** !!!!! *****
+                            initFuniforms                                   (   glsl_state    *m_glsl, 
                                                                                 int             p_fromFile, 
                                                                                 int             p_toFile) 
-                            initOtexture                                    (   glsl_states     *m_glsl)            // ***** !!!!! *****
-                            initUtextures                                   (   glsl_states    *m_glsl, 
+                            initOtexture                                    (   glsl_state     *m_glsl)            // ***** !!!!! *****
+                            initUtextures                                   (   glsl_state    *m_glsl, 
                                                                                 int             p_fromFile, 
                                                                                 int             p_toFile)  
-                            initVbuffer                                     (   glsl_states    *m_glsl) 
+                            initVbuffer                                     (   glsl_state    *m_glsl) 
 
-gfx_render.cpp              gfx_render_shader_a                             (   glsl_states    *m_glsl)             // ***** !!!!! *****
-                            gfx_render_shader_b                             (   glsl_states    *m_glsl)
+gfx_render.cpp              gfx_render_shader_a                             (   glsl_state    *m_glsl)             // ***** !!!!! *****
+                            gfx_render_shader_b                             (   glsl_state    *m_glsl)
 
 helpers.cpp                 checkUpdate                                     ()                                      // ***** !!!!! *****
 
@@ -221,7 +221,6 @@ the loop pipeline is something like
 read adc -> 
 
 // the array for the loader constance - i think its better than scatter the values / constants everywhere around
-// still need
 
 #define         VSH_SD             		1	// max number of u_vertex shader on sd
 #define         OMF_SD             		1	// max number of fragment shader on sd
@@ -231,8 +230,7 @@ read adc ->
 #define         VID_SD             		0	// max number of videos on sd
 #define         KLN_SD                  1
 
-#define         FRM_SD                  1
-
+#define         FRM_SD                  1   // i put them here because if my mem/dma allocation
 #define         LOG_SD                  8
 
 
@@ -244,8 +242,7 @@ read adc ->
 #define         VID_USB            		8	// max number of videos on sd
 #define         KLN_USB                 1
 
-#define         FRM_USB                 1
-
+#define         FRM_USB                 1   // i put them here because if my mem/dma allocation
 #define         LOG_USB                 1
 
 #define         VSH_EXT                 1
@@ -268,8 +265,6 @@ read adc ->
 
 #define         LOG_SIZ                 (1024*64)
 
-// because i need to declare my other arrays right?
-
 enum FileType
 {
     FT_VSH = 0,
@@ -289,25 +284,26 @@ enum FileField
     FLD_MAXSD = 0,
     FLD_MAXUSB,
     FLD_EXTCNT,
+    FLD_SCANNED,    // new
     FLD_LOADED,
+    FLD_PREV,       // new
     FLD_SIZE,
     FLD_COUNT
 };
 
 int filecounter[FT_COUNT][FLD_COUNT] =
-{
-    /* VSH */ { VSH_SD, VSH_USB, VSH_EXT, 0, VSH_SIZ },
-    /* OMF */ { OMF_SD, OMF_USB, OMF_EXT, 0, OMF_SIZ },
-    /* FSH */ { FSH_SD, FSH_USB, FSH_EXT, 0, FSH_SIZ },
-    /* OMT */ { OMT_SD, OMT_USB, OMT_EXT, 0, OMT_SIZ },
-    /* TEX */ { TEX_SD, TEX_USB, TEX_EXT, 0, TEX_SIZ },
-    /* VID */ { VID_SD, VID_USB, VID_EXT, 0, VID_SIZ },
-    /* KLN */ { KLN_SD, KLN_USB, KLN_EXT, 0, KLN_SIZ },
-    /* FRM */ { FRM_SD, FRM_USB,       0, 0, FRM_SIZ },     // i decided to add the output-frames A & B
-    /* LOG */ { LOG_SD, LOG_USB,       0, 0, LOG_SIZ }      // and logger buffer information here      
+{   //          MAXSD   MAXUSB   EXTCNT   SCANNED   
+    /* VSH */ { VSH_SD, VSH_USB, VSH_EXT, 0, 0, 0, VSH_SIZ },
+    /* OMF */ { OMF_SD, OMF_USB, OMF_EXT, 0, 0, 0, OMF_SIZ },
+    /* FSH */ { FSH_SD, FSH_USB, FSH_EXT, 0, 0, 0, FSH_SIZ },
+    /* OMT */ { OMT_SD, OMT_USB, OMT_EXT, 0, 0, 0, OMT_SIZ },
+    /* TEX */ { TEX_SD, TEX_USB, TEX_EXT, 0, 0, 0, TEX_SIZ },
+    /* VID */ { VID_SD, VID_USB, VID_EXT, 0, 0, 0, VID_SIZ },
+    /* KLN */ { KLN_SD, KLN_USB, KLN_EXT, 0, 0, 0, KLN_SIZ },
+    /* FRM */ { FRM_SD, FRM_USB,       0, 0, 0, 0, FRM_SIZ },     // i decided to add the output-frames A & B
+    /* LOG */ { LOG_SD, LOG_USB,       0, 0, 0, 0, LOG_SIZ }      // and logger buffer information here      
 };
-
-// list of extensions used in my scanroot directory function per filetype 
+// lists of extensions possible in my scanroot directory function per filetype 
         const   char                   *g_SufVsh[VSH_EXT]			    = { "vsh" }; 
         const   char                   *g_SufOmf[OMF_EXT]			    = { "omf" };	// is a fsh file but used for the overlay atlas
         const   char                   *g_SufFsh[FSH_EXT]			    = { "fsh" };
@@ -315,7 +311,7 @@ int filecounter[FT_COUNT][FLD_COUNT] =
         const   char                   *g_SufTex[TEX_EXT]			    = { "bmp" };
         const   char                   *g_SufVid[VID_EXT]			    = { "264" }; // i guess i will remove the whole parse code for anything but h264
         const   char                   *g_SufKln[KLN_EXT]			    = { "img" };
-// array to store the scanned filenames?
+// array to store the scanned filenames
                 char                   *g_ScnVsh[VSH_SD + VSH_USB]     	= { 0 };
         		char				   *g_ScnOmf[OMF_SD + OMF_USB] 		= { 0 };
                 char                   *g_ScnFsh[FSH_SD + FSH_USB]     	= { 0 };
@@ -323,7 +319,7 @@ int filecounter[FT_COUNT][FLD_COUNT] =
                 char                   *g_ScnTex[TEX_SD + TEX_USB]     	= { 0 };
                 char                   *g_ScnVid[VID_SD + VID_USB]     	= { 0 };
                 char                   *g_ScnKln[KLM_SD + KLN_USB]     	= { 0 };
-// array to store the length of the loased files
+// array to store the length of the loaded files
                 unsigned                g_bytVsh[VSH_SD + VSH_USB]      = { 0 };
                 unsigned                g_bytOmf[OMF_SD + OMF_USB]      = { 0 };
                 unsigned                g_bytFsh[FSH_SD + FSH_USB]      = { 0 };
@@ -331,6 +327,30 @@ int filecounter[FT_COUNT][FLD_COUNT] =
                 unsigned                g_bytTex[TEX_SD + TEX_USB]      = { 0 };
                 unsigned                g_bytVid[VID_SD + VID_USB]      = { 0 };
                 unsigned                g_bytKln[KLM_SD + KLN_USB]      = { 0 };
+// our buffers members for the allocation
+
+enum io_types
+{
+int raw = 0,        //  the position the dampened adc values per channels are stored *
+int  in,            //  either the calculated int or flt value *
+int out,            //  here lands the processed ( after mode ) for the glsl uniforms      
+int rnd,            //  either the per-channel random int or flt value *
+int lf1,            //  either the lfo one int or flt value
+int lf2,            //  either the lfo two int or flt value
+int au0,            //  the audio band 0 flt value
+int au1,            //  the audio band 1 flt value
+int au2,            //  the audio band 2 flt value
+int au3,            //  the audio band 3 flt value
+                    // *means i have a unique value for each channel - the other values are singular, and/or only int/flt
+int trL,            //  per channel threshold low !!! dont forget to copy the values in here    128
+int trH,            //  per channel threshold high                                              320
+//  trF,            //  per channel threshold "flag"
+int io_type_count
+}
+
+g_inOutMatrixInt[CHANNEL][io_types];
+g_inOutMatrixFlt[CHANNEL][io_types];
+g_menuPickUpFlag[4*menu_layers];
 
                 char** 				    m_bufferVid;
                 char* 				    m_videoBlockBase;

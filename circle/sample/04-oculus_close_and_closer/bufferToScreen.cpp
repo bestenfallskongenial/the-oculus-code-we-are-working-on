@@ -2,16 +2,16 @@
 for kernel.h
 
 
-boolean CKernel::buffer_to_screen_init                              (   void );
-void    CKernel::buffer_to_screen_clear_screen                      (   u32 bgColor );
-void    CKernel::buffer_to_screen_draw_buffer_segment_to_screen     (   const char *pSourceBuffer,
+boolean CKernel::screen_init                              (   void );
+void    CKernel::screen_clear_screen                      (   u32 bgColor );
+void    CKernel::screen_draw_buffer_segment     (   const char *pSourceBuffer,
                                                                         u32 startIndex,
                                                                         u32 endIndex,
                                                                         unsigned startCol,
                                                                         unsigned startRow,
                                                                         u32 fgColor,
                                                                         u32 bgColor );
-unsigned CKernel::buffer_to_screen_get_grid                         (    unsigned &cols, 
+unsigned CKernel::screen_get_grid                         (    unsigned &cols, 
                                                                         unsigned &rows )
 
 #include <circle/bcmframebuffer.h>
@@ -19,7 +19,7 @@ unsigned CKernel::buffer_to_screen_get_grid                         (    unsigne
 
     Self-contained framebuffer setup:
     width/height are queried from firmware via mailbox when constructed with 0,0.
-    This reflects the effective display mode (typically driven by config.txt/EDID firmware state).
+    This reflects the effective display mode (typically driven by config.txt/EDID firmware states).
 */
 
 static CBcmFrameBuffer gE_FrameBuffer (0, 0, 32, 0, TRUE);
@@ -34,12 +34,12 @@ static unsigned  gE_CharHeight   = 0;
 static unsigned  gE_Cols         = 0;
 static unsigned  gE_Rows         = 0;
 
-static void CKernel::buffer_to_screen_plot                          (   unsigned x, unsigned y, u32 color )
+static void CKernel::screen_plot                          (   unsigned x, unsigned y, u32 color )
 {
     gE_PixelBuffer[y * (gE_PitchBytes >> 2) + x] = color;
 }
 
-static void CKernel::buffer_to_screen_draw_char                     (   char ch,
+static void CKernel::screen_draw_char                     (   char ch,
                                                                         unsigned charCol,
                                                                         unsigned charRow,
                                                                         u32 fgColor,
@@ -52,13 +52,13 @@ static void CKernel::buffer_to_screen_draw_char                     (   char ch,
     {
         for (unsigned x = 0; x < gE_CharWidth; x++)
         {
-            buffer_to_screen_plot (px + x, py + y,
+            screen_plot (px + x, py + y,
                                      gE_CharGenerator.GetPixel (ch, x, y) ? fgColor : bgColor );
         }
     }
 }
 
-boolean CKernel::buffer_to_screen_init                              (   void )
+boolean CKernel::screen_init                              (   void )
 {
     if (!gE_FrameBuffer.Initialize ())
     {
@@ -85,7 +85,7 @@ boolean CKernel::buffer_to_screen_init                              (   void )
     return TRUE;
 }
 
-void CKernel::buffer_to_screen_clear_screen                         (   u32 bgColor)
+void CKernel::screen_clear_screen                         (   u32 bgColor)
 {
     const unsigned pitch32 = gE_PitchBytes >> 2;
 
@@ -98,7 +98,7 @@ void CKernel::buffer_to_screen_clear_screen                         (   u32 bgCo
     }
 }
 
-void CKernel::buffer_to_screen_draw_buffer_segment_to_screen        (   const char *pSourceBuffer,
+void CKernel::screen_draw_buffer_segment        (   const char *pSourceBuffer,
                                                                         u32 startIndex,
                                                                         u32 endIndex,
                                                                         unsigned startCol,
@@ -133,7 +133,7 @@ void CKernel::buffer_to_screen_draw_buffer_segment_to_screen        (   const ch
         }
         if (col < gE_Cols && row < gE_Rows)
         {
-            buffer_to_screen_draw_char (ch, col, row, fgColor, bgColor);
+            screen_draw_char (ch, col, row, fgColor, bgColor);
         }
         col++;
         if (col >= gE_Cols)
@@ -148,7 +148,7 @@ void CKernel::buffer_to_screen_draw_buffer_segment_to_screen        (   const ch
     }
 }
 
-unsigned CKernel::buffer_to_screen_get_grid                         (   unsigned &cols, unsigned &rows)
+unsigned CKernel::screen_get_grid                         (   unsigned &cols, unsigned &rows)
 {
     cols = gE_Cols;
     rows = gE_Rows;

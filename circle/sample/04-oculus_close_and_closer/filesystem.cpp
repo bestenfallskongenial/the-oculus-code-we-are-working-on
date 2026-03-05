@@ -2,9 +2,9 @@
 #include "kernel.h"
 #include "global.h"
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::Mount                      (   const char*         p_deviceName)                           // its in the name. mount the filesystem ( sd / usb ) for further use
+bool            CKernel::Mount          (   const char* p_deviceName)                           // its in the name. mount the filesystem ( sd / usb ) for further use
 {
-                CDevice *f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);
+                CDevice* f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);   // CDevice *f_partitionName?!?
 
                 if (f_partitionName == 0)
                     {
@@ -26,7 +26,7 @@ bool            CKernel::Mount                      (   const char*         p_de
                 return true;
 }
 
-bool            CKernel::UnMount                    ()                                                              // unmount it after use
+bool            CKernel::UnMount        ()                                                              // unmount it after use
 {
                 if (m_pFileSystem == 0)
                     {
@@ -38,7 +38,7 @@ bool            CKernel::UnMount                    ()                          
                 return true;
 }
 
-bool            CKernel::openFile       (   const char         *p_fileName)		                        // Open File by passing p_fileName via pointer 
+bool            CKernel::openFile       (   const char* p_fileName)		                        // Open File by passing p_fileName via pointer 
 {   
 	            g_hFile = m_pFileSystem->FileOpen (p_fileName);
 	            if (g_hFile == 0)
@@ -47,8 +47,8 @@ bool            CKernel::openFile       (   const char         *p_fileName)		   
 		            }	
                 return true;
 }
-unsigned        CKernel::loadFile       (   char               *p_buffer,                               // destination buffer for the file data
-                                                        unsigned            p_bufferSize)                           // maximum number of bytes to read into the buffer
+unsigned        CKernel::loadFile       (   char*       p_buffer,                               // destination buffer for the file data
+                                            unsigned    p_bufferSize)                           // maximum number of bytes to read into the buffer
 {
                 unsigned f_totalBytesRead = 0;
                 unsigned f_bytesRead;
@@ -74,9 +74,9 @@ unsigned        CKernel::loadFile       (   char               *p_buffer,       
                 return 0;  // Buffer full, EOF not reached - this is NOT a success - 0 is equal to false
 }
 
-bool            CKernel::saveBuffer (   const char*     p_fileName,
-                                                    const char*     p_buffer,
-                                                    unsigned        p_bufferSize)
+bool            CKernel::saveBuffer     (   const char* p_fileName,
+                                            const char* p_buffer,
+                                            unsigned    p_bufferSize)
 {
                 if (m_pFileSystem == 0 || p_fileName == 0 || p_buffer == 0 || p_bufferSize  == 0)
                     {
@@ -104,13 +104,16 @@ bool            CKernel::closeFile      ()	                                     
                 return true;								                                                        // success closing file
 }
 
-void            CKernel::bulkLoad                   (   char*               p_fileNameArray[],                      // where we have stored the filenames from the root directory scan
-                                                        unsigned            p_loadedBytes[],                        // where we store the size in bytes for each file 
-                                                        char**              p_bufferArray,                          // where we store the loaded file data for each file ( or dma/non-dma buffers )
-                                                        int                 p_maxFiles,                             // how many files we are allowed to process ( os limitations )
-                                                        int                &p_validFiles,                           // counts successful loads - we need to keep track here <- MUST initialised with 0
-                                                        unsigned            p_fileSize)                             // maximum size for each file
+void            CKernel::bulkLoad       (   char*       p_fileNameArray[],                      // where we have stored the filenames from the root directory scan
+                                            unsigned    p_loadedBytes[],                        // where we store the size in bytes for each file 
+                                            char**      p_bufferArray,                          // where we store the loaded file data for each file ( or dma/non-dma buffers )
+                                            int         p_maxFiles,                             // how many files we are allowed to process ( os limitations )
+                                            int&        p_validFiles,                           // counts successful loads - we need to keep track here <- MUST initialised with 0
+                                            int&        p_prevFiles,
+                                            unsigned    p_fileSize)                             // maximum size for each file
 {
+                p_prevFiles = p_validFiles;   // boundary before loading
+
                 for (int i = 0; i < p_maxFiles; ++i) 
                     {
                     if (openFile(p_fileNameArray[i]))                                                   // returns true if the file was opened successfully
@@ -126,8 +129,8 @@ void            CKernel::bulkLoad                   (   char*               p_fi
                     }   
 }
 
-bool            CKernel::IsValidFile(                   const char*         pFileName,
-                                                        const char*         extension)
+bool            CKernel::IsValidFile    (   const char* pFileName,
+                                            const char* extension)
 {
                 if (!pFileName || !extension)
                     return false;
@@ -160,12 +163,14 @@ bool            CKernel::IsValidFile(                   const char*         pFil
                 return (*suffix == '\0' && *extension == '\0');     // both must end at same time
 }
 
-bool            CKernel::scanRoot     (   char**              p_fileNameArray,                        // where we store the valid filenames we find
-                                                        const char*         p_fileExtension[],                      // the array of valid file extensions for this type of file
-                                                        int                 p_extentionCount,                       // how many valid file extensions we have in the array above
-                                                        int                &p_scannedFiles,                         // our counter of found files, important - but we can reset it between calls / devices <- has to be initialised with 0 before calling this function
-                                                        unsigned            p_maxFiles )                            // how many files are allowed to scan and stored in the array, not sure, the same as above? i had two parameters there, need to check the code
+bool            CKernel::scanRoot       (   char**      p_fileNameArray,                        // where we store the valid filenames we find
+                                            const char* p_fileExtension[],                      // the array of valid file extensions for this type of file
+                                            int         p_extentionCount,                       // how many valid file extensions we have in the array above
+                                            int&        p_scannedFiles,                         // our counter of found files, important - but we can reset it between calls / devices <- has to be initialised with 0 before calling this function
+                                            unsigned    p_maxFiles )                            // how many files are allowed to scan and stored in the array, not sure, the same as above? i had two parameters there, need to check the code
 {
+                p_scannedFiles = 0;
+
                 TDirentry           f_directoryEntry;
                 TFindCurrentEntry   f_currentDirectoryEntry;
                 
@@ -195,11 +200,11 @@ bool            CKernel::scanRoot     (   char**              p_fileNameArray,  
                 return true;                                                                                        // Return true to indicate successful scan (even if no valid files were found, as long as the directory was accessed successfully)               
 }
 
-bool            CKernel::updateUSB      (   const char*         p_deviceName)                           // this is called when we get a plug and play event for the USB, we check if the device is already in our tree of connected devices,
-{                                                                                                                   //  if not we update the tree and check again, if we find it this means we can now access the filesystem on the USB and we register a handler for when the USB gets removed so we can update our state accordingly 
+bool            CKernel::updateUSB      (   const char* p_deviceName)                           // this is called when we get a plug and play event for the USB, we check if the device is already in our tree of connected devices,
+{                                                                                                                   //  if not we update the tree and check again, if we find it this means we can now access the filesystem on the USB and we register a handler for when the USB gets removed so we can update our states accordingly 
                 if (m_USBHCI.UpdatePlugAndPlay())                                                                   // Update the tree of connected USB devices
                     {
-                    CDevice *f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);
+                    CDevice* f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);   // CDevice *f_partitionName
                     if (f_partitionName != nullptr)
                         {
                         m_bStorageAttached = true;                                                                  // this is a global, volatile variable! 
@@ -210,8 +215,8 @@ bool            CKernel::updateUSB      (   const char*         p_deviceName)   
                     }
                 return false;
 }
-void            CKernel::removeUSB      (   CDevice            *f_partitionName,                        // this is the handler we register for when the USB gets removed, we set our state to reflect that the storage is no longer attached, we could also unmount the filesystem here if we wanted to be extra safe?
-                                                        void               *p_pContext)
+void            CKernel::removeUSB      (   CDevice*    f_partitionName,                        // CDevice *f_partitionName?? this is the handler we register for when the USB gets removed, we set our states to reflect that the storage is no longer attached, we could also unmount the filesystem here if we wanted to be extra safe?
+                                            void*       p_pContext)
 {
 	            CKernel *pThis = (CKernel *) p_pContext;
 	            assert (pThis != 0);

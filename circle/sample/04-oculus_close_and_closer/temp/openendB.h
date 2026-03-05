@@ -13,7 +13,7 @@
 // Structs found in this sample
 // -------------------------------------------------------------------------------------------------
 struct RGB;
-struct glsl_states;
+struct glsl_state;
 struct MenuTileRect;
 struct MenuGpuState;
 
@@ -51,7 +51,7 @@ extern int g_currentProgramBuffer;
 extern int g_current_menu_layer;
 extern int g_menu_mode_new;
 extern int g_menu_mode_old;
-extern bool menu_pickup_flag[];
+extern bool g_menuPickUpFlag[];
 
 // unified in/out matrices (new naming appears with and without g_ prefix)
 extern int   g_inOutMatrixInt[][/*io_types*/];
@@ -84,7 +84,7 @@ extern int g_sensitivityOld;
 extern int g_attenuation;
 extern int g_modes[];
 
-// runtime selection state
+// runtime selection m_glsl
 extern int g_current_gl_program;
 extern int g_last_gl_program;
 extern int g_loaded_fsh_new;
@@ -92,7 +92,7 @@ extern int g_validTextureCount;
 extern int g_validVideoCount;
 extern bool shader_has_stored_params[];
 
-// button timing/event state
+// button timing/event m_glsl
 extern unsigned int g_buttons_states[2][5];
 extern unsigned int g_currentTime;
 extern unsigned int g_double_click_time;
@@ -146,9 +146,9 @@ extern MenuGpuState g_menu_state;
 //    kernel.h enum: maxUsb
 //    wrappers.cpp use: maxUsb
 
-// 7) state object name mismatch
-//    glsl state member appears as m_glsl in kernel.h
-//    wrappers.cpp/gfx paths also use bare "state" in calls
+// 7) m_glsl object name mismatch
+//    glsl m_glsl member appears as m_glsl in kernel.h
+//    wrappers.cpp/gfx paths also use bare "m_glsl" in calls
 
 // 8) omt buffer name mismatch
 //    m_bufferOmt vs m_bufferOmt
@@ -317,8 +317,8 @@ extern MenuGpuState g_menu_state;
 // - m_videoBlockSize
 // - m_videoBuffer
 // - m_videoRawBlock
-// - menu_pickup_flag
+// - g_menuPickUpFlag
 // - g_centralModeBuffer
 // - g_resultBPM
 // - shader_has_stored_params
-// - state
+// - m_glsl

@@ -2,7 +2,7 @@
 
 This roadmap turns the notes in `README.cpp` into a staged implementation plan.
 
-## 1) Current state (what exists)
+## 1) Current m_glsl (what exists)
 
 - **Core intended pipeline is already sketched** in `CKernel::Run()` and wrappers:
   - setup (`prepParameters`)
@@ -14,31 +14,31 @@ This roadmap turns the notes in `README.cpp` into a staged implementation plan.
   - `saveBuffer()` in filesystem layer
   - `storeLog` / `storeMsg` in util
   - framebuffer text drawing in `bufferToScreen.cpp`
-- **Menu mode-state model exists conceptually**:
+- **Menu mode-m_glsl model exists conceptually**:
   - `g_centralModeBuffer`/mode table approach
   - per-channel mode application in `menu_final.cpp`
   - button timing function `buttonPing`
 - **Overlay menu shader path exists as a prototype** in `the functions.cpp` with menu program/atlas helpers and a dedicated `menu.fsh`.
-- **Timing/LFO/BPM feature logic exists** in `features.cpp` and can be adapted to matrix-based state.
+- **Timing/LFO/BPM feature logic exists** in `features.cpp` and can be adapted to matrix-based m_glsl.
 
 ## 2) Biggest integration gaps (what is missing)
 
 1. **Build correctness first**
    - Multiple files currently contain syntax/integration breakages (missing semicolons, inconsistent names, mismatched enums, mixed old/new symbols).
-   - `kernel.h` is not yet a coherent declaration surface for all globals/state used by cpp files.
+   - `kernel.h` is not yet a coherent declaration surface for all globals/m_glsl used by cpp files.
 
-2. **Single source of truth for state naming**
+2. **Single source of truth for m_glsl naming**
    - Old symbols (`g_centralModeBuffer`, `g_currentProgramBuffer`, `g_resultBPM`) and new symbols (`g_centralModeBuffer`, `g_currentProgramBuffer`, `g_resultBPM`) are mixed.
    - `g_inOutMatrix*` vs `inOutMatrix*` usage is inconsistent.
 
 3. **Button/menu behavior contract is not centralized**
-   - Desired UX (tap BPM, hold layer A/B, combo for deeper pages) is documented, but not yet encoded as a clean state machine with deterministic transitions.
+   - Desired UX (tap BPM, hold layer A/B, combo for deeper pages) is documented, but not yet encoded as a clean m_glsl machine with deterministic transitions.
 
 4. **Wrapper API vs implementations drift**
    - Wrapper names/calls differ (`wrapper_load_sd` vs `wrapper_from_sd`, `wrapper_init_usb` vs `wrapper_load_usb`, missing args in `buttonPing` calls).
 
 5. **Overlay menu pass not wired end-to-end**
-   - Overlay compile/link/upload helpers exist, but render-loop integration and data feeding from central mode/bpm state is incomplete.
+   - Overlay compile/link/upload helpers exist, but render-loop integration and data feeding from central mode/bpm m_glsl is incomplete.
 
 6. **Logging migration incomplete**
    - Goal is to remove CString/screen/logger dependency paths for runtime logs, but old CString-centric assumptions still appear in run path and helper signatures.
@@ -69,11 +69,11 @@ This roadmap turns the notes in `README.cpp` into a staged implementation plan.
 
 **Exit criterion:** deterministic run-order with no hidden side effects.
 
-### Phase C — Menu input state machine
+### Phase C — Menu input m_glsl machine
 
 - Implement a small explicit menu controller with:
   - button event decode (`single`, `double`, `long-enter`, `hold-tick`, `release`)
-  - layer state (`NONE`, `A`, `B`, `EXT_*`)
+  - layer m_glsl (`NONE`, `A`, `B`, `EXT_*`)
   - transition table for combo gestures
 - Route ADC channels 4..7 to active menu group only while layer is active.
 - Keep pickup behavior (`menu_pickup_flag`) but reset only on actual layer/group changes.
@@ -112,7 +112,7 @@ This roadmap turns the notes in `README.cpp` into a staged implementation plan.
 - [ ] Normalize all symbol names (old/new merge pass).
 - [ ] Repair `kernel.h` declarations and enum completeness.
 - [ ] Align wrapper names/signatures/calls.
-- [ ] Add menu controller state machine (single source of truth).
+- [ ] Add menu controller m_glsl machine (single source of truth).
 - [ ] Integrate button routing with ADC multiplexing behavior.
 - [ ] Finish overlay pass wiring in render loop.
 - [ ] Complete timing-array migration to matrix-compatible structure.

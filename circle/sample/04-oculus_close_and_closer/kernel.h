@@ -285,7 +285,7 @@ struct RGB
 	uint8_t blu;
 };
 
-struct glsl_states									// we will  rework this here! seperation of the dispmax/egl - the user shader / overlay shader, vertex, buffer?? means 5 instead of one?
+struct glsl_state									// we will  rework this here! seperation of the dispmax/egl - the user shader / overlay shader, vertex, buffer?? means 5 instead of one?
 	{
 	// EGL Window
    	uint32_t screen_width;
@@ -320,33 +320,7 @@ struct glsl_states									// we will  rework this here! seperation of the dispm
     GLint u_tex_l[FSH_FILES_ON_SD+FSH_FILES_ON_USB];
 	};
 
-
-
-// list of extensions used in my scanroot directory function per filetype 
-        const   char                   *g_SufVsh[SUFFIX_VSH]			= { "vsh" }; 
-        const   char                   *g_SufOmf[SUFFIX_FSH]			= { "omf" };	// is a fsh file but used for the overlay atlas
-        const   char                   *g_SufFsh[SUFFIX_FSH]			= { "fsh" };
-        const   char                   *g_SufOmt[SUFFIX_TEX]			= { "omt" }; // is a bpm file but used for the overlay atlas
-        const   char                   *g_SufTex[SUFFIX_TEX]			= { "bmp" };
-        const   char                   *g_SufVid[SUFFIX_VID]			= { "264" }; // i guess i will remove the whole parse code for anything but h264
-
-// array to store the scanned filenames?
-                char                   *g_ScnVsh[VSH_FILES_ON_SD + VSH_FILES_ON_USB]     	= { 0 };
-        		char				   *g_ScnOmf[OMF_FILES_ON_SD + OMF_FILES_ON_USB] 		= { 0 };
-                char                   *g_ScnFsh[FSH_FILES_ON_SD + FSH_FILES_ON_USB]     	= { 0 };
-        		char				   *g_ScnOmt[OMT_FILES_ON_SD + OMT_FILES_ON_USB] 		= { 0 };
-                char                   *g_ScnTex[TEX_FILES_ON_SD + TEX_FILES_ON_USB]     	= { 0 };
-                char                   *g_ScnVid[VID_FILES_ON_SD + VID_FILES_ON_USB]     	= { 0 };
-// array to store the length of the loased files
-                unsigned                g_bytVsh[VSH_FILES_ON_SD + VSH_FILES_ON_USB]          = { 0 };
-                unsigned                g_bytOmf[OMF_FILES_ON_SD + OMF_FILES_ON_USB]          = { 0 };
-                unsigned                g_bytFsh[FSH_FILES_ON_SD + FSH_FILES_ON_USB]          = { 0 };
-                unsigned                g_bytOmt[OMT_FILES_ON_SD + OMT_FILES_ON_USB]          = { 0 };
-                unsigned                g_bytTex[TEX_FILES_ON_SD + TEX_FILES_ON_USB]        	= { 0 };
-                unsigned                g_bytVid[VID_FILES_ON_SD + VID_FILES_ON_USB]          = { 0 };
-
-
-	glsl_states  		m_glsl;
+	glsl_state  		m_glsl;
 	bufferInfo			m_videoBuffer;
 	bufferInfo			m_bufferFameA;
 	bufferInfo			m_bufferFameB;

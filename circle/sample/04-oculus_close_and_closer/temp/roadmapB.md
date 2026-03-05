@@ -29,8 +29,8 @@ This structure is exactly the right basis for the `load -> init -> io -> modes -
 - The design is already moving toward `g_inOutMatrixInt[][]` and `g_inOutMatrixFlt[][]` as the central per-channel transport (raw/in/out/rnd/lfo/audio/threshold).
 
 ## D. Overlay menu shader prototype exists
-- A concrete menu GPU state + tile-based overlay implementation exists in `the functions.cpp`:
-  - menu state struct,
+- A concrete menu GPU m_glsl + tile-based overlay implementation exists in `the functions.cpp`:
+  - menu m_glsl struct,
   - menu shader compilation/link helpers,
   - atlas upload,
   - init/update/draw/shutdown functions.
@@ -50,7 +50,7 @@ Practical blockers:
 - mixed old/new names (`g_centralModeBuffer` vs `g_centralModeBuffer`, `g_inOutMatrix*` vs `inOutMatrix*`),
 - values and globals declared in header scope that should be centralized.
 
-## B. Several source files are still in sketch state (compile blockers)
+## B. Several source files are still in sketch m_glsl (compile blockers)
 There are obvious syntax/consistency issues in key integration files (missing separators, comment fragments, inconsistent identifiers/includes), especially in:
 - `kernel_run.cpp`,
 - `wrappers.cpp`,
@@ -59,8 +59,8 @@ There are obvious syntax/consistency issues in key integration files (missing se
 
 These need a compile-pass stabilization before any behavioral integration can be trusted.
 
-## C. Button/menu state machine is not fully encoded yet
-You have the event intent (single/hold/double/layer switch) and timestamp structure, but the complete deterministic state machine that maps events to `menu_id`, layer selection, and assignment groups is incomplete.
+## C. Button/menu m_glsl machine is not fully encoded yet
+You have the event intent (single/hold/double/layer switch) and timestamp structure, but the complete deterministic m_glsl machine that maps events to `menu_id`, layer selection, and assignment groups is incomplete.
 
 ## D. Overlay shader pass is implemented, but not fully wired into render lifecycle
 Menu pass helpers exist, but integration points are still incomplete:
@@ -70,7 +70,7 @@ Menu pass helpers exist, but integration points are still incomplete:
 - cleanup and reload behavior under USB refresh/reset.
 
 ## E. Timing arrays are not yet unified into the same matrix philosophy
-Your BPM/LFO code has much of the logic, but related timing state is still spread over dedicated arrays and static locals. The migration plan to a unified timing state table is not yet done.
+Your BPM/LFO code has much of the logic, but related timing m_glsl is still spread over dedicated arrays and static locals. The migration plan to a unified timing m_glsl table is not yet done.
 
 ## F. Logging migration is partial
 `saveBuffer()` and screen-buffer drawing utilities exist, but the full replacement of `CString`/`screen/logger` call patterns with one unified logging buffer mechanism is not completed.
@@ -86,7 +86,7 @@ Goal: stop naming drift and define one authoritative vocabulary.
    - `g_centralModeBuffer` -> `g_centralModeBuffer`
    - `g_inOutMatrix*` -> `inOutMatrix*` (or the opposite, but pick one)
    - threshold keys (`trL/trH/trF`) consistently everywhere.
-2. Move global state ownership to a single place (prefer `.cpp` definitions with `extern` in header).
+2. Move global m_glsl ownership to a single place (prefer `.cpp` definitions with `extern` in header).
 3. Keep `kernel.h` as API surface only (types, constants, class declarations).
 
 Deliverable: builds parse cleanly and all symbols resolve consistently.
@@ -103,15 +103,15 @@ Goal: ensure loop stages are real and callable.
 
 Deliverable: one deterministic loop that can run without undefined calls.
 
-## Phase 2 — Button-driven menu state machine
+## Phase 2 — Button-driven menu m_glsl machine
 Goal: translate physical button behavior into deterministic menu layer/mode control.
 
 1. Finalize `buttonPing()` events (`single`, `double`, `hold_tick`, `release`).
-2. Implement one consumer/state machine that maps events to:
+2. Implement one consumer/m_glsl machine that maps events to:
    - active menu layer A/B,
    - sublayers (LFO, attenuation, sensitivity, filesystem ops),
    - BPM tap capture.
-3. Keep all outputs of this state machine in a compact struct (e.g., `MenuNavState`).
+3. Keep all outputs of this m_glsl machine in a compact struct (e.g., `MenuNavState`).
 
 Deliverable: button behavior is deterministic and testable without rendering.
 
@@ -125,10 +125,10 @@ Goal: make the matrix the only source of truth for channel processing.
 Deliverable: mode engine works independently of UI and render.
 
 ## Phase 4 — Timing/BPM/LFO unification
-Goal: make timing state structurally similar to channel matrix state.
+Goal: make timing m_glsl structurally similar to channel matrix m_glsl.
 
-1. Introduce a compact timing-state table/struct array (per clock source/lfo lane).
-2. Migrate `calculateBPM()`, `predictedNextBeat()`, `sampleWaveTable()` to consume/write that state.
+1. Introduce a compact timing-m_glsl table/struct array (per clock source/lfo lane).
+2. Migrate `calculateBPM()`, `predictedNextBeat()`, `sampleWaveTable()` to consume/write that m_glsl.
 3. Keep exposed outputs mapped back into matrix slots (`lf1`, `lf2`, bpm-dependent outputs).
 
 Deliverable: timing logic no longer scattered across unrelated globals/statics.
@@ -181,4 +181,4 @@ You are “integrated” when all are true:
 4. `g_centralModeBuffer` is the single mode source across channels.
 5. Menu overlay renders every frame as second pass.
 6. Logging works to file and optional screen buffer without legacy logger dependence.
-7. USB re-scan/reload path does not corrupt active render state.
+7. USB re-scan/reload path does not corrupt active render m_glsl.
