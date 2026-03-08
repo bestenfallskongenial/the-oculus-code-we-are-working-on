@@ -4,16 +4,16 @@ Makefile                                                                        
 README.md                   
 
 
-bufferToScreen.cpp          screen_plot                           (   unsigned        x,                  // !!! not tested !!!
+bufferToScreen.cpp          screen_plot                                     (   unsigned        x,                  // !!! not tested !!!
                                                                                 unsigned        y, 
                                                                                 u32 color )
-                            screen_draw_char                      (   char            ch,
+                            screen_draw_char                                (   char            ch,
                                                                                 unsigned        charCol,
                                                                                 unsigned        charRow,
                                                                                 u32             fgColor,
                                                                                 u32             bgColor )
-                            screen_init                           (   void )
-                            screen_clear_screen                   (   u32 bgColor)
+                            screen_init                                     (   void )
+                            screen_clear_screen                             (   u32 bgColor)
                             screen_draw_buffer_segment  (   const char     *pSourceBuffer,
                                                                                 u32             startIndex,
                                                                                 u32             endIndex,
@@ -24,7 +24,7 @@ bufferToScreen.cpp          screen_plot                           (   unsigned  
                             screen_get_grid                       (   unsigned       &cols, 
                                                                                 unsigned       &rows )
 
-color_table.cpp             const unsigned char g_rgb_color_table[49][3]                                            // ***** !!!!! *****
+table_colors.cpp            const unsigned char g_rgb_color_table[49][3]                                            // ***** !!!!! *****
 
 
 features.cpp                randomVec8                                      (   uint32_t        p_seed )
@@ -36,8 +36,8 @@ features.cpp                randomVec8                                      (   
 
 filesystem.cpp              Mount                                           (   const char*     p_deviceName )
                             UnMount                                         ()
-                            openFile                                        (   const char     *p_fileName )
-                            loadFile                                        (   char           *p_buffer,       // destination buffer for the file data
+                            openFile                                        (   const char*     p_fileName )
+                            loadFile                                        (   char*           p_buffer,       // destination buffer for the file data
                                                                                 unsigned        p_bufferSize )
                             saveBuffer                                      (   const char*     p_fileName,
                                                                                 const char*     p_buffer,
@@ -47,18 +47,19 @@ filesystem.cpp              Mount                                           (   
                                                                                 unsigned        p_loadedBytes[],    // where we store the size in bytes for each file 
                                                                                 char**          p_bufferArray,      // where we store the loaded file data for each file ( or dma/non-dma buffers )
                                                                                 int             p_maxFiles,         // how many files we are allowed to process ( os limitations )
-                                                                                int            &p_validFiles,       // counts successful loads <- directly modified in the function, we dont need to return it
+                                                                                int&            p_validFiles,       // counts successful loads <- directly modified in the function, we dont need to return it
+                                                                                int&            p_prevFiles,
                                                                                 unsigned        p_fileSize )        // maximum size for each file
                             IsValidFile(                                        const char*     pFileName,
                                                                                 const char*     extension )
                             scanRoot                                        (   char**          p_fileNameArray,    // where we store the valid filenames we find
                                                                                 const char*     p_fileExtension[],  // the array of valid file extensions for this type of file
                                                                                 int             p_extentionCount,   // how many valid file extensions we have in the array above
-                                                                                int            &p_scannedFiles,     // our counter of found files, important <- has to be initialised with 0
+                                                                                int&            p_scannedFiles,     // our counter of found files, important <- has to be initialised with 0
                                                                                 unsigned        p_maxFiles )  
                             updateUSB                                       (   const char*     p_deviceName )
-                            removeUSB                                       (   CDevice        *f_partitionName,    // we could also unmount the filesystem here if we wanted to be extra safe,right?
-                                                                                void           *p_pContext )
+                            removeUSB                                       (   CDevice*        f_partitionName,    // we could also unmount the filesystem here if we wanted to be extra safe,right?
+                                                                                void*           p_pContext )
 
 filesystem_user.cpp         util_save_modes_file                            ()                                      // this is not wanted/needed anymore
 
@@ -168,7 +169,7 @@ util.cpp                    prepParameters                                  ()
                             nextline                                        (   char*           buffer,
                                                                                 u32&            index )
 
-wavetable.cpp               unsigned long g_waveTable[WAVEFORMS][WAVESAMPLES] 
+table_waveforms.cpp         unsigned long g_waveTable[WAVEFORMS][WAVESAMPLES] 
 
 
 wrappers.cpp                wrapper_from_sd                                 ()

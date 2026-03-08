@@ -175,6 +175,7 @@ void            CKernel::sampleWaveTable                   ()
                 g_inOutMatrixInt[0][lf2]            =   g_waveTable[g_centralModeBuffer[LF2_WAVE][g_currentProgramBuffer]][g_sampleIndex[1]];
 }   
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
 void            CKernel::audioEnergy          (float p_adcvalue) 
 {   
                 const int f_maxBuffer = 33;
@@ -241,6 +242,7 @@ void            CKernel::audioEnergy          (float p_adcvalue)
                 f_indexBand2 = (f_indexBand2 + 1) % f_averageBufferSizeTable[2][g_sensitivityNew];
                 f_indexBand3 = (f_indexBand3 + 1) % f_averageBufferSizeTable[3][g_sensitivityNew];
 }
+*/
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
     we need a combined array for the bpm/lfo timing stuff here, same as in circle/sample/04-oculus_close_and_closer/menu_final.cpp

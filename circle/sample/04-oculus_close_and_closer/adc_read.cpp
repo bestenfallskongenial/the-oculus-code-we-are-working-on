@@ -1,3 +1,17 @@
+/*
+// readADC()
+// Purpose:
+// - Basic ADC sampling path for all channels.
+//
+// How it works:
+// - Reads one raw sample per channel from the MCP300X ADC.
+// - Stores each sample in a 4-slot ring buffer (per channel).
+// - Averages the 4 most recent samples to reduce jitter.
+// - Applies attenuation scaling and writes both int + float outputs.
+//
+// What it is doing:
+// - This is the simplest/most direct conversion path (no audio-mode logic).
+
 void            CKernel::readADC                () 
 {
                 const float f_max_adc = 1023.0f;
@@ -29,6 +43,17 @@ void            CKernel::readADC                ()
                 f_index_ring_buffer = (f_index_ring_buffer + 1) & 3;
 }
 
+// io_read_ADC() - explicit per-channel audio envelope path
+// Purpose:
+// - Read all 8 ADC channels, generate stable control values, and generate audio envelopes for channels 0..3.
+// How it works:
+// - Stores each new ADC sample into a 4-slot ring buffer per channel.
+// - Computes `raw` as `(s0 + s1 + s2 + s3) >> 2` for every channel.
+// - Computes `val` by applying attenuation scaling, then converts it to float for `g_inOutMatrixFlt[ch][val]`.
+// - Computes `erraticness[ch] = s0 - s1 + s2 - s3` for channels 0..3 and checks against +/-AUDIO_THRESHOLD.
+// - On threshold hits, updates one envelope accumulator per channel (`au0`, `au1`, `au2`, `au3`) using rolling sums.
+// What it is doing in practice:
+// - Outputs smoothed control values for channels 0..7 and transient-driven envelope values for channels 0..3.
 
 void            CKernel::io_read_ADC() 
 {
@@ -209,7 +234,17 @@ void            CKernel::io_read_ADC()
                 f_index_ring_buffer = (f_index_ring_buffer + 1) & 3;  // Update buffer index
 }
 
-// this is the one i guess. highly optimized for speed - sadly i have "munched" the audio detection/energy averaging here but it makes the most sense
+// io_read_ADC() - explicit low-cost arithmetic path
+// Purpose:
+// - Read all 8 ADC channels, generate control values, and generate four transient-driven envelope outputs.
+// How it works:
+// - Stores each new ADC sample into a 4-slot ring buffer per channel and computes `raw` from those 4 samples.
+// - Uses `erraticness[ch] = s0 - s1 + s2 - s3` for channels 0..3 to detect fast signal changes.
+// - Uses `f_scale = scaleFactors[attenuation]`, then computes `val` with `(raw * f_scale) >> 10`.
+// - Converts integer units to float with `* 0.0009765625f`.
+// - Updates envelopes as paired groups: channel 0/2 activity writes `au0` and `au1`; channel 1/3 activity writes `au2` and `au3`.
+// What it is doing in practice:
+// - Publishes `raw`, `val`, and `au0..au3` on each call with fixed formulas and bounded ring-buffer state.
 
 void            CKernel::io_read_ADC() 
 {
@@ -423,6 +458,18 @@ void            CKernel::io_read_ADC()
                 f_index_ring_buffer = (f_index_ring_buffer + 1) & 3;  // Update buffer index
 }
 
+// io_read_ADC() - explicit audio hold + menu scaling path
+// Purpose:
+// - Read all 8 ADC channels, compute control/envelope outputs, and apply temporary menu scaling during audio activity.
+// How it works:
+// - Uses 4-sample per-channel ring buffers to compute `raw`, then computes scaled `val` and float output values.
+// - Detects transients on channels 0..3 with `erraticness[ch] = s0 - s1 + s2 - s3` and +/-AUDIO_THRESHOLD.
+// - Sets hold timers on transient events: channels 0/2 set `audio_hold_A`, channels 1/3 set `audio_hold_B`.
+// - Computes `menu_map_max[0..3]` from active holds: 5 when none are active, 7 with one active hold, 9 with both.
+// - Decrements each hold timer on every call until it reaches zero.
+// What it is doing in practice:
+// - Produces deterministic signal outputs (`raw`, `val`, `au0..au3`) and deterministic temporary UI range expansion.
+*/
 void            CKernel::io_read_ADC() 
 {
                 const float maxA = 1023.0;
@@ -477,7 +524,7 @@ void            CKernel::io_read_ADC()
 
                 erraticness[0]  =   f_ring_buffer[0][i0] - f_ring_buffer[0][i1] + f_ring_buffer[0][i2] - f_ring_buffer[0][i3];
 
-                if(erraticness[0] > AUDIO_THRESHOLD || erraticness[0] < -AUDIO_THRESHOLD)
+                if(erraticness[0] > AUDIO_THRESHOLD || erraticness[0] < -AUDIO_THRESHOLD && m_audio_mode_activated )
                     {
                     is_audio[0] = 0;
 
@@ -520,7 +567,7 @@ void            CKernel::io_read_ADC()
 
                 erraticness[1] =    f_ring_buffer[1][i0] - f_ring_buffer[1][i1] + f_ring_buffer[1][i2] - f_ring_buffer[1][i3];
 
-                if(erraticness[1] > AUDIO_THRESHOLD || erraticness[1] < -AUDIO_THRESHOLD)
+                if(erraticness[1] > AUDIO_THRESHOLD || erraticness[1] < -AUDIO_THRESHOLD && m_audio_mode_activated )
                     {
                     is_audio[1] = 1;
 
@@ -563,7 +610,7 @@ void            CKernel::io_read_ADC()
 
                 erraticness[2] =    f_ring_buffer[2][i0] - f_ring_buffer[2][i1] + f_ring_buffer[2][i2] - f_ring_buffer[2][i3];
                 
-                if(erraticness[2] > AUDIO_THRESHOLD || erraticness[2] < -AUDIO_THRESHOLD)
+                if(erraticness[2] > AUDIO_THRESHOLD || erraticness[2] < -AUDIO_THRESHOLD && m_audio_mode_activated )
                     {
                     is_audio[0] = 2;
 
@@ -606,7 +653,7 @@ void            CKernel::io_read_ADC()
 
                 erraticness[3] =    f_ring_buffer[3][i0] - f_ring_buffer[3][i1] + f_ring_buffer[3][i2] - f_ring_buffer[3][i3];
 
-                if(erraticness[3] > AUDIO_THRESHOLD || erraticness[3] < -AUDIO_THRESHOLD)
+                if(erraticness[3] > AUDIO_THRESHOLD || erraticness[3] < -AUDIO_THRESHOLD && m_audio_mode_activated )
                     {
                     is_audio[1] = 3;
 

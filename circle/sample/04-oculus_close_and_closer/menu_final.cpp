@@ -127,9 +127,13 @@ void            CKernel::applyModeToChannel(int channel)
                     break;
                     }
 }
+
+/*
+is now included in read_adc() itself, turned out that combining the adc value processing and the audio detection in one function is simpler ( i hope )
+
 void CKernel::helper_update_menu_max()
 {
-    if (is_audio[0] == 0 && is_audio[1] == 0)
+    if (is_audio[0] == 0 && is_audio[1] == 0)   // no audio mode is detected!
     {
         menu_map_max[0] = 5;
         menu_map_max[1] = 5;
@@ -156,6 +160,8 @@ void CKernel::helper_update_menu_max()
         return;
     }
 }
+*/
+
 void            CKernel::modeADC (int channel) 
 {
                 g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[channel][ in] // adc_float_value[channel];
