@@ -1,14 +1,7 @@
-// ! we will follow the given naming conventions and design philosophy in the project
-// ! we need to rename the functions below and we need to create about 2 functions 
-// ! to integrate this functions later that they fit into the flow.
-// ! clear seperation of concerns, first principle, no uneccessary additions!
-// ! no guessworking about further implementation!
-// ! only a new file called  circle/sample/02-oculus_mendax_cleanup/my_overlay_menu/menu_A.cpp
-// ! no change on other files! all new functions in one file
-// ! add commentary!
-// ! following the given instructions!
-// ! open questions, stop and ask !
 
+// we need to figure out what we already have done in gfx_init.cpp and how we nust implement the rest here following OUR framework!
+
+/*
 #include "kernel.h"
 #include "global.h"
 
@@ -77,31 +70,7 @@ struct MenuGpuState
 };
 
 MenuGpuState g_menu_state = { false, 0, 0, -1, -1, -1, -1, -1, {0}, {{0.0f, 0.0f, 0.0f, 0.0f}} };
-
-// load menu fragment shader source bytes directly from scanned file
-bool CKernel::gpu_render_helper_load_menu_fsh(char **fshader_buffers, unsigned fshader_buffer_size, int load_mode)
-{
-    MENU_FSH_LOADED_BYTES[0] = 0;
-
-    filesystem_open_file(SCANED_FILES_MENU_FSH[0]);
-    MENU_FSH_LOADED_BYTES[0] = filesystem_load_file(fshader_buffers[0], fshader_buffer_size, load_mode);
-    filesystem_close_file();
-
-    return true;
-}
-
-// load menu atlas file bytes directly from scanned file
-bool CKernel::gpu_render_helper_load_menu_tex(char **texture_buffers, unsigned texture_buffer_size, int load_mode)
-{
-    MENU_TEX_LOADED_BYTES[0] = 0;
-
-    filesystem_open_file(SCANED_FILES_MENU_TEX[0]);
-    MENU_TEX_LOADED_BYTES[0] = filesystem_load_file(texture_buffers[0], texture_buffer_size, load_mode);
-    filesystem_close_file();
-
-    return true;
-}
-
+*/
 // compile shader stage
 GLuint CKernel::gpu_render_helper_compile_shader(GLenum shader_type, char *shader_source, CString *optional_log)
 {

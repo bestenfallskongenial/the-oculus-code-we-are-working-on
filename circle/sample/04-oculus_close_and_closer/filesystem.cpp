@@ -224,5 +224,3 @@ void            CKernel::removeUSB      (   CDevice*    f_partitionName,        
 	            pThis->m_bStorageAttached = FALSE;
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-// i need to create the array filecounter[][] containing the max on file, max to load, scanned ang so on values unsing an enum here!

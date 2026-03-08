@@ -3,6 +3,86 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  my new memory.cpp with added dma memory allocation for the texture atlas and the overlay fragment shader - also i found some strange errors here.
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+char**          CKernel::alllocateBufferMEM         (   size_t count, size_t bufferSize) 
+{
+                char** buffers = (char**)malloc(count * sizeof(char*));
+#ifdef ALLOC_DEBUG                   
+CLogger::Get()->Write("ALLOC-DMA", LogDebug, "buffers = 0x%p", buffers);
+#endif // ALLOC_DEBUG
+
+                for (size_t i = 0; i < count; ++i) 
+                {
+                    buffers[i] = (char*)calloc(bufferSize, sizeof(char));
+#ifdef ALLOC_DEBUG                    
+CLogger::Get()->Write("ALLOC-DMA", LogDebug, "buffers[%u] = 0x%p", (unsigned)i, buffers[i]);
+#endif // ALLOC_DEBUG
+                }
+#ifdef ALLOC_DEBUG   
+CLogger::Get()->Write("ALLOC-DMA", LogDebug, "final buffers = 0x%p count = %u bufferSize = %u", buffers, (unsigned)count, (unsigned)bufferSize);
+#endif // ALLOC_DEBUG                
+                msleep(100);            // do i really need you here?
+                return buffers;
+}
+
+char**          CKernel::alllocateBufferDMA     (   size_t count, 
+                                                        size_t bufferSize,
+                                                        char** blockBaseOut,
+                                                        char** rawBlockOut,
+                                                        size_t* alignedSizeOut)
+{
+                size_t total_size = count * bufferSize;
+                size_t aligned_total_size = (total_size + 4095) & ~4095;
+
+                // Allocate +4096 for manual alignment
+                char* raw = new (HEAP_DMA30) char[aligned_total_size + 4096];
+#ifdef ALLOC_DEBUG   
+CLogger::Get()->Write("ALLOC-STD", LogDebug, "raw = 0x%p", raw);
+#endif // ALLOC_DEBUG
+                char* dma_block = (char*)(((uintptr_t)raw + 4095) & ~4095);  // 4K-aligned
+#ifdef ALLOC_DEBUG   
+CLogger::Get()->Write("ALLOC-STD", LogDebug, "dma_block (aligned) = 0x%p", dma_block);
+#endif // ALLOC_DEBUG
+                // Build slice table
+                char** buffers = new char*[count];
+                for (size_t i = 0; i < count; ++i)
+                {
+                    buffers[i] = dma_block + i * bufferSize;
+#ifdef ALLOC_DEBUG   
+CLogger::Get()->Write("ALLOC-STD", LogDebug, "buffers[%u] = 0x%p", (unsigned)i, buffers[i]);
+#endif // ALLOC_DEBUG            
+                    memset(buffers[i], 0, bufferSize);
+                }
+#ifdef ALLOC_DEBUG   
+CLogger::Get()->Write("ALLOC-STD", LogDebug, "raw = 0x%p dma_block = 0x%p aligned_size = 0x%X", raw, dma_block, (unsigned)aligned_total_size);
+#endif // ALLOC_DEBUG
+                *blockBaseOut = dma_block;
+                *rawBlockOut = raw;
+                *alignedSizeOut = aligned_total_size;
+
+                msleep(100);                                                    // for what reason?!
+                return buffers;
+}
+
+void            CKernel::clearBufferMEM        (   char** buffers, size_t count) 
+{
+                for (size_t i = 0; i < count; ++i)                              // why the elements and than all? why not just all?!
+                    {
+                    free(buffers[i]);
+                    }
+                free(buffers);                                                  // why this too?!
+
+                buffers = nullptr;                
+}
+
+void            CKernel::clearBufferDMA    (   char** buffers, char* rawBlock)
+{
+                delete[] rawBlock;  // Raw block from new[]
+                delete[] buffers;   // Slice table
+
+                rawBlock = nullptr;
+                buffers  = nullptr;
+}
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool CKernel::wrapperInitDMA()
 {
     bool bOK = true;
@@ -91,6 +171,7 @@ void            CKernel::wrapperDMAcleanUp            ()
 
 
 }
+
 void            CKernel::wrapperMEMcleanUp            ()
 {
                     clearBufferMEM( m_bufferKnl, filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB] ); 
@@ -103,84 +184,3 @@ void            CKernel::wrapperMEMcleanUp            ()
 
                     clearBufferMEM( m_bufferFsh, filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB] );        
 }
-
-char**          CKernel::alllocateBufferMEM         (   size_t count, size_t bufferSize) 
-{
-                char** buffers = (char**)malloc(count * sizeof(char*));
-#ifdef ALLOC_DEBUG                   
-CLogger::Get()->Write("ALLOC-DMA", LogDebug, "buffers = 0x%p", buffers);
-#endif // ALLOC_DEBUG
-
-                for (size_t i = 0; i < count; ++i) 
-                {
-                    buffers[i] = (char*)calloc(bufferSize, sizeof(char));
-#ifdef ALLOC_DEBUG                    
-CLogger::Get()->Write("ALLOC-DMA", LogDebug, "buffers[%u] = 0x%p", (unsigned)i, buffers[i]);
-#endif // ALLOC_DEBUG
-                }
-#ifdef ALLOC_DEBUG   
-CLogger::Get()->Write("ALLOC-DMA", LogDebug, "final buffers = 0x%p count = %u bufferSize = %u", buffers, (unsigned)count, (unsigned)bufferSize);
-#endif // ALLOC_DEBUG                
-                msleep(100);            // do i really need you here?
-                return buffers;
-}
-
-char**          CKernel::alllocateBufferDMA     (   size_t count, 
-                                                        size_t bufferSize,
-                                                        char** blockBaseOut,
-                                                        char** rawBlockOut,
-                                                        size_t* alignedSizeOut)
-{
-                size_t total_size = count * bufferSize;
-                size_t aligned_total_size = (total_size + 4095) & ~4095;
-
-                // Allocate +4096 for manual alignment
-                char* raw = new (HEAP_DMA30) char[aligned_total_size + 4096];
-#ifdef ALLOC_DEBUG   
-CLogger::Get()->Write("ALLOC-STD", LogDebug, "raw = 0x%p", raw);
-#endif // ALLOC_DEBUG
-                char* dma_block = (char*)(((uintptr_t)raw + 4095) & ~4095);  // 4K-aligned
-#ifdef ALLOC_DEBUG   
-CLogger::Get()->Write("ALLOC-STD", LogDebug, "dma_block (aligned) = 0x%p", dma_block);
-#endif // ALLOC_DEBUG
-                // Build slice table
-                char** buffers = new char*[count];
-                for (size_t i = 0; i < count; ++i)
-                {
-                    buffers[i] = dma_block + i * bufferSize;
-#ifdef ALLOC_DEBUG   
-CLogger::Get()->Write("ALLOC-STD", LogDebug, "buffers[%u] = 0x%p", (unsigned)i, buffers[i]);
-#endif // ALLOC_DEBUG            
-                    memset(buffers[i], 0, bufferSize);
-                }
-#ifdef ALLOC_DEBUG   
-CLogger::Get()->Write("ALLOC-STD", LogDebug, "raw = 0x%p dma_block = 0x%p aligned_size = 0x%X", raw, dma_block, (unsigned)aligned_total_size);
-#endif // ALLOC_DEBUG
-                *blockBaseOut = dma_block;
-                *rawBlockOut = raw;
-                *alignedSizeOut = aligned_total_size;
-
-                msleep(100);                                                    // for what reason?!
-                return buffers;
-}
-
-void            CKernel::clearBufferMEM        (   char** buffers, size_t count) 
-{
-                for (size_t i = 0; i < count; ++i)                              // why the elements and than all? why not just all?!
-                    {
-                    free(buffers[i]);
-                    }
-                free(buffers);                                                  // why this too?!
-
-                buffers = nullptr;                
-}
-
-void            CKernel::clearBufferDMA    (   char** buffers, char* rawBlock)
-{
-                delete[] rawBlock;  // Raw block from new[]
-                delete[] buffers;   // Slice table
-
-                rawBlock = nullptr;
-                buffers  = nullptr;
-}
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -2,15 +2,15 @@
 #include "global.h"
 #include "wavetable.h"
 
-void            CKernel::prepParameters       ()        // i guess here we need much more to do!
+void            CKernel::prepParameters       ()        // f_index_ring_buffer guess here we need much more to do!
 {
-    for ( int i=0; i <= DEFAULT_SLOT; i++)
-    {
-    g_centralModeBuffer[LF1_WAVE][i] = 0;
-    g_centralModeBuffer[LF2_WAVE][i] = 1;
-    g_centralModeBuffer[LF1_MULT][i] = 3;
-    g_centralModeBuffer[LF2_MULT][i] = 3;
-    }
+                for ( int f_index_ring_buffer=0; f_index_ring_buffer <= DEFAULT_SLOT; f_index_ring_buffer++)
+                    {
+                    g_centralModeBuffer[LF1_WAVE][f_index_ring_buffer] = 0;
+                    g_centralModeBuffer[LF2_WAVE][f_index_ring_buffer] = 1;
+                    g_centralModeBuffer[LF1_MULT][f_index_ring_buffer] = 3;
+                    g_centralModeBuffer[LF2_MULT][f_index_ring_buffer] = 3;
+                    }
 }
 
 int             CKernel::chooseProgram        ( int p_channel )
@@ -20,14 +20,14 @@ int             CKernel::chooseProgram        ( int p_channel )
                 int f_calculated = g_inOutMatrixInt[p_channel][raw] * g_loaded_fsh_new / 1024;
 
                 if (m_shaderStatusFlags[f_calculated])
-                {
+                    {
                     f_activeShader = f_calculated;
-                }
+                    }
 
                 return f_activeShader;
 }
 
-int             CKernel::chooseTexture        ( int p_channel ) // i have three possible ways here! i can a) invent a mechanism to get the is valid table for the vids - i can also draw from parser.is_valid[x] 
+int             CKernel::chooseTexture        ( int p_channel ) // f_index_ring_buffer have three possible ways here! f_index_ring_buffer can a) invent a mechanism to get the is valid table for the vids - f_index_ring_buffer can also draw from parser.is_valid[x] 
 {
                 static int f_activeTexture = 0;
                 if (g_validTextureCount != 0) 
@@ -49,27 +49,26 @@ int             CKernel::chooseVideo        ( int p_channel )
                     }
                 return f_activeVideo;
 }
-
+// new version
 void            CKernel::storeModes         () 
 {
-                // 1. SHADER CHANGE CHECK
-                if (g_current_gl_program != g_last_gl_program) 
+                
+                if (g_current_gl_program != g_last_gl_program)  // 1. SHADER CHANGE CHECK
                     {    
-                    // SIMPLE: Use program slot if stored, otherwise DEFAULT_SLOT
-                    g_currentProgramBuffer = shader_has_stored_params[g_current_gl_program] ? g_current_gl_program : DEFAULT_SLOT;
+                    g_currentProgramBuffer = shader_has_stored_params[g_current_gl_program] ? g_current_gl_program : DEFAULT_SLOT;  // SIMPLE: Use program slot if stored, otherwise DEFAULT_SLOT
                     g_last_gl_program = g_current_gl_program;
                     }
 
-                // 2. STORE PARAMETERS
-                if (shader_has_stored_params[g_current_gl_program] == false && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true )
+                
+                if (shader_has_stored_params[g_current_gl_program] == false && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true ) // 2. STORE PARAMETERS
                     {  
-                    // SIMPLE: Copy DEFAULT_SLOT contents to this program's slot
-                    memcpy(&g_centralModeBuffer[0][g_current_gl_program],
+                    
+                    memcpy(&g_centralModeBuffer[0][g_current_gl_program],   // SIMPLE: Copy DEFAULT_SLOT contents to this program's slot
                         &g_centralModeBuffer[0][DEFAULT_SLOT],
                         16 * sizeof(int));
                     
                     shader_has_stored_params[g_current_gl_program] = true;
-                    g_currentProgramBuffer = g_current_gl_program;  // Now use program's slot
+                    g_currentProgramBuffer = g_current_gl_program;          // Now use program's slot
             //      is_hold_for_2_sec_a = false;
             //      is_hold_for_2_sec_b = false;
                     }
@@ -84,52 +83,43 @@ void            CKernel::storeModes         ()
             //      is_hold_for_2_sec_b = false;
                     }
 }
-
-void            CKernel::readADC                () 
+// original version from ssd - f_index_ring_buffer need to doublecheck the variables because f_index_ring_buffer may have rename them falsely!!
+void            CKernel::util_store_program         () 
 {
-                const float f_max_adc = 1023.0f;
-                const int scaleFactors[3] = {   2047,       // 2.5V max (1023 * 2)
-                                                1551,       // 3.3V max (1023 * 1.515555...)
-                                                1023    };  // 5.0V max       
-
-                static int  f_ring_buffer[ADC_CHANNELS][ADC_BUFFER] = { 0 };
-                        
-                static int f_index_ring_buffer;
-
-                for (unsigned channel = 0; channel < ADC_CHANNELS; ++channel)  // Loop through each channel and read its raw value 
-                    {
-                    f_ring_buffer[channel][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(channel);  // or 1023?!
-                    
-                    if(f_ring_buffer[channel][f_index_ring_buffer] > 1023) 
-                        {
-                        f_ring_buffer[channel][f_index_ring_buffer] = 1023; // ??
-                        }
-                        g_inOutMatrixInt[channel][raw]  = ( f_ring_buffer[channel][0] +
-                                                            f_ring_buffer[channel][1] +
-                                                            f_ring_buffer[channel][2] +
-                                                            f_ring_buffer[channel][3]) >>2 ; 
-
-                        g_inOutMatrixInt[channel][val]    = ( g_inOutMatrixInt[channel][raw] * scaleFactors[g_attenuation] ) /1023;
-                          
-                        g_inOutMatrixFlt[channel][val]    = ( g_inOutMatrixInt[channel][val] /1024.0f );
+                // 1. SHADER CHANGE CHECK
+                if (gl_current_prg != last_gl_current_prg) 
+                    {    
+                    // SIMPLE: Use program slot if stored, otherwise DEFAULT_SLOT
+                    current_buffer = shader_has_stored_params[gl_current_prg] ?
+                                    gl_current_prg : DEFAULT_SLOT;
+                    last_gl_current_prg = gl_current_prg;
                     }
-                f_index_ring_buffer = (f_index_ring_buffer + 1) & 3;
+
+                // 2. STORE PARAMETERS
+                if (shader_has_stored_params[gl_current_prg] == false && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true )
+                    {  
+                    // SIMPLE: Copy DEFAULT_SLOT contents to this program's slot
+                    memcpy(&mode_storage_buffers[0][gl_current_prg],
+                        &mode_storage_buffers[0][DEFAULT_SLOT],
+                        16 * sizeof(int));
+                    
+                    shader_has_stored_params[gl_current_prg] = true;
+                    current_buffer = gl_current_prg;  // Now use program's slot
+                    is_hold_for_2_sec_a = false;
+                    is_hold_for_2_sec_b = false;
+                    }
+
+                // 3. DELETE STORED PARAMETERS
+                
+        else  if (shader_has_stored_params[gl_current_prg] == true && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true ) // -really else and not only if??
+                    {  
+                    shader_has_stored_params[gl_current_prg] = false;
+                    current_buffer = DEFAULT_SLOT;  // Back to default
+                    is_hold_for_2_sec_a = false;
+                    is_hold_for_2_sec_b = false;
+                    }
 }
 
-// after getting fucked in my head we finally found the deterministic function i am looking for!
-/*
-#define BTN_PRESSED 0
-
-enum ButtonTSIndex
-{
-    BTN_PRESS_START = 0, // timestamp when press starts, 0 = currently up
-    BTN_RELEASE     = 1, // timestamp of last release (double-click window anchor)
-    BTN_HOLD_TICK   = 2, // increments while held after long threshold
-    BTN_SINGLE      = 3, // one-cycle pulse on press edge
-    BTN_DOUBLE      = 4  // one-cycle pulse on second press edge in double window
-};
-*/
-// 2 buttons, 5 fields each (no BTN_STATUS needed)
 unsigned int g_buttons_states[2][5] = {0};
 
 void            CKernel::buttonPing(int p_btn_id, int pin)
@@ -169,6 +159,21 @@ void            CKernel::buttonPing(int p_btn_id, int pin)
                 }
 }
 /*
+// after getting fucked in my head we finally found the deterministic function f_index_ring_buffer am looking for!
+/*
+#define BTN_PRESSED 0
+
+enum ButtonTSIndex
+{
+    BTN_PRESS_START = 0, // timestamp when press starts, 0 = currently up
+    BTN_RELEASE     = 1, // timestamp of last release (double-click window anchor)
+    BTN_HOLD_TICK   = 2, // increments while held after long threshold
+    BTN_SINGLE      = 3, // one-cycle pulse on press edge
+    BTN_DOUBLE      = 4  // one-cycle pulse on second press edge in double window
+};
+*/
+// 2 buttons, 5 fields each (no BTN_STATUS needed)
+
 void CKernel::button_consumer(int p_btn_id)
 {
     if (g_buttons_states[p_btn_id][BTN_SINGLE]) counter += 1;
@@ -185,4 +190,4 @@ void CKernel::button_consumer(int p_btn_id)
         longhold += 2;
 
 }
-*/
+

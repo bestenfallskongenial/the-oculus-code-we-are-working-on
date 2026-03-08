@@ -12,6 +12,38 @@ void            CKernel::resetMenuPickupFlags    ()
                     g_menu_mode_old = g_menu_mode_new;
                     }
 }
+// this here is the version i created to reset also the autodetected audio input channels after AUDIO_TIMEOUT
+void            CKernel::menu_general()
+{
+//                      unsigned long current_time = m_Timer.GetClockTicks();
+
+                const   unsigned long AUDIO_TIMEOUT = 2 * 1000000; // 2 seconds
+
+                if (g_menu_mode_new != g_menu_mode_old) 
+{
+/*
+                    for(int i = 0; i < 16; i++) 
+                        {
+                        menu_pickup_flag[i] = false;
+                        }
+*/
+
+                    memset(menu_pickup_flag, 0, 16 * sizeof(bool)); // new
+
+                    g_menu_mode_old = g_menu_mode_new;
+                    }
+                    
+                    // reset AUD after AUDIO_TIMEOUT seconds
+                    if ( is_audio[0] == 0 && audio_sample[0] != 0.0 ) last_audio_timestamps[0] = start_time_fps_calculation;
+                    if ( is_audio[0] == 2 && audio_sample[0] != 0.0 ) last_audio_timestamps[2] = start_time_fps_calculation;
+                    if ( is_audio[1] == 1 && audio_sample[1] != 0.0 ) last_audio_timestamps[1] = start_time_fps_calculation;
+                    if ( is_audio[1] == 3 && audio_sample[1] != 0.0 ) last_audio_timestamps[3] = start_time_fps_calculation;
+                    
+                    if (is_audio[0] == 0 && (start_time_fps_calculation - last_audio_timestamps[0] > AUDIO_TIMEOUT)) is_audio[0] = -1;
+                    if (is_audio[0] == 2 && (start_time_fps_calculation - last_audio_timestamps[2] > AUDIO_TIMEOUT)) is_audio[0] = -1;
+                    if (is_audio[1] == 1 && (start_time_fps_calculation - last_audio_timestamps[1] > AUDIO_TIMEOUT)) is_audio[1] = -1;
+                    if (is_audio[1] == 3 && (start_time_fps_calculation - last_audio_timestamps[3] > AUDIO_TIMEOUT)) is_audio[1] = -1;
+}
 
 void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
 {
@@ -65,6 +97,9 @@ void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
 
 void            CKernel::applyModeToChannel(int channel)
 {
+            //  if (is_audio[0] == channel || is_audio[1] == channel)
+            //  return;
+
                 if (!g_channel_mode_capability[channel][g_centralModeBuffer[channel][g_currentProgramBuffer]])
                     {
                     return;
@@ -92,7 +127,35 @@ void            CKernel::applyModeToChannel(int channel)
                     break;
                     }
 }
+void CKernel::helper_update_menu_max()
+{
+    if (is_audio[0] == 0 && is_audio[1] == 0)
+    {
+        menu_map_max[0] = 5;
+        menu_map_max[1] = 5;
+        menu_map_max[2] = 5;
+        menu_map_max[3] = 5;
+        return;
+    }
 
+    if (is_audio[0] != 0 && is_audio[1] == 0)   // opens up two more "modes" if one audio input is detected!
+    {
+        menu_map_max[0] = 7;
+        menu_map_max[1] = 7;
+        menu_map_max[2] = 7;
+        menu_map_max[3] = 7;
+        return;
+    }
+
+    if (is_audio[0] != 0 && is_audio[1] != 0)   // opens up four more "modes" if one audio input is detected!
+    {
+        menu_map_max[0] = 9;
+        menu_map_max[1] = 9;
+        menu_map_max[2] = 9;
+        menu_map_max[3] = 9;
+        return;
+    }
+}
 void            CKernel::modeADC (int channel) 
 {
                 g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[channel][ in] // adc_float_value[channel];
@@ -133,6 +196,33 @@ void            CKernel::modeLF2 (int channel)
                 g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[1][lf2] // g_lfoFltOut[1];
                 g_inOutMatrixInt[channel][out] = g_inOutMatrixInt[1][lf2] // g_lfoIntOut[1];    
 }
+void            CKernel::modeLF2 (int channel)
+{
+                g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[1][lf2] // g_lfoFltOut[1];
+                g_inOutMatrixInt[channel][out] = g_inOutMatrixInt[1][lf2] // g_lfoIntOut[1];    
+}
+
+void            CKernel::modeAudioAb0 (int channel)
+{
+                g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[0][au0] // g_lfoFltOut[1];
+            //  g_inOutMatrixInt[channel][out] = // i have no int audio band!!    
+}
+void            CKernel::modeAudioAb1 (int channel)
+{
+                g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[0][au1] // g_lfoFltOut[1];
+            //  g_inOutMatrixInt[channel][out] = // i have no int audio band!!
+}
+void            CKernel::modeAudioBb0 (int channel)
+{
+                g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[0][au2] // g_lfoFltOut[1];
+            //  g_inOutMatrixInt[channel][out] = // i have no int audio band!!
+}
+void            CKernel::modeAudioBb1 (int channel)
+{
+                g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[0][au3] // g_lfoFltOut[1];
+            //  g_inOutMatrixInt[channel][out] = // i have no int audio band!!
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /* 
@@ -164,7 +254,7 @@ ch5	    opt         U	        U           U	        G	        G	        G	      
 ch6	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
 ch7	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
 
-enum:   raw             in          out         rnd         lf1         lf2         au0         au1         au2         au3         trL         trH
+enum:   raw         in          out         rnd         lf1         lf2         au0         au1         au2         au3         trL         trH
 
 
 all the G ( global ) sit in channel 0 - U are unique values per channel 
