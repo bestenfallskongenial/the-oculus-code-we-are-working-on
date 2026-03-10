@@ -162,7 +162,7 @@ MenuGpuState g_menu_state;
 // g_inOutMatrixInt / g_inOutMatrixInt  -> ONE spelling only (recommend g_inOutMatrixInt)
 // g_inOutMatrixFlt / g_inOutMatrixFlt  -> ONE spelling only (recommend g_inOutMatrixFlt)
 // g_current_gl_program                 -> g_current_gl_program
-// g_validTextureCount / g_validTextureCount -> one global symbol (pick one prefix strategy)
+// p_validTextureCount / p_validTextureCount -> one global symbol (pick one prefix strategy)
 // m_bufferOmt / m_bufferOmt      -> one member spelling
 // m_bufferVid / m_bufferVid    -> one member spelling
 // maxUsb / maxUsb                -> one enum token spelling

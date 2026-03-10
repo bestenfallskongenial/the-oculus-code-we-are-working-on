@@ -117,8 +117,8 @@ extern int g_attenuation;
 extern int g_current_gl_program;
 extern int g_last_gl_program;
 extern int g_loaded_fsh_new;
-extern int g_validTextureCount;
-extern int g_validVideoCount;
+extern int p_validTextureCount;
+extern int p_validVideoCount;
 
 extern int g_current_menu_layer;
 extern int g_menu_mode_new;

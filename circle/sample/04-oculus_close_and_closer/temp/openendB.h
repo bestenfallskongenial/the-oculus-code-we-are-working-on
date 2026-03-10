@@ -88,8 +88,8 @@ extern int g_modes[];
 extern int g_current_gl_program;
 extern int g_last_gl_program;
 extern int g_loaded_fsh_new;
-extern int g_validTextureCount;
-extern int g_validVideoCount;
+extern int p_validTextureCount;
+extern int p_validVideoCount;
 extern bool shader_has_stored_params[];
 
 // button timing/event m_glsl
@@ -237,8 +237,8 @@ extern MenuGpuState g_menu_state;
 // - g_sensitivityNew
 // - g_sensitivityOld
 // - g_texLogNames
-// - g_validTextureCount
-// - g_validVideoCount
+// - p_validTextureCount
+// - p_validVideoCount
 // - g_vidLogNames
 // - g_waveTable
 // - g_inOutMatrixFlt

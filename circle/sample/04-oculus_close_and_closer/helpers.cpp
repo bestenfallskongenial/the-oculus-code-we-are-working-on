@@ -1,22 +1,4 @@
-// helpers i didnt integrate yet, but they are here and working why not using the actual filename array? i mean the log is .txt
-/*
-void            CKernel::GenerateH264ParserInfo( int p_fileIndex)
-{
-                CString f_bufferParser = m_H264Parser.m_DebugCharArray[p_fileIndex];
-                filesystem_save_log_file( "emmc1-1", g_vidLogNames[p_fileIndex], f_bufferParser);       // <---- is now saveBuffer we need to refactor!
-}
-void            CKernel::GenerateBmpParserInfo( int p_fileIndex)
-{
-                CString f_bufferParser = m_H264Parser.m_DebugCharArray[p_fileIndex];
-                filesystem_save_log_file( "emmc1-1", g_texLogNames[p_fileIndex], f_bufferParser);       // <---- is now saveBuffer we need to refactor!
-}
 
-void            CKernel::GenerateBmpOverlayInfo( int p_fileIndex)                                       // new to store the log for the system textures, here the overlay atlas
-{
-                CString f_bufferParser = m_H264SystemParser.m_DebugCharArray[p_fileIndex];
-                filesystem_save_log_file( "emmc1-1", OMT__LOG_NAMES[p_fileIndex], f_bufferParser);      // <---- is now saveBuffer we need to refactor!    
-}
-*/
 void            CKernel::parser_h264    (   int         p_fromFile, 
                                             int         p_toFile)
 {
@@ -61,7 +43,7 @@ bool            CKernel::Update         ()
 {
                 // assumes:
                 // - m_bufferKnl[1] + loaded_bytes_kernel[1] already contain the "new" kernel
-                // - m_bufferKnl[0] + loaded_bytes_kernel[0] already contain the fallback kernel
+                // - m_bufferKnl[0] + loaded_bytes_kernel[0] already contain the fallback kernel loaded from sd ( the running kernel )
                 // - filesystem is already mounted by caller
 
                 if (m_filesystem_save_buffer_to_file(FILENAME_KERNEL, m_bufferKnl[1], loaded_bytes_kernel[1]))

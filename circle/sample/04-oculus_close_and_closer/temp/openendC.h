@@ -144,7 +144,7 @@ static const char *g_SufVid[] = { "264" };
 // g_current_gl_program, g_last_gl_program
 // g_currentProgramBuffer
 // g_loaded_fsh_new
-// g_validTextureCount, g_validVideoCount
+// p_validTextureCount, p_validVideoCount
 
 // Menu runtime m_glsl
 // g_current_menu_layer

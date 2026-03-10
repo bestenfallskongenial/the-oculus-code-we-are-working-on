@@ -123,6 +123,33 @@ void            CKernel::audioEnergy          (float p_adcvalue)
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // filesystem_user.cpp
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// helpers.cpp
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// helpers i didnt integrate yet, but they are here and working why not using the actual filename array? i mean the log is .txt
+/*
+void            CKernel::GenerateH264ParserInfo( int p_fileIndex)
+{
+                CString f_bufferParser = m_H264Parser.m_DebugCharArray[p_fileIndex];
+                filesystem_save_log_file( "emmc1-1", g_vidLogNames[p_fileIndex], f_bufferParser);       // <---- is now saveBuffer we need to refactor!
+}
+void            CKernel::GenerateBmpParserInfo( int p_fileIndex)
+{
+                CString f_bufferParser = m_H264Parser.m_DebugCharArray[p_fileIndex];
+                filesystem_save_log_file( "emmc1-1", g_texLogNames[p_fileIndex], f_bufferParser);       // <---- is now saveBuffer we need to refactor!
+}
+
+void            CKernel::GenerateBmpOverlayInfo( int p_fileIndex)                                       // new to store the log for the system textures, here the overlay atlas
+{
+                CString f_bufferParser = m_H264SystemParser.m_DebugCharArray[p_fileIndex];
+                filesystem_save_log_file( "emmc1-1", OMT__LOG_NAMES[p_fileIndex], f_bufferParser);      // <---- is now saveBuffer we need to refactor!    
+}
+*/
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // menu_final.cpp
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* 

@@ -1,14 +1,11 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-*/
-// the files stays at it is - we will later change the logging to the methods we developed in vc_h264_decoder.cpp and vc_vcsm.cpp - clear, deterministic without extra dependencies.
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 #undef __OLG_DEBUG__
                 #undef __GL_DEBUG__
 
 
                 #include "kernel.h"
-                #include "global.h"
                 #include "bcm_host.h" 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -58,12 +55,12 @@ void            CKernel::render_shader_a(   glsl_state* m_glsl)
                                                                                                 g_inOutMatrixFlt[5][out], 
                                                                                                 g_inOutMatrixFlt[6][out], 
                                                                                                 g_inOutMatrixFlt[7][out]);
-                if(m_glsl->u_tex_l[g_current_gl_program] != -1) glUniform1i(   m_glsl->u_tex_l[g_current_gl_program], g_validTextureCount);
+                if(m_glsl->u_tex_l[g_current_gl_program] != -1) glUniform1i(   m_glsl->u_tex_l[g_current_gl_program], p_validTextureCount);
 
                 switch(g_centralModeBuffer[g_currentProgramBuffer][TEX_MODE]) // <- this is using g_currentProgramBuffer because we read an global mode !!! 
                     {
                     case false:     // Original mode
-                        for (int i = 0; i < g_validTextureCount; i++) 
+                        for (int i = 0; i < p_validTextureCount; i++) 
                             {
                             glActiveTexture(GL_TEXTURE0+i);
                             glBindTexture(GL_TEXTURE_2D, m_glsl->gl_tex_id[i]);
@@ -78,7 +75,7 @@ void            CKernel::render_shader_a(   glsl_state* m_glsl)
                         break;
 
                     case true:      // Single texture mode
-                        switch(g_validTextureCount) 
+                        switch(p_validTextureCount) 
                             {
                             case 0:     // No textures - skip entirely
                                 break;
@@ -113,17 +110,14 @@ void            CKernel::render_shader_a(   glsl_state* m_glsl)
                             }
                         break;
                     }
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* 
-// debug code start                                                                                                 <- was for displaying our "potential" decoded h264 frame, bul latter mode
- 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, m_H264Decoder.m_TextureA);
-        if (m_glsl->u_tex_id[g_current_gl_program][0] != -1)
-            glUniform1i(m_glsl->u_tex_id[g_current_gl_program][0], 0);
- debug code end 
+    debug code start <- was for displaying our "potential" decoded h264 frame, becomes a mode latter on
+                 glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, m_H264Decoder.m_TextureA);
+                if (m_glsl->u_tex_id[g_current_gl_program][0] != -1)
+                    glUniform1i(m_glsl->u_tex_id[g_current_gl_program][0], 0);
+    debug code end 
  */
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 glDrawArrays( GL_TRIANGLE_FAN, 0, 4 );
                 #ifdef __GL_DEBUG__
                         glslCheck();
@@ -149,4 +143,6 @@ void            CKernel::render_shader_b(   glsl_state* m_glsl)
                         glslCheck();
                 #endif // __GL_DEBUG__
 }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

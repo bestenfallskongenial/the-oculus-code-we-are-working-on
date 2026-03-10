@@ -184,7 +184,7 @@ glslCheck();
 
 void            CKernel::initOtexture   (   glsl_state* m_glsl)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
-                // g_validTextureCount = 0;  // Counter for valid textures only
+                // p_validTextureCount = 0;  // Counter for valid textures only
 
                     if(m_H264SystemParser.m_tex_valid[0] == true) // do we really need this too? - yes, otherwise we never know the size of it!! 
                         {
@@ -218,7 +218,7 @@ glslCheck();
 #ifdef __GL_DEBUG__
 glslCheck();
 #endif // __GL_DEBUG__
-                    //  g_validTextureCount++;  the texture atlas is not part of the user pipeline ! Increment only after successful texture creation
+                    //  p_validTextureCount++;  the texture atlas is not part of the user pipeline ! Increment only after successful texture creation
                         }
                     m_Watchdog.Start(TIMEOUT);       // new watchdog
 }
@@ -226,14 +226,14 @@ void            CKernel::initUtextures  (   glsl_state* m_glsl,
                                             int         p_fromFile, 
                                             int         p_toFile)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
-                // g_validTextureCount = 0;  // Counter for valid textures only
+                // p_validTextureCount = 0;  // Counter for valid textures only
 
                 for (int i = p_fromFile; i < p_toFile; i++)
                     {
                     if(m_H264Parser.m_tex_valid[i] == true)
                         {
-                        glGenTextures(1, &m_glsl->gl_tex_id[g_validTextureCount]);  // Use counter instead of i
-                        glBindTexture(GL_TEXTURE_2D, m_glsl->gl_tex_id[g_validTextureCount]);
+                        glGenTextures(1, &m_glsl->gl_tex_id[p_validTextureCount]);  // Use counter instead of i
+                        glBindTexture(GL_TEXTURE_2D, m_glsl->gl_tex_id[p_validTextureCount]);
 #ifdef __GL_DEBUG__
 glslCheck();
 #endif // __GL_DEBUG__
@@ -262,7 +262,7 @@ glslCheck();
 #ifdef __GL_DEBUG__
 glslCheck();
 #endif // __GL_DEBUG__
-                        g_validTextureCount++;  // Increment only after successful texture creation
+                        p_validTextureCount++;  // Increment only after successful texture creation
                         }
                     m_Watchdog.Start(TIMEOUT);       // new watchdog
                     }

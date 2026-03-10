@@ -59,8 +59,7 @@ void            CKernel::io_read_ADC()
                     g_modeMap[2][0] =
                     g_modeMap[3][0] = 5;
 
-                // Channel 0 - First of pair for audio_sample[0]
-                f_ring_buffer[0][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(0);
+                f_ring_buffer[0][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(0);    // Channel 0 - First of pair for audio_sample[0]
 
                 erraticness[0]  =   f_ring_buffer[0][i0] - f_ring_buffer[0][i1] + f_ring_buffer[0][i2] - f_ring_buffer[0][i3];
 
@@ -100,10 +99,9 @@ void            CKernel::io_read_ADC()
 
                 g_inOutMatrixInt[0][val] = (g_inOutMatrixInt[0][raw] * f_scale) >> 10; //  -> / 1023;                                
                 
-                g_inOutMatrixFlt[0][val] = (g_inOutMatrixInt[0][val]) * 0.0009765625f; // -> / 1024.0f;
+                g_inOutMatrixFlt[0][val] = (g_inOutMatrixInt[0][val]) * 0.0009765625f;
 
-                // Channel 1 - First of pair for audio_sample[1]
-                f_ring_buffer[1][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(1);
+                f_ring_buffer[1][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(1);    // Channel 1 - First of pair for audio_sample[1]
 
                 erraticness[1] =    f_ring_buffer[1][i0] - f_ring_buffer[1][i1] + f_ring_buffer[1][i2] - f_ring_buffer[1][i3];
 
@@ -120,7 +118,7 @@ void            CKernel::io_read_ADC()
                         g_modeMap[2][0] =
                         g_modeMap[3][0] = v;
 
-                    float s = f_ring_buffer[1][f_index_ring_buffer] * 0.0009765625f; // -> / 1024.0f;
+                    float s = f_ring_buffer[1][f_index_ring_buffer] * 0.0009765625f;
 
                     sum2 -= f_band2[idx2];
                     f_band2[idx2] = s;
@@ -141,12 +139,11 @@ void            CKernel::io_read_ADC()
 
                 g_inOutMatrixInt[1][raw] =  (f_ring_buffer[1][0] + f_ring_buffer[1][1] + f_ring_buffer[1][2] + f_ring_buffer[1][3]) >>2 ; 
 
-                g_inOutMatrixInt[1][val] = (g_inOutMatrixInt[1][raw] * f_scale) >> 10; //  -> / 1023;                                
+                g_inOutMatrixInt[1][val] = (g_inOutMatrixInt[1][raw] * f_scale) >> 10;                               
                 
-                g_inOutMatrixFlt[1][val] = (g_inOutMatrixInt[1][val]) * 0.0009765625f; // -> / 1024.0f;
+                g_inOutMatrixFlt[1][val] = (g_inOutMatrixInt[1][val]) * 0.0009765625f;
 
-                // Channel 2 - Second of pair for audio_sample[0]
-                f_ring_buffer[2][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(2);
+                f_ring_buffer[2][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(2);    // Channel 2 - Second of pair for audio_sample[0]
 
                 erraticness[2] =    f_ring_buffer[2][i0] - f_ring_buffer[2][i1] + f_ring_buffer[2][i2] - f_ring_buffer[2][i3];
                 
@@ -163,7 +160,7 @@ void            CKernel::io_read_ADC()
                         g_modeMap[2][0] =
                         g_modeMap[3][0] = v;
 
-                    float s = f_ring_buffer[2][f_index_ring_buffer] * 0.0009765625f; // -> / 1024.0f;
+                    float s = f_ring_buffer[2][f_index_ring_buffer] * 0.0009765625f;
 
                     sum0 -= f_band0[idx0];
                     f_band0[idx0] = s;
@@ -184,12 +181,11 @@ void            CKernel::io_read_ADC()
 
                 g_inOutMatrixInt[2][raw] =  (f_ring_buffer[2][0] + f_ring_buffer[2][1] + f_ring_buffer[2][2] + f_ring_buffer[2][3]) >>2 ; 
 
-                g_inOutMatrixInt[2][val] = (g_inOutMatrixInt[2][raw] * f_scale) >> 10; //  -> / 1023;                   
+                g_inOutMatrixInt[2][val] = (g_inOutMatrixInt[2][raw] * f_scale) >> 10;                 
                 
-                g_inOutMatrixFlt[2][val] = (g_inOutMatrixInt[2][val]) * 0.0009765625f; // -> / 1024.0f;
+                g_inOutMatrixFlt[2][val] = (g_inOutMatrixInt[2][val]) * 0.0009765625f;
 
-                // Channel 3 - Second of pair for audio_sample[1]
-                f_ring_buffer[3][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(3);
+                f_ring_buffer[3][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(3);    // Channel 3 - Second of pair for audio_sample[1]
 
                 erraticness[3] =    f_ring_buffer[3][i0] - f_ring_buffer[3][i1] + f_ring_buffer[3][i2] - f_ring_buffer[3][i3];
 
@@ -206,7 +202,7 @@ void            CKernel::io_read_ADC()
                         g_modeMap[2][0] =
                         g_modeMap[3][0] = v;
 
-                    float s = f_ring_buffer[3][f_index_ring_buffer] * 0.0009765625f; // -> / 1024.0f;
+                    float s = f_ring_buffer[3][f_index_ring_buffer] * 0.0009765625f;
 
                     sum2 -= f_band2[idx2];
                     f_band2[idx2] = s;
@@ -227,49 +223,45 @@ void            CKernel::io_read_ADC()
 
                 g_inOutMatrixInt[3][raw] = (f_ring_buffer[3][0] + f_ring_buffer[3][1] + f_ring_buffer[3][2] + f_ring_buffer[3][3]) >>2 ; 
 
-                g_inOutMatrixInt[3][val] = (g_inOutMatrixInt[3][raw] * f_scale) >> 10; //  -> / 1023;                   
+                g_inOutMatrixInt[3][val] = (g_inOutMatrixInt[3][raw] * f_scale) >> 10;                  
                 
-                g_inOutMatrixFlt[3][val] = (g_inOutMatrixInt[3][val]) * 0.0009765625f; // -> / 1024.0f;
+                g_inOutMatrixFlt[3][val] = (g_inOutMatrixInt[3][val]) * 0.0009765625f;
 
-                // Channel 4 (no audio detection)
-                f_ring_buffer[4][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(4);
+                f_ring_buffer[4][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(4);    // Channel 4 (no audio detection)
 
                 g_inOutMatrixInt[4][raw] =  (f_ring_buffer[4][0] + f_ring_buffer[4][1] + f_ring_buffer[4][2] + f_ring_buffer[4][3]) >>2 ; 
 
-                g_inOutMatrixInt[4][val] = (g_inOutMatrixInt[4][raw] * f_scale) >> 10; //  -> / 1023;                   
+                g_inOutMatrixInt[4][val] = (g_inOutMatrixInt[4][raw] * f_scale) >> 10;               
                 
-                g_inOutMatrixFlt[4][val] = (g_inOutMatrixInt[4][val]) * 0.0009765625f; // -> / 1024.0f;
+                g_inOutMatrixFlt[4][val] = (g_inOutMatrixInt[4][val]) * 0.0009765625f;
 
-                // Channel 5 (no audio detection)
                 f_ring_buffer[5][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(5);
 
                 g_inOutMatrixInt[5][raw] =  (f_ring_buffer[5][0] + f_ring_buffer[5][1] + f_ring_buffer[5][2] + f_ring_buffer[5][3]) >>2 ; 
 
-                g_inOutMatrixInt[5][val] = (g_inOutMatrixInt[5][raw] * f_scale) >> 10; //  -> / 1023;                   
+                g_inOutMatrixInt[5][val] = (g_inOutMatrixInt[5][raw] * f_scale) >> 10;                  
                 
-                g_inOutMatrixFlt[5][val] = (g_inOutMatrixInt[5][val]) * 0.0009765625f; // -> / 1024.0f;
+                g_inOutMatrixFlt[5][val] = (g_inOutMatrixInt[5][val]) * 0.0009765625f;
 
-                // Channel 6 (no audio detection)
                 f_ring_buffer[6][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(6);
 
                 g_inOutMatrixInt[6][raw] = (f_ring_buffer[6][0] + f_ring_buffer[6][1] + f_ring_buffer[6][2] + f_ring_buffer[6][3]) >>2 ; 
 
-                g_inOutMatrixInt[6][val] = (g_inOutMatrixInt[6][raw] * f_scale) >> 10; //  -> / 1023;                   
+                g_inOutMatrixInt[6][val] = (g_inOutMatrixInt[6][raw] * f_scale) >> 10;                  
                 
-                g_inOutMatrixFlt[6][val] = (g_inOutMatrixInt[6][val]) * 0.0009765625f; // -> / 1024.0f;
+                g_inOutMatrixFlt[6][val] = (g_inOutMatrixInt[6][val]) * 0.0009765625f;
 
-                // Channel 7 (no audio detection)
                 f_ring_buffer[7][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(7);
 
                 g_inOutMatrixInt[7][raw] = (f_ring_buffer[7][0] + f_ring_buffer[7][1] + f_ring_buffer[7][2] + f_ring_buffer[7][3]) >>2 ; 
 
-                g_inOutMatrixInt[7][val] = (g_inOutMatrixInt[7][raw] * f_scale) >> 10; //  -> / 1023;                   
+                g_inOutMatrixInt[7][val] = (g_inOutMatrixInt[7][raw] * f_scale) >> 10;                  
                 
-                g_inOutMatrixFlt[7][val] = (g_inOutMatrixInt[7][val]) * 0.0009765625f; // -> / 1024.0f;
+                g_inOutMatrixFlt[7][val] = (g_inOutMatrixInt[7][val]) * 0.0009765625f;
                 
                 if(audio_hold_A > 0) --audio_hold_A;
                 if(audio_hold_B > 0) --audio_hold_B;
 
-                f_index_ring_buffer = (f_index_ring_buffer + 1) & 3;  // Update buffer index
+                f_index_ring_buffer = (f_index_ring_buffer + 1) & 3;
 }
 
