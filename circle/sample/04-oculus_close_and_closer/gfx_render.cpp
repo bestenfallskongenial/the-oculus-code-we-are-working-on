@@ -60,7 +60,7 @@ void            CKernel::render_shader_a(   glsl_state* m_glsl)
                                                                                                 g_inOutMatrixFlt[7][out]);
                 if(m_glsl->u_tex_l[g_current_gl_program] != -1) glUniform1i(   m_glsl->u_tex_l[g_current_gl_program], g_validTextureCount);
 
-                switch(g_centralModeBuffer[TEX_MODE][g_currentProgramBuffer]) 
+                switch(g_centralModeBuffer[g_currentProgramBuffer][TEX_MODE]) 
                     {
                     case false:     // Original mode
                         for (int i = 0; i < g_validTextureCount; i++) 

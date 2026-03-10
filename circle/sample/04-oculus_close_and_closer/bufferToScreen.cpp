@@ -1,40 +1,5 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-for kernel.h
 
-
-boolean CKernel::screen_init                              (   void );
-void    CKernel::screen_clear_screen                      (   u32 bgColor );
-void    CKernel::screen_draw_buffer_segment     (   const char *pSourceBuffer,
-                                                                        u32 startIndex,
-                                                                        u32 endIndex,
-                                                                        unsigned startCol,
-                                                                        unsigned startRow,
-                                                                        u32 fgColor,
-                                                                        u32 bgColor );
-unsigned CKernel::screen_get_grid                         (    unsigned &cols, 
-                                                                        unsigned &rows )
-
-#include <circle/bcmframebuffer.h>
-#include <circle/chargenerator.h>
-
-    Self-contained framebuffer setup:
-    width/height are queried from firmware via mailbox when constructed with 0,0.
-    This reflects the effective display mode (typically driven by config.txt/EDID firmware states).
-
-
-static CBcmFrameBuffer gE_FrameBuffer (0, 0, 32, 0, TRUE);
-static CCharGenerator  gE_CharGenerator;
-
-static u32      *gE_PixelBuffer  = 0;
-static unsigned  gE_PitchBytes   = 0;
-static unsigned  gE_ScreenWidth  = 0;
-static unsigned  gE_ScreenHeight = 0;
-static unsigned  gE_CharWidth    = 0;
-static unsigned  gE_CharHeight   = 0;
-static unsigned  gE_Cols         = 0;
-static unsigned  gE_Rows         = 0;
-*/
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 static void CKernel::screen_plot                          (   unsigned x, unsigned y, u32 color )
 {

@@ -3,6 +3,10 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::resetMenuPickupFlags    ()
 {
+//              or simply 
+
+//              memset(menu_pickup_flag, 0, 16 * sizeof(bool)); // ?
+
                 if (g_menu_mode_new != g_menu_mode_old) 
                     {
                     for(int i = 0; i < 16; i++) 
@@ -11,38 +15,6 @@ void            CKernel::resetMenuPickupFlags    ()
                         }
                     g_menu_mode_old = g_menu_mode_new;
                     }
-}
-// this here is the version i created to reset also the autodetected audio input channels after AUDIO_TIMEOUT
-void            CKernel::menu_general()
-{
-//                      unsigned long current_time = m_Timer.GetClockTicks();
-
-                const   unsigned long AUDIO_TIMEOUT = 2 * 1000000; // 2 seconds
-
-                if (g_menu_mode_new != g_menu_mode_old) 
-{
-/*
-                    for(int i = 0; i < 16; i++) 
-                        {
-                        menu_pickup_flag[i] = false;
-                        }
-*/
-
-                    memset(menu_pickup_flag, 0, 16 * sizeof(bool)); // new
-
-                    g_menu_mode_old = g_menu_mode_new;
-                    }
-                    
-                    // reset AUD after AUDIO_TIMEOUT seconds
-                    if ( is_audio[0] == 0 && audio_sample[0] != 0.0 ) last_audio_timestamps[0] = start_time_fps_calculation;
-                    if ( is_audio[0] == 2 && audio_sample[0] != 0.0 ) last_audio_timestamps[2] = start_time_fps_calculation;
-                    if ( is_audio[1] == 1 && audio_sample[1] != 0.0 ) last_audio_timestamps[1] = start_time_fps_calculation;
-                    if ( is_audio[1] == 3 && audio_sample[1] != 0.0 ) last_audio_timestamps[3] = start_time_fps_calculation;
-                    
-                    if (is_audio[0] == 0 && (start_time_fps_calculation - last_audio_timestamps[0] > AUDIO_TIMEOUT)) is_audio[0] = -1;
-                    if (is_audio[0] == 2 && (start_time_fps_calculation - last_audio_timestamps[2] > AUDIO_TIMEOUT)) is_audio[0] = -1;
-                    if (is_audio[1] == 1 && (start_time_fps_calculation - last_audio_timestamps[1] > AUDIO_TIMEOUT)) is_audio[1] = -1;
-                    if (is_audio[1] == 3 && (start_time_fps_calculation - last_audio_timestamps[3] > AUDIO_TIMEOUT)) is_audio[1] = -1;
 }
 
 void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
@@ -53,58 +25,51 @@ void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
                     }
                 int v;
 
-                v = (g_inOutMatrixInt[4][raw] * menu_map_max[base + 0]) >> 10;        // slot 0
+                v = (g_inOutMatrixInt[4][raw] * g_modeMap[base + 0][0]) >> 10;        // slot 0
 
-                if (!g_menuPickUpFlag[base + 0] && v == g_centralModeBuffer[base + 0][g_currentProgramBuffer])
+                if (!g_menuPickUpFlag[base + 0] && v == g_centralModeBuffer[g_currentProgramBuffer][base + 0])
                     {
                     g_menuPickUpFlag[base + 0] = true;
                     }
                 else if (g_menuPickUpFlag[base + 0])
                     {
-                    g_centralModeBuffer[base + 0][g_currentProgramBuffer] = v;
+                    g_centralModeBuffer[g_currentProgramBuffer][base + 0] = v;
                     }
-                v = (g_inOutMatrixInt[5][raw] * menu_map_max[base + 1]) >> 10;        // slot 1
+                v = (g_inOutMatrixInt[5][raw] * g_modeMap[base + 1][0]) >> 10;        // slot 1
 
-                if (!g_menuPickUpFlag[base + 1] && v == g_centralModeBuffer[base + 1][g_currentProgramBuffer])
+                if (!g_menuPickUpFlag[base + 1] && v == g_centralModeBuffer[g_currentProgramBuffer][base + 1])
                     {
                     g_menuPickUpFlag[base + 1] = true;
                     }
                 else if (g_menuPickUpFlag[base + 1])
                     {
-                    g_centralModeBuffer[base + 1][g_currentProgramBuffer] = v;
+                    g_centralModeBuffer[g_currentProgramBuffer][base + 1] = v;
                     }
-                v = (g_inOutMatrixInt[6][raw] * menu_map_max[base + 2]) >> 10;        // slot 2
+                v = (g_inOutMatrixInt[6][raw] * g_modeMap[base + 2][0]) >> 10;        // slot 2
 
-                if (!g_menuPickUpFlag[base + 2] && v == g_centralModeBuffer[base + 2][g_currentProgramBuffer])
+                if (!g_menuPickUpFlag[base + 2] && v == g_centralModeBuffer[g_currentProgramBuffer][base + 2])
                     {
                     g_menuPickUpFlag[base + 2] = true;
                     }
                 else if (g_menuPickUpFlag[base + 2])
                     {
-                    g_centralModeBuffer[base + 2][g_currentProgramBuffer] = v;
+                    g_centralModeBuffer[g_currentProgramBuffer][base + 2] = v;
                     }
-                v = (g_inOutMatrixInt[7][raw] * menu_map_max[base + 3]) >> 10;        // slot 3
+                v = (g_inOutMatrixInt[7][raw] * g_modeMap[base + 3][0]) >> 10;        // slot 3
 
-                if (!g_menuPickUpFlag[base + 3] && v == g_centralModeBuffer[base + 3][g_currentProgramBuffer])
+                if (!g_menuPickUpFlag[base + 3] && v == g_centralModeBuffer[g_currentProgramBuffer][base + 3])
                     {
                     g_menuPickUpFlag[base + 3] = true;
                     }
                 else if (g_menuPickUpFlag[base + 3])
                     {
-                    g_centralModeBuffer[base + 3][g_currentProgramBuffer] = v;
+                    g_centralModeBuffer[g_currentProgramBuffer][base + 3] = v;
                     }
 }
 
 void            CKernel::applyModeToChannel(int channel)
 {
-            //  if (is_audio[0] == channel || is_audio[1] == channel)
-            //  return;
-
-                if (!g_channel_mode_capability[channel][g_centralModeBuffer[channel][g_currentProgramBuffer]])
-                    {
-                    return;
-                    }
-                switch (g_centralModeBuffer[channel][g_currentProgramBuffer])
+                switch (g_modeMap[channel][g_centralModeBuffer[g_currentProgramBuffer][channel] + 1])
                     {
                     case 0:
                         modeADC (channel);
@@ -121,46 +86,35 @@ void            CKernel::applyModeToChannel(int channel)
                     case 3:
                         modeLF1 (channel);
                     break;
-
                     case 4:
                         modeLF2 (channel);
                     break;
+                    case 5:
+                        modeTex (channel);
+                    break;
+                    case 6:
+                        modeVid (channel);
+                    break;
+                    case 7:
+                        modeFrm (channel);
+                    break;                    
+                    case 8:
+                        modeAudioAb0 (channel);     // this modes will be "available" if audio is detected.
+                    break;
+
+                    case 9:
+                        modeAudioAb1 (channel);
+                    break;
+
+                    case 10:
+                        modeAudioBb0 (channel);
+                    break;
+
+                    case 11:
+                        modeAudioBb1 (channel);
+                    break;                    
                     }
 }
-
-/*
-is now included in read_adc() itself, turned out that combining the adc value processing and the audio detection in one function is simpler ( i hope )
-
-void CKernel::helper_update_menu_max()
-{
-    if (is_audio[0] == 0 && is_audio[1] == 0)   // no audio mode is detected!
-    {
-        menu_map_max[0] = 5;
-        menu_map_max[1] = 5;
-        menu_map_max[2] = 5;
-        menu_map_max[3] = 5;
-        return;
-    }
-
-    if (is_audio[0] != 0 && is_audio[1] == 0)   // opens up two more "modes" if one audio input is detected!
-    {
-        menu_map_max[0] = 7;
-        menu_map_max[1] = 7;
-        menu_map_max[2] = 7;
-        menu_map_max[3] = 7;
-        return;
-    }
-
-    if (is_audio[0] != 0 && is_audio[1] != 0)   // opens up four more "modes" if one audio input is detected!
-    {
-        menu_map_max[0] = 9;
-        menu_map_max[1] = 9;
-        menu_map_max[2] = 9;
-        menu_map_max[3] = 9;
-        return;
-    }
-}
-*/
 
 void            CKernel::modeADC (int channel) 
 {
@@ -202,13 +156,7 @@ void            CKernel::modeLF2 (int channel)
                 g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[1][lf2] // g_lfoFltOut[1];
                 g_inOutMatrixInt[channel][out] = g_inOutMatrixInt[1][lf2] // g_lfoIntOut[1];    
 }
-void            CKernel::modeLF2 (int channel)
-{
-                g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[1][lf2] // g_lfoFltOut[1];
-                g_inOutMatrixInt[channel][out] = g_inOutMatrixInt[1][lf2] // g_lfoIntOut[1];    
-}
-
-void            CKernel::modeAudioAb0 (int channel)
+void            CKernel::modeAudioAb0 (int channel)     // 
 {
                 g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[0][au0] // g_lfoFltOut[1];
             //  g_inOutMatrixInt[channel][out] = // i have no int audio band!!    
@@ -230,74 +178,48 @@ void            CKernel::modeAudioBb1 (int channel)
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// the idea is that i have a global menuMap[menu_layer_members][max_modes]
 
-/* 
-                        need to figure out the enums here again!
-
-g_inOutMatrixInt[CHANNEL][ENUM_SOURCE]
-g_inOutMatrixFlt[CHANNEL][ENUM_SOURCE]
-g_menuPickUpFlag[4*menu_layers]
-
-
-INT	    ADC_RAW     (SCALED)IN  (SCALED)OUT RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
-ch0	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
-ch1	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
-ch2	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
-ch3	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
-ch4	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
-ch5	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
-ch6	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
-ch7	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
-
-
-FLT	    ADC_RAW     (SCALED)IN  (SCALED)OUT RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
-ch0	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
-ch1	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
-ch2	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
-ch3	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
-ch4	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
-ch5	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
-ch6	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
-ch7	    opt         U	        U           U	        G	        G	        G	        G	        G	        G           opt        opt   
-
-enum:   raw         in          out         rnd         lf1         lf2         au0         au1         au2         au3         trL         trH
-
-
-all the G ( global ) sit in channel 0 - U are unique values per channel 
-*/
-
-enum io_types
+uint8_t mode_map[8][17] =                                   // mode_map is not the same as the g_centralModeBuffer mapping. i can still do the mapping!
 {
-int raw = 0,        //  the position the dampened adc values per channels are stored *
-int  in,            //  either the calculated int or flt value *
-int out,            //  here lands the processed ( after mode ) for the glsl uniforms      
-int rnd,            //  either the per-channel random int or flt value *
-int lf1,            //  either the lfo one int or flt value
-int lf2,            //  either the lfo two int or flt value
-int au0,            //  the audio band 0 flt value
-int au1,            //  the audio band 1 flt value
-int au2,            //  the audio band 2 flt value
-int au3,            //  the audio band 3 flt value
-                    // *means i have a unique value for each channel - the other values are singular, and/or only int/flt
-int trL,            //  per channel threshold low !!! dont forget to copy the values in here    128
-int trH,            //  per channel threshold high                                              320
-//  trF,            //  per channel threshold "flag"
-int io_type_count
-}
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11, 0, 0, 0, 0}        // group for the first 4 channels 
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11, 0, 0, 0, 0}
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11, 0, 0, 0, 0}
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11, 0, 0, 0, 0}
 
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0}       // group for the second 4 channels
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0}
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0}
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0}
 
-/*
-Discrete/equality pickup
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}       // group for the lfo wave and multiplier mapping 
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}       // question - can we create modes like the others to map the lfo settings 
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}        // and use them here in an combined manner?
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}
 
-Pattern: compute quantized value (new_mode, waveform, multiply) and arm when it equals stored value.
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}
+};
 
-Example:
-new_mode = ...; if (!flag && new_mode == stored)
+// i see the logical issue here: modes are usually meant to control how the in values are processed to out values.
+// things like modes and lfo parameters are stored in g_centralModeBuffer[][]
+// THAN there are the functions where a knop uses the raw out value AFTER 
+// modes and than map it to program, texture, video, frame, sensetivity ( i could made this a g_centralModeBuffer field too ),
+// means input -> input-processing -> mode-selection -> mode-precessing -> target-selection -> target ( gl uniform OR hardware )
+// because i want for example to have bpm on channel 0 control the frame of the video.
+// i assume this is possible with gl code BUT the user may have not the knowlege or the will to program this features therefore the device must offer another way!   
+// i could indeed pass the array (like g_centralModeBuffer ) i use as target for the mapping in modeMenuAssignGroup(uint8_t menu_id, uint8_t base, &array_to_work_on )
 
-Analog/tolerance pickup with bypass (only CH6/CH7 runtime path)
+// 
+//               0        1        2        3 |      4        5        6        7 |        8          9         10         11 |       12         13         14           15 |
+// program  mode 0 | mode 1 | mode 2 | mode 3 | mode 4 | mode 5 | mode 6 | mode 7 | lf1 wave | lf2 wave | lf1 mult | lf2 mult | tex mode | vid mode | frm mode | is_stored? |
+//      0 
+//      1
+//      2
+//      ...
+//     31
+// default
 
-Pattern: arm when raw ADC enters buffer ± TOLERANCE, else allow processing if flag or mode is non-zero.
-
-Example CH6: if (!flag12 && raw6 in window) ... else if (flag12 || CH6_MODE != 0)
-
-*/
+int g_centralModeBuffer[SLOTS][MODES];

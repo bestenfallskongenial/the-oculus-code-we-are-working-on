@@ -2,53 +2,61 @@
 #include "global.h"
 #include "wavetable.h"
 
-void            CKernel::prepParameters       ()        // f_index_ring_buffer guess here we need much more to do!
+void            CKernel::prepParameters       ()        // f_buffer guess here we need much more to do!
 {
-                for ( int f_index_ring_buffer=0; f_index_ring_buffer <= DEFAULT_SLOT; f_index_ring_buffer++)
+                for ( int f_buffer=0; f_buffer <= DEFAULT_SLOT; f_buffer++)
                     {
-                    g_centralModeBuffer[LF1_WAVE][f_index_ring_buffer] = 0;
-                    g_centralModeBuffer[LF2_WAVE][f_index_ring_buffer] = 1;
-                    g_centralModeBuffer[LF1_MULT][f_index_ring_buffer] = 3;
-                    g_centralModeBuffer[LF2_MULT][f_index_ring_buffer] = 3;
+                    g_centralModeBuffer[f_buffer][LF1_WAVE] = 0;
+                    g_centralModeBuffer[f_buffer][LF2_WAVE] = 1;
+                    g_centralModeBuffer[f_buffer][LF1_MULT] = 3;
+                    g_centralModeBuffer[f_buffer][LF2_MULT] = 3;
                     }
 }
 
-int             CKernel::chooseProgram        ( int p_channel )
+void            CKernel::chooseProgram        ( int p_channel, &g_activeShader )
 {
-                static int f_activeShader = 0;
+                static int g_activeShader = 0;
 
-                int f_calculated = g_inOutMatrixInt[p_channel][raw] * g_loaded_fsh_new / 1024;
+                int f_calculated = g_inOutMatrixInt[p_channel][raw] * g_loaded_fsh_new >> 10; // -> / 1024; <- why no bracelets here too?
 
                 if (m_shaderStatusFlags[f_calculated])
                     {
-                    f_activeShader = f_calculated;
+                    g_activeShader = f_calculated;
                     }
-
-                return f_activeShader;
 }
 
-int             CKernel::chooseTexture        ( int p_channel ) // f_index_ring_buffer have three possible ways here! f_index_ring_buffer can a) invent a mechanism to get the is valid table for the vids - f_index_ring_buffer can also draw from parser.is_valid[x] 
+void             CKernel::chooseTexture        ( int p_channel, &g_activeTexture ) // f_buffer have three possible ways here! f_buffer can a) invent a mechanism to get the is valid table for the vids - f_buffer can also draw from parser.is_valid[x] 
 {
-                static int f_activeTexture = 0;
+                static int g_activeTexture = 0;
                 if (g_validTextureCount != 0) 
                     {
 
-                    int f_calculated = g_inOutMatrixInt[p_channel][raw] * (g_validTextureCount ) / 1024;
-                    f_activeTexture = f_calculated;
+                    int f_calculated = g_inOutMatrixInt[p_channel][raw] * (g_validTextureCount) >> 10; // -> / 1024; ) / 1024;
+                    g_activeTexture = f_calculated;
                     }
-                return f_activeTexture;
 }
-int             CKernel::chooseVideo        ( int p_channel )
+int             CKernel::chooseVideo        ( int p_channel, &g_activeVideo )
 {
-                static int f_activeVideo = 0;
+                static int g_activeVideo = 0;
                 if (g_validVideoCount != 0) 
                     {
 
-                    int f_calculated = g_inOutMatrixInt[p_channel][raw] * (g_validVideoCount ) / 1024;
-                    f_activeVideo = f_calculated;
+                    int f_calculated = g_inOutMatrixInt[p_channel][raw] * (g_validVideoCount) >> 10; // -> / 1024; ) / 1024;
+                    g_activeVideo = f_calculated;
                     }
-                return f_activeVideo;
 }
+
+int             CKernel::chooseFrame        ( int p_channel, &g_activeFrame )
+{
+                static int g_activeFrame = 0;
+                if (m_H264Parser.m_frame_count[g_activeVideo] != 0) 
+                    {
+
+                    int f_calculated = g_inOutMatrixInt[p_channel][raw] *  (m_H264Parser.m_frame_count[g_activeVideo]) >> 10; // -> / 1024; ) / 1024;
+                    g_activeFrame = f_calculated;
+                    }
+}
+
 // new version
 void            CKernel::storeModes         () 
 {
@@ -63,14 +71,12 @@ void            CKernel::storeModes         ()
                 if (shader_has_stored_params[g_current_gl_program] == false && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true ) // 2. STORE PARAMETERS
                     {  
                     
-                    memcpy(&g_centralModeBuffer[0][g_current_gl_program],   // SIMPLE: Copy DEFAULT_SLOT contents to this program's slot
-                        &g_centralModeBuffer[0][DEFAULT_SLOT],
+                    memcpy(&g_centralModeBuffer[g_current_gl_program][0],   // SIMPLE: Copy DEFAULT_SLOT contents to this program's slot
+                        &g_centralModeBuffer[DEFAULT_SLOT][0],
                         16 * sizeof(int));
                     
                     shader_has_stored_params[g_current_gl_program] = true;
                     g_currentProgramBuffer = g_current_gl_program;          // Now use program's slot
-            //      is_hold_for_2_sec_a = false;
-            //      is_hold_for_2_sec_b = false;
                     }
 
                 // 3. DELETE STORED PARAMETERS
@@ -79,11 +85,56 @@ void            CKernel::storeModes         ()
                     {  
                     shader_has_stored_params[g_current_gl_program] = false;
                     g_currentProgramBuffer = DEFAULT_SLOT;  // Back to default
-            //      is_hold_for_2_sec_a = false;
-            //      is_hold_for_2_sec_b = false;
                     }
 }
-// original version from ssd - f_index_ring_buffer need to doublecheck the variables because f_index_ring_buffer may have rename them falsely!!
+
+void            CKernel::storeModes         () 
+{
+                
+                if (g_current_gl_program != g_last_gl_program)
+                    {    
+                    g_currentProgramBuffer = g_centralModeBuffer[g_current_gl_program][is_stored] ? g_current_gl_program : DEFAULT_SLOT;
+                    g_last_gl_program = g_current_gl_program;
+                    }               
+                if (g_centralModeBuffer[g_current_gl_program][is_stored] == true )
+                    {  
+                    memcpy(&g_centralModeBuffer[g_current_gl_program][0],
+                        &g_centralModeBuffer[DEFAULT_SLOT][0],
+                        16 * sizeof(int));
+                    
+                    g_currentProgramBuffer = g_current_gl_program;
+                    }
+                else  if (g_centralModeBuffer[g_current_gl_program][is_stored] == false )
+                    {  
+                    g_currentProgramBuffer = DEFAULT_SLOT;
+                    }
+}
+
+void            CKernel::storeModes         ()
+{
+                
+                if (g_current_gl_program != g_last_gl_program)
+                    {    
+                    g_currentProgramBuffer = g_centralModeBuffer[g_current_gl_program][is_stored] ? g_current_gl_program : DEFAULT_SLOT;
+                    g_last_gl_program = g_current_gl_program;
+                    }               
+
+                if (g_centralModeBuffer[g_current_gl_program][is_stored] == true && g_currentProgramBuffer != g_current_gl_program)
+                    {  
+                    memcpy(&g_centralModeBuffer[g_current_gl_program][0],
+                           &g_centralModeBuffer[DEFAULT_SLOT][0],
+                           16 * sizeof(int));
+                    
+                    g_currentProgramBuffer = g_current_gl_program;
+                    }
+                else if (g_centralModeBuffer[g_current_gl_program][is_stored] == false && g_currentProgramBuffer != DEFAULT_SLOT)
+                    {  
+                    g_currentProgramBuffer = DEFAULT_SLOT;
+                    }
+}
+
+
+// original version from ssd - f_buffer need to doublecheck the variables because f_buffer may have rename them falsely!!
 void            CKernel::util_store_program         () 
 {
                 // 1. SHADER CHANGE CHECK
@@ -99,8 +150,8 @@ void            CKernel::util_store_program         ()
                 if (shader_has_stored_params[gl_current_prg] == false && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true )
                     {  
                     // SIMPLE: Copy DEFAULT_SLOT contents to this program's slot
-                    memcpy(&mode_storage_buffers[0][gl_current_prg],
-                        &mode_storage_buffers[0][DEFAULT_SLOT],
+                    memcpy(&mode_storage_buffers[gl_current_prg][0],
+                        &mode_storage_buffers[DEFAULT_SLOT][0],
                         16 * sizeof(int));
                     
                     shader_has_stored_params[gl_current_prg] = true;
@@ -158,21 +209,6 @@ void            CKernel::buttonPing(int p_btn_id, int pin)
                     g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
                 }
 }
-/*
-// after getting fucked in my head we finally found the deterministic function f_index_ring_buffer am looking for!
-/*
-#define BTN_PRESSED 0
-
-enum ButtonTSIndex
-{
-    BTN_PRESS_START = 0, // timestamp when press starts, 0 = currently up
-    BTN_RELEASE     = 1, // timestamp of last release (double-click window anchor)
-    BTN_HOLD_TICK   = 2, // increments while held after long threshold
-    BTN_SINGLE      = 3, // one-cycle pulse on press edge
-    BTN_DOUBLE      = 4  // one-cycle pulse on second press edge in double window
-};
-*/
-// 2 buttons, 5 fields each (no BTN_STATUS needed)
 
 void CKernel::button_consumer(int p_btn_id)
 {

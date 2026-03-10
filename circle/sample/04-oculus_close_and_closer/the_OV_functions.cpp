@@ -1,76 +1,6 @@
 
-// we need to figure out what we already have done in gfx_init.cpp and how we nust implement the rest here following OUR framework!
-
-/*
-#include "kernel.h"
-#include "global.h"
-
-// menu asset extension lists used by scan/load flow
-char *MENU_FSH_EXTENSIONS[1] = { (char *)"fsh" };   // is implemented elsewhere!!
-char *MENU_TEX_EXTENSIONS[1] = { (char *)"bmp" };   // is implemented elsewhere!!
-
-// scanned filenames and loaded byte counters
-char *SCANED_FILES_MENU_FSH[1] = { 0 };             // is implemented elsewhere!!
-char *SCANED_FILES_MENU_TEX[1] = { 0 };             // is implemented elsewhere!!
-unsigned MENU_FSH_LOADED_BYTES[1] = { 0 };          // is implemented elsewhere!!
-unsigned MENU_TEX_LOADED_BYTES[1] = { 0 };          // is implemented elsewhere!!
-
-// global menu layout values
-float MENU_GPU_ORIGIN[2] = { 0.05f, 0.08f };
-float MENU_GPU_TILE_SIZE[2] = { 0.08f, 0.08f };
-float MENU_GPU_BACKGROUND_SCALE[2] = { 1.0f, 1.0f };
-
-// slots: 0..7 mode icons, 8..11 bpm digits, 12 dot, 13 bpm icon, 14..15 background blocks
-float MENU_GPU_REL_POS[16][2] =
-{
-    {0.0f, 0.0f}, {1.1f, 0.0f}, {2.2f, 0.0f}, {3.3f, 0.0f},
-    {0.0f, 1.1f}, {1.1f, 1.1f}, {2.2f, 1.1f}, {3.3f, 1.1f},
-
-    {0.0f, 2.6f}, {0.9f, 2.6f}, {1.8f, 2.6f}, {2.7f, 2.6f},
-    {3.6f, 2.6f}, {4.1f, 2.6f},
-
-    {-0.1f, -0.1f},
-    {-0.1f, 2.5f}
-};
-
-float MENU_GPU_REL_SIZE[16][2] =
-{
-    {1.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 1.0f},
-    {1.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 1.0f}, {1.0f, 1.0f},
-
-    {0.75f, 0.95f}, {0.75f, 0.95f}, {0.75f, 0.95f}, {0.75f, 0.95f},
-    {0.35f, 0.95f}, {0.75f, 0.95f},
-
-    {4.4f, 2.2f},
-    {5.8f, 1.2f}
-};
-
-int MENU_GPU_TILE_COUNT = 16;
-
-struct MenuTileRect
-{
-    float x;
-    float y;
-    float w;
-    float h;
-};
-
-struct MenuGpuState
-{
-    bool initialized;
-    GLuint program;
-    GLuint atlas_texture;
-    GLint a_vertex;
-    GLint u_atlas;
-    GLint u_tile_count;
-    GLint u_tile_rect;
-    GLint u_tile_index;
-    int tile_index[16];
-    MenuTileRect tile_rect[16];
-};
-
 MenuGpuState g_menu_state = { false, 0, 0, -1, -1, -1, -1, -1, {0}, {{0.0f, 0.0f, 0.0f, 0.0f}} };
-*/
+
 // compile shader stage
 GLuint CKernel::gpu_render_helper_compile_shader(GLenum shader_type, char *shader_source, CString *optional_log)
 {
@@ -166,14 +96,14 @@ bool CKernel::gpu_render_menu_init(GLuint shared_vertex_shader, char *menu_fsh_s
         g_menu_state.tile_rect[i].h = sy * th;
     }
 
-    g_menu_state.tile_index[0] = g_centralModeBuffer[CH0_MODE][g_currentProgramBuffer];
-    g_menu_state.tile_index[1] = g_centralModeBuffer[CH1_MODE][g_currentProgramBuffer];
-    g_menu_state.tile_index[2] = g_centralModeBuffer[CH2_MODE][g_currentProgramBuffer];
-    g_menu_state.tile_index[3] = g_centralModeBuffer[CH3_MODE][g_currentProgramBuffer];
-    g_menu_state.tile_index[4] = g_centralModeBuffer[CH4_MODE][g_currentProgramBuffer];
-    g_menu_state.tile_index[5] = g_centralModeBuffer[CH5_MODE][g_currentProgramBuffer];
-    g_menu_state.tile_index[6] = g_centralModeBuffer[CH6_MODE][g_currentProgramBuffer];
-    g_menu_state.tile_index[7] = g_centralModeBuffer[CH7_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[0] = g_centralModeBuffer[g_currentProgramBuffer][CH0_MODE];
+    g_menu_state.tile_index[1] = g_centralModeBuffer[g_currentProgramBuffer][CH1_MODE];
+    g_menu_state.tile_index[2] = g_centralModeBuffer[g_currentProgramBuffer][CH2_MODE];
+    g_menu_state.tile_index[3] = g_centralModeBuffer[g_currentProgramBuffer][CH3_MODE];
+    g_menu_state.tile_index[4] = g_centralModeBuffer[g_currentProgramBuffer][CH4_MODE];
+    g_menu_state.tile_index[5] = g_centralModeBuffer[g_currentProgramBuffer][CH5_MODE];
+    g_menu_state.tile_index[6] = g_centralModeBuffer[g_currentProgramBuffer][CH6_MODE];
+    g_menu_state.tile_index[7] = g_centralModeBuffer[g_currentProgramBuffer][CH7_MODE];
 
     unsigned long bpm0 = g_resultBPM[0] % 10000UL;
     unsigned long bpm1 = g_resultBPM[1] % 10UL;
@@ -220,14 +150,14 @@ void CKernel::gpu_render_menu_rebuild_layout()
 // rebuild dynamic indices from mode buffers and bpm values
 void CKernel::gpu_render_menu_update_indices()
 {
-    g_menu_state.tile_index[0] = g_centralModeBuffer[CH0_MODE][g_currentProgramBuffer];
-    g_menu_state.tile_index[1] = g_centralModeBuffer[CH1_MODE][g_currentProgramBuffer];
-    g_menu_state.tile_index[2] = g_centralModeBuffer[CH2_MODE][g_currentProgramBuffer];
-    g_menu_state.tile_index[3] = g_centralModeBuffer[CH3_MODE][g_currentProgramBuffer];
-    g_menu_state.tile_index[4] = g_centralModeBuffer[CH4_MODE][g_currentProgramBuffer];
-    g_menu_state.tile_index[5] = g_centralModeBuffer[CH5_MODE][g_currentProgramBuffer];
-    g_menu_state.tile_index[6] = g_centralModeBuffer[CH6_MODE][g_currentProgramBuffer];
-    g_menu_state.tile_index[7] = g_centralModeBuffer[CH7_MODE][g_currentProgramBuffer];
+    g_menu_state.tile_index[0] = g_centralModeBuffer[g_currentProgramBuffer][CH0_MODE];
+    g_menu_state.tile_index[1] = g_centralModeBuffer[g_currentProgramBuffer][CH1_MODE];
+    g_menu_state.tile_index[2] = g_centralModeBuffer[g_currentProgramBuffer][CH2_MODE];
+    g_menu_state.tile_index[3] = g_centralModeBuffer[g_currentProgramBuffer][CH3_MODE];
+    g_menu_state.tile_index[4] = g_centralModeBuffer[g_currentProgramBuffer][CH4_MODE];
+    g_menu_state.tile_index[5] = g_centralModeBuffer[g_currentProgramBuffer][CH5_MODE];
+    g_menu_state.tile_index[6] = g_centralModeBuffer[g_currentProgramBuffer][CH6_MODE];
+    g_menu_state.tile_index[7] = g_centralModeBuffer[g_currentProgramBuffer][CH7_MODE];
 
     unsigned long bpm0 = g_resultBPM[0] % 10000UL;
     unsigned long bpm1 = g_resultBPM[1] % 10UL;

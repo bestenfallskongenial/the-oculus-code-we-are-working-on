@@ -64,13 +64,13 @@ bool            CKernel::Update         ()
                 // - m_bufferKnl[0] + loaded_bytes_kernel[0] already contain the fallback kernel
                 // - filesystem is already mounted by caller
 
-                if (filesystem_save_buffer_to_file(FILENAME_KERNEL, m_bufferKnl[1], loaded_bytes_kernel[1]))
+                if (m_filesystem_save_buffer_to_file(FILENAME_KERNEL, m_bufferKnl[1], loaded_bytes_kernel[1]))
                     {
                     return true;
                     }
 
                 // fallback attempt (allowed to fail)
-                filesystem_save_buffer_to_file(FILENAME_KERNEL, m_bufferKnl[0], loaded_bytes_kernel[0]);
+                m_filesystem_save_buffer_to_file(FILENAME_KERNEL, m_bufferKnl[0], loaded_bytes_kernel[0]);
 
                 return false;
 }
