@@ -57,39 +57,7 @@ int             CKernel::chooseFrame        ( int p_channel, &g_activeFrame )
                     }
 }
 
-// new version
-void            CKernel::storeModes         () 
-{
-                if (g_current_gl_program != g_last_gl_program)  // 1. SHADER CHANGE CHECK
-                    {    
-                    g_currentProgramBuffer = shader_has_stored_params[g_current_gl_program] ? g_current_gl_program : DEFAULT_SLOT;  // SIMPLE: Use program slot if stored, otherwise DEFAULT_SLOT
-                    g_last_gl_program = g_current_gl_program;
-                    }
-
-                
-                if (shader_has_stored_params[g_current_gl_program] == false && g_trigger_save == true ) // 2. STORE PARAMETERS
-                    {  
-                    
-                    memcpy(&g_centralModeBuffer[g_current_gl_program][0],   // SIMPLE: Copy DEFAULT_SLOT contents to this program's slot
-                        &g_centralModeBuffer[DEFAULT_SLOT][0],
-                        16 * sizeof(int));
-                    
-                    shader_has_stored_params[g_current_gl_program] = true;
-                    g_currentProgramBuffer = g_current_gl_program;          // Now use program's slot
-                    g_trigger_save = false;
-                    }
-
-                // 3. DELETE STORED PARAMETERS
-                
-                else  if (shader_has_stored_params[g_current_gl_program] == true && g_trigger_save == true )
-                    {  
-                    shader_has_stored_params[g_current_gl_program] = false;
-                    g_currentProgramBuffer = DEFAULT_SLOT;  // Back to default
-                    g_trigger_save = false;
-                    }
-}
-
-void            CKernel::storeModes         () 
+void            CKernel::storeModesV1         () 
 {
                 
                 if (g_current_gl_program != g_last_gl_program)
@@ -111,7 +79,7 @@ void            CKernel::storeModes         ()
                     }
 }
 
-void            CKernel::storeModes         ()
+void            CKernel::storeModesV2         ()
 {
                 
                 if (g_current_gl_program != g_last_gl_program)
@@ -131,42 +99,6 @@ void            CKernel::storeModes         ()
                 else if (g_centralModeBuffer[g_current_gl_program][is_stored] == false && g_currentProgramBuffer != DEFAULT_SLOT)
                     {  
                     g_currentProgramBuffer = DEFAULT_SLOT;
-                    }
-}
-// original version from ssd - f_buffer need to doublecheck the variables because f_buffer may have rename them falsely!!
-void            CKernel::util_store_program         () 
-{
-                // 1. SHADER CHANGE CHECK
-                if (gl_current_prg != last_gl_current_prg) 
-                    {    
-                    // SIMPLE: Use program slot if stored, otherwise DEFAULT_SLOT
-                    current_buffer = shader_has_stored_params[gl_current_prg] ?
-                                    gl_current_prg : DEFAULT_SLOT;
-                    last_gl_current_prg = gl_current_prg;
-                    }
-
-                // 2. STORE PARAMETERS
-                if (shader_has_stored_params[gl_current_prg] == false && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true )
-                    {  
-                    // SIMPLE: Copy DEFAULT_SLOT contents to this program's slot
-                    memcpy(&mode_storage_buffers[gl_current_prg][0],
-                        &mode_storage_buffers[DEFAULT_SLOT][0],
-                        16 * sizeof(int));
-                    
-                    shader_has_stored_params[gl_current_prg] = true;
-                    current_buffer = gl_current_prg;  // Now use program's slot
-                    is_hold_for_2_sec_a = false;
-                    is_hold_for_2_sec_b = false;
-                    }
-
-                // 3. DELETE STORED PARAMETERS
-                
-        else  if (shader_has_stored_params[gl_current_prg] == true && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true ) // -really else and not only if??
-                    {  
-                    shader_has_stored_params[gl_current_prg] = false;
-                    current_buffer = DEFAULT_SLOT;  // Back to default
-                    is_hold_for_2_sec_a = false;
-                    is_hold_for_2_sec_b = false;
                     }
 }
 
