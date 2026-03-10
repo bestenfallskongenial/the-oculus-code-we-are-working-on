@@ -60,7 +60,6 @@ int             CKernel::chooseFrame        ( int p_channel, &g_activeFrame )
 // new version
 void            CKernel::storeModes         () 
 {
-                
                 if (g_current_gl_program != g_last_gl_program)  // 1. SHADER CHANGE CHECK
                     {    
                     g_currentProgramBuffer = shader_has_stored_params[g_current_gl_program] ? g_current_gl_program : DEFAULT_SLOT;  // SIMPLE: Use program slot if stored, otherwise DEFAULT_SLOT
@@ -68,7 +67,7 @@ void            CKernel::storeModes         ()
                     }
 
                 
-                if (shader_has_stored_params[g_current_gl_program] == false && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true ) // 2. STORE PARAMETERS
+                if (shader_has_stored_params[g_current_gl_program] == false && g_trigger_save == true ) // 2. STORE PARAMETERS
                     {  
                     
                     memcpy(&g_centralModeBuffer[g_current_gl_program][0],   // SIMPLE: Copy DEFAULT_SLOT contents to this program's slot
@@ -77,14 +76,16 @@ void            CKernel::storeModes         ()
                     
                     shader_has_stored_params[g_current_gl_program] = true;
                     g_currentProgramBuffer = g_current_gl_program;          // Now use program's slot
+                    g_trigger_save = false;
                     }
 
                 // 3. DELETE STORED PARAMETERS
                 
-                else  if (shader_has_stored_params[g_current_gl_program] == true && is_hold_for_2_sec_a == true && is_hold_for_2_sec_b == true ) // -really else and not only if??
+                else  if (shader_has_stored_params[g_current_gl_program] == true && g_trigger_save == true )
                     {  
                     shader_has_stored_params[g_current_gl_program] = false;
                     g_currentProgramBuffer = DEFAULT_SLOT;  // Back to default
+                    g_trigger_save = false;
                     }
 }
 
@@ -132,8 +133,6 @@ void            CKernel::storeModes         ()
                     g_currentProgramBuffer = DEFAULT_SLOT;
                     }
 }
-
-
 // original version from ssd - f_buffer need to doublecheck the variables because f_buffer may have rename them falsely!!
 void            CKernel::util_store_program         () 
 {
