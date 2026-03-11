@@ -22,24 +22,9 @@
 extern "C" void vc_host_get_vchi_state(VCHI_INSTANCE_T *inst, VCHI_CONNECTION_T **conn);
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-//              CONSTRUCTOR / DECONSTRUCTOR
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-                CH264Decoder::CH264Decoder              (   )
-                    : m_ServiceHandle(0)
-                    , m_TransactionId(0)
-                    {
-                    }
-                CH264Decoder::~CH264Decoder             (   )
-{
-                if (m_ServiceHandle)
-                    {
-                    vchi_service_close(m_ServiceHandle);
-                    }
-}
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 //              USER API
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::MMALinitialize            (   u32 InBufferHandle,                                         // my input buffer handle from smem
+bool            CKernel::MMALinitialize            (   u32 InBufferHandle,                                         // my input buffer handle from smem
                                                             u32 InBufferSize,                                           // my allocated input buffer size 
                                                             u32 OutBufferHandleA,                                       // my output buffer handle a from smem 
                                                             u32 OutBufferHandleB,                                       // my output buffer handle b from smem
@@ -133,7 +118,7 @@ bool            CH264Decoder::MMALinitialize            (   u32 InBufferHandle, 
                 return true;                                                                                            // <- early exit we are debugging         
 }
 
-bool            CH264Decoder::MMALFramePoller           (   u32 frame_offset, 
+bool            CKernel::MMALFramePoller           (   u32 frame_offset, 
                                                             u32 frame_length  )
 {
                 if (!m_FirstFrameQueued) 
@@ -230,7 +215,7 @@ bool            CH264Decoder::MMALFramePoller           (   u32 frame_offset,
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              CALLBACK / HELPERS / UTILITY / WRAPPER
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CH264Decoder::MMALcallBack              (   void                   *callback_param, 
+void            CKernel::MMALcallBack              (   void                   *callback_param, 
                                                             VCHI_CALLBACK_REASON_T  reason, 
                                                             void                   *msg_handle )
 {
@@ -240,19 +225,19 @@ void            CH264Decoder::MMALcallBack              (   void                
                     vcos_event_signal(event); 
                     }
 }
-u32             CH264Decoder::NextTransId               (   u32 &tid )
+u32             CKernel::NextTransId               (   u32 &tid )
 {
                 tid = ( tid+1 ) & ~0x80000000u;                                             // mask for async messages really needed ?!                        
                 return tid;
 }
-bool            CH264Decoder::GetVCHIstate              (   )
+bool            CKernel::GetVCHIstate              (   )
 {
                 vc_host_get_vchi_state(&m_VCHIInstance, &m_Connection);                         //1. get the VCHI instance and the connection handle from bcm_host.h
                 MMALstoreLog ( "\nVCHI State Instance & Connection  ", (u32)m_VCHIInstance, (u32)m_Connection);                 
 
                 return true;
 }
-bool            CH264Decoder::MMALinitEvents            (   )
+bool            CKernel::MMALinitEvents            (   )
 {
                 if (vcos_event_create(&m_VCOSevent, "MMAL") != VCOS_SUCCESS)
                     {
@@ -262,7 +247,7 @@ bool            CH264Decoder::MMALinitEvents            (   )
                 MMALstoreLog ( "\nVCOS Event Init SUCCESS!  ", (u32)&m_VCOSevent);                    
                 return true;    
 }
-void            CH264Decoder::MMALstoreLog              (   const char* label, 
+void            CKernel::MMALstoreLog              (   const char* label, 
                                                             u32         value1, 
                                                             u32         value2, 
                                                             u32         value3, 
@@ -326,7 +311,7 @@ void            CH264Decoder::MMALstoreLog              (   const char* label,
                 m_DebugCharArray[m_CharIndex++] = '\n';
                 m_DebugCharArray[m_CharIndex]   = '\0';
 }
-void            CH264Decoder::MMALstoreMsg              (   const void* tx_msg, 
+void            CKernel::MMALstoreMsg              (   const void* tx_msg, 
                                                             u32         total_size, 
                                                             const char* label)
 {   
@@ -370,7 +355,7 @@ void            CH264Decoder::MMALstoreMsg              (   const void* tx_msg,
                 m_CharIndex++;    
                 m_DebugCharArray[m_CharIndex] = '\0';
 }
-bool            CH264Decoder::MMALsendAndWait           (   const void *msg, 
+bool            CKernel::MMALsendAndWait           (   const void *msg, 
                                                             size_t      msg_size, 
                                                             void       *rx_msg, 
                                                             size_t      max_reply_len, 
@@ -403,7 +388,7 @@ bool            CH264Decoder::MMALsendAndWait           (   const void *msg,
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              H264 Decoder Setup Code
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::MMALopenService          (   )
+bool            CKernel::MMALopenService          (   )
 {
                 SERVICE_CREATION_T tx_body                      = {};
                 tx_body.version.version                         = VC_MMAL_VER;
@@ -441,7 +426,7 @@ bool            CH264Decoder::MMALopenService          (   )
                     }
                return rc; // (rc == 0);
 }
-bool            CH264Decoder::MMALcreateComponent      (   )                                                            // mmal_msg_component_create    // expects a pointer therefore CreateComponent(&m_My_private_Member);
+bool            CKernel::MMALcreateComponent      (   )                                                            // mmal_msg_component_create    // expects a pointer therefore CreateComponent(&m_My_private_Member);
 {
                 mmal_msg_header tx_hdr                          = {};                                                           // 1. MMAL header: all fields shown
 
@@ -499,7 +484,7 @@ bool            CH264Decoder::MMALcreateComponent      (   )                    
                 
                 return /*true;*/ (reply->status == MMAL_MSG_STATUS_SUCCESS);
 }
-bool            CH264Decoder::MMALgetPortInfo          (    u32                             port_type, 
+bool            CKernel::MMALgetPortInfo          (    u32                             port_type, 
                                                             u32                            &port_handle, 
                                                             mmal_msg_port_info_get_reply   &PortInfoReply )             // mmal_msg_port_info_get
 {
@@ -600,7 +585,7 @@ bool            CH264Decoder::MMALgetPortInfo          (    u32                 
                  
                 return /*true;*/(PortInfoReply.status == MMAL_MSG_STATUS_SUCCESS);
 }
-void            CH264Decoder::MMALsetInputPortFormat    (   const mmal_msg_port_info_get_reply  &OriginalPortInfo, 
+void            CKernel::MMALsetInputPortFormat    (   const mmal_msg_port_info_get_reply  &OriginalPortInfo, 
                                                             mmal_msg_port_info_get_reply        &WorkingCopy )
 {
                 // 1. Copy full original struct (includes all nested fields)
@@ -622,7 +607,7 @@ void            CH264Decoder::MMALsetInputPortFormat    (   const mmal_msg_port_
                 WorkingCopy.es.video.crop.width                 = m_ResolutionX;
                 WorkingCopy.es.video.crop.height                = m_ResolutionY;    
 }
-void            CH264Decoder::MMALsetOutputPortFormat   (   const mmal_msg_port_info_get_reply  &OriginalPortInfo, 
+void            CKernel::MMALsetOutputPortFormat   (   const mmal_msg_port_info_get_reply  &OriginalPortInfo, 
                                                             mmal_msg_port_info_get_reply        &WorkingCopy )
 {
                 // 1. Copy full original struct (includes all nested fields)
@@ -644,7 +629,7 @@ void            CH264Decoder::MMALsetOutputPortFormat   (   const mmal_msg_port_
                 // leave all other fields from GET untouched
 }
 
-bool            CH264Decoder::SendPortWorkingCopy       (   u32                                 port_type, 
+bool            CKernel::SendPortWorkingCopy       (   u32                                 port_type, 
                                                             const mmal_msg_port_info_get_reply &WorkingCopy )
 {
                 // 1) Header
@@ -756,7 +741,7 @@ bool            CH264Decoder::SendPortWorkingCopy       (   u32                 
 }
 
 /*
-bool            CH264Decoder::SendPortWorkingCopy( u32 port_type, const mmal_msg_port_info_get_reply &WorkingCopy)
+bool            CKernel::SendPortWorkingCopy( u32 port_type, const mmal_msg_port_info_get_reply &WorkingCopy)
 {
                 // 1. Prepare MMAL header
                 mmal_msg_header tx_hdr              = {};
@@ -806,7 +791,7 @@ bool            CH264Decoder::SendPortWorkingCopy( u32 port_type, const mmal_msg
                 return (reply->status == MMAL_MSG_STATUS_SUCCESS);
 }
 */
-bool            CH264Decoder::MMALenableComponent       (   )                                                    // mmal_msg_component_enable
+bool            CKernel::MMALenableComponent       (   )                                                    // mmal_msg_component_enable
 {
                 mmal_msg_header tx_hdr              = {};
                 tx_hdr.magic                        = MMAL_MAGIC;
@@ -843,7 +828,7 @@ bool            CH264Decoder::MMALenableComponent       (   )                   
                 
                 return true; // (reply->status == MMAL_MSG_STATUS_SUCCESS);
 }
-bool            CH264Decoder::MMALenablePort            (   u32                                 port_handle, 
+bool            CKernel::MMALenablePort            (   u32                                 port_handle, 
                                                             const mmal_msg_port_info_get_reply &port_info )
 {
                 // Prepare MMAL header
@@ -898,7 +883,7 @@ bool            CH264Decoder::MMALenablePort            (   u32                 
                 MMALstoreLog("Enable Port SUCCESS", port_handle);
                 return true;
 }
-bool            CH264Decoder::MMALsetZeroCopyMode       (   u32 port_handle)                                     // mmal_msg_port_parameter_set
+bool            CKernel::MMALsetZeroCopyMode       (   u32 port_handle)                                     // mmal_msg_port_parameter_set
 {
                 mmal_msg_header tx_hdr                          = {};
                 tx_hdr.magic                                    = MMAL_MAGIC;
@@ -943,7 +928,7 @@ bool            CH264Decoder::MMALsetZeroCopyMode       (   u32 port_handle)    
 
                 return true; //(reply->status == MMAL_MSG_STATUS_SUCCESS);
 }
-void            CH264Decoder::MMALinitialOutputBuffers (   )
+void            CKernel::MMALinitialOutputBuffers (   )
 {
                 if(!MMALqueueOutputBuffer(mBodyOut, m_OutputBufferHandleA, m_OutputBufferSize))
                     {
@@ -963,7 +948,7 @@ void            CH264Decoder::MMALinitialOutputBuffers (   )
                     }
 }
 
-inline bool CH264Decoder::CheckGLError                  (   )
+inline bool CKernel::CheckGLError                  (   )
 {
                 GLenum error = glGetError();
                 if (error != GL_NO_ERROR)
@@ -985,7 +970,7 @@ inline bool CH264Decoder::CheckGLError                  (   )
                 return true;    
 }
 
-bool            CH264Decoder::MMALcreateTextures       (   )
+bool            CKernel::MMALcreateTextures       (   )
 {
                 int count = 0;
 
@@ -1034,7 +1019,7 @@ bool            CH264Decoder::MMALcreateTextures       (   )
                 MMALstoreLog("\nTexture Creation SUCCESS");
                 return true;
 }
-void            CH264Decoder::InitBodies                (   )
+void            CKernel::InitBodies                (   )
 {
                 // OUTPUT constants
                 mBodyOut = {};
@@ -1130,7 +1115,7 @@ void            CH264Decoder::InitBodies                (   )
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              H264 Decoder Runtime Code
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::MMALbufferReady           (   u32 handle  )
+bool            CKernel::MMALbufferReady           (   u32 handle  )
 {
                 if (handle == m_VCSMHandleA)
                     {
@@ -1188,7 +1173,7 @@ bool            CH264Decoder::MMALbufferReady           (   u32 handle  )
                     }
                 return true;
 }
-bool            CH264Decoder::MMALqueueOutputBuffer     (   mmal_msg_buffer_from_host_wire32&   tx_body, 
+bool            CKernel::MMALqueueOutputBuffer     (   mmal_msg_buffer_from_host_wire32&   tx_body, 
                                                             u32                                 vc_handle, 
                                                             u32                                 alloc_size  )
 {
@@ -1222,7 +1207,7 @@ bool            CH264Decoder::MMALqueueOutputBuffer     (   mmal_msg_buffer_from
                 return vchi_msg_queue(m_ServiceHandle, msg, (u32)sizeof(msg), VCHI_FLAGS_BLOCK_UNTIL_QUEUED, nullptr) == 0;
 }
 
-bool            CH264Decoder::MMALqueueInputBuffer      (   mmal_msg_buffer_from_host_wire32&   tx_body, 
+bool            CKernel::MMALqueueInputBuffer      (   mmal_msg_buffer_from_host_wire32&   tx_body, 
                                                             u32                                 frame_offset, 
                                                             u32                                 frame_length )
 {

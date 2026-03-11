@@ -131,7 +131,7 @@ void            CKernel::storeMsg       (   char*       buffer,
                 buffer[index] = '\0';
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-void            CH264Decoder::nextline(char* buffer,
+void            CKernel::nextline(char* buffer,
                                    u32& index)
 {
                 buffer[index] = '\n';

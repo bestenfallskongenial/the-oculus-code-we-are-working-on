@@ -8,18 +8,18 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              CONSTRUCTOR / DECONSTRUCTOR
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-CH264Parser::CH264Parser(void)
+CKernel::CKernel(void)
 {
     // Nothing to initialize - we use external storage
 }
-CH264Parser::~CH264Parser(void)
+CKernel::~CKernel(void)
 {
     // Nothing to clean up - we don't own any memory
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              USER API
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool    CH264Parser::ParseInitialize (  char*      blockBase,
+bool    CKernel::ParseInitialize (  char*      blockBase,
                                         int         max_textures,
                                         u32         max_tex_size,
                                         int         max_videos,  
@@ -45,7 +45,7 @@ bool    CH264Parser::ParseInitialize (  char*      blockBase,
     return true;
 }
 
-bool CH264Parser::ParseVideoAuto( int file_index, char* buffer_array[], size_t size_array[])
+bool CKernel::ParseVideoAuto( int file_index, char* buffer_array[], size_t size_array[])
 {
     if (size_array[file_index] < 8) return false;
 
@@ -70,7 +70,7 @@ bool CH264Parser::ParseVideoAuto( int file_index, char* buffer_array[], size_t s
 }
 
 
-bool CH264Parser::ParseAnnexB(    int     file_index, char*   buffer_array[], size_t  size_array[])
+bool CKernel::ParseAnnexB(    int     file_index, char*   buffer_array[], size_t  size_array[])
 {
     m_CharIndex[file_index] = 0;
     memset(m_DebugCharArray[file_index], 
@@ -246,7 +246,7 @@ bool CH264Parser::ParseAnnexB(    int     file_index, char*   buffer_array[], si
 
         return m_vid_is_valid[file_index];
 }
-bool CH264Parser::ParseMP4(int file_index, char* buffer_array[], size_t size_array[])
+bool CKernel::ParseMP4(int file_index, char* buffer_array[], size_t size_array[])
 {
     m_CharIndex[file_index] = 0;
     memset(m_DebugCharArray[file_index], 0, sizeof m_DebugCharArray[file_index]);
@@ -361,7 +361,7 @@ bool CH264Parser::ParseMP4(int file_index, char* buffer_array[], size_t size_arr
 
     return m_vid_is_valid[file_index];
 }
-bool CH264Parser::ParseAvcC(int file_index, const u8* avcc, size_t max_len)
+bool CKernel::ParseAvcC(int file_index, const u8* avcc, size_t max_len)
 {
     if (max_len < 8) {
         m_vid_is_valid[file_index] = false;
@@ -426,7 +426,7 @@ bool CH264Parser::ParseAvcC(int file_index, const u8* avcc, size_t max_len)
 
 
 /*
-bool CH264Parser::ParseMP4( int file_index, char* buffer_array[], size_t size_array[])
+bool CKernel::ParseMP4( int file_index, char* buffer_array[], size_t size_array[])
 {
     m_CharIndex[file_index] = 0;
     memset(m_DebugCharArray[file_index], 0, sizeof m_DebugCharArray[file_index]);
@@ -576,7 +576,7 @@ while (pos < mdat_payload_offset + mdat_payload_size && frame_idx < MAX_FRAMES) 
 }
 */
 /*inline*/ 
-u32 CH264Parser::ReadBE32(const u8 *p)
+u32 CKernel::ReadBE32(const u8 *p)
 {
     return (u32(p[0]) << 24) |
            (u32(p[1]) << 16) |
@@ -584,7 +584,7 @@ u32 CH264Parser::ReadBE32(const u8 *p)
             u32(p[3]);
 }
 /*
-size_t CH264Parser::FindBox(const u8 *data, size_t size, const char box_type[4])
+size_t CKernel::FindBox(const u8 *data, size_t size, const char box_type[4])
 {
     size_t pos = 0;
     while (pos + 8 <= size) {
@@ -608,7 +608,7 @@ size_t CH264Parser::FindBox(const u8 *data, size_t size, const char box_type[4])
     return 0; // not found
 }
 */
-size_t CH264Parser::FindBox(const u8 *data, size_t size, const char box_type[4])
+size_t CKernel::FindBox(const u8 *data, size_t size, const char box_type[4])
 {
     size_t pos = 0;
     while (pos + 8 <= size) {
@@ -625,7 +625,7 @@ size_t CH264Parser::FindBox(const u8 *data, size_t size, const char box_type[4])
     }
     return 0;
 }
-size_t CH264Parser::FindBoxDeep(const u8 *data, size_t size, const char box_type[4])
+size_t CKernel::FindBoxDeep(const u8 *data, size_t size, const char box_type[4])
 {
     size_t pos = 0;
     while (pos + 8 <= size) {
@@ -652,7 +652,7 @@ size_t CH264Parser::FindBoxDeep(const u8 *data, size_t size, const char box_type
 }
 
 /*
-size_t CH264Parser::RemoveEmulationBytes(const u8 *src, size_t src_len, u8 *dst)
+size_t CKernel::RemoveEmulationBytes(const u8 *src, size_t src_len, u8 *dst)
 {
     size_t dst_len = 0;
     int zero_count = 0;
@@ -673,7 +673,7 @@ size_t CH264Parser::RemoveEmulationBytes(const u8 *src, size_t src_len, u8 *dst)
     return dst_len;
 }
 */
-bool CH264Parser::ParseBPM          (int file_index, char* filename_array[], char* buffer_array[], size_t size_array[])
+bool CKernel::ParseBPM          (int file_index, char* filename_array[], char* buffer_array[], size_t size_array[])
 {
     m_CharIndex[file_index] = 0;
     memset(m_DebugCharArray[file_index], 
@@ -748,7 +748,7 @@ bool CH264Parser::ParseBPM          (int file_index, char* filename_array[], cha
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              CALLBACK / HELPERS / UTILITY / WRAPPER
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void CH264Parser::ParserStoreLog(  int file_index,
+void CKernel::ParserStoreLog(  int file_index,
                                  const char* label,
                                  u32 value1,
                                  u32 value2,
@@ -818,7 +818,7 @@ void CH264Parser::ParserStoreLog(  int file_index,
     m_DebugCharArray[file_index][m_CharIndex[file_index]++] = '\n';
     m_DebugCharArray[file_index][m_CharIndex[file_index]]   = '\0';
 }
-void            CH264Parser::ParserStoreMsg              ( int file_index,const void* tx_msg, u32 total_size, const char* label )
+void            CKernel::ParserStoreMsg              ( int file_index,const void* tx_msg, u32 total_size, const char* label )
 {   
     // insert leading newline
     m_DebugCharArray[file_index][m_CharIndex[file_index]] = '\n';
@@ -861,7 +861,7 @@ void            CH264Parser::ParserStoreMsg              ( int file_index,const 
     m_CharIndex[file_index]++;    
     m_DebugCharArray[file_index][m_CharIndex[file_index]] = '\0';
 }
-size_t CH264Parser::FindNextStartCode(u8* data, size_t pos, size_t size) const
+size_t CKernel::FindNextStartCode(u8* data, size_t pos, size_t size) const
 {
     while (pos < size - 3) {
         if ((data[pos] == 0 && data[pos+1] == 0 && data[pos+2] == 1) ||
@@ -873,7 +873,7 @@ size_t CH264Parser::FindNextStartCode(u8* data, size_t pos, size_t size) const
     }
     return size; // No more start codes found
 }
-u32 CH264Parser::ReadExpGolomb(u8* data, size_t* bit_offset) const
+u32 CKernel::ReadExpGolomb(u8* data, size_t* bit_offset) const
 {
     size_t leadingZeroBits = 0;
     size_t offset = *bit_offset;
@@ -923,7 +923,7 @@ u32 CH264Parser::ReadExpGolomb(u8* data, size_t* bit_offset) const
     *bit_offset = offset;
     return result;
 }
-bool CH264Parser::ParseSPS(u8* sps_data, size_t sps_size, u16* width, u16* height, u8* profile, u8* level) const
+bool CKernel::ParseSPS(u8* sps_data, size_t sps_size, u16* width, u16* height, u8* profile, u8* level) const
 {
     // Ensure we have enough data
     if (sps_size < 3) 
