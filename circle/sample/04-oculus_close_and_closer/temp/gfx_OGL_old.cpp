@@ -1,7 +1,5 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::gfx_init_OGL   (   glsl_state* m_glsl,
-                                            char*       buffer,
-                                            u32&        index)
+void            CKernel::gfx_init_OGL   (   glsl_state* m_glsl)
 {
                 int32_t success = 0;
                 EGLBoolean result;
@@ -34,14 +32,14 @@ void            CKernel::gfx_init_OGL   (   glsl_state* m_glsl,
                 m_glsl->display             = eglGetDisplay             (   EGL_DEFAULT_DISPLAY     );  // get an EGL display connection
 #ifdef __OLG_DEBUG__                
 assert(m_glsl->display!=EGL_NO_DISPLAY);
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __OLG_DEBUG__
                 result                      = eglInitialize             (   m_glsl->display,         // initialize the EGL display connection
                                                                             NULL, 
                                                                             NULL                    );
 #ifdef __OLG_DEBUG__
 assert(EGL_FALSE != result);//?
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __OLG_DEBUG__
                 result                      = eglChooseConfig           (   m_glsl->display,         // get an appropriate EGL frame buffer configuration 
                                                                             attribute_list, 
@@ -50,12 +48,12 @@ gfx_check(buffer, index, __FILE__, __LINE__);
                                                                             &num_config             );
 #ifdef __OLG_DEBUG__                
 assert(EGL_FALSE != result); //?
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __OLG_DEBUG__
                 result                      = eglBindAPI                (   EGL_OPENGL_ES_API);                                         // get an appropriate EGL frame buffer configuration
 #ifdef __OLG_DEBUG__
 assert(EGL_FALSE != result);//?
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __OLG_DEBUG__
                 m_glsl->context             = eglCreateContext          (   m_glsl->display,         // create an EGL rendering context
                                                                             config, 
@@ -63,14 +61,14 @@ gfx_check(buffer, index, __FILE__, __LINE__);
                                                                             context_attributes      );
 #ifdef __OLG_DEBUG__
 assert(m_glsl->context!=EGL_NO_CONTEXT);//?
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __OLG_DEBUG__
                 success                     = graphics_get_display_size (   0 /* LCD */,            // create an EGL window surface
                                                                             &m_glsl->screen_width, 
                                                                             &m_glsl->screen_height   );
 #ifdef __OLG_DEBUG__
 assert( success >= 0 );
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __OLG_DEBUG__
                 dst_rect.x                  = 0;
                 dst_rect.y                  = 0;
@@ -102,7 +100,7 @@ gfx_check(buffer, index, __FILE__, __LINE__);
 
                 vc_dispmanx_update_submit_sync                          (   dispman_update  );
 #ifdef __OLG_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __OLG_DEBUG__            
                 m_glsl->surface             = eglCreateWindowSurface    (   m_glsl->display, 
                                                                             config, 
@@ -110,7 +108,7 @@ gfx_check(buffer, index, __FILE__, __LINE__);
                                                                             NULL            );
 #ifdef __OLG_DEBUG__
 assert(m_glsl->surface != EGL_NO_SURFACE);//?
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __OLG_DEBUG__                
                 result                      = eglMakeCurrent            (   m_glsl->display,     // connect the context to the surface
                                                                             m_glsl->surface, 
@@ -118,12 +116,12 @@ gfx_check(buffer, index, __FILE__, __LINE__);
                                                                             m_glsl->context  );
 #ifdef __OLG_DEBUG__
 assert(EGL_FALSE != result);//?
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __OLG_DEBUG__
                                               glClearColor              (   0.15f, 0.25f, 0.35f, 1.0f);                                    // Set background color and clear buffers
                                               glClear                   (   GL_COLOR_BUFFER_BIT );
 #ifdef __OLG_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __OLG_DEBUG__            
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

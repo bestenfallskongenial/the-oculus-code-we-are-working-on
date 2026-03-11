@@ -1,9 +1,9 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initVshaders   (   glsl_state* m_glsl, 
                                             int         p_fromFile, 
-                                            int         p_toFile,
-                                            char*       buffer,
-                                            u32&        index)    // Function to initialize Vertex Shaders
+                                            int         p_toFile)    // Function to initialize Vertex Shaders
 {
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
@@ -13,31 +13,27 @@ void            CKernel::initVshaders   (   glsl_state* m_glsl,
                     glShaderSource(m_glsl->gl_vsh_id[i], 1, &SourcePrtVshader, 0);  // will be later maybe changed to multible instances of vshader
                     glCompileShader(m_glsl->gl_vsh_id[i]);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                     }
 }
 
-void            CKernel::initOshader    (   glsl_state* m_glsl,
-                                            char*       buffer,
-                                            u32&        index )    // Function to initialize Fragment Shaders                        <- *m_glsl should change too, right?
+void            CKernel::initOshader    (   glsl_state* m_glsl )    // Function to initialize Fragment Shaders                        <- *m_glsl should change too, right?
 {
                     const char *SourcePrtFshader = m_bufferOmf[0]; // because this array is only [1] for consistency
 
                     m_glsl->gl_oms_id[0] = glCreateShader(GL_FRAGMENT_SHADER);       // gl_oms_id is new for the overlay shader
                     glShaderSource(m_glsl->gl_oms_id[0], 1, &SourcePrtFshader, 0);   // will m_glsl not also become a seperate struct here?!
                     glCompileShader(m_glsl->gl_oms_id[0]);
-                    shaderLog(buffer, index, m_glsl->gl_oms_id[0], 1);
+                    shaderLog(m_glsl->gl_oms_id[0], 1);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
 
 }
 void            CKernel::initFshaders   (   glsl_state* m_glsl, 
                                             int         p_fromFile, 
-                                            int         p_toFile,
-                                            char*       buffer,
-                                            u32&        index)    // Function to initialize Fragment Shaders                        <- we need a copy here for the overlay shader
+                                            int         p_toFile)    // Function to initialize Fragment Shaders                        <- we need a copy here for the overlay shader
 {
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
@@ -46,15 +42,13 @@ void            CKernel::initFshaders   (   glsl_state* m_glsl,
                     m_glsl->gl_fsh_id[i] = glCreateShader(GL_FRAGMENT_SHADER);
                     glShaderSource(m_glsl->gl_fsh_id[i], 1, &SourcePrtFshader, 0);
                     glCompileShader(m_glsl->gl_fsh_id[i]);
-                    shaderLog(buffer, index, m_glsl->gl_fsh_id[i], i);
+                    shaderLog(m_glsl->gl_fsh_id[i], i);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                     }
 }
-void            CKernel::initOprogram   (   glsl_state* m_glsl,
-                                            char*       buffer,
-                                            u32&        index)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+void            CKernel::initOprogram   (   glsl_state* m_glsl)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                     if (m_shaderStatusFlags[i])                                     // we need to figure out from where this comes, we need also a separate method here
                         {
@@ -66,9 +60,9 @@ void            CKernel::initOprogram   (   glsl_state* m_glsl,
                         GLint linkStatus;
                         glGetProgramiv(m_glsl->gl_omp_id[0], GL_LINK_STATUS, &linkStatus);
 
-                        programLog(buffer, index, m_glsl->gl_omp_id[0],i);
+                        programLog(m_glsl->gl_omp_id[0],i);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
 
                         if (linkStatus == GL_FALSE) 
@@ -86,9 +80,7 @@ gfx_check(buffer, index, __FILE__, __LINE__);
 }
 void            CKernel::initFprograms  (   glsl_state* m_glsl, 
                                             int         p_fromFile, 
-                                            int         p_toFile,
-                                            char*       buffer,
-                                            u32&        index)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+                                            int         p_toFile)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
@@ -102,9 +94,9 @@ void            CKernel::initFprograms  (   glsl_state* m_glsl,
                         GLint linkStatus;
                         glGetProgramiv(m_glsl->gl_prg_id[i], GL_LINK_STATUS, &linkStatus);
 
-                        programLog(buffer, index, m_glsl->gl_prg_id[i],i);
+                        programLog(m_glsl->gl_prg_id[i],i);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
 
                         if (linkStatus == GL_FALSE) 
@@ -121,18 +113,16 @@ gfx_check(buffer, index, __FILE__, __LINE__);
                     m_Watchdog.Start(TIMEOUT*3); // new watchdog        
                     }
 }
-void            CKernel::initOuniforms  (   glsl_state* m_glsl,
-                                            char*       buffer,
-                                            u32&        index)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+void            CKernel::initOuniforms  (   glsl_state* m_glsl)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                 if (m_shaderStatusFlags[i])
                     {
                     glUseProgram(m_glsl->gl_omp_id[0]);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                     m_glsl->gl_vtx           = glGetAttribLocation( m_glsl->gl_omp_id[0], "vertex" );
 
@@ -141,30 +131,28 @@ gfx_check(buffer, index, __FILE__, __LINE__);
                     m_glsl->u_tile_rect[0]   = glGetUniformLocation(m_glsl->gl_omp_id[0], "u_menu_tile_rect" );
                     m_glsl->u_tile_index[0]  = glGetUniformLocation(m_glsl->gl_omp_id[0], "u_menu_tile_index" );
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                     }
 }
 
 void            CKernel::initFuniforms  (   glsl_state* m_glsl, 
                                             int         p_fromFile, 
-                                            int         p_toFile,
-                                            char*       buffer,
-                                            u32&        index)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+                                            int         p_toFile)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                     if (m_shaderStatusFlags[i])
                         {
                         glUseProgram(m_glsl->gl_prg_id[i]);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                         m_glsl->gl_vtx           = glGetAttribLocation( m_glsl->gl_prg_id[i], "vertex" );
 
@@ -189,15 +177,13 @@ gfx_check(buffer, index, __FILE__, __LINE__);
                         m_glsl->u_tex_id[i][8]   = glGetUniformLocation(m_glsl->gl_prg_id[i], "tex[8]" );
                         m_glsl->u_tex_id[i][9]   = glGetUniformLocation(m_glsl->gl_prg_id[i], "tex[9]" );
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                         }
                     }
 }
 
-void            CKernel::initOtexture   (   glsl_state* m_glsl,
-                                            char*       buffer,
-                                            u32&        index)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+void            CKernel::initOtexture   (   glsl_state* m_glsl)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                 // p_validTextureCount = 0;  // Counter for valid textures only
 
@@ -206,14 +192,14 @@ void            CKernel::initOtexture   (   glsl_state* m_glsl,
                         glGenTextures(1, &m_glsl->gl_omt_id[0]);  // Use counter instead of i - no in this case we use not this one
                         glBindTexture(GL_TEXTURE_2D, m_glsl->gl_omt_id[0]);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                         GLvoid* bitmapData = &m_bufferOmt[0][m_H264SystemParser.m_tex_data_offset[0]]; // oh, we need to figure out how we do the bmp parsing for only the atlas!!
 
@@ -227,11 +213,11 @@ gfx_check(buffer, index, __FILE__, __LINE__);
                                    GL_UNSIGNED_BYTE, 
                                    bitmapData);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                         glBindTexture(GL_TEXTURE_2D, 0);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                     //  p_validTextureCount++;  the texture atlas is not part of the user pipeline ! Increment only after successful texture creation
                         }
@@ -239,9 +225,7 @@ gfx_check(buffer, index, __FILE__, __LINE__);
 }
 void            CKernel::initUtextures  (   glsl_state* m_glsl, 
                                             int         p_fromFile, 
-                                            int         p_toFile,
-                                            char*       buffer,
-                                            u32&        index)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+                                            int         p_toFile)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                 // p_validTextureCount = 0;  // Counter for valid textures only
 
@@ -252,14 +236,14 @@ void            CKernel::initUtextures  (   glsl_state* m_glsl,
                         glGenTextures(1, &m_glsl->gl_tex_id[p_validTextureCount]);  // Use counter instead of i
                         glBindTexture(GL_TEXTURE_2D, m_glsl->gl_tex_id[p_validTextureCount]);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                         GLvoid* bitmapData = &m_bufferTex[i][m_H264Parser.m_tex_data_offset[i]];
 
@@ -273,11 +257,11 @@ gfx_check(buffer, index, __FILE__, __LINE__);
                                    GL_UNSIGNED_BYTE, 
                                    bitmapData);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                         glBindTexture(GL_TEXTURE_2D, 0);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                         p_validTextureCount++;  // Increment only after successful texture creation
                         }
@@ -285,9 +269,7 @@ gfx_check(buffer, index, __FILE__, __LINE__);
                     }
 }
 
-void            CKernel::initVbuffer    (   glsl_state* m_glsl,
-                                            char*       buffer,
-                                            u32&        index)                              // Function to initialize Buffers 
+void            CKernel::initVbuffer    (   glsl_state* m_glsl)                              // Function to initialize Buffers 
 {
                 static const GLfloat vertex_data[] = 
                     {  -1.0,-1.0, 1.0, 1.0,
@@ -299,17 +281,17 @@ void            CKernel::initVbuffer    (   glsl_state* m_glsl,
 
                 glGenBuffers(1, &m_glsl->gl_buf);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
 
                 glBindFramebuffer(GL_FRAMEBUFFER, 0);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                 
                 glViewport(0, 0, m_glsl->screen_width, m_glsl->screen_height);                        // Prepare viewport
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
                 
                 glBindBuffer(GL_ARRAY_BUFFER, m_glsl->gl_buf);                                          // Upload vertex data to a buffer
@@ -317,6 +299,6 @@ gfx_check(buffer, index, __FILE__, __LINE__);
                 glVertexAttribPointer(m_glsl->gl_vtx, 4, GL_FLOAT, 0, 16, 0);
                 glEnableVertexAttribArray(m_glsl->gl_vtx);
 #ifdef __GL_DEBUG__
-gfx_check(buffer, index, __FILE__, __LINE__);
+glslCheck();
 #endif // __GL_DEBUG__
 }
