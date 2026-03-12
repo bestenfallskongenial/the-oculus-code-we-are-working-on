@@ -33,7 +33,7 @@ void            CKernel::randomVec8           (uint32_t p_seed)                 
                 g_inOutMatrixInt[7][rnd] = ( g_inOutMatrixFlt[7][rnd] * f_max_int);
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::calculateBPM   (   unsigned long   p_triggerTimeClockA, 
+void            CKernel::calculate2BPM   (   unsigned long   p_triggerTimeClockA, 
                                             unsigned long   p_triggerTimeClockB) 
 {
                 static unsigned long f_lastTime[2];
@@ -50,9 +50,8 @@ void            CKernel::calculateBPM   (   unsigned long   p_triggerTimeClockA,
                     f_intervalBuffer[0][0]          =   f_timeBuffer[0][1] - f_timeBuffer[0][0];   
                     f_intervalBuffer[0][1]          =   f_timeBuffer[0][2] - f_timeBuffer[0][1];
                     f_intervalBuffer[0][2]          =   f_timeBuffer[0][3] - f_timeBuffer[0][2];
-                    if(     f_intervalBuffer[0][1]  <   f_intervalBuffer[0][0] * 1.25f 
-                        &&  f_intervalBuffer[0][2]  <   f_intervalBuffer[0][0] * 1.25f
-                        &&  f_intervalBuffer[0][0]  <   f_intervalBuffer[0][2] * 1.25f ) 
+
+                    if(     f_intervalBuffer[0][1]  <   f_intervalBuffer[0][0] * 1.25f &&  f_intervalBuffer[0][2]  <   f_intervalBuffer[0][0] * 1.25f &&  f_intervalBuffer[0][0]  <   f_intervalBuffer[0][2] * 1.25f ) // calculates an average and allows 25% play ( quite high right ) 
                         {
                         f_intervalAverage           = ( f_intervalBuffer[0][0] + f_intervalBuffer[0][1] + f_intervalBuffer[0][2]) / 3;
             
@@ -72,9 +71,8 @@ void            CKernel::calculateBPM   (   unsigned long   p_triggerTimeClockA,
                     f_intervalBuffer[1][0]          =   f_timeBuffer[1][1] - f_timeBuffer[1][0];
                     f_intervalBuffer[1][1]          =   f_timeBuffer[1][2] - f_timeBuffer[1][1];
                     f_intervalBuffer[1][2]          =   f_timeBuffer[1][3] - f_timeBuffer[1][2];
-                    if(     f_intervalBuffer[1][1]  <   f_intervalBuffer[1][0] * 1.25f                              // calculates an average and allows 25% play ( quite high right ) 
-                        &&  f_intervalBuffer[1][2]  <   f_intervalBuffer[1][0] * 1.25f
-                        &&  f_intervalBuffer[1][0]  <   f_intervalBuffer[1][2] * 1.25f ) 
+
+                    if(     f_intervalBuffer[1][1]  <   f_intervalBuffer[1][0] * 1.25f &&  f_intervalBuffer[1][2]  <   f_intervalBuffer[1][0] * 1.25f &&  f_intervalBuffer[1][0]  <   f_intervalBuffer[1][2] * 1.25f ) 
                         {
                         f_intervalAverage           = ( f_intervalBuffer[1][0] + f_intervalBuffer[1][1] + f_intervalBuffer[1][2]) / 3;
             
@@ -89,8 +87,42 @@ void            CKernel::calculateBPM   (   unsigned long   p_triggerTimeClockA,
                     }
                 g_activeBpmChannel                  = ( g_lastBpmCalculation[0] > g_lastBpmCalculation[1]) ? 0 : 1; // what was the last bpm input? 
 }
+
+void            CKernel::calculate1BPM   (   int source, unsigned long   p_triggerTimeClock) 
+{
+                static unsigned long f_lastTime[2];
+                static unsigned long f_timeBuffer[2][4] = {{0}};  
+                static unsigned long f_intervalBuffer[2][3]= { 0 };
+
+                unsigned long f_intervalAverage = 0;
+                static int f_timeIndex[2] = {0};
+
+                if (p_triggerTimeClock != f_lastTime[source])                                                          // Process button u_time (instance 0)
+                    {
+                    f_timeBuffer[source][f_timeIndex[source]] = p_triggerTimeClock;
+        
+                    f_intervalBuffer[source][0]          =   f_timeBuffer[source][1] - f_timeBuffer[source][0];   
+                    f_intervalBuffer[source][1]          =   f_timeBuffer[source][2] - f_timeBuffer[source][1];
+                    f_intervalBuffer[source][2]          =   f_timeBuffer[source][3] - f_timeBuffer[source][2];
+                    
+                    if(     f_intervalBuffer[source][1]  <   f_intervalBuffer[source][0] * 1.25f &&  f_intervalBuffer[source][2]  <   f_intervalBuffer[source][0] * 1.25f &&  f_intervalBuffer[source][0]  <   f_intervalBuffer[source][2] * 1.25f ) // calculates an average and allows 25% play ( quite high right ) 
+                        {
+                        f_intervalAverage           = ( f_intervalBuffer[source][0] + f_intervalBuffer[source][1] + f_intervalBuffer[source][2]) / 3;
+            
+                        g_resultBPM[source]              =   60000000 / f_intervalAverage;
+            
+                        g_intervalCalculated[source]     =   f_intervalAverage;
+                        g_lastBpmCalculation[source]     =   m_Timer.GetClockTicks();
+                        }
+                    f_lastTime[source]                   =   p_triggerTimeClock;
+
+                    f_timeIndex[source]                  = ( f_timeIndex[source] + 1) % 4;    
+                    }
+
+                g_activeBpmChannel                  = ( g_lastBpmCalculation[0] > g_lastBpmCalculation[1]) ? 0 : 1; // what was the last bpm input? 
+}
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::predictedNextBeat ()
+void            CKernel::predictedNextBeat2 ()
 {
                 unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                      // Get the current u_time in clock ticks
 
@@ -137,6 +169,34 @@ void            CKernel::predictedNextBeat ()
                     g_lfoMultiplierTMP[1]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF2_MULT]];
                     }
 }
+
+void            CKernel::predictedNextBeat1 (int source)
+{
+                unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                      // Get the current u_time in clock ticks
+
+                if (currentTime >= g_nextBeatTime[source])
+                    {
+                    g_nextBeatTime[source]               +=  g_intervalCalculated[0];                                                                        // Predict the next beat u_time
+                    }
+                if (currentTime >= g_nextCircleBuffer[source]) 
+                    {
+                    g_lastCircleBuffer[source]           =   g_nextCircleBuffer[source];
+                    g_nextCircleBuffer[source]           =   g_nextCircleBuffer[source] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[source]);
+                    g_lfoMultiplierTMP[source]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF1_MULT]];
+                    }
+                if ((g_lastBpmCalculationTMP[source]     !=  g_lastBpmCalculation[source]))
+                    {
+                    g_nextBeatTime[source]               =   g_lastBpmCalculation[source];                                                                      // Reset to current time for new BPM
+                    g_lastBpmCalculationTMP[source]      =   g_lastBpmCalculation[source];
+                    }
+                if (g_lfoMultiplierTMP[source]           !=  g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF1_MULT]])
+                    {
+                    g_lastCircleBuffer[source]           =   g_lastBpmCalculation[g_activeBpmChannel];
+                    g_nextCircleBuffer[source]           =   g_lastBpmCalculation[g_activeBpmChannel] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[source]);
+                    g_lfoMultiplierTMP[source]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF1_MULT]];
+                    }
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::sampleWaveTable                   ()
 {

@@ -5,7 +5,7 @@ static void     CKernel::screen_plot                          (   unsigned x, un
 {
                 gE_PixelBuffer[y * (gE_PitchBytes >> 2) + x] = color;
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 static void     CKernel::screen_draw_char                     (   char ch,
                                                                         unsigned charCol,
                                                                         unsigned charRow,

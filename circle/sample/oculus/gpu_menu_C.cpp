@@ -2,7 +2,7 @@
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MenuGpuState g_menu_state = { false, 0, 0, -1, -1, -1, -1, -1, {0}, {{0.0f, 0.0f, 0.0f, 0.0f}} };
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // compile shader stage
 GLuint CKernel::gpu_render_helper_compile_shader(GLenum shader_type, char *shader_source, CString *optional_log)
 {
@@ -12,7 +12,7 @@ GLuint CKernel::gpu_render_helper_compile_shader(GLenum shader_type, char *shade
 
     return shader;
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // link program from vertex + fragment shader ids
 GLuint CKernel::gpu_render_helper_link_program(GLuint vertex_shader, GLuint fragment_shader, CString *optional_log)
 {
@@ -23,7 +23,7 @@ GLuint CKernel::gpu_render_helper_link_program(GLuint vertex_shader, GLuint frag
 
     return program;
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // create menu program with shared vertex shader and menu fragment source
 // ? what is this? what is this for ? where has it reference in gfx.cpp ?
 bool CKernel::gpu_render_helper_build_menu_program(GLuint shared_vertex_shader, char *menu_fragment_source, GLuint *out_program, CString *optional_log)
@@ -36,7 +36,7 @@ bool CKernel::gpu_render_helper_build_menu_program(GLuint shared_vertex_shader, 
     *out_program = menu_program;
     return true;
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // upload decoded rgb24 atlas to gl texture
 bool CKernel::gpu_render_helper_upload_menu_atlas_rgb24(void *rgb_pixels, unsigned width, unsigned height, GLuint *out_texture)
 {
@@ -56,7 +56,7 @@ bool CKernel::gpu_render_helper_upload_menu_atlas_rgb24(void *rgb_pixels, unsign
     *out_texture = texture;
     return true;
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // initialize menu render states and build static rectangles + current indices
 bool CKernel::gpu_render_menu_init(GLuint shared_vertex_shader, char *menu_fsh_source, GLuint atlas_texture)
 {
@@ -122,7 +122,7 @@ bool CKernel::gpu_render_menu_init(GLuint shared_vertex_shader, char *menu_fsh_s
     g_menu_state.initialized = true;
     return true;
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // rebuild layout values from global menu knobs
 void CKernel::gpu_render_menu_rebuild_layout()
 {
@@ -148,7 +148,7 @@ void CKernel::gpu_render_menu_rebuild_layout()
         g_menu_state.tile_rect[i].h = sy * th;
     }
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // rebuild dynamic indices from mode buffers and bpm values
 void CKernel::gpu_render_menu_update_indices()
 {
@@ -173,7 +173,7 @@ void CKernel::gpu_render_menu_update_indices()
     g_menu_state.tile_index[14] = 48;
     g_menu_state.tile_index[15] = 49;
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // draw menu layer using current menu states arrays
 void CKernel::gpu_render_menu_draw(GLuint fullscreen_vbo)
 {
@@ -202,7 +202,7 @@ void CKernel::gpu_render_menu_draw(GLuint fullscreen_vbo)
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     glDisable(GL_BLEND);
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // shutdown menu render program and reset cached states
 void CKernel::gpu_render_menu_shutdown()
 {

@@ -1,11 +1,5 @@
 // bufferToScreen.cpp
-
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-for kernel.h
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 boolean CKernel::screen_init                              (   void );
 void    CKernel::screen_clear_screen                      (   u32 bgColor );
 void    CKernel::screen_draw_buffer_segment     (   const char *pSourceBuffer,
@@ -37,7 +31,6 @@ static unsigned  gE_CharWidth    = 0;
 static unsigned  gE_CharHeight   = 0;
 static unsigned  gE_Cols         = 0;
 static unsigned  gE_Rows         = 0;
-*/
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // adc_read.cpp
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -52,17 +45,12 @@ static unsigned  gE_Rows         = 0;
 // - Decrements each hold timer on every call until it reaches zero.
 // What it is doing in practice:
 // - Produces deterministic signal outputs (`raw`, `val`, `au0..au3`) and deterministic temporary UI range expansion.
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // features.cpp
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-/*
-g_resultBPM g_nextBeatTime  g_intervalCalculated    g_elapsedMicroseconds   g_sampleIndex   g_cycleLength   g_lfoMultiplier g_lfoMultiplierTMP   g_lastBpmCalculation   g_lastBpmCalculationTMP g_lastCircleBuffer  g_nextCircleBuffer      
-
-i love to have a similar array i i have for the in/output matrix
-*/
-
-/*
+// g_resultBPM g_nextBeatTime  g_intervalCalculated    g_elapsedMicroseconds   g_sampleIndex   g_cycleLength   g_lfoMultiplier g_lfoMultiplierTMP   g_lastBpmCalculation   g_lastBpmCalculationTMP g_lastCircleBuffer  g_nextCircleBuffer      
+// i love to have a similar array i i have for the in/output matrix
 void            CKernel::audioEnergy          (float p_adcvalue) 
 {   
                 const int f_maxBuffer = 33;
@@ -129,7 +117,6 @@ void            CKernel::audioEnergy          (float p_adcvalue)
                 f_indexBand2 = (f_indexBand2 + 1) % f_averageBufferSizeTable[2][g_sensitivityNew];
                 f_indexBand3 = (f_indexBand3 + 1) % f_averageBufferSizeTable[3][g_sensitivityNew];
 }
-*/
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
     we need a combined array for the bpm/lfo timing stuff here, same as in circle/sample/04-oculus_close_and_closer/menu_final.cpp
@@ -144,7 +131,6 @@ void            CKernel::audioEnergy          (float p_adcvalue)
 // helpers.cpp
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // helpers i didnt integrate yet, but they are here and working why not using the actual filename array? i mean the log is .txt
-/*
 void            CKernel::GenerateH264ParserInfo( int p_fileIndex)
 {
                 CString f_bufferParser = m_H264Parser.m_DebugCharArray[p_fileIndex];
@@ -161,8 +147,6 @@ void            CKernel::GenerateBmpOverlayInfo( int p_fileIndex)               
                 CString f_bufferParser = m_H264SystemParser.m_DebugCharArray[p_fileIndex];
                 filesystem_save_log_file( "emmc1-1", OMT__LOG_NAMES[p_fileIndex], f_bufferParser);      // <---- is now saveBuffer we need to refactor!    
 }
-*/
-
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // menu_final.cpp
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -210,15 +194,31 @@ uint8_t mode_map[8][17] =                                   // mode_map is not t
 //     31
 // default
 
+g_inOutMatrixInt[CHANNEL][ENUM_SOURCE];
+g_inOutMatrixFlt[CHANNEL][ENUM_SOURCE];
+g_menuPickUpFlag[4*menu_layers];
+
+enum io_types
+{
+int raw = 0,        //  the position the dampened adc values per channels are stored *
+int  in,            //  either the calculated int or flt value *
+int out,            //  here lands the processed ( after mode ) for the glsl uniforms      
+int rnd,            //  either the per-channel random int or flt value *
+int lf1,            //  either the lfo one int or flt value
+int lf2,            //  either the lfo two int or flt value
+int au0,            //  the audio band 0 flt value
+int au1,            //  the audio band 1 flt value
+int au2,            //  the audio band 2 flt value
+int au3,            //  the audio band 3 flt value
+                    // *means i have a unique value for each channel - the other values are singular, and/or only int/flt
+int trL,            //  per channel threshold low !!! dont forget to copy the values in here    128
+int trH,            //  per channel threshold high                                              320
+//  trF,            //  per channel threshold "flag"
+int io_type_count
+}
+
 int g_centralModeBuffer[SLOTS][MODES];
 /* 
-                        need to figure out the enums here again!
-
-g_inOutMatrixInt[CHANNEL][ENUM_SOURCE]
-g_inOutMatrixFlt[CHANNEL][ENUM_SOURCE]
-g_menuPickUpFlag[4*menu_layers]
-
-
 INT	    ADC_RAW     (SCALED)IN  (SCALED)OUT RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
 ch0	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
 ch1	    U	        U	        U           U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
@@ -242,29 +242,8 @@ ch7	    opt         U	        U           U	        G	        G	        G	      
 
 enum:   raw         in          out         rnd         lf1         lf2         au0         au1         au2         au3         trL         trH
 
-
 all the G ( global ) sit in channel 0 - U are unique values per channel 
 */
-
-enum io_types
-{
-int raw = 0,        //  the position the dampened adc values per channels are stored *
-int  in,            //  either the calculated int or flt value *
-int out,            //  here lands the processed ( after mode ) for the glsl uniforms      
-int rnd,            //  either the per-channel random int or flt value *
-int lf1,            //  either the lfo one int or flt value
-int lf2,            //  either the lfo two int or flt value
-int au0,            //  the audio band 0 flt value
-int au1,            //  the audio band 1 flt value
-int au2,            //  the audio band 2 flt value
-int au3,            //  the audio band 3 flt value
-                    // *means i have a unique value for each channel - the other values are singular, and/or only int/flt
-int trL,            //  per channel threshold low !!! dont forget to copy the values in here    128
-int trH,            //  per channel threshold high                                              320
-//  trF,            //  per channel threshold "flag"
-int io_type_count
-}
-
 
 /*
 Discrete/equality pickup
@@ -294,14 +273,12 @@ uint8_t mode_map[8][17] =
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
-
 };
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// the_OV_functions.cpp
+// gpu_menu_C.cpp ( i assume ! )
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // we need to figure out what we already have done in gfx_init.cpp and how we nust implement the rest here following OUR framework!
 
-/*
 // menu asset extension lists used by scan/load flow
 char *MENU_FSH_EXTENSIONS[1] = { (char *)"fsh" };   // is implemented elsewhere!!
 char *MENU_TEX_EXTENSIONS[1] = { (char *)"bmp" };   // is implemented elsewhere!!
@@ -365,13 +342,53 @@ struct MenuGpuState
     int tile_index[16];
     MenuTileRect tile_rect[16];
 };
-*/
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// start_up_screen.cpp
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool            CKernel::display_startup_screen(CUBE_STATE_T *state)
+{                   CString info;
+                    const char* clearScreen = "\x1b[H\x1b[J";
+
+                    m_Screen.Write(clearScreen, strlen(clearScreen));
+
+                    m_Screen.Write("\n", 1);
+
+                    info.Format("\n\n  Machine Model: %s V%u.%u SoC Type: %s | RAM Size: %u MB\n\n", 
+                    m_MachineInfo.GetMachineName(), 
+                    m_MachineInfo.GetModelMajor(), 
+                    m_MachineInfo.GetModelRevision(),
+                    m_MachineInfo.GetSoCName(), 
+                    m_MachineInfo.GetRAMSize());
+                    m_Screen.Write(info, info.GetLength());
+
+                    info.Format("    CPU Speed: %s | SoC Max Temperature: %u Celsius\n\n", 
+                    m_Options.GetCPUSpeed() == CPUSpeedMaximum ? "Maximum" : "Low", m_Options.GetSoCMaxTemp());
+                    m_Screen.Write(info, info.GetLength());
+
+                    info.Format("    Core: %3u MHz | ARM: %3u MHz\n\n    EMMC: %3u MHz | EMMC2: %3u MHz | UART: %3u MHz\n\n", 
+                    m_MachineInfo.GetClockRate(CLOCK_ID_CORE)/ 1000000, 
+                    m_MachineInfo.GetClockRate(CLOCK_ID_ARM)/ 1000000,
+                    m_MachineInfo.GetClockRate(CLOCK_ID_EMMC)/ 1000000, 
+                    m_MachineInfo.GetClockRate(CLOCK_ID_EMMC2)/ 1000000,
+                    m_MachineInfo.GetClockRate(CLOCK_ID_UART)/ 1000000);
+                    m_Screen.Write(info, info.GetLength());
+
+                    info.Format("    DMA Channel: %u\n\n", 
+                    m_MachineInfo.AllocateDMAChannel(DMA_CHANNEL_NORMAL));
+                    m_Screen.Write(info, info.GetLength());
+
+                    info.Format("    USB Power Delay: %u ms | USB Full Speed: %s\n\n", 
+                    m_Options.GetUSBPowerDelay(), m_Options.GetUSBFullSpeed() ? "Yes" : "No");
+                    m_Screen.Write(info, info.GetLength());
+
+                    return true;
+}
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // util.cpp
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
+
 // after getting fucked in my head we finally found the deterministic function f_buffer am looking for!
-/*
+
 #define BTN_PRESSED 0
 
 enum ButtonTSIndex
@@ -382,6 +399,6 @@ enum ButtonTSIndex
     BTN_SINGLE      = 3, // one-cycle pulse on press edge
     BTN_DOUBLE      = 4  // one-cycle pulse on second press edge in double window
 };
-*/
+
 // 2 buttons, 5 fields each (no BTN_STATUS needed)
 

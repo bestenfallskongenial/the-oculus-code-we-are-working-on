@@ -13,14 +13,14 @@ boolean bOK = TRUE;
                     {
                     bOK = m_Serial.Initialize(115200); // we need to initialize the serial port before the logger, because the logger needs a target device and the serial port is the default target device if no other is specified
                 }   
-                if (bOK)
+                if (bOK) // the idea is to remove the CScreen Class form our code, to much overhead, also  the CString code !!!
                     {
                     CDevice *pTarget = m_DeviceNameService.GetDevice(m_Options.GetLogDevice(), FALSE);
                     if (pTarget == 0)
                     {
                         pTarget = &m_Screen;
                     }
-                    bOK = m_Logger.Initialize(pTarget);
+                    bOK = m_Logger.Initialize(pTarget);  //  i want to get rid of this!
                     }   
                 if (bOK)
                 {
@@ -32,24 +32,24 @@ boolean bOK = TRUE;
                     }
                 if (bOK)
                     {
-                    bOK = m_Timer.Initialize(); // we need to initialize the timer before the filesystem, because the filesystem uses the timer for delays and if the timer is not initialized, it will cause a crash
+                    bOK = m_Timer.Initialize(); 
                     }
                 if (bOK)
                     {
-                    bOK = m_EMMC.Initialize(); // we need to initialize the emmc before the filesystem, because the filesystem uses the emmc for storage and if the emmc is not initialized, it will cause a crash
+                    bOK = m_EMMC.Initialize(); 
                     }
                 if (bOK)
                     {
-                    bOK = m_USBHCI.Initialize(); // we need to initialize the USBHCI before the filesystem, because the filesystem uses the USBHCI for storage and if the USBHCI is not initialized, it will cause a crash
+                    bOK = m_USBHCI.Initialize(); 
                     }
                 if (bOK)
                     {
-                    m_USBHCI.UpdatePlugAndPlay(); // we need to call UpdatePlugAndPlay() after initializing the USBHCI to detect if a USB device is already connected at startup, because if we don't call it, the filesystem will not detect the USB device and if the user has a USB device connected at startup, it will cause a crash when the filesystem tries to access the USB device
-                    m_Timer.MsDelay(1000);  // we need to delay after initializing the USBHCI to give it time to detect the USB device and if we don't delay, the filesystem will not detect the USB device and if the user has a USB device connected at startup, it will cause a crash when the filesystem tries to access the USB device
+                    m_USBHCI.UpdatePlugAndPlay(); 
+                    m_Timer.MsDelay(1000);  
                     }
                 if (bOK)
                     {
-                    bOK = wrapperMemoryAllocate(); // we need to allocate memory before the VCHIQ, because the VCHIQ uses the memory for communication and if the memory is not allocated, it will cause a crash when the VCHIQ tries to access the memory
+                    bOK = wrapperMemoryAllocate(); // we need to allocate memory before the VCHIQ
                     }
                 if (bOK)
                     {
@@ -58,21 +58,21 @@ boolean bOK = TRUE;
                     }
                 if (bOK)
                 {
-                    bcm_host_init();  // we need to initialize the bcm_host before the graphics, because the graphics uses the bcm_host for initialization and if the bcm_host is not initialized, it will cause a crash when the graphics tries to access the bcm_host
+                    bcm_host_init();  // we need to initialize the bcm_host before the graphics
                     m_Timer.MsDelay(200);
                 }
                 if (bOK)
                 {
-                    gfx_init_OGL(&m_glsl); // we need to initialize the graphics before the shared memory, because the shared memory uses the graphics for initialization and if the graphics is not initialized, it will cause a crash when the shared memory tries to access the graphics
+                    gfx_init_OGL(&m_glsl); // we need to initialize the graphics before the shared memory
                     m_Timer.MsDelay(200);
                 }
                 if (bOK)
                 {
-                    bOK = m_SharedMemory.VCSMInitialize(); // we need to initialize the shared memory before importing the memory, because we need to have the shared memory initialized to import the memory and if the shared memory is not initialized, it will cause a crash when we try to import the memory
+                    bOK = m_SharedMemory.VCSMInitialize(); 
                 }
                 if (bOK)
                 {
-                    bOK = m_SharedMemory.VCSMimportMemory(m_videoBlockBase, m_videoBlockSize, 0); // we can do all vcsm imports in one bOK block, dont you think?
+                    bOK = m_SharedMemory.VCSMimportMemory(m_videoBlockBase, m_videoBlockSize, 0); 
                     m_SharedMemory.VCSMLockMemory(0);
                 }
                 if (bOK)
@@ -85,7 +85,7 @@ boolean bOK = TRUE;
                     bOK = m_SharedMemory.VCSMimportMemory(m_frameBlockBaseB, m_frameBlockSizeB, 2);
                     bOK = m_SharedMemory.VCSMLockMemory(2);
                     }
-                if (bOK)// new only for the system texture, the overlay atlas, i guess i will rework the parser too, a dedicated bpm parser, one for h264
+                if (bOK)// new only for the system texture, the overlay atlas, i guess i will rework the parser too, a dedicated bpm parser, one for h264 I WILL INCLUDE IT AGAIN INTO THE CKernel Class code!!!
                     {
                     bOK = m_H264SystemParser.ParseInitialize(   TEX_FILE_SIZE,           // max_tex_size
                                                                 8,                  // max_textures
@@ -101,7 +101,7 @@ boolean bOK = TRUE;
                     }                    
                 if (bOK)
                     {
-                    bOK = m_H264Parser.ParseInitialize      (   TEX_FILE_SIZE,                  // we will rework the parser into a dedicated bpm and one for h264 ( i still dont know what codes )
+                    bOK = m_H264Parser.ParseInitialize      (   TEX_FILE_SIZE,                  // we will rework the parser into a dedicated bpm and one for h264 ( i still dont know what codes ) I WILL INCLUDE IT AGAIN INTO THE CKernel Class code!!!
                                                                 8,
                                                                 
                                                                 m_videoBlockBase,
@@ -115,7 +115,7 @@ boolean bOK = TRUE;
                     }
                 if (bOK)
                     {
-                    bOK = m_H264Decoder.MMALinitialize(     m_SharedMemory.m_vc_handle[0],      // means also that i will rework the decode,
+                    bOK = m_H264Decoder.MMALinitialize(     m_SharedMemory.m_vc_handle[0],      // means also that i will rework the decode, I WILL INCLUDE IT AGAIN INTO THE CKernel Class code!!!
                                                           /*m_SharedMemory.m_vc_pointer[0],*/   // still a blackbox,
                                                             m_videoBlockSize,                   // still about 90% finish
                                                             m_SharedMemory.m_vc_handle[1],
