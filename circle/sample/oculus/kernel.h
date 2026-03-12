@@ -159,6 +159,29 @@ enum TShutdownMode
             { true, true, true, true, true, false }
         };
 
+uint8_t g_modeMap[modetablecount][17] =
+{
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0} 	// the first element is the max of modes for each channel, than we have the order ( switch case of applyModeToChannel(int channel) )
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+
+{63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+};
+
 enum modetable		// for the g_centralModeBuffer array
 {
 	CH0_MODE = 0,
@@ -173,10 +196,15 @@ enum modetable		// for the g_centralModeBuffer array
 	LF2_WAVE,
 	LF1_MULT,
 	LF2_MULT,
+	SENS_A,
+	SENS_B,
+	SENS_C,
+	SENS_D,
 	FRM_MODE,
 	TEX_MODE,
 	CLK_MODE,
 	VID_MODE,
+	IS_STORED,
 	modetablecount
 }
 

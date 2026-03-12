@@ -9,7 +9,7 @@ void            CKernel::resetMenuPickupFlags    ()
 
                 if (g_menu_mode_new != g_menu_mode_old) 
                     {
-                    for(int i = 0; i < 16; i++) 
+                    for(int i = 0; i < modetablecount; i++) 
                         {
                         g_menuPickUpFlag[i] = false;
                         }
@@ -69,7 +69,7 @@ void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::applyModeToChannel(int channel)
 {
-                switch (g_modeMap[channel][g_centralModeBuffer[g_currentProgramBuffer][channel] + 1])
+                switch (g_modeMap[channel][g_centralModeBuffer[g_currentProgramBuffer][channel] + 1]) <- is this correct! g_modeMap gives me the max of modes ( needed for mapping ), also shall it determine if i can use a channel in this function...
                     {
                     case 0:
                         modeADC (channel);

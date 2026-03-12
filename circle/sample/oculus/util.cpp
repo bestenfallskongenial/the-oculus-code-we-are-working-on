@@ -9,6 +9,10 @@ void            CKernel::prepParameters       ()        // f_buffer guess here w
                     g_centralModeBuffer[f_buffer][LF2_WAVE] = 1;
                     g_centralModeBuffer[f_buffer][LF1_MULT] = 3;
                     g_centralModeBuffer[f_buffer][LF2_MULT] = 3;
+                    g_centralModeBuffer[f_buffer][SENS_A] = 15;
+                    g_centralModeBuffer[f_buffer][SENS_B] = 47;
+                    g_centralModeBuffer[f_buffer][SENS_C] = 15;
+                    g_centralModeBuffer[f_buffer][SENS_D] = 47;                    
                     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -69,7 +73,7 @@ void            CKernel::storeModesV1         ()
                     {  
                     memcpy(&g_centralModeBuffer[g_current_gl_program][0],
                         &g_centralModeBuffer[DEFAULT_SLOT][0],
-                        16 * sizeof(int));
+                        sizeof(g_centralModeBuffer[g_current_gl_program]));
                     
                     g_currentProgramBuffer = g_current_gl_program;
                     }

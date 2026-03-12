@@ -240,11 +240,10 @@ CKernel::wrapper_modes()
             case 2:
                 modeMenuAssignGroup(3,  8);   // LFO
                 break;
-/*
             case 3:
-                modeMenuAssignGroup(4, 12);   // <- additional menu layers here -> brainstorm
+                modeMenuAssignGroup(4, 12);   // sensitivity layer A..D
                 break;
-*/
+
             default:
                 break;
             }
