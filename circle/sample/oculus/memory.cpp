@@ -1,7 +1,5 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#include "kernel.h"
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//  my new memory.cpp with added dma memory allocation for the texture atlas and the overlay fragment shader - also i found some strange errors here.
+#include "kernel.h"         //  my new memory.cpp with added dma memory allocation for the texture atlas and the overlay fragment shader - also i found some strange errors here.
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 char**          CKernel::alllocateBufferMEM         (   size_t count, size_t bufferSize) 
 {
@@ -23,7 +21,7 @@ CLogger::Get()->Write("ALLOC-DMA", LogDebug, "final buffers = 0x%p count = %u bu
                 msleep(100);            // do i really need you here?
                 return buffers;
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 char**          CKernel::alllocateBufferDMA     (   size_t count, 
                                                         size_t bufferSize,
                                                         char** blockBaseOut,
@@ -62,7 +60,7 @@ CLogger::Get()->Write("ALLOC-STD", LogDebug, "raw = 0x%p dma_block = 0x%p aligne
                 msleep(100);                                                    // for what reason?!
                 return buffers;
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::clearBufferMEM        (   char** buffers, size_t count) 
 {
                 for (size_t i = 0; i < count; ++i)                              // why the elements and than all? why not just all?!
@@ -73,7 +71,7 @@ void            CKernel::clearBufferMEM        (   char** buffers, size_t count)
 
                 buffers = nullptr;                
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::clearBufferDMA    (   char** buffers, char* rawBlock)
 {
                 delete[] rawBlock;  // Raw block from new[]
@@ -129,7 +127,7 @@ bool CKernel::wrapperInitDMA()
         }
     return bOK;
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool CKernel::wrapperInitMEM()
 {
     bool bOK = true;
@@ -156,7 +154,7 @@ bool CKernel::wrapperInitMEM()
         }
     return bOK;
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::wrapperDMAcleanUp            ()
 {
                     clearBufferDMA( m_bufferVid, m_videoRawBlock); 
@@ -171,7 +169,7 @@ void            CKernel::wrapperDMAcleanUp            ()
 
 
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::wrapperMEMcleanUp            ()
 {
                     clearBufferMEM( m_bufferKnl, filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB] ); 
@@ -184,3 +182,6 @@ void            CKernel::wrapperMEMcleanUp            ()
 
                     clearBufferMEM( m_bufferFsh, filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB] );        
 }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -39,6 +39,20 @@ static unsigned  gE_Cols         = 0;
 static unsigned  gE_Rows         = 0;
 */
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// adc_read.cpp
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// io_read_ADC() - explicit audio hold + menu scaling path
+// Purpose:
+// - Read all 8 ADC channels, compute control/envelope outputs, and apply temporary menu scaling during audio activity.
+// How it works:
+// - Uses 4-sample per-channel ring buffers to compute `raw`, then computes scaled `val` and float output values.
+// - Detects transients on channels 0..3 with `erraticness[ch] = s0 - s1 + s2 - s3` and +/-AUDIO_THRESHOLD.
+// - Sets hold timers on transient events: channels 0/2 set `audio_hold_A`, channels 1/3 set `audio_hold_B`.
+// - Computes `menu_map_max[0..3]` from active holds: 5 when none are active, 7 with one active hold, 9 with both.
+// - Decrements each hold timer on every call until it reaches zero.
+// What it is doing in practice:
+// - Produces deterministic signal outputs (`raw`, `val`, `au0..au3`) and deterministic temporary UI range expansion.
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // features.cpp
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -152,6 +166,51 @@ void            CKernel::GenerateBmpOverlayInfo( int p_fileIndex)               
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // menu_final.cpp
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// the idea is that i have a global menuMap[menu_layer_members][max_modes]
+
+uint8_t mode_map[8][17] =                                   // mode_map is not the same as the g_centralModeBuffer mapping. i can still do the mapping!
+{
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11, 0, 0, 0, 0}        // group for the first 4 channels 
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11, 0, 0, 0, 0}
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11, 0, 0, 0, 0}
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11, 0, 0, 0, 0}
+
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0}       // group for the second 4 channels
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0}
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0}
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0}
+
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}       // group for the lfo wave and multiplier mapping 
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}       // question - can we create modes like the others to map the lfo settings 
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}        // and use them here in an combined manner?
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}
+
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}
+{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}
+};
+
+// i see the logical issue here: modes are usually meant to control how the in values are processed to out values.
+// things like modes and lfo parameters are stored in g_centralModeBuffer[][]
+// THAN there are the functions where a knop uses the raw out value AFTER 
+// modes and than map it to program, texture, video, frame, sensetivity ( i could made this a g_centralModeBuffer field too ),
+// means input -> input-processing -> mode-selection -> mode-precessing -> target-selection -> target ( gl uniform OR hardware )
+// because i want for example to have bpm on channel 0 control the frame of the video.
+// i assume this is possible with gl code BUT the user may have not the knowlege or the will to program this features therefore the device must offer another way!   
+// i could indeed pass the array (like g_centralModeBuffer ) i use as target for the mapping in modeMenuAssignGroup(uint8_t menu_id, uint8_t base, &array_to_work_on )
+
+// 
+//               0        1        2        3 |      4        5        6        7 |        8          9         10         11 |       12         13         14           15 |
+// program  mode 0 | mode 1 | mode 2 | mode 3 | mode 4 | mode 5 | mode 6 | mode 7 | lf1 wave | lf2 wave | lf1 mult | lf2 mult | tex mode | vid mode | frm mode | is_stored? |
+//      0 
+//      1
+//      2
+//      ...
+//     31
+// default
+
+int g_centralModeBuffer[SLOTS][MODES];
 /* 
                         need to figure out the enums here again!
 

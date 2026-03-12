@@ -1,4 +1,7 @@
-                CKernel::wrapper_from_sd()
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void                CKernel::wrapper_from_sd()
 {
                 if(Mount( PARTITION_NAME_SD ))
                     {
@@ -105,7 +108,7 @@
                 // Flush CPU->RAM so the VPU sees the loaded bitstream
                 CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 CKernel::wrapper_load_usb()
 {
                 if(Mount( PARTITION_NAME_USB ))
@@ -166,7 +169,7 @@
                 // Flush CPU->RAM so the VPU sees the loaded bitstream
                 CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 CKernel::wrapper_init_gl_sd()
 {
         parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
@@ -189,10 +192,10 @@ CKernel::wrapper_init_gl_sd()
         initFuniforms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
 
         initOtexture    (&m_glsl, filecounter[FT_OMT][FLD_PREV], filecounter[FT_OMT][FLD_LOADED]);
-/*
-        initUtextures   (&m_glsl, filecounter[FT_TEX][FLD_PREV], filecounter[FT_TEX][FLD_LOADED]); 
-*/
+
+//      initUtextures   (&m_glsl, filecounter[FT_TEX][FLD_PREV], filecounter[FT_TEX][FLD_LOADED]); 
 }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 CKernel::wrapper_init_gl_usb()
 {
         parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
@@ -206,7 +209,7 @@ CKernel::wrapper_init_gl_usb()
 
         initUtextures   (&m_glsl, filecounter[FT_TEX][FLD_PREV], filecounter[FT_TEX][FLD_LOADED]); 
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 CKernel::wrapper_io()
 {
         readADC();                  //  we read and dampen the adc each loop
@@ -221,7 +224,7 @@ CKernel::wrapper_io()
         button_consume(0);               // and transpose the button input in menulayer information each time
         button_consume(1);
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 CKernel::wrapper_modes()
 {
         resetMenuPickupFlags();                              // we need to reset the threshold flags each loop - why again?!
@@ -245,7 +248,6 @@ CKernel::wrapper_modes()
             default:
                 break;
             }
-            
         applyModeToChannel(0);                               // than we apply the mapped modes for the 8 channels
         applyModeToChannel(1);                               // other menulayer modes are handled in the background
         applyModeToChannel(2);
@@ -257,3 +259,6 @@ CKernel::wrapper_modes()
 
         apply_state_to_led();                                   // than we update the 4 leds depending on the modes - we have to write this function 
 }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

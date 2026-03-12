@@ -1,5 +1,6 @@
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include "kernel.h"
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::prepParameters       ()        // f_buffer guess here we need much more to do!
 {
                 for ( int f_buffer=0; f_buffer <= DEFAULT_SLOT; f_buffer++)
@@ -10,7 +11,7 @@ void            CKernel::prepParameters       ()        // f_buffer guess here w
                     g_centralModeBuffer[f_buffer][LF2_MULT] = 3;
                     }
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::chooseProgram        ( int p_channel, &p_activeShader )
 {
                 static int p_activeShader = 0;
@@ -22,7 +23,7 @@ void            CKernel::chooseProgram        ( int p_channel, &p_activeShader )
                     p_activeShader = f_calculated;
                     }
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void             CKernel::chooseTexture        ( int p_channel, &p_activeTexture, &p_validTextureCount) // f_buffer have three possible ways here! f_buffer can a) invent a mechanism to get the is valid table for the vids - f_buffer can also draw from parser.is_valid[x] 
 {                                                                                                       // wait, we have a parser and this parser is giving like for program a valid status array!!!
                 static int p_activeTexture = 0;
@@ -33,7 +34,7 @@ void             CKernel::chooseTexture        ( int p_channel, &p_activeTexture
                     p_activeTexture = f_calculated;
                     }
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int             CKernel::chooseVideo        ( int p_channel, &p_activeVideo, &p_validVideoCount )
 {
                 static int p_activeVideo = 0;
@@ -44,18 +45,18 @@ int             CKernel::chooseVideo        ( int p_channel, &p_activeVideo, &p_
                     p_activeVideo = f_calculated;
                     }
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int             CKernel::chooseFrame        ( int p_channel, &p_activeFrame, &p_validFrameCount ) // or direct m_H264Parser.m_frame_count[p_activeVideo]? <- why is this different?
 {
                 static int p_activeFrame = 0;
-                if (p_validFrameCount != 0) 
+                if (p_validFrameCount != 0) // <- !!! this is the point where i decided to include the h264 / vc_sm / parser class into the CKernel code ( again ) !!!
                     {
 
                     int f_calculated = g_inOutMatrixInt[p_channel][raw] *  (p_validFrameCount) >> 10;
                     p_activeFrame = f_calculated;
                     }
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::storeModesV1         () 
 {
                 
@@ -77,7 +78,7 @@ void            CKernel::storeModesV1         ()
                     g_currentProgramBuffer = DEFAULT_SLOT;
                     }
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::storeModesV2         ()
 {
                 
@@ -97,7 +98,7 @@ void            CKernel::storeModesV2         ()
                     g_currentProgramBuffer = DEFAULT_SLOT;
                     }
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // for kernel.h -> unsigned int g_buttons_states[2][5] = {0} !!!
 
 void            CKernel::buttonPing(int p_btn_id, int pin)
@@ -128,7 +129,7 @@ void            CKernel::buttonPing(int p_btn_id, int pin)
                     g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
                     }
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::button_consumer(int p_btn_id)
 {
                 if (g_buttons_states[p_btn_id][BTN_SINGLE]) counter += 1;
@@ -143,6 +144,7 @@ void            CKernel::button_consumer(int p_btn_id)
                     longhold += 1;
                 if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] =20)
                     longhold += 2;
-
 }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

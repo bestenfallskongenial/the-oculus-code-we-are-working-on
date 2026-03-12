@@ -16,7 +16,7 @@ void            CKernel::resetMenuPickupFlags    ()
                     g_menu_mode_old = g_menu_mode_new;
                     }
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
 {
                 if (g_menu_mode_new != menu_id)
@@ -66,7 +66,7 @@ void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
                     g_centralModeBuffer[g_currentProgramBuffer][base + 3] = v;
                     }
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::applyModeToChannel(int channel)
 {
                 switch (g_modeMap[channel][g_centralModeBuffer[g_currentProgramBuffer][channel] + 1])
@@ -115,13 +115,13 @@ void            CKernel::applyModeToChannel(int channel)
                     break;                    
                     }
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::modeADC (int channel) 
 {
                 g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[channel][ in] // adc_float_value[channel];
                 g_inOutMatrixInt[channel][out] = g_inOutMatrixInt[channel][ in] // adc_int_value[channel];            
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::modeTRG (int channel)
 {
                 if (  g_inOutMatrixInt[channel][ in] >= g_inOutMatrixInt[channel][trH] &&
@@ -137,6 +137,7 @@ void            CKernel::modeTRG (int channel)
                     g_inOutMatrixInt[channel][trF] = false;
                     }
 }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::modeBPM (int channel) 
 { 
                 if (currentTime >= g_nextBeatTime[g_activeBpmChannel])
@@ -145,81 +146,42 @@ void            CKernel::modeBPM (int channel)
                     g_inOutMatrixInt[channel][out] = g_inOutMatrixInt[channel][rnd] // g_randomIntegerValue[channel];
                     }
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::modeLF1 (int channel)
 {
                 g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[0][lf1] // g_lfoFltOut[0] <- lfo comes always from [0] since it is global
                 g_inOutMatrixInt[channel][out] = g_inOutMatrixInt[0][lf1] // g_lfoIntOut[0];
 }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::modeLF2 (int channel)
 {
                 g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[1][lf2] // g_lfoFltOut[1];
                 g_inOutMatrixInt[channel][out] = g_inOutMatrixInt[1][lf2] // g_lfoIntOut[1];    
 }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::modeAudioAb0 (int channel)     // 
 {
                 g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[0][au0] // g_lfoFltOut[1];
             //  g_inOutMatrixInt[channel][out] = // i have no int audio band!!    
 }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::modeAudioAb1 (int channel)
 {
                 g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[0][au1] // g_lfoFltOut[1];
             //  g_inOutMatrixInt[channel][out] = // i have no int audio band!!
 }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::modeAudioBb0 (int channel)
 {
                 g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[0][au2] // g_lfoFltOut[1];
             //  g_inOutMatrixInt[channel][out] = // i have no int audio band!!
 }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::modeAudioBb1 (int channel)
 {
                 g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[0][au3] // g_lfoFltOut[1];
             //  g_inOutMatrixInt[channel][out] = // i have no int audio band!!
 }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// the idea is that i have a global menuMap[menu_layer_members][max_modes]
-
-uint8_t mode_map[8][17] =                                   // mode_map is not the same as the g_centralModeBuffer mapping. i can still do the mapping!
-{
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11, 0, 0, 0, 0}        // group for the first 4 channels 
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11, 0, 0, 0, 0}
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11, 0, 0, 0, 0}
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11, 0, 0, 0, 0}
-
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0}       // group for the second 4 channels
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0}
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0}
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0}
-
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}       // group for the lfo wave and multiplier mapping 
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}       // question - can we create modes like the others to map the lfo settings 
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}        // and use them here in an combined manner?
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}
-
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}
-{8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,11, 0, 0, 0, 0, 0}
-};
-
-// i see the logical issue here: modes are usually meant to control how the in values are processed to out values.
-// things like modes and lfo parameters are stored in g_centralModeBuffer[][]
-// THAN there are the functions where a knop uses the raw out value AFTER 
-// modes and than map it to program, texture, video, frame, sensetivity ( i could made this a g_centralModeBuffer field too ),
-// means input -> input-processing -> mode-selection -> mode-precessing -> target-selection -> target ( gl uniform OR hardware )
-// because i want for example to have bpm on channel 0 control the frame of the video.
-// i assume this is possible with gl code BUT the user may have not the knowlege or the will to program this features therefore the device must offer another way!   
-// i could indeed pass the array (like g_centralModeBuffer ) i use as target for the mapping in modeMenuAssignGroup(uint8_t menu_id, uint8_t base, &array_to_work_on )
-
-// 
-//               0        1        2        3 |      4        5        6        7 |        8          9         10         11 |       12         13         14           15 |
-// program  mode 0 | mode 1 | mode 2 | mode 3 | mode 4 | mode 5 | mode 6 | mode 7 | lf1 wave | lf2 wave | lf1 mult | lf2 mult | tex mode | vid mode | frm mode | is_stored? |
-//      0 
-//      1
-//      2
-//      ...
-//     31
-// default
-
-int g_centralModeBuffer[SLOTS][MODES];

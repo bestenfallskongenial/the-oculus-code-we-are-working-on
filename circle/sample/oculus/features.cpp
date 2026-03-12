@@ -32,7 +32,7 @@ void            CKernel::randomVec8           (uint32_t p_seed)                 
                 g_inOutMatrixFlt[7][rnd] = f_x * f_scale;
                 g_inOutMatrixInt[7][rnd] = ( g_inOutMatrixFlt[7][rnd] * f_max_int);
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::calculateBPM   (   unsigned long   p_triggerTimeClockA, 
                                             unsigned long   p_triggerTimeClockB) 
 {
@@ -156,4 +156,6 @@ void            CKernel::sampleWaveTable                   ()
                 g_inOutMatrixFlt[0][lf2]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF2_WAVE]][g_sampleIndex[1]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
                 g_inOutMatrixInt[0][lf2]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF2_WAVE]][g_sampleIndex[1]];
 }   
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
