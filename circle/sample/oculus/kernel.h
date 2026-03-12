@@ -159,9 +159,9 @@ enum TShutdownMode
             { true, true, true, true, true, false }
         };
 
-uint8_t g_modeMap[modetablecount][17] =
+uint8_t g_modeMap[modetablecount][17] =	// the first element is the max of modes for each channel, than we have the order ( switch case of applyModeToChannel(int channel) )
 {
-{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0} 	// the first element is the max of modes for each channel, than we have the order ( switch case of applyModeToChannel(int channel) )
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0} 	
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
