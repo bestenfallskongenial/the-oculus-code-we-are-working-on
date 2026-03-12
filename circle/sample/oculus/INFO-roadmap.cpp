@@ -159,4 +159,4 @@ wrappers.cpp
         i will need to implement the parser, the h264 decoder and the vcsm class code here, but the unfinished new versions
         where i can - hopefully - share some functionality and make use of the common m_bufferLog for all parse and log files!
 
-    
+        look up circle/sample/vc04 for more informations!!!
