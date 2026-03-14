@@ -1,50 +1,5 @@
 // bufferToScreen.cpp
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-boolean CKernel::screen_init                              (   void );
-void    CKernel::screen_clear_screen                      (   u32 bgColor );
-void    CKernel::screen_draw_buffer_segment     (   const char *pSourceBuffer,
-                                                                        u32 startIndex,
-                                                                        u32 endIndex,
-                                                                        unsigned startCol,
-                                                                        unsigned startRow,
-                                                                        u32 fgColor,
-                                                                        u32 bgColor );
-unsigned CKernel::screen_get_grid                         (    unsigned &cols, 
-                                                                        unsigned &rows )
-
-#include <circle/bcmframebuffer.h>
-#include <circle/chargenerator.h>
-
-    Self-contained framebuffer setup:
-    width/height are queried from firmware via mailbox when constructed with 0,0.
-    This reflects the effective display mode (typically driven by config.txt/EDID firmware states).
-
-
-static CBcmFrameBuffer gE_FrameBuffer (0, 0, 32, 0, TRUE);
-static CCharGenerator  gE_CharGenerator;
-
-static u32      *gE_PixelBuffer  = 0;
-static unsigned  gE_PitchBytes   = 0;
-static unsigned  gE_ScreenWidth  = 0;
-static unsigned  gE_ScreenHeight = 0;
-static unsigned  gE_CharWidth    = 0;
-static unsigned  gE_CharHeight   = 0;
-static unsigned  gE_Cols         = 0;
-static unsigned  gE_Rows         = 0;
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// adc_read.cpp
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// io_read_ADC() - explicit audio hold + menu scaling path
-// Purpose:
-// - Read all 8 ADC channels, compute control/envelope outputs, and apply temporary menu scaling during audio activity.
-// How it works:
-// - Uses 4-sample per-channel ring buffers to compute `raw`, then computes scaled `val` and float output values.
-// - Detects transients on channels 0..3 with `g_irregularity[ch] = s0 - s1 + s2 - s3` and +/-AUDIO_THRESHOLD.
-// - Sets hold timers on transient events: channels 0/2 set `audio_hold_A`, channels 1/3 set `audio_hold_B`.
-// - Computes `menu_map_max[0..3]` from active holds: 5 when none are active, 7 with one active hold, 9 with both.
-// - Decrements each hold timer on every call until it reaches zero.
-// What it is doing in practice:
-// - Produces deterministic signal outputs (`raw`, `val`, `au0..au3`) and deterministic temporary UI range expansion.
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // features.cpp
@@ -134,18 +89,18 @@ void            CKernel::audioEnergy          (float p_adcvalue)
 void            CKernel::GenerateH264ParserInfo( int p_fileIndex)
 {
                 CString f_bufferParser = m_H264Parser.m_DebugCharArray[p_fileIndex];
-                filesystem_save_log_file( "emmc1-1", g_vidLogNames[p_fileIndex], f_bufferParser);       // <---- is now saveBuffer we need to refactor!
+                filesystem_save_log_file( "emmc1-1", g_vidLogNames[p_fileIndex], f_bufferParser);       // <---- is now saveToBuffer we need to refactor!
 }
 void            CKernel::GenerateBmpParserInfo( int p_fileIndex)
 {
                 CString f_bufferParser = m_H264Parser.m_DebugCharArray[p_fileIndex];
-                filesystem_save_log_file( "emmc1-1", g_texLogNames[p_fileIndex], f_bufferParser);       // <---- is now saveBuffer we need to refactor!
+                filesystem_save_log_file( "emmc1-1", g_texLogNames[p_fileIndex], f_bufferParser);       // <---- is now saveToBuffer we need to refactor!
 }
 
 void            CKernel::GenerateBmpOverlayInfo( int p_fileIndex)                                       // new to store the log for the system textures, here the overlay atlas
 {
                 CString f_bufferParser = m_H264SystemParser.m_DebugCharArray[p_fileIndex];
-                filesystem_save_log_file( "emmc1-1", OMT__LOG_NAMES[p_fileIndex], f_bufferParser);      // <---- is now saveBuffer we need to refactor!    
+                filesystem_save_log_file( "emmc1-1", OMT__LOG_NAMES[p_fileIndex], f_bufferParser);      // <---- is now saveToBuffer we need to refactor!    
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // menu_final.cpp

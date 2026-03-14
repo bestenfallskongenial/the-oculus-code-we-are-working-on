@@ -138,7 +138,7 @@ bool CKernel::wrapperInitMEM()
         }
     if (bOK)
         {
-        bOK = (m_bufferLog = alllocateBufferMEM( filecounter[LOGGER][FLD_MAXSD]+filecounter[LOGGER][FLD_MAXUSB], filecounter[LOGGER][FLD_SIZE]));      // 1024 *64 <- the new buffer for log/text files <- saveBuffer() <-
+        bOK = (m_bufferLog = alllocateBufferMEM( filecounter[LOGGER][FLD_MAXSD]+filecounter[LOGGER][FLD_MAXUSB], filecounter[LOGGER][FLD_SIZE]));      // 1024 *64 <- the new buffer for log/text files <- saveToBuffer() <-
         }                   
     if (bOK)
         {

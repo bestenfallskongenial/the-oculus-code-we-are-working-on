@@ -47,7 +47,7 @@ bool            CKernel::openFile       (   const char* p_fileName)
                 return true;
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-unsigned        CKernel::loadFile       (   char*       p_buffer,                                                   // destination buffer for the file data
+unsigned        CKernel::loadToBuffer       (   char*       p_buffer,                                                   // destination buffer for the file data
                                             unsigned    p_bufferSize)                                               // maximum number of bytes to read into the buffer
 {
                 unsigned f_totalBytesRead = 0;
@@ -74,7 +74,7 @@ unsigned        CKernel::loadFile       (   char*       p_buffer,               
                 return 0;                                                                                           // Buffer full, EOF not reached - this is NOT a success - 0 is equal to false !!!
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::saveBuffer     (   const char* p_fileName,
+bool            CKernel::saveToBuffer     (   const char* p_fileName,
                                             const char* p_buffer,
                                             unsigned    p_bufferSize)
 {
@@ -118,7 +118,7 @@ void            CKernel::bulkLoad       (   char*       p_fileNameArray[],      
                     {
                     if (openFile(p_fileNameArray[i]))                                                               // returns true if the file was opened successfully
                         {
-                        unsigned f_bytesRead = loadFile(p_bufferArray[p_validFiles], p_fileSize);
+                        unsigned f_bytesRead = loadToBuffer(p_bufferArray[p_validFiles], p_fileSize);
                         if (f_bytesRead)
                             {
                             p_loadedBytes[p_validFiles] = f_bytesRead;

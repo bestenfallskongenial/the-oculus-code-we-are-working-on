@@ -109,7 +109,7 @@ void                CKernel::wrapper_from_sd()
                 CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                CKernel::wrapper_load_usb()
+void            CKernel::wrapper_load_usb()
 {
                 if(Mount( PARTITION_NAME_USB ))
                     {
@@ -133,7 +133,7 @@ void                CKernel::wrapper_from_sd()
                                                 filecounter[FT_KLN][FLD_EXTCNT], 
                                                 filecounter[FT_KLN][FLD_SCANNED], 
                                                 filecounter[FT_KLN][FLD_MAXUSB]);                                                  
-     
+        
                     bulkLoad                (   g_ScnFsh, 
                                                 g_bytFsh, 
                                                 m_bufferFsh, 
@@ -141,7 +141,7 @@ void                CKernel::wrapper_from_sd()
                                                 filecounter[FT_FSH][FLD_LOADED], 
                                                 filecounter[FT_FSH][FLD_PREV],
                                                 filecounter[FT_FSH][FLD_SIZE]);                           
-    
+
                     bulkLoad                (   g_ScnTex, 
                                                 g_bytTex, 
                                                 m_bufferTex, 
@@ -149,7 +149,7 @@ void                CKernel::wrapper_from_sd()
                                                 filecounter[FT_TEX][FLD_LOADED], 
                                                 filecounter[FT_TEX][FLD_PREV],
                                                 filecounter[FT_TEX][FLD_SIZE]);                                   
-  
+
                     bulkLoad                (   g_ScnVid, 
                                                 g_bytVid, 
                                                 m_bufferVid, 
@@ -170,62 +170,62 @@ void                CKernel::wrapper_from_sd()
                 CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-CKernel::wrapper_init_gl_sd()
+void            CKernel::wrapper_init_gl_sd()
 {
-        parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
-        parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
+                parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
+                parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
 
-        initVbuffer(&m_glsl);
+                initVbuffer(&m_glsl);
 
-        initVshaders    (&m_glsl, filecounter[FT_VSH][FLD_PREV], filecounter[FT_VSH][FLD_LOADED]);
+                initVshaders    (&m_glsl, filecounter[FT_VSH][FLD_PREV], filecounter[FT_VSH][FLD_LOADED]);
 
-        initOshader     (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);  
+                initOshader     (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);  
 
-        initFshaders    (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+                initFshaders    (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
 
-        initOprogram    (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);
+                initOprogram    (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);
 
-        initFprograms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+                initFprograms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
 
-        initOuniforms   (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);
+                initOuniforms   (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);
 
-        initFuniforms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+                initFuniforms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
 
-        initOtexture    (&m_glsl, filecounter[FT_OMT][FLD_PREV], filecounter[FT_OMT][FLD_LOADED]);
+                initOtexture    (&m_glsl, filecounter[FT_OMT][FLD_PREV], filecounter[FT_OMT][FLD_LOADED]);
 
-//      initUtextures   (&m_glsl, filecounter[FT_TEX][FLD_PREV], filecounter[FT_TEX][FLD_LOADED]); 
+        //      initUtextures   (&m_glsl, filecounter[FT_TEX][FLD_PREV], filecounter[FT_TEX][FLD_LOADED]); 
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-CKernel::wrapper_init_gl_usb()
+void            CKernel::wrapper_init_gl_usb()
 {
-        parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
-        parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
+                parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
+                parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
 
-        initFshaders    (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+                initFshaders    (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
 
-        initFprograms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+                initFprograms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
 
-        initFuniforms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+                initFuniforms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
 
-        initUtextures   (&m_glsl, filecounter[FT_TEX][FLD_PREV], filecounter[FT_TEX][FLD_LOADED]); 
+                initUtextures   (&m_glsl, filecounter[FT_TEX][FLD_PREV], filecounter[FT_TEX][FLD_LOADED]); 
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-CKernel::wrapper_io()
+void            CKernel::wrapper_io()
 {
-        readADC();                  //  we read and dampen the adc each loop
+                readADC();                  //  we read and dampen the adc each loop
 
-        chooseProgram(ADC_SELECT_PRG);          // determine the shader
-        chooseTexture(ADC_SELECT_TEX);          // texture 
-        chooseVideo(ADC_SELECT_VID);            // video each loop
+                chooseProgram(ADC_SELECT_PRG);          // determine the shader
+                chooseTexture(ADC_SELECT_TEX);          // texture 
+                chooseVideo(ADC_SELECT_VID);            // video each loop
 
-        buttonPing( 0, SW_PIN_A);                  // check button A
-        buttonPing( 1, SW_PIN_B);                  // and B
+                buttonPing( 0, SW_PIN_A);                  // check button A
+                buttonPing( 1, SW_PIN_B);                  // and B
 
-        button_consume(0);               // and transpose the button input in menulayer information each time
-        button_consume(1);
+                button_consume(0);               // and transpose the button input in menulayer information each time
+                button_consume(1);
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-CKernel::wrapper_modes()
+void    CKernel::wrapper_modes()
 {
         resetMenuPickupFlags();                              // we need to reset the threshold flags each loop - why again?!
 

@@ -37,9 +37,9 @@ features.cpp                randomVec8                                      (   
 filesystem.cpp              Mount                                           (   const char*     p_deviceName )
                             UnMount                                         ()
                             openFile                                        (   const char*     p_fileName )
-                            loadFile                                        (   char*           p_buffer,       // destination buffer for the file data
+                            loadToBuffer                                        (   char*           p_buffer,       // destination buffer for the file data
                                                                                 unsigned        p_bufferSize )
-                            saveBuffer                                      (   const char*     p_fileName,
+                            saveToBuffer                                      (   const char*     p_fileName,
                                                                                 const char*     p_buffer,
                                                                                 unsigned        p_bufferSize )
                             closeFile                                       ()
@@ -184,7 +184,7 @@ okay, here now the plan - we need to connect the loose ends
 - to replace it with a mechanism that logs into a buffer and either write it to a file or show it on screen
 new functions here are:
 
-saveBuffer() and buffer_to_screen_*()
+saveToBuffer() and buffer_to_screen_*()
 
 - to integrate a texture atlas driven menu running as a second pass fragment shader:
 

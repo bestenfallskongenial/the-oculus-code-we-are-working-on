@@ -13,7 +13,7 @@ features.cpp
 
 filesystem_user.cpp
 
-    this function need to be created using our self-made storeLog()/saveBuffer etc code...
+    this function need to be created using our self-made storeLog()/saveToBuffer etc code...
     it is meant to create, store and read a human readeble and editable file from the g_centralModeBuffer array
     means we also need to check if the shaders are the same as last time ( size or name, both retrieved while loading )
 

@@ -1,7 +1,7 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool CKernel::display_startup_screen(char* buffer, u32& index)
+bool CKernel::startupScreen(char* buffer, u32& index)
 {
     const char* machineName = m_MachineInfo.GetMachineName();
     const char* socName     = m_MachineInfo.GetSoCName();
@@ -28,30 +28,34 @@ bool CKernel::display_startup_screen(char* buffer, u32& index)
 
     /* text labels */
 
-    storeLog(buffer, index, "Machine Model", EMPTYLOG, EMPTYLOG, EMPTYLOG, EMPTYLOG);
-    storeLog(buffer, index, machineName, EMPTYLOG, EMPTYLOG, EMPTYLOG, EMPTYLOG);
+    storeLog(buffer, index, "Machine Model");
+    storeLog(buffer, index, machineName);
     nextline(buffer, index);
-    storeLog(buffer, index, "SoC Name", EMPTYLOG, EMPTYLOG, EMPTYLOG, EMPTYLOG);
-    storeLog(buffer, index, socName, EMPTYLOG, EMPTYLOG, EMPTYLOG, EMPTYLOG);
+    storeLog(buffer, index, "SoC Name");
+    storeLog(buffer, index, socName);
     nextline(buffer, index);
 
     /* numeric values */
 
-    storeLog(buffer, index, "Model Major", modelMajor, EMPTYLOG, EMPTYLOG, EMPTYLOG);
-    storeLog(buffer, index, "Model Revision", modelRevision, EMPTYLOG, EMPTYLOG, EMPTYLOG);
+    storeLog(buffer, index, "Model Major    ", modelMajor);
+    storeLog(buffer, index, "Model Revision ", modelRevision);
     nextline(buffer, index);
-    storeLog(buffer, index, "RAM Size MB", ramSize, EMPTYLOG, EMPTYLOG, EMPTYLOG);
-    storeLog(buffer, index, "CPU Speed Mode", cpuSpeedMode, EMPTYLOG, EMPTYLOG, EMPTYLOG);
+    storeLog(buffer, index, "RAM Size     MB", ramSize);
+    storeLog(buffer, index, "CPU Speed Mode ", cpuSpeedMode);
     nextline(buffer, index);
-    storeLog(buffer, index, "SoC Max Temp", socMaxTemp, EMPTYLOG, EMPTYLOG, EMPTYLOG);
+    storeLog(buffer, index, "SoC Max Temp   ", socMaxTemp);
     nextline(buffer, index);
-    storeLog(buffer, index, "Clock CORE ARM MHz", coreClock, armClock, EMPTYLOG, EMPTYLOG);
-    storeLog(buffer, index, "Clock EMMC EMMC2 UART MHz", emmcClock, emmc2Clock, uartClock, EMPTYLOG);
+    storeLog(buffer, index, "Clock CORE  MHz", coreClock);
+    storeLog(buffer, index, "Clock ARM   MHz", armClock);    
+    storeLog(buffer, index, "Clock EMMC  MHz", emmcClock, emmc2Clock, uartClock);
+    storeLog(buffer, index, "Clock EMMC2 MHz", emmcClock, emmc2Clock, uartClock);
+    storeLog(buffer, index, "Clock UART  MHz", emmcClock, emmc2Clock, uartClock);    
     nextline(buffer, index);
-    storeLog(buffer, index, "DMA Channel", dmaChannel, EMPTYLOG, EMPTYLOG, EMPTYLOG);
+    storeLog(buffer, index, "DMA Channel    ", dmaChannel);
     nextline(buffer, index);
-    storeLog(buffer, index, "USB Delay / FullSpeed", usbDelay, usbSpeed, EMPTYLOG, EMPTYLOG);
-
+    storeLog(buffer, index, "USB Delay      ", usbDelay);
+    storeLog(buffer, index, "USB FullSpeed  ", usbSpeed);
+    
     screen_clear_screen(0x00000000);
 
     screen_draw_buffer_segment  (
