@@ -1,0 +1,102 @@
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// final consistency remarks (last scan)
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// purpose:
+// - record cross-file naming/indexing mismatches and migration notes observed during the final scan.
+
+// needed headers / dependencies:
+// - N/A (documentation remark section).
+
+// needed variables:
+// - N/A (meta section).
+
+// key functions / entry points:
+// - N/A.
+
+// implementation notes:
+// - enum key mismatch exists between declaration and use sites:
+//     kernel.h declares `IS_STORED` in enum `modetable`, while util.cpp uses `is_stored` as an index token.
+// - button state naming is not yet unified:
+//     util.cpp actively uses `g_buttons_states`, while docs/other notes also reference `g_buttonTS`.
+// - glsl_state overlay members are used in gfx_init.cpp (`gl_oms_id`, `gl_omp_id`, `u_atlas`, `u_tile_count`, `u_tile_rect`, `u_tile_index`) and should stay explicitly declared/documented together.
+// - `FileType` / `FileField` + `filecounter[FT_COUNT][FLD_COUNT]` appear in INFO-README.cpp planning/reference text and are referenced by runtime wrappers; keep one canonical declaration source during cleanup.
+// - mixed macro families are present across code and notes (examples: `VSH_FILE_SIZE` vs `VSH_SD`/`VSH_USB` and `VSH_FILES_ON_SD` naming patterns); advisable to consolidate to one naming scheme.
+// - long-term cleanup recommendation:
+//     choose one canonical GPU menu implementation (B or C) and retire duplicate variant to reduce drift.
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// final consistency remarks (last scan)
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// purpose:
+// - capture concrete cross-file inconsistencies spotted during final documentation scan.
+
+// key remarks / inconsistencies spotted:
+// - enum token mismatch: runtime code uses `is_stored` while `kernel.h` enum declares `IS_STORED`.
+// - button state naming mismatch: `util.cpp` uses `g_buttons_states` while docs/other places also refer to `g_buttonTS`.
+// - overlay GLSL handles (`gl_oms_id`, `gl_omp_id`, `u_atlas`, `u_tile_*`) are used in `gfx_init.cpp` and must stay present in `glsl_state` declarations.
+// - `FileType` / `FileField` are present in `INFO-README.cpp` reference content and are not confirmed as canonical `kernel.h` enums in current active header.
+// - parallel GPU menu variants (`gpu_menu_B.cpp` and `gpu_menu_C.cpp`) duplicate major functionality and should be reduced to one canonical path.
+
+// recommended follow-up:
+// - pick one canonical naming convention for state enums/arrays (`IS_STORED` vs `is_stored`, `g_buttonTS` vs `g_buttons_states`).
+// - align `kernel.h` declarations with all actually used fields in `gfx_init.cpp` and menu render path.
+// - keep reference-only docs (`INFO-*.cpp`) clearly separated from active API/declaration source of truth.
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// final scan: known inconsistencies / additional remarks
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// naming / symbol consistency issues currently visible in source:
+// - mode-store enum token mismatch: `IS_STORED` appears in kernel.h enum, while util.cpp uses `is_stored`.
+// - button-state naming drift: README/history mention `g_buttonTS`, while util.cpp currently uses `g_buttons_states`.
+// - buffer member naming drift in kernel.h vs active code:
+//     kernel.h draft names include `m_bufferTexture` and `m_bufferKernel`,
+//     runtime code paths use `m_bufferTex` and `m_bufferKnl`.
+// - frame buffer metadata typo in kernel.h tail: `m_bufferFameA` / `m_bufferFameB` (likely intended `Frame`).
+
+// config/source-of-truth drift:
+// - array-size macros in kernel.h (`VSH_FILES_ON_SD`, `FSH_FILES_ON_SD`, ...) differ from INFO docs that use `VSH_SD`, `FSH_SD`, ...
+// - `FileType` / `FileField` and `filecounter[FT_COUNT][FLD_COUNT]` are documented in INFO-README.cpp but not cleanly declared in kernel.h in this tree.
+// - `menu_layers` is referenced by docs/snippets for `g_menuPickUpFlag[4*menu_layers]`, but should be consolidated to one canonical declaration.
+
+// compile-risk remarks worth checking before functional refactor:
+// - kernel.h currently mixes incomplete/legacy declarations (for example `bufferInfo` references and multiple naming variants) and should be normalized.
+// - util.cpp contains assignment-in-condition patterns for hold ticks (`=10`, `=20`) that look accidental and should be reviewed during code cleanup.
+
+// recommendation:
+// - choose one canonical naming set (enum token case, buffer member names, button matrix name, size macro family),
+//   then align kernel.h + README + implementation files in one pass to avoid drift reappearing.
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Final scan remarks (inconsistencies worth tracking)
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// 1) enum naming mismatch in runtime code:
+// - kernel.h defines IS_STORED in modetable,
+//   while util.cpp accesses is_stored (lowercase).
+// - keep one canonical enum symbol and update all call sites.
+
+// 2) button state symbol mismatch:
+// - util.cpp operates on g_buttons_states[][],
+//   while the docs/history also mention g_buttonTS[][].
+// - choose one authoritative button state matrix and document dimensions from ButtonTSIndex.
+
+// 3) menu overlay GLSL handles:
+// - gfx_init.cpp uses overlay handles/uniform arrays (gl_oms_id/gl_omp_id/u_atlas/u_tile_*),
+//   but these must remain explicitly present in glsl_state declarations to avoid drift.
+
+// 4) enum source split:
+// - FileType/FileField are currently reference-doc enums (INFO-README.cpp),
+//   while kernel.h uses filecount/fileindex.
+// - if runtime standardization is desired, consolidate to one enum family.
+
+// 5) reference files vs runtime files:
+// - INFO-*.cpp files contain useful design notes but are not authoritative runtime contracts.
+// - keep runtime declarations in kernel.h + active *.cpp, and treat INFO files as historical notes.
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// EOF
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

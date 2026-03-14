@@ -4,11 +4,11 @@
 
 // one-style reference for ALL files inside circle/sample/oculus.
 // each section follows the same template:
-//     1) purpose
-//     2) needed headers / external dependencies
-//     3) needed variables (preferably public member declarations in kernel.h where cross-file access is required)
-//     4) key functions / entry points
-//     5) implementation notes
+//     1- purpose
+//     2- needed headers / external dependencies
+//     3- needed variables (preferably public member declarations in kernel.h where cross-file access is required)
+//     4- key functions / entry points
+//     5- implementation notes
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Makefile
@@ -52,7 +52,8 @@
 // - shared constant tables: g_rgb_color_table[49][3], g_waveTable[WAVEFORMS][WAVESAMPLES]
 //
 // needed enums / structs:
-// - enums: TShutdownMode, modetable, io_types, filecount, fileindex, ButtonTSIndex, colorindex, FileType, FileField
+// - enums (kernel.h): TShutdownMode, modetable, io_types, filecount, fileindex, ButtonTSIndex, colorindex
+// - enums (reference docs / INFO-README.cpp): FileType, FileField
 // - structs: RGB, glsl_state, bufferInfo
 
 // key entry points:
@@ -281,7 +282,7 @@
 // - filesystem, memory, gfx init, adc read, mode application utilities.
 
 // needed variables:
-// - filecounter[][], g_Scn*, g_byt*, m_buffer* arrays
+// - filecounter[][], g_Scn* filename arrays, g_byt* byte-count arrays, m_buffer* data arrays
 // - glsl state members and current program/texture/frame selectors
 
 // key functions / entry points:
@@ -389,7 +390,8 @@
 // needed variables:
 // - g_inOutMatrixInt[][]
 // - g_centralModeBuffer[][]
-// - g_buttonTS[][]
+// - g_buttonTS[][] / g_buttons_states[][BTN_INDEX_COUNT]
+// - g_long_click_time, g_double_click_time, g_currentTime
 // - loaded/valid counters for shader/texture/video/frame selection
 
 // key functions / entry points:
@@ -522,6 +524,7 @@
 
 // needed variables:
 // - glsl_state arrays: gl_vsh_id[], gl_fsh_id[], gl_prg_id[], gl_tex_id[], u_tex_id[][]
+// - overlay arrays in glsl_state: gl_oms_id[], gl_omp_id[], u_atlas[], u_tile_count[], u_tile_rect[], u_tile_index[]
 // - glsl_state uniforms: u_time[], u_tres[], u_seed[], u_aud[], u_col[], u_par_a[], u_par_b[], u_tex_l[]
 // - m_bufferVsh/m_bufferOmf/m_bufferFsh/m_bufferOmt/m_bufferTex payload buffers
 // - loaded counters for shader/program/texture resource loops
@@ -660,62 +663,189 @@
 // - maintain one canonical implementation eventually; duplicated variants increase maintenance overhead.
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// INFO-README.cpp
+// FINAL CONSOLIDATED CONSISTENCY REPORT
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// purpose:
-// - ad-hoc function inventory and migration notes used as historical scratchpad/reference.
-
-// needed headers / dependencies:
-// - none required for runtime (documentation-only content).
-
-// needed variables:
-// - N/A (text/reference only).
-
-// key functions / entry points:
-// - none (contains textual listings of functions from many modules).
-
-// implementation notes:
-// - useful as raw inventory but superseded by this README for normalized style.
+// This block compiles all concrete cross-file inconsistencies and structural observations found during the final documentation scan.
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// INFO-cutouts.cpp
+// 1. ENUM TOKEN MISMATCH
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// purpose:
-// - scratchpad for extracted experiments/snippets and explanatory notes.
+// Observed:
+// - `kernel.h` declares enum token:
+//       IS_STORED
+//   within enum `modetable`.
 
-// needed headers / dependencies:
-// - depends on snippet being copied; not core runtime source of truth.
+// - `util.cpp` uses:
+//       is_stored
+//   as an index token.
 
-// needed variables:
-// - mixed prototype/reference variables for menu/audio/parser notes.
-
-// key functions / entry points (snippet-level references):
-// - audioEnergy(...)
-// - GenerateH264ParserInfo(...)
-// - GenerateBmpParserInfo(...)
-// - GenerateBmpOverlayInfo(...)
-// - display_startup_screen(...)
-
-// implementation notes:
-// - treat as notes repository; not a stable production module contract.
+// Conclusion:
+// - The same logical enum entry appears with two different identifiers (`IS_STORED` vs `is_stored`) across files.
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// INFO-roadmap.cpp
+// 2. BUTTON STATE MATRIX NAME MISMATCH
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// purpose:
-// - roadmap/planning notes and migration ideas for future cleanup.
+// Observed:
+// - `util.cpp` actively uses:
+//       g_buttons_states
 
-// needed headers / dependencies:
-// - none required for runtime (planning text).
+// - Documentation and historical notes reference:
+//       g_buttonTS
 
-// needed variables:
-// - N/A (documentation/planning).
+// Conclusion:
+// - Two different identifiers exist for the same logical button state structure.
 
-// key functions / entry points:
-// - contains draft references like display_startup_screen variants.
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 3. BUFFER MEMBER NAME DRIFT
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// implementation notes:
-// - planning document; keep implementation commitments in active modules and this README.
+// Observed differences between header drafts and runtime code:
+
+// kernel.h draft names:
+//     m_bufferTexture
+//     m_bufferKernel
+
+// runtime code uses:
+//     m_bufferTex
+//     m_bufferKnl
+
+// Additional header issue:
+//     m_bufferFameA
+//     m_bufferFameB
+
+// Conclusion:
+// - Buffer structure member names differ between header draft and implementation.
+// - `m_bufferFame*` appears to be a typographical variant of "Frame".
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 4. GLSL OVERLAY STATE MEMBERS
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Observed usage in `gfx_init.cpp`:
+
+// Handles:
+//     gl_oms_id
+//     gl_omp_id
+
+// Uniform references:
+//     u_atlas
+//     u_tile_count
+//     u_tile_rect
+//     u_tile_index
+
+// Conclusion:
+// - These members are used by runtime code and must exist in `glsl_state` declarations.
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 5. FILE ENUM / FILE COUNTER DEFINITIONS
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Observed:
+// - `INFO-README.cpp` references:
+
+//       enum FileType
+//       enum FileField
+//       filecounter[FT_COUNT][FLD_COUNT]
+
+// - Current active header (`kernel.h`) does not clearly define these enums.
+
+// Conclusion:
+// - File classification enums exist in documentation but are not confirmed as canonical runtime enums in the active header.
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 6. FILE COUNT MACRO FAMILY DRIFT
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Observed macro naming patterns:
+
+// In kernel/header drafts:
+//     VSH_FILES_ON_SD
+//     FSH_FILES_ON_SD
+
+// In documentation notes:
+//     VSH_SD
+//     FSH_SD
+
+// Conclusion:
+// - Two macro naming families exist for file count constants.
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 7. MENU LAYER CONSTANT SOURCE
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Observed:
+// - Documentation references:
+
+//       g_menuPickUpFlag[4 * menu_layers]
+
+// - The canonical declaration location of `menu_layers` is not clearly identified.
+
+// Conclusion:
+// - The constant should originate from one authoritative declaration.
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 8. GPU MENU IMPLEMENTATION DUPLICATION
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Observed:
+// - Two separate implementations exist:
+
+//       gpu_menu_B.cpp
+//       gpu_menu_C.cpp
+
+// - Both implement major portions of the same functionality.
+
+// Conclusion:
+// - Parallel implementations of the GPU menu currently coexist.
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 9. HEADER CONSISTENCY RISKS
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Observed in `kernel.h`:
+
+// - Presence of mixed or legacy declarations
+// - References to `bufferInfo`
+// - Multiple naming variants for similar members
+
+// Conclusion:
+// - Header contains inconsistent or partially outdated definitions relative to runtime code.
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 10. CONDITIONAL ASSIGNMENT PATTERNS IN util.cpp
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Observed patterns:
+
+//     if (... = 10)
+//     if (... = 20)
+
+// in hold-tick logic.
+
+// Conclusion:
+// - Assignment appears inside conditional expressions and should be reviewed.
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 11. DOCUMENTATION VS RUNTIME SOURCE OF TRUTH
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Observed separation:
+
+// Reference / documentation files:
+//     INFO-*.cpp
+
+// Runtime declarations:
+//     kernel.h
+//     active *.cpp files
+
+// Conclusion:
+// - INFO files contain design notes but are not authoritative runtime interfaces.
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// END OF VERIFIED FACT SET
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// EOF
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
