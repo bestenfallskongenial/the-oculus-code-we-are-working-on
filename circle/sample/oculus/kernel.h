@@ -138,29 +138,8 @@ enum TShutdownMode
 	ShutdownReboot
 };
 
-    uint8_t menu_map_max[12] =	// this is need because the common map function need uper limits depending on g_channel_mode_capability, otherwhise we map to much / less
-        {
-            5, 5, 5, 5,
-            5, 5, 5, 5,
-            4, 4, 7, 7
-        };
-
-    // per-channel, per-mode capability (boolean) 
-
-    const bool g_channel_mode_capability[ADC_CHANNELS][NUMBER_OF_MODES] = // we need this to keep track what channel can use what mode in applyModeToChannel
-        {
-            { true, true, true, true, true, false },
-            { true, true, true, true, true, false },
-            { true, true, true, true, true, false },
-            { true, true, true, true, true, false },
-            { true, true, true, true, true, false },
-            { true, true, true, true, true, false },
-            { true, true, true, true, true, false },
-            { true, true, true, true, true, false }
-        };
-
 uint8_t g_modeMap[modetablecount][17] =	// the first element is the max of modes for each channel, than we have the order ( switch case of applyModeToChannel(int channel) )
-{
+{  /  A    /  B    /  LFO  / Sens       
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0} 	
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
@@ -242,7 +221,7 @@ enum fileindex
 {
 	maxSD = 0,
 	maxUsb,
-	oldcount, // ? i mean the function now & the counterm no old-new thing neccesary
+	oldcount, // no old-new thing necessary
 	count,
 	scanned,
 	fileindexcount

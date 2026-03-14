@@ -30,10 +30,10 @@ void            CKernel::io_read_ADC()
                 static uint32_t audio_hold_A = 0;
                 static uint32_t audio_hold_B = 0;
 
-                int w0 = f_averageBufferSizeTable[0][g_sensitivityNew];
-                int w1 = f_averageBufferSizeTable[1][g_sensitivityNew];
-                int w2 = f_averageBufferSizeTable[2][g_sensitivityNew];
-                int w3 = f_averageBufferSizeTable[3][g_sensitivityNew];
+                int w0 = g_centralModeBuffer[g_currentProgramBuffer][SENS_A] & 63;
+                int w1 = g_centralModeBuffer[g_currentProgramBuffer][SENS_B] & 63;
+                int w2 = g_centralModeBuffer[g_currentProgramBuffer][SENS_C] & 63;
+                int w3 = g_centralModeBuffer[g_currentProgramBuffer][SENS_D] & 63;
 
                 static int f_ring_buffer[ADC_CHANNELS][ADC_BUFFER] = { 0 };
                 static int f_index_ring_buffer;
@@ -45,16 +45,16 @@ void            CKernel::io_read_ADC()
 
                 const int f_scale = scaleFactors[attenuation];
 
-                    g_modeMap[0][0] =
-                    g_modeMap[1][0] =
-                    g_modeMap[2][0] =
+                    g_modeMap[0][0] = 5;
+                    g_modeMap[1][0] = 5;
+                    g_modeMap[2][0] = 5;
                     g_modeMap[3][0] = 5;
 
                 f_ring_buffer[0][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(0);    // Channel 0 - First of pair for audio_sample[0]
 
-                erraticness[0]  =   f_ring_buffer[0][i0] - f_ring_buffer[0][i1] + f_ring_buffer[0][i2] - f_ring_buffer[0][i3];
+                g_irregularity[0]  =   f_ring_buffer[0][i0] - f_ring_buffer[0][i1] + f_ring_buffer[0][i2] - f_ring_buffer[0][i3];
 
-                if(erraticness[0] > AUDIO_THRESHOLD || erraticness[0] < -AUDIO_THRESHOLD && m_audio_mode_activated )
+                if(g_irregularity[0] > AUDIO_THRESHOLD || g_irregularity[0] < -AUDIO_THRESHOLD && m_audio_mode_activated )
                     {
                     is_audio[0] = 0;
 
@@ -62,9 +62,9 @@ void            CKernel::io_read_ADC()
 
                     uint8_t v = 5 + ((audio_hold_A > 0) + (audio_hold_B > 0)) * 2;
 
-                        g_modeMap[0][0] =
-                        g_modeMap[1][0] =
-                        g_modeMap[2][0] =
+                        g_modeMap[0][0] = v;
+                        g_modeMap[1][0] = v;
+                        g_modeMap[2][0] = v;
                         g_modeMap[3][0] = v;
 
                     float s = f_ring_buffer[0][f_index_ring_buffer] * 0.0009765625f; // -> / 1024.0f;
@@ -94,9 +94,9 @@ void            CKernel::io_read_ADC()
 
                 f_ring_buffer[1][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(1);    // Channel 1 - First of pair for audio_sample[1]
 
-                erraticness[1] =    f_ring_buffer[1][i0] - f_ring_buffer[1][i1] + f_ring_buffer[1][i2] - f_ring_buffer[1][i3];
+                g_irregularity[1] =    f_ring_buffer[1][i0] - f_ring_buffer[1][i1] + f_ring_buffer[1][i2] - f_ring_buffer[1][i3];
 
-                if(erraticness[1] > AUDIO_THRESHOLD || erraticness[1] < -AUDIO_THRESHOLD && m_audio_mode_activated )
+                if(g_irregularity[1] > AUDIO_THRESHOLD || g_irregularity[1] < -AUDIO_THRESHOLD && m_audio_mode_activated )
                     {
                     is_audio[1] = 1;
 
@@ -104,9 +104,9 @@ void            CKernel::io_read_ADC()
 
                     uint8_t v = 5 + ((audio_hold_A > 0) + (audio_hold_B > 0)) * 2;
 
-                        g_modeMap[0][0] =
-                        g_modeMap[1][0] =
-                        g_modeMap[2][0] =
+                        g_modeMap[0][0] = v;
+                        g_modeMap[1][0] = v;
+                        g_modeMap[2][0] = v;
                         g_modeMap[3][0] = v;
 
                     float s = f_ring_buffer[1][f_index_ring_buffer] * 0.0009765625f;
@@ -136,9 +136,9 @@ void            CKernel::io_read_ADC()
 
                 f_ring_buffer[2][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(2);    // Channel 2 - Second of pair for audio_sample[0]
 
-                erraticness[2] =    f_ring_buffer[2][i0] - f_ring_buffer[2][i1] + f_ring_buffer[2][i2] - f_ring_buffer[2][i3];
+                g_irregularity[2] =    f_ring_buffer[2][i0] - f_ring_buffer[2][i1] + f_ring_buffer[2][i2] - f_ring_buffer[2][i3];
                 
-                if(erraticness[2] > AUDIO_THRESHOLD || erraticness[2] < -AUDIO_THRESHOLD && m_audio_mode_activated )
+                if(g_irregularity[2] > AUDIO_THRESHOLD || g_irregularity[2] < -AUDIO_THRESHOLD && m_audio_mode_activated )
                     {
                     is_audio[0] = 2;
 
@@ -178,9 +178,9 @@ void            CKernel::io_read_ADC()
 
                 f_ring_buffer[3][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(3);    // Channel 3 - Second of pair for audio_sample[1]
 
-                erraticness[3] =    f_ring_buffer[3][i0] - f_ring_buffer[3][i1] + f_ring_buffer[3][i2] - f_ring_buffer[3][i3];
+                g_irregularity[3] =    f_ring_buffer[3][i0] - f_ring_buffer[3][i1] + f_ring_buffer[3][i2] - f_ring_buffer[3][i3];
 
-                if(erraticness[3] > AUDIO_THRESHOLD || erraticness[3] < -AUDIO_THRESHOLD && m_audio_mode_activated )
+                if(g_irregularity[3] > AUDIO_THRESHOLD || g_irregularity[3] < -AUDIO_THRESHOLD && m_audio_mode_activated )
                     {
                     is_audio[1] = 3;
 

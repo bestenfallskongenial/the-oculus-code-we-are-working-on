@@ -161,26 +161,22 @@ void            CKernel::modeLF2 (int channel)
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::modeAudioAb0 (int channel)     // 
 {
-                g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[0][au0] // g_lfoFltOut[1];
-            //  g_inOutMatrixInt[channel][out] = // i have no int audio band!!    
+                g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[0][au0] // g_lfoFltOut[1];  
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::modeAudioAb1 (int channel)
 {
                 g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[0][au1] // g_lfoFltOut[1];
-            //  g_inOutMatrixInt[channel][out] = // i have no int audio band!!
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::modeAudioBb0 (int channel)
 {
                 g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[0][au2] // g_lfoFltOut[1];
-            //  g_inOutMatrixInt[channel][out] = // i have no int audio band!!
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::modeAudioBb1 (int channel)
 {
                 g_inOutMatrixFlt[channel][out] = g_inOutMatrixFlt[0][au3] // g_lfoFltOut[1];
-            //  g_inOutMatrixInt[channel][out] = // i have no int audio band!!
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

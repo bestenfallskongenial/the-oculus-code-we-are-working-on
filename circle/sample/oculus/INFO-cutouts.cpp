@@ -39,7 +39,7 @@ static unsigned  gE_Rows         = 0;
 // - Read all 8 ADC channels, compute control/envelope outputs, and apply temporary menu scaling during audio activity.
 // How it works:
 // - Uses 4-sample per-channel ring buffers to compute `raw`, then computes scaled `val` and float output values.
-// - Detects transients on channels 0..3 with `erraticness[ch] = s0 - s1 + s2 - s3` and +/-AUDIO_THRESHOLD.
+// - Detects transients on channels 0..3 with `g_irregularity[ch] = s0 - s1 + s2 - s3` and +/-AUDIO_THRESHOLD.
 // - Sets hold timers on transient events: channels 0/2 set `audio_hold_A`, channels 1/3 set `audio_hold_B`.
 // - Computes `menu_map_max[0..3]` from active holds: 5 when none are active, 7 with one active hold, 9 with both.
 // - Decrements each hold timer on every call until it reaches zero.

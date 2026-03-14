@@ -22,7 +22,7 @@ CLogger::Get()->Write("ALLOC-DMA", LogDebug, "final buffers = 0x%p count = %u bu
                 return buffers;
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-char**          CKernel::alllocateBufferDMA     (   size_t count, 
+char**          CKernel::alllocateBufferDMA         (   size_t count, 
                                                         size_t bufferSize,
                                                         char** blockBaseOut,
                                                         char** rawBlockOut,
@@ -163,11 +163,9 @@ void            CKernel::wrapperDMAcleanUp            ()
 
                     clearBufferDMA( m_bufferFrB, m_frameRawBlockB); 
 
-                    clearBufferDMA( m_bufferTex, m_textureRawBlock); 
-
                     clearBufferDMA( m_bufferOmt, m_overlayRawBlock); 
 
-
+                    clearBufferDMA( m_bufferTex, m_textureRawBlock); 
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::wrapperMEMcleanUp            ()
