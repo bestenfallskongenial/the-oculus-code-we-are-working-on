@@ -118,3 +118,8 @@ void            CKernel::gpu_render_menu_draw()
                 glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
                 glDisable(GL_BLEND);
 }
+
+void CKernel::gpu_render_menu_shutdown()
+{
+    g_menu_state = MenuGpuState{ {0}, {{0.0f, 0.0f, 0.0f, 0.0f}} };
+}
