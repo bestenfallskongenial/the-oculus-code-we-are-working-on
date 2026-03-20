@@ -2,7 +2,7 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::openService           (   SERVICE_CREATION_T &tx)
+bool            CKernel::openServiceMMAL           (   SERVICE_CREATION_T &tx)
 {
                 tx.version.version                                  = VC_MMAL_VER;
                 tx.version.version_min                              = VC_MMAL_MIN_VER;
@@ -10,22 +10,22 @@ bool            CH264Decoder::openService           (   SERVICE_CREATION_T &tx)
                 tx.connection                                       = m_Connection;
                 tx.rx_fifo_size                                     = 0;
                 tx.tx_fifo_size                                     = 0;
-                tx.callback                                         = callBack;
-                tx.callback_param                                   = &m_VCOSevent;
+                tx.callBackMMAL                                         = callBackMMAL;
+                tx.callBackMMAL_param                                   = &m_VCOSevent;
                 tx.want_unaligned_bulk_rx                           = 0;
                 tx.want_unaligned_bulk_tx                           = 0;
                 tx.want_crc                                         = 0;
 
                 int rc = vchi_service_open( m_VCHIInstance, &tx, &m_ServiceHandle );    
 #ifdef __H264_DECODER_DEBUG_INIT__
-                Log_openService(tx);
+                Log_openServiceMMAL(tx);
 #endif
                 return (rc == 0);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::createComponent       (   MMAL_Component_Create_Msg& tx, MMAL_Component_Create_Reply_Msg& rx)
+bool            CKernel::createComponentMMAL       (   MMAL_Component_Create_Msg& tx, MMAL_Component_Create_Reply_Msg& rx)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_COMPONENT_CREATE );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_COMPONENT_CREATE );
 
                 tx.msg                                             = {};   /* prime TX msg */
 
@@ -42,16 +42,16 @@ bool            CH264Decoder::createComponent       (   MMAL_Component_Create_Ms
                     return false;
                     }
 #ifdef __H264_DECODER_DEBUG_INIT__
-                Log_createComponent(tx,rx);
+                Log_createComponentMMAL(tx,rx);
 #endif        
                 m_ComponentHandle = rx.msg.component_handle;
 
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::getPortInfo           (   u32 port_type, u32& port_handle, MMAL_Port_Info_Get_Msg& tx, MMAL_Port_Info_Get_Reply_Msg& rx)
+bool            CKernel::getPortInfoMMAL           (   u32 port_type, u32& port_handle, MMAL_Port_Info_Get_Msg& tx, MMAL_Port_Info_Get_Reply_Msg& rx)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_PORT_INFO_GET );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_PORT_INFO_GET );
 
                 tx.msg                                             = {};       /* prime TX msg */
                 tx.msg.component_handle                            = m_ComponentHandle;
@@ -68,14 +68,14 @@ bool            CH264Decoder::getPortInfo           (   u32 port_type, u32& port
                     }
                 port_handle = rx.msg.port_handle;
 #ifdef __H264_DECODER_DEBUG_INIT__
-                Log_getPortInfo(tx,rx);
+                Log_getPortInfoMMAL(tx,rx);
 #endif
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::setPortInfo           (   MMAL_Port_Info_Set_Msg& tx, MMAL_Port_Info_Set_Reply_Msg& rx)
+bool            CKernel::setPortInfoMMAL           (   MMAL_Port_Info_Set_Msg& tx, MMAL_Port_Info_Set_Reply_Msg& rx)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_PORT_INFO_SET );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_PORT_INFO_SET );
 
                 size_t rx_len = 0;
 
@@ -87,14 +87,14 @@ bool            CH264Decoder::setPortInfo           (   MMAL_Port_Info_Set_Msg& 
                     return false;
                     }
 #ifdef __H264_DECODER_DEBUG_INIT__
-                Log_setPortInfo(tx,rx); 
+                Log_setPortInfoMMAL(tx,rx); 
 #endif                
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::enableComponent       (   MMAL_Component_Enable_Msg& tx, MMAL_Component_Enable_Reply_Msg& rx)
+bool            CKernel::enableComponentMMAL       (   MMAL_Component_Enable_Msg& tx, MMAL_Component_Enable_Reply_Msg& rx)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_COMPONENT_ENABLE );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_COMPONENT_ENABLE );
 
                 tx.msg                                             = {};                                                   /* prime TX msg */
                 tx.msg.component_handle                            = m_ComponentHandle;
@@ -109,14 +109,14 @@ bool            CH264Decoder::enableComponent       (   MMAL_Component_Enable_Ms
                     return false;
                     }
 #ifdef __H264_DECODER_DEBUG_INIT__
-                Log_enableComponent(tx,rx);
+                Log_enableComponentMMAL(tx,rx);
 #endif        
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::setZeroCopyMode       (   /*u32 port_handle,*/ const MMAL_Port_Info_Get_Reply_Msg& src,  MMAL_Port_Parameter_Set_Msg& tx, MMAL_Port_Parameter_Set_Reply_Msg& rx)
+bool            CKernel::setZeroCopyModeMMAL       (   /*u32 port_handle,*/ const MMAL_Port_Info_Get_Reply_Msg& src,  MMAL_Port_Parameter_Set_Msg& tx, MMAL_Port_Parameter_Set_Reply_Msg& rx)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_PORT_PARAMETER_SET );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_PORT_PARAMETER_SET );
 
                 tx.msg = {};                                                       /* prime TX msg */
                 tx.msg.component_handle                            = m_ComponentHandle;
@@ -137,14 +137,14 @@ bool            CH264Decoder::setZeroCopyMode       (   /*u32 port_handle,*/ con
                     return false;
                     }
 #ifdef __H264_DECODER_DEBUG_INIT__
-                Log_setZeroCopyMode(tx,rx);
+                Log_setZeroCopyModeMMAL(tx,rx);
 #endif        
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::enablePort            (   /*u32 port_handle,*/ const MMAL_Port_Info_Get_Reply_Msg& src, MMAL_Port_Action_Msg& tx, MMAL_Port_Action_Reply_Msg& rx)
+bool            CKernel::enablePortMMAL            (   /*u32 port_handle,*/ const MMAL_Port_Info_Get_Reply_Msg& src, MMAL_Port_Action_Msg& tx, MMAL_Port_Action_Reply_Msg& rx)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_PORT_ACTION );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_PORT_ACTION );
 
                 tx.msg                                             = {};                                                   /* prime TX msg from GET snapshot */
                 tx.msg.component_handle                            = m_ComponentHandle;
@@ -162,14 +162,14 @@ bool            CH264Decoder::enablePort            (   /*u32 port_handle,*/ con
                     return false;
                     }
 #ifdef __H264_DECODER_DEBUG_INIT__
-                Log_enablePort(tx,rx);
+                Log_enablePortMMAL(tx,rx);
 #endif        
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CH264Decoder::PrimeOutputBufferBody     (   MMAL_Buffer_From_Host_Msg& tx)
+void            CKernel::PrimeOutputBufferBodyMMAL     (   MMAL_Buffer_From_Host_Msg& tx)
 {
                 tx.msg = {};
                 tx.msg.drvbuf.magic                                = MMAL_MAGIC;
@@ -186,11 +186,11 @@ void            CH264Decoder::PrimeOutputBufferBody     (   MMAL_Buffer_From_Hos
                 tx.msg.payload_in_message                          = 0;
 
 #ifdef __H264_DECODER_DEBUG_INIT__
-//             Log_createComponent(tx);
+//             Log_createComponentMMAL(tx);
 #endif            
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CH264Decoder::PrimeInputBufferBody      (   MMAL_Buffer_From_Host_Msg& tx)
+void            CKernel::PrimeInputBufferBodyMMAL      (   MMAL_Buffer_From_Host_Msg& tx)
 {
                 tx.msg = {};
                 tx.msg.drvbuf.magic                                = MMAL_MAGIC;
@@ -210,11 +210,11 @@ void            CH264Decoder::PrimeInputBufferBody      (   MMAL_Buffer_From_Hos
                 tx.msg.payload_in_message                          = 0;
 
 #ifdef __H264_DECODER_DEBUG_INIT__
-//               Log_createComponent(tx);
+//               Log_createComponentMMAL(tx);
 #endif            
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void CH264Decoder::setPortFormatInput( const MMAL_Port_Info_Get_Reply_Msg& src, MMAL_Port_Info_Set_Msg& tx)
+void CKernel::setPortFormatInputMMAL( const MMAL_Port_Info_Get_Reply_Msg& src, MMAL_Port_Info_Set_Msg& tx)
 {
     // SET-prefix fields (must be explicit)
     tx.msg.component_handle = src.msg.component_handle;
@@ -242,7 +242,7 @@ void CH264Decoder::setPortFormatInput( const MMAL_Port_Info_Get_Reply_Msg& src, 
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void CH264Decoder::setPortFormatOutput( const MMAL_Port_Info_Get_Reply_Msg& src, MMAL_Port_Info_Set_Msg& tx)
+void CKernel::setPortFormatOutputMMAL( const MMAL_Port_Info_Get_Reply_Msg& src, MMAL_Port_Info_Set_Msg& tx)
 {
     // SET-prefix fields (must be explicit)
     tx.msg.component_handle = src.msg.component_handle;

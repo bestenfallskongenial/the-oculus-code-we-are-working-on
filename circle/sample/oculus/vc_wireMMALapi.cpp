@@ -2,12 +2,12 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              CONSTRUCTOR / DECONSTRUCTOR
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-                CH264Decoder::CH264Decoder              (   )
+                CKernel::CKernel              (   )
                     : m_ServiceHandle(0)
                     , m_TransactionId(0)
                     {
                     }
-                CH264Decoder::~CH264Decoder             (   )
+                CKernel::~CKernel             (   )
 {
                 if (m_ServiceHandle)
                     {
@@ -15,7 +15,7 @@
                     }
 }
 
-bool            CH264Decoder::initialize                  ( u32         InBufferHandle,         // my input buffer handle from smem
+bool            CKernel::initializeMMAL                  ( u32         InBufferHandle,         // my input buffer handle from smem
                                                             u32         InBufferPointer,        // i got the feeling i rather need this
                                                             u32         InBufferSize,           // my allocated input buffer size 
                                                             u32         OutBufferHandleA,       // my output buffer handle a from smem
@@ -53,7 +53,7 @@ bool            CH264Decoder::initialize                  ( u32         InBuffer
 #ifdef __H264_DECODER_DEBUG_INIT__
                 nextline();
 #endif                
-                initEvents                  ( );
+                initEventsMMAL                  ( );
 #ifdef __H264_DECODER_DEBUG_INIT__
                 storeLog ( "----------------------------------------------------------------");   
                 storeLog ( "Input Port      Handle / Size ",m_InputBufferHandle, m_InputBufferPointer, m_InputBufferSize);
@@ -69,147 +69,147 @@ bool bOK = true;
 
     if (bOK)
         {
-    bOK = openService(m_ServiceCreate);
+    bOK = openServiceMMAL(m_ServiceCreate);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMAL openService FAILED");
+        if (!bOK) storeLog("\nMMAL openServiceMMAL FAILED");
 #endif
         }
     if (bOK)
         {
-    bOK = createComponent(m_ComponentCreateTx, m_ComponentCreateRx);
+    bOK = createComponentMMAL(m_ComponentCreateTx, m_ComponentCreateRx);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALcreateComponent FAILED");
+        if (!bOK) storeLog("\nMMALcreateComponentMMAL FAILED");
 #endif
         }
     if (bOK)
         {
-        bOK = getPortInfo(MMAL_PORT_TYPE_INPUT, m_InputPortHandle, m_PortInfoGetTx_Input_A, m_PortInfoGetRx_Input_A);
+        bOK = getPortInfoMMAL(MMAL_PORT_TYPE_INPUT, m_InputPortHandle, m_PortInfoGetTx_Input_A, m_PortInfoGetRx_Input_A);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALgetPortInfo Input A FAILED");
+        if (!bOK) storeLog("\nMMALgetPortInfoMMAL Input A FAILED");
 #endif
         }
     if (bOK)
         {
-        bOK = getPortInfo(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_A, m_PortInfoGetRx_Output_A);
+        bOK = getPortInfoMMAL(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_A, m_PortInfoGetRx_Output_A);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALgetPortInfo Output A FAILED");
+        if (!bOK) storeLog("\nMMALgetPortInfoMMAL Output A FAILED");
 #endif
         }
     if (bOK)
         {
-        setPortFormatInput (m_PortInfoGetRx_Input_A,  m_PortInfoSetTx_Input);
-        setPortFormatOutput(m_PortInfoGetRx_Output_A, m_PortInfoSetTx_Output);
+        setPortFormatInputMMAL (m_PortInfoGetRx_Input_A,  m_PortInfoSetTx_Input);
+        setPortFormatOutputMMAL(m_PortInfoGetRx_Output_A, m_PortInfoSetTx_Output);
         }
     if (bOK)
         {
-        bOK = setPortInfo(m_PortInfoSetTx_Input, m_PortInfoSetRx_Input);
+        bOK = setPortInfoMMAL(m_PortInfoSetTx_Input, m_PortInfoSetRx_Input);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALsetPortInfo Input FAILED");
+        if (!bOK) storeLog("\nMMALsetPortInfoMMAL Input FAILED");
 #endif
         }
     if (bOK)
         {
-        bOK = setPortInfo(m_PortInfoSetTx_Output, m_PortInfoSetRx_Output);
+        bOK = setPortInfoMMAL(m_PortInfoSetTx_Output, m_PortInfoSetRx_Output);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALsetPortInfo Output FAILED");
+        if (!bOK) storeLog("\nMMALsetPortInfoMMAL Output FAILED");
 #endif
         }
     if (bOK)
         {
-        bOK = enableComponent(m_ComponentEnableTx, m_ComponentEnableRx);
+        bOK = enableComponentMMAL(m_ComponentEnableTx, m_ComponentEnableRx);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALenableComponent FAILED");
+        if (!bOK) storeLog("\nMMALenableComponentMMAL FAILED");
 #endif
         }
     if (bOK)
         {
-        bOK = getPortInfo(MMAL_PORT_TYPE_INPUT, m_InputPortHandle, m_PortInfoGetTx_Input_B, m_PortInfoGetRx_Input_B);
+        bOK = getPortInfoMMAL(MMAL_PORT_TYPE_INPUT, m_InputPortHandle, m_PortInfoGetTx_Input_B, m_PortInfoGetRx_Input_B);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALgetPortInfo Input B FAILED");
+        if (!bOK) storeLog("\nMMALgetPortInfoMMAL Input B FAILED");
 #endif
         }
     if (bOK)
         {
-        bOK = getPortInfo(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_B, m_PortInfoGetRx_Output_B);
+        bOK = getPortInfoMMAL(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_B, m_PortInfoGetRx_Output_B);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALgetPortInfo Output B BFAILED");
+        if (!bOK) storeLog("\nMMALgetPortInfoMMAL Output B BFAILED");
 #endif
         }
     if (bOK)
         {
-        bOK = setZeroCopyMode(m_PortInfoGetRx_Input_B, m_PortParamTx_Input, m_PortParamRx_Input);
+        bOK = setZeroCopyModeMMAL(m_PortInfoGetRx_Input_B, m_PortParamTx_Input, m_PortParamRx_Input);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALsetZeroCopyMode Input FAILED");
+        if (!bOK) storeLog("\nMMALsetZeroCopyModeMMAL Input FAILED");
 #endif
         }
     if (bOK)
         {
-        bOK = setZeroCopyMode(m_PortInfoGetRx_Output_B, m_PortParamTx_Output, m_PortParamRx_Output);
+        bOK = setZeroCopyModeMMAL(m_PortInfoGetRx_Output_B, m_PortParamTx_Output, m_PortParamRx_Output);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALsetZeroCopyMode Output FAILED");
+        if (!bOK) storeLog("\nMMALsetZeroCopyModeMMAL Output FAILED");
 #endif
         }
     if (bOK)
         {
-        bOK = getPortInfo(MMAL_PORT_TYPE_INPUT, m_InputPortHandle, m_PortInfoGetTx_Input_C, m_PortInfoGetRx_Input_C);
+        bOK = getPortInfoMMAL(MMAL_PORT_TYPE_INPUT, m_InputPortHandle, m_PortInfoGetTx_Input_C, m_PortInfoGetRx_Input_C);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALgetPortInfo Input C FAILED");
+        if (!bOK) storeLog("\nMMALgetPortInfoMMAL Input C FAILED");
 #endif
         }
 if (bOK)
         {
-        bOK = getPortInfo(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_C, m_PortInfoGetRx_Output_C);
+        bOK = getPortInfoMMAL(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_C, m_PortInfoGetRx_Output_C);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALgetPortInfo Output C FAILED");
+        if (!bOK) storeLog("\nMMALgetPortInfoMMAL Output C FAILED");
 #endif
         }
     if (bOK)
         {
-        bOK = enablePort(m_PortInfoGetRx_Input_C, m_PortActionTx_Input, m_PortActionRx_Input);
+        bOK = enablePortMMAL(m_PortInfoGetRx_Input_C, m_PortActionTx_Input, m_PortActionRx_Input);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALenablePort Input FAILED");
+        if (!bOK) storeLog("\nMMALenablePortMMAL Input FAILED");
 #endif
         }
     if (bOK)
         {
-        bOK = enablePort(m_PortInfoGetRx_Output_C, m_PortActionTx_Output, m_PortActionRx_Output);
+        bOK = enablePortMMAL(m_PortInfoGetRx_Output_C, m_PortActionTx_Output, m_PortActionRx_Output);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALenablePort Output FAILED");
+        if (!bOK) storeLog("\nMMALenablePortMMAL Output FAILED");
 #endif
         }
     return bOK;
 
             /*
-                queueInputBuffer        ( m_BufferFromHostTx_Input,         // ---------- BUFFERS ---------- 
+                queueInputBufferMMAL        ( m_BufferFromHostTx_Input,         // ---------- BUFFERS ---------- 
                                             m_BufferFromHostRx_Input );
 
-                queueOutputBuffer       ( m_BufferFromHostTx_OutputA,
+                queueOutputBufferMMAL       ( m_BufferFromHostTx_OutputA,
                                             m_BufferFromHostRx_OutputA );
 
-                queueOutputBuffer       ( m_BufferFromHostTx_OutputB,
+                queueOutputBufferMMAL       ( m_BufferFromHostTx_OutputB,
                                             m_BufferFromHostRx_OutputB );
             */
                 return true;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::createTextures       (   )
+bool            CKernel::createTexturesMMAL       (   )
 {
                 int count = 0;
 
                 glGenTextures(1, &m_Texture);
-                if(!checkGLerror()) count++;
+                if(!checkGLerrorMMAL()) count++;
                 glBindTexture(GL_TEXTURE_2D, m_Texture);
-                if(!checkGLerror()) count++;
+                if(!checkGLerrorMMAL()) count++;
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                if(!checkGLerror()) count++;
+                if(!checkGLerrorMMAL()) count++;
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                if(!checkGLerror()) count++;
+                if(!checkGLerrorMMAL()) count++;
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-                if(!checkGLerror()) count++;
+                if(!checkGLerrorMMAL()) count++;
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-                if(!checkGLerror()) count++;
+                if(!checkGLerrorMMAL()) count++;
                 glBindTexture(GL_TEXTURE_2D, 0);
-                if(!checkGLerror()) count++;
+                if(!checkGLerrorMMAL()) count++;
 
                 if( count != 0)
                     { 
@@ -226,12 +226,12 @@ bool            CH264Decoder::createTextures       (   )
                 return true;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::framePoller(u32 frame_offset, u32 frame_length)
+bool            CKernel::framePollerMMAL(u32 frame_offset, u32 frame_length)
 {
 #ifdef __H264_DECODER_DEBUG_RUNTIME__           // Bootstrap: prime first input buffer and snapshot port state (debug)
                 if (!m_FirstFrameQueued)
                     {
-                    if (!queueInputBuffer(m_BufferFromHostTx_Input, frame_offset, frame_length))
+                    if (!queueInputBufferMMAL(m_BufferFromHostTx_Input, frame_offset, frame_length))
                         {
                         nextline();
                         storeLog("very first frame queue error!", frame_offset, frame_length);
@@ -240,8 +240,8 @@ bool            CH264Decoder::framePoller(u32 frame_offset, u32 frame_length)
                     nextline();
                     storeLog("very first frame queue SUCCESS", frame_offset, frame_length);
 
-                    getPortInfo(MMAL_PORT_TYPE_INPUT,  m_InputPortHandle,  m_PortInfoGetTx_Input_D, m_PortInfoGetRx_Input_D);
-                    getPortInfo(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_D, m_PortInfoGetRx_Output_D);
+                    getPortInfoMMAL(MMAL_PORT_TYPE_INPUT,  m_InputPortHandle,  m_PortInfoGetTx_Input_D, m_PortInfoGetRx_Input_D);
+                    getPortInfoMMAL(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_D, m_PortInfoGetRx_Output_D);
 
                     m_FirstFrameQueued = true;
                     return true;
@@ -275,17 +275,17 @@ bool            CH264Decoder::framePoller(u32 frame_offset, u32 frame_length)
 
                                     if (m_CurrentHandle == m_OutputBufferHandleA) // Ping-pong: requeue the other output buffer
                                         {
-                                        if (!queueOutputBuffer(m_BufferFromHostTx_Output, m_OutputBufferHandleB, m_OutputBufferSize))
+                                        if (!queueOutputBufferMMAL(m_BufferFromHostTx_Output, m_OutputBufferHandleB, m_OutputBufferSize))
                                             return false;
                                         }
                                     if (m_CurrentHandle == m_OutputBufferHandleB) 
                                         {
-                                        if (!queueOutputBuffer(m_BufferFromHostTx_Output, m_OutputBufferHandleA, m_OutputBufferSize))
+                                        if (!queueOutputBufferMMAL(m_BufferFromHostTx_Output, m_OutputBufferHandleA, m_OutputBufferSize))
                                             return false;
                                         }
-                                    if (!bufferReady(m_CurrentHandle))
+                                    if (!bufferReadyMMAL(m_CurrentHandle))
                                         return false;
-                                    if (!queueInputBuffer(m_BufferFromHostTx_Input, frame_offset, frame_length))
+                                    if (!queueInputBufferMMAL(m_BufferFromHostTx_Input, frame_offset, frame_length))
                                         return false;
 #ifdef __H264_DECODER_DEBUG_RUNTIME__   
                                     message = "MMAL_MSG_STATUS_SUCCESS      - All is Fine";

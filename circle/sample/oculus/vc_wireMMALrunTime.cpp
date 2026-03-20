@@ -2,7 +2,7 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool CH264Decoder::bufferReady(u32 handle)
+bool CKernel::bufferReadyMMAL(u32 handle)
 {
         //      if (handle != m_VCSMHandleA && handle != m_VCSMHandleB)         // Only react to our two output buffers
         //          return true;                                                // why???? we have filtered before ad infiniti 
@@ -32,9 +32,9 @@ bool CH264Decoder::bufferReady(u32 handle)
                 return true;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::queueOutputBuffer     (   MMAL_Buffer_From_Host_Msg& tx, u32 vc_handle, u32 alloc_size)
+bool            CKernel::queueOutputBufferMMAL     (   MMAL_Buffer_From_Host_Msg& tx, u32 vc_handle, u32 alloc_size)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_BUFFER_FROM_HOST );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_BUFFER_FROM_HOST );
 
                 tx.msg.drvbuf.client_context                       = tx.hdr.context;  /* patch dynamic fields into already-primed msg */
 
@@ -46,14 +46,14 @@ bool            CH264Decoder::queueOutputBuffer     (   MMAL_Buffer_From_Host_Ms
 
 #ifdef __H264_DECODER_DEBUG_RUNTIME__
                 storeLog("\nBUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
-                storeMsg("QueueOutputBuffer", &tx, (u32)sizeof(tx));
+                storeMsg("queueOutputBufferMMAL", &tx, (u32)sizeof(tx));
 #endif
                 return (vchi_msg_queue(m_ServiceHandle, &tx, (u32)sizeof(tx), VCHI_FLAGS_BLOCK_UNTIL_QUEUED, nullptr) == 0);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::queueInputBuffer      (   MMAL_Buffer_From_Host_Msg& tx, u32 frame_offset, u32 frame_length)
+bool            CKernel::queueInputBufferMMAL      (   MMAL_Buffer_From_Host_Msg& tx, u32 frame_offset, u32 frame_length)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_BUFFER_FROM_HOST );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_BUFFER_FROM_HOST );
 
                 tx.msg.drvbuf.client_context                       = tx.hdr.context;                /* patch dynamic fields into already-primed msg */
 
@@ -64,7 +64,7 @@ bool            CH264Decoder::queueInputBuffer      (   MMAL_Buffer_From_Host_Ms
                 tx.msg.buffer_header.flags                         = flags;
 #ifdef __H264_DECODER_DEBUG_RUNTIME__
                 storeLog("\nBUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
-                storeMsg("QueueInputBuffer", &tx, (u32)sizeof(tx));
+                storeMsg("queueInputBufferMMAL", &tx, (u32)sizeof(tx));
 #endif
                 return (vchi_msg_queue(m_ServiceHandle, &tx, (u32)sizeof(tx), VCHI_FLAGS_BLOCK_UNTIL_QUEUED, nullptr) == 0);
 }

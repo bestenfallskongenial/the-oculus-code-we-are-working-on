@@ -2,16 +2,16 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // h264_hardware_decoder.cpp
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CH264Decoder::callBack              (   void *callback_param, VCHI_CALLBACK_REASON_T reason, void *msg_handle )
+void            CKernel::callBackMMAL              (   void *callBackMMAL_param, VCHI_callBackMMAL_REASON_T reason, void *msg_handle )
 {
-                VCOS_EVENT_T *event = (VCOS_EVENT_T *)callback_param;
-                if (reason == VCHI_CALLBACK_MSG_AVAILABLE && event)
+                VCOS_EVENT_T *event = (VCOS_EVENT_T *)callBackMMAL_param;
+                if (reason == VCHI_callBackMMAL_MSG_AVAILABLE && event)
                     {  
                     vcos_event_signal(event); 
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CH264Decoder::initHeader            (   mmal_msg_header& hdr, u32 type)
+void            CKernel::initHeaderMMAL            (   mmal_msg_header& hdr, u32 type)
 {
     hdr                 = {};
     hdr.magic           = MMAL_MAGIC;
@@ -22,13 +22,13 @@ void            CH264Decoder::initHeader            (   mmal_msg_header& hdr, u3
     hdr.padding         = 0;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-u32             CH264Decoder::NextTransId               (   u32 &tid )
+u32             CKernel::NextTransId               (   u32 &tid )
 {
                 tid = ( tid+1 ) & ~0x80000000u;                                             // mask for async messages really needed ?!                        
                 return tid;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::getVCHIstate              (   )
+bool            CKernel::getVCHIstate              (   )
 {
                 vc_host_get_vchi_state(&m_VCHIInstance, &m_Connection);                         //1. get the VCHI instance and the connection handle from bcm_host.h
 #ifdef __H264_DECODER_DEBUG_INIT__
@@ -37,7 +37,7 @@ bool            CH264Decoder::getVCHIstate              (   )
                 return true;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::initEvents            (   )
+bool            CKernel::initEventsMMAL            (   )
 {
                 if (vcos_event_create(&m_VCOSevent, "MMAL") != VCOS_SUCCESS)
                     {
@@ -52,7 +52,7 @@ bool            CH264Decoder::initEvents            (   )
                 return true;    
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::checkGLerror                  (   )
+bool            CKernel::checkGLerrorMMAL                  (   )
 {
                 GLenum error = glGetError();
                 if (error != GL_NO_ERROR)
@@ -78,7 +78,7 @@ bool            CH264Decoder::checkGLerror                  (   )
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::sendAndWait           (   const void *msg, size_t msg_size, void *rx_msg, size_t max_reply_len, size_t *actual_reply_len )
+bool            CKernel::sendAndWait           (   const void *msg, size_t msg_size, void *rx_msg, size_t max_reply_len, size_t *actual_reply_len )
 {
 #ifdef __H264_DECODER_DEBUG_INIT__
                 nextline();

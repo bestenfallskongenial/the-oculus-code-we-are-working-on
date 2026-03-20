@@ -140,16 +140,16 @@ struct MMAL_Buffer_From_Host_Msg
     mmal_msg_buffer_from_host_wire32  msg;
 };
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-class CH264Decoder
+class CKernel
 {
 public:
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              CONSTRUCTOR / DECONSTRUCTOR
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-                CH264Decoder();
-               ~CH264Decoder();
+                CKernel();
+               ~CKernel();
 // api.cpp -------------------------------------------------------------------------------------------------------------------------------------------
-bool initialize                                           ( u32         InBufferHandle,         // my input buffer handle from smem
+bool initializeMMAL                                           ( u32         InBufferHandle,         // my input buffer handle from smem
                                                             u32         InBufferPointer,        // i got the feeling i rather need this
                                                             u32         InBufferSize,           // my allocated input buffer size 
                                                             u32         OutBufferHandleA,       // my output buffer handle a from smem
@@ -161,48 +161,48 @@ bool initialize                                           ( u32         InBuffer
                                                             u32         ResolutionY,            // obvious, right?
                                                             EGLDisplay  eglDisplay,             // EGL display connection
                                                             EGLContext  eglContext );           // EGL rendering context
-bool createTextures                                       (   );
-bool framePoller                                          ( u32 frame_offset, u32 frame_length);
+bool createTexturesMMAL                                       (   );
+bool framePollerMMAL                                          ( u32 frame_offset, u32 frame_length);
 // runtime.cpp ---------------------------------------------------------------------------------------------------------------------------------------
 private:
-bool bufferReady                                          ( u32 handle);
-bool queueOutputBuffer                                    ( MMAL_Buffer_From_Host_Msg& tx, u32 vc_handle, u32 alloc_size);
-bool queueInputBuffer                                     ( MMAL_Buffer_From_Host_Msg& tx, u32 frame_offset, u32 frame_length);
+bool bufferReadyMMAL                                          ( u32 handle);
+bool queueOutputBufferMMAL                                    ( MMAL_Buffer_From_Host_Msg& tx, u32 vc_handle, u32 alloc_size);
+bool queueInputBufferMMAL                                     ( MMAL_Buffer_From_Host_Msg& tx, u32 frame_offset, u32 frame_length);
 // helper.cpp ----------------------------------------------------------------------------------------------------------------------------------------
-static void callBack                                      ( void *callback_param, VCHI_CALLBACK_REASON_T reason, void *msg_handle );
-void initHeader                                           ( mmal_msg_header& hdr, u32 type);
+static void callBackMMAL                                      ( void *callBackMMAL_param, VCHI_callBackMMAL_REASON_T reason, void *msg_handle );
+void initHeaderMMAL                                           ( mmal_msg_header& hdr, u32 type);
 u32  NextTransId                                          ( u32 &tid );
 bool getVCHIstate                                         (   );
-bool initEvents                                           (   );
-bool checkGLerror                                         (   );
+bool initEventsMMAL                                           (   );
+bool checkGLerrorMMAL                                         (   );
 bool sendAndWait                                          (   const void *msg, size_t msg_size, void *rx_msg, size_t max_reply_len, size_t *actual_reply_len );
 // init.cpp ------------------------------------------------------------------------------------------------------------------------------------------
-bool openService                                          (   SERVICE_CREATION_T &tx);
-bool createComponent                                      (   MMAL_Component_Create_Msg& tx, MMAL_Component_Create_Reply_Msg& rx);
-bool getPortInfo                                          (   u32 port_type, u32& port_handle, MMAL_Port_Info_Get_Msg& tx, MMAL_Port_Info_Get_Reply_Msg& rx);
-bool setPortInfo                                          (   MMAL_Port_Info_Set_Msg& tx, MMAL_Port_Info_Set_Reply_Msg& rx);
-bool enableComponent                                      (   MMAL_Component_Enable_Msg& tx, MMAL_Component_Enable_Reply_Msg& rx);
-bool setZeroCopyMode                                      (   /*u32 port_handle,*/ const MMAL_Port_Info_Get_Reply_Msg& src,  MMAL_Port_Parameter_Set_Msg& tx, MMAL_Port_Parameter_Set_Reply_Msg& rx);
-bool enablePort                                           (   /*u32 port_handle,*/ const MMAL_Port_Info_Get_Reply_Msg& src, MMAL_Port_Action_Msg& tx, MMAL_Port_Action_Reply_Msg& rx);
+bool openServiceMMAL                                          (   SERVICE_CREATION_T &tx);
+bool createComponentMMAL                                      (   MMAL_Component_Create_Msg& tx, MMAL_Component_Create_Reply_Msg& rx);
+bool getPortInfoMMAL                                          (   u32 port_type, u32& port_handle, MMAL_Port_Info_Get_Msg& tx, MMAL_Port_Info_Get_Reply_Msg& rx);
+bool setPortInfoMMAL                                          (   MMAL_Port_Info_Set_Msg& tx, MMAL_Port_Info_Set_Reply_Msg& rx);
+bool enableComponentMMAL                                      (   MMAL_Component_Enable_Msg& tx, MMAL_Component_Enable_Reply_Msg& rx);
+bool setZeroCopyModeMMAL                                      (   /*u32 port_handle,*/ const MMAL_Port_Info_Get_Reply_Msg& src,  MMAL_Port_Parameter_Set_Msg& tx, MMAL_Port_Parameter_Set_Reply_Msg& rx);
+bool enablePortMMAL                                           (   /*u32 port_handle,*/ const MMAL_Port_Info_Get_Reply_Msg& src, MMAL_Port_Action_Msg& tx, MMAL_Port_Action_Reply_Msg& rx);
 
-void PrimeOutputBufferBody                                (   MMAL_Buffer_From_Host_Msg& tx);
-void PrimeInputBufferBody                                 (   MMAL_Buffer_From_Host_Msg& tx);
+void PrimeOutputBufferBodyMMAL                                (   MMAL_Buffer_From_Host_Msg& tx);
+void PrimeInputBufferBodyMMAL                                 (   MMAL_Buffer_From_Host_Msg& tx);
 
-void setPortFormatInput                                   ( const MMAL_Port_Info_Get_Reply_Msg& src, MMAL_Port_Info_Set_Msg& tx);
-void setPortFormatOutput                                  ( const MMAL_Port_Info_Get_Reply_Msg& src, MMAL_Port_Info_Set_Msg& tx);
+void setPortFormatInputMMAL                                   ( const MMAL_Port_Info_Get_Reply_Msg& src, MMAL_Port_Info_Set_Msg& tx);
+void setPortFormatOutputMMAL                                  ( const MMAL_Port_Info_Get_Reply_Msg& src, MMAL_Port_Info_Set_Msg& tx);
 // log.cpp -------------------------------------------------------------------------------------------------------------------------------------------
 #ifdef __H264_DECODER_DEBUG_INIT__
 void storeLog                                             (   const char* label, u32  value1 = EMPTYLOG, u32  value2 = EMPTYLOG, u32  value3 = EMPTYLOG, u32  value4 = EMPTYLOG );        // NEW
 void storeMsg                                             (   const char* label, const void* tx_msg, u32 total_size);
 void nextline();
-void Log_openService                                      ( const SERVICE_CREATION_T &src);
-void Log_createComponent                                  ( const MMAL_Component_Create_Msg& tx, const MMAL_Component_Create_Reply_Msg& rx);
-void Log_getPortInfo                                      ( const MMAL_Port_Info_Get_Msg& tx, const MMAL_Port_Info_Get_Reply_Msg& rx);
-void Log_setPortInfo                                      ( const MMAL_Port_Info_Set_Msg& tx, const MMAL_Port_Info_Set_Reply_Msg& rx);
-void Log_enableComponent                                  ( const MMAL_Component_Enable_Msg& tx, const MMAL_Component_Enable_Reply_Msg& rx);
-void Log_enablePort                                       ( const MMAL_Port_Action_Msg& tx, const MMAL_Port_Action_Reply_Msg&  rx);
-void Log_setZeroCopyMode                                  ( const MMAL_Port_Parameter_Set_Msg& tx, const MMAL_Port_Parameter_Set_Reply_Msg& rx);
-void Log_BufferFromHost                                   ( const MMAL_Buffer_From_Host_Msg& rx);
+void Log_openServiceMMAL                                      ( const SERVICE_CREATION_T &src);
+void Log_createComponentMMAL                                  ( const MMAL_Component_Create_Msg& tx, const MMAL_Component_Create_Reply_Msg& rx);
+void Log_getPortInfoMMAL                                      ( const MMAL_Port_Info_Get_Msg& tx, const MMAL_Port_Info_Get_Reply_Msg& rx);
+void Log_setPortInfoMMAL                                      ( const MMAL_Port_Info_Set_Msg& tx, const MMAL_Port_Info_Set_Reply_Msg& rx);
+void Log_enableComponentMMAL                                  ( const MMAL_Component_Enable_Msg& tx, const MMAL_Component_Enable_Reply_Msg& rx);
+void Log_enablePortMMAL                                       ( const MMAL_Port_Action_Msg& tx, const MMAL_Port_Action_Reply_Msg&  rx);
+void Log_setZeroCopyModeMMAL                                  ( const MMAL_Port_Parameter_Set_Msg& tx, const MMAL_Port_Parameter_Set_Reply_Msg& rx);
+void Log_BufferFromHostMMAL                              ( const MMAL_Buffer_From_Host_Msg& rx);
 #endif
 // void Log_BufferBody                                    ( const mmal_msg_buffer_from_host_wire32& msg );
 // void Log_queueBufferFromHost                           ( const MMAL_Buffer_From_Host_Msg& tx );
@@ -243,7 +243,7 @@ private:
 
         VCHI_INSTANCE_T                                     m_VCHIInstance;                                             // global vchi instance from bcm_host.c via GetVCHIstate
         VCHI_CONNECTION_T*                                  m_Connection;                                               // global vchi instance from bcm_host.c via GetVCHIstate
-        VCOS_EVENT_T                                        m_VCOSevent;                                                // vcos event from vcos for the callback control
+        VCOS_EVENT_T                                        m_VCOSevent;                                                // vcos event from vcos for the callBackMMAL control
         VCHI_SERVICE_HANDLE_T                               m_ServiceHandle;                                            // vchi service handle 
 
         EGLDisplay                                          m_eglDisplay;                                               // egl display handle 
@@ -253,7 +253,7 @@ private:
         u32                                                 m_TransactionId;                                            // to get unique message numbers
         //  0. Open MMAL service (transport only)
 //----------------------------------------------------------------------------------------------------------------------------------------------------        
-SERVICE_CREATION_T                 m_ServiceCreate              = {};   //  SEND                    - sent via `openService()`
+SERVICE_CREATION_T                 m_ServiceCreate              = {};   //  SEND                    - sent via `openServiceMMAL()`
                                                                         //  RECEIVE none            - open VCHI/MMAL control channel. No MMAL protocol yet.
 //  1. Create component
 MMAL_Component_Create_Msg          m_ComponentCreateTx          = {};   //  SEND

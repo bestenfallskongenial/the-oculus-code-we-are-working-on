@@ -3,7 +3,7 @@
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 #ifdef __H264_DECODER_DEBUG_INIT__
-void            CH264Decoder::storeLog              (   const char* label, u32 value1, u32 value2, u32 value3, u32 value4 )
+void            CKernel::storeLog              (   const char* label, u32 value1, u32 value2, u32 value3, u32 value4 )
 {
                 /* always write the label */
                 for (const char* p = label; *p; ++p)
@@ -64,7 +64,7 @@ void            CH264Decoder::storeLog              (   const char* label, u32 v
                 m_DebugCharArray[m_CharIndex]   = '\0';
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-void            CH264Decoder::storeMsg              ( const char* label, const void* tx_msg, u32 total_size)
+void            CKernel::storeMsg              ( const char* label, const void* tx_msg, u32 total_size)
 {   
                 // insert leading newline
                 m_DebugCharArray[m_CharIndex] = '\n';
@@ -107,13 +107,13 @@ void            CH264Decoder::storeMsg              ( const char* label, const v
                 m_DebugCharArray[m_CharIndex] = '\0';
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-inline void CH264Decoder::nextline()
+inline void CKernel::nextline()
 {
     m_DebugCharArray[m_CharIndex++] = '\n';
     m_DebugCharArray[m_CharIndex]   = '\0';
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-void CH264Decoder::Log_openService(const SERVICE_CREATION_T &src)
+void CKernel::Log_openServiceMMAL(const SERVICE_CREATION_T &src)
 {
     nextline();
     storeLog("version                           ", src.version.version);
@@ -122,14 +122,14 @@ void CH264Decoder::Log_openService(const SERVICE_CREATION_T &src)
     storeLog("connection                        ", (u32)(uintptr_t)src.connection);
     storeLog("rx_fifo_size                      ", src.rx_fifo_size);
     storeLog("tx_fifo_size                      ", src.tx_fifo_size);
-    storeLog("callback                          ", (u32)(uintptr_t)src.callback);
-    storeLog("callback_param                    ", (u32)(uintptr_t)src.callback_param);
+    storeLog("callBackMMAL                          ", (u32)(uintptr_t)src.callBackMMAL);
+    storeLog("callBackMMAL_param                    ", (u32)(uintptr_t)src.callBackMMAL_param);
     storeLog("want_unaligned_bulk_rx            ", src.want_unaligned_bulk_rx);
     storeLog("want_unaligned_bulk_tx            ", src.want_unaligned_bulk_tx);
     storeLog("want_crc                          ", src.want_crc);                            // complete
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-void CH264Decoder::Log_createComponent( const MMAL_Component_Create_Msg& tx, const MMAL_Component_Create_Reply_Msg& rx)
+void CKernel::Log_createComponentMMAL( const MMAL_Component_Create_Msg& tx, const MMAL_Component_Create_Reply_Msg& rx)
 {
     nextline();
     storeLog("hdr.magic                         ", tx.hdr.magic);                   // tx HEADER
@@ -158,7 +158,7 @@ void CH264Decoder::Log_createComponent( const MMAL_Component_Create_Msg& tx, con
     storeLog("msg.clock_num                   *", rx.msg.clock_num);
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-void CH264Decoder::Log_getPortInfo( const MMAL_Port_Info_Get_Msg& tx, const MMAL_Port_Info_Get_Reply_Msg& rx)
+void CKernel::Log_getPortInfoMMAL( const MMAL_Port_Info_Get_Msg& tx, const MMAL_Port_Info_Get_Reply_Msg& rx)
 {
     nextline();                                                             // tx HEADER
     storeLog("hdr.magic                         ", tx.hdr.magic);
@@ -228,7 +228,7 @@ void CH264Decoder::Log_getPortInfo( const MMAL_Port_Info_Get_Msg& tx, const MMAL
     storeMsg("extradata", rx.msg.extradata, rx.msg.format.extradata_size);    // rx EXTRADATA
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-void CH264Decoder::Log_setPortInfo( const MMAL_Port_Info_Set_Msg& tx, const MMAL_Port_Info_Set_Reply_Msg& rx)
+void CKernel::Log_setPortInfoMMAL( const MMAL_Port_Info_Set_Msg& tx, const MMAL_Port_Info_Set_Reply_Msg& rx)
 {
     nextline();
     storeLog("hdr.magic                         ", tx.hdr.magic);                       // tx HEADER
@@ -339,7 +339,7 @@ void CH264Decoder::Log_setPortInfo( const MMAL_Port_Info_Set_Msg& tx, const MMAL
     storeMsg("extradata                         ", rx.msg.extradata, rx.msg.format.extradata_size);     // rx extradata
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-void CH264Decoder::Log_enableComponent( const MMAL_Component_Enable_Msg& tx, const MMAL_Component_Enable_Reply_Msg& rx)
+void CKernel::Log_enableComponentMMAL( const MMAL_Component_Enable_Msg& tx, const MMAL_Component_Enable_Reply_Msg& rx)
 {
     nextline();
     storeLog("hdr.magic                         ", tx.hdr.magic);                                   // tx HEADER
@@ -361,7 +361,7 @@ void CH264Decoder::Log_enableComponent( const MMAL_Component_Enable_Msg& tx, con
     storeLog("msg.status                     **", rx.msg.status);                                 // rx BODY
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-void CH264Decoder::Log_enablePort( const MMAL_Port_Action_Msg& tx, const MMAL_Port_Action_Reply_Msg&  rx)
+void CKernel::Log_enablePortMMAL( const MMAL_Port_Action_Msg& tx, const MMAL_Port_Action_Reply_Msg&  rx)
 {
     nextline();
     storeLog("hdr.magic                         ", tx.hdr.magic);                                   // tx HEADER
@@ -403,7 +403,7 @@ void CH264Decoder::Log_enablePort( const MMAL_Port_Action_Msg& tx, const MMAL_Po
     storeLog("msg.status                     **", rx.msg.status);                                 // rx BODY
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-void CH264Decoder::Log_setZeroCopyMode( const MMAL_Port_Parameter_Set_Msg& tx, const MMAL_Port_Parameter_Set_Reply_Msg& rx)
+void CKernel::Log_setZeroCopyModeMMAL( const MMAL_Port_Parameter_Set_Msg& tx, const MMAL_Port_Parameter_Set_Reply_Msg& rx)
 {
     nextline();                                                         // tx HEADER
     storeLog("hdr.magic                         ", tx.hdr.magic);
@@ -430,7 +430,7 @@ void CH264Decoder::Log_setZeroCopyMode( const MMAL_Port_Parameter_Set_Msg& tx, c
     storeLog("msg.status                     **", rx.msg.status);         // rx BODY
 }
 
-void CH264Decoder::Log_BufferFromHost( const MMAL_Buffer_From_Host_Msg& rx)
+void CKernel::Log_BufferFromHostMMAL( const MMAL_Buffer_From_Host_Msg& rx)
 {
     nextline();
     storeLog("hdr.magic                         ", rx.hdr.magic);                          // RX HEADER
@@ -490,7 +490,7 @@ void CH264Decoder::Log_BufferFromHost( const MMAL_Buffer_From_Host_Msg& rx)
 #endif
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 /*
-void CH264Decoder::Log_BufferBody(  const mmal_msg_buffer_from_host_wire32& msg )
+void CKernel::Log_BufferBody(  const mmal_msg_buffer_from_host_wire32& msg )
 {
     storeLog("drvbuf.magic                  ", msg.drvbuf.magic);
     storeLog("drvbuf.component_handle       ", msg.drvbuf.component_handle);
@@ -523,7 +523,7 @@ void CH264Decoder::Log_BufferBody(  const mmal_msg_buffer_from_host_wire32& msg 
     storeMsg(msg.short_data, sizeof(msg.short_data), "short_data");
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-void CH264Decoder::Log_queueBufferFromHost( const MMAL_Buffer_From_Host_Msg& tx )
+void CKernel::Log_queueBufferFromHost( const MMAL_Buffer_From_Host_Msg& tx )
 {
     storeLog("sizeof(tx)                   ", (u32)sizeof(tx));
 
