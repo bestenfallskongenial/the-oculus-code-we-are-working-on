@@ -232,8 +232,15 @@ read adc ->
 #define         KLN_SD                  1
 
 #define         FRM_SD                  1   // i put them here because if my mem/dma allocation
-#define         LOG_SD                  8
-
+#define         LOG_SD                  24  // here is the trick:
+                                            // i will use a mix of hardwired and "open" logs.
+                                            // m_bufferLog[0]       - startup - memory - init log
+                                            // m_bufferLog[1]       - vc_sm
+                                            // m_bufferLog[2]       - mmal
+                                            // m_bufferLog[3]       - check glsl
+                                            // m_bufferLog[4]       - glsl compile
+                                            // m_bufferLog[5  - 15] - texture parser
+                                            // m_bufferLog[16 - 23] - video parser
 
 #define         VSH_USB                 0	// max number of u_vertex shader on sd
 #define         OMF_USB            		0	// max number of fragment shader on sd

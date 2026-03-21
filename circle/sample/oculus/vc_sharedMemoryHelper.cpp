@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CVCSharedMemory::callback       ( void *callback_param, VCHI_CALLBACK_REASON_T reason, void *msg_handle )
+void            CKernel::callback       ( void *callback_param, VCHI_CALLBACK_REASON_T reason, void *msg_handle )
 {
                 VCOS_EVENT_T *event = (VCOS_EVENT_T *)callback_param;
                 if (reason == VCHI_CALLBACK_MSG_AVAILABLE && event)
@@ -10,13 +10,13 @@ void            CVCSharedMemory::callback       ( void *callback_param, VCHI_CAL
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-u32             CVCSharedMemory::nextId         ( u32 &tid )
+u32             CKernel::nextId         ( u32 &tid )
 {
                 tid = ( tid+1 ) & ~0x80000000u;                                             // mask for async messages really needed ?!                        
                 return tid;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CVCSharedMemory::getVCHI        ( )
+void            CKernel::getVCHI        ( )
 {
                 vc_host_get_vchi_state(&m_VCHIInstance, &m_Connection);                         //1. get the VCHI instance and the connection handle from bcm_host.h
 #ifdef VCSMLOG
@@ -25,7 +25,7 @@ void            CVCSharedMemory::getVCHI        ( )
 #endif // VCSMLOG            
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CVCSharedMemory::initEvents     ( )
+bool            CKernel::initEvents     ( )
 {
                 if (vcos_event_create(&m_VCOSevent, "SMEM") != VCOS_SUCCESS)
                     {
@@ -37,7 +37,7 @@ bool            CVCSharedMemory::initEvents     ( )
                 return true;    
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-u32             CVCSharedMemory::convertAddress ( void* buffer, size_t size )
+u32             CKernel::convertAddress ( void* buffer, size_t size )
 {
                 u32 bus_addr = BUS_ADDRESS(reinterpret_cast<uintptr_t>(buffer));
                 u32 vcsm_addr = (bus_addr & ~0xC0000000) | 0xC0000000;
@@ -51,7 +51,7 @@ u32             CVCSharedMemory::convertAddress ( void* buffer, size_t size )
                 return vcsm_addr;
 }
 
-void            CVCSharedMemory::initHeader(vc_sm_msg_hdr_t& tx, u16 type)
+void            CKernel::initHeader(vc_sm_msg_hdr_t& tx, u16 type)
 {
                 tx.hdr = {};
                 tx.hdr.type     = type;
@@ -112,7 +112,7 @@ bool            CH264Decoder::sendAndWait           (   const void *msg, size_t 
                 return true;                                    //  return (ReplyLength != 0);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CVCSharedMemory::openService    ( SERVICE_CREATION_T &tx)
+bool            CKernel::openService    ( SERVICE_CREATION_T &tx)
 {
                 tx.version.version                                  = VC_MMAL_VER;
                 tx.version.version_min                              = VC_MMAL_MIN_VER;

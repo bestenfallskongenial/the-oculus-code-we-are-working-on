@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CVCSharedMemory::initialize     (   )
+bool            CKernel::initialize     (   )
 {
 #ifdef VCSMLOG
                 storeLog ( SERVICENAMESTRING, SERVICEVERSIONSTRING);    
@@ -28,7 +28,7 @@ bool            CVCSharedMemory::initialize     (   )
                 return true;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CVCSharedMemory::importMemory   ( void* buffer, size_t size, int slot, vc_sm_import_msg& tx, vc_sm_import_result& rx)
+bool            CKernel::importMemory   ( void* buffer, size_t size, int slot, vc_sm_import_msg& tx, vc_sm_import_result& rx)
 {
                 initHeader(tx, VC_SM_MSG_TYPE_IMPORT);
 
@@ -53,7 +53,7 @@ bool            CVCSharedMemory::importMemory   ( void* buffer, size_t size, int
                 return false;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CVCSharedMemory::lockMemory     ( int slot, vc_sm_lock_msg& tx, vc_sm_lock_result_t& rx)
+bool            CKernel::lockMemory     ( int slot, vc_sm_lock_msg& tx, vc_sm_lock_result_t& rx)
 {
                 initHeader(tx, VC_SM_MSG_TYPE_LOCK);
 
@@ -74,7 +74,7 @@ bool            CVCSharedMemory::lockMemory     ( int slot, vc_sm_lock_msg& tx, 
                 return false;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CVCSharedMemory::freeMemory     ( int slot, vc_sm_free_msg& tx, vc_sm_result_t& rx)
+bool            CKernel::freeMemory     ( int slot, vc_sm_free_msg& tx, vc_sm_result_t& rx)
 {
                 initHeader(tx, VC_SM_MSG_TYPE_FREE);
 
