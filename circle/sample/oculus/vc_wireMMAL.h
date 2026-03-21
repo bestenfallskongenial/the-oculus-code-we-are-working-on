@@ -164,7 +164,7 @@ bool bufferReadyMMAL                                          ( u32 handle);
 bool queueOutputBufferMMAL                                    ( MMAL_Buffer_From_Host_Msg& tx, u32 vc_handle, u32 alloc_size);
 bool queueInputBufferMMAL                                     ( MMAL_Buffer_From_Host_Msg& tx, u32 frame_offset, u32 frame_length);
 // helper.cpp ----------------------------------------------------------------------------------------------------------------------------------------
-static void callBackMMAL                                      ( void *callBackMMAL_param, VCHI_callBackMMAL_REASON_T reason, void *msg_handle );
+static void callBackMMAL                                      ( void *callBackMMAL_param, VCHI_MMAL_REASON_T reason, void *msg_handle );
 void initHeaderMMAL                                           ( mmal_msg_header& hdr, u32 type);
 u32  NextTransId                                          ( u32 &tid );
 bool getVCHIstate                                         (   );

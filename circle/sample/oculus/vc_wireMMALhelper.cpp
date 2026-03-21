@@ -2,7 +2,7 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // h264_hardware_decoder.cpp
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::callBackMMAL              (   void *callBackMMAL_param, VCHI_callBackMMAL_REASON_T reason, void *msg_handle )
+void            CKernel::callBackMMAL              (   void *callBackMMAL_param, VCHI_MMAL_REASON_T reason, void *msg_handle )
 {
                 VCOS_EVENT_T *event = (VCOS_EVENT_T *)callBackMMAL_param;
                 if (reason == VCHI_callBackMMAL_MSG_AVAILABLE && event)

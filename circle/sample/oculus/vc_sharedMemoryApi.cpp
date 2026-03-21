@@ -6,7 +6,7 @@ bool            CKernel::initialize     (   )
 #ifdef VCSMLOG
                 storeLog ( SERVICENAMESTRING, SERVICEVERSIONSTRING);    
 #endif // VCSMLOG
-                getVCHI();
+                getVCHIstate();
 
                 if(!initEvents())
                     {
