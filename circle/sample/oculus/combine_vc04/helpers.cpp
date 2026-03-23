@@ -155,8 +155,8 @@ bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   
                     {
 #ifdef __DEBUG_LOG__
                 //  const mmal_msg_header* h = (const mmal_msg_header*)msg; 
-                    nextline( MY_BUFFER, MY_INDEX );
-                    storeLog( MY_BUFFER, MY_INDEX, "ANSWER TO SHORT - MSG #", h->context );
+                //  nextline( MY_BUFFER, MY_INDEX );
+                //  storeLog( MY_BUFFER, MY_INDEX, "ANSWER TO SHORT - MSG #", h->context ); // is only available with mmal, not for vcsm
 #endif // __DEBUG_LOG__
                     return false;
                     }
