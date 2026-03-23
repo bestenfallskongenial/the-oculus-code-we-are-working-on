@@ -173,6 +173,8 @@ bool            CKernel::openService(   SERVICE_CREATION_T      &tx,
                                         VCHI_SERVICE_HANDLE_T&  ServiceHandle ) // sure about uint32_t service_id for VCHIQ_MAKE_FOURCC??
 
 {
+
+            //  SERVICE_CREATION_T tx = {}; // why not here?!
                 tx.version.version     = serviceVersion;
                 tx.version.version_min = serviceVersionMin;
                 tx.service_id          = service_id;
