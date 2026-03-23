@@ -123,7 +123,7 @@ bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   
                     m_vc_pointer[slot] = rx.res_mem;
 #ifdef __DEBUG_LOG__
                         nextline( MY_BUFFER, MY_INDEX );  
-                        storeLog( MY_BUFFER, MY_INDEX, "Lock VCSM Memory in Slot ", slot)  
+                        storeLog( MY_BUFFER, MY_INDEX, "Lock VCSM Memory in Slot   ", slot)  
                         storeLog( MY_BUFFER, MY_INDEX, "VCSM Handle / VCSM Pointer ", rx.res_handle, rx.res_mem);
 #endif // __DEBUG_LOG__        
                     return true;
