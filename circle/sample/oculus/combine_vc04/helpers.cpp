@@ -1,9 +1,9 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::callbackVCSM       ( void *callback_param, VCHI_CALLBACK_REASON_T reason, void *msg_handle )   // new for mmal and vcsm
+void            CKernel::callbackVCSM       ( void *callback_param, VCHI_CALLBACK_REASON_T reason, void *msg_handle )   // new for mmal and vcsm and what the hell is msg_handle?? i need sleep!
 {
-                VCOS_EVENT_T *event = (VCOS_EVENT_T *)callback_param;
+                VCOS_EVENT_T *event = (VCOS_EVENT_T *)callback_param;   // how do ii ensure that this callback takes as reason only the initEvents(m_EventSMEM, "SMEM"); and not initEvents(m_EventMMAL, "MMAL");? explain!
                 if (reason == VCHI_CALLBACK_MSG_AVAILABLE && event)
                     {
                     vcos_event_signal(event);
@@ -93,9 +93,9 @@ u32             CKernel::NextTransId         ( u32 &tid )   // new for mmal and 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initHeaderVCSM             (   vc_sm_msg_hdr_t& tx, u16 type) // why tx.hdr? why not like initHeaderMMAL
 {
-                tx.hdr = {};
-                tx.hdr.type     = type;
-                tx.hdr.trans_id = NextTransId(m_TransactionId);
+                tx.hdr              = {};
+                tx.hdr.type         = type;
+                tx.hdr.trans_id     = NextTransId(m_TransactionId);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initHeaderMMAL            (   mmal_msg_header& hdr, u32 type)
@@ -109,21 +109,27 @@ void            CKernel::initHeaderMMAL            (   mmal_msg_header& hdr, u32
                 hdr.padding         = 0;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::sendAndWait           (   const void *msg, size_t msg_size, void *rx_msg, size_t max_reply_len, size_t *actual_reply_len ) // new for mmal and vcsm
+bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   ServiceHandle, V
+                                                        COS_EVENT_T             &VCOSevent, 
+                                                        const void              *msg, 
+                                                        size_t                  msg_size, 
+                                                        void                    *rx_msg, 
+                                                        size_t                  max_reply_len, 
+                                                        size_t                  *actual_reply_len ) // new for mmal and vcsm
 {
 #ifdef __DEBUG_LOG__
                 nextline();
-                storeLog("TX MSG", (u32)msg_size);
+                storeLog( "TX MSG", (u32)msg_size);
                 storeMsg( "Raw TX", msg, msg_size);
 #endif // __DEBUG_LOG__
 
-                if (vchi_msg_queue(m_ServiceHandle, msg, msg_size, VCHI_FLAGS_BLOCK_UNTIL_QUEUED, NULL) != 0)
+                if (vchi_msg_queue(ServiceHandle, msg, msg_size, VCHI_FLAGS_BLOCK_UNTIL_QUEUED, NULL) != 0)
                     {
                     return false;
                     }
                 uint32_t ReplyLength = 0;
                 do {
-                    if (vchi_msg_dequeue(m_ServiceHandle, rx_msg, max_reply_len, &ReplyLength, VCHI_FLAGS_NONE) == 0)
+                    if (vchi_msg_dequeue(ServiceHandle, rx_msg, max_reply_len, &ReplyLength, VCHI_FLAGS_NONE) == 0)
                         {
 #ifdef __DEBUG_LOG__
                         nextline();    
@@ -133,7 +139,7 @@ bool            CH264Decoder::sendAndWait           (   const void *msg, size_t 
                         break;
                         }
                     } 
-                while (vcos_event_wait(&m_VCOSevent) == VCOS_SUCCESS);
+                while (vcos_event_wait(&VCOSevent) == VCOS_SUCCESS);
 
                 if (actual_reply_len)
                     {
@@ -142,20 +148,27 @@ bool            CH264Decoder::sendAndWait           (   const void *msg, size_t 
                 if (ReplyLength != max_reply_len)               /* enforce completeness HERE */
                     {
 #ifdef __DEBUG_LOG__
-                    const mmal_msg_header* h = (const mmal_msg_header*)msg;
+                //  const mmal_msg_header* h = (const mmal_msg_header*)msg; 
                     nextline();
-                    storeLog("MMALsendAndWait ANSWER TO SHORT - MSG #", h->context );
+                    storeLog("ANSWER TO SHORT - MSG #", h->context );
 #endif // __DEBUG_LOG__
                     return false;
                     }
                 return true;                                    //  return (ReplyLength != 0);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::openService( SERVICE_CREATION_T &tx, uint32_t service_id, VCHI_CALLBACK_T cb, void *cb_param // sure about uint32_t service_id for VCHIQ_MAKE_FOURCC??
-)
+bool            CKernel::openService(   SERVICE_CREATION_T      &tx, 
+                                        uint32_t                serviceVersion, 
+                                        uint32_t                serviceVersionMin, 
+                                        int32_t                 service_id, 
+                                        VCHI_CALLBACK_T         cb, 
+                                        void                    *cb_param, 
+                                        VCHI_INSTANCE_T         VCHIInstance, 
+                                        VCHI_SERVICE_HANDLE_T&  ServiceHandle ) // sure about uint32_t service_id for VCHIQ_MAKE_FOURCC??
+
 {
-                tx.version.version     = VC_MMAL_VER;
-                tx.version.version_min = VC_MMAL_MIN_VER;
+                tx.version.version     = serviceVersion;
+                tx.version.version_min = serviceVersionMin;
                 tx.service_id          = service_id;
                 tx.connection          = m_Connection;
 
@@ -169,22 +182,30 @@ bool            CKernel::openService( SERVICE_CREATION_T &tx, uint32_t service_i
                 tx.want_unaligned_bulk_tx = 0;
                 tx.want_crc               = 0;
 
-                int rc = vchi_service_open(m_VCHIInstance, &tx, &m_ServiceHandle);
+                int rc = vchi_service_open(VCHIInstance, &tx, &ServiceHandle);
                 return (rc == 0);
 }
 /*
                 openService(
                     tx,
+                    VC_SM_VER,
+                    VC_SM_MIN_VER,
                     VCHIQ_MAKE_FOURCC('S','M','E','M'),
-                    callback,
-                    &m_EventSMEM
+                    callbackCSM,
+                    &m_EventSMEM,
+                    m_VCHIInstance,
+                    m_ServiceHandleVCSM
                 );
 
                 openService(
                     tx,
+                    VC_MMAL_VER,
+                    VC_MMAL_MIN_VER,
                     VCHIQ_MAKE_FOURCC('m','m','a','l'),
                     callBackMMAL,
-                    &m_EventMMAL
+                    &m_EventMMAL,
+                    m_VCHIInstance,
+                    m_ServiceHandleMMAL
                 );
 */
 //----------------------------------------------------------------------------------------------------------------------------------------------------
