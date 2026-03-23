@@ -97,12 +97,12 @@ u32             CKernel::NextTransId         ( u32 &tid )   // new for mmal and 
                 return tid;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::initHeaderVCSM             (   vc_sm_msg_hdr_t& tx, u16 type) // why tx.hdr? why not like initHeaderMMAL
-{
-                tx.hdr              = {};
-                tx.hdr.type         = type;
-                tx.hdr.trans_id     = NextTransId(m_TransactionId);
-}
+void            CKernel::initHeaderVCSM             (   vc_sm_msg_hdr_t& hdr, u16 type)
+{␊
+                hdr                 = {};
+                hdr.type            = type;
+                hdr.trans_id        = NextTransId(m_TransactionId);
+}␊
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initHeaderMMAL            (   mmal_msg_header& hdr, u32 type)
 {

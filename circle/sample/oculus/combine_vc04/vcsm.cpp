@@ -61,7 +61,7 @@ bool            CKernel::initializeVCSM     (   )
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 bool            CKernel::importMemoryVCSM   ( void* buffer, size_t size, int slot, vc_sm_import_msg& tx, vc_sm_import_result& rx)
 {
-                initHeaderVCSM(tx, VC_SM_MSG_TYPE_IMPORT);
+                initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_IMPORT);
 
                 tx.body = {};
                 tx.body.type       = VC_SM_ALLOC_NON_CACHED;
@@ -99,7 +99,7 @@ bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 bool            CKernel::lockMemoryVCSM     ( int slot, vc_sm_lock_msg& tx, vc_sm_lock_result_t& rx)
 {
-                initHeaderVCSM(tx, VC_SM_MSG_TYPE_LOCK);
+                initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_LOCK);
 
                 tx.body = {};
                 tx.body.res_handle = m_vc_handle[slot];     // 
@@ -133,7 +133,7 @@ bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 bool            CKernel::freeMemoryVCSM     ( int slot, vc_sm_free_msg& tx, vc_sm_result_t& rx)
 {
-                initHeaderVCSM(tx, VC_SM_MSG_TYPE_FREE);
+                initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_FREE);
 
                 tx.body = {};
                 tx.body.res_handle = m_vc_handle[slot];
