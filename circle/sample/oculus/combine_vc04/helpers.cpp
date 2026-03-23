@@ -25,7 +25,7 @@ void            CKernel::getVCHIstate        ( )    // new for mmal and vcsm
 {
                 vc_host_get_vchi_state(&m_VCHIInstance, &m_Connection);                         //1. get the VCHI instance and the connection handle from bcm_host.h
 #ifdef __DEBUG_LOG__
-                nextline( MY_BUFFER, MY_INDEX );
+                nextline ( MY_BUFFER, MY_INDEX );
                 storeLog ( MY_BUFFER, MY_INDEX, "\nVCHI State Instance     ", (u32)m_VCHIInstance);   
                 storeLog ( MY_BUFFER, MY_INDEX, "VCHI State Connection   ", (u32)m_Connection);   
 #endif // __DEBUG_LOG__            
