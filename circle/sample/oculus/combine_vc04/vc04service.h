@@ -11,6 +11,40 @@
 
 extern "C" void vc_host_get_vchi_state(VCHI_INSTANCE_T *inst, VCHI_CONNECTION_T **conn);
 
+// VCSM wrapper messages, matching the "header + body" pattern already used by MMAL.
+struct vc_sm_import_msg
+{
+        vc_sm_msg_hdr_t                 hdr;
+        vc_sm_import                    body;
+};
+
+struct vc_sm_import_reply
+{
+        vc_sm_import_result             body;
+};
+
+struct vc_sm_lock_msg
+{
+        vc_sm_msg_hdr_t                 hdr;
+        vc_sm_lock_unlock_t             body;
+};
+
+struct vc_sm_lock_reply
+{
+        vc_sm_lock_result_t             body;
+};
+
+struct vc_sm_free_msg
+{
+        vc_sm_msg_hdr_t                 hdr;
+        vc_sm_free_t                    body;
+};
+
+struct vc_sm_free_reply
+{
+        vc_sm_result_t                  body;
+};
+
 // Draft extraction target for the shared VC04 helpers currently living in CKernel.
 class CVC04Service
 {
@@ -20,13 +54,13 @@ public:
                                                                     size_t size,
                                                                     int slot,
                                                                     vc_sm_import_msg& tx,
-                                                                    vc_sm_import_result& rx );
+                                                                    vc_sm_import_reply& rx );
         bool lockMemoryVCSM                                       (   int slot,
                                                                     vc_sm_lock_msg& tx,
-                                                                    vc_sm_lock_result_t& rx );
+                                                                    vc_sm_lock_reply& rx );
         bool freeMemoryVCSM                                       (   int slot,
                                                                     vc_sm_free_msg& tx,
-                                                                    vc_sm_result_t& rx );
+                                                                    vc_sm_free_reply& rx );
 
 private:
 static  void callbackVCSM                                        (   void *callback_param,

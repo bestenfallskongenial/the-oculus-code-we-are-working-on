@@ -84,13 +84,13 @@ bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   
                 if (!sendAndWait( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len ))
                     return false;
 
-                if (rx.res_handle != 0)
+                if (rx.body.res_handle != 0)
                 {
-                    m_vc_handle[slot] = rx.res_handle;
+                    m_vc_handle[slot] = rx.body.res_handle;
 #ifdef __DEBUG_LOG__
                         nextline( MY_BUFFER, MY_INDEX );  
                         storeLog( MY_BUFFER, MY_INDEX, "Import VCSM Memory to Slot ", slot)  
-                        storeLog( MY_BUFFER, MY_INDEX, "ARM Address / GPU Address / Size / VCSM Handle ", buffer, tx.body.addr, size, rx.res_handle);
+                        storeLog( MY_BUFFER, MY_INDEX, "ARM Address / GPU Address / Size / VCSM Handle ", buffer, tx.body.addr, size, rx.body.res_handle);
 #endif // __DEBUG_LOG__                    
                     return true;
                 }
@@ -118,13 +118,13 @@ bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   
                 if (!sendAndWait( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len) )
                     return false;
 
-                if (rx.res_mem != 0)
+                if (rx.body.res_mem != 0)
                 {
-                    m_vc_pointer[slot] = rx.res_mem;
+                    m_vc_pointer[slot] = rx.body.res_mem;
 #ifdef __DEBUG_LOG__
                         nextline( MY_BUFFER, MY_INDEX );  
                         storeLog( MY_BUFFER, MY_INDEX, "Lock VCSM Memory in Slot   ", slot)  
-                        storeLog( MY_BUFFER, MY_INDEX, "VCSM Handle / VCSM Pointer ", rx.res_handle, rx.res_mem);
+                        storeLog( MY_BUFFER, MY_INDEX, "VCSM Handle / VCSM Pointer ", rx.body.res_handle, rx.body.res_mem);
 #endif // __DEBUG_LOG__        
                     return true;
                 }
@@ -152,7 +152,7 @@ bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   
                 if (!sendAndWait( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len) )
                     return false;
 
-                if (rx.success == 0)
+                if (rx.body.success == 0)
                 {
                     m_vc_handle[slot]  = 0;
                     m_vc_pointer[slot] = 0;
