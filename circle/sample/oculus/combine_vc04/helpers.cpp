@@ -1,5 +1,7 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
+#define __DEBUG_LOG__
+#define MY_BUFFER m_bufferLog
+#define MY_INDEX vc04_logIndex  // vc04_logIndex is a public member variable
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::callbackVCSM       ( void *callback_param, VCHI_CALLBACK_REASON_T reason, void *msg_handle )   // new for mmal and vcsm and what the hell is msg_handle?? i need sleep!
 {
@@ -23,8 +25,9 @@ void            CKernel::getVCHIstate        ( )    // new for mmal and vcsm
 {
                 vc_host_get_vchi_state(&m_VCHIInstance, &m_Connection);                         //1. get the VCHI instance and the connection handle from bcm_host.h
 #ifdef __DEBUG_LOG__
-                storeLog ( "\nVCHI State Instance     ", (u32)m_VCHIInstance);   
-                storeLog ( "VCHI State Connection   ", (u32)m_Connection);   
+                nextline( MY_BUFFER, MY_INDEX );
+                storeLog ( MY_BUFFER, MY_INDEX, "\nVCHI State Instance     ", (u32)m_VCHIInstance);   
+                storeLog ( MY_BUFFER, MY_INDEX, "VCHI State Connection   ", (u32)m_Connection);   
 #endif // __DEBUG_LOG__            
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -32,8 +35,9 @@ bool            CKernel::initEvents(VCOS_EVENT_T &event, const char* name)
 {
                 if (vcos_event_create(&event, name) != VCOS_SUCCESS)
                     {
-#ifdef __DEBUG_LOG__                        
-                    storeLog ( "\nVCOS Event Init Failed!", (u32)&m_VCOSevent);  
+#ifdef __DEBUG_LOG__
+                    nextline ( MY_BUFFER, MY_INDEX );
+                    storeLog ( MY_BUFFER, MY_INDEX, "\nVCOS Event Init Failed!", (u32)&event);  
 #endif // __DEBUG_LOG__              
                     return false;
                     }
@@ -52,9 +56,10 @@ u32             CKernel::convertAddress ( void* buffer, size_t size )
                 u32 bus_addr = BUS_ADDRESS(reinterpret_cast<uintptr_t>(buffer));
                 u32 vcsm_addr = (bus_addr & ~0xC0000000) | 0xC0000000;
 #ifdef __DEBUG_LOG__
-                storeLog ( "\nBuffer Address USR", (u32)buffer); 
-                storeLog ( "Buffer Address ARM", (u32)bus_addr); 
-                storeLog ( "Buffer Address VPU", (u32)vcsm_addr); 
+                nextline ( MY_BUFFER, MY_INDEX );
+                storeLog ( MY_BUFFER, MY_INDEX, "\nBuffer Address USR", (u32)buffer); 
+                storeLog ( MY_BUFFER, MY_INDEX, "Buffer Address ARM", (u32)bus_addr); 
+                storeLog ( MY_BUFFER, MY_INDEX, "Buffer Address VPU", (u32)vcsm_addr); 
 #endif // __DEBUG_LOG__
                 CleanAndInvalidateDataCacheRange((uintptr_t)(buffer), size);
 
@@ -77,8 +82,9 @@ bool            CKernel::checkGLerrorMMAL                  (   )
                         case        GL_INVALID_FRAMEBUFFER_OPERATION:   error_str = "GL_INVALID_FRAMEBUFFER_OPERATION"; break;
                         default:                                        error_str = "UNKNOWN_ERROR"; break;
                         }
-#ifdef __DEBUG_LOG__                        
-                    storeLog (error_str);
+#ifdef __DEBUG_LOG__  
+                    nextline ( MY_BUFFER, MY_INDEX );
+                    storeLog ( MY_BUFFER, MY_INDEX, error_str);
 #endif // __DEBUG_LOG__
                     return false;
                     }
@@ -118,9 +124,9 @@ bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   
                                                         size_t                  *actual_reply_len ) // new for mmal and vcsm
 {
 #ifdef __DEBUG_LOG__
-                nextline();
-                storeLog( "TX MSG", (u32)msg_size);
-                storeMsg( "Raw TX", msg, msg_size);
+                nextline( MY_BUFFER, MY_INDEX );
+                storeLog( MY_BUFFER, MY_INDEX, "TX MSG", (u32)msg_size);
+                storeMsg( MY_BUFFER, MY_INDEX, "Raw TX", msg, msg_size);
 #endif // __DEBUG_LOG__
 
                 if (vchi_msg_queue(ServiceHandle, msg, msg_size, VCHI_FLAGS_BLOCK_UNTIL_QUEUED, NULL) != 0)
@@ -132,9 +138,9 @@ bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   
                     if (vchi_msg_dequeue(ServiceHandle, rx_msg, max_reply_len, &ReplyLength, VCHI_FLAGS_NONE) == 0)
                         {
 #ifdef __DEBUG_LOG__
-                        nextline();    
-                        storeLog("RX MSG", ReplyLength);
-                        storeMsg("Raw RX", rx_msg, ReplyLength);
+                        nextline( MY_BUFFER, MY_INDEX );    
+                        storeLog( MY_BUFFER, MY_INDEX, "RX MSG", ReplyLength);
+                        storeMsg( MY_BUFFER, MY_INDEX, "Raw RX", rx_msg, ReplyLength);
 #endif // __DEBUG_LOG__
                         break;
                         }
@@ -149,8 +155,8 @@ bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   
                     {
 #ifdef __DEBUG_LOG__
                 //  const mmal_msg_header* h = (const mmal_msg_header*)msg; 
-                    nextline();
-                    storeLog("ANSWER TO SHORT - MSG #", h->context );
+                    nextline( MY_BUFFER, MY_INDEX );
+                    storeLog( MY_BUFFER, MY_INDEX, "ANSWER TO SHORT - MSG #", h->context );
 #endif // __DEBUG_LOG__
                     return false;
                     }
@@ -211,22 +217,18 @@ bool            CKernel::openService(   SERVICE_CREATION_T      &tx,
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
+/*
 void            CKernel::storeLog              (   const char* label, u32 value1, u32 value2, u32 value3, u32 value4 )
 {
-
-// we will imprement the version from circle/sample/oculus/logging.cpp here and for the VCSM/MMAL code!!
-
+                // we will imprement the version from circle/sample/oculus/logging.cpp here and for the VCSM/MMAL code!!
 }
 void            CKernel::storeMsg              ( const char* label, const void* tx_msg, u32 total_size)
 {
-
-// we will imprement the version from circle/sample/oculus/logging.cpp here and for the VCSM/MMAL code!!
-
+                // we will imprement the version from circle/sample/oculus/logging.cpp here and for the VCSM/MMAL code!!
 }
 inline void CKernel::nextline()
 {
-
-// we will imprement the version from circle/sample/oculus/logging.cpp here and for the VCSM/MMAL code!!
-
+                // we will imprement the version from circle/sample/oculus/logging.cpp here and for the VCSM/MMAL code!!
 }
+*/
+#undef __DEBUG_LOG__
