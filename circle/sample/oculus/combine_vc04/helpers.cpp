@@ -115,7 +115,7 @@ void            CKernel::initHeaderMMAL            (   mmal_msg_header& hdr, u32
                 hdr.padding         = 0;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   ServiceHandle, V
+bool            CKernel::sendAndWait                (   VCHI_SERVICE_HANDLE_T   ServiceHandle, V
                                                         COS_EVENT_T             &VCOSevent, 
                                                         const void              *msg, 
                                                         size_t                  msg_size, 
