@@ -175,20 +175,20 @@ bool            CKernel::openService(   SERVICE_CREATION_T      &tx,
 {
 
             //  SERVICE_CREATION_T tx = {}; // why not here?!
-                tx.version.version     = serviceVersion;
-                tx.version.version_min = serviceVersionMin;
-                tx.service_id          = service_id;
-                tx.connection          = m_Connection;
+                tx.version.version          = serviceVersion;
+                tx.version.version_min      = serviceVersionMin;
+                tx.service_id               = service_id;
+                tx.connection               = m_Connection;
 
-                tx.rx_fifo_size = 0;
-                tx.tx_fifo_size = 0;
+                tx.rx_fifo_size             = 0;
+                tx.tx_fifo_size             = 0;
 
-                tx.callback       = cb;
-                tx.callback_param = cb_param;
+                tx.callback                 = cb;
+                tx.callback_param           = cb_param;
 
-                tx.want_unaligned_bulk_rx = 0;
-                tx.want_unaligned_bulk_tx = 0;
-                tx.want_crc               = 0;
+                tx.want_unaligned_bulk_rx   = 0;
+                tx.want_unaligned_bulk_tx   = 0;
+                tx.want_crc                 = 0;
 
                 int rc = vchi_service_open(VCHIInstance, &tx, &ServiceHandle);
                 return (rc == 0);
