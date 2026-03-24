@@ -5,7 +5,6 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 bool            CKernel::initializeVCSM     (   )
 {
-                SERVICE_CREATION_T tx = {};
 #ifdef __DEBUG_LOG__
                 storeLog ( MY_BUFFER, MY_INDEX, SERVICENAMESTRING, SERVICEVERSIONSTRING);    
 #endif // __DEBUG_LOG__
