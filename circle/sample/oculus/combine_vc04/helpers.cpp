@@ -5,7 +5,7 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::callbackVCSM       ( void *callback_param, VCHI_CALLBACK_REASON_T reason, void *msg_handle )   // new for mmal and vcsm and what the hell is msg_handle?? i need sleep!
 {
-                VCOS_EVENT_T *event = (VCOS_EVENT_T *)callback_param;   // how do ii ensure that this callback takes as reason only the initEvents(m_EventSMEM, "SMEM"); and not initEvents(m_EventMMAL, "MMAL");? explain!
+                VCOS_EVENT_T *event = (VCOS_EVENT_T *)callback_param;   // how do ii ensure that this callback takes as reason only the initEventsVCOS(m_EventSMEM, "SMEM"); and not initEventsVCOS(m_EventMMAL, "MMAL");? explain!
                 if (reason == VCHI_CALLBACK_MSG_AVAILABLE && event)
                     {
                     vcos_event_signal(event);
@@ -21,7 +21,7 @@ void            CKernel::callbackMMAL       ( void *callback_param, VCHI_CALLBAC
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::getVCHIstate        ( )    // new for mmal and vcsm
+void            CKernel::getStateVCHI        ( )    // new for mmal and vcsm
 {
                 vc_host_get_vchi_state(&m_VCHIInstance, &m_Connection);                         //1. get the VCHI instance and the connection handle from bcm_host.h
 #ifdef __DEBUG_LOG__
@@ -31,7 +31,7 @@ void            CKernel::getVCHIstate        ( )    // new for mmal and vcsm
 #endif // __DEBUG_LOG__            
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::initEvents(VCOS_EVENT_T &event, const char* name)
+bool            CKernel::initEventsVCOS(VCOS_EVENT_T &event, const char* name)
 {
                 if (vcos_event_create(&event, name) != VCOS_SUCCESS)
                     {
@@ -47,8 +47,8 @@ bool            CKernel::initEvents(VCOS_EVENT_T &event, const char* name)
                 VCOS_EVENT_T m_EventSMEM;
                 VCOS_EVENT_T m_EventMMAL;
 
-                initEvents(m_EventSMEM, "SMEM");
-                initEvents(m_EventMMAL, "MMAL");
+                initEventsVCOS(m_EventSMEM, "SMEM");
+                initEventsVCOS(m_EventMMAL, "MMAL");
 */
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 u32             CKernel::convertAddress ( void* buffer, size_t size )
@@ -115,7 +115,7 @@ void            CKernel::initHeaderMMAL            (   mmal_msg_header& hdr, u32
                 hdr.padding         = 0;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::sendAndWait                (   VCHI_SERVICE_HANDLE_T   ServiceHandle, V
+bool            CKernel::sendAndWaitVCHI                (   VCHI_SERVICE_HANDLE_T   ServiceHandle, V
                                                         COS_EVENT_T             &VCOSevent, 
                                                         const void              *msg, 
                                                         size_t                  msg_size, 
@@ -163,7 +163,7 @@ bool            CKernel::sendAndWait                (   VCHI_SERVICE_HANDLE_T   
                 return true;                                    //  return (ReplyLength != 0);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::openService(   SERVICE_CREATION_T      &tx, 
+bool            CKernel::openServiceVCHI(   SERVICE_CREATION_T      &tx, 
                                         uint32_t                serviceVersion, 
                                         uint32_t                serviceVersionMin, 
                                         int32_t                 service_id, 
@@ -194,7 +194,7 @@ bool            CKernel::openService(   SERVICE_CREATION_T      &tx,
                 return (rc == 0);
 }
 /*
-                openService(
+                openServiceVCHI(
                     tx,
                     VC_SM_VER,
                     VC_SM_MIN_VER,
@@ -205,7 +205,7 @@ bool            CKernel::openService(   SERVICE_CREATION_T      &tx,
                     m_ServiceHandleVCSM
                 );
 
-                openService(
+                openServiceVCHI(
                     tx,
                     VC_MMAL_VER,
                     VC_MMAL_MIN_VER,

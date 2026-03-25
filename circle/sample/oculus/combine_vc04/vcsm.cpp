@@ -8,9 +8,9 @@ bool            CKernel::initializeVCSM     (   )
 #ifdef __DEBUG_LOG__
                 storeLog ( MY_BUFFER, MY_INDEX, SERVICENAMESTRING, SERVICEVERSIONSTRING);    
 #endif // __DEBUG_LOG__
-                getVCHIstate();
+                getStateVCHI();
 
-                if(!initEvents(m_EventSMEM, "SMEM"))
+                if(!initEventsVCOS(m_EventSMEM, "SMEM"))
                     {
 #ifdef __DEBUG_LOG__
                     nextline ( MY_BUFFER, MY_INDEX );
@@ -18,7 +18,7 @@ bool            CKernel::initializeVCSM     (   )
 #endif // __DEBUG_LOG__
                     return false;
                     }
-                if(!openService (
+                if(!openServiceVCHI (
                                 tx,
                                 VC_SM_VER,
                                 VC_SM_MIN_VER,
@@ -44,10 +44,10 @@ bool            CKernel::initializeVCSM     (   )
                 VCOS_EVENT_T m_EventSMEM;
                 VCOS_EVENT_T m_EventMMAL;
 
-                initEvents(m_EventSMEM, "SMEM");
-                initEvents(m_EventMMAL, "MMAL");
+                initEventsVCOS(m_EventSMEM, "SMEM");
+                initEventsVCOS(m_EventMMAL, "MMAL");
 
-                openService(
+                openServiceVCHI(
                     tx,
                     VC_SM_VER,
                     VC_SM_MIN_VER,
@@ -59,7 +59,7 @@ bool            CKernel::initializeVCSM     (   )
                 );                
 */
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::importMemoryVCSM   ( void* buffer, size_t size, int slot, vc_sm_import_msg& tx, vc_sm_import_result& rx)
+bool            CKernel::importMemoryVCSM   ( void* buffer, size_t size, int slot, VCSM_Import_MEM_Msg& tx, vc_sm_import_result& rx)
 {
                 initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_IMPORT);
 
@@ -73,7 +73,7 @@ bool            CKernel::importMemoryVCSM   ( void* buffer, size_t size, int slo
 
                 size_t rx_len = 0;
 /*
-bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   ServiceHandle, V
+bool            CKernel::sendAndWaitVCHI           (   VCHI_SERVICE_HANDLE_T   ServiceHandle, V
                                                         COS_EVENT_T             &VCOSevent, 
                                                         const void              *msg, 
                                                         size_t                  msg_size, 
@@ -81,7 +81,7 @@ bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   
                                                         size_t                  max_reply_len, 
                                                         size_t                  *actual_reply_len ) // new for mmal and vcsm
 */
-                if (!sendAndWait( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len ))
+                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len ))
                     return false;
 
                 if (rx.body.res_handle != 0)
@@ -97,7 +97,7 @@ bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   
                 return false;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::lockMemoryVCSM     ( int slot, vc_sm_lock_msg& tx, vc_sm_lock_result_t& rx)
+bool            CKernel::lockMemoryVCSM     ( int slot, VCSM_Lock_MEM_Msg& tx, vc_sm_lock_result_t& rx)
 {
                 initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_LOCK);
 
@@ -107,7 +107,7 @@ bool            CKernel::lockMemoryVCSM     ( int slot, vc_sm_lock_msg& tx, vc_s
 
                 size_t rx_len = 0;
 /*
-bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   ServiceHandle, V
+bool            CKernel::sendAndWaitVCHI           (   VCHI_SERVICE_HANDLE_T   ServiceHandle, V
                                                         COS_EVENT_T             &VCOSevent, 
                                                         const void              *msg, 
                                                         size_t                  msg_size, 
@@ -115,7 +115,7 @@ bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   
                                                         size_t                  max_reply_len, 
                                                         size_t                  *actual_reply_len ) // new for mmal and vcsm
 */
-                if (!sendAndWait( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len) )
+                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len) )
                     return false;
 
                 if (rx.body.res_mem != 0)
@@ -131,7 +131,7 @@ bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   
                 return false;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::freeMemoryVCSM     ( int slot, vc_sm_free_msg& tx, vc_sm_result_t& rx)
+bool            CKernel::freeMemoryVCSM     ( int slot, VCSM_Free_MEM_Msg& tx, vc_sm_result_t& rx)
 {
                 initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_FREE);
 
@@ -141,7 +141,7 @@ bool            CKernel::freeMemoryVCSM     ( int slot, vc_sm_free_msg& tx, vc_s
 
                 size_t rx_len = 0;
 /*
-bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   ServiceHandle, V
+bool            CKernel::sendAndWaitVCHI           (   VCHI_SERVICE_HANDLE_T   ServiceHandle, V
                                                         COS_EVENT_T             &VCOSevent, 
                                                         const void              *msg, 
                                                         size_t                  msg_size, 
@@ -149,7 +149,7 @@ bool            CH264Decoder::sendAndWait           (   VCHI_SERVICE_HANDLE_T   
                                                         size_t                  max_reply_len, 
                                                         size_t                  *actual_reply_len ) // new for mmal and vcsm
 */
-                if (!sendAndWait( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len) )
+                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len) )
                     return false;
 
                 if (rx.body.success == 0)

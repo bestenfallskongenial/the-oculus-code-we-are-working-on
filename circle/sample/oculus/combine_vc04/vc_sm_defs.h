@@ -177,4 +177,39 @@ union vc_sm_msg_union_t 					// Union of ALL messages //
 	struct vc_sm_vc_mem_request_result vc_request_result;
 	};
 
+// we predefine message "superstructs" that we can pass and prime the whole package to the function and also have it stored to debunk it later
+
+struct VCSM_Import_MEM_Msg
+{
+        vc_sm_msg_hdr_t                 hdr;
+        vc_sm_import                    body;
+};
+
+struct VCSM_Import_MEM_Reply
+{
+        vc_sm_import_result             body;
+};
+
+struct VCSM_Lock_MEM_Msg
+{
+        vc_sm_msg_hdr_t                 hdr;
+        vc_sm_lock_unlock_t             body;
+};
+
+struct VCSM_Lock_MEM_Reply    
+{
+        vc_sm_lock_result_t             body;
+};
+
+struct VCSM_Free_MEM_Msg
+{
+        vc_sm_msg_hdr_t                 hdr;
+        vc_sm_free_t                    body;
+};
+
+struct VCSM_Free_MEM_Reply    
+{
+        vc_sm_result_t                  body;
+};
+
 #endif // __VC_SM_DEFS_H__INCLUDED__ //

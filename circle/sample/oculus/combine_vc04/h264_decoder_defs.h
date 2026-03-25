@@ -662,6 +662,113 @@ struct mmal_msg 	// all mmal messages are serialised through this structure //
 	} u;
 };
 //----------------------------------------------------------------------------------------------------------------------------------------------------
+//              MY OWN STRUCTS NEEDED FOR MY PROGRAM FLOW
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+
+struct mmal_buffer_header_wire32 {
+    u32 next;
+    u32 priv;
+    u32 cmd;
+    u32 data;           // 16
+    u32 alloc_size;
+    u32 length;
+    u32 offset;
+    u32 flags;          // 32
+    u32 pts_lo;
+    u32 pts_hi;   // replaces s64 pts
+    u32 dts_lo;
+    u32 dts_hi;   // replaces s64 dts 48
+    u32 type;
+    u32 user_data; // 52
+};
+
+struct mmal_msg_buffer_from_host_wire32
+{
+    struct mmal_driver_buffer drvbuf;     // you set these fields → keep as struct (16)
+    struct mmal_driver_buffer drvbuf_ref; // 16
+    struct mmal_buffer_header_wire32 buffer_header; // you patch these → keep (56)
+    struct mmal_buffer_header_type_specific buffer_header_type_specific;
+
+    s32 is_zero_copy;              // 4
+    s32 has_reference;             // 4
+    u32 payload_in_message;        // 4
+
+    u8 short_data[128];           // unchanged, stays zero
+}; // total: 16 + 16 + 56 + 40 + 4 + 4 + 4 + 128 = 268 bytes
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+//  1. Create component
+struct MMAL_Component_Create_Msg            // correct
+{
+    mmal_msg_header                 hdr;
+    mmal_msg_component_create       msg;
+};
+struct MMAL_Component_Create_Reply          // correct
+{
+    mmal_msg_header                 hdr;
+    mmal_msg_component_create_reply msg;
+};
+//  5. Enable component
+struct MMAL_Component_Enable_Msg            // correct
+{
+    mmal_msg_header                 hdr;
+    mmal_msg_component_enable       msg;
+};
+struct MMAL_Component_Enable_Reply          // correct
+{
+    mmal_msg_header                 hdr;
+    mmal_msg_component_enable_reply msg;
+};
+//  2. Snapshot – get initial port state (before any modification)
+struct MMAL_Port_Info_Get_Msg               // correct
+{
+    mmal_msg_header                 hdr;
+    mmal_msg_port_info_get          msg;
+};
+struct MMAL_Port_Info_Get_Reply             // correct
+{
+    mmal_msg_header                 hdr;
+    mmal_msg_port_info_get_reply    msg;
+};
+//  4. Send SET (this is where data from step 3 is sent)
+struct MMAL_Port_Info_Set_Msg
+{
+    mmal_msg_header                 hdr;
+    mmal_msg_port_info_set          msg;
+};
+struct MMAL_Port_Info_Set_Reply    
+{
+    mmal_msg_header                 hdr;
+    mmal_msg_port_info_set_reply    msg;
+};
+//  7. Zero-copy parameter set
+struct MMAL_Port_Parameter_Set_Msg
+{
+    mmal_msg_header                 hdr;
+    mmal_msg_port_parameter_set     msg;
+};
+struct MMAL_Port_Parameter_Set_Reply    
+{
+    mmal_msg_header                 hdr;
+    mmal_msg_port_parameter_set_reply msg;
+};
+//  9. Enable ports
+struct MMAL_Port_Action_Msg
+{
+    mmal_msg_header                 hdr;
+    mmal_msg_port_action_port       msg;
+};
+struct MMAL_Port_Action_Reply_Msg
+{
+    mmal_msg_header                 hdr;
+    mmal_msg_port_action_reply      msg;
+};
+//  10. Runtime buffer flow
+struct MMAL_Buffer_From_Host_Msg
+{
+    mmal_msg_header                   hdr;
+    mmal_msg_buffer_from_host_wire32  msg;
+};
+//----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-ENCODINGS.H
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 #define MMAL_ENCODING_H264             MMAL_FOURCC('H', '2', '6', '4')
