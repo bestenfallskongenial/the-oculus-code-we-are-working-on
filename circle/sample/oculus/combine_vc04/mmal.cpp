@@ -38,7 +38,7 @@ bool            CKernel::initialize                  ( u32         InBufferHandl
 #endif
                 getVCHIstate                ( );
 #ifdef __H264_DECODER_DEBUG_INIT__
-                nextline();
+                nextline( MY_BUFFER, MY_INDEX );
 #endif                
                 initEvents                  ( );
 #ifdef __H264_DECODER_DEBUG_INIT__
@@ -46,7 +46,7 @@ bool            CKernel::initialize                  ( u32         InBufferHandl
                 storeLog ( "Input Port      Handle / Size ",m_InputBufferHandle, m_InputBufferPointer, m_InputBufferSize);
                 storeLog ( "Output A Port   Handle / Size ",m_OutputBufferHandleA, m_OutputBufferPointerA, m_OutputBufferSize);
                 storeLog ( "Output B Port   Handle / Size ",m_OutputBufferHandleB, m_OutputBufferPointerB, m_OutputBufferSize); 
-                nextline();       
+                nextline( MY_BUFFER, MY_INDEX );       
                 storeLog ( "Resolution      Height / Width",m_ResolutionX, m_ResolutionY);
                 storeLog ( "EGL Display / Contex          ", (u32)m_eglDisplay, (u32)m_eglContext);
                 storeLog ( "----------------------------------------------------------------");
@@ -58,28 +58,28 @@ bool bOK = true;
         {
     bOK = openService(m_ServiceCreate);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMAL openService FAILED");
+        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "\nMMAL openService FAILED");
 #endif
         }
     if (bOK)
         {
     bOK = createComponent(m_ComponentCreateTx, m_ComponentCreateRx);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALcreateComponent FAILED");
+        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "\nMMALcreateComponent FAILED");
 #endif
         }
     if (bOK)
         {
         bOK = getPortInfo(MMAL_PORT_TYPE_INPUT, m_InputPortHandle, m_PortInfoGetTx_Input_A, m_PortInfoGetRx_Input_A);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALgetPortInfo Input A FAILED");
+        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "\nMMALgetPortInfo Input A FAILED");
 #endif
         }
     if (bOK)
         {
         bOK = getPortInfo(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_A, m_PortInfoGetRx_Output_A);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALgetPortInfo Output A FAILED");
+        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "\nMMALgetPortInfo Output A FAILED");
 #endif
         }
     if (bOK)
@@ -91,77 +91,77 @@ bool bOK = true;
         {
         bOK = setPortInfo(m_PortInfoSetTx_Input, m_PortInfoSetRx_Input);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALsetPortInfo Input FAILED");
+        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "\nMMALsetPortInfo Input FAILED");
 #endif
         }
     if (bOK)
         {
         bOK = setPortInfo(m_PortInfoSetTx_Output, m_PortInfoSetRx_Output);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALsetPortInfo Output FAILED");
+        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "\nMMALsetPortInfo Output FAILED");
 #endif
         }
     if (bOK)
         {
         bOK = enableComponent(m_ComponentEnableTx, m_ComponentEnableRx);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALenableComponent FAILED");
+        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "\nMMALenableComponent FAILED");
 #endif
         }
     if (bOK)
         {
         bOK = getPortInfo(MMAL_PORT_TYPE_INPUT, m_InputPortHandle, m_PortInfoGetTx_Input_B, m_PortInfoGetRx_Input_B);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALgetPortInfo Input B FAILED");
+        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "\nMMALgetPortInfo Input B FAILED");
 #endif
         }
     if (bOK)
         {
         bOK = getPortInfo(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_B, m_PortInfoGetRx_Output_B);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALgetPortInfo Output B BFAILED");
+        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "\nMMALgetPortInfo Output B BFAILED");
 #endif
         }
     if (bOK)
         {
         bOK = setZeroCopyMode(m_PortInfoGetRx_Input_B, m_PortParamTx_Input, m_PortParamRx_Input);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALsetZeroCopyMode Input FAILED");
+        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "\nMMALsetZeroCopyMode Input FAILED");
 #endif
         }
     if (bOK)
         {
         bOK = setZeroCopyMode(m_PortInfoGetRx_Output_B, m_PortParamTx_Output, m_PortParamRx_Output);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALsetZeroCopyMode Output FAILED");
+        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "\nMMALsetZeroCopyMode Output FAILED");
 #endif
         }
     if (bOK)
         {
         bOK = getPortInfo(MMAL_PORT_TYPE_INPUT, m_InputPortHandle, m_PortInfoGetTx_Input_C, m_PortInfoGetRx_Input_C);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALgetPortInfo Input C FAILED");
+        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "\nMMALgetPortInfo Input C FAILED");
 #endif
         }
 if (bOK)
         {
         bOK = getPortInfo(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_C, m_PortInfoGetRx_Output_C);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALgetPortInfo Output C FAILED");
+        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "\nMMALgetPortInfo Output C FAILED");
 #endif
         }
     if (bOK)
         {
         bOK = enablePort(m_PortInfoGetRx_Input_C, m_PortActionTx_Input, m_PortActionRx_Input);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALenablePort Input FAILED");
+        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "\nMMALenablePort Input FAILED");
 #endif
         }
     if (bOK)
         {
         bOK = enablePort(m_PortInfoGetRx_Output_C, m_PortActionTx_Output, m_PortActionRx_Output);
 #ifdef __H264_DECODER_DEBUG_INIT__
-        if (!bOK) storeLog("\nMMALenablePort Output FAILED");
+        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "\nMMALenablePort Output FAILED");
 #endif
         }
     return bOK;
@@ -201,14 +201,14 @@ bool            CKernel::createTextures       (   )
                 if( count != 0)
                     { 
 #ifdef __H264_DECODER_DEBUG_INIT__ 
-                    nextline();                                 
-                    storeLog("\nTexture A Creation FAILED");
+                    nextline( MY_BUFFER, MY_INDEX );                                 
+                    storeLog( MY_BUFFER, MY_INDEX, "\nTexture A Creation FAILED");
 #endif                    
                     return false;
                     }
 #ifdef __H264_DECODER_DEBUG_INIT__             
-                nextline();
-                storeLog("\nTexture Creation SUCCESS");
+                nextline( MY_BUFFER, MY_INDEX );
+                storeLog( MY_BUFFER, MY_INDEX, "\nTexture Creation SUCCESS");
 #endif                
                 return true;
 }
@@ -220,12 +220,12 @@ bool            CKernel::framePoller(u32 frame_offset, u32 frame_length)
                     {
                     if (!queueInputBuffer(m_BufferFromHostTx_Input, frame_offset, frame_length))
                         {
-                        nextline();
-                        storeLog("very first frame queue error!", frame_offset, frame_length);
+                        nextline( MY_BUFFER, MY_INDEX );
+                        storeLog( MY_BUFFER, MY_INDEX, "very first frame queue error!", frame_offset, frame_length);
                         return false;
                         }
-                    nextline();
-                    storeLog("very first frame queue SUCCESS", frame_offset, frame_length);
+                    nextline( MY_BUFFER, MY_INDEX );
+                    storeLog( MY_BUFFER, MY_INDEX, "very first frame queue SUCCESS", frame_offset, frame_length);
 
                     getPortInfo(MMAL_PORT_TYPE_INPUT,  m_InputPortHandle,  m_PortInfoGetTx_Input_D, m_PortInfoGetRx_Input_D);
                     getPortInfo(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_D, m_PortInfoGetRx_Output_D);
@@ -252,8 +252,8 @@ bool            CKernel::framePoller(u32 frame_offset, u32 frame_length)
                                     {
                                     u32 m_CurrentHandle = m_BufferFromHostTx_Output.msg.buffer_header.data;  // Payload layout reused: buffer_from_host
 #ifdef __H264_DECODER_DEBUG_RUNTIME__   
-                                    nextline();
-                                    storeLog("offset / length / status / data", frame_offset, frame_length, m_BufferFromHostTx_Output.hdr.status, m_CurrentHandle);
+                                    nextline( MY_BUFFER, MY_INDEX );
+                                    storeLog( MY_BUFFER, MY_INDEX, "offset / length / status / data", frame_offset, frame_length, m_BufferFromHostTx_Output.hdr.status, m_CurrentHandle);
 #endif
                                     if (m_CurrentHandle != m_OutputBufferHandleA && m_CurrentHandle != m_OutputBufferHandleB)
                                         {
@@ -276,7 +276,7 @@ bool            CKernel::framePoller(u32 frame_offset, u32 frame_length)
                                         return false;
 #ifdef __H264_DECODER_DEBUG_RUNTIME__   
                                     message = "MMAL_MSG_STATUS_SUCCESS      - All is Fine";
-                                    nextline();
+                                    nextline( MY_BUFFER, MY_INDEX );
                                     storeLog(message, frame_offset, frame_length);
 #endif                        
                                     return true;
@@ -301,9 +301,9 @@ bool            CKernel::framePoller(u32 frame_offset, u32 frame_length)
                                 default:                         message = "Unknown MMAL status          - WTF!!!                             "; break;
                                 }
 #ifdef __H264_DECODER_DEBUG_RUNTIME__   
-                            nextline();
+                            nextline( MY_BUFFER, MY_INDEX );
                             storeLog(message, frame_offset, frame_length);
-                            storeMsg("Poller ERROR (BUFFER_TO_HOST)", &m_BufferFromHostTx_Output, msg_len);
+                            storeMsg( MY_BUFFER, MY_INDEX, "Poller ERROR (BUFFER_TO_HOST)", &m_BufferFromHostTx_Output, msg_len);
 #endif                
                             return false;
                             }
@@ -312,22 +312,22 @@ bool            CKernel::framePoller(u32 frame_offset, u32 frame_length)
                             {
                             message = "UNEXPECTED MESSAGE";
 #ifdef __H264_DECODER_DEBUG_RUNTIME__    
-                            nextline();
+                            nextline( MY_BUFFER, MY_INDEX );
                             storeLog(message, frame_offset, frame_length,m_BufferFromHostTx_Output.hdr.type, m_BufferFromHostTx_Output.hdr.status);
-                            storeMsg("Poller ERROR (UNEXPECTED MESSAGE)", &m_BufferFromHostTx_Output, msg_len);
+                            storeMsg( MY_BUFFER, MY_INDEX, "Poller ERROR (UNEXPECTED MESSAGE)", &m_BufferFromHostTx_Output, msg_len);
 #endif
                             break;
                             }
                         }
 #ifdef __H264_DECODER_DEBUG_RUNTIME__ 
-                    nextline();
-                    storeLog("Unexpected Reply", frame_offset, frame_length);
-                    storeMsg("Unexpected Reply", &m_BufferFromHostTx_Output, msg_len);
+                    nextline( MY_BUFFER, MY_INDEX );
+                    storeLog( MY_BUFFER, MY_INDEX, "Unexpected Reply", frame_offset, frame_length);
+                    storeMsg( MY_BUFFER, MY_INDEX, "Unexpected Reply", &m_BufferFromHostTx_Output, msg_len);
 #endif        
                     }
 #ifdef __H264_DECODER_DEBUG_RUNTIME__   
-                nextline();
-                storeLog("Nothing in the Pipeline", frame_offset, frame_length);    // Nothing relevant received
+                nextline( MY_BUFFER, MY_INDEX );
+                storeLog( MY_BUFFER, MY_INDEX, "Nothing in the Pipeline", frame_offset, frame_length);    // Nothing relevant received
 #endif
                 return true;
 }
@@ -353,7 +353,7 @@ bool CKernel::bufferReady(u32 handle)
                 if (m_EGLimage == EGL_NO_IMAGE_KHR)
                     {
 #ifdef __H264_DECODER_DEBUG_RUNTIME__        
-                    storeLog("\nEGLImage creation FAILED", handle);
+                    storeLog( MY_BUFFER, MY_INDEX, "\nEGLImage creation FAILED", handle);
 #endif
                     return false;
                     }
@@ -377,8 +377,8 @@ bool            CKernel::queueOutputBuffer     (   MMAL_Buffer_From_Host_Msg& tx
                 tx.msg.buffer_header.flags                         = 0;
 
 #ifdef __H264_DECODER_DEBUG_RUNTIME__
-                storeLog("\nBUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
-                storeMsg("QueueOutputBuffer", &tx, (u32)sizeof(tx));
+                storeLog( MY_BUFFER, MY_INDEX, "\nBUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
+                storeMsg( MY_BUFFER, MY_INDEX, "QueueOutputBuffer", &tx, (u32)sizeof(tx));
 #endif
                 return (vchi_msg_queue(m_ServiceHandle, &tx, (u32)sizeof(tx), VCHI_FLAGS_BLOCK_UNTIL_QUEUED, nullptr) == 0);
 }
@@ -395,8 +395,8 @@ bool            CKernel::queueInputBuffer      (   MMAL_Buffer_From_Host_Msg& tx
                 u32 flags                                           = MMAL_BUFFER_HEADER_FLAG_FRAME | MMAL_BUFFER_HEADER_FLAG_KEYFRAME;
                 tx.msg.buffer_header.flags                         = flags;
 #ifdef __H264_DECODER_DEBUG_RUNTIME__
-                storeLog("\nBUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
-                storeMsg("QueueInputBuffer", &tx, (u32)sizeof(tx));
+                storeLog( MY_BUFFER, MY_INDEX, "\nBUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
+                storeMsg( MY_BUFFER, MY_INDEX, "QueueInputBuffer", &tx, (u32)sizeof(tx));
 #endif
                 return (vchi_msg_queue(m_ServiceHandle, &tx, (u32)sizeof(tx), VCHI_FLAGS_BLOCK_UNTIL_QUEUED, nullptr) == 0);
 }
@@ -417,7 +417,7 @@ bool            CKernel::createComponent       (   MMAL_Component_Create_Msg& tx
                 if (!sendAndWaitVCHI(&tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __H264_DECODER_DEBUG_INIT__
-                    storeLog("\nMMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog( MY_BUFFER, MY_INDEX, "\nMMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif
                     return false;
                     }
@@ -442,7 +442,7 @@ bool            CKernel::getPortInfo           (   u32 port_type, u32& port_hand
                 if (!sendAndWaitVCHI(&tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __H264_DECODER_DEBUG_INIT__
-                    storeLog("\nMMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog( MY_BUFFER, MY_INDEX, "\nMMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif
                     return false;
                     }
@@ -462,7 +462,7 @@ bool            CKernel::setPortInfo           (   MMAL_Port_Info_Set_Msg& tx, M
                 if (!sendAndWaitVCHI(&tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __H264_DECODER_DEBUG_INIT__
-                    storeLog("\nMMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog( MY_BUFFER, MY_INDEX, "\nMMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif
                     return false;
                     }
@@ -484,7 +484,7 @@ bool            CKernel::enableComponent       (   MMAL_Component_Enable_Msg& tx
                 if (!sendAndWaitVCHI(&tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __H264_DECODER_DEBUG_INIT__
-                    storeLog("\nMMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog( MY_BUFFER, MY_INDEX, "\nMMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif
                     return false;
                     }
@@ -512,7 +512,7 @@ bool            CKernel::setZeroCopyMode       (   /*u32 port_handle,*/ const MM
                 if (!sendAndWaitVCHI(&tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __H264_DECODER_DEBUG_INIT__
-                    storeLog("\nMMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog( MY_BUFFER, MY_INDEX, "\nMMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif
                     return false;
                     }
@@ -537,7 +537,7 @@ bool            CKernel::enablePort            (   /*u32 port_handle,*/ const MM
                 if (!sendAndWaitVCHI(&tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __H264_DECODER_DEBUG_INIT__
-                    storeLog("\nMMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog( MY_BUFFER, MY_INDEX, "\nMMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif
                     return false;
                     }
