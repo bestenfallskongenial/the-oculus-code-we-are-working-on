@@ -1,3 +1,8 @@
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+#define __DEBUG_LOG__
+#define MY_BUFFER m_bufferLog
+#define MY_INDEX vc04_logIndex  // vc04_logIndex is a public member variable
+//----------------------------------------------------------------------------------------------------------------------------------------------------
 #include "h264_decoder.h"
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -34,7 +39,7 @@ bool            CKernel::initialize                  ( u32         InBufferHandl
                 m_eglDisplay                = eglDisplay;
                 m_eglContext                = eglContext;
 #ifdef __H264_DECODER_DEBUG_INIT__                
-                storeLog ( "----------------------------------------------------------------");
+                storeLog ( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
 #endif
                 getVCHIstate                ( );
 #ifdef __H264_DECODER_DEBUG_INIT__
@@ -42,14 +47,14 @@ bool            CKernel::initialize                  ( u32         InBufferHandl
 #endif                
                 initEvents                  ( );
 #ifdef __H264_DECODER_DEBUG_INIT__
-                storeLog ( "----------------------------------------------------------------");   
-                storeLog ( "Input Port      Handle / Size ",m_InputBufferHandle, m_InputBufferPointer, m_InputBufferSize);
-                storeLog ( "Output A Port   Handle / Size ",m_OutputBufferHandleA, m_OutputBufferPointerA, m_OutputBufferSize);
-                storeLog ( "Output B Port   Handle / Size ",m_OutputBufferHandleB, m_OutputBufferPointerB, m_OutputBufferSize); 
+                storeLog ( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");   
+                storeLog ( MY_BUFFER, MY_INDEX, "Input Port      Handle / Size ",m_InputBufferHandle, m_InputBufferPointer, m_InputBufferSize);
+                storeLog ( MY_BUFFER, MY_INDEX, "Output A Port   Handle / Size ",m_OutputBufferHandleA, m_OutputBufferPointerA, m_OutputBufferSize);
+                storeLog ( MY_BUFFER, MY_INDEX, "Output B Port   Handle / Size ",m_OutputBufferHandleB, m_OutputBufferPointerB, m_OutputBufferSize); 
                 nextline( MY_BUFFER, MY_INDEX );       
-                storeLog ( "Resolution      Height / Width",m_ResolutionX, m_ResolutionY);
-                storeLog ( "EGL Display / Contex          ", (u32)m_eglDisplay, (u32)m_eglContext);
-                storeLog ( "----------------------------------------------------------------");
+                storeLog ( MY_BUFFER, MY_INDEX, "Resolution      Height / Width",m_ResolutionX, m_ResolutionY);
+                storeLog ( MY_BUFFER, MY_INDEX, "EGL Display / Contex          ", (u32)m_eglDisplay, (u32)m_eglContext);
+                storeLog ( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
 #endif
 
 bool bOK = true;
@@ -277,7 +282,7 @@ bool            CKernel::framePoller(u32 frame_offset, u32 frame_length)
 #ifdef __H264_DECODER_DEBUG_RUNTIME__   
                                     message = "MMAL_MSG_STATUS_SUCCESS      - All is Fine";
                                     nextline( MY_BUFFER, MY_INDEX );
-                                    storeLog(message, frame_offset, frame_length);
+                                    storeLog( MY_BUFFER, MY_INDEX, message, frame_offset, frame_length);
 #endif                        
                                     return true;
                                     }
@@ -302,7 +307,7 @@ bool            CKernel::framePoller(u32 frame_offset, u32 frame_length)
                                 }
 #ifdef __H264_DECODER_DEBUG_RUNTIME__   
                             nextline( MY_BUFFER, MY_INDEX );
-                            storeLog(message, frame_offset, frame_length);
+                            storeLog( MY_BUFFER, MY_INDEX, message, frame_offset, frame_length);
                             storeMsg( MY_BUFFER, MY_INDEX, "Poller ERROR (BUFFER_TO_HOST)", &m_BufferFromHostTx_Output, msg_len);
 #endif                
                             return false;
@@ -313,7 +318,7 @@ bool            CKernel::framePoller(u32 frame_offset, u32 frame_length)
                             message = "UNEXPECTED MESSAGE";
 #ifdef __H264_DECODER_DEBUG_RUNTIME__    
                             nextline( MY_BUFFER, MY_INDEX );
-                            storeLog(message, frame_offset, frame_length,m_BufferFromHostTx_Output.hdr.type, m_BufferFromHostTx_Output.hdr.status);
+                            storeLog( MY_BUFFER, MY_INDEX, message, frame_offset, frame_length,m_BufferFromHostTx_Output.hdr.type, m_BufferFromHostTx_Output.hdr.status);
                             storeMsg( MY_BUFFER, MY_INDEX, "Poller ERROR (UNEXPECTED MESSAGE)", &m_BufferFromHostTx_Output, msg_len);
 #endif
                             break;

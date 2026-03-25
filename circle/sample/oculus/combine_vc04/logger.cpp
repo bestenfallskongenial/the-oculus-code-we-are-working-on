@@ -417,12 +417,12 @@ void CKernel::Log_queueBufferFromHost( const MMAL_Buffer_From_Host_Msg& tx )
 {
     storeLog( MY_BUFFER, MY_INDEX, "sizeof(tx)                   ", (u32)sizeof(tx));
 
-    storeLog( MY_BUFFER, MY_INDEX, "\nTX.hdr.magic                 ", tx.hdr.magic);
+    storeLog( MY_BUFFER, MY_INDEX, "TX.hdr.magic                 ", tx.hdr.magic);
     storeLog( MY_BUFFER, MY_INDEX, "hdr.type                  ", tx.hdr.type);
     storeLog( MY_BUFFER, MY_INDEX, "hdr.context               ", tx.hdr.context);
     storeLog( MY_BUFFER, MY_INDEX, "hdr.status                ", tx.hdr.status);
 
-    storeLog( MY_BUFFER, MY_INDEX, "\ndrvbuf.magic                 ", tx.msg.drvbuf.magic);
+    storeLog( MY_BUFFER, MY_INDEX, "drvbuf.magic                 ", tx.msg.drvbuf.magic);
     storeLog( MY_BUFFER, MY_INDEX, "drvbuf.component_handle      ", tx.msg.drvbuf.component_handle);
     storeLog( MY_BUFFER, MY_INDEX, "drvbuf.port_handle           ", tx.msg.drvbuf.port_handle);
     storeLog( MY_BUFFER, MY_INDEX, "drvbuf.client_context        ", tx.msg.drvbuf.client_context);
