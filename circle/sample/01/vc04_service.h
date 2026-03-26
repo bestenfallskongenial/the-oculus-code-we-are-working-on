@@ -3,8 +3,8 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 #include <circle/types.h>                                                           // for u32, size_t, etc.
 
-#include "vc_sm_defs.h"
-#include "h264_decoder_defs.h"
+#include "VCSM_defs.h"
+#include "MMAL_defs.h"
 
 #include "interface/vcos/vcos.h"
 #include "interface/vcos/vcos_event.h"          // ?

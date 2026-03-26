@@ -687,9 +687,9 @@
 // - m_programStatusFlags[]
 
 // key functions / entry points:
-// - shaderLog(char* buffer, u32& index, GLint shader, int shaderIndex)
-// - programLog(char* buffer, u32& index, GLint shader, int program_index)
-// - gfx_check(char* buffer, u32& index, const char* file, unsigned line)
+// - shaderLog(GLint shader, int shaderIndex)
+// - programLog(GLint shader, int program_index)
+// - gfx_check(const char* file, unsigned line) // fixed buffer passed via macro per file!!!
 
 // implementation notes:
 // - all three functions share the same buffer/index contract; caller controls sink and capacity.

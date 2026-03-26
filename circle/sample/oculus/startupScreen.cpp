@@ -28,33 +28,33 @@ bool CKernel::startupScreen(char* buffer, u32& index)
 
     /* text labels */
 
-    storeLog(buffer, index, "Machine Model");
-    storeLog(buffer, index, machineName);
+    storeLog( MY_BUFFER, MY_INDEX, "Machine Model");
+    storeLog( MY_BUFFER, MY_INDEX, machineName);
     nextline(buffer, index);
-    storeLog(buffer, index, "SoC Name");
-    storeLog(buffer, index, socName);
+    storeLog( MY_BUFFER, MY_INDEX, "SoC Name");
+    storeLog( MY_BUFFER, MY_INDEX, socName);
     nextline(buffer, index);
 
     /* numeric values */
 
-    storeLog(buffer, index, "Model Major    ", modelMajor);
-    storeLog(buffer, index, "Model Revision ", modelRevision);
+    storeLog( MY_BUFFER, MY_INDEX, "Model Major    ", modelMajor);
+    storeLog( MY_BUFFER, MY_INDEX, "Model Revision ", modelRevision);
     nextline(buffer, index);
-    storeLog(buffer, index, "RAM Size     MB", ramSize);
-    storeLog(buffer, index, "CPU Speed Mode ", cpuSpeedMode);
+    storeLog( MY_BUFFER, MY_INDEX, "RAM Size     MB", ramSize);
+    storeLog( MY_BUFFER, MY_INDEX, "CPU Speed Mode ", cpuSpeedMode);
     nextline(buffer, index);
-    storeLog(buffer, index, "SoC Max Temp   ", socMaxTemp);
+    storeLog( MY_BUFFER, MY_INDEX, "SoC Max Temp   ", socMaxTemp);
     nextline(buffer, index);
-    storeLog(buffer, index, "Clock CORE  MHz", coreClock);
-    storeLog(buffer, index, "Clock ARM   MHz", armClock);    
-    storeLog(buffer, index, "Clock EMMC  MHz", emmcClock, emmc2Clock, uartClock);
-    storeLog(buffer, index, "Clock EMMC2 MHz", emmcClock, emmc2Clock, uartClock);
-    storeLog(buffer, index, "Clock UART  MHz", emmcClock, emmc2Clock, uartClock);    
+    storeLog( MY_BUFFER, MY_INDEX, "Clock CORE  MHz", coreClock);
+    storeLog( MY_BUFFER, MY_INDEX, "Clock ARM   MHz", armClock);    
+    storeLog( MY_BUFFER, MY_INDEX, "Clock EMMC  MHz", emmcClock, emmc2Clock, uartClock);
+    storeLog( MY_BUFFER, MY_INDEX, "Clock EMMC2 MHz", emmcClock, emmc2Clock, uartClock);
+    storeLog( MY_BUFFER, MY_INDEX, "Clock UART  MHz", emmcClock, emmc2Clock, uartClock);    
     nextline(buffer, index);
-    storeLog(buffer, index, "DMA Channel    ", dmaChannel);
+    storeLog( MY_BUFFER, MY_INDEX, "DMA Channel    ", dmaChannel);
     nextline(buffer, index);
-    storeLog(buffer, index, "USB Delay      ", usbDelay);
-    storeLog(buffer, index, "USB FullSpeed  ", usbSpeed);
+    storeLog( MY_BUFFER, MY_INDEX, "USB Delay      ", usbDelay);
+    storeLog( MY_BUFFER, MY_INDEX, "USB FullSpeed  ", usbSpeed);
     
     screen_clear_screen(0x00000000);
 
