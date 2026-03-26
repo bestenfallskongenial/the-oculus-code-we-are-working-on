@@ -94,7 +94,7 @@ bool            CKernel::saveFromBufferOld     (   const char* p_fileName,      
                 closeFile();
                 return true;
 }
-bool            CKernel::saveFromBuffer    (   const char* p_deviceName  
+bool            CKernel::saveFromBuffer    (    const char* p_deviceName  
                                                 const char* p_fileName,             // we should include also the mount / unmount stuff here
                                                 const char* p_buffer,
                                                 unsigned    p_bufferSize)

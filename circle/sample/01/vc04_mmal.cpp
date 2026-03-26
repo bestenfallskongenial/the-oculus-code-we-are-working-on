@@ -521,7 +521,7 @@ bool            CKernel::setZeroCopyModeMMAL       (   /*u32 port_handle,*/ cons
 
                 tx.msg = {};                                                       /* prime TX msg */
                 tx.msg.component_handle                            = m_ComponentHandle;
-                tx.msg.port_handle                                 = src.msg.port_handle; // port_handle - my original code takes it as parameter! i assume this is chosen because source has the correct handle
+                tx.msg.port_handle                                 = src.msg.port_handle; // port_handle - my original code takes it as parameter! i assume this is chosen because chn has the correct handle
                 tx.msg.id                                          = MMAL_PARAMETER_ZERO_COPY;
                 tx.msg.size                                        = sizeof(u32);
 
@@ -549,7 +549,7 @@ bool            CKernel::enablePortMMAL            (   /*u32 port_handle,*/ cons
 
                 tx.msg                                             = {};                                                   /* prime TX msg from GET snapshot */
                 tx.msg.component_handle                            = m_ComponentHandle;
-                tx.msg.port_handle                                 = src.msg.port_handle;                // port_handle - my original code takes it as parameter! i assume this is chosen because source has the correct handle
+                tx.msg.port_handle                                 = src.msg.port_handle;                // port_handle - my original code takes it as parameter! i assume this is chosen because chn has the correct handle
                 tx.msg.action                                      = MMAL_MSG_PORT_ACTION_TYPE_ENABLE;
                 tx.msg.port                                        = src.msg.port;
 
