@@ -21,8 +21,7 @@ void            CKernel::programLog(GLint shader, int program_index)
 
                 GLint success;
                 glGetProgramiv(shader, GL_LINK_STATUS, &success);
-                m_shaderStatusFlags[program_index] = (success == GL_TRUE);
-#ifdef __DEBUG_LOG__
+#ifdef __DEBUG_LOG__ 
                 storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
                 storeLog( MY_BUFFER, MY_INDEX, "Program link status idx/success", (u32)program_index, (u32)success);
 #endif // __DEBUG_LOG__
@@ -375,15 +374,19 @@ void            CKernel::initOprogram   (   glsl_state* m_glsl,
                         glAttachShader(m_glsl->gl_omp_id[0], m_glsl->gl_oms_id[0]);
                         glLinkProgram(m_glsl->gl_omp_id[0]);
 
-                         programLog(m_glsl->gl_omp_id[0],i);
+                        GLint linkStatus;
+                        glGetProgramiv(m_glsl->gl_omp_id[0], GL_LINK_STATUS, &linkStatus);
+
+                        programLog(m_glsl->gl_omp_id[0],i);
 #ifdef __GL_DEBUG__
                 check();
 #endif // __GL_DEBUG__
 
-                        if (!m_shaderStatusFlags[i])
+                        if (linkStatus == GL_FALSE) 
                             {
                             glDeleteProgram(m_glsl->gl_omp_id[0]);
                             m_glsl->gl_omp_id[0] = 0;
+                            m_shaderStatusFlags[i] = false;
                             }
                         else
                             {
@@ -408,15 +411,19 @@ void            CKernel::initFprograms  (   glsl_state* m_glsl,
                         glAttachShader(m_glsl->gl_prg_id[i], m_glsl->gl_fsh_id[i]);
                         glLinkProgram(m_glsl->gl_prg_id[i]);
 
+                        GLint linkStatus;
+                        glGetProgramiv(m_glsl->gl_prg_id[i], GL_LINK_STATUS, &linkStatus);
+
                         programLog(m_glsl->gl_prg_id[i],i);
 #ifdef __GL_DEBUG__
                 check();
 #endif // __GL_DEBUG__
 
-                        if (!m_shaderStatusFlags[i])
+                        if (linkStatus == GL_FALSE) 
                             {
                             glDeleteProgram(m_glsl->gl_prg_id[i]);
                             m_glsl->gl_prg_id[i] = 0;
+                            m_shaderStatusFlags[i] = false;
                             }
                         else
                             {
