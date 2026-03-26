@@ -229,7 +229,7 @@ void CKernel::Log_setPortInfo( const MMAL_Port_Info_Set_Msg& tx, const MMAL_Port
     storeMsg( MY_BUFFER, MY_INDEX, "extradata                         ", rx.msg.extradata, rx.msg.format.extradata_size);     // rx extradata
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-void CKernel::Log_enableComponent( const MMAL_Component_Enable_Msg& tx, const MMAL_Component_Enable_Reply    & rx)
+void CKernel::Log_enableComponentMMAL( const MMAL_Component_Enable_Msg& tx, const MMAL_Component_Enable_Reply    & rx)
 {
     nextline( MY_BUFFER, MY_INDEX );
     storeLog( MY_BUFFER, MY_INDEX, "hdr.magic                         ", tx.hdr.magic);                                   // tx HEADER
@@ -293,7 +293,7 @@ void CKernel::Log_enablePort( const MMAL_Port_Action_Msg& tx, const MMAL_Port_Ac
     storeLog( MY_BUFFER, MY_INDEX, "msg.status                     **", rx.msg.status);                                 // rx BODY
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
-void CKernel::Log_setZeroCopyMode( const MMAL_Port_Parameter_Set_Msg& tx, const MMAL_Port_Parameter_Set_Reply    & rx)
+void CKernel::Log_setZeroCopyModeMMAL( const MMAL_Port_Parameter_Set_Msg& tx, const MMAL_Port_Parameter_Set_Reply    & rx)
 {
     nextline( MY_BUFFER, MY_INDEX );                                                         // tx HEADER
     storeLog( MY_BUFFER, MY_INDEX, "hdr.magic                         ", tx.hdr.magic);

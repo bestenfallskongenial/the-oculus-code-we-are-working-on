@@ -19,7 +19,7 @@ bool            CKernel::initializeVCSM     (   )
                     return false;
                     }
                 if(!openServiceVCHI (
-                                tx,
+                                m_ServiceCreateVCSM,
                                 VC_SM_VER,
                                 VC_SM_MIN_VER,
                                 VCHIQ_MAKE_FOURCC('S','M','E','M'),
@@ -59,7 +59,7 @@ bool            CKernel::initializeVCSM     (   )
                 );                
 */
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::importMemoryVCSM   ( void* buffer, size_t size, int slot, VCSM_Import_MEM_Msg& tx, vc_sm_import_result& rx)
+bool            CKernel::importMemoryVCSM   ( void* buffer, size_t size, int slot, VCSM_Import_MEM_Msg& tx, VCSM_Import_MEM_Reply& rx)
 {
                 initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_IMPORT);
 
@@ -89,7 +89,7 @@ bool            CKernel::sendAndWaitVCHI           (   VCHI_SERVICE_HANDLE_T   S
                     m_vc_handle[slot] = rx.body.res_handle;
 #ifdef __DEBUG_LOG__
                         nextline( MY_BUFFER, MY_INDEX );  
-                        storeLog( MY_BUFFER, MY_INDEX, "Import VCSM Memory to Slot ", slot)  
+                        storeLog( MY_BUFFER, MY_INDEX, "Import VCSM Memory to Slot ", slot); 
                         storeLog( MY_BUFFER, MY_INDEX, "ARM Address / GPU Address / Size / VCSM Handle ", buffer, tx.body.addr, size, rx.body.res_handle);
 #endif // __DEBUG_LOG__                    
                     return true;
@@ -97,7 +97,7 @@ bool            CKernel::sendAndWaitVCHI           (   VCHI_SERVICE_HANDLE_T   S
                 return false;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::lockMemoryVCSM     ( int slot, VCSM_Lock_MEM_Msg& tx, vc_sm_lock_result_t& rx)
+bool            CKernel::lockMemoryVCSM     ( int slot, VCSM_Lock_MEM_Msg& tx, VCSM_Lock_MEM_Reply& rx)
 {
                 initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_LOCK);
 
@@ -123,7 +123,7 @@ bool            CKernel::sendAndWaitVCHI           (   VCHI_SERVICE_HANDLE_T   S
                     m_vc_pointer[slot] = rx.body.res_mem;
 #ifdef __DEBUG_LOG__
                         nextline( MY_BUFFER, MY_INDEX );  
-                        storeLog( MY_BUFFER, MY_INDEX, "Lock VCSM Memory in Slot   ", slot)  
+                        storeLog( MY_BUFFER, MY_INDEX, "Lock VCSM Memory in Slot   ", slot);  
                         storeLog( MY_BUFFER, MY_INDEX, "VCSM Handle / VCSM Pointer ", rx.body.res_handle, rx.body.res_mem);
 #endif // __DEBUG_LOG__        
                     return true;
@@ -131,7 +131,7 @@ bool            CKernel::sendAndWaitVCHI           (   VCHI_SERVICE_HANDLE_T   S
                 return false;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::freeMemoryVCSM     ( int slot, VCSM_Free_MEM_Msg& tx, vc_sm_result_t& rx)
+bool            CKernel::freeMemoryVCSM     ( int slot, VCSM_Free_MEM_Msg& tx, VCSM_Free_MEM_Reply& rx)
 {
                 initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_FREE);
 
@@ -158,7 +158,7 @@ bool            CKernel::sendAndWaitVCHI           (   VCHI_SERVICE_HANDLE_T   S
                     m_vc_pointer[slot] = 0;
 #ifdef __DEBUG_LOG__
                         nextline( MY_BUFFER, MY_INDEX );  
-                        storeLog( MY_BUFFER, MY_INDEX, "Free VCSM Memory in Slot ", slot)  
+                        storeLog( MY_BUFFER, MY_INDEX, "Free VCSM Memory in Slot ", slot);  
 #endif // __DEBUG_LOG__       
                     return true;
                 }

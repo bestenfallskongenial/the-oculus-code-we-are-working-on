@@ -97,7 +97,7 @@ u32             CKernel::NextTransId         ( u32 &tid )   // new for mmal and 
                 return tid;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::initHeaderVCSM             (   vc_sm_msg_hdr_t& hdr, u16 type)
+void            CKernel::initHeaderVCSM             (   vc_sm_msg_hdr_t& hdr, u32 type)
 {␊
                 hdr                 = {};
                 hdr.type            = type;
@@ -115,13 +115,13 @@ void            CKernel::initHeaderMMAL            (   mmal_msg_header& hdr, u32
                 hdr.padding         = 0;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::sendAndWaitVCHI                (   VCHI_SERVICE_HANDLE_T   ServiceHandle, V
-                                                        COS_EVENT_T             &VCOSevent, 
-                                                        const void              *msg, 
-                                                        size_t                  msg_size, 
-                                                        void                    *rx_msg, 
-                                                        size_t                  max_reply_len, 
-                                                        size_t                  *actual_reply_len ) // new for mmal and vcsm
+bool            CKernel::sendAndWaitVCHI                (   VCHI_SERVICE_HANDLE_T   ServiceHandle, 
+                                                            VCOS_EVENT_T             &VCOSevent, 
+                                                            const void              *msg, 
+                                                            size_t                  msg_size, 
+                                                            void                    *rx_msg, 
+                                                            size_t                  max_reply_len, 
+                                                            size_t                  *actual_reply_len ) // new for mmal and vcsm
 {
 #ifdef __DEBUG_LOG__
                 nextline( MY_BUFFER, MY_INDEX );

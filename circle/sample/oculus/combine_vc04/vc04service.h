@@ -61,7 +61,7 @@ static  void callbackMMAL                                        (      void    
         u32  NextTransId                                          (     u32                     &tid );
 
         void initHeaderVCSM                                       (     vc_sm_msg_hdr_t         &tx,
-                                                                        u16                     type );
+                                                                        u32                     type );
 
         void initHeaderMMAL                                       (     mmal_msg_header         &hdr,
                                                                         u32                     type );
@@ -98,38 +98,37 @@ static  void callbackMMAL                                        (      void    
                                                                         u32         ResolutionY,            // obvious, right?
                                                                         EGLDisplay  eglDisplay,             // EGL display connection
                                                                         EGLContext  eglContext );           // EGL rendering context
-        bool createTextures                                       (   );
-        bool framePoller                                          (     u32 frame_offset, u32 frame_length);
+        bool createTexturesMMAL                                       (   );
+        bool framePollerMMAL                                          (     u32 frame_offset, u32 frame_length);
         //----------------------------------------------------------------------------------------------------------------------------------------------------
         private:
-        bool bufferReady                                          (     u32 handle);
-        bool queueOutputBuffer                                    (     MMAL_Buffer_From_Host_Msg& tx, u32 vc_handle, u32 alloc_size);
-        bool queueInputBuffer                                     (     MMAL_Buffer_From_Host_Msg& tx, u32 frame_offset, u32 frame_length);
+        bool bufferReadyMMAL                                          (     u32 handle);
+        bool queueOutputBufferMMAL                                    (     MMAL_Buffer_From_Host_Msg& tx, u32 vc_handle, u32 alloc_size);
+        bool queueInputBufferMMAL                                     (     MMAL_Buffer_From_Host_Msg& tx, u32 frame_offset, u32 frame_length);
         //----------------------------------------------------------------------------------------------------------------------------------------------------
-        bool checkGLerror                                         (   );
+        bool checkGLerrorMMAL                                         (   );
         //----------------------------------------------------------------------------------------------------------------------------------------------------
-        bool openServiceVCHI                                          (     SERVICE_CREATION_T &tx);
         bool createComponent                                      (     MMAL_Component_Create_Msg& tx, MMAL_Component_Create_Reply    & rx);
-        bool getPortInfo                                          (     u32 port_type, u32& port_handle, MMAL_Port_Info_Get_Msg& tx, MMAL_Port_Info_Get_Reply    & rx);
-        bool setPortInfo                                          (     MMAL_Port_Info_Set_Msg& tx, MMAL_Port_Info_Set_Reply    & rx);
-        bool enableComponent                                      (     MMAL_Component_Enable_Msg& tx, MMAL_Component_Enable_Reply    & rx);
-        bool setZeroCopyMode                                      (     /*u32 port_handle,*/ const MMAL_Port_Info_Get_Reply    & src,  MMAL_Port_Parameter_Set_Msg& tx, MMAL_Port_Parameter_Set_Reply    & rx);
-        bool enablePort                                           (     /*u32 port_handle,*/ const MMAL_Port_Info_Get_Reply    & src, MMAL_Port_Action_Msg& tx, MMAL_Port_Action_Reply_Msg& rx);
+        bool getPortInfoMMAL                                          (     u32 port_type, u32& port_handle, MMAL_Port_Info_Get_Msg& tx, MMAL_Port_Info_Get_Reply    & rx);
+        bool setPortInfoMMAL                                          (     MMAL_Port_Info_Set_Msg& tx, MMAL_Port_Info_Set_Reply    & rx);
+        bool enableComponentMMAL                                      (     MMAL_Component_Enable_Msg& tx, MMAL_Component_Enable_Reply    & rx);
+        bool setZeroCopyModeMMAL                                      (     /*u32 port_handle,*/ const MMAL_Port_Info_Get_Reply    & src,  MMAL_Port_Parameter_Set_Msg& tx, MMAL_Port_Parameter_Set_Reply    & rx);
+        bool enablePortMMAL                                           (     /*u32 port_handle,*/ const MMAL_Port_Info_Get_Reply    & src, MMAL_Port_Action_Msg& tx, MMAL_Port_Action_Reply_Msg& rx);
 
-        void PrimeOutputBufferBody                                (     MMAL_Buffer_From_Host_Msg& tx);
-        void PrimeInputBufferBody                                 (     MMAL_Buffer_From_Host_Msg& tx);
+        void PrimeOutputBufferBodyMMAL                                (     MMAL_Buffer_From_Host_Msg& tx);
+        void PrimeInputBufferBodyMMAL                                 (     MMAL_Buffer_From_Host_Msg& tx);
 
-        void setPortFormatInput                                   (     const MMAL_Port_Info_Get_Reply    & src, MMAL_Port_Info_Set_Msg& tx);
-        void setPortFormatOutput                                  (     const MMAL_Port_Info_Get_Reply    & src, MMAL_Port_Info_Set_Msg& tx);
+        void primePortFormatInputMMAL                                   (     const MMAL_Port_Info_Get_Reply    & src, MMAL_Port_Info_Set_Msg& tx);
+        void primePortFormatOutputMMAL                                  (     const MMAL_Port_Info_Get_Reply    & src, MMAL_Port_Info_Set_Msg& tx);
         //----------------------------------------------------------------------------------------------------------------------------------------------------
         #ifdef __H264_DECODER_DEBUG_INIT__
         void Log_openService                                      (     const SERVICE_CREATION_T &src);
         void Log_createComponent                                  (     const MMAL_Component_Create_Msg& tx, const MMAL_Component_Create_Reply    & rx);
         void Log_getPortInfo                                      (     const MMAL_Port_Info_Get_Msg& tx, const MMAL_Port_Info_Get_Reply    & rx);
         void Log_setPortInfo                                      (     const MMAL_Port_Info_Set_Msg& tx, const MMAL_Port_Info_Set_Reply    & rx);
-        void Log_enableComponent                                  (     const MMAL_Component_Enable_Msg& tx, const MMAL_Component_Enable_Reply    & rx);
+        void Log_enableComponentMMAL                                  (     const MMAL_Component_Enable_Msg& tx, const MMAL_Component_Enable_Reply    & rx);
         void Log_enablePort                                       (     const MMAL_Port_Action_Msg& tx, const MMAL_Port_Action_Reply_Msg&  rx);
-        void Log_setZeroCopyMode                                  (     const MMAL_Port_Parameter_Set_Msg& tx, const MMAL_Port_Parameter_Set_Reply    & rx);
+        void Log_setZeroCopyModeMMAL                                  (     const MMAL_Port_Parameter_Set_Msg& tx, const MMAL_Port_Parameter_Set_Reply    & rx);
         void Log_BufferFromHost                                   (     const MMAL_Buffer_From_Host_Msg& rx);
 #endif
 //      void Log_BufferBody                                       (     const mmal_msg_buffer_from_host_wire32& msg );
