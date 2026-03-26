@@ -5,59 +5,45 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 bool            CKernel::initializeVCSM     (   )
 {
+bool bOK = true;
+
 #ifdef __DEBUG_LOG__
                 storeLog ( MY_BUFFER, MY_INDEX, SERVICENAMESTRING, SERVICEVERSIONSTRING);    
 #endif // __DEBUG_LOG__
-                getStateVCHI();
 
-                if(!initEventsVCOS(m_EventSMEM, "SMEM"))
+                getStateVCHI                ();
+                if (bOK)
                     {
+                    bOK = initEventsVCOS(m_EventSMEM, "SMEM");
 #ifdef __DEBUG_LOG__
-                    nextline ( MY_BUFFER, MY_INDEX );
-                    storeLog ( MY_BUFFER, MY_INDEX, "VCOS Init FAILED!");      
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "VCSM initEventsVCOS FAILED");
 #endif // __DEBUG_LOG__
-                    return false;
+                    if (!bOK) return false;
                     }
-                if(!openServiceVCHI (
-                                m_ServiceCreateVCSM,
-                                VC_SM_VER,
-                                VC_SM_MIN_VER,
-                                VCHIQ_MAKE_FOURCC('S','M','E','M'),
-                                callbackVCSM,
-                                &m_EventSMEM,
-                                m_VCHIInstance,
-                                m_ServiceHandleVCSM
-                                ))
+
+                if (bOK)
                     {
+                    bOK = openServiceVCHI ( m_ServiceCreateVCSM,
+                                            VC_SM_VER,
+                                            VC_SM_MIN_VER,
+                                            VCHIQ_MAKE_FOURCC('S','M','E','M'),
+                                            callbackVCSM,
+                                            &m_EventSMEM,
+                                            m_VCHIInstance,
+                                            m_ServiceHandleVCSM
+                                            );
 #ifdef __DEBUG_LOG__            
-                    storeLog ( MY_BUFFER, MY_INDEX, "VCHI Init FAILED!");      
+                    if (!bOK) storeLog ( MY_BUFFER, MY_INDEX, "VCHI openService FAILED!");      
 #endif // __DEBUG_LOG__                    
-                    return false;
+                    if (!bOK) return false;
                     }
 #ifdef __DEBUG_LOG__ 
                 nextline ( MY_BUFFER, MY_INDEX );
-                storeLog ( MY_BUFFER, MY_INDEX, "VCSM Successful Initialized");      
+                storeLog ( MY_BUFFER, MY_INDEX, "VCSM Successful Initialized");
+                storeLog ( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");                
 #endif // __DEBUG_LOG__
-                return true;
+                return bOK;
 }
-/*
-                VCOS_EVENT_T m_EventSMEM;
-                VCOS_EVENT_T m_EventMMAL;
-
-                initEventsVCOS(m_EventSMEM, "SMEM");
-                initEventsVCOS(m_EventMMAL, "MMAL");
-
-                openServiceVCHI(
-                    tx,
-                    VC_SM_VER,
-                    VC_SM_MIN_VER,
-                    VCHIQ_MAKE_FOURCC('S','M','E','M'),
-                    callbackCSM,
-                    &m_EventSMEM,
-                    m_VCHIInstance,
-                    m_ServiceHandleVCSM
-                );                
-*/
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 bool            CKernel::importMemoryVCSM   ( void* buffer, size_t size, int slot, VCSM_Import_MEM_Msg& tx, VCSM_Import_MEM_Reply& rx)
 {
@@ -72,15 +58,7 @@ bool            CKernel::importMemoryVCSM   ( void* buffer, size_t size, int slo
                 strncpy(tx.body.name, "SMEM", sizeof(tx.body.name));
 
                 size_t rx_len = 0;
-/*
-bool            CKernel::sendAndWaitVCHI           (   VCHI_SERVICE_HANDLE_T   ServiceHandle, V
-                                                        COS_EVENT_T             &VCOSevent, 
-                                                        const void              *msg, 
-                                                        size_t                  msg_size, 
-                                                        void                    *rx_msg, 
-                                                        size_t                  max_reply_len, 
-                                                        size_t                  *actual_reply_len ) // new for mmal and vcsm
-*/
+
                 if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len ))
                     return false;
 
@@ -106,15 +84,7 @@ bool            CKernel::lockMemoryVCSM     ( int slot, VCSM_Lock_MEM_Msg& tx, V
                 tx.body.res_mem    = 0;
 
                 size_t rx_len = 0;
-/*
-bool            CKernel::sendAndWaitVCHI           (   VCHI_SERVICE_HANDLE_T   ServiceHandle, V
-                                                        COS_EVENT_T             &VCOSevent, 
-                                                        const void              *msg, 
-                                                        size_t                  msg_size, 
-                                                        void                    *rx_msg, 
-                                                        size_t                  max_reply_len, 
-                                                        size_t                  *actual_reply_len ) // new for mmal and vcsm
-*/
+
                 if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len) )
                     return false;
 
@@ -140,15 +110,7 @@ bool            CKernel::freeMemoryVCSM     ( int slot, VCSM_Free_MEM_Msg& tx, V
                 tx.body.res_mem    = 0;
 
                 size_t rx_len = 0;
-/*
-bool            CKernel::sendAndWaitVCHI           (   VCHI_SERVICE_HANDLE_T   ServiceHandle, V
-                                                        COS_EVENT_T             &VCOSevent, 
-                                                        const void              *msg, 
-                                                        size_t                  msg_size, 
-                                                        void                    *rx_msg, 
-                                                        size_t                  max_reply_len, 
-                                                        size_t                  *actual_reply_len ) // new for mmal and vcsm
-*/
+
                 if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len) )
                     return false;
 

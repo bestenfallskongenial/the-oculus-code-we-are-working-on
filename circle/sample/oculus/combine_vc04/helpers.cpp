@@ -156,7 +156,7 @@ bool            CKernel::sendAndWaitVCHI                (   VCHI_SERVICE_HANDLE_
 #ifdef __DEBUG_LOG__
                 //  const mmal_msg_header* h = (const mmal_msg_header*)msg; 
                 //  nextline( MY_BUFFER, MY_INDEX );
-                //  storeLog( MY_BUFFER, MY_INDEX, "ANSWER TO SHORT - MSG #", h->context ); // is only available with mmal, not for vcsm
+                    storeLog( MY_BUFFER, MY_INDEX, "ANSWER TO SHORT - MSG #" /*, h->context*/ ); // is only available with mmal, not for vcsm
 #endif // __DEBUG_LOG__
                     return false;
                     }
@@ -193,44 +193,7 @@ bool            CKernel::openServiceVCHI(   SERVICE_CREATION_T      &tx,
                 int rc = vchi_service_open(VCHIInstance, &tx, &ServiceHandle);
                 return (rc == 0);
 }
-/*
-                openServiceVCHI(
-                    tx,
-                    VC_SM_VER,
-                    VC_SM_MIN_VER,
-                    VCHIQ_MAKE_FOURCC('S','M','E','M'),
-                    callbackCSM,
-                    &m_EventSMEM,
-                    m_VCHIInstance,
-                    m_ServiceHandleVCSM
-                );
-
-                openServiceVCHI(
-                    tx,
-                    VC_MMAL_VER,
-                    VC_MMAL_MIN_VER,
-                    VCHIQ_MAKE_FOURCC('m','m','a','l'),
-                    callBackMMAL,
-                    &m_EventMMAL,
-                    m_VCHIInstance,
-                    m_ServiceHandleMMAL
-                );
-*/
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-void            CKernel::storeLog              (   const char* label, u32 value1, u32 value2, u32 value3, u32 value4 )
-{
-                // we will imprement the version from circle/sample/oculus/logging.cpp here and for the VCSM/MMAL code!!
-}
-void            CKernel::storeMsg              ( const char* label, const void* tx_msg, u32 total_size)
-{
-                // we will imprement the version from circle/sample/oculus/logging.cpp here and for the VCSM/MMAL code!!
-}
-inline void CKernel::nextline()
-{
-                // we will imprement the version from circle/sample/oculus/logging.cpp here and for the VCSM/MMAL code!!
-}
-*/
 #undef __DEBUG_LOG__
