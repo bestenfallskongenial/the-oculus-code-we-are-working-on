@@ -646,19 +646,19 @@ void            CKernel::render_shader_a(   glsl_state* m_glsl )
                 glBindFramebuffer(GL_FRAMEBUFFER,0);    // Now render to the main frame buffer
         
                 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);   // Clear the background (not really necessary I suppose)
-                #ifdef __GL_DEBUG__
+#ifdef __GL_DEBUG__
                 check();
-                #endif // __GL_DEBUG__
+#endif // __GL_DEBUG__
                 glBindBuffer(GL_ARRAY_BUFFER, m_glsl->gl_buf);
-                #ifdef __GL_DEBUG__
+#ifdef __GL_DEBUG__
                 check();
-                #endif // __GL_DEBUG__
+#endif // __GL_DEBUG__
 
                 glUseProgram ( m_glsl->gl_prg_id[g_current_gl_program] );
 
-                #ifdef __GL_DEBUG__
+#ifdef __GL_DEBUG__
                 check();
-                #endif // __GL_DEBUG__
+#endif // __GL_DEBUG__
 
                 GLuint cx = m_glsl->screen_width;
                 GLuint cy = m_glsl->screen_height;
@@ -699,9 +699,9 @@ void            CKernel::render_shader_a(   glsl_state* m_glsl )
                                 {
                                 glUniform1i(m_glsl->u_tex_id[g_current_gl_program][i], i);
                                 }
-                #ifdef __GL_DEBUG__
+#ifdef __GL_DEBUG__
                             check();
-                #endif // __GL_DEBUG__
+#endif // __GL_DEBUG__
                             }
                         break;
 
@@ -716,9 +716,9 @@ void            CKernel::render_shader_a(   glsl_state* m_glsl )
                                 glBindTexture(GL_TEXTURE_2D, m_glsl->gl_tex_id[gl_current_tex]);
                                 if (m_glsl->u_tex_id[g_current_gl_program][0] != -1)
                                     glUniform1i(m_glsl->u_tex_id[g_current_gl_program][0], 0);
-                #ifdef __GL_DEBUG__
+#ifdef __GL_DEBUG__
                             check();
-                #endif // __GL_DEBUG__
+#endif // __GL_DEBUG__
                                 break;
                                 
                             default:    // Two or more textures - bind current and next
@@ -726,17 +726,17 @@ void            CKernel::render_shader_a(   glsl_state* m_glsl )
                                 glBindTexture(GL_TEXTURE_2D, m_glsl->gl_tex_id[gl_current_tex]);
                                 if (m_glsl->u_tex_id[g_current_gl_program][0] != -1)
                                     glUniform1i(m_glsl->u_tex_id[g_current_gl_program][0], 0);
-                #ifdef __GL_DEBUG__
+#ifdef __GL_DEBUG__
                             check();
-                #endif // __GL_DEBUG__
+#endif // __GL_DEBUG__
                                 
                                 glActiveTexture(GL_TEXTURE1);
                                 glBindTexture(GL_TEXTURE_2D, m_glsl->gl_tex_id[gl_current_tex + 1]);
                                 if (m_glsl->u_tex_id[g_current_gl_program][1] != -1)
                                     glUniform1i(m_glsl->u_tex_id[g_current_gl_program][1], 1);
-                #ifdef __GL_DEBUG__
+#ifdef __GL_DEBUG__
                             check();
-                #endif // __GL_DEBUG__
+#endif // __GL_DEBUG__
                                 break;
                             }
                         break;
@@ -750,9 +750,9 @@ void            CKernel::render_shader_a(   glsl_state* m_glsl )
     debug code end 
  */
                 glDrawArrays( GL_TRIANGLE_FAN, 0, 4 );
-                #ifdef __GL_DEBUG__
+#ifdef __GL_DEBUG__
                 check();
-                #endif // __GL_DEBUG__
+#endif // __GL_DEBUG__
 
                 glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
@@ -761,18 +761,18 @@ void            CKernel::render_shader_a(   glsl_state* m_glsl )
                 if (noTargetFPS==true)
                     {
                     glFinish();
-                #ifdef __GL_DEBUG__
+#ifdef __GL_DEBUG__
                 check();
-                #endif // __GL_DEBUG__
+#endif // __GL_DEBUG__
                     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::render_shader_b(   glsl_state* m_glsl )
 {
                 eglSwapBuffers(m_glsl->display, m_glsl->surface);
-                #ifdef __GL_DEBUG__
+#ifdef __GL_DEBUG__
                 check();
-                #endif // __GL_DEBUG__
+#endif // __GL_DEBUG__
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
