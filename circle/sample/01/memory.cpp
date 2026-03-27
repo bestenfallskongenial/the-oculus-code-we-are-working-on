@@ -5,7 +5,8 @@ char**          CKernel::alllocateBufferMEM         (   size_t count, size_t buf
 {
                 char** buffers = (char**)malloc(count * sizeof(char*));
 #ifdef ALLOC_DEBUG                   
-CLogger::Get()->Write("ALLOC-DMA", LogDebug, "buffers = 0x%p", buffers);    // TODO - replace CLogger with my own logger -> example is vc04_MMAL.cpp for example!
+// CLogger::Get()->Write("ALLOC-DMA", LogDebug, "buffers = 0x%p", buffers);    // TODO - replace CLogger with my own logger -> example is vc04_MMAL.cpp for example!
+storeMsg( MY_BUFFER, MY_INDEX, "Allocate DMA Buffer Address 0x",(u32)buffers);
 #endif // ALLOC_DEBUG
 
                 for (size_t i = 0; i < count; ++i) 
@@ -13,6 +14,7 @@ CLogger::Get()->Write("ALLOC-DMA", LogDebug, "buffers = 0x%p", buffers);    // T
                     buffers[i] = (char*)calloc(bufferSize, sizeof(char));
 #ifdef ALLOC_DEBUG                    
 CLogger::Get()->Write("ALLOC-DMA", LogDebug, "buffers[%u] = 0x%p", (unsigned)i, buffers[i]);    // TODO - replace CLogger with my own logger -> example is vc04_MMAL.cpp for example!
+storeMsg( MY_BUFFER, MY_INDEX, "Allocate DMA Buffer Address 0x",(u32)buffers); // ??? 
 #endif // ALLOC_DEBUG
                 }
 #ifdef ALLOC_DEBUG   

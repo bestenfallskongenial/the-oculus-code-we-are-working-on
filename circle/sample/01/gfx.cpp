@@ -767,9 +767,9 @@ void            CKernel::render_shader_b(   glsl_state* m_glsl )
 #endif // __GL_DEBUG__
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// new render calls
+// new render calls !!! why?
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void CKernel::render_shader_setup(glsl_state* m_glsl)
+void CKernel::render_buffer_setup(glsl_state* m_glsl)
 {
     glBindFramebuffer(GL_FRAMEBUFFER,0);
 
@@ -782,7 +782,11 @@ void CKernel::render_shader_setup(glsl_state* m_glsl)
 #ifdef __GL_DEBUG__
     check();
 #endif
+}
 
+
+void CKernel::render_uniform_setup(glsl_state* m_glsl)
+{
     glUseProgram(m_glsl->gl_prg_id[g_current_gl_program]);
 #ifdef __GL_DEBUG__
     check();
@@ -815,8 +819,12 @@ void CKernel::render_shader_setup(glsl_state* m_glsl)
                                                                g_inOutMatrixFlt[6][out],
                                                                g_inOutMatrixFlt[7][out]);
     if(m_glsl->u_tex_l[g_current_gl_program] != -1) glUniform1i(m_glsl->u_tex_l[g_current_gl_program], p_validTextureCount);
+#ifdef __GL_DEBUG__
+    check();
+#endif
 }
-void CKernel::render_textures(glsl_state* m_glsl)
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void CKernel::render_textures_setup(glsl_state* m_glsl)
 {
 #ifdef __H264_DEBUG_TEX__
 
@@ -896,6 +904,7 @@ void CKernel::render_textures(glsl_state* m_glsl)
 
 #endif
 }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void CKernel::render_shader_draw(glsl_state* m_glsl)
 {
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
@@ -907,7 +916,7 @@ void CKernel::render_shader_draw(glsl_state* m_glsl)
 
     glFlush();
 
-    if (noTargetFPS==true)
+    if (noTargetFPS==true)  // <- this is my "fps break" - explain why
     {
         glFinish();
 #ifdef __GL_DEBUG__
@@ -915,17 +924,14 @@ void CKernel::render_shader_draw(glsl_state* m_glsl)
 #endif
     }
 }
-void CKernel::render_swap(glsl_state* m_glsl)
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void CKernel::render_buffer_swap(glsl_state* m_glsl)
 {
     eglSwapBuffers(m_glsl->display, m_glsl->surface);
 #ifdef __GL_DEBUG__
     check();
 #endif
 }
-/*
-external call sequence
-render_shader_setup(m_glsl);
-render_textures(m_glsl);
-render_shader_draw(m_glsl);
-render_swap(m_glsl);
-*/
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
