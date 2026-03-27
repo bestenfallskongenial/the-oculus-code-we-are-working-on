@@ -101,6 +101,10 @@ bool            CKernel::saveFromBuffer    (    const char* p_deviceName
 {
                 if(!Mount( p_deviceName ))
                     {
+#ifdef __DEBUG_LOG__                        
+                    storeLog( MY_BUFFER, MY_INDEX, "Failed to Mount Device");
+                    storeLog( MY_BUFFER, MY_INDEX, p_deviceName);    
+#endif // __DEBUG_LOG__                    
                     return false;
                     }
                 if (m_pFileSystem == 0 || p_fileName == 0 || p_buffer == 0 || p_bufferSize  == 0)
@@ -110,14 +114,30 @@ bool            CKernel::saveFromBuffer    (    const char* p_deviceName
                 g_hFile = m_pFileSystem->FileCreate(p_fileName);
                 if (g_hFile == 0)
                     {
+#ifdef __DEBUG_LOG__                        
+                    storeLog( MY_BUFFER, MY_INDEX, "Failed to Create File");
+                    storeLog( MY_BUFFER, MY_INDEX, p_fileName);    
+#endif // __DEBUG_LOG__                    
                     return false;
                     }
                 if (m_pFileSystem->FileWrite(g_hFile, p_buffer, p_bufferSize) != p_bufferSize)
                     {
+#ifdef __DEBUG_LOG__                        
+                    storeLog( MY_BUFFER, MY_INDEX, "Failed to Store File");
+                    storeLog( MY_BUFFER, MY_INDEX, p_fileName);      
+#endif // __DEBUG_LOG__                                      
                     return false;
                     }
                 closeFile();
                 UnMount();
+#ifdef __DEBUG_LOG__
+                storeLog( MY_BUFFER, MY_INDEX, "Successful Stored")
+                storeLog( MY_BUFFER, MY_INDEX, p_fileName);
+                storeLog( MY_BUFFER, MY_INDEX, "into Buffer");
+                storeLog( MY_BUFFER, MY_INDEX, p_buffer, p_bufferSize);
+                storeLog( MY_BUFFER, MY_INDEX, "on Device");
+                storeLog( MY_BUFFER, MY_INDEX, p_deviceName);
+#endif // __DEBUG_LOG__                                 
                 return true;
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -140,6 +160,10 @@ void            CKernel::bulkLoad       (   char*       p_fileNameArray[],      
 {
                 p_prevFiles = p_validFiles;                                                                         // boundary before loading
 
+#ifdef __DEBUG_LOG__
+                storeLog (MY_BUFFER, MY_INDEX, "BULKLOAD begin max/valid/size", (u32) p_maxFiles, (u32) p_validFiles, (u32) p_fileSize);
+#endif // __DEBUG_LOG__
+
                 for (int i = 0; i < p_maxFiles; ++i) 
                     {
                     if (openFile(p_fileNameArray[i]))                                                               // returns true if the file was opened successfully
@@ -148,10 +172,17 @@ void            CKernel::bulkLoad       (   char*       p_fileNameArray[],      
                         if (f_bytesRead)
                             {
                             p_loadedBytes[p_validFiles] = f_bytesRead;
+#ifdef __DEBUG_LOG__
+                            storeLog (MY_BUFFER, MY_INDEX, p_fileNameArray[i], (u32) f_bytesRead);
+                            storeLog (MY_BUFFER, MY_INDEX, p_bufferArray, (u32) p_validFiles);
+#endif // __DEBUG_LOG__                            
                             p_validFiles++;   
                             }
                         closeFile();
                         }                                                                                           // a false on open file will simply skip the file and move on to the next one
+#ifdef __DEBUG_LOG__
+                storeLog (MY_BUFFER, MY_INDEX, "BULKLOAD end prev/new/loaded", (u32) p_prevFiles, (u32) p_validFiles, (u32) (p_validFiles - p_prevFiles));
+#endif // __DEBUG_LOG__
                     }   
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
