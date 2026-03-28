@@ -296,7 +296,8 @@ void            set_pot_routing         (   bool        adc_pot_routing)
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------void            CKernel::prepParameters       ()        // f_buffer guess here we need much more to do!
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void            CKernel::prepParameters       ()        // f_buffer guess here we need much more to do!
 {
                 for ( int f_buffer=0; f_buffer <= DEFAULT_SLOT; f_buffer++)
                     {
@@ -356,7 +357,7 @@ int             CKernel::chooseFrame        ( int p_channel, &p_activeFrame, &p_
                     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::storeModesV1         () 
+void            CKernel::storeModesV1         ()  // faster
 {
                 
                 if (g_current_gl_program != g_last_gl_program)
@@ -366,9 +367,7 @@ void            CKernel::storeModesV1         ()
                     }               
                 if (g_centralModeBuffer[g_current_gl_program][is_stored] == true )
                     {  
-                    memcpy(&g_centralModeBuffer[g_current_gl_program][0],
-                        &g_centralModeBuffer[DEFAULT_SLOT][0],
-                        sizeof(g_centralModeBuffer[g_current_gl_program]));
+                    memcpy(&g_centralModeBuffer[g_current_gl_program][0], &g_centralModeBuffer[DEFAULT_SLOT][0], sizeof(g_centralModeBuffer[g_current_gl_program]));
                     
                     g_currentProgramBuffer = g_current_gl_program;
                     }
@@ -378,7 +377,7 @@ void            CKernel::storeModesV1         ()
                     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::storeModesV2         ()
+void            CKernel::storeModesV2         ()    // "saver"
 {
                 
                 if (g_current_gl_program != g_last_gl_program)
@@ -535,7 +534,7 @@ void            CKernel::calculate2BPM   (   unsigned long   p_triggerTimeClockA
                     }
                 g_activeBpmChannel                  = ( g_lastBpmCalculation[0] > g_lastBpmCalculation[1]) ? 0 : 1; // what was the last bpm input? 
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::calculate1BPM   (   int chn, unsigned long   p_triggerTimeClock) 
 {
                 static unsigned long f_lastTime[2];
@@ -619,7 +618,7 @@ void            CKernel::predictedNextBeat2 ()
                     g_lfoMultiplierTMP[1]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF2_MULT]];
                     }
 }
-
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::predictedNextBeat1 (int chn)
 {
                 unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                      // Get the current u_time in clock ticks
@@ -646,7 +645,6 @@ void            CKernel::predictedNextBeat1 (int chn)
                     g_lfoMultiplierTMP[chn]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF1_MULT]];
                     }
 }
-
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::sampleWaveTable                   ()
 {
