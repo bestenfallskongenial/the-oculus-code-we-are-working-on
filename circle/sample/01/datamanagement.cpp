@@ -74,7 +74,7 @@ unsigned        CKernel::loadToBuffer       (   char*       p_buffer,           
                 return 0;                                                                                           // Buffer full, EOF not reached - this is NOT a success - 0 is equal to false !!!
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::saveFromBufferOld     (   const char* p_fileName,             // we should include also the mount / unmount stuff here
+bool            CKernel::saveFromBufferOld     (   const char* p_fileName,
                                                 const char* p_buffer,
                                                 unsigned    p_bufferSize)
 {
@@ -94,8 +94,9 @@ bool            CKernel::saveFromBufferOld     (   const char* p_fileName,      
                 closeFile();
                 return true;
 }
-bool            CKernel::saveFromBuffer    (    const char* p_deviceName  
-                                                const char* p_fileName,             // we should include also the mount / unmount stuff here
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool            CKernel::saveFromBuffer    (    const char* p_deviceName  // we should include also the mount / unmount stuff here
+                                                const char* p_fileName,             
                                                 const char* p_buffer,
                                                 unsigned    p_bufferSize)
 {
@@ -377,105 +378,6 @@ void            CKernel::clearBufferDMA    (   char** buffers, char* rawBlock)
                 buffers  = nullptr;
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool CKernel::wrapperInitDMA()
-{
-    bool bOK = true;
 
-    if (bOK)
-        {
-        bOK = (m_bufferVid = alllocateBufferDMA  (  filecounter[FT_VID][FLD_MAXSD]+filecounter[FT_VID][FLD_MAXUSB],
-                                                    filecounter[FT_VID][FLD_SIZE],
-                                                   &m_videoBlockBase,
-                                                   &m_videoRawBlock,
-                                                   &m_videoBlockSize));
-        }
-    if (bOK)
-        {
-        bOK = (m_bufferFrA = alllocateBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB],
-                                                    filecounter[FRM_BF][FLD_SIZE],
-                                                   &m_frameBlockBaseA,
-                                                   &m_frameRawBlockA,
-                                                   &m_frameBlockSizeA));
-        }
-    if (bOK)
-        {
-        bOK = (m_bufferFrB = alllocateBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB],
-                                                    filecounter[FRM_BF][FLD_SIZE],
-                                                   &m_frameBlockBaseB,
-                                                   &m_frameRawBlockB,
-                                                   &m_frameBlockSizeB));
-        }
-    if (bOK)
-        {
-        bOK = (m_bufferOmt = alllocateBufferDMA  (  filecounter[FT_OMT][FLD_MAXSD]+filecounter[FT_OMT][FLD_MAXUSB],
-                                                    filecounter[FT_OMT][FLD_SIZE],
-                                                   &m_overlyBlockBase,
-                                                   &m_overlayRawBlock,
-                                                   &m_overlyBlockSize));
-        }
-    if (bOK)
-        {
-        bOK = (m_bufferTex = alllocateBufferDMA  (  filecounter[FT_TEX][FLD_MAXSD]+filecounter[FT_TEX][FLD_MAXUSB],
-                                                    filecounter[FT_TEX][FLD_SIZE],
-                                                   &m_textureBlockBase,
-                                                   &m_textureRawBlock,
-                                                   &m_textureBlockSize));
-        }
-    return bOK;
-}
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool CKernel::wrapperInitMEM()
-{
-    bool bOK = true;
-
-    if (bOK)
-        {
-        bOK = (m_bufferKnl = alllocateBufferMEM( filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], filecounter[FT_KLN][FLD_SIZE]));
-        }
-    if (bOK)
-        {
-        bOK = (m_bufferLog = alllocateBufferMEM( filecounter[LOGGER][FLD_MAXSD]+filecounter[LOGGER][FLD_MAXUSB], filecounter[LOGGER][FLD_SIZE]));      // 1024 *64 <- the new buffer for log/text files <- saveFromBuffer() <-
-        }                   
-    if (bOK)
-        {
-        bOK = (m_bufferVsh = alllocateBufferMEM( filecounter[FT_VSH][FLD_MAXSD]+filecounter[FT_VSH][FLD_MAXUSB], filecounter[FT_VSH][FLD_SIZE]));
-        }
-    if (bOK)
-        {
-        bOK = (m_bufferOmf = alllocateBufferMEM( filecounter[FT_OMF][FLD_MAXSD]+filecounter[FT_OMF][FLD_MAXUSB], filecounter[FT_OMF][FLD_SIZE]));
-        }
-    if (bOK)
-        {
-        bOK = (m_bufferFsh = alllocateBufferMEM( filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB], filecounter[FT_FSH][FLD_SIZE]));
-        }
-    return bOK;
-}
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::wrapperDMAcleanUp            ()
-{
-                    clearBufferDMA( m_bufferVid, m_videoRawBlock); 
-
-                    clearBufferDMA( m_bufferFrA, m_frameRawBlockA); 
-
-                    clearBufferDMA( m_bufferFrB, m_frameRawBlockB); 
-
-                    clearBufferDMA( m_bufferOmt, m_overlayRawBlock); 
-
-                    clearBufferDMA( m_bufferTex, m_textureRawBlock); 
-}
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::wrapperMEMcleanUp            ()
-{
-                    clearBufferMEM( m_bufferKnl, filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB] ); 
-
-                    clearBufferMEM( m_bufferLog, filecounter[LOGGER][FLD_MAXSD]+filecounter[LOGGER][FLD_MAXUSB] ); 
-
-                    clearBufferMEM( m_bufferVsh, filecounter[FT_VSH][FLD_MAXSD]+filecounter[FT_VSH][FLD_MAXUSB] ); 
-
-                    clearBufferMEM( m_bufferOmf, filecounter[FT_OMF][FLD_MAXSD]+filecounter[FT_OMF][FLD_MAXUSB] ); 
-
-                    clearBufferMEM( m_bufferFsh, filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB] );        
-}
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
