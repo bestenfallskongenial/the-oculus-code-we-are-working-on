@@ -73,6 +73,8 @@
 #define 		LFO_INSTANCES			2
 #define			LFO_MULTIPLIERS			7
 
+// the array for the loader constance - i think its better than scatter the values / constants everywhere around
+
 #define         VSH_SD             		1	// max number of u_vertex shader on sd
 #define         OMF_SD             		1	// max number of fragment shader on sd
 #define         FSH_SD             		1	// max number of fragment shader on sd
@@ -123,7 +125,6 @@
 
 #define         LOG_SIZ                 (1024*64)
 
-
 #define         TARGET_FPS              24      // desired frame rate !!! becomes menu !!!
 #define 		MIN_BPM					10		// min bpm for adc selector 
 #define			MAX_BPM					240 	// max bpm for adc selector
@@ -132,9 +133,7 @@
 #define         WAVESAMPLES            	256  	// number of samples per lfo waves
 #define         PARTITIONSD	            "emmc1-1"	// partition sd
 #define         PARTITIONUSB	        "umsd1-1"	// partition usb
-
 // LOGFILE NAMES 
-
 #define 		FILENAME_GL_LOG			"LOG-GLES.txt"
 #define 		FILENAME_GLERROR		"LOG-GLER.txt"
 #define 		FILENAME_VCSM_LOG		"LOG-VCSM.txt"
@@ -147,7 +146,6 @@
 #define 		FILENAME_PARSER3		"FRMT-3.txt"
 #define 		FILENAME_KERNEL			"kernel.img"
 #define 		CHUNK_SIZE				1024
-
 // hardware 
 #define         LED_PIN		           	19		// pin led ( 8 .. 23 )
 #define         CS_PIN                 	12      // pin for menu input selector
@@ -180,47 +178,57 @@ enum modetable		// for the g_centralModeBuffer array
 	CH1_MODE,
 	CH2_MODE,
 	CH3_MODE,
+
 	CH4_MODE,
 	CH5_MODE,
 	CH6_MODE,
 	CH7_MODE,
+
 	LF1_WAVE,
 	LF2_WAVE,
 	LF1_MULT,
 	LF2_MULT,
+
 	SENS_A,
 	SENS_B,
 	SENS_C,
 	SENS_D,
+
 	FRM_MODE,
 	TEX_MODE,
 	CLK_MODE,
 	VID_MODE,
+
 	IS_STORED,
-	modetablecount
+	modetablecount = 21 // right?
 }
-
-uint8_t g_modeMap[modetablecount][17] =	// the first element is the max of modes for each channel, than we have the order ( switch case of applyModeToChannel(int channel) )
-{  /  A    /  B    /  LFO  / Sens       
-{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0} 	
+// we need to check this, also the file menu.cpp code. 
+uint8_t g_modeMap[MENU_LAYERS*4][MENU_LAYERS*4] =	// the first element is the max of modes for each channel, than we have the order ( switch case of applyModeToChannel(int channel) )
+{ //  A    /  B    /  LFO  / Sens  / etc     
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0} 	// layer a is adc in 0-3 
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 
-{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}    // layer b is adc in 4-7
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 
-{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}    // layer c is adc in 8-11
 {4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 {4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 {4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 
+{63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}   // layer d is adc in 12-15
 {63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 {63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 {63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
-{63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}    // layer c is adc in 8-11
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 };
 
 

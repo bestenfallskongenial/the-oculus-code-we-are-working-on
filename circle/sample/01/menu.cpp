@@ -17,6 +17,15 @@ void            CKernel::resetMenuPickupFlags    ()
                     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// i see the logical issue here: modes are usually meant to control how the in values are processed to out values.
+// things like modes and lfo parameters are stored in g_centralModeBuffer[][]
+// THAN there are the functions where a knop uses the raw out value AFTER 
+// modes and than map it to program, texture, video, frame, sensetivity ( i could made this a g_centralModeBuffer field too ),
+// means input -> input-processing -> mode-selection -> mode-precessing -> target-selection -> target ( gl uniform OR hardware )
+// because i want for example to have bpm on channel 0 control the frame of the video.
+// i assume this is possible with gl code BUT the user may have not the knowlege or the will to program this features therefore the device must offer another way!   
+// i could indeed pass the array (like g_centralModeBuffer ) i use as target for the mapping in modeMenuAssignGroup(uint8_t menu_id, uint8_t base, &array_to_work_on )
+
 void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
 {
                 if (g_menu_mode_new != menu_id)
@@ -69,7 +78,7 @@ void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::applyModeToChannel(int channel)
 {
-                switch (g_modeMap[channel][g_centralModeBuffer[g_currentProgramBuffer][channel] + 1]) <- is this correct! g_modeMap gives me the max of modes ( needed for mapping ), also shall it determine if i can use a channelVAL this function...
+                switch (g_modeMap[channel][g_centralModeBuffer[g_currentProgramBuffer][channel] + 1]) // <- is this correct! g_modeMap gives me the max of modes ( needed for mapping ), also shall it determine if i can use a channelVAL this function...
                     {
                     case 0:
                         modeADC (channel);
