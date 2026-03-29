@@ -186,8 +186,8 @@ void            CKernel::gfx_check( const char* file, unsigned line )
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::gfx_init_OGL   (   glsl_state* m_glsl,
-                                            char*       buffer,
-                                            u32&        index)
+                                            int         p_fromFile, 
+                                            int         p_toFile)
 {
                 int32_t success = 0;
                 EGLBoolean result;
@@ -317,9 +317,7 @@ assert(EGL_FALSE != result);//?
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initVshaders   (   glsl_state* m_glsl, 
                                             int         p_fromFile, 
-                                            int         p_toFile,
-                                            char*       buffer,
-                                            u32&        index)    // Function to initialize Vertex Shaders
+                                            int         p_toFile)    // Function to initialize Vertex Shaders
 {
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
@@ -335,15 +333,15 @@ void            CKernel::initVshaders   (   glsl_state* m_glsl,
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initOshader    (   glsl_state* m_glsl,
-                                            char*       buffer,
-                                            u32&        index )    // Function to initialize Fragment Shaders                        <- *m_glsl should change too, right?
+                                            int         p_fromFile, 
+                                            int         p_toFile)    // Function to initialize Fragment Shaders                        <- *m_glsl should change too, right?
 {
                     const char *SourcePrtFshader = m_bufferOmf[0]; // because this array is only [1] for consistency
 
                     m_glsl->gl_oms_id[0] = glCreateShader(GL_FRAGMENT_SHADER);       // gl_oms_id is new for the overlay shader
                     glShaderSource(m_glsl->gl_oms_id[0], 1, &SourcePrtFshader, 0);   // will m_glsl not also become a seperate struct here?!
                     glCompileShader(m_glsl->gl_oms_id[0]);
-                    shaderLog(buffer, index, m_glsl->gl_oms_id[0], 1);
+                    shaderLog(m_glsl->gl_oms_id[0], 1);
 #ifdef __GL_DEBUG__
                 check();
 #endif // __GL_DEBUG__
@@ -351,9 +349,7 @@ void            CKernel::initOshader    (   glsl_state* m_glsl,
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initFshaders   (   glsl_state* m_glsl, 
                                             int         p_fromFile, 
-                                            int         p_toFile,
-                                            char*       buffer,
-                                            u32&        index)    // Function to initialize Fragment Shaders                        <- we need a copy here for the overlay shader
+                                            int         p_toFile)    // Function to initialize Fragment Shaders                        <- we need a copy here for the overlay shader
 {
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
@@ -362,7 +358,7 @@ void            CKernel::initFshaders   (   glsl_state* m_glsl,
                     m_glsl->gl_fsh_id[i] = glCreateShader(GL_FRAGMENT_SHADER);
                     glShaderSource(m_glsl->gl_fsh_id[i], 1, &SourcePrtFshader, 0);
                     glCompileShader(m_glsl->gl_fsh_id[i]);
-                    shaderLog(buffer, index, m_glsl->gl_fsh_id[i], i);
+                    shaderLog(m_glsl->gl_fsh_id[i], i);
 #ifdef __GL_DEBUG__
                 check();
 #endif // __GL_DEBUG__
@@ -370,10 +366,10 @@ void            CKernel::initFshaders   (   glsl_state* m_glsl,
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initOprogram   (   glsl_state* m_glsl,
-                                            char*       buffer,
-                                            u32&        index)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+                                            int         p_fromFile, 
+                                            int         p_toFile)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
-                    if (m_shaderStatusFlags[i])                                     // we need to figure out from where this comes, we need also a separate method here
+                    if (m_shaderStatusFlags[i])                                     // we need to figure OUT from where this comes, we need also a separate method here
                         {
                         m_glsl->gl_omp_id[0] = glCreateProgram();
                         glAttachShader(m_glsl->gl_omp_id[0], m_glsl->gl_vsh_id[0]);
@@ -392,7 +388,7 @@ void            CKernel::initOprogram   (   glsl_state* m_glsl,
                             }
                         else
                             {
-                        //  g_linked_programs_counter++; commented out because this shader program is not part of the user pipeline! Count valid programs for chooseProgram()       ????????????
+                        //  g_linked_programs_counter++; commented OUT because this shader program is not part of the user pipeline! Count valid programs for chooseProgram()       ????????????
                             }
                         }
                 m_Watchdog.Start(TIMEOUT*3); // new watchdog        
@@ -400,9 +396,7 @@ void            CKernel::initOprogram   (   glsl_state* m_glsl,
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initFprograms  (   glsl_state* m_glsl, 
                                             int         p_fromFile, 
-                                            int         p_toFile,
-                                            char*       buffer,
-                                            u32&        index)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+                                            int         p_toFile)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                 for (int i = p_fromFile; i < p_toFile; i++) 
                     {
@@ -433,8 +427,8 @@ void            CKernel::initFprograms  (   glsl_state* m_glsl,
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initOuniforms  (   glsl_state* m_glsl,
-                                            char*       buffer,
-                                            u32&        index)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+                                            int         p_fromFile, 
+                                            int         p_toFile)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
 #ifdef __GL_DEBUG__
                 check();
@@ -459,9 +453,7 @@ void            CKernel::initOuniforms  (   glsl_state* m_glsl,
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initFuniforms  (   glsl_state* m_glsl, 
                                             int         p_fromFile, 
-                                            int         p_toFile,
-                                            char*       buffer,
-                                            u32&        index)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+                                            int         p_toFile)    // Function to initialize Uniforms                           <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
 #ifdef __GL_DEBUG__
                 check();
@@ -507,8 +499,8 @@ void            CKernel::initFuniforms  (   glsl_state* m_glsl,
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initOtexture   (   glsl_state* m_glsl,
-                                            char*       buffer,
-                                            u32&        index)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+                                            int         p_fromFile, 
+                                            int         p_toFile)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                 // p_validTextureCount = 0;  // Counter for valid textures only
 
@@ -526,12 +518,12 @@ void            CKernel::initOtexture   (   glsl_state* m_glsl,
 #ifdef __GL_DEBUG__
                 check();
 #endif // __GL_DEBUG__
-                        GLvoid* bitmapData = &m_bufferOmt[0][m_H264SystemParser.m_tex_data_offset[0]]; // oh, we need to figure out how we do the bmp parsing for only the atlas!!
+                        GLvoid* bitmapData = &m_bufferOmt[0][m_H264SystemParser.m_tex_data_offset[0]]; // oh, we need to figure OUT how we do the bmp parsing for only the atlas!!
 
                         glTexImage2D(GL_TEXTURE_2D, 
                                    0, 
                                    GL_RGB, 
-                                   m_H264SystemParser.m_tex_width[0], // oh, we need to figure out how we do the bmp parsing for only the atlas!!
+                                   m_H264SystemParser.m_tex_width[0], // oh, we need to figure OUT how we do the bmp parsing for only the atlas!!
                                    m_H264SystemParser.m_tex_height[0], 
                                    0, 
                                    GL_RGB, 
@@ -551,9 +543,7 @@ void            CKernel::initOtexture   (   glsl_state* m_glsl,
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initUtextures  (   glsl_state* m_glsl, 
                                             int         p_fromFile, 
-                                            int         p_toFile,
-                                            char*       buffer,
-                                            u32&        index)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
+                                            int         p_toFile)                                                  //  <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
                 // p_validTextureCount = 0;  // Counter for valid textures only
 
@@ -598,8 +588,8 @@ void            CKernel::initUtextures  (   glsl_state* m_glsl,
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initVbuffer    (   glsl_state* m_glsl,
-                                            char*       buffer,
-                                            u32&        index)                              // Function to initialize Buffers 
+                                            int         p_fromFile, 
+                                            int         p_toFile)                              // Function to initialize Buffers 
 {
                 static const GLfloat vertex_data[] = 
                     {  -1.0,-1.0, 1.0, 1.0,
@@ -634,135 +624,4 @@ void            CKernel::initVbuffer    (   glsl_state* m_glsl,
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::render_shader_a(   glsl_state* m_glsl )
-{
-                glBindFramebuffer(GL_FRAMEBUFFER,0);    // Now render to the main frame buffer
-        
-                glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);   // Clear the background (not really necessary I suppose)
-#ifdef __GL_DEBUG__
-                check();
-#endif // __GL_DEBUG__
-                glBindBuffer(GL_ARRAY_BUFFER, m_glsl->gl_buf);
-#ifdef __GL_DEBUG__
-                check();
-#endif // __GL_DEBUG__
-
-                glUseProgram ( m_glsl->gl_prg_id[g_current_gl_program] );
-
-#ifdef __GL_DEBUG__
-                check();
-#endif // __GL_DEBUG__
-
-                GLuint cx = m_glsl->screen_width;
-                GLuint cy = m_glsl->screen_height;
-
-                if(m_glsl->u_time[g_current_gl_program] != -1) glUniform1f(    m_glsl->u_time[g_current_gl_program], GLtime);
-                if(m_glsl->u_tres[g_current_gl_program]!= -1 ) glUniform2f(    m_glsl->u_tres[g_current_gl_program], cx, cy);
-                if(m_glsl->u_seed[g_current_gl_program] != -1) glUniform4f(     m_glsl->u_seed[g_current_gl_program], 
-                                                                                                g_inOutMatrixFlt[0][rnd], 
-                                                                                                g_inOutMatrixFlt[1][rnd], 
-                                                                                                g_inOutMatrixFlt[2][rnd], 
-                                                                                                g_inOutMatrixFlt[3][rnd]);
-                if(m_glsl->u_aud[g_current_gl_program]!= -1 ) glUniform4f(     m_glsl->u_aud[g_current_gl_program], 
-                                                                                                g_inOutMatrixFlt[0][au0], 
-                                                                                                g_inOutMatrixFlt[0][au1], 
-                                                                                                g_inOutMatrixFlt[0][au2], 
-                                                                                                g_inOutMatrixFlt[0][au3]);
-                if(m_glsl->u_col[g_current_gl_program] != -1) glUniform4f(     m_glsl->u_col[g_current_gl_program], 0.0f, 0.0f, 0.0f, g_opaque);
-                if(m_glsl->u_par_a[g_current_gl_program] != -1 ) glUniform4f(  m_glsl->u_par_a[g_current_gl_program], 
-                                                                                                g_inOutMatrixFlt[0][out], 
-                                                                                                g_inOutMatrixFlt[1][out], 
-                                                                                                g_inOutMatrixFlt[2][out], 
-                                                                                                g_inOutMatrixFlt[3][out]);
-                if(m_glsl->u_par_b[g_current_gl_program] != -1 ) glUniform4f(  m_glsl->u_par_b[g_current_gl_program], 
-                                                                                                g_inOutMatrixFlt[4][out], 
-                                                                                                g_inOutMatrixFlt[5][out], 
-                                                                                                g_inOutMatrixFlt[6][out], 
-                                                                                                g_inOutMatrixFlt[7][out]);
-                if(m_glsl->u_tex_l[g_current_gl_program] != -1) glUniform1i(   m_glsl->u_tex_l[g_current_gl_program], p_validTextureCount);
-
-                switch(g_centralModeBuffer[g_currentProgramBuffer][TEX_MODE]) // <- this is using g_currentProgramBuffer because we read an global mode !!! 
-                    {
-                    case false:     // Original mode
-                        for (int i = 0; i < p_validTextureCount; i++) 
-                            {
-                            glActiveTexture(GL_TEXTURE0+i);
-                            glBindTexture(GL_TEXTURE_2D, m_glsl->gl_tex_id[i]);
-                            if (m_glsl->u_tex_id[g_current_gl_program][i] != -1)
-                                {
-                                glUniform1i(m_glsl->u_tex_id[g_current_gl_program][i], i);
-                                }
-#ifdef __GL_DEBUG__
-                            check();
-#endif // __GL_DEBUG__
-                            }
-                        break;
-
-                    case true:      // Single texture mode
-                        switch(p_validTextureCount) 
-                            {
-                            case 0:     // No textures - skip entirely
-                                break;
-                                
-                            case 1:     // Single texture - only bind one
-                                glActiveTexture(GL_TEXTURE0);
-                                glBindTexture(GL_TEXTURE_2D, m_glsl->gl_tex_id[gl_current_tex]);
-                                if (m_glsl->u_tex_id[g_current_gl_program][0] != -1) glUniform1i(m_glsl->u_tex_id[g_current_gl_program][0], 0);
-#ifdef __GL_DEBUG__
-                            check();
-#endif // __GL_DEBUG__
-                                break;
-                                
-                            default:    // Two or more textures - bind current and next
-                                glActiveTexture(GL_TEXTURE0);
-                                glBindTexture(GL_TEXTURE_2D, m_glsl->gl_tex_id[gl_current_tex]);
-                                if (m_glsl->u_tex_id[g_current_gl_program][0] != -1) glUniform1i(m_glsl->u_tex_id[g_current_gl_program][0], 0);
-#ifdef __GL_DEBUG__
-                            check();
-#endif // __GL_DEBUG__
-                                
-                                glActiveTexture(GL_TEXTURE1);
-                                glBindTexture(GL_TEXTURE_2D, m_glsl->gl_tex_id[gl_current_tex + 1]);
-                                if (m_glsl->u_tex_id[g_current_gl_program][1] != -1) glUniform1i(m_glsl->u_tex_id[g_current_gl_program][1], 1);
-#ifdef __GL_DEBUG__
-                            check();
-#endif // __GL_DEBUG__
-                                break;
-                            }
-                        break;
-                    }
-/* 
-    debug code start <- was for displaying our "potential" decoded h264 frame, becomes a mode latter on
-                 glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, m_H264Decoder.m_TextureA);
-                if (m_glsl->u_tex_id[g_current_gl_program][0] != -1)
-                    glUniform1i(m_glsl->u_tex_id[g_current_gl_program][0], 0);
-    debug code end 
- */
-                glDrawArrays( GL_TRIANGLE_FAN, 0, 4 );
-#ifdef __GL_DEBUG__
-                check();
-#endif // __GL_DEBUG__
-
-                glBindBuffer( GL_ARRAY_BUFFER, 0 );
-
-                glFlush();
-
-                if (noTargetFPS==true)
-                    {
-                    glFinish();
-#ifdef __GL_DEBUG__
-                check();
-#endif // __GL_DEBUG__
-                    }
-}
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::render_shader_b(   glsl_state* m_glsl )
-{
-                eglSwapBuffers(m_glsl->display, m_glsl->surface);
-#ifdef __GL_DEBUG__
-                check();
-#endif // __GL_DEBUG__
-}
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

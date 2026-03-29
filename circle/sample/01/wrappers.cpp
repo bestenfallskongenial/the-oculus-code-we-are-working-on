@@ -34,7 +34,7 @@ bool CKernel::wrapperInitMEM()
 
     if (bOK)
         {
-        bOK = (m_bufferKnl = alllocateBufferMEM( filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], filecounter[FT_KLN][FLD_SIZE]));
+        bOK = (m_bufferKnl = alllocateBufferMEM( filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], filecounter[FT_KLN][FLD_SIZE]));       // same as alllocateBufferMEM( KLN_SD + KLN_USB, filecounter[FT_KLN][FLD_SIZE]));
         }
     if (bOK)
         {
@@ -301,8 +301,8 @@ void            CKernel::wrapper_io()
                 buttonPing( 0, SW_PIN_A);                  // check button A
                 buttonPing( 1, SW_PIN_B);                  // and B
 
-                button_consume(0);               // and transpose the button input in menulayer information each time
-                button_consume(1);
+                button_consumer(0);               // and transpose the button input in menulayer information each time
+                button_consumer(1);
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void    CKernel::wrapper_modes()

@@ -300,16 +300,16 @@ enum FileField
 };
 
 int filecounter[FT_COUNT][FLD_COUNT] =
-{   //          MAXSD   MAXUSB   EXTCNT   SCANNED   
-    /* VSH */ { VSH_SD, VSH_USB, VSH_EXT, 0, 0, 0, VSH_SIZ },
-    /* OMF */ { OMF_SD, OMF_USB, OMF_EXT, 0, 0, 0, OMF_SIZ },
-    /* FSH */ { FSH_SD, FSH_USB, FSH_EXT, 0, 0, 0, FSH_SIZ },
-    /* OMT */ { OMT_SD, OMT_USB, OMT_EXT, 0, 0, 0, OMT_SIZ },
-    /* TEX */ { TEX_SD, TEX_USB, TEX_EXT, 0, 0, 0, TEX_SIZ },
-    /* VID */ { VID_SD, VID_USB, VID_EXT, 0, 0, 0, VID_SIZ },
-    /* KLN */ { KLN_SD, KLN_USB, KLN_EXT, 0, 0, 0, KLN_SIZ },
-    /* FRM */ { FRM_SD, FRM_USB,       0, 0, 0, 0, FRM_SIZ },     // i decided to add the output-frames A & B
-    /* LOG */ { LOG_SD, LOG_USB,       0, 0, 0, 0, LOG_SIZ }      // and logger buffer information here      
+{   //          MAXSD   MAXUSB      EXTCNT   SCANNED   LOADED  PREV    SIZE  
+    /* VSH */ { VSH_SD, VSH_USB,    VSH_EXT, 0,        0,      0,      VSH_SIZ },
+    /* OMF */ { OMF_SD, OMF_USB,    OMF_EXT, 0,        0,      0,      OMF_SIZ },
+    /* FSH */ { FSH_SD, FSH_USB,    FSH_EXT, 0,        0,      0,      FSH_SIZ },
+    /* OMT */ { OMT_SD, OMT_USB,    OMT_EXT, 0,        0,      0,      OMT_SIZ },
+    /* TEX */ { TEX_SD, TEX_USB,    TEX_EXT, 0,        0,      0,      TEX_SIZ },
+    /* VID */ { VID_SD, VID_USB,    VID_EXT, 0,        0,      0,      VID_SIZ },
+    /* KLN */ { KLN_SD, KLN_USB,    KLN_EXT, 0,        0,      0,      KLN_SIZ },
+    /* FRM */ { FRM_SD, FRM_USB,          0, 0,        0,      0,      FRM_SIZ },     // i decided to add the output-frames A & B
+    /* LOG */ { LOG_SD, LOG_USB,          0, 0,        0,      0,      LOG_SIZ }      // and logger buffer information here      
 };
 // lists of extensions possible in my scanroot directory function per filetype 
         const   char                   *g_SufVsh[VSH_EXT]			    = { "vsh" }; 
@@ -339,25 +339,25 @@ int filecounter[FT_COUNT][FLD_COUNT] =
 
 enum io_types
 {
-int raw = 0,        //  the position the dampened adc values per channels are stored *
-int  in,            //  either the calculated int or flt value *
-int out,            //  here lands the processed ( after mode ) for the glsl uniforms      
-int rnd,            //  either the per-channel random int or flt value *
-int lf1,            //  either the lfo one int or flt value
-int lf2,            //  either the lfo two int or flt value
-int au0,            //  the audio band 0 flt value
-int au1,            //  the audio band 1 flt value
-int au2,            //  the audio band 2 flt value
+int RAW = 0,        //  the position the dampened adc values per channels are stored *
+int VAL,            //  either the calculated int or flt value *
+int OUT,            //  here lands the processed ( after mode ) for the glsl uniforms      
+int RND,            //  either the per-channel random int or flt value *
+int LF1,            //  either the lfo one int or flt value
+int LF2,            //  either the lfo two int or flt value
+int AU0,            //  the audio band 0 flt value
+int AU1,            //  the audio band 1 flt value
+int AU2,            //  the audio band 2 flt value
 int au3,            //  the audio band 3 flt value
                     // *means i have a unique value for each channel - the other values are singular, and/or only int/flt
-int trL,            //  per channel threshold low !!! dont forget to copy the values in here    128
+int TRL,            //  per channel threshold low !!! dont forget to copy the values in here    128
 int trH,            //  per channel threshold high                                              320
 //  trF,            //  per channel threshold "flag"
-int io_type_count
+int IO_TYPE_COUNT
 }
 
-g_inOutMatrixInt[CHANNEL][io_types];
-g_inOutMatrixFlt[CHANNEL][io_types];
+g_inOutMatrixInt[CHANNEL][IO_TYPE_COUNT];
+g_inOutMatrixFlt[CHANNEL][IO_TYPE_COUNT];
 g_menuPickUpFlag[4*menu_layers];
 
                 char** 				    m_bufferVid;

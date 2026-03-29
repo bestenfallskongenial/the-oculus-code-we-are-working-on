@@ -4,33 +4,6 @@
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include "kernel.h"
-
-static const int MENU_GPU_TILE_COUNT = 16;
-
-struct menu_glsl_state
-{
-            GLuint          gl_omp_id[1];
-            GLuint          gl_omt_id[1];
-
-            GLint           u_atlas[1];
-            GLint           u_tile_count[1];
-            GLint           u_tile_rect[1];
-            GLint           u_tile_index[1];
-
-            float           kMenuOrigin[2];
-            float           kMenuTileSize[2];
-            float           kMenuBackgroundScale[2];
-            float           kMenuRelPos[MENU_GPU_TILE_COUNT][2];
-            float           kMenuRelSize[MENU_GPU_TILE_COUNT][2];
-
-            float           tile_rect_x[MENU_GPU_TILE_COUNT];
-            float           tile_rect_y[MENU_GPU_TILE_COUNT];
-            float           tile_rect_w[MENU_GPU_TILE_COUNT];
-            float           tile_rect_h[MENU_GPU_TILE_COUNT];
-
-            GLfloat         tile_rect[MENU_GPU_TILE_COUNT * 4];
-            GLfloat         tile_index[MENU_GPU_TILE_COUNT];
-};
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void CKernel::render_buffer_setup(glsl_state* m_glsl)
 {
@@ -60,11 +33,11 @@ void CKernel::render_uniform_setup(glsl_state* m_glsl)
 
     if(m_glsl->u_time[g_current_gl_program] != -1) glUniform1f(m_glsl->u_time[g_current_gl_program], GLtime);
     if(m_glsl->u_tres[g_current_gl_program]!= -1 ) glUniform2f(m_glsl->u_tres[g_current_gl_program], cx, cy);
-    if(m_glsl->u_seed[g_current_gl_program] != -1) glUniform4f(m_glsl->u_seed[g_current_gl_program], g_inOutMatrixFlt[0][rnd], g_inOutMatrixFlt[1][rnd], g_inOutMatrixFlt[2][rnd], g_inOutMatrixFlt[3][rnd]);
-    if(m_glsl->u_aud[g_current_gl_program]!= -1 ) glUniform4f(m_glsl->u_aud[g_current_gl_program], g_inOutMatrixFlt[0][au0], g_inOutMatrixFlt[0][au1], g_inOutMatrixFlt[0][au2], g_inOutMatrixFlt[0][au3]);
+    if(m_glsl->u_seed[g_current_gl_program] != -1) glUniform4f(m_glsl->u_seed[g_current_gl_program], g_inOutMatrixFlt[0][RND], g_inOutMatrixFlt[1][RND], g_inOutMatrixFlt[2][RND], g_inOutMatrixFlt[3][RND]);
+    if(m_glsl->u_aud[g_current_gl_program]!= -1 ) glUniform4f(m_glsl->u_aud[g_current_gl_program], g_inOutMatrixFlt[0][AU0], g_inOutMatrixFlt[0][AU1], g_inOutMatrixFlt[0][AU2], g_inOutMatrixFlt[0][AU3]);
     if(m_glsl->u_col[g_current_gl_program] != -1) glUniform4f(m_glsl->u_col[g_current_gl_program], 0.0f, 0.0f, 0.0f, g_opaque);
-    if(m_glsl->u_par_a[g_current_gl_program] != -1) glUniform4f(m_glsl->u_par_a[g_current_gl_program], g_inOutMatrixFlt[0][out], g_inOutMatrixFlt[1][out], g_inOutMatrixFlt[2][out], g_inOutMatrixFlt[3][out]);
-    if(m_glsl->u_par_b[g_current_gl_program] != -1) glUniform4f(m_glsl->u_par_b[g_current_gl_program], g_inOutMatrixFlt[4][out], g_inOutMatrixFlt[5][out], g_inOutMatrixFlt[6][out], g_inOutMatrixFlt[7][out]);
+    if(m_glsl->u_par_a[g_current_gl_program] != -1) glUniform4f(m_glsl->u_par_a[g_current_gl_program], g_inOutMatrixFlt[0][OUT], g_inOutMatrixFlt[1][OUT], g_inOutMatrixFlt[2][OUT], g_inOutMatrixFlt[3][OUT]);
+    if(m_glsl->u_par_b[g_current_gl_program] != -1) glUniform4f(m_glsl->u_par_b[g_current_gl_program], g_inOutMatrixFlt[4][OUT], g_inOutMatrixFlt[5][OUT], g_inOutMatrixFlt[6][OUT], g_inOutMatrixFlt[7][OUT]);
     if(m_glsl->u_tex_l[g_current_gl_program] != -1) glUniform1i(m_glsl->u_tex_l[g_current_gl_program], p_validTextureCount);
 #ifdef __GL_DEBUG__
     check();
@@ -76,7 +49,7 @@ void CKernel::render_textures_setup(glsl_state* m_glsl)
 #ifdef __H264_DEBUG_TEX__
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, m_H264Decoder.m_TextureA);
+    glBindTexture(GL_TEXTURE_2D, m_TextureA);
 
     if (m_glsl->u_tex_id[g_current_gl_program][0] != -1) glUniform1i(m_glsl->u_tex_id[g_current_gl_program][0], 0);
 

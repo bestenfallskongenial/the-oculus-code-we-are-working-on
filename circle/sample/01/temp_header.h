@@ -166,7 +166,7 @@ MenuGpuState g_menu_state;
 // m_bufferOmt / m_bufferOmt      -> one member spelling
 // m_bufferVid / m_bufferVid    -> one member spelling
 // maxUsb / maxUsb                -> one enum token spelling
-// trL,trH vs trL,trH             -> one enum token spelling
+// TRL,TRH vs TRL,TRH             -> one enum token spelling
 
 // Wrapper/API drift to normalize:
 // wrapper_from_sd   vs wrapper_load_sd
@@ -401,117 +401,117 @@ namespace sample01_inventory
 }
 // datamanagement.cpp
 
-bool            CKernel::Mount(const char* p_deviceName);
-bool            CKernel::UnMount();
-bool            CKernel::openFile(const char* p_fileName);
-unsigned        CKernel::loadToBuffer(char* p_buffer, unsigned p_bufferSize);
-bool            CKernel::saveFromBufferOld(const char* p_fileName, const char* p_buffer, unsigned p_bufferSize);
-bool            CKernel::saveFromBuffer(const char* p_deviceName, const char* p_fileName, const char* p_buffer, unsigned p_bufferSize);
-bool            CKernel::closeFile();
-void            CKernel::bulkLoad(char* p_fileNameArray[], unsigned p_byteArray[], char* p_bufferArray[], unsigned p_maxFiles, unsigned& p_loadedFiles, unsigned& p_prevFiles, unsigned p_maxFileSize);
-bool            CKernel::IsValidFile(const char* pFileName, const char* pSuffixArray[], unsigned pSuffixCount);
-bool            CKernel::scanRoot(char** p_fileNameArray, const char* pSuffixArray[], unsigned pSuffixCount, unsigned& p_scannedFiles, unsigned p_maxFiles);
-bool            CKernel::updateUSB(const char* p_deviceName);
-void            CKernel::removeUSB(CDevice* f_partitionName, void* p_pContext);
-char**          CKernel::alllocateBufferMEM(size_t count, size_t bufferSize);
-char**          CKernel::alllocateBufferDMA(size_t count, size_t bufferSize, char** blockBaseOut, char** rawBlockOut, size_t* blockSizeOut);
-void            CKernel::clearBufferMEM(char** buffers, size_t count);
-void            CKernel::clearBufferDMA(char** buffers, char* rawBlock);
+bool                    Mount(const char* p_deviceName);
+bool                    UnMount();
+bool                    openFile(const char* p_fileName);
+unsigned                loadToBuffer(char* p_buffer, unsigned p_bufferSize);
+bool                    saveFromBufferOld(const char* p_fileName, const char* p_buffer, unsigned p_bufferSize);
+bool                    saveFromBuffer(const char* p_deviceName, const char* p_fileName, const char* p_buffer, unsigned p_bufferSize);
+bool                    closeFile();
+void                    bulkLoad(char* p_fileNameArray[], unsigned p_byteArray[], char* p_bufferArray[], unsigned p_maxFiles, unsigned& p_loadedFiles, unsigned& p_prevFiles, unsigned p_maxFileSize);
+bool                    IsValidFile(const char* pFileName, const char* pSuffixArray[], unsigned pSuffixCount);
+bool                    scanRoot(char** p_fileNameArray, const char* pSuffixArray[], unsigned pSuffixCount, unsigned& p_scannedFiles, unsigned p_maxFiles);
+bool                    updateUSB(const char* p_deviceName);
+void                    removeUSB(CDevice* f_partitionName, void* p_pContext);
+char**                  alllocateBufferMEM(size_t count, size_t bufferSize);
+char**                  alllocateBufferDMA(size_t count, size_t bufferSize, char** blockBaseOut, char** rawBlockOut, size_t* blockSizeOut);
+void                    clearBufferMEM(char** buffers, size_t count);
+void                    clearBufferDMA(char** buffers, char* rawBlock);
 
 // gfx_init.cpp
 
-void            CKernel::shaderLog(GLint shader, int shaderIndex);
-void            CKernel::programLog(GLint shader, int program_index);
-void            CKernel::gfx_check(const char* file, unsigned line);
-void            CKernel::gfx_init_OGL(glsl_state* m_glsl, char* buffer, u32& index);
-void            CKernel::initVshaders(glsl_state* m_glsl, char* buffer, u32& index);
-void            CKernel::initOshader(glsl_state* m_glsl, char* buffer, u32& index);
-void            CKernel::initFshaders(glsl_state* m_glsl, char* buffer, u32& index);
-void            CKernel::initOprogram(glsl_state* m_glsl, char* buffer, u32& index);
-void            CKernel::initFprograms(glsl_state* m_glsl, char* buffer, u32& index);
-void            CKernel::initOuniforms(glsl_state* m_glsl, char* buffer, u32& index);
-void            CKernel::initFuniforms(glsl_state* m_glsl, char* buffer, u32& index);
-void            CKernel::initOtexture(glsl_state* m_glsl, char* buffer, u32& index);
-void            CKernel::initUtextures(glsl_state* m_glsl, char* buffer, u32& index);
-void            CKernel::initVbuffer(glsl_state* m_glsl, char* buffer, u32& index);
-void            CKernel::render_shader_a(glsl_state* m_glsl);
-void            CKernel::render_shader_b(glsl_state* m_glsl);
+void                    shaderLog(GLint shader, int shaderIndex);
+void                    programLog(GLint shader, int program_index);
+void                    gfx_check(const char* file, unsigned line);
+void                    gfx_init_OGL(glsl_state* m_glsl, char* buffer, u32& index);
+void                    initVshaders(glsl_state* m_glsl, char* buffer, u32& index);
+void                    initOshader(glsl_state* m_glsl, char* buffer, u32& index);
+void                    initFshaders(glsl_state* m_glsl, char* buffer, u32& index);
+void                    initOprogram(glsl_state* m_glsl, char* buffer, u32& index);
+void                    initFprograms(glsl_state* m_glsl, char* buffer, u32& index);
+void                    initOuniforms(glsl_state* m_glsl, char* buffer, u32& index);
+void                    initFuniforms(glsl_state* m_glsl, char* buffer, u32& index);
+void                    initOtexture(glsl_state* m_glsl, char* buffer, u32& index);
+void                    initUtextures(glsl_state* m_glsl, char* buffer, u32& index);
+void                    initVbuffer(glsl_state* m_glsl, char* buffer, u32& index);
+void                    render_shader_a(glsl_state* m_glsl);
+void                    render_shader_b(glsl_state* m_glsl);
 
 // gfx_render.cpp
 
-void CKernel::render_buffer_setup(glsl_state* m_glsl);
-void CKernel::render_uniform_setup(glsl_state* m_glsl);
-void CKernel::render_textures_setup(glsl_state* m_glsl);
-void CKernel::render_shader_draw(glsl_state* m_glsl);
-void frame_break_mechanism();
-void CKernel::render_buffer_swap(glsl_state* m_glsl);
-void CKernel::gpu_render_menu_state_update(sample01_inventory::menu_glsl_state* m_menu);
-void CKernel::gpu_render_menu_uniform_setup(sample01_inventory::menu_glsl_state* m_menu);
-void CKernel::gpu_render_menu_textures_setup(sample01_inventory::menu_glsl_state* m_menu);
-void CKernel::gpu_render_menu_shader_draw();
+void                    render_buffer_setup(glsl_state* m_glsl);
+void                    render_uniform_setup(glsl_state* m_glsl);
+void                    render_textures_setup(glsl_state* m_glsl);
+void                    render_shader_draw(glsl_state* m_glsl);
+void                    frame_break_mechanism();
+void                    render_buffer_swap(glsl_state* m_glsl);
+void                    gpu_render_menu_state_update(sample01_inventory::menu_glsl_state* m_menu);
+void                    gpu_render_menu_uniform_setup(sample01_inventory::menu_glsl_state* m_menu);
+void                    gpu_render_menu_textures_setup(sample01_inventory::menu_glsl_state* m_menu);
+void                    gpu_render_menu_shader_draw();
 
 // logging.cpp
 
-void CKernel::storeLog(char* buffer, u32& index, const char* label, u32 value1, u32 value2, u32 value3, u32 value4);
-void CKernel::storeMsg(char* buffer, u32& index, const char* label, const char* value, u32 max_len);
-void CKernel::nextline(char* buffer, u32& index);
-void CKernel::bufferToScreenPlot(unsigned x, unsigned y, u32 color);
-void CKernel::bufferToScreenDrawChar(char ch, unsigned x, unsigned y, u32 color);
-boolean CKernel::bufferToScreenInit(void);
-void CKernel::bufferToScreenClear(u32 bgColor);
-void CKernel::bufferToScreenDrawBufferSegment(const char* pSourceBuffer, unsigned startOffset, unsigned byteCount, unsigned x, unsigned y, u32 color);
-unsigned CKernel::bufferToScreenGetGrid(unsigned& cols, unsigned& rows);
+void                    storeLog(char* buffer, u32& index, const char* label, u32 value1, u32 value2, u32 value3, u32 value4);
+void                    storeMsg(char* buffer, u32& index, const char* label, const char* value, u32 max_len);
+void                    nextline(char* buffer, u32& index);
+void                    bufferToScreenPlot(unsigned x, unsigned y, u32 color);
+void                    bufferToScreenDrawChar(char ch, unsigned x, unsigned y, u32 color);
+boolean                 bufferToScreenInit(void);
+void                    bufferToScreenClear(u32 bgColor);
+void                    bufferToScreenDrawBufferSegment(const char* pSourceBuffer, unsigned startOffset, unsigned byteCount, unsigned x, unsigned y, u32 color);
+unsigned                bufferToScreenGetGrid(unsigned& cols, unsigned& rows);
 
 // menu.cpp
 
-void CKernel::resetMenuPickupFlags();
-void CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base);
-void CKernel::applyModeToChannel(int channel);
-void CKernel::modeADC(int channel);
-void CKernel::modeTRG(int channel);
-void CKernel::modeBPM(int channel);
-void CKernel::modeLF1(int channel);
-void CKernel::modeLF2(int channel);
-void CKernel::modeAudioAb0(int channel);
-void CKernel::modeAudioAb1(int channel);
-void CKernel::modeAudioBb0(int channel);
-void CKernel::modeAudioBb1(int channel);
+void                    resetMenuPickupFlags();
+void                    modeMenuAssignGroup(uint8_t menu_id, uint8_t base);
+void                    applyModeToChannel(int channel);
+void                    modeADC(int channel);
+void                    modeTRG(int channel);
+void                    modeBPM(int channel);
+void                    modeLF1(int channel);
+void                    modeLF2(int channel);
+void                    modeAudioAb0(int channel);
+void                    modeAudioAb1(int channel);
+void                    modeAudioBb0(int channel);
+void                    modeAudioBb1(int channel);
 
 // util.cpp
 
-bool CKernel::startupScreen(char* buffer, u32& index);
-void CKernel::readADC();
-bool CKernel::checkUpdate();
-bool CKernel::Update();
-void set_pot_routing(bool adc_pot_routing);
-void CKernel::prepParameters();
-void CKernel::chooseProgram(int p_channel, int& p_activeShader);
-void CKernel::chooseTexture(int p_channel, int& p_activeTexture, int& p_validTextureCount);
-int CKernel::chooseVideo(int p_channel, int& p_activeVideo, int& p_validVideoCount);
-int CKernel::chooseFrame(int p_channel, int& p_activeFrame, int& p_validFrameCount);
-void CKernel::storeModesV1();
-void CKernel::storeModesV2();
-void CKernel::buttonPing(int p_btn_id, int pin);
-void CKernel::button_consumer(int p_btn_id);
-void CKernel::randomVec8(uint32_t p_seed);
-void CKernel::calculate2BPM(unsigned long p_triggerTimeClockA, unsigned long p_triggerTimeClockB);
-void CKernel::calculate1BPM(int chn, unsigned long p_triggerTimeClock);
-void CKernel::predictedNextBeat2();
-void CKernel::predictedNextBeat1(int chn);
-void CKernel::sampleWaveTable();
+bool                    startupScreen(char* buffer, u32& index);
+void                    readADC();
+bool                    checkUpdate();
+bool                    Update();
+void                    set_pot_routing(bool adc_pot_routing);
+void                    prepParameters();
+void                    chooseProgram(int p_channel, int& p_activeShader);
+void                    chooseTexture(int p_channel, int& p_activeTexture, int& p_validTextureCount);
+int                     chooseVideo(int p_channel, int& p_activeVideo, int& p_validVideoCount);
+int                     chooseFrame(int p_channel, int& p_activeFrame, int& p_validFrameCount);
+void                    storeModesV1();
+void                    storeModesV2();
+void                    buttonPing(int p_btn_id, int pin);
+void                    button_consumer(int p_btn_id);
+void                    randomVec8(uint32_t p_seed);
+void                    calculate2BPM(unsigned long p_triggerTimeClockA, unsigned long p_triggerTimeClockB);
+void                    calculate1BPM(int chn, unsigned long p_triggerTimeClock);
+void                    predictedNextBeat2();
+void                    predictedNextBeat1(int chn);
+void                    sampleWaveTable();
 
 // wrapper.cpp
 
-bool CKernel::wrapperInitDMA();
-bool CKernel::wrapperInitMEM();
-void CKernel::wrapperDMAcleanUp();
-void CKernel::wrapperMEMcleanUp();
-void CKernel::wrapper_from_sd();
-void CKernel::wrapper_load_usb();
-void CKernel::wrapper_init_gl_sd();
-void CKernel::wrapper_init_gl_usb();
-void CKernel::wrapper_io();
-void CKernel::wrapper_modes();
+bool                    wrapperInitDMA();
+bool                    wrapperInitMEM();
+void                    wrapperDMAcleanUp();
+void                    wrapperMEMcleanUp();
+void                    wrapper_from_sd();
+void                    wrapper_load_usb();
+void                    wrapper_init_gl_sd();
+void                    wrapper_init_gl_usb();
+void                    wrapper_io();
+void                    wrapper_modes();
 
 
 

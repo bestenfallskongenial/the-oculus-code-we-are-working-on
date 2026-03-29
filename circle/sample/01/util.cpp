@@ -146,7 +146,7 @@ void            CKernel::readADC()
                     sum0 -= f_band0[idx0];
                     f_band0[idx0] = s;
                     sum0 += s;
-                    g_inOutMatrixFlt[0][au0] = sum0 / w0;
+                    g_inOutMatrixFlt[0][AU0] = sum0 / w0;
 
                     ++idx0;
                     if(idx0 == w0) idx0 = 0;
@@ -154,17 +154,17 @@ void            CKernel::readADC()
                     sum1 -= f_band1[idx1];
                     f_band1[idx1] = s;
                     sum1 += s;
-                    g_inOutMatrixFlt[0][au1] = sum1 / w1;
+                    g_inOutMatrixFlt[0][AU1] = sum1 / w1;
 
                     ++idx1;
                     if(idx1 == w1) idx1 = 0;
                     }
 
-                g_inOutMatrixInt[0][raw] =  (f_ring_buffer[0][0] + f_ring_buffer[0][1] + f_ring_buffer[0][2] + f_ring_buffer[0][3]) >>2 ; 
+                g_inOutMatrixInt[0][RAW] =  (f_ring_buffer[0][0] + f_ring_buffer[0][1] + f_ring_buffer[0][2] + f_ring_buffer[0][3]) >>2 ; 
 
-                g_inOutMatrixInt[0][val] = (g_inOutMatrixInt[0][raw] * f_scale) >> 10; //  -> / 1023;                                
+                g_inOutMatrixInt[0][VAL] = (g_inOutMatrixInt[0][RAW] * f_scale) >> 10; //  -> / 1023;                                
                 
-                g_inOutMatrixFlt[0][val] = (g_inOutMatrixInt[0][val]) * 0.0009765625f;
+                g_inOutMatrixFlt[0][VAL] = (g_inOutMatrixInt[0][VAL]) * 0.0009765625f;
 
                 f_ring_buffer[1][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(1);    // Channel 1 - First of pair for audio_sample[1]
 
@@ -188,7 +188,7 @@ void            CKernel::readADC()
                     sum2 -= f_band2[idx2];
                     f_band2[idx2] = s;
                     sum2 += s;
-                    g_inOutMatrixFlt[0][au2] = sum2 / w2;
+                    g_inOutMatrixFlt[0][AU2] = sum2 / w2;
 
                     ++idx2;
                     if(idx2 == w2) idx2 = 0;
@@ -196,17 +196,17 @@ void            CKernel::readADC()
                     sum3 -= f_band3[idx3];
                     f_band3[idx3] = s;
                     sum3 += s;
-                    g_inOutMatrixFlt[0][au3] = sum3 / w3;
+                    g_inOutMatrixFlt[0][AU3] = sum3 / w3;
 
                     ++idx3;
                     if(idx3 == w3) idx3 = 0;
                     }
 
-                g_inOutMatrixInt[1][raw] =  (f_ring_buffer[1][0] + f_ring_buffer[1][1] + f_ring_buffer[1][2] + f_ring_buffer[1][3]) >>2 ; 
+                g_inOutMatrixInt[1][RAW] =  (f_ring_buffer[1][0] + f_ring_buffer[1][1] + f_ring_buffer[1][2] + f_ring_buffer[1][3]) >>2 ; 
 
-                g_inOutMatrixInt[1][val] = (g_inOutMatrixInt[1][raw] * f_scale) >> 10;                               
+                g_inOutMatrixInt[1][VAL] = (g_inOutMatrixInt[1][RAW] * f_scale) >> 10;                               
                 
-                g_inOutMatrixFlt[1][val] = (g_inOutMatrixInt[1][val]) * 0.0009765625f;
+                g_inOutMatrixFlt[1][VAL] = (g_inOutMatrixInt[1][VAL]) * 0.0009765625f;
 
                 f_ring_buffer[2][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(2);    // Channel 2 - Second of pair for audio_sample[0]
 
@@ -230,7 +230,7 @@ void            CKernel::readADC()
                     sum0 -= f_band0[idx0];
                     f_band0[idx0] = s;
                     sum0 += s;
-                    g_inOutMatrixFlt[0][au0] = sum0 / w0;
+                    g_inOutMatrixFlt[0][AU0] = sum0 / w0;
 
                     ++idx0;
                     if(idx0 == w0) idx0 = 0;
@@ -238,17 +238,17 @@ void            CKernel::readADC()
                     sum1 -= f_band1[idx1];
                     f_band1[idx1] = s;
                     sum1 += s;
-                    g_inOutMatrixFlt[0][au1] = sum1 / w1;
+                    g_inOutMatrixFlt[0][AU1] = sum1 / w1;
 
                     ++idx1;
                     if(idx1 == w1) idx1 = 0;
                     }
 
-                g_inOutMatrixInt[2][raw] =  (f_ring_buffer[2][0] + f_ring_buffer[2][1] + f_ring_buffer[2][2] + f_ring_buffer[2][3]) >>2 ; 
+                g_inOutMatrixInt[2][RAW] =  (f_ring_buffer[2][0] + f_ring_buffer[2][1] + f_ring_buffer[2][2] + f_ring_buffer[2][3]) >>2 ; 
 
-                g_inOutMatrixInt[2][val] = (g_inOutMatrixInt[2][raw] * f_scale) >> 10;                 
+                g_inOutMatrixInt[2][VAL] = (g_inOutMatrixInt[2][RAW] * f_scale) >> 10;                 
                 
-                g_inOutMatrixFlt[2][val] = (g_inOutMatrixInt[2][val]) * 0.0009765625f;
+                g_inOutMatrixFlt[2][VAL] = (g_inOutMatrixInt[2][VAL]) * 0.0009765625f;
 
                 f_ring_buffer[3][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(3);    // Channel 3 - Second of pair for audio_sample[1]
 
@@ -272,7 +272,7 @@ void            CKernel::readADC()
                     sum2 -= f_band2[idx2];
                     f_band2[idx2] = s;
                     sum2 += s;
-                    g_inOutMatrixFlt[0][au2] = sum2 / w2;
+                    g_inOutMatrixFlt[0][AU2] = sum2 / w2;
 
                     ++idx2;
                     if(idx2 == w2) idx2 = 0;
@@ -280,49 +280,49 @@ void            CKernel::readADC()
                     sum3 -= f_band3[idx3];
                     f_band3[idx3] = s;
                     sum3 += s;
-                    g_inOutMatrixFlt[0][au3] = sum3 / w3;
+                    g_inOutMatrixFlt[0][AU3] = sum3 / w3;
 
                     ++idx3;
                     if(idx3 == w3) idx3 = 0;
                     }
 
-                g_inOutMatrixInt[3][raw] = (f_ring_buffer[3][0] + f_ring_buffer[3][1] + f_ring_buffer[3][2] + f_ring_buffer[3][3]) >>2 ; 
+                g_inOutMatrixInt[3][RAW] = (f_ring_buffer[3][0] + f_ring_buffer[3][1] + f_ring_buffer[3][2] + f_ring_buffer[3][3]) >>2 ; 
 
-                g_inOutMatrixInt[3][val] = (g_inOutMatrixInt[3][raw] * f_scale) >> 10;                  
+                g_inOutMatrixInt[3][VAL] = (g_inOutMatrixInt[3][RAW] * f_scale) >> 10;                  
                 
-                g_inOutMatrixFlt[3][val] = (g_inOutMatrixInt[3][val]) * 0.0009765625f;
+                g_inOutMatrixFlt[3][VAL] = (g_inOutMatrixInt[3][VAL]) * 0.0009765625f;
 
                 f_ring_buffer[4][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(4);    // Channel 4 (no audio detection)
 
-                g_inOutMatrixInt[4][raw] =  (f_ring_buffer[4][0] + f_ring_buffer[4][1] + f_ring_buffer[4][2] + f_ring_buffer[4][3]) >>2 ; 
+                g_inOutMatrixInt[4][RAW] =  (f_ring_buffer[4][0] + f_ring_buffer[4][1] + f_ring_buffer[4][2] + f_ring_buffer[4][3]) >>2 ; 
 
-                g_inOutMatrixInt[4][val] = (g_inOutMatrixInt[4][raw] * f_scale) >> 10;               
+                g_inOutMatrixInt[4][VAL] = (g_inOutMatrixInt[4][RAW] * f_scale) >> 10;               
                 
-                g_inOutMatrixFlt[4][val] = (g_inOutMatrixInt[4][val]) * 0.0009765625f;
+                g_inOutMatrixFlt[4][VAL] = (g_inOutMatrixInt[4][VAL]) * 0.0009765625f;
 
                 f_ring_buffer[5][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(5);
 
-                g_inOutMatrixInt[5][raw] =  (f_ring_buffer[5][0] + f_ring_buffer[5][1] + f_ring_buffer[5][2] + f_ring_buffer[5][3]) >>2 ; 
+                g_inOutMatrixInt[5][RAW] =  (f_ring_buffer[5][0] + f_ring_buffer[5][1] + f_ring_buffer[5][2] + f_ring_buffer[5][3]) >>2 ; 
 
-                g_inOutMatrixInt[5][val] = (g_inOutMatrixInt[5][raw] * f_scale) >> 10;                  
+                g_inOutMatrixInt[5][VAL] = (g_inOutMatrixInt[5][RAW] * f_scale) >> 10;                  
                 
-                g_inOutMatrixFlt[5][val] = (g_inOutMatrixInt[5][val]) * 0.0009765625f;
+                g_inOutMatrixFlt[5][VAL] = (g_inOutMatrixInt[5][VAL]) * 0.0009765625f;
 
                 f_ring_buffer[6][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(6);
 
-                g_inOutMatrixInt[6][raw] = (f_ring_buffer[6][0] + f_ring_buffer[6][1] + f_ring_buffer[6][2] + f_ring_buffer[6][3]) >>2 ; 
+                g_inOutMatrixInt[6][RAW] = (f_ring_buffer[6][0] + f_ring_buffer[6][1] + f_ring_buffer[6][2] + f_ring_buffer[6][3]) >>2 ; 
 
-                g_inOutMatrixInt[6][val] = (g_inOutMatrixInt[6][raw] * f_scale) >> 10;                  
+                g_inOutMatrixInt[6][VAL] = (g_inOutMatrixInt[6][RAW] * f_scale) >> 10;                  
                 
-                g_inOutMatrixFlt[6][val] = (g_inOutMatrixInt[6][val]) * 0.0009765625f;
+                g_inOutMatrixFlt[6][VAL] = (g_inOutMatrixInt[6][VAL]) * 0.0009765625f;
 
                 f_ring_buffer[7][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(7);
 
-                g_inOutMatrixInt[7][raw] = (f_ring_buffer[7][0] + f_ring_buffer[7][1] + f_ring_buffer[7][2] + f_ring_buffer[7][3]) >>2 ; 
+                g_inOutMatrixInt[7][RAW] = (f_ring_buffer[7][0] + f_ring_buffer[7][1] + f_ring_buffer[7][2] + f_ring_buffer[7][3]) >>2 ; 
 
-                g_inOutMatrixInt[7][val] = (g_inOutMatrixInt[7][raw] * f_scale) >> 10;                  
+                g_inOutMatrixInt[7][VAL] = (g_inOutMatrixInt[7][RAW] * f_scale) >> 10;                  
                 
-                g_inOutMatrixFlt[7][val] = (g_inOutMatrixInt[7][val]) * 0.0009765625f;
+                g_inOutMatrixFlt[7][VAL] = (g_inOutMatrixInt[7][VAL]) * 0.0009765625f;
                 
                 if(audio_hold_A > 0) --audio_hold_A;
                 if(audio_hold_B > 0) --audio_hold_B;
@@ -388,7 +388,7 @@ void            CKernel::chooseProgram        ( int p_channel, &p_activeShader )
 {
                 static int p_activeShader = 0;
 
-                int f_calculated = g_inOutMatrixInt[p_channel][raw] * g_loaded_fsh_new >> 10; // <- why no bracelets here too?
+                int f_calculated = g_inOutMatrixInt[p_channel][RAW] * g_loaded_fsh_new >> 10; // <- why no bracelets here too? g_loaded_fsh_new doesnt exis anymore !!!
 
                 if (m_shaderStatusFlags[f_calculated])  // comes from gfx.cpp ->
                     {
@@ -402,7 +402,7 @@ void             CKernel::chooseTexture        ( int p_channel, &p_activeTexture
                 if (p_validTextureCount != 0) 
                     {
 
-                    int f_calculated = g_inOutMatrixInt[p_channel][raw] * (p_validTextureCount) >> 10;
+                    int f_calculated = g_inOutMatrixInt[p_channel][RAW] * (p_validTextureCount) >> 10;
                     p_activeTexture = f_calculated;
                     }
 }
@@ -413,7 +413,7 @@ int             CKernel::chooseVideo        ( int p_channel, &p_activeVideo, &p_
                 if (p_validVideoCount != 0) 
                     {
 
-                    int f_calculated = g_inOutMatrixInt[p_channel][raw] * (p_validVideoCount) >> 10;
+                    int f_calculated = g_inOutMatrixInt[p_channel][RAW] * (p_validVideoCount) >> 10;
                     p_activeVideo = f_calculated;
                     }
 }
@@ -424,7 +424,7 @@ int             CKernel::chooseFrame        ( int p_channel, &p_activeFrame, &p_
                 if (p_validFrameCount != 0) // <- !!! this is the point where i decided to include the h264 / vc_sm / parser class into the CKernel code ( again ) !!!
                     {
 
-                    int f_calculated = g_inOutMatrixInt[p_channel][raw] *  (p_validFrameCount) >> 10;
+                    int f_calculated = g_inOutMatrixInt[p_channel][RAW] *  (p_validFrameCount) >> 10;
                     p_activeFrame = f_calculated;
                     }
 }
@@ -469,8 +469,6 @@ void            CKernel::storeModesV2         ()    // "saver"
                     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// for kernel.h -> unsigned int g_buttons_states[2][5] = {0} !!!
-
 void            CKernel::buttonPing(int p_btn_id, int pin)
 {
                 g_buttons_states[p_btn_id][BTN_SINGLE] = 0;
@@ -525,29 +523,29 @@ void            CKernel::randomVec8           (uint32_t p_seed)                 
                 uint32_t        f_x         = p_seed;
 
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[0][rnd] = / f_x * f_scale;
-                g_inOutMatrixInt[0][rnd] = ( g_inOutMatrixFlt[0][rnd] * f_max_int);
+                g_inOutMatrixFlt[0][RND] = / f_x * f_scale;
+                g_inOutMatrixInt[0][RND] = ( g_inOutMatrixFlt[0][RND] * f_max_int);
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[1][rnd] = f_x * f_scale;
-                g_inOutMatrixInt[1][rnd] = ( g_inOutMatrixFlt[1][rnd] * f_max_int);
+                g_inOutMatrixFlt[1][RND] = f_x * f_scale;
+                g_inOutMatrixInt[1][RND] = ( g_inOutMatrixFlt[1][RND] * f_max_int);
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[2][rnd] = f_x * f_scale;
-                g_inOutMatrixInt[2][rnd] = ( g_inOutMatrixFlt[2][rnd] * f_max_int);
+                g_inOutMatrixFlt[2][RND] = f_x * f_scale;
+                g_inOutMatrixInt[2][RND] = ( g_inOutMatrixFlt[2][RND] * f_max_int);
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[3][rnd] = f_x * f_scale;
-                g_inOutMatrixInt[3][rnd] = ( g_inOutMatrixFlt[3][rnd] * f_max_int);
+                g_inOutMatrixFlt[3][RND] = f_x * f_scale;
+                g_inOutMatrixInt[3][RND] = ( g_inOutMatrixFlt[3][RND] * f_max_int);
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[4][rnd] = /* (float) */ f_x * f_scale;
-                g_inOutMatrixInt[4][rnd] = ( g_inOutMatrixFlt[4][rnd] * f_max_int);
+                g_inOutMatrixFlt[4][RND] = /* (float) */ f_x * f_scale;
+                g_inOutMatrixInt[4][RND] = ( g_inOutMatrixFlt[4][RND] * f_max_int);
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[5][rnd] = /* (float) */ f_x * f_scale;
-                g_inOutMatrixInt[5][rnd] = ( g_inOutMatrixFlt[5][rnd] * f_max_int);
+                g_inOutMatrixFlt[5][RND] = /* (float) */ f_x * f_scale;
+                g_inOutMatrixInt[5][RND] = ( g_inOutMatrixFlt[5][RND] * f_max_int);
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[6][rnd] = /* (float) */ f_x * f_scale;
-                g_inOutMatrixInt[6][rnd] = ( g_inOutMatrixFlt[6][rnd] * f_max_int);
+                g_inOutMatrixFlt[6][RND] = /* (float) */ f_x * f_scale;
+                g_inOutMatrixInt[6][RND] = ( g_inOutMatrixFlt[6][RND] * f_max_int);
                 f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[7][rnd] = f_x * f_scale;
-                g_inOutMatrixInt[7][rnd] = ( g_inOutMatrixFlt[7][rnd] * f_max_int);
+                g_inOutMatrixFlt[7][RND] = f_x * f_scale;
+                g_inOutMatrixInt[7][RND] = ( g_inOutMatrixFlt[7][RND] * f_max_int);
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // question here - should i rather have one funtion for both channels or should i seperate the functions and call per channel?
@@ -607,41 +605,7 @@ void            CKernel::calculate2BPM   (   unsigned long   p_triggerTimeClockA
                 g_activeBpmChannel                  = ( g_lastBpmCalculation[0] > g_lastBpmCalculation[1]) ? 0 : 1; // what was the last bpm input? 
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::calculate1BPM   (   int chn, unsigned long   p_triggerTimeClock) 
-{
-                static unsigned long f_lastTime[2];
-                static unsigned long f_timeBuffer[2][4] = {{0}};  
-                static unsigned long f_deltaBuffer[2][3]= { 0 };
-
-                unsigned long f_intervalAverage = 0;
-                static int f_timeIndex[2] = {0};
-
-                if (p_triggerTimeClock != f_lastTime[chn])                                                          // Process button u_time (instance 0)
-                    {
-                    f_timeBuffer[chn][f_timeIndex[chn]] = p_triggerTimeClock;
-        
-                    f_deltaBuffer[chn][0]          =   f_timeBuffer[chn][1] - f_timeBuffer[chn][0];   
-                    f_deltaBuffer[chn][1]          =   f_timeBuffer[chn][2] - f_timeBuffer[chn][1];
-                    f_deltaBuffer[chn][2]          =   f_timeBuffer[chn][3] - f_timeBuffer[chn][2];
-                    
-                    if(     f_deltaBuffer[chn][1]  <   f_deltaBuffer[chn][0] * 1.25f &&  f_deltaBuffer[chn][2]  <   f_deltaBuffer[chn][0] * 1.25f &&  f_deltaBuffer[chn][0]  <   f_deltaBuffer[chn][2] * 1.25f ) // calculates an average and allows 25% play ( quite high right ) 
-                        {
-                        f_intervalAverage           = ( f_deltaBuffer[chn][0] + f_deltaBuffer[chn][1] + f_deltaBuffer[chn][2]) / 3;
-            
-                        g_resultBPM[chn]              =   60000000 / f_intervalAverage;
-            
-                        g_intervalCalculated[chn]     =   f_intervalAverage;
-                        g_lastBpmCalculation[chn]     =   m_Timer.GetClockTicks();
-                        }
-                    f_lastTime[chn]                   =   p_triggerTimeClock;
-
-                    f_timeIndex[chn]                  = ( f_timeIndex[chn] + 1) % 4;    
-                    }
-
-                g_activeBpmChannel                  = ( g_lastBpmCalculation[0] > g_lastBpmCalculation[1]) ? 0 : 1; // what was the last bpm input? 
-}
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::predictedNextBeat2 ()
 {
@@ -691,33 +655,6 @@ void            CKernel::predictedNextBeat2 ()
                     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::predictedNextBeat1 (int chn)
-{
-                unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                      // Get the current u_time in clock ticks
-
-                if (currentTime >= g_nextBeatTime[chn])
-                    {
-                    g_nextBeatTime[chn]               +=  g_intervalCalculated[0];                                                                        // Predict the next beat u_time
-                    }
-                if (currentTime >= g_nextCircleBuffer[chn]) 
-                    {
-                    g_lastCircleBuffer[chn]           =   g_nextCircleBuffer[chn];
-                    g_nextCircleBuffer[chn]           =   g_nextCircleBuffer[chn] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[chn]);
-                    g_lfoMultiplierTMP[chn]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF1_MULT]];
-                    }
-                if ((g_lastBpmCalculationTMP[chn]     !=  g_lastBpmCalculation[chn]))
-                    {
-                    g_nextBeatTime[chn]               =   g_lastBpmCalculation[chn];                                                                      // Reset to current time for new BPM
-                    g_lastBpmCalculationTMP[chn]      =   g_lastBpmCalculation[chn];
-                    }
-                if (g_lfoMultiplierTMP[chn]           !=  g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF1_MULT]])
-                    {
-                    g_lastCircleBuffer[chn]           =   g_lastBpmCalculation[g_activeBpmChannel];
-                    g_nextCircleBuffer[chn]           =   g_lastBpmCalculation[g_activeBpmChannel] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[chn]);
-                    g_lfoMultiplierTMP[chn]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF1_MULT]];
-                    }
-}
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::sampleWaveTable                   ()
 {
                 unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                          // Get the current u_time in clock ticks why not the start_time_fps_calculation or currentTime from Run()??
@@ -726,15 +663,15 @@ void            CKernel::sampleWaveTable                   ()
                 g_cycleLength[0]                    =   g_nextCircleBuffer[0] - g_lastCircleBuffer[0];                                                    // Total length of the current cycle
                 int f_indexA                        =  (g_elapsedMicroseconds[0] * 255) / g_cycleLength[0];                                               // 255 is not the amplitude! its the number of samples
                 g_sampleIndex[0]                    =   f_indexA > 255 ? 255 : f_indexA;                                                                  // means i need a wraparound - on the other hand: i should have a clear calculation here that will never create a index >255!
-                g_inOutMatrixFlt[0][lf1]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF1_WAVE]][g_sampleIndex[0]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
-                g_inOutMatrixInt[0][lf1]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF1_WAVE]][g_sampleIndex[0]];
+                g_inOutMatrixFlt[0][LF1]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF1_WAVE]][g_sampleIndex[0]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
+                g_inOutMatrixInt[0][LF1]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF1_WAVE]][g_sampleIndex[0]];
 
                 g_elapsedMicroseconds[1]            =   currentTime - g_lastCircleBuffer[1];
                 g_cycleLength[1]                    =   g_nextCircleBuffer[1] - g_lastCircleBuffer[1];                                                   // Total length of the current cycle
                 int f_indexB                        =  (g_elapsedMicroseconds[1] * 255) / g_cycleLength[1];
                 g_sampleIndex[1]                    =   f_indexB > 255 ? 255 : f_indexB;                                                                  // ! i like to get rid of this saveguard !
-                g_inOutMatrixFlt[0][lf2]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF2_WAVE]][g_sampleIndex[1]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
-                g_inOutMatrixInt[0][lf2]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF2_WAVE]][g_sampleIndex[1]];
+                g_inOutMatrixFlt[0][LF2]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF2_WAVE]][g_sampleIndex[1]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
+                g_inOutMatrixInt[0][LF2]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF2_WAVE]][g_sampleIndex[1]];
 }   
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

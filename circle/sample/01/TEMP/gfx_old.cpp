@@ -367,7 +367,7 @@ void            CKernel::initOprogram   (   glsl_state* m_glsl,
                                             char*       buffer,
                                             u32&        index)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
-                    if (m_shaderStatusFlags[i])                                     // we need to figure out from where this comes, we need also a separate method here
+                    if (m_shaderStatusFlags[i])                                     // we need to figure OUT from where this comes, we need also a separate method here
                         {
                         m_glsl->gl_omp_id[0] = glCreateProgram();
                         glAttachShader(m_glsl->gl_omp_id[0], m_glsl->gl_vsh_id[0]);
@@ -390,7 +390,7 @@ void            CKernel::initOprogram   (   glsl_state* m_glsl,
                             }
                         else
                             {
-                        //  g_linked_programs_counter++; commented out because this shader program is not part of the user pipeline! Count valid programs for chooseProgram()       ????????????
+                        //  g_linked_programs_counter++; commented OUT because this shader program is not part of the user pipeline! Count valid programs for chooseProgram()       ????????????
                             }
                         }
                 m_Watchdog.Start(TIMEOUT*3); // new watchdog        
@@ -528,12 +528,12 @@ void            CKernel::initOtexture   (   glsl_state* m_glsl,
 #ifdef __GL_DEBUG__
                 check();
 #endif // __GL_DEBUG__
-                        GLvoid* bitmapData = &m_bufferOmt[0][m_H264SystemParser.m_tex_data_offset[0]]; // oh, we need to figure out how we do the bmp parsing for only the atlas!!
+                        GLvoid* bitmapData = &m_bufferOmt[0][m_H264SystemParser.m_tex_data_offset[0]]; // oh, we need to figure OUT how we do the bmp parsing for only the atlas!!
 
                         glTexImage2D(GL_TEXTURE_2D, 
                                    0, 
                                    GL_RGB, 
-                                   m_H264SystemParser.m_tex_width[0], // oh, we need to figure out how we do the bmp parsing for only the atlas!!
+                                   m_H264SystemParser.m_tex_width[0], // oh, we need to figure OUT how we do the bmp parsing for only the atlas!!
                                    m_H264SystemParser.m_tex_height[0], 
                                    0, 
                                    GL_RGB, 
@@ -671,21 +671,21 @@ void            CKernel::render_shader_a(   glsl_state* m_glsl )
                                                                                                 g_inOutMatrixFlt[2][rnd], 
                                                                                                 g_inOutMatrixFlt[3][rnd]);
                 if(m_glsl->u_aud[g_current_gl_program]!= -1 ) glUniform4f(     m_glsl->u_aud[g_current_gl_program], 
-                                                                                                g_inOutMatrixFlt[0][au0], 
-                                                                                                g_inOutMatrixFlt[0][au1], 
-                                                                                                g_inOutMatrixFlt[0][au2], 
-                                                                                                g_inOutMatrixFlt[0][au3]);
+                                                                                                g_inOutMatrixFlt[0][AU0], 
+                                                                                                g_inOutMatrixFlt[0][AU1], 
+                                                                                                g_inOutMatrixFlt[0][AU2], 
+                                                                                                g_inOutMatrixFlt[0][AU3]);
                 if(m_glsl->u_col[g_current_gl_program] != -1) glUniform4f(     m_glsl->u_col[g_current_gl_program], 0.0f, 0.0f, 0.0f, g_opaque);
                 if(m_glsl->u_par_a[g_current_gl_program] != -1 ) glUniform4f(  m_glsl->u_par_a[g_current_gl_program], 
-                                                                                                g_inOutMatrixFlt[0][out], 
-                                                                                                g_inOutMatrixFlt[1][out], 
-                                                                                                g_inOutMatrixFlt[2][out], 
-                                                                                                g_inOutMatrixFlt[3][out]);
+                                                                                                g_inOutMatrixFlt[0][OUT], 
+                                                                                                g_inOutMatrixFlt[1][OUT], 
+                                                                                                g_inOutMatrixFlt[2][OUT], 
+                                                                                                g_inOutMatrixFlt[3][OUT]);
                 if(m_glsl->u_par_b[g_current_gl_program] != -1 ) glUniform4f(  m_glsl->u_par_b[g_current_gl_program], 
-                                                                                                g_inOutMatrixFlt[4][out], 
-                                                                                                g_inOutMatrixFlt[5][out], 
-                                                                                                g_inOutMatrixFlt[6][out], 
-                                                                                                g_inOutMatrixFlt[7][out]);
+                                                                                                g_inOutMatrixFlt[4][OUT], 
+                                                                                                g_inOutMatrixFlt[5][OUT], 
+                                                                                                g_inOutMatrixFlt[6][OUT], 
+                                                                                                g_inOutMatrixFlt[7][OUT]);
                 if(m_glsl->u_tex_l[g_current_gl_program] != -1) glUniform1i(   m_glsl->u_tex_l[g_current_gl_program], p_validTextureCount);
 
                 switch(g_centralModeBuffer[g_currentProgramBuffer][TEX_MODE]) // <- this is using g_currentProgramBuffer because we read an global mode !!! 
