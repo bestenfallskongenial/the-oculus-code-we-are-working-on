@@ -366,6 +366,67 @@ void            set_pot_routing         (   bool        adc_pot_routing)
 {
                 m_ChipSelectPin.Write(adc_pot_routing);
 }
+// can we use this instead of the CGPIOPin class????
+/*
+#include <circle/bcm2835.h>
+#include <circle/types.h>
+#include <circle/timer.h>
+
+#define LOW  0
+#define HIGH 1
+
+#define PULL_OFF  0
+#define PULL_DOWN 1
+#define PULL_UP   2
+
+static inline u32 mmio_read32(uintptr addr)
+{
+    return *(volatile u32 *)addr;
+}
+
+static inline void mmio_write32(uintptr addr, u32 value)
+{
+    *(volatile u32 *)addr = value;
+}
+
+void gpio_write(unsigned pin, unsigned state, int pull)
+{
+    unsigned shift = (pin % 10) * 3;
+    uintptr sel = ARM_GPIO_GPFSEL0 + (pin / 10) * 4;
+
+    // set OUTPUT
+    u32 v = mmio_read32(sel);
+    v &= ~(7 << shift);
+    v |=  (1 << shift);
+    mmio_write32(sel, v);
+
+    // optional pull
+    if (pull >= 0)
+    {
+        u32 mask = 1 << (pin % 32);
+
+        mmio_write32(ARM_GPIO_GPPUD, pull);
+        CTimer::SimpleusDelay(5);
+        mmio_write32(ARM_GPIO_GPPUDCLK0 + (pin / 32) * 4, mask);
+        CTimer::SimpleusDelay(5);
+        mmio_write32(ARM_GPIO_GPPUD, 0);
+        mmio_write32(ARM_GPIO_GPPUDCLK0 + (pin / 32) * 4, 0);
+    }
+
+    // write HIGH / LOW (explicit)
+    u32 mask = 1 << (pin % 32);
+
+    if (state == HIGH)
+    {
+        mmio_write32(ARM_GPIO_GPSET0 + (pin / 32) * 4, mask);
+    }
+
+    if (state == LOW)
+    {
+        mmio_write32(ARM_GPIO_GPCLR0 + (pin / 32) * 4, mask);
+    }
+}
+*/
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

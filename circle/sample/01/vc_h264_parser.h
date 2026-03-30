@@ -1,12 +1,3 @@
-// vc_h264_parser.h
-//
-// FINAL VERSION DONT CHANGE
-// seems to work as intended
-
-#ifndef _vc_h264_parser_h
-#define _vc_h264_parser_h
-
-#include <circle/types.h>
 
 #define MAX_VIDEOS 8
 #define MAX_TEXTURES 8
@@ -25,20 +16,7 @@
 #define NAL_TYPE_SPS   7
 #define NAL_TYPE_PPS   8
 
-#define STOREDEBUG_WHITESPACE 255
-#define STOREDEBUG_NEWLINE '\n'
-#define PARSER_MAX_DEBUG_FILE_LENGTH (1024 * 64)
-
 #define MMAL_FORMAT_EXTRADATA_MAX_SIZE 128              // Maximum size of the format extradata. //
-
-class CH264Parser
-{
-public:
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-//              CONSTRUCTOR / DECONSTRUCTOR
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-    CH264Parser(void);
-    ~CH264Parser(void);
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              USER API
 //----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -51,45 +29,27 @@ bool            ParseInitialize                         (       char*           
                                                                 u16             max_height,
                                                                 u8              max_profile,
                                                                 u8              max_level);
-bool            ParseVideoAuto                          (       int             file_index, char* buffer_array[], size_t size_array[]);                                                
+                                             
 bool            ParseAnnexB                             (       int             file_index, char* buffer_array[], size_t size_array[]);
-bool            ParseMP4                                (       int             file_index, char* buffer_array[], size_t size_array[]); // works also for .mov?!
 bool            ParseBPM                                (       int             file_index, char* filename_array[], char* buffer_array[], size_t size_array[]);
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              CALLBACK / HELPERS / UTILITY / WRAPPER
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-private:
-        void    ParserStoreLog                          (       int             file_index,
-                                                                const char*     label,
-                                                                u32             value1 = STOREDEBUG_WHITESPACE,
-                                                                u32             value2 = STOREDEBUG_WHITESPACE,
-                                                                u32             value3 = STOREDEBUG_WHITESPACE,
-                                                                u32             value4 = STOREDEBUG_WHITESPACE );
-        void    ParserStoreMsg                              (   int             video_index,
-                                                                const void*     tx_msg, 
-                                                                u32             total_size, 
-                                                                const char*     label);
 size_t          FindNextStartCode                           (   u8*             data, 
                                                                 size_t          pos, 
                                                                 size_t          size) const;
-bool            ParseAvcC                               (       int file_index, const u8* avcc, size_t max_len);
-u32             ReadBE32                                (       const u8       *p);
-size_t          FindBox                                 (       const u8 *data, size_t size, const char box_type[4]);
-size_t          FindBoxDeep                             (       const u8 *data, size_t size, const char box_type[4]);
-//size_t          FindBox                                 (       const u8       *data, size_t size, const char box_type[4]);
-//size_t          RemoveEmulationBytes                    (       const u8       *src, size_t src_len, u8 *dst);
+u32             ReadExpGolomb                           (       u8*             data, 
+                                                                size_t*         bit_offset) const;
+
 bool            ParseSPS                                (       u8*             sps_data, 
                                                                 size_t          sps_size, 
                                                                 u16*            width, 
                                                                 u16*            height, 
                                                                 u8*             profile, 
                                                                 u8*             level) const;
-u32             ReadExpGolomb                           (       u8*             data, 
-                                                                size_t*         bit_offset) const;
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              CALLBACK / HELPERS / UTILITY / WRAPPER
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-public: 
         int     m_max_textures;
         u32     m_max_tex_size;
 
@@ -117,10 +77,6 @@ public:
         u8      m_extradata[MAX_VIDEOS][MMAL_FORMAT_EXTRADATA_MAX_SIZE];                // Raw Annex-B extradata buffer containing SPS+PPS for each video stream
         size_t  m_extradata_len[MAX_VIDEOS];                                            // Length (in bytes) of the extradata buffer for each video stream
         bool    m_extradata_valid[MAX_VIDEOS];                                          // Validity flag: true if extradata is ready for SetPortInfo
-        // ---------------- Debug logging per stream --------------------------------------------------------------------------------------------------------------------------
-        char    m_DebugCharArray[MAX_VIDEOS][PARSER_MAX_DEBUG_FILE_LENGTH] = { 0 };       // Debug log string buffer for each video stream
-                                                                                        // Contains SPS/metadata logs, extradata hex dump, IDR frame addresses/lengths
-        u32     m_CharIndex[MAX_VIDEOS] = { 0 };                                        // Current write index in the debug log buffer for each video stream
         // ---------------- Per-texture metadata arrays -----------------------------------------------------------------------------------------------------------------------
         bool    m_tex_valid[MAX_TEXTURES];                                              // true if header passed all BMP checks
         u32     m_tex_file_size[MAX_TEXTURES];                                          // value of the BMP “file size” field
@@ -130,11 +86,7 @@ public:
         u32     m_tex_image_size[MAX_TEXTURES];                                         // decoded image-data byte count (width×height×3)
 
         char*  m_videoBlockBase;
-
-};
-
 /*
-
 Setup buffer (first and only time):
 
 ptr = m_frame_address[file_index][0];        // points to the SPS start-code
@@ -143,6 +95,4 @@ Each buffer in the normal decode loop:
 
 ptr = m_frame_address[file_index][i] + m_idr_offset[video_index];   // jump to IDR start
 len = m_framelenght[file_index][i]  - m_idr_offset[video_index];    // IDR-only length
-
 */
-#endif // _vc_h264_parser_h
