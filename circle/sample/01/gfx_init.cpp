@@ -359,7 +359,7 @@ void            CKernel::initFshaders   (   glsl_state* m_glsl, int p_fromFile, 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initOprogram   (   glsl_state* m_glsl, int p_fromFile, int p_toFile)                                                                   // <- we need a dedicated copy here, clear seperation but complete emulations ( variables/arrays, etc )
 {
-                    if (m_shaderStatusFlags[0])                                     // we need to figure OUT from where this comes, we need also a separate method here
+                    if (m_shaderStatusFlags[0s])                                     // we need to figure OUT from where this comes, we need also a separate method here
                         {
                         m_glsl->gl_omp_id[0] = glCreateProgram();
                         glAttachShader(m_glsl->gl_omp_id[0], m_glsl->gl_vsh_id[0]);
