@@ -88,7 +88,7 @@
 
 #define 		LFO_PARAMETERS			4
 #define 		LFO_INSTANCES			2
-#define			LFO_MULTIPLIERS
+#define			LFO_MULTIPLIERS			7
 
 #define 		R     					0
 #define 		G   					1  
