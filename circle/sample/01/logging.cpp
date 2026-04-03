@@ -88,6 +88,177 @@ void            CKernel::storeLog       (   char*       buffer,
                 index++;
                 buffer[index]   = '\0';
 }
+/* new for kernel.h
+#define EMPTYSTR ""
+#define EMPTYLOG 255
+
+void storeLog( char*       buffer,
+                u32&        index,
+                const char* l1,
+                u32         v1 = EMPTYLOG,
+                const char* l2 = EMPTYSTR,
+                u32         v2 = EMPTYLOG,
+                const char* l3 = EMPTYSTR,
+                u32         v3 = EMPTYLOG,
+                const char* l4 = EMPTYSTR,
+                u32         v4 = EMPTYLOG);
+*/
+void CKernel::storeLog( char*       buffer,
+                        u32&        index,
+                        const char* l1, u32 v1,
+                        const char* l2, u32 v2,
+                        const char* l3, u32 v3,
+                        const char* l4, u32 v4)
+{
+    for (const char* p = l1; *p; ++p)   // always write first label
+    {
+        buffer[index] = *p;
+        index++;
+    }
+    if (v1 != EMPTYLOG)
+    {
+        buffer[index] = ' ';
+        index++;
+        buffer[index] = '0';
+        index++;
+        buffer[index] = 'x';
+        index++;
+        for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i)
+        {
+            char hex = "0123456789ABCDEF"[(v1 >> (i * 4)) & 0xF];
+            buffer[index] = hex;
+            index++;
+        }
+    }
+    if (l2 != EMPTYSTR) // label 2
+    {
+        buffer[index] = ' ';
+        index++;
+        for (const char* p = l2; *p; ++p)
+        {
+            buffer[index] = *p;
+            index++;
+        }
+    }
+    if (v2 != EMPTYLOG)
+    {
+        buffer[index] = ' ';
+        index++;
+        buffer[index] = '0';
+        index++;
+        buffer[index] = 'x';
+        index++;
+        for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i)
+        {
+            char hex = "0123456789ABCDEF"[(v2 >> (i * 4)) & 0xF];
+            buffer[index] = hex;
+            index++;
+        }
+    }
+    if (l3 != EMPTYSTR) // label 3
+    {
+        buffer[index] = ' ';
+        index++;
+        for (const char* p = l3; *p; ++p)
+        {
+            buffer[index] = *p;
+            index++;
+        }
+    }
+    if (v3 != EMPTYLOG)
+    {
+        buffer[index] = ' ';
+        index++;
+        buffer[index] = '0';
+        index++;
+        buffer[index] = 'x';
+        index++;
+        for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i)
+        {
+            char hex = "0123456789ABCDEF"[(v3 >> (i * 4)) & 0xF];
+            buffer[index] = hex;
+            index++;
+        }
+    }
+    if (l4 != EMPTYSTR) // label 4
+    {
+        buffer[index] = ' ';
+        index++;
+        for (const char* p = l4; *p; ++p)
+        {
+            buffer[index] = *p;
+            index++;
+        }
+    }
+    if (v4 != EMPTYLOG)
+    {
+        buffer[index] = ' ';
+        index++;
+        buffer[index] = '0';
+        index++;
+        buffer[index] = 'x';
+        index++;
+        for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i)
+        {
+            char hex = "0123456789ABCDEF"[(v4 >> (i * 4)) & 0xF];
+            buffer[index] = hex;
+            index++;
+        }
+    }
+
+    buffer[index] = '\n';
+    index++;
+    buffer[index] = '\0';
+}
+/*
+calls 
+
+// assume EMPTYSTR = "" and EMPTYLOG = 255
+
+storeLog(buf, idx, "texture", EMPTYLOG, "loaded", EMPTYLOG, "successfully", EMPTYLOG, EMPTYSTR, EMPTYLOG);
+// texture loaded successfully
+
+storeLog(buf, idx, "video", EMPTYLOG, "decode", EMPTYLOG, "error", 5, EMPTYSTR, EMPTYLOG);
+// video decode error 0x00000005
+
+storeLog(buf, idx, "shader", 3);
+// shader 0x00000003
+
+storeLog(buf, idx, "frame", EMPTYLOG, "dropped", EMPTYLOG);
+// frame dropped
+
+storeLog(buf, idx, "audio", EMPTYLOG, "buffer", EMPTYLOG, "underrun", EMPTYLOG);
+// audio buffer underrun
+
+storeLog(buf, idx, "init", 1, "stage", 2);
+// init 0x00000001 stage 0x00000002
+
+storeLog(buf, idx, "gpu", EMPTYLOG, "upload", EMPTYLOG, "failed", 255);
+// gpu upload failed 0x000000FF
+
+storeLog(buf, idx, "file", EMPTYLOG, "not", EMPTYLOG, "found", EMPTYLOG);
+// file not found
+
+storeLog(buf, idx, "mode", 7, "active", EMPTYLOG);
+// mode 0x00000007 active
+
+storeLog(buf, idx, "stream", EMPTYLOG, "h264", EMPTYLOG, "idr", 1);
+// stream h264 idr 0x00000001
+
+// example variables
+const char* fileName = m_bufferTex[i];
+u32 fileIndex = i;
+
+storeLog(buf, idx,
+    "file", EMPTYLOG,
+    fileName, EMPTYLOG,
+    "not found in", fileIndex,
+    EMPTYSTR, EMPTYLOG);
+
+// output example:
+// file my_texture.bmp not found in 0x00000003
+*/
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::storeMsg       (   char*       buffer,
                                             u32&        index,

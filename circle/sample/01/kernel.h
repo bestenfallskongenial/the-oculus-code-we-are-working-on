@@ -304,6 +304,7 @@ public:
 
 	TShutdownMode Run (void);
 
+/* OLD !!!
 struct glsl_state
 	{
 	// EGL Window
@@ -366,8 +367,77 @@ struct menu_glsl_state
     GLfloat     tile_rect[MENU_GPU_TILE_COUNT * 4];
     GLfloat     tile_index[MENU_GPU_TILE_COUNT];
 };
+*/
 
+// NEW
 
+    struct vertex_state
+{
+    // shared attrib/buffer
+    GLuint                      gl_buf;                         // this is also an extra struct we need to pass too
+    GLint                       gl_vtx[MAX_SHADER];    
+};
+
+struct olg_state
+{
+    // EGL Window
+    uint32_t                    screen_width;
+    uint32_t                    screen_height;
+
+    DISPMANX_ELEMENT_HANDLE_T   dispman_element;
+    DISPMANX_DISPLAY_HANDLE_T   dispman_display;
+
+    EGLDisplay                  display;
+    EGLSurface                  surface;
+    EGLContext                  context;
+};
+struct texture_state
+{
+
+    unsigned                    width[MAX_TEXTURE];
+    unsigned                    height[MAX_TEXTURE];
+    unsigned                    offset[MAX_TEXTURE];
+	GLuint                      gl_tex_id[MAX_TEXTURE];
+	GLint                       u_tex_id[MAX_SHADER][MAX_TEXTURE];
+};
+
+struct glsl_state
+{
+    GLuint                      gl_shader_id[MAX_SHADER];
+    GLuint                      gl_program_id[MAX_SHADER];
+    // user uniforms                                            // this is the actual common shader struct we define for 
+    GLint                       u_time[MAX_SHADER];
+    GLint                       u_tres[MAX_SHADER];
+    GLint                       u_seed[MAX_SHADER];
+    GLint                       u_aud[MAX_SHADER];
+    GLint                       u_col[MAX_SHADER];
+    GLint                       u_par_a[MAX_SHADER];
+    GLint                       u_par_b[MAX_SHADER];
+    GLint                       u_tex_l[MAX_SHADER];
+    // overlay uniforms
+    GLint                       u_atlas[MAX_OMF];
+    GLint                       u_tile_count[MAX_OMF];
+    GLint                       u_tile_rect[MAX_OMF];
+    GLint                       u_tile_index[MAX_OMF];
+
+    // overlay data
+    float                       kMenuOrigin[2];
+    float                       kMenuTileSize[2];
+    float                       kMenuBackgroundScale[2];
+
+    float                       kMenuRelPos[MAX_TILES][2];
+    float                       kMenuRelSize[MAX_TILES][2];
+
+    float                       tile_rect_x[MAX_TILES];
+    float                       tile_rect_y[MAX_TILES];
+    float                       tile_rect_w[MAX_TILES];
+    float                       tile_rect_h[MAX_TILES];
+
+    GLfloat                     tile_rect[MAX_TILES * 4];
+    GLfloat                     tile_index[MAX_TILES];
+};
+
+// we need a struct for the videos right?
 
                 char** 				    m_bufferVid;
                 char* 				    m_videoBlockBase;
@@ -454,26 +524,38 @@ private:
 	CVCHIQDevice		m_VCHIQ;
 
 	CMemorySystem		m_Memory;
-// my Video Player
-    CVCSharedMemory 	m_SharedMemory;
-    CH264Decoder 		m_H264Decoder;
-    CH264Parser 		m_H264Parser;
 
 	volatile boolean	m_bStorageAttached;
 	CFATFileSystem		*m_pFileSystem;
 
-  	CScheduler		    m_Scheduler;
+  	CScheduler		    m_Scheduler; // really? is it needed for the khronos stuff?
 
-	CBcmWatchdog       	m_Watchdog; // Watchdog instance
+	CBcmWatchdog       	m_Watchdog; // Watchdog instance - we included our own!
 
 	CSPIMaster		    m_SPIMaster;
 	CMCP300X		    m_MCP300X;
 
 	CWS2812OverSMI		m_NeoPixels;
 
-	CGPIOManager		m_GPIOManager;		// not needed in polling mode
+	CGPIOManager		m_GPIOManager;		// not needed in polling mode - we included our own "write to pin" but why does the constructor def uses "m_GPIOManager (&m_Interrupt),..." oh i see, the ws2812 led i assume
 
-	CGPIOPin 			m_ChipSelectPin;  	// Add this line for the chip select pin
+	CGPIOPin 			m_ChipSelectPin;  	// Add this line for the chip select pin - we included our own "write to pin"
+public:
 
+    bool                        vsh_flags[MAX_VERTEX];
+    bool                        fsh_flags[MAX_SHADER];
+    bool                        omf_flags[MAX_SHADER];
 
+    bool                        tex_flags[MAX_TEXTURE];
+    bool                        omt_flags[MAX_TEXTURE];        
+
+    vertex_state                m_vertex;
+    glsl_state                  m_vsh;
+    glsl_state                  m_fsh;
+    glsl_state                  m_osh;
+
+    texture_state               m_tex;
+    texture_state               m_omt;
+
+// we need also a struct for the videos, just to keep the frame hear    
 }

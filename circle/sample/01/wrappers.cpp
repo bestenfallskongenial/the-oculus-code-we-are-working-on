@@ -7,23 +7,23 @@ bool CKernel::wrapperInitDMA()
 
     if (bOK)
         {
-        bOK = (m_bufferVid = alllocateBufferDMA  (  filecounter[FT_VID][FLD_MAXSD]+filecounter[FT_VID][FLD_MAXUSB], filecounter[FT_VID][FLD_SIZE], &m_videoBlockBase, &m_videoRawBlock, &m_videoBlockSize));
+        bOK = (m_bufferVid = allocBufferDMA  (  filecounter[FT_VID][FLD_MAXSD]+filecounter[FT_VID][FLD_MAXUSB], filecounter[FT_VID][FLD_SIZE], &m_videoBlockBase, &m_videoRawBlock, &m_videoBlockSize));
         }
     if (bOK)
         {
-        bOK = (m_bufferFrA = alllocateBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB], filecounter[FRM_BF][FLD_SIZE], &m_frameBlockBaseA, &m_frameRawBlockA, &m_frameBlockSizeA));
+        bOK = (m_bufferFrA = allocBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB], filecounter[FRM_BF][FLD_SIZE], &m_frameBlockBaseA, &m_frameRawBlockA, &m_frameBlockSizeA));
         }
     if (bOK)
         {
-        bOK = (m_bufferFrB = alllocateBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB], filecounter[FRM_BF][FLD_SIZE], &m_frameBlockBaseB, &m_frameRawBlockB, &m_frameBlockSizeB));
+        bOK = (m_bufferFrB = allocBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB], filecounter[FRM_BF][FLD_SIZE], &m_frameBlockBaseB, &m_frameRawBlockB, &m_frameBlockSizeB));
         }
     if (bOK)
         {
-        bOK = (m_bufferOmt = alllocateBufferDMA  (  filecounter[FT_OMT][FLD_MAXSD]+filecounter[FT_OMT][FLD_MAXUSB], filecounter[FT_OMT][FLD_SIZE], &m_overlyBlockBase, &m_overlayRawBlock, &m_overlyBlockSize));
+        bOK = (m_bufferOmt = allocBufferDMA  (  filecounter[FT_OMT][FLD_MAXSD]+filecounter[FT_OMT][FLD_MAXUSB], filecounter[FT_OMT][FLD_SIZE], &m_overlyBlockBase, &m_overlayRawBlock, &m_overlyBlockSize));
         }
     if (bOK)
         {
-        bOK = (m_bufferTex = alllocateBufferDMA  (  filecounter[FT_TEX][FLD_MAXSD]+filecounter[FT_TEX][FLD_MAXUSB], filecounter[FT_TEX][FLD_SIZE], &m_textureBlockBase, &m_textureRawBlock, &m_textureBlockSize));
+        bOK = (m_bufferTex = allocBufferDMA  (  filecounter[FT_TEX][FLD_MAXSD]+filecounter[FT_TEX][FLD_MAXUSB], filecounter[FT_TEX][FLD_SIZE], &m_textureBlockBase, &m_textureRawBlock, &m_textureBlockSize));
         }
     return bOK;
 }
@@ -34,23 +34,23 @@ bool CKernel::wrapperInitMEM()
 
     if (bOK)
         {
-        bOK = (m_bufferKnl = alllocateBufferMEM( filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], filecounter[FT_KLN][FLD_SIZE]));       // same as alllocateBufferMEM( KLN_SD + KLN_USB, filecounter[FT_KLN][FLD_SIZE]));
+        bOK = (m_bufferKnl = allocBufferMEM( filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], filecounter[FT_KLN][FLD_SIZE]));       // same as allocBufferMEM( KLN_SD + KLN_USB, filecounter[FT_KLN][FLD_SIZE]));
         }
     if (bOK)
         {
-        bOK = (m_bufferLog = alllocateBufferMEM( filecounter[LOGGER][FLD_MAXSD]+filecounter[LOGGER][FLD_MAXUSB], filecounter[LOGGER][FLD_SIZE]));      // 1024 *64 <- the new buffer for log/text files <- saveFromBuffer() <-
+        bOK = (m_bufferLog = allocBufferMEM( filecounter[LOGGER][FLD_MAXSD]+filecounter[LOGGER][FLD_MAXUSB], filecounter[LOGGER][FLD_SIZE]));      // 1024 *64 <- the new buffer for log/text files <- saveFromBuffer() <-
         }                   
     if (bOK)
         {
-        bOK = (m_bufferVsh = alllocateBufferMEM( filecounter[FT_VSH][FLD_MAXSD]+filecounter[FT_VSH][FLD_MAXUSB], filecounter[FT_VSH][FLD_SIZE]));
+        bOK = (m_bufferVsh = allocBufferMEM( filecounter[FT_VSH][FLD_MAXSD]+filecounter[FT_VSH][FLD_MAXUSB], filecounter[FT_VSH][FLD_SIZE]));
         }
     if (bOK)
         {
-        bOK = (m_bufferOmf = alllocateBufferMEM( filecounter[FT_OMF][FLD_MAXSD]+filecounter[FT_OMF][FLD_MAXUSB], filecounter[FT_OMF][FLD_SIZE]));
+        bOK = (m_bufferOmf = allocBufferMEM( filecounter[FT_OMF][FLD_MAXSD]+filecounter[FT_OMF][FLD_MAXUSB], filecounter[FT_OMF][FLD_SIZE]));
         }
     if (bOK)
         {
-        bOK = (m_bufferFsh = alllocateBufferMEM( filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB], filecounter[FT_FSH][FLD_SIZE]));
+        bOK = (m_bufferFsh = allocBufferMEM( filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB], filecounter[FT_FSH][FLD_SIZE]));
         }
     return bOK;
 }

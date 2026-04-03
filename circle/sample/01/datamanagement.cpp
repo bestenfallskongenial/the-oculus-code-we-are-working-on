@@ -14,15 +14,27 @@ bool            CKernel::Mount          (   const char* p_deviceName)           
                     {
                     return false;
                     }
-
                 if (!m_pFileSystem->Mount(f_partitionName))
                     {
                     delete m_pFileSystem;
                     m_pFileSystem = 0;
                     return false;
                     }
-
                 return true;
+}
+// new
+bool CKernel::Mount2(const char* p_deviceName)   // this or the one above?
+{
+    CDevice* f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);
+    m_pFileSystem = new CFATFileSystem;
+
+    if (f_partitionName == 0 || m_pFileSystem == 0 || !m_pFileSystem->Mount(f_partitionName))
+    {
+        delete m_pFileSystem;
+        m_pFileSystem = 0;
+        return false;
+    }
+    return true;
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool            CKernel::UnMount        ()
@@ -132,7 +144,7 @@ bool            CKernel::saveFromBuffer    (    const char* p_deviceName  // we 
                 closeFile();
                 UnMount();
 #ifdef __DEBUG_LOG__
-                storeLog( MY_BUFFER, MY_INDEX, "Successful Stored")
+                storeLog( MY_BUFFER, MY_INDEX, "Successful Stored") // what if i refactor the storeLog to take ( "string", u32, "string", u32, "string", u32, "string", u32 ) or simliar?!
                 storeLog( MY_BUFFER, MY_INDEX, p_fileName);
                 storeLog( MY_BUFFER, MY_INDEX, "into Buffer");
                 storeLog( MY_BUFFER, MY_INDEX, p_buffer, p_bufferSize);
@@ -289,14 +301,12 @@ void            CKernel::removeUSB      (   CDevice*    f_partitionName,        
 #define MY_BUFFER m_bufferLog
 #define MY_INDEX vc04_logIndex  // vc04_logIndex is a public member variable
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#include "kernel.h"         //  my new memory.cpp with added dma memory allocation for the texture atlas and the overlay fragment shader - also i found some strange errors here.
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-char**          CKernel::alllocateBufferMEM         (   size_t count, size_t bufferSize) 
+char**          CKernel::allocBufferMEM         (   size_t count, size_t bufferSize) 
 {
                 char** buffers = (char**)malloc(count * sizeof(char*));
 #ifdef ALLOC_DEBUG                   ␊
                 storeLog( MY_BUFFER, MY_INDEX, "ALLOC-DMA buffers", (u32) buffers);
-#endif // ALLOC_DEBUG␊
+#endif // ALLOC_DEBUG
                 for (size_t i = 0; i < count; ++i) 
                 {
                     buffers[i] = (char*)calloc(bufferSize, sizeof(char));
@@ -312,7 +322,7 @@ char**          CKernel::alllocateBufferMEM         (   size_t count, size_t buf
                 return buffers;
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-char**          CKernel::alllocateBufferDMA         (   size_t count, 
+char**          CKernel::allocBufferDMA             (   size_t count, 
                                                         size_t bufferSize,
                                                         char** blockBaseOut,
                                                         char** rawBlockOut,
@@ -321,8 +331,8 @@ char**          CKernel::alllocateBufferDMA         (   size_t count,
                 size_t total_size = count * bufferSize;
                 size_t aligned_total_size = (total_size + 4095) & ~4095;
 
-                // Allocate +4096 for manual alignment
-                char* raw = new (HEAP_DMA30) char[aligned_total_size + 4096];
+                
+                char* raw = new (HEAP_DMA30) char[aligned_total_size + 4096];   // Allocate +4096 for manual alignment - rather an artifact because it seems that the alignment happens by itself
 #ifdef ALLOC_DEBUG   
                 storeLog( MY_BUFFER, MY_INDEX, "ALLOC-STD raw", (u32) raw);
 #endif // ALLOC_DEBUG
@@ -350,7 +360,7 @@ char**          CKernel::alllocateBufferDMA         (   size_t count,
                 return buffers;
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::clearBufferMEM        (   char** buffers, size_t count) 
+void            CKernel::clearBufferMEM         (   char** buffers, size_t count) 
 {
                 for (size_t i = 0; i < count; ++i)                              // why the elements and than all? why not just all?!
                     {
@@ -361,7 +371,7 @@ void            CKernel::clearBufferMEM        (   char** buffers, size_t count)
                 buffers = nullptr;                
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::clearBufferDMA    (   char** buffers, char* rawBlock)
+void            CKernel::clearBufferDMA         (   char** buffers, char* rawBlock)
 {
                 delete[] rawBlock;  // Raw block from new[]
                 delete[] buffers;   // Slice table

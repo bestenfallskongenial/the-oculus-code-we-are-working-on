@@ -413,8 +413,8 @@ bool                    IsValidFile(const char* pFileName, const char* pSuffixAr
 bool                    scanRoot(char** p_fileNameArray, const char* pSuffixArray[], unsigned pSuffixCount, unsigned& p_scannedFiles, unsigned p_maxFiles);
 bool                    updateUSB(const char* p_deviceName);
 void                    removeUSB(CDevice* f_partitionName, void* p_pContext);
-char**                  alllocateBufferMEM(size_t count, size_t bufferSize);
-char**                  alllocateBufferDMA(size_t count, size_t bufferSize, char** blockBaseOut, char** rawBlockOut, size_t* blockSizeOut);
+char**                  allocBufferMEM(size_t count, size_t bufferSize);
+char**                  allocBufferDMA(size_t count, size_t bufferSize, char** blockBaseOut, char** rawBlockOut, size_t* blockSizeOut);
 void                    clearBufferMEM(char** buffers, size_t count);
 void                    clearBufferDMA(char** buffers, char* rawBlock);
 

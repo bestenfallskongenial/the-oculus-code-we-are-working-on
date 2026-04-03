@@ -82,6 +82,11 @@ void            CKernel::readADC()
                                                 1551,       // 3.3V max (1023 * 1.515555...)
                                                 1023    };  // 5.0V max       
 
+                static int f_ring_buffer[ADC_CHANNELS][ADC_BUFFER] = { 0 };
+                static int f_index_ring_buffer;
+
+                const int f_scale = scaleFactors[attenuation];
+#ifdef __AUDIO_DETECTION__
                 const int AUDIO_THRESHOLD = 160;  // Threshold for audio detection
 
                 const int f_maxBuffer = 33;
@@ -104,28 +109,23 @@ void            CKernel::readADC()
                 static uint32_t audio_hold_A = 0;
                 static uint32_t audio_hold_B = 0;
 
-                int w0 = g_centralModeBuffer[g_currentProgramBuffer][SENS_A] & 63;
+                int w0 = g_centralModeBuffer[g_currentProgramBuffer][SENS_A] & 63; // dont need the modulo! its a retardo saveguard!
                 int w1 = g_centralModeBuffer[g_currentProgramBuffer][SENS_B] & 63;
                 int w2 = g_centralModeBuffer[g_currentProgramBuffer][SENS_C] & 63;
                 int w3 = g_centralModeBuffer[g_currentProgramBuffer][SENS_D] & 63;
-
-                static int f_ring_buffer[ADC_CHANNELS][ADC_BUFFER] = { 0 };
-                static int f_index_ring_buffer;
 
                 int i0 =  f_index_ring_buffer;
                 int i1 = (f_index_ring_buffer - 1) & 3;
                 int i2 = (f_index_ring_buffer - 2) & 3;
                 int i3 = (f_index_ring_buffer - 3) & 3;
 
-                const int f_scale = scaleFactors[attenuation];
-
                     g_modeMap[0][0] = 5;
                     g_modeMap[1][0] = 5;
                     g_modeMap[2][0] = 5;
                     g_modeMap[3][0] = 5;
-
+#endif // __AUDIO_DETECTION__
                 f_ring_buffer[0][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(0);    // Channel 0 - First of pair for audio_sample[0]
-
+#ifdef __AUDIO_DETECTION__
                 g_irregularity[0]  =   f_ring_buffer[0][i0] - f_ring_buffer[0][i1] + f_ring_buffer[0][i2] - f_ring_buffer[0][i3];
 
                 if(g_irregularity[0] > AUDIO_THRESHOLD || g_irregularity[0] < -AUDIO_THRESHOLD && m_audio_mode_activated )
@@ -159,7 +159,7 @@ void            CKernel::readADC()
                     ++idx1;
                     if(idx1 == w1) idx1 = 0;
                     }
-
+#endif // __AUDIO_DETECTION__
                 g_inOutMatrixInt[0][RAW] =  (f_ring_buffer[0][0] + f_ring_buffer[0][1] + f_ring_buffer[0][2] + f_ring_buffer[0][3]) >>2 ; 
 
                 g_inOutMatrixInt[0][VAL] = (g_inOutMatrixInt[0][RAW] * f_scale) >> 10; //  -> / 1023;                                
@@ -167,7 +167,7 @@ void            CKernel::readADC()
                 g_inOutMatrixFlt[0][VAL] = (g_inOutMatrixInt[0][VAL]) * 0.0009765625f;
 
                 f_ring_buffer[1][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(1);    // Channel 1 - First of pair for audio_sample[1]
-
+#ifdef __AUDIO_DETECTION__
                 g_irregularity[1] =    f_ring_buffer[1][i0] - f_ring_buffer[1][i1] + f_ring_buffer[1][i2] - f_ring_buffer[1][i3];
 
                 if(g_irregularity[1] > AUDIO_THRESHOLD || g_irregularity[1] < -AUDIO_THRESHOLD && m_audio_mode_activated )
@@ -201,7 +201,7 @@ void            CKernel::readADC()
                     ++idx3;
                     if(idx3 == w3) idx3 = 0;
                     }
-
+#endif // __AUDIO_DETECTION__
                 g_inOutMatrixInt[1][RAW] =  (f_ring_buffer[1][0] + f_ring_buffer[1][1] + f_ring_buffer[1][2] + f_ring_buffer[1][3]) >>2 ; 
 
                 g_inOutMatrixInt[1][VAL] = (g_inOutMatrixInt[1][RAW] * f_scale) >> 10;                               
@@ -209,7 +209,7 @@ void            CKernel::readADC()
                 g_inOutMatrixFlt[1][VAL] = (g_inOutMatrixInt[1][VAL]) * 0.0009765625f;
 
                 f_ring_buffer[2][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(2);    // Channel 2 - Second of pair for audio_sample[0]
-
+#ifdef __AUDIO_DETECTION__
                 g_irregularity[2] =    f_ring_buffer[2][i0] - f_ring_buffer[2][i1] + f_ring_buffer[2][i2] - f_ring_buffer[2][i3];
                 
                 if(g_irregularity[2] > AUDIO_THRESHOLD || g_irregularity[2] < -AUDIO_THRESHOLD && m_audio_mode_activated )
@@ -243,7 +243,7 @@ void            CKernel::readADC()
                     ++idx1;
                     if(idx1 == w1) idx1 = 0;
                     }
-
+#endif // __AUDIO_DETECTION__
                 g_inOutMatrixInt[2][RAW] =  (f_ring_buffer[2][0] + f_ring_buffer[2][1] + f_ring_buffer[2][2] + f_ring_buffer[2][3]) >>2 ; 
 
                 g_inOutMatrixInt[2][VAL] = (g_inOutMatrixInt[2][RAW] * f_scale) >> 10;                 
@@ -251,7 +251,7 @@ void            CKernel::readADC()
                 g_inOutMatrixFlt[2][VAL] = (g_inOutMatrixInt[2][VAL]) * 0.0009765625f;
 
                 f_ring_buffer[3][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(3);    // Channel 3 - Second of pair for audio_sample[1]
-
+#ifdef __AUDIO_DETECTION__
                 g_irregularity[3] =    f_ring_buffer[3][i0] - f_ring_buffer[3][i1] + f_ring_buffer[3][i2] - f_ring_buffer[3][i3];
 
                 if(g_irregularity[3] > AUDIO_THRESHOLD || g_irregularity[3] < -AUDIO_THRESHOLD && m_audio_mode_activated )
@@ -285,7 +285,7 @@ void            CKernel::readADC()
                     ++idx3;
                     if(idx3 == w3) idx3 = 0;
                     }
-
+#endif // __AUDIO_DETECTION__
                 g_inOutMatrixInt[3][RAW] = (f_ring_buffer[3][0] + f_ring_buffer[3][1] + f_ring_buffer[3][2] + f_ring_buffer[3][3]) >>2 ; 
 
                 g_inOutMatrixInt[3][VAL] = (g_inOutMatrixInt[3][RAW] * f_scale) >> 10;                  
@@ -323,10 +323,10 @@ void            CKernel::readADC()
                 g_inOutMatrixInt[7][VAL] = (g_inOutMatrixInt[7][RAW] * f_scale) >> 10;                  
                 
                 g_inOutMatrixFlt[7][VAL] = (g_inOutMatrixInt[7][VAL]) * 0.0009765625f;
-                
+#ifdef __AUDIO_DETECTION__                
                 if(audio_hold_A > 0) --audio_hold_A;
                 if(audio_hold_B > 0) --audio_hold_B;
-
+#endif // __AUDIO_DETECTION__
                 f_index_ring_buffer = (f_index_ring_buffer + 1) & 3;
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -426,6 +426,81 @@ void gpio_write(unsigned pin, unsigned state, int pull)
         mmio_write32(ARM_GPIO_GPCLR0 + (pin / 32) * 4, mask);
     }
 }
+
+
+// from marcos.h
+
+#define PACKED		__attribute__ ((packed))
+#define	MAXALIGN	__attribute__ ((aligned))
+#define	ALIGN(n)	__attribute__ ((aligned (n)))
+#define NORETURN	__attribute__ ((noreturn))
+#ifndef __clang__
+#define NOOPT		__attribute__ ((optimize (0)))
+#define STDOPT		__attribute__ ((optimize (2)))
+#define MAXOPT		__attribute__ ((optimize (3)))
+#else
+#define NOOPT
+#define STDOPT
+#define MAXOPT
+#endif
+#define WEAK		__attribute__ ((weak))
+
+#define likely(exp)	__builtin_expect (!!(exp), 1)
+#define unlikely(exp)	__builtin_expect (!!(exp), 0)
+
+#define BIT(n)		(1U << (n))
+
+#define IS_POWEROF_2(num) ((num) != 0 && (((num) & ((num) - 1)) == 0))
+
+// big endian (to be used for constants only)
+#define BE(value)	((((value) & 0xFF00) >> 8) | (((value) & 0x00FF) << 8))
+
+// from memio.h
+
+#include <circle/types.h>
+
+#ifdef __cplusplus      // why? 
+extern "C" {
+#endif
+
+/// \brief Read 32-bit value from MMIO address
+static inline u32 read32 (uintptr nAddress)
+{
+	return *(u32 volatile *) nAddress;
+}
+/// \brief Write 32-bit value to MMIO address
+static inline void write32 (uintptr nAddress, u32 nValue)
+{
+	*(u32 volatile *) nAddress = nValue;
+}
+#ifdef __cplusplus
+}
+#endif
+
+// from bcmwatchdog.h 
+#include <circle/spinlock.h>
+
+
+	static const unsigned MaxTimeoutSeconds = 15;
+
+    CSpinLock m_SpinLock; // really ?!?!
+
+
+void CKernel::watchDogStart (unsigned nTimeoutSeconds)
+{
+	if (nTimeoutSeconds > MaxTimeoutSeconds)
+	{
+		nTimeoutSeconds = MaxTimeoutSeconds;
+	}
+	m_SpinLock.Acquire ();
+
+	write32 (ARM_PM_WDOG, ARM_PM_PASSWD | ((nTimeoutSeconds << 16) & ARM_PM_WDOG_TIME));
+
+	write32 (ARM_PM_RSTC,   ARM_PM_PASSWD | ARM_PM_RSTC_REBOOT
+			      | (read32 (ARM_PM_RSTC) & ARM_PM_RSTC_CLEAR));
+
+	m_SpinLock.Release ();
+}
 */
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -445,6 +520,7 @@ void            CKernel::prepParameters       ()        // f_buffer guess here w
                     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
 void            CKernel::chooseProgram        ( int p_channel, &p_activeShader )
 {
                 static int p_activeShader = 0;
@@ -489,7 +565,21 @@ int             CKernel::chooseFrame        ( int p_channel, &p_activeFrame, &p_
                     p_activeFrame = f_calculated;
                     }
 }
+*/
+// NEW generic - not condensed valid arrays, max number of files ( macros for example!)
+void CKernel::chooseIndex(int p_channel, int& p_activeIndex, int p_maxCount, bool* flags)
+{
+    static int p_activeIndex = 0;
+
+    int f_calculated = g_inOutMatrixInt[p_channel][RAW] * p_maxCount >> 10;
+
+    if (flags[f_calculated])
+    {
+        p_activeIndex = f_calculated;
+    }
+}
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
 void            CKernel::storeModesV1         ()  // faster
 {
                 
@@ -509,6 +599,7 @@ void            CKernel::storeModesV1         ()  // faster
                     g_currentProgramBuffer = DEFAULT_SLOT;
                     }
 }
+*/
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::storeModesV2         ()    // "saver"
 {
@@ -519,12 +610,12 @@ void            CKernel::storeModesV2         ()    // "saver"
                     g_last_gl_program = g_current_gl_program;
                     }               
 
-                if (g_centralModeBuffer[g_current_gl_program][is_stored] == true && g_currentProgramBuffer != g_current_gl_program)
+                if (g_centralModeBuffer[g_current_gl_program][is_stored] == true /* && g_currentProgramBuffer != g_current_gl_program */)
                     {  
                     memcpy(&g_centralModeBuffer[g_current_gl_program][0], &g_centralModeBuffer[DEFAULT_SLOT][0], sizeof(g_centralModeBuffer[g_current_gl_program])); // replaces 16 * sizeof(int)
                     g_currentProgramBuffer = g_current_gl_program;
                     }
-                else if (g_centralModeBuffer[g_current_gl_program][is_stored] == false && g_currentProgramBuffer != DEFAULT_SLOT)
+                else if (g_centralModeBuffer[g_current_gl_program][is_stored] == false /* && g_currentProgramBuffer != DEFAULT_SLOT */)
                     {  
                     g_currentProgramBuffer = DEFAULT_SLOT;
                     }
@@ -559,7 +650,7 @@ void            CKernel::buttonPing(int p_btn_id, int pin)
                     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::button_consumer(int p_btn_id)
+void            CKernel::button_consumer(int p_btn_id) // this is where the magic happens: we need to set the states of menu layer, menu, we need to use one button for bpm input and so on 
 {
                 if (g_buttons_states[p_btn_id][BTN_SINGLE]) counter += 1;
                 if (g_buttons_states[p_btn_id][BTN_DOUBLE]) counter -= 1;
@@ -609,10 +700,10 @@ void            CKernel::randomVec8           (uint32_t p_seed)                 
                 g_inOutMatrixInt[7][RND] = ( g_inOutMatrixFlt[7][RND] * f_max_int);
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// question here - should i rather have one funtion for both channels or should i seperate the functions and call per channel?
+// question here - should i rather have one function for both channels or should i separate the functions and call per channel?
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::calculate2BPM   (   unsigned long   p_triggerTimeClockA, 
-                                            unsigned long   p_triggerTimeClockB) 
+void            CKernel::calculate2BPM   (   unsigned long   p_triggerTimeClockA,       // love to split it but i will need additional parameters right?
+                                                unsigned long   p_triggerTimeClockB) 
 {
                 static unsigned long f_lastTime[2];
                 static unsigned long f_timeBuffer[2][4] = {{0}};  
@@ -665,10 +756,40 @@ void            CKernel::calculate2BPM   (   unsigned long   p_triggerTimeClockA
                     }
                 g_activeBpmChannel                  = ( g_lastBpmCalculation[0] > g_lastBpmCalculation[1]) ? 0 : 1; // what was the last bpm input? 
 }
+
+void            CKernel::calculate1BPM   (   int p_source, unsigned long   p_triggerTimeClock)       // love to split it but i will need additional parameters right?
+{
+                static unsigned long f_lastTime[2];
+                static unsigned long f_timeBuffer[2][4] = {{0}};  
+                static unsigned long f_deltaBuffer[2][3]= { 0 };
+
+                unsigned long f_intervalAverage = 0;
+                static int f_timeIndex[2] = {0};
+
+                if (p_triggerTimeClock != f_lastTime[p_source])                                                          // Process button u_time (instance 0)
+                    {
+                    f_timeBuffer[p_source][f_timeIndex[p_source]] = p_triggerTimeClock;
+        
+                    f_deltaBuffer[p_source][0]          =   f_timeBuffer[p_source][1] - f_timeBuffer[p_source][0];   
+                    f_deltaBuffer[p_source][1]          =   f_timeBuffer[p_source][2] - f_timeBuffer[p_source][1];
+                    f_deltaBuffer[p_source][2]          =   f_timeBuffer[p_source][3] - f_timeBuffer[p_source][2];
+
+                    if(     f_deltaBuffer[p_source][1]  <   f_deltaBuffer[p_source][0] * 1.25f &&  f_deltaBuffer[p_source][2]  <   f_deltaBuffer[p_source][0] * 1.25f &&  f_deltaBuffer[p_source][0]  <   f_deltaBuffer[p_source][2] * 1.25f ) // calculates an average and allows 25% play ( quite high right ) 
+                        {
+                        f_intervalAverage           = ( f_deltaBuffer[p_source][0] + f_deltaBuffer[p_source][1] + f_deltaBuffer[p_source][2]) / 3;
+            
+                        g_resultBPM[p_source]              =   60000000 / f_intervalAverage;
+            
+                        g_intervalCalculated[p_source]     =   f_intervalAverage;
+                        g_lastBpmCalculation[p_source]     =   m_Timer.GetClockTicks();
+                        }
+                    f_lastTime[p_source]                   =   p_triggerTimeClock;
+
+                    f_timeIndex[p_source]                  = ( f_timeIndex[p_source] + 1) % 4;    
+                    }
+}
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::predictedNextBeat2 ()
+void            CKernel::predictedNextBeat2 ()  // love to split it but i will need additional parameters right? like LF1_MULT
 {
                 unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                      // Get the current u_time in clock ticks
 
@@ -679,7 +800,7 @@ void            CKernel::predictedNextBeat2 ()
                 if (currentTime >= g_nextCircleBuffer[0]) 
                     {
                     g_lastCircleBuffer[0]           =   g_nextCircleBuffer[0];
-                    g_nextCircleBuffer[0]           =   g_nextCircleBuffer[0] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[0]);
+                    g_nextCircleBuffer[0]           =   g_nextCircleBuffer[0] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[0]); // why again g_lfoMultiplierTMP? isnt it stored already, do we need to back it up?
                     g_lfoMultiplierTMP[0]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF1_MULT]];
                     }
                 if ((g_lastBpmCalculationTMP[0]     !=  g_lastBpmCalculation[0]))
@@ -715,8 +836,36 @@ void            CKernel::predictedNextBeat2 ()
                     g_lfoMultiplierTMP[1]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF2_MULT]];
                     }
 }
+
+void            CKernel::predictedNextBeat2 ( int p_source, int p_lfoMult )  // love to split it but i will need additional parameters right? like LF1_MULT
+{
+                unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                      // Get the current u_time in clock ticks
+
+                if (currentTime >= g_nextBeatTime[p_source])
+                    {
+                    g_nextBeatTime[p_source]               +=  g_intervalCalculated[p_source];                                                                        // Predict the next beat u_time
+                    }
+                if (currentTime >= g_nextCircleBuffer[p_source]) 
+                    {
+                    g_lastCircleBuffer[p_source]           =   g_nextCircleBuffer[p_source];
+                    g_nextCircleBuffer[p_source]           =   g_nextCircleBuffer[p_source] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[p_source]); // why again g_lfoMultiplierTMP? isnt it stored already, do we need to back it up?
+                    g_lfoMultiplierTMP[source0]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMult]];
+                    }
+                if ((g_lastBpmCalculationTMP[p_source]     !=  g_lastBpmCalculation[p_source]))
+                    {
+                    g_nextBeatTime[p_source]               =   g_lastBpmCalculation[p_source];                                                                      // Reset to current time for new BPM
+                    g_lastBpmCalculationTMP[p_source]      =   g_lastBpmCalculation[p_source];
+                    }
+                if (g_lfoMultiplierTMP[p_source]           !=  g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMult]])
+                    {
+                    g_lastCircleBuffer[p_source]           =   g_lastBpmCalculation[g_activeBpmChannel];
+                    g_nextCircleBuffer[p_source]           =   g_lastBpmCalculation[g_activeBpmChannel] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[p_source]);
+                    g_lfoMultiplierTMP[p_source]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMult]];
+                    }
+
+}
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::sampleWaveTable                   ()
+void            CKernel::sampleWaveTable                   () // love to split it but i will need additional parameters right? like LF1_MULT
 {
                 unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                          // Get the current u_time in clock ticks why not the start_time_fps_calculation or currentTime from Run()??
 
@@ -733,6 +882,18 @@ void            CKernel::sampleWaveTable                   ()
                 g_sampleIndex[1]                    =   f_indexB > 255 ? 255 : f_indexB;                                                                  // ! i like to get rid of this saveguard !
                 g_inOutMatrixFlt[0][LF2]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF2_WAVE]][g_sampleIndex[1]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
                 g_inOutMatrixInt[0][LF2]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF2_WAVE]][g_sampleIndex[1]];
+}   
+
+void            CKernel::sampleWaveTable                   ( int p_source, int p_lfoOut, int p_waveTable ) // love to split it but i will need additional parameters right? like LF1_MULT
+{
+                unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                          // Get the current u_time in clock ticks why not the start_time_fps_calculation or currentTime from Run()??
+
+                g_elapsedMicroseconds[p_source]     =   currentTime - g_lastCircleBuffer[p_source];
+                g_cycleLength[p_source]             =   g_nextCircleBuffer[p_source] - g_lastCircleBuffer[p_source];                                                    // Total length of the current cycle
+                int f_indexA                        =  (g_elapsedMicroseconds[p_source] * 255) / g_cycleLength[p_source];                                               // 255 is not the amplitude! its the number of samples
+                g_sampleIndex[p_source]             =   f_indexA > 255 ? 255 : f_indexA;                                                                  // means i need a wraparound - on the other hand: i should have a clear calculation here that will never create a index >255!
+                g_inOutMatrixFlt[0][p_lfoOut]       =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_waveTable]][g_sampleIndex[p_source]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
+                g_inOutMatrixInt[0][p_lfoOut]       =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_waveTable]][g_sampleIndex[p_source]];
 }   
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

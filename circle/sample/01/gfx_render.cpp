@@ -31,14 +31,26 @@ void CKernel::render_uniform_setup(glsl_state* m_glsl)
     GLuint cx = m_glsl->screen_width;
     GLuint cy = m_glsl->screen_height;
 
-    if(m_glsl->u_time[g_current_gl_program] != -1) glUniform1f(m_glsl->u_time[g_current_gl_program], GLtime);
-    if(m_glsl->u_tres[g_current_gl_program]!= -1 ) glUniform2f(m_glsl->u_tres[g_current_gl_program], cx, cy);
-    if(m_glsl->u_seed[g_current_gl_program] != -1) glUniform4f(m_glsl->u_seed[g_current_gl_program], g_inOutMatrixFlt[0][RND], g_inOutMatrixFlt[1][RND], g_inOutMatrixFlt[2][RND], g_inOutMatrixFlt[3][RND]);
-    if(m_glsl->u_aud[g_current_gl_program]!= -1 ) glUniform4f(m_glsl->u_aud[g_current_gl_program], g_inOutMatrixFlt[0][AU0], g_inOutMatrixFlt[0][AU1], g_inOutMatrixFlt[0][AU2], g_inOutMatrixFlt[0][AU3]);
-    if(m_glsl->u_col[g_current_gl_program] != -1) glUniform4f(m_glsl->u_col[g_current_gl_program], 0.0f, 0.0f, 0.0f, g_opaque);
-    if(m_glsl->u_par_a[g_current_gl_program] != -1) glUniform4f(m_glsl->u_par_a[g_current_gl_program], g_inOutMatrixFlt[0][OUT], g_inOutMatrixFlt[1][OUT], g_inOutMatrixFlt[2][OUT], g_inOutMatrixFlt[3][OUT]);
-    if(m_glsl->u_par_b[g_current_gl_program] != -1) glUniform4f(m_glsl->u_par_b[g_current_gl_program], g_inOutMatrixFlt[4][OUT], g_inOutMatrixFlt[5][OUT], g_inOutMatrixFlt[6][OUT], g_inOutMatrixFlt[7][OUT]);
-    if(m_glsl->u_tex_l[g_current_gl_program] != -1) glUniform1i(m_glsl->u_tex_l[g_current_gl_program], p_validTextureCount);
+    if(m_glsl->u_time[g_current_gl_program] != -1)  glUniform1f(m_glsl->u_time[g_current_gl_program],   GLtime);
+    if(m_glsl->u_tres[g_current_gl_program]!= -1 )  glUniform2f(m_glsl->u_tres[g_current_gl_program],   cx, cy);
+    if(m_glsl->u_seed[g_current_gl_program] != -1)  glUniform4f(m_glsl->u_seed[g_current_gl_program],   g_inOutMatrixFlt[0][RND], 
+                                                                                                        g_inOutMatrixFlt[1][RND], 
+                                                                                                        g_inOutMatrixFlt[2][RND], 
+                                                                                                        g_inOutMatrixFlt[3][RND]);
+    if(m_glsl->u_aud[g_current_gl_program]!= -1 )   glUniform4f(m_glsl->u_aud[g_current_gl_program],    g_inOutMatrixFlt[0][AU0], 
+                                                                                                        g_inOutMatrixFlt[0][AU1], 
+                                                                                                        g_inOutMatrixFlt[0][AU2], 
+                                                                                                        g_inOutMatrixFlt[0][AU3]);
+    if(m_glsl->u_col[g_current_gl_program] != -1)   glUniform4f(m_glsl->u_col[g_current_gl_program],    0.0f, 0.0f, 0.0f, g_opaque);    // is a stub for a potential color mode, alfa was to see my text display
+    if(m_glsl->u_par_a[g_current_gl_program] != -1) glUniform4f(m_glsl->u_par_a[g_current_gl_program],  g_inOutMatrixFlt[0][OUT], 
+                                                                                                        g_inOutMatrixFlt[1][OUT], 
+                                                                                                        g_inOutMatrixFlt[2][OUT], 
+                                                                                                        g_inOutMatrixFlt[3][OUT]);
+    if(m_glsl->u_par_b[g_current_gl_program] != -1) glUniform4f(m_glsl->u_par_b[g_current_gl_program],  g_inOutMatrixFlt[4][OUT], 
+                                                                                                        g_inOutMatrixFlt[5][OUT], 
+                                                                                                        g_inOutMatrixFlt[6][OUT], 
+                                                                                                        g_inOutMatrixFlt[7][OUT]);
+    if(m_glsl->u_tex_l[g_current_gl_program] != -1) glUniform1i(m_glsl->u_tex_l[g_current_gl_program],  p_validTextureCount);           // relict? 
 #ifdef __GL_DEBUG__
     check();
 #endif

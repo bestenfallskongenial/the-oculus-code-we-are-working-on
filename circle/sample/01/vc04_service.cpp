@@ -45,13 +45,6 @@ bool            CKernel::initEventsVCOS(VCOS_EVENT_T &event, const char* name)
                     }
                 return true;
 }
-/*
-                VCOS_EVENT_T m_EventSMEM;
-                VCOS_EVENT_T m_EventMMAL;
-
-                initEventsVCOS(m_EventSMEM, "SMEM");
-                initEventsVCOS(m_EventMMAL, "MMAL");
-*/
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 u32             CKernel::convertAddress ( void* buffer, size_t size )
 {
@@ -175,7 +168,6 @@ bool            CKernel::openServiceVCHI(   SERVICE_CREATION_T      &tx,
                                         VCHI_SERVICE_HANDLE_T&  ServiceHandle ) // sure about uint32_t service_id for VCHIQ_MAKE_FOURCC??
 
 {
-
             //  SERVICE_CREATION_T tx = {}; // why not here?!
                 tx.version.version          = serviceVersion;
                 tx.version.version_min      = serviceVersionMin;
@@ -504,10 +496,8 @@ bool bOK = true;
             /*
                 queueInputBufferMMAL        ( m_BufferFromHostTx_Input,         // ---------- BUFFERS ---------- 
                                             m_BufferFromHostRx_Input );
-
                 queueOutputBufferMMAL       ( m_BufferFromHostTx_OutputA,
                                             m_BufferFromHostRx_OutputA );
-
                 queueOutputBufferMMAL       ( m_BufferFromHostTx_OutputB,
                                             m_BufferFromHostRx_OutputB );
             */
