@@ -1,6 +1,7 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include "kernel.h"
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
 bool            CKernel::Mount          (   const char* p_deviceName)                           // its in the name. mount the filesystem ( sd / usb ) for further use
 {
                 CDevice* f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);
@@ -22,6 +23,8 @@ bool            CKernel::Mount          (   const char* p_deviceName)           
                     }
                 return true;
 }
+*/
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // new
 bool CKernel::Mount2(const char* p_deviceName)   // this or the one above?
 {
@@ -339,8 +342,7 @@ char**          CKernel::allocBufferDMA             (   size_t count,
                 char* dma_block = (char*)(((uintptr_t)raw + 4095) & ~4095);  // 4K-aligned
                 storeLog( MY_BUFFER, MY_INDEX, "ALLOC-STD dma_block", (u32) dma_block);
 #endif // ALLOC_DEBUG
-                // Build slice table
-                char** buffers = new char*[count];
+                char** buffers = new char*[count];  // Build slice table
                 for (size_t i = 0; i < count; ++i)
                 {
                     buffers[i] = dma_block + i * bufferSize;

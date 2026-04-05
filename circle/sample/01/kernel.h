@@ -549,7 +549,10 @@ public:
     bool                        tex_flags[MAX_TEXTURE];
     bool                        omt_flags[MAX_TEXTURE];        
 
+    olg_state                   m_ogl;
+
     vertex_state                m_vertex;
+
     glsl_state                  m_vsh;
     glsl_state                  m_fsh;
     glsl_state                  m_osh;
