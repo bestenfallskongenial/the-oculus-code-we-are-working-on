@@ -69,7 +69,7 @@ boolean         CKernel::Initialize (void)
                 }
                 if (bOK)
                 {
-                    gfx_init_OGL(&m_glsl); // we need to initialize the graphics before the shared memory
+                    initOGL   (&m_glsl); // we need to initialize the graphics before the shared memory
                     m_Timer.MsDelay(200);
                 }
                 if (bOK)

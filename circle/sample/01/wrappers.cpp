@@ -252,51 +252,169 @@ void            CKernel::wrapper_load_usb()
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::wrapper_init_gl_sd()
 {
-                parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
-                parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
+            //  parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
+            //    parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
 
-                initVbuffer(&m_glsl);
+                initVbuffer (   &m_ogl,
+                                &m_vtx ) 
 
-                initVshaders    (&m_glsl, filecounter[FT_VSH][FLD_PREV], filecounter[FT_VSH][FLD_LOADED]);
+            //  initVshaders    (&m_glsl, filecounter[FT_VSH][FLD_PREV], filecounter[FT_VSH][FLD_LOADED]);
 
-                initOshader     (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);  
+                initShader(     &m_vtx,         // init vertex shader 
+                                &m_vsh, 
+                                &m_tex,
+                                m_bufferVsh,
+                                filecounter[FT_VSH][FLD_PREV],      // should be 0
+                                filecounter[FT_VSH][FLD_LOADED],    // should be 1 - BUT the code should also ensure that filecounter contains the correct values
+                                GL_VERTEX_SHADER,
+                                vsh_flags);
 
-                initFshaders    (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+                initShader(     &m_vtx,         // init fragment shader ( default )
+                                &m_fsh, 
+                                &m_tex,
+                                m_bufferFsh,
+                                filecounter[FT_FSH][FLD_PREV],
+                                filecounter[FT_FSH][FLD_LOADED],
+                                GL_FRAGMENT_SHADER,
+                                fsh_flags);          
 
-                initOprogram    (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);
+                initShader(     &m_vtx,         // init Overlay shader
+                                &m_osh, 
+                                &m_omt,
+                                m_bufferOmf,
+                                filecounter[FT_OMF][FLD_PREV],
+                                filecounter[FT_OMF][FLD_LOADED],
+                                GL_FRAGMENT_SHADER,
+                                omf_flags);
 
-                initFprograms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+            //  initOshader     (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);  
 
-                initOuniforms   (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);
+            //  initFshaders    (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
 
-                initFuniforms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+            //  initOprogram    (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);
 
-                initOtexture    (&m_glsl, filecounter[FT_OMT][FLD_PREV], filecounter[FT_OMT][FLD_LOADED]);
+                initProgram(    &m_vtx,         // user fragment shaders
+                                &m_vsh,
+                                &m_fsh,
+                                &m_tex,
+                                filecounter[FT_FSH][FLD_PREV],
+                                filecounter[FT_FSH][FLD_LOADED],
+                                filecounter[FT_FSH][FLD_VALID],
+                                vsh_flags,
+                                fsh_flags);
+                                
+                initProgram(    &m_vtx,         // overlay fragment shader 
+                                &m_vsh,
+                                &m_osh,
+                                &m_omt,
+                                filecounter[FT_OMF][FLD_PREV],
+                                filecounter[FT_OMF][FLD_LOADED],
+                                filecounter[FT_OMF][FLD_VALID],
+                                vsh_flags,
+                                omf_flags);
+
+            //  initFprograms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+
+                initUniform(    &m_vtx,
+                                &m_fsh,
+                                &m_tex,
+                                0,                                  // why not simply change the call signature? 
+                                filecounter[FT_FSH][FLD_VALID]);
+
+                initUniform(    &m_vtx,
+                                &m_osh,
+                                &m_omt,
+                                0,
+                                filecounter[FT_OMF][FLD_VALID]);            
+
+            //  initOuniforms   (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);
+
+            //  initFuniforms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+
+                initTexture(    &m_vtx,
+                                &m_fsh,
+                                &m_tex,
+                                m_bufferTex,
+                                filecounter[FT_TEX][FLD_PREV],
+                                filecounter[FT_TEX][FLD_LOADED],
+                                filecounter[FT_TEX][FLD_VALID],
+                                tex_flags,
+                                GL_REPEAT,
+                                GL_REPEAT);
+
+                initTexture(    &m_vtx,
+                                &m_osh,
+                                &m_omt,
+                                m_bufferOmt,
+                                filecounter[FT_OMT][FLD_PREV],
+                                filecounter[FT_OMT][FLD_LOADED],
+                                filecounter[FT_OMT][FLD_VALID],
+                                omt_flags,
+                                GL_CLAMP_TO_EDGE,
+                                GL_CLAMP_TO_EDGE);
+
+            //  initOtexture    (&m_glsl, filecounter[FT_OMT][FLD_PREV], filecounter[FT_OMT][FLD_LOADED]);
 
         //      initUtextures   (&m_glsl, filecounter[FT_TEX][FLD_PREV], filecounter[FT_TEX][FLD_LOADED]); 
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::wrapper_init_gl_usb()
 {
-                parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
-                parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
+            //    parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
+            //    parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
 
-                initFshaders    (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+            //  initFshaders    (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
 
-                initFprograms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+                initShader(     &m_vtx,         // init fragment shader ( default )
+                                &m_fsh, 
+                                &m_tex,
+                                m_bufferFsh,
+                                filecounter[FT_FSH][FLD_PREV],
+                                filecounter[FT_FSH][FLD_LOADED],
+                                GL_FRAGMENT_SHADER,
+                                fsh_flags);    
 
-                initFuniforms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+            //  initFprograms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
 
-                initUtextures   (&m_glsl, filecounter[FT_TEX][FLD_PREV], filecounter[FT_TEX][FLD_LOADED]); 
+                initProgram(    &m_vtx,         // user fragment shaders
+                                &m_vsh,
+                                &m_fsh,
+                                &m_tex,
+                                filecounter[FT_FSH][FLD_PREV],
+                                filecounter[FT_FSH][FLD_LOADED],
+                                filecounter[FT_FSH][FLD_VALID],
+                                vsh_flags,
+                                fsh_flags);            
+
+            //  initFuniforms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+
+                initUniform(    &m_vtx,
+                                &m_fsh,
+                                &m_tex,
+                                0,                                  // why not simply change the call signature? 
+                                filecounter[FT_FSH][FLD_VALID]);            
+
+            //  initUtextures   (&m_glsl, filecounter[FT_TEX][FLD_PREV], filecounter[FT_TEX][FLD_LOADED]); 
+
+                initTexture(    &m_vtx,
+                                &m_fsh,
+                                &m_tex,
+                                m_bufferTex,
+                                filecounter[FT_TEX][FLD_PREV],
+                                filecounter[FT_TEX][FLD_LOADED],
+                                filecounter[FT_TEX][FLD_VALID],
+                                tex_flags,
+                                GL_REPEAT,
+                                GL_REPEAT);
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::wrapper_io()
 {
                 readADC();                  //  we read and dampen the adc each loop
 
-                chooseProgram(ADC_SELECT_PRG);          // determine the shader
-                chooseTexture(ADC_SELECT_TEX);          // texture 
-                chooseVideo(ADC_SELECT_VID);            // video each loop
+            //  chooseProgram(ADC_SELECT_PRG);          // determine the shader
+            //  chooseTexture(ADC_SELECT_TEX);          // texture 
+            //  chooseVideo(ADC_SELECT_VID);            // video each loop
 
                 buttonPing( 0, SW_PIN_A);                  // check button A
                 buttonPing( 1, SW_PIN_B);                  // and B

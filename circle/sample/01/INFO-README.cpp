@@ -115,21 +115,22 @@ enum FileField
     FLD_SCANNED,    // new
     FLD_LOADED,
     FLD_PREV,       // new
+    FLD_VALID // <- p_validCount 
     FLD_SIZE,
     FLD_COUNT
 };
 
-int filecounter[FT_COUNT][FLD_COUNT] =
-{   //          MAXSD   MAXUSB      EXTCNT   SCANNED   LOADED  PREV    SIZE  
-    /* VSH */ { VSH_SD, VSH_USB,    VSH_EXT, 0,        0,      0,      VSH_SIZ },
-    /* OMF */ { OMF_SD, OMF_USB,    OMF_EXT, 0,        0,      0,      OMF_SIZ },
-    /* FSH */ { FSH_SD, FSH_USB,    FSH_EXT, 0,        0,      0,      FSH_SIZ },
-    /* OMT */ { OMT_SD, OMT_USB,    OMT_EXT, 0,        0,      0,      OMT_SIZ },
-    /* TEX */ { TEX_SD, TEX_USB,    TEX_EXT, 0,        0,      0,      TEX_SIZ },
-    /* VID */ { VID_SD, VID_USB,    VID_EXT, 0,        0,      0,      VID_SIZ },
-    /* KLN */ { KLN_SD, KLN_USB,    KLN_EXT, 0,        0,      0,      KLN_SIZ },
-    /* FRM */ { FRM_SD, FRM_USB,          0, 0,        0,      0,      FRM_SIZ },     // i decided to add the output-frames A & B
-    /* LOG */ { LOG_SD, LOG_USB,          0, 0,        0,      0,      LOG_SIZ }      // and logger buffer information here      
+unsigned filecounter[FT_COUNT][FLD_COUNT] =
+{   //          MAXSD   MAXUSB      EXTCNT   SCANNED   LOADED  PREV    V_CNT    SIZE  
+    /* VSH */ { VSH_SD, VSH_USB,    VSH_EXT, 0,        0,      0,      0,       VSH_SIZ },
+    /* OMF */ { OMF_SD, OMF_USB,    OMF_EXT, 0,        0,      0,      0,       OMF_SIZ },
+    /* FSH */ { FSH_SD, FSH_USB,    FSH_EXT, 0,        0,      0,      0,       FSH_SIZ },
+    /* OMT */ { OMT_SD, OMT_USB,    OMT_EXT, 0,        0,      0,      0,       OMT_SIZ },
+    /* TEX */ { TEX_SD, TEX_USB,    TEX_EXT, 0,        0,      0,      0,       TEX_SIZ },
+    /* VID */ { VID_SD, VID_USB,    VID_EXT, 0,        0,      0,      0,       VID_SIZ },
+    /* KLN */ { KLN_SD, KLN_USB,    KLN_EXT, 0,        0,      0,      0,       KLN_SIZ },
+    /* FRM */ { FRM_SD, FRM_USB,          0, 0,        0,      0,      0,       FRM_SIZ },     // i decided to add the output-frames A & B
+    /* LOG */ { LOG_SD, LOG_USB,          0, 0,        0,      0,      0,       LOG_SIZ }      // and logger buffer information here      
 };
 // lists of extensions possible in my scanroot directory function per filetype 
         const   char                   *g_SufVsh[VSH_EXT]			    = { "vsh" }; 

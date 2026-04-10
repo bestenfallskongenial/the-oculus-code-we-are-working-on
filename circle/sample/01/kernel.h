@@ -371,7 +371,7 @@ struct menu_glsl_state
 
 // NEW
 
-    struct vertex_state
+    struct vtx_state
 {
     // shared attrib/buffer
     GLuint                      gl_buf;                         // this is also an extra struct we need to pass too
@@ -391,7 +391,7 @@ struct olg_state
     EGLSurface                  surface;
     EGLContext                  context;
 };
-struct texture_state
+struct tex_state
 {
 
     unsigned                    width[MAX_TEXTURE];
@@ -551,14 +551,14 @@ public:
 
     olg_state                   m_ogl;
 
-    vertex_state                m_vertex;
+    vtx_state                m_vtx;
 
     glsl_state                  m_vsh;
     glsl_state                  m_fsh;
     glsl_state                  m_osh;
 
-    texture_state               m_tex;
-    texture_state               m_omt;
+    tex_state               m_tex;
+    tex_state               m_omt;
 
 // we need also a struct for the videos, just to keep the frame hear    
 }

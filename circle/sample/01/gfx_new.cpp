@@ -11,14 +11,14 @@ void            CKernel::shaderLog(GLint shader, int shaderIndex, bool* flags)
 #endif // __DEBUG_LOG__                 
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::programLog(GLint shader, int program_index, bool* flags)
+void            CKernel::programLog(GLint program, int program_index, bool* flags)
 {
             //  int internal_index = 0;                     // i wonder, if and why we need it, was the indexing in the buffer incorrect? !!! DOUBLECHECK !!!
             //  if (program_index > 0)
             //      internal_index = program_index - 1;
 
                 GLint success;
-                glGetProgramiv(shader, GL_LINK_STATUS, &success);
+                glGetProgramiv(program, GL_LINK_STATUS, &success);
 
                 flags[program_index] = (success == GL_TRUE);
 #ifdef __DEBUG_LOG__
@@ -34,12 +34,12 @@ void            CKernel::programLog(GLint shader, int program_index, bool* flags
                 storeLog( MY_BUFFER, MY_INDEX, "Program byte size", (u32)g_bytFsh[program_index]);
 #endif // __DEBUG_LOG__
                 char log[1024];
-                glGetProgramInfoLog(shader, sizeof(log), NULL, log);
+                glGetProgramInfoLog(program, sizeof(log), NULL, log);
 #ifdef __DEBUG_LOG__                 
                 storeMsg( MY_BUFFER, MY_INDEX, "Program InfoLog", log, sizeof(log));
 #endif // __DEBUG_LOG__
                 GLint numUniforms;
-                glGetProgramiv(shader, GL_ACTIVE_UNIFORMS, &numUniforms);
+                glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &numUniforms);
 #ifdef __DEBUG_LOG__ 
                 storeLog( MY_BUFFER, MY_INDEX, "Active Uniforms", (u32)numUniforms);
 #endif // __DEBUG_LOG__
@@ -50,8 +50,8 @@ void            CKernel::programLog(GLint shader, int program_index, bool* flags
                     GLint size;
                     GLenum type;
 
-                    glGetActiveUniform(shader, i, sizeof(uname), &length, &size, &type, uname);
-                    GLint location = glGetUniformLocation(shader, uname);
+                    glGetActiveUniform(program, i, sizeof(uname), &length, &size, &type, uname);
+                    GLint location = glGetUniformLocation(program, uname);
 #ifdef __DEBUG_LOG__ 
                     storeLog( MY_BUFFER, MY_INDEX, "Uniform idx/size/type/loc", (u32)i, (u32)size, (u32)type, (u32)location);
                     storeMsg( MY_BUFFER, MY_INDEX, "Uniform name", uname, length);
@@ -59,7 +59,7 @@ void            CKernel::programLog(GLint shader, int program_index, bool* flags
                 }
 
                 GLint numAttributes;
-                glGetProgramiv(shader, GL_ACTIVE_ATTRIBUTES, &numAttributes);
+                glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &numAttributes);
 #ifdef __DEBUG_LOG__ 
                 storeLog( MY_BUFFER, MY_INDEX, "Active Attributes", (u32)numAttributes);
 #endif // __DEBUG_LOG__
@@ -70,8 +70,8 @@ void            CKernel::programLog(GLint shader, int program_index, bool* flags
                     GLint size;
                     GLenum type;
 
-                    glGetActiveAttrib(shader, i, sizeof(aname), &length, &size, &type, aname);
-                    GLint location = glGetAttribLocation(shader, aname);
+                    glGetActiveAttrib(program, i, sizeof(aname), &length, &size, &type, aname);
+                    GLint location = glGetAttribLocation(program, aname);
 #ifdef __DEBUG_LOG__ 
                     storeLog( MY_BUFFER, MY_INDEX, "Attribute idx/size/type/loc", (u32)i, (u32)size, (u32)type, (u32)location);
                     storeMsg( MY_BUFFER, MY_INDEX, "Attribute name", aname, length);
@@ -179,7 +179,7 @@ void            CKernel::gfx_check( const char* file, unsigned line )
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::gfx_init_OGL   (   olg_state* o )
+void            CKernel::initOGL      (   olg_state* o )
 {
                 int32_t success = 0;
                 EGLBoolean result;
@@ -305,8 +305,10 @@ assert(EGL_FALSE != result);//?
 #endif // __OLG_DEBUG__            
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initVbuffer    (   olg_state* o,
-                                            vertex_state* v )                              // Function to initialize Buffers 
+                                            vtx_state* v )                              // Function to initialize Buffers 
 {
                 static const GLfloat vertex_data[] =  {  -1.0,-1.0, 1.0, 1.0, 1.0,-1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0  };
 
@@ -334,10 +336,10 @@ void            CKernel::initVbuffer    (   olg_state* o,
                 check();
 #endif // __GL_DEBUG__
 }
-
-void CKernel::initShaders(  vertex_state* v,
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void CKernel::initShaders(  vtx_state* v,
                             glsl_state* s,
-                            texture_state* t,
+                            tex_state* t,
                             char** srcBuffer, // removed the const here
                             int fromFile,
                             int toFile,
@@ -359,32 +361,41 @@ void CKernel::initShaders(  vertex_state* v,
 #endif
     }
 }
-void CKernel::initPrograms( vertex_state* v,
-                            glsl_state* s,
-                            texture_state* t,
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void CKernel::initProgram( vtx_state* v,
+                            glsl_state* vsh,
+                            glsl_state* fsh,
+                            tex_state* t,
                             int fromFile,
                             int toFile,
-                            bool* flags)
+                            bool* flags_vsh,
+                            bool* flags_fsh)
 {
+            if (!flags_vsh[0])
+                return;
+
     for (int i = fromFile; i < toFile; i++)
     {
-        if (!flags[i])
+        if (!flags_fsh[i])
             continue;
 
         fsh->gl_program_id[i] = glCreateProgram();
+        
+        if (!fsh->gl_program_id[i])     // i dont know! another suggestion from the wanna be smarter but knows shit retard!
+            continue;
 
         glAttachShader(fsh->gl_program_id[i], vsh->gl_shader_id[0]);
         glAttachShader(fsh->gl_program_id[i], fsh->gl_shader_id[i]);
 
         glLinkProgram(fsh->gl_program_id[i]);
 
-        programLog(fsh->gl_program_id[i], i, flags); // should rather return 0/1 that we can do  flags[i] = ... right here!!!
+        programLog(fsh->gl_program_id[i], i, flags_fsh); // should rather return 0/1 that we can do  flags[i] = ... right here!!!
 
 #ifdef __GL_DEBUG__
         check();
 #endif
 
-        if (!flags[i])
+        if (!flags_fsh[i])
         {
             glDeleteProgram(fsh->gl_program_id[i]);
             fsh->gl_program_id[i] = 0;
@@ -397,9 +408,59 @@ void CKernel::initPrograms( vertex_state* v,
 
     m_Watchdog.Start(TIMEOUT * 3);
 }
-void CKernel::initUniforms( vertex_state* v,
+
+void CKernel::initProgram(  vtx_state* v,
+                            glsl_state* vsh,
+                            glsl_state* fsh,
+                            tex_state* t,
+                            int fromFile,
+                            int toFile,
+                            unsigned& valid_count,
+                            bool* flags_vsh,
+                            bool* flags_fsh)
+{
+            if (!flags_vsh[0])
+                return;
+
+    for (int i = fromFile; i < toFile; i++)
+    {
+        if (!flags_fsh[i])
+            continue;
+
+        fsh->gl_program_id[i] = glCreateProgram();
+        
+        if (!fsh->gl_program_id[i])
+            continue;
+
+        glAttachShader(fsh->gl_program_id[i], vsh->gl_shader_id[0]);
+        glAttachShader(fsh->gl_program_id[i], fsh->gl_shader_id[i]);
+
+        glLinkProgram(fsh->gl_program_id[i]);
+
+        programLog(fsh->gl_program_id[i], i, flags_fsh);
+
+#ifdef __GL_DEBUG__
+        check();
+#endif
+
+        if (!flags_fsh[i])
+        {
+            glDeleteProgram(fsh->gl_program_id[i]);
+            fsh->gl_program_id[i] = 0;
+        }
+        else
+        {
+            fsh->gl_program_id[valid_count] = fsh->gl_program_id[i];
+            valid_count++;
+        }
+    }
+
+    m_Watchdog.Start(TIMEOUT * 3);
+}
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void CKernel::initUniform( vtx_state* v,
                             glsl_state* s,
-                            texture_state* t,
+                            tex_state* t,
                             int fromFile,
                             int toFile,
                             bool* flags)
@@ -445,17 +506,17 @@ void CKernel::initUniforms( vertex_state* v,
 #endif
     }
 }
-
-void CKernel::initTextures(
-    vertex_state* v,
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void CKernel::initTexture(
+    vtx_state* v,
     glsl_state* s,
-    texture_state* t,
+    tex_state* t,
     char** buffer,
     int fromFile,
     int toFile,
     bool* flags,
     GLint wrap_s,
-    GLint wrap_t)
+    GLint wrap_t)       // should we not implement a dence index packing or even a translation matrix to support u_tex_l and p_validTextureCount???  
 {
     for (int i = fromFile; i < toFile; i++)
     {
@@ -498,6 +559,8 @@ void CKernel::initTextures(
     }
 }
 
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void CKernel::render_uniforms_all(glsl_state* s, glsl_state* m) // shall i combine them here or just keep the two separate calls?
 {
 #ifdef __GL_DEBUG__
@@ -507,7 +570,7 @@ void CKernel::render_uniforms_all(glsl_state* s, glsl_state* m) // shall i combi
     // ================= USER =================
     int i = g_current_gl_program;
 
-    glUseProgram(s->gl_prg_id[i]);
+    glUseProgram(s->gl_program_id[i]);
 #ifdef __GL_DEBUG__
     check();
 #endif
@@ -551,7 +614,7 @@ void CKernel::render_uniforms_all(glsl_state* s, glsl_state* m) // shall i combi
 
 
     // ================= MENU =================
-    glUseProgram(m->gl_omp_id[0]);
+    glUseProgram(m->gl_program_id[0]);
 #ifdef __GL_DEBUG__
     check();
 #endif
@@ -575,14 +638,14 @@ initShaders(&m_vsh, 0, vsh_count, m_bufferVsh, GL_VERTEX_SHADER, vsh_flags);
 initShaders(&m_fsh, 0, fsh_count, m_bufferFsh, GL_FRAGMENT_SHADER, fsh_flags);
 initShaders(&m_osh, 0, omf_count, m_bufferOsh, GL_FRAGMENT_SHADER, omf_flags);
 
-initPrograms(&m_vsh, &m_fsh, 0, fsh_count, fsh_flags);
-initPrograms(&m_vsh, &m_osh, 0, omf_count, omf_flags);
+initProgram(&m_vsh, &m_fsh, 0, fsh_count, fsh_flags);
+initProgram(&m_vsh, &m_osh, 0, omf_count, omf_flags);
 
-initUniforms(&m_vertex, &m_fsh, &m_tex, 0, fsh_count, fsh_flags);
-initUniforms(&m_vertex, &m_osh, &m_omt, 0, omf_count, omf_flags);
+initUniform(&m_vtx, &m_fsh, &m_tex, 0, fsh_count, fsh_flags);
+initUniform(&m_vtx, &m_osh, &m_omt, 0, omf_count, omf_flags);
 
-initTextures(&m_tex, 0, tex_count, m_bufferTex, tex_flags, p_validTextureCount, GL_REPEAT, GL_REPEAT);
-initTextures(&m_omt, 0, 1,         m_bufferOtm, omt_flags, dummyTextureCount, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+initTexture(&m_tex, 0, tex_count, m_bufferTex, tex_flags, p_validTextureCount, GL_REPEAT, GL_REPEAT);
+initTexture(&m_omt, 0, 1,         m_bufferOtm, omt_flags, dummyTextureCount, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 
 render_uniforms_all(fm_glsl, m_menu);
 */

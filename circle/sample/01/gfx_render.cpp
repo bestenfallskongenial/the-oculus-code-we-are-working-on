@@ -5,7 +5,7 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #include "kernel.h"
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void CKernel::render_buffer_setup(glsl_state* m_glsl)
+void CKernel::frmBufferSet(vtx_state* v)
 {
     glBindFramebuffer(GL_FRAMEBUFFER,0);
 
@@ -14,56 +14,56 @@ void CKernel::render_buffer_setup(glsl_state* m_glsl)
     check();
 #endif
 
-    glBindBuffer(GL_ARRAY_BUFFER, m_glsl->gl_buf);
+    glBindBuffer(GL_ARRAY_BUFFER, v->gl_buf);
 #ifdef __GL_DEBUG__
     check();
 #endif
 }
 
 
-void CKernel::render_uniform_setup(glsl_state* m_glsl)
+void CKernel::setUniPrg(olg_state* o, glsl_state* s, tex_state* t)
 {
-    glUseProgram(m_glsl->gl_prg_id[g_current_gl_program]);
+    glUseProgram(s->gl_program_id[g_current_gl_program]);
 #ifdef __GL_DEBUG__
     check();
 #endif
 
-    GLuint cx = m_glsl->screen_width;
-    GLuint cy = m_glsl->screen_height;
+    GLuint cx = o->screen_width;
+    GLuint cy = o->screen_height;
 
-    if(m_glsl->u_time[g_current_gl_program] != -1)  glUniform1f(m_glsl->u_time[g_current_gl_program],   GLtime);
-    if(m_glsl->u_tres[g_current_gl_program]!= -1 )  glUniform2f(m_glsl->u_tres[g_current_gl_program],   cx, cy);
-    if(m_glsl->u_seed[g_current_gl_program] != -1)  glUniform4f(m_glsl->u_seed[g_current_gl_program],   g_inOutMatrixFlt[0][RND], 
+    if(s->u_time[g_current_gl_program] != -1)  glUniform1f(s->u_time[g_current_gl_program],   GLtime);
+    if(s->u_tres[g_current_gl_program]!= -1 )  glUniform2f(s->u_tres[g_current_gl_program],   cx, cy);
+    if(s->u_seed[g_current_gl_program] != -1)  glUniform4f(s->u_seed[g_current_gl_program],   g_inOutMatrixFlt[0][RND], 
                                                                                                         g_inOutMatrixFlt[1][RND], 
                                                                                                         g_inOutMatrixFlt[2][RND], 
                                                                                                         g_inOutMatrixFlt[3][RND]);
-    if(m_glsl->u_aud[g_current_gl_program]!= -1 )   glUniform4f(m_glsl->u_aud[g_current_gl_program],    g_inOutMatrixFlt[0][AU0], 
+    if(s->u_aud[g_current_gl_program]!= -1 )   glUniform4f(s->u_aud[g_current_gl_program],    g_inOutMatrixFlt[0][AU0], 
                                                                                                         g_inOutMatrixFlt[0][AU1], 
                                                                                                         g_inOutMatrixFlt[0][AU2], 
                                                                                                         g_inOutMatrixFlt[0][AU3]);
-    if(m_glsl->u_col[g_current_gl_program] != -1)   glUniform4f(m_glsl->u_col[g_current_gl_program],    0.0f, 0.0f, 0.0f, g_opaque);    // is a stub for a potential color mode, alfa was to see my text display
-    if(m_glsl->u_par_a[g_current_gl_program] != -1) glUniform4f(m_glsl->u_par_a[g_current_gl_program],  g_inOutMatrixFlt[0][OUT], 
+    if(s->u_col[g_current_gl_program] != -1)   glUniform4f(s->u_col[g_current_gl_program],    0.0f, 0.0f, 0.0f, g_opaque);    // is a stub for a potential color mode, alfa was to see my text display
+    if(s->u_par_a[g_current_gl_program] != -1) glUniform4f(s->u_par_a[g_current_gl_program],  g_inOutMatrixFlt[0][OUT], 
                                                                                                         g_inOutMatrixFlt[1][OUT], 
                                                                                                         g_inOutMatrixFlt[2][OUT], 
                                                                                                         g_inOutMatrixFlt[3][OUT]);
-    if(m_glsl->u_par_b[g_current_gl_program] != -1) glUniform4f(m_glsl->u_par_b[g_current_gl_program],  g_inOutMatrixFlt[4][OUT], 
+    if(s->u_par_b[g_current_gl_program] != -1) glUniform4f(s->u_par_b[g_current_gl_program],  g_inOutMatrixFlt[4][OUT], 
                                                                                                         g_inOutMatrixFlt[5][OUT], 
                                                                                                         g_inOutMatrixFlt[6][OUT], 
                                                                                                         g_inOutMatrixFlt[7][OUT]);
-    if(m_glsl->u_tex_l[g_current_gl_program] != -1) glUniform1i(m_glsl->u_tex_l[g_current_gl_program],  p_validTextureCount);           // relict? 
+    if(s->u_tex_l[g_current_gl_program] != -1) glUniform1i(s->u_tex_l[g_current_gl_program],  p_validTextureCount);           // relict? 
 #ifdef __GL_DEBUG__
     check();
 #endif
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void CKernel::render_textures_setup(glsl_state* m_glsl)
+void CKernel::setTexPrg( glsl_state* s, tex_state* t, int& gl_current_tex)
 {
 #ifdef __H264_DEBUG_TEX__
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_TextureA);
 
-    if (m_glsl->u_tex_id[g_current_gl_program][0] != -1) glUniform1i(m_glsl->u_tex_id[g_current_gl_program][0], 0);
+    if (t->u_tex_id[g_current_gl_program][0] != -1) glUniform1i(t->u_tex_id[g_current_gl_program][0], 0);
 
 #ifdef __GL_DEBUG__
     check();
@@ -76,12 +76,12 @@ void CKernel::render_textures_setup(glsl_state* m_glsl)
     switch(g_centralModeBuffer[g_currentProgramBuffer][TEX_MODE])
     {
     case false:
-        for (int i = 0; i < p_validTextureCount; i++)
+        for (int i = 0; i < p_validTextureCount; i++)   // we need to implement 
         {
             glActiveTexture(GL_TEXTURE0+i);
-            glBindTexture(GL_TEXTURE_2D, m_glsl->gl_tex_id[i]);
+            glBindTexture(GL_TEXTURE_2D, s->gl_tex_id[i]);
 
-            if (m_glsl->u_tex_id[g_current_gl_program][i] != -1) glUniform1i(m_glsl->u_tex_id[g_current_gl_program][i], i);
+            if (t->u_tex_id[g_current_gl_program][i] != -1) glUniform1i(t->u_tex_id[g_current_gl_program][i], i);
 
 #ifdef __GL_DEBUG__
             check();
@@ -97,9 +97,9 @@ void CKernel::render_textures_setup(glsl_state* m_glsl)
 
         case 1:
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, m_glsl->gl_tex_id[gl_current_tex]);
+            glBindTexture(GL_TEXTURE_2D, s->gl_tex_id[gl_current_tex]);
 
-            if (m_glsl->u_tex_id[g_current_gl_program][0] != -1) glUniform1i(m_glsl->u_tex_id[g_current_gl_program][0], 0);
+            if (t->u_tex_id[g_current_gl_program][0] != -1) glUniform1i(t->u_tex_id[g_current_gl_program][0], 0);
 
 #ifdef __GL_DEBUG__
             check();
@@ -108,18 +108,18 @@ void CKernel::render_textures_setup(glsl_state* m_glsl)
 
         default:
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, m_glsl->gl_tex_id[gl_current_tex]);
+            glBindTexture(GL_TEXTURE_2D, s->gl_tex_id[gl_current_tex]);
 
-            if (m_glsl->u_tex_id[g_current_gl_program][0] != -1) glUniform1i(m_glsl->u_tex_id[g_current_gl_program][0], 0);
+            if (t->u_tex_id[g_current_gl_program][0] != -1) glUniform1i(t->u_tex_id[g_current_gl_program][0], 0);
 
 #ifdef __GL_DEBUG__
             check();
 #endif
 
             glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_2D, m_glsl->gl_tex_id[gl_current_tex + 1]);
+            glBindTexture(GL_TEXTURE_2D, s->gl_tex_id[gl_current_tex + 1]);
 
-            if (m_glsl->u_tex_id[g_current_gl_program][1] != -1) glUniform1i(m_glsl->u_tex_id[g_current_gl_program][1], 1);
+            if (t->u_tex_id[g_current_gl_program][1] != -1) glUniform1i(t->u_tex_id[g_current_gl_program][1], 1);
 
 #ifdef __GL_DEBUG__
             check();
@@ -132,7 +132,7 @@ void CKernel::render_textures_setup(glsl_state* m_glsl)
 #endif
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void CKernel::render_shader_draw(glsl_state* m_glsl)
+void CKernel::drawGLsPrg(glsl_state* m_glsl)
 {
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 #ifdef __GL_DEBUG__
@@ -153,7 +153,7 @@ void CKernel::render_shader_draw(glsl_state* m_glsl)
 */
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void frame_break_mechanism()
+void frmRateBreak()
 {
     glFlush();
 
@@ -166,7 +166,7 @@ void frame_break_mechanism()
         }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void CKernel::render_buffer_swap(glsl_state* m_glsl)
+void CKernel::frmBufferSwap(glsl_state* m_glsl)
 {
     eglSwapBuffers(m_glsl->display, m_glsl->surface);
 #ifdef __GL_DEBUG__
@@ -178,7 +178,7 @@ void CKernel::render_buffer_swap(glsl_state* m_glsl)
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::gpu_render_menu_state_update(menu_glsl_state* m_menu)
+void            CKernel::updateOvlState(menu_glsl_state* m_menu)
 {
             const float ox = m_menu->kMenuOrigin[0];
             const float oy = m_menu->kMenuOrigin[1];
@@ -229,7 +229,7 @@ void            CKernel::gpu_render_menu_state_update(menu_glsl_state* m_menu)
                 m_menu->tile_index[15] = 49.0f;
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::gpu_render_menu_uniform_setup(menu_glsl_state* m_menu)
+void            CKernel::setUniOvl(menu_glsl_state* m_menu)
 {
                 glUseProgram(m_menu->gl_omp_id[0]);
 #ifdef __GL_DEBUG__
@@ -246,7 +246,7 @@ void            CKernel::gpu_render_menu_uniform_setup(menu_glsl_state* m_menu)
 #endif
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::gpu_render_menu_textures_setup(menu_glsl_state* m_menu)
+void            CKernel::setTexOvl(menu_glsl_state* m_menu)
 {
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, m_menu->gl_omt_id[0]);
@@ -257,7 +257,7 @@ void            CKernel::gpu_render_menu_textures_setup(menu_glsl_state* m_menu)
 #endif
 }
 
-void            CKernel::gpu_render_menu_shader_draw()
+void            CKernel::drawGLsOvl()
 {
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -271,20 +271,20 @@ void            CKernel::gpu_render_menu_shader_draw()
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
-render_buffer_setup(&m_glsl);
+frmBufferSet(&m_glsl);
 
 // pass 1
-render_uniform_setup(&m_glsl);
-render_textures_setup(&m_glsl);
-render_shader_draw(&m_glsl);
+setUniPrg(&m_glsl);
+setTexPrg(&m_glsl);
+drawGLsPrg(&m_glsl);
 
 // pass 2
-gpu_render_menu_state_update(&m_menu);
-gpu_render_menu_uniform_setup(&m_menu);
-gpu_render_menu_textures_setup(&m_menu);
-gpu_render_menu_shader_draw();
+updateOvlState(&m_menu);
+setUniOvl(&m_menu);
+setTexOvl(&m_menu);
+drawGLsOvl();
 
-frame_break_mechanism()
+frmRateBreak()
 
-render_buffer_swap(&m_glsl);
+frmBufferSwap(&m_glsl);
 */

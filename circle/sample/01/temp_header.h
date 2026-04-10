@@ -331,10 +331,6 @@ unsigned int g_buttons_states[2][5] = {0};
 #define GLSL_LOG    4
 
 
-#include "kernel.h"
-
-namespace sample01_inventory
-{
     static const int MENU_GPU_TILE_COUNT = 16;
 
     struct menu_glsl_state
@@ -398,7 +394,7 @@ namespace sample01_inventory
     extern unsigned long f_timeBuffer[2][4];
     extern unsigned long f_deltaBuffer[2][3];
     extern int f_timeIndex[2];
-}
+
 // datamanagement.cpp
 
 bool                    Mount(const char* p_deviceName);
@@ -423,7 +419,7 @@ void                    clearBufferDMA(char** buffers, char* rawBlock);
 void                    shaderLog(GLint shader, int shaderIndex);
 void                    programLog(GLint shader, int program_index);
 void                    gfx_check(const char* file, unsigned line);
-void                    gfx_init_OGL(glsl_state* m_glsl, char* buffer, u32& index);
+void                    initOGL   (glsl_state* m_glsl, char* buffer, u32& index);
 void                    initVshaders(glsl_state* m_glsl, char* buffer, u32& index);
 void                    initOshader(glsl_state* m_glsl, char* buffer, u32& index);
 void                    initFshaders(glsl_state* m_glsl, char* buffer, u32& index);
@@ -439,16 +435,16 @@ void                    render_shader_b(glsl_state* m_glsl);
 
 // gfx_render.cpp
 
-void                    render_buffer_setup(glsl_state* m_glsl);
-void                    render_uniform_setup(glsl_state* m_glsl);
-void                    render_textures_setup(glsl_state* m_glsl);
-void                    render_shader_draw(glsl_state* m_glsl);
-void                    frame_break_mechanism();
-void                    render_buffer_swap(glsl_state* m_glsl);
-void                    gpu_render_menu_state_update(sample01_inventory::menu_glsl_state* m_menu);
-void                    gpu_render_menu_uniform_setup(sample01_inventory::menu_glsl_state* m_menu);
-void                    gpu_render_menu_textures_setup(sample01_inventory::menu_glsl_state* m_menu);
-void                    gpu_render_menu_shader_draw();
+void                    frmBufferSet(glsl_state* m_glsl);
+void                    setUniPrg(glsl_state* m_glsl);
+void                    setTexPrg(glsl_state* m_glsl);
+void                    drawGLsPrg(glsl_state* m_glsl);
+void                    frmRateBreak();
+void                    frmBufferSwap(glsl_state* m_glsl);
+void                    updateOvlState(sample01_inventory::menu_glsl_state* m_menu);
+void                    setUniOvl(sample01_inventory::menu_glsl_state* m_menu);
+void                    setTexOvl(sample01_inventory::menu_glsl_state* m_menu);
+void                    drawGLsOvl();
 
 // logging.cpp
 

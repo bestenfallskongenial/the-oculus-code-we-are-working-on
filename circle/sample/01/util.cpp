@@ -566,8 +566,8 @@ int             CKernel::chooseFrame        ( int p_channel, &p_activeFrame, &p_
                     }
 }
 */
-// NEW generic - not condensed valid arrays, max number of files ( macros for example!)
-void CKernel::chooseIndex(int p_channel, int& p_activeIndex, int p_maxCount, bool* flags)
+// NEW generic not condensed valid arrays, max number of files ( macros for example!)
+void CKernel::chooseIndexSparse(int p_channel, int& p_activeIndex, int p_maxCount, bool* flags)
 {
     static int p_activeIndex = 0;
 
@@ -577,6 +577,13 @@ void CKernel::chooseIndex(int p_channel, int& p_activeIndex, int p_maxCount, boo
     {
         p_activeIndex = f_calculated;
     }
+}
+// NEW generic condensed valid arrays, max number of files ( macros for example!)
+void CKernel::chooseIndexDense(int p_channel, int& p_activeIndex, int p_maxCount)
+{
+    int f_calculated = (g_inOutMatrixInt[p_channel][RAW] * p_maxCount) >> 10;
+
+    p_activeIndex = f_calculated;
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
