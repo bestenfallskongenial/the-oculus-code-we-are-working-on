@@ -175,9 +175,9 @@ bool            CKernel::closeFile                  ()	                         
 void            CKernel::bulkLoad                   (   char*       p_fileNameArray[],                                          // where we have stored the filenames from the root directory scan
                                                         unsigned    p_loadedBytes[],                                            // where we store the size in bytes for each file 
                                                         char**      p_bufferArray,                                              // where we store the loaded file data for each file ( or dma/non-dma buffers )
-                                                        unsigned         p_maxFiles,                                                 // how many files we are allowed to process ( os limitations )
-                                                        unsigned&        p_validFiles,                                               // counts successful loads - we need to keep track here <- MUST initialised with 0
-                                                        unsigned&        p_prevFiles,                                                // number of loads from the last call - we need it to init the files correctly
+                                                        unsigned    p_maxFiles,                                                 // how many files we are allowed to process ( os limitations )
+                                                        unsigned&   p_validFiles,                                               // counts successful loads - we need to keep track here <- MUST initialised with 0
+                                                        unsigned&   p_prevFiles,                                                // number of loads from the last call - we need it to init the files correctly
                                                         unsigned    p_fileSize)                                                 // maximum size for each file
 {
                 p_prevFiles = p_validFiles;                                                                         // boundary before loading
@@ -344,22 +344,27 @@ char**          CKernel::allocBufferDMA             (   size_t      count,
                 
                 char* raw = new (HEAP_DMA30) char[aligned_total_size + 4096];   // Allocate +4096 for manual alignment - rather an artifact because it seems that the alignment happens by itself
 #ifdef ALLOC_DEBUG   
-                storeLog( MY_BUFFER, MY_INDEX, "ALLOC-STD raw", (u32) raw);
+            //  storeLog( MY_BUFFER, MY_INDEX, "ALLOC-STD raw", (u32) raw);
 #endif // ALLOC_DEBUG
                 char* dma_block = (char*)(((uintptr_t)raw + 4095) & ~4095);  // 4K-aligned
-                storeLog( MY_BUFFER, MY_INDEX, "ALLOC-STD dma_block", (u32) dma_block);
+#ifdef ALLOC_DEBUG                  
+            //  storeLog( MY_BUFFER, MY_INDEX, "ALLOC-STD dma_block", (u32) dma_block);
+                storeLog( MY_BUFFER, MY_INDEX, "Alloc RAW:", (u32) raw, " / Alloc DMA Block:", (u32) dma_block )
 #endif // ALLOC_DEBUG
                 char** buffers = new char*[count];  // Build slice table
                 for (size_t i = 0; i < count; ++i)
-                {
+                    {
                     buffers[i] = dma_block + i * bufferSize;
 #ifdef ALLOC_DEBUG   
-                storeLog( MY_BUFFER, MY_INDEX, "ALLOC-STD buffers[i]", (u32) i, (u32) buffers[i]);
+                storeLog( MY_BUFFER, MY_INDEX, "ALLOC-DMA buffers[", (u32) i, "] -" (u32) sizeof(buffers[i]));  // !!!! MY NEW storeLog() FUNCTION and why all the logging above when i have all together below?
 #endif // ALLOC_DEBUG  
                     memset(buffers[i], 0, bufferSize);
-                }
+                    }
 #ifdef ALLOC_DEBUG   
-                storeLog( MY_BUFFER, MY_INDEX, "ALLOC-STD final", (u32) raw, (u32) dma_block, (u32) aligned_total_size);
+                storeLog( MY_BUFFER, MY_INDEX,  "ALLOC-DMA RAW", (u32) raw,
+                                                "in Block", (u32) dma_block, 
+                                                "Buffer Size", (u32) total_size, 
+                                                "Alligned Size",  (u32) aligned_total_size); // correct?!?
 #endif // ALLOC_DEBUG
                 *blockBaseOut = dma_block;
                 *rawBlockOut = raw;

@@ -416,6 +416,10 @@ void            CKernel::wrapper_io()
             //  chooseTexture(ADC_SELECT_TEX);          // texture 
             //  chooseVideo(ADC_SELECT_VID);            // video each loop
 
+                chooseIndexDense( ADC_SELECT_PRG, m_activePrg, filecounter[FT_FSH][FLD_VALID])
+                chooseIndexDense( ADC_SELECT_TEX, m_activeTex, filecounter[FT_TEX][FLD_VALID])
+                chooseIndexDense( ADC_SELECT_VID, m_activeVid, filecounter[FT_VID][FLD_VALID])
+
                 buttonPing( 0, SW_PIN_A);                  // check button A
                 buttonPing( 1, SW_PIN_B);                  // and B
 

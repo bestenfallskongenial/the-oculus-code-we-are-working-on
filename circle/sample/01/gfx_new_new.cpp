@@ -446,6 +446,53 @@ void            CKernel::initTexture                (   vtx_state*  v,
                     }
 }
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void            CKernel::initTextureNEW             (   vtx_state*  v,                 // new. takes now all texture related data from the struct that the parser filled 
+                                                        glsl_state* s,
+                                                        tex_state*  t,
+                                                        int         fromFile,
+                                                        int         toFile,
+                                                        unsigned&   valid_count,       // means also we dont use the if (flags[i]) anymore but (t->tex_valid[i])
+                                                        GLint       wrap_s,
+                                                        GLint       wrap_t )
+{
+    for (int i = fromFile; i < toFile; i++)
+    {
+        if (t->tex_valid[i])
+        {
+            glGenTextures(1, &t->gl_tex_id[valid_count]);
+            glBindTexture(GL_TEXTURE_2D, t->gl_tex_id[valid_count]);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            GLvoid* bitmapData = &t->data[i][t->offset[i]];
+
+            glTexImage2D(GL_TEXTURE_2D,
+                         0,
+                         GL_RGB,
+                         t->width[i],
+                         t->height[i],
+                         0,
+                         GL_RGB,
+                         GL_UNSIGNED_BYTE,
+                         bitmapData);
+
+            if (glGetError() == GL_NO_ERROR)
+            {
+                valid_count++;
+            }
+            else
+            {
+                glDeleteTextures(1, &t->gl_tex_id[valid_count]);
+            }
+        }
+
+        m_Watchdog.Start(TIMEOUT);
+    }
+}
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initUniform                (   vtx_state*  v,   // since i call it after initProgram() i have a dense packing
                                                         glsl_state* s,
                                                         tex_state*  t,
@@ -757,7 +804,6 @@ void            CKernel::drawGLsOvl                 ()
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 /*
 
 okay, what we have done here:
@@ -766,7 +812,7 @@ okay, what we have done here:
       the call parameter bool* flags - its set now on caller side
     - we simplified the function initShader() and initTexture that it give out a dense indexed
       id / handle for the programs / textures -> we now need to refactor the select*() functions
-
+*/
 // NEW generic not condensed valid arrays, max number of files ( macros for example!)
 
 void CKernel::chooseIndexSparse(int p_channel, int& p_activeIndex, int p_maxCount, bool* flags)
@@ -929,14 +975,68 @@ struct olg_state
     EGLSurface                  surface;
     EGLContext                  context;
 };
+
 struct tex_state
 {
+    u32     max_tex_size;   // moved from CKernel   
 
-    unsigned                    width[MAX_TEXTURE];
-    unsigned                    height[MAX_TEXTURE];
-    unsigned                    offset[MAX_TEXTURE];
-	GLuint                      gl_tex_id[MAX_TEXTURE];
-	GLint                       u_tex_id[MAX_SHADER][MAX_TEXTURE];
+    bool        tex_valid[MAX_TEXTURE];
+
+    unsigned    width[MAX_TEXTURE];
+    unsigned    height[MAX_TEXTURE];
+    unsigned    offset[MAX_TEXTURE];
+
+    unsigned    file_size[MAX_TEXTURE];
+    unsigned    image_size[MAX_TEXTURE];
+
+    u8*         data[MAX_TEXTURE];
+    size_t      size[MAX_TEXTURES];
+
+    GLuint      gl_tex_id[MAX_TEXTURE];
+    GLint       u_tex_id[MAX_SHADER][MAX_TEXTURE];
+};
+
+struct h264_state
+{
+    // raw input
+    u8*     data[MAX_VIDEOS];
+    size_t  size[MAX_VIDEOS];
+    // SPS
+    size_t  sps_off[MAX_VIDEOS][MAX_FRAMES];
+    size_t  sps_sc_len[MAX_VIDEOS][MAX_FRAMES];
+    size_t  sps_len[MAX_VIDEOS][MAX_FRAMES];
+    // PPS
+    size_t  pps_off[MAX_VIDEOS][MAX_FRAMES];
+    size_t  pps_sc_len[MAX_VIDEOS][MAX_FRAMES];
+    size_t  pps_len[MAX_VIDEOS][MAX_FRAMES];
+    // IDR
+    size_t  idr_off[MAX_VIDEOS][MAX_FRAMES];
+    size_t  idr_sc_len[MAX_VIDEOS][MAX_FRAMES];
+    size_t  idr_len[MAX_VIDEOS][MAX_FRAMES];
+    // frame table
+    void*   frame_address[MAX_VIDEOS][MAX_FRAMES];
+    size_t  frame_offset[MAX_VIDEOS][MAX_FRAMES];
+    size_t  frame_length[MAX_VIDEOS][MAX_FRAMES];
+    int     idr_offset[MAX_VIDEOS]; // size_t      idr_offset[MAX_VIDEOS];
+    // extradata
+    u8      extradata[MAX_VIDEOS][1024];
+    size_t  extradata_len[MAX_VIDEOS];
+    bool    extradata_valid[MAX_VIDEOS];
+    // parsed metadata
+    u16     video_width[MAX_VIDEOS];
+    u16     video_height[MAX_VIDEOS];
+    u8      vid_profile[MAX_VIDEOS];
+    u8      vid_level[MAX_VIDEOS];
+    // state
+    int     frame_count[MAX_VIDEOS]; //     unsigned    frame_count[MAX_VIDEOS];
+    bool    vid_valid[MAX_VIDEOS];
+    // shared base
+    char*   block_base; // void*   block_base;
+    // constraints
+    u16     max_width;
+    u16     max_height;
+    u8      max_profile;
+    u8      max_level;
 };
 
 struct glsl_state
@@ -987,9 +1087,8 @@ struct glsl_state
     tex_state               m_tex;
     tex_state               m_omt;
 
-// example calls
-
-// SHADERS (delta)
+// example calls for wrapper
+// SHADERS 
 initShader(&m_vtx, &m_vsh, &m_tex,
            m_bufferVsh,
            filecounter[FT_VSH][FLD_PREV],
@@ -1009,10 +1108,8 @@ initShader(&m_vtx, &m_fsh, &m_tex,
            filecounter[FT_FSH][FLD_PREV],
            filecounter[FT_FSH][FLD_LOADED],
            GL_FRAGMENT_SHADER,
-           fsh_flags);
-
-
-// PROGRAMS (delta)
+           fsh_flags);                          // the signature is designed to have a clear pattern, the functions to use the same parameter matrix
+// PROGRAMS 
 initProgram(&m_vtx,
              &m_vsh,
              &m_fsh,
@@ -1032,9 +1129,7 @@ initProgram(&m_vtx,
              filecounter[FT_OMF][FLD_VALID],
              vsh_flags,
              omf_flags);
-
-
-// TEXTURES (delta)
+// TEXTURES
 initTexture(&m_vtx,
              &m_fsh,
              &m_tex,
@@ -1056,7 +1151,7 @@ initTexture(&m_vtx,
              omt_flags,
              GL_CLAMP_TO_EDGE,
              GL_CLAMP_TO_EDGE);
-
+// UNIFORMS
 initUniform(&m_vtx,
              &m_fsh,
              &m_tex,
@@ -1070,7 +1165,7 @@ initUniform(&m_vtx,
              filecounter[FT_OMF][FLD_VALID]);
 
              // runtime loop
-
+// RUNTIME
 if (overlay_enabled)
     {
     updateOvlState(&m_osh);
@@ -1094,4 +1189,3 @@ if (overlay_enabled)
 frmRateBreak();
 
 frmBufferSwap(&m_ogl);             
-*/

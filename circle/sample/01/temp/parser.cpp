@@ -26,8 +26,10 @@ bool    CKernel::ParseInitialize (  char*      blockBase,
 
     return true;
 }
-
-bool CKernel::ParseAnnexB(    int     file_index, char*   buffer_array[], size_t  size_array[])
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+bool            CKernel::ParseAnnexB                (   int         file_index, 
+                                                        char*       buffer_array[], 
+                                                        size_t      size_array[])
 {
     m_CharIndex[file_index] = 0;
     memset(m_DebugCharArray[file_index], 0,sizeof m_DebugCharArray[file_index]);                                    // clear the array???
@@ -197,7 +199,8 @@ bool CKernel::ParseAnnexB(    int     file_index, char*   buffer_array[], size_t
         }
         return m_vid_is_valid[file_index];
 }
-
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+/*
 bool CKernel::ParseBPM          (int file_index, char* filename_array[], char* buffer_array[], size_t size_array[])
 {
     m_CharIndex[file_index] = 0;
@@ -259,184 +262,226 @@ bool CKernel::ParseBPM          (int file_index, char* filename_array[], char* b
 
     return ok;
 }
+*/
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-//              CALLBACK / HELPERS / UTILITY / WRAPPER
+void            CKernel::ParseBPM                   (   tex_state*  t,
+                                                        char*       filename_array[],
+                                                        char*       buffer_array[],
+                                                        size_t      size_array[],
+                                                        int         fromFile,
+                                                        int         toFile)
+{
+                for (int i = fromFile; i < toFile; i++)
+                    {
+                    m_CharIndex[i] = 0;
+                    memset(m_DebugCharArray[i], 0, sizeof m_DebugCharArray[i]);
+
+                    u8*    data = reinterpret_cast<u8*>(buffer_array[i]);
+                    size_t size = size_array[i];
+
+                    storeLog(i, "======== BMP header parse start ========");
+                    storeLog(i, filename_array[i], i);
+                    storeLog(i, "========================================");
+
+                    u32 fileSize    = data[2]  | (data[3]<<8)  | (data[4]<<16)  | (data[5]<<24);
+                    u32 dataOffset  = data[10] | (data[11]<<8) | (data[12]<<16) | (data[13]<<24);
+                    u32 headerSize  = data[14] | (data[15]<<8) | (data[16]<<16) | (data[17]<<24);
+                    u16 planes      = data[26] | (data[27]<<8);
+                    u16 bpp         = data[28] | (data[29]<<8);
+                    u32 compression = data[30] | (data[31]<<8) | (data[32]<<16) | (data[33]<<24);
+                    u32 width       = data[18] | (data[19]<<8) | (data[20]<<16) | (data[21]<<24);
+                    u32 height      = data[22] | (data[23]<<8) | (data[24]<<16) | (data[25]<<24);
+                    u32 imgSize     = data[34] | (data[35]<<8) | (data[36]<<16) | (data[37]<<24);
+
+                    bool ok =
+                        data[0]             == 'B' &&
+                        data[1]             == 'M' &&
+                        fileSize            <= m_max_tex_size &&    // is passed from the parser init 
+                        headerSize          == 40 &&
+                        planes              == 1 &&
+                        bpp                 == 24 &&
+                        compression         == 0 &&
+                        width * height * 3  == imgSize &&
+                        ((width & 3)        == 0) &&
+                        ((height & 3)       == 0);
+
+                    t->tex_valid[i] = ok;
+                    t->width[i]     = width;
+                    t->height[i]    = height;
+                    t->offset[i]    = dataOffset;
+                    t->file_size[i] = fileSize;
+                    t->image_size[i]= imgSize;
+                    t->data[i]      = data;
+
+                    storeLog(i, ok ? "BMP header VALID" : "BMP header FAILED");
+
+                    m_Watchdog.Start(TIMEOUT);
+                    }
+}
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-size_t CKernel::FindNextStartCode(u8* data, size_t pos, size_t size) const
+//              HELPERS / UTILITY / WRAPPER
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+size_t          CKernel::FindNextStartCode(u8* data, size_t pos, size_t size) const
 {
-    while (pos < size - 3) {
-        if ((data[pos] == 0 && data[pos+1] == 0 && data[pos+2] == 1) ||
-            (data[pos] == 0 && data[pos+1] == 0 && data[pos+2] == 0 && data[pos+3] == 1)) 
-            {
-            return pos;
-            }
-        pos++;
-    }
-    return size;                                                                                                    // No more start codes found
+                while (pos < size - 3) {
+                    if ((data[pos] == 0 && data[pos+1] == 0 && data[pos+2] == 1) ||
+                        (data[pos] == 0 && data[pos+1] == 0 && data[pos+2] == 0 && data[pos+3] == 1)) 
+                        {
+                        return pos;
+                        }
+                    pos++;
+                }
+                return size;                                                                                                    // No more start codes found
 }
-u32 CKernel::ReadExpGolomb(u8* data, size_t* bit_offset) const
+u32             CKernel::ReadExpGolomb(u8* data, size_t* bit_offset) const
 {
-    size_t leadingZeroBits = 0;
-    size_t offset = *bit_offset;
-    size_t byte_offset = offset / 8;
-    size_t bit_pos = offset % 8;
-    
-    while (1)                                                                                                       // Count leading zeros
-        {
-        if (bit_pos == 8) 
-            {
-            bit_pos = 0;
-            byte_offset++;
-            }
-        
-        if ((data[byte_offset] & (0x80 >> bit_pos)) != 0) 
-            {
-            break;
-            }
-        leadingZeroBits++;
-        bit_pos++;
-        offset++;
-        }
-    offset++;                                                                                                       // Skip the stop bit
-    bit_pos = offset % 8;
-    byte_offset = offset / 8;
-    
-    u32 result = 0;                                                                                                 // Read the coefficient bits
-    for (size_t i = 0; i < leadingZeroBits; i++) 
-        {
-        result <<= 1;
-        if (bit_pos == 8) 
-            {
-            bit_pos = 0;
-            byte_offset++;
-            }
-        
-        if ((data[byte_offset] & (0x80 >> bit_pos)) != 0) 
-            {
-            result |= 1;
-            }
-        bit_pos++;
-        offset++;
-        }
-    
-    result = (1 << leadingZeroBits) - 1 + result;
-    *bit_offset = offset;
-    return result;
+                size_t leadingZeroBits = 0;
+                size_t offset = *bit_offset;
+                size_t byte_offset = offset / 8;
+                size_t bit_pos = offset % 8;
+                
+                while (1)                                                                                                       // Count leading zeros
+                    {
+                    if (bit_pos == 8) 
+                        {
+                        bit_pos = 0;
+                        byte_offset++;
+                        }
+                    
+                    if ((data[byte_offset] & (0x80 >> bit_pos)) != 0) 
+                        {
+                        break;
+                        }
+                    leadingZeroBits++;
+                    bit_pos++;
+                    offset++;
+                    }
+                offset++;                                                                                                       // Skip the stop bit
+                bit_pos = offset % 8;
+                byte_offset = offset / 8;
+                
+                u32 result = 0;                                                                                                 // Read the coefficient bits
+                for (size_t i = 0; i < leadingZeroBits; i++) 
+                    {
+                    result <<= 1;
+                    if (bit_pos == 8) 
+                        {
+                        bit_pos = 0;
+                        byte_offset++;
+                        }
+                    if ((data[byte_offset] & (0x80 >> bit_pos)) != 0) 
+                        {
+                        result |= 1;
+                        }
+                    bit_pos++;
+                    offset++;
+                    }
+                result = (1 << leadingZeroBits) - 1 + result;
+                *bit_offset = offset;
+                return result;
 }
-bool CKernel::ParseSPS(u8* sps_data, size_t sps_size, u16* width, u16* height, u8* profile, u8* level) const
+bool            CKernel::ParseSPS(u8* sps_data, size_t sps_size, u16* width, u16* height, u8* profile, u8* level) const
 {
-    
-    if (sps_size < 3)                       // Ensure we have enough data
-        {
-        return false;
-        }
-    *profile = sps_data[0];                 // First byte is profile_idc
-    
-    *level = sps_data[2];                   // NEW: store level_idc // END NEW
-    
-    
-    size_t bit_offset = 24;                 // Skip constraint_set flags and level_idc (3 bytes total) // Skip 3 bytes (profile + constraint flags + level)
-    
-    ReadExpGolomb(sps_data, &bit_offset);   // seq_parameter_set_id 
-    
-    
-    if (*profile >= 100)                    // FIX 5: Process all profiles without restriction // Handle high profile specific parameters if needed
-        {
-        
-        u32 chroma_format_idc = ReadExpGolomb(sps_data, &bit_offset);   // chroma_format_idc
+                if (sps_size < 3)                       // Ensure we have enough data
+                    {
+                    return false;
+                    }
+                *profile = sps_data[0];                 // First byte is profile_idc
+                
+                *level = sps_data[2];                   // NEW: store level_idc // END NEW
+                
+                size_t bit_offset = 24;                 // Skip constraint_set flags and level_idc (3 bytes total) // Skip 3 bytes (profile + constraint flags + level)
+                
+                ReadExpGolomb(sps_data, &bit_offset);   // seq_parameter_set_id 
+                
+                if (*profile >= 100)                    // FIX 5: Process all profiles without restriction // Handle high profile specific parameters if needed
+                    {
+                    u32 chroma_format_idc = ReadExpGolomb(sps_data, &bit_offset);   // chroma_format_idc
 
-        if (chroma_format_idc == 3) 
-            {
-            
-            bit_offset++; // separate_colour_plane_flag // Skip 1 bit
-            }
-        
-        ReadExpGolomb(sps_data, &bit_offset);   // bit_depth_luma_minus8
-        
-        ReadExpGolomb(sps_data, &bit_offset);   // bit_depth_chroma_minus8
-        
-        bit_offset++;   // qpprime_y_zero_transform_bypass_flag // Skip 1 bit
-        
-        u8 seq_scaling_matrix_present_flag = (sps_data[bit_offset/8] >> (7 - (bit_offset % 8))) & 0x01; // seq_scaling_matrix_present_flag
-        bit_offset++;
+                    if (chroma_format_idc == 3) 
+                        {
+                        bit_offset++; // separate_colour_plane_flag // Skip 1 bit
+                        }
+                    ReadExpGolomb(sps_data, &bit_offset);   // bit_depth_luma_minus8
+                    ReadExpGolomb(sps_data, &bit_offset);   // bit_depth_chroma_minus8
+                    
+                    bit_offset++;   // qpprime_y_zero_transform_bypass_flag // Skip 1 bit
+                    
+                    u8 seq_scaling_matrix_present_flag = (sps_data[bit_offset/8] >> (7 - (bit_offset % 8))) & 0x01; // seq_scaling_matrix_present_flag
+                    bit_offset++;
 
-        if (seq_scaling_matrix_present_flag) 
-            {
-            bit_offset += 8;    // Simple approximation for scaling matrix
-            }
-        }
-    ReadExpGolomb(sps_data, &bit_offset);   // log2_max_frame_num_minus4
-    
-    u32 pic_order_cnt_type = ReadExpGolomb(sps_data, &bit_offset);  // pic_order_cnt_type
+                    if (seq_scaling_matrix_present_flag) 
+                        {
+                        bit_offset += 8;    // Simple approximation for scaling matrix
+                        }
+                    }
+                ReadExpGolomb(sps_data, &bit_offset);   // log2_max_frame_num_minus4
+                
+                u32 pic_order_cnt_type = ReadExpGolomb(sps_data, &bit_offset);  // pic_order_cnt_type
 
-    if (pic_order_cnt_type == 0) 
-        {
-        ReadExpGolomb(sps_data, &bit_offset);   // log2_max_pic_order_cnt_lsb_minus4
-        } 
-    else if (pic_order_cnt_type == 1) 
-        {
-        bit_offset++;                           // delta_pic_order_always_zero_flag
-        ReadExpGolomb(sps_data, &bit_offset);   // offset_for_non_ref_pic
-        ReadExpGolomb(sps_data, &bit_offset);   // offset_for_top_to_bottom_field
-        u32 num_ref_frames_in_pic_order_cnt_cycle = ReadExpGolomb(sps_data, &bit_offset);   // num_ref_frames_in_pic_order_cnt_cycle
+                if (pic_order_cnt_type == 0) 
+                    {
+                    ReadExpGolomb(sps_data, &bit_offset);   // log2_max_pic_order_cnt_lsb_minus4
+                    } 
+                else if (pic_order_cnt_type == 1) 
+                    {
+                    bit_offset++;                           // delta_pic_order_always_zero_flag
+                    ReadExpGolomb(sps_data, &bit_offset);   // offset_for_non_ref_pic
+                    ReadExpGolomb(sps_data, &bit_offset);   // offset_for_top_to_bottom_field
+                    u32 num_ref_frames_in_pic_order_cnt_cycle = ReadExpGolomb(sps_data, &bit_offset);   // num_ref_frames_in_pic_order_cnt_cycle
 
-        for (u32 i = 0; i < num_ref_frames_in_pic_order_cnt_cycle; i++) 
-            {
-            ReadExpGolomb(sps_data, &bit_offset);   // offset_for_ref_frame[i]
-            }
-        }
-    
-    ReadExpGolomb(sps_data, &bit_offset);   // max_num_ref_frames
-    
-    bit_offset++;       // gaps_in_frame_num_value_allowed_flag
-    
-    u32 pic_width_in_mbs_minus1 = ReadExpGolomb(sps_data, &bit_offset); // pic_width_in_mbs_minus1
-    
-    u32 pic_height_in_map_units_minus1 = ReadExpGolomb(sps_data, &bit_offset);  // pic_height_in_map_units_minus1
-    
-    u8 frame_mbs_only_flag = (sps_data[bit_offset/8] >> (7 - (bit_offset % 8))) & 0x01; // frame_mbs_only_flag
-    bit_offset++;
-    
-    *width = (pic_width_in_mbs_minus1 + 1) * 16;    // Calculate the dimensions
+                    for (u32 i = 0; i < num_ref_frames_in_pic_order_cnt_cycle; i++) 
+                        {
+                        ReadExpGolomb(sps_data, &bit_offset);   // offset_for_ref_frame[i]
+                        }
+                    }
+                ReadExpGolomb(sps_data, &bit_offset);   // max_num_ref_frames
+                
+                bit_offset++;       // gaps_in_frame_num_value_allowed_flag
+                
+                u32 pic_width_in_mbs_minus1 = ReadExpGolomb(sps_data, &bit_offset); // pic_width_in_mbs_minus1
+                
+                u32 pic_height_in_map_units_minus1 = ReadExpGolomb(sps_data, &bit_offset);  // pic_height_in_map_units_minus1
+                
+                u8 frame_mbs_only_flag = (sps_data[bit_offset/8] >> (7 - (bit_offset % 8))) & 0x01; // frame_mbs_only_flag
+                bit_offset++;
+                
+                *width = (pic_width_in_mbs_minus1 + 1) * 16;    // Calculate the dimensions
 
-    if (frame_mbs_only_flag) 
-        {
-        *height = (pic_height_in_map_units_minus1 + 1) * 16;
-        } 
-    else 
-        {
-        *height = (pic_height_in_map_units_minus1 + 1) * 32;
+                if (frame_mbs_only_flag) 
+                    {
+                    *height = (pic_height_in_map_units_minus1 + 1) * 16;
+                    } 
+                else 
+                    {
+                    *height = (pic_height_in_map_units_minus1 + 1) * 32;
 
-        
-        bit_offset++;   // mb_adaptive_frame_field_flag
-        }
-    
-    bit_offset++;   
-    
-    u8 frame_cropping_flag = (sps_data[bit_offset/8] >> (7 - (bit_offset % 8))) & 0x01; // frame_cropping_flag
-    bit_offset++;
+                    
+                    bit_offset++;   // mb_adaptive_frame_field_flag
+                    }
+                bit_offset++;   
+                
+                u8 frame_cropping_flag = (sps_data[bit_offset/8] >> (7 - (bit_offset % 8))) & 0x01; // frame_cropping_flag
+                bit_offset++;
 
-    if (frame_cropping_flag) 
-        {
-        
-        u32 frame_crop_left_offset = ReadExpGolomb(sps_data, &bit_offset);  // Apply cropping to the dimensions
-        u32 frame_crop_right_offset = ReadExpGolomb(sps_data, &bit_offset);
-        u32 frame_crop_top_offset = ReadExpGolomb(sps_data, &bit_offset);
-        u32 frame_crop_bottom_offset = ReadExpGolomb(sps_data, &bit_offset);
+                if (frame_cropping_flag) 
+                    {
+                    u32 frame_crop_left_offset = ReadExpGolomb(sps_data, &bit_offset);  // Apply cropping to the dimensions
+                    u32 frame_crop_right_offset = ReadExpGolomb(sps_data, &bit_offset);
+                    u32 frame_crop_top_offset = ReadExpGolomb(sps_data, &bit_offset);
+                    u32 frame_crop_bottom_offset = ReadExpGolomb(sps_data, &bit_offset);
 
-        
-        *width -= (frame_crop_left_offset + frame_crop_right_offset) * 2;   // Adjust width and height based on cropping
+                    *width -= (frame_crop_left_offset + frame_crop_right_offset) * 2;   // Adjust width and height based on cropping
 
-        if (frame_mbs_only_flag) 
-            {
-            *height -= (frame_crop_top_offset + frame_crop_bottom_offset) * 2;
-            } 
-        else 
-            {
-            *height -= (frame_crop_top_offset + frame_crop_bottom_offset) * 4;
-            }
-        }
-
-    return true;
+                    if (frame_mbs_only_flag) 
+                        {
+                        *height -= (frame_crop_top_offset + frame_crop_bottom_offset) * 2;
+                        } 
+                    else 
+                        {
+                        *height -= (frame_crop_top_offset + frame_crop_bottom_offset) * 4;
+                        }
+                    }
+                return true;
 }
 

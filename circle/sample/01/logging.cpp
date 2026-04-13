@@ -92,23 +92,23 @@ void            CKernel::storeLog       (   char*       buffer,
 #define EMPTYSTR ""
 #define EMPTYLOG 255
 
-void storeLog( char*       buffer,
-                u32&        index,
-                const char* l1,
-                u32         v1 = EMPTYLOG,
-                const char* l2 = EMPTYSTR,
-                u32         v2 = EMPTYLOG,
-                const char* l3 = EMPTYSTR,
-                u32         v3 = EMPTYLOG,
-                const char* l4 = EMPTYSTR,
-                u32         v4 = EMPTYLOG);
+void storeLogLong(              char*       buffer,
+                                u32&        index,
+                                const char* l1,
+                                u32         v1 = EMPTYLOG,
+                                const char* l2 = EMPTYSTR,
+                                u32         v2 = EMPTYLOG,
+                                const char* l3 = EMPTYSTR,
+                                u32         v3 = EMPTYLOG,
+                                const char* l4 = EMPTYSTR,
+                                u32         v4 = EMPTYLOG);
 */
-void CKernel::storeLog( char*       buffer,
-                        u32&        index,
-                        const char* l1, u32 v1,
-                        const char* l2, u32 v2,
-                        const char* l3, u32 v3,
-                        const char* l4, u32 v4)
+void CKernel::storeLogLong  (   char*       buffer,
+                                u32&        index,
+                                const char* l1, u32 v1,
+                                const char* l2, u32 v2,
+                                const char* l3, u32 v3,
+                                const char* l4, u32 v4)
 {
     for (const char* p = l1; *p; ++p)   // always write first label
     {
