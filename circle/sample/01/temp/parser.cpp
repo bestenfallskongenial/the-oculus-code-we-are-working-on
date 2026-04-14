@@ -62,13 +62,13 @@ bool            CKernel::ParseAnnexB                (   int         file_index,
     size_t pos = 0;                                                                                                 // --- First pass: find SPS/PPS ---
     while (pos < size - 3) 
         {
-        pos = FindNextStartCode(data, pos, size);
+        pos = findNext000001(data, pos, size);
         if (pos >= size - 3) break;
 
         size_t sc_len = (data[pos + 2] == 1) ? 3 : 4;
         u8 nal_type = data[pos + sc_len] & 0x1F;
 
-        size_t next_pos = FindNextStartCode(data, pos + sc_len, size);
+        size_t next_pos = findNext000001(data, pos + sc_len, size);
         size_t nal_size = (next_pos == size)
                         ? (size - pos - sc_len)
                         : (next_pos - pos - sc_len);
@@ -111,7 +111,7 @@ bool            CKernel::ParseAnnexB                (   int         file_index,
         size_t sc_pps = (data[pps_off+2] == 1) ? 3 : 4;
         sps_len = pps_off - (sps_off + sc_sps);
 
-        size_t next_after_pps = FindNextStartCode(data, pps_off + sc_pps, size);
+        size_t next_after_pps = findNext000001(data, pps_off + sc_pps, size);
         if (next_after_pps > size) next_after_pps = size;
         pps_len = next_after_pps - (pps_off + sc_pps);
 
@@ -133,7 +133,7 @@ bool            CKernel::ParseAnnexB                (   int         file_index,
     pos = 0;
     while (pos < size - 3 && frame_idx < MAX_FRAMES) 
         {
-        pos = FindNextStartCode(data, pos, size);
+        pos = findNext000001(data, pos, size);
         if (pos >= size - 3)
             {
             break;
@@ -149,7 +149,7 @@ bool            CKernel::ParseAnnexB                (   int         file_index,
             {
             m_frame_address [file_index][frame_idx] = (void*)(data + last_sps_pos);
             m_frameOffset[file_index][frame_idx] = (size_t)((data + last_sps_pos) - (u8*)m_videoBlockBase);         // store SPS addr
-            size_t next_pos = FindNextStartCode(data, pos + sc_len, size);
+            size_t next_pos = findNext000001(data, pos + sc_len, size);
             if (next_pos < size)
                 {
                 m_framelenght[file_index][frame_idx] = next_pos - last_sps_pos;                                     // SPS→IDR-end length
@@ -165,7 +165,7 @@ bool            CKernel::ParseAnnexB                (   int         file_index,
             }
         else 
             {
-            pos = FindNextStartCode(data, pos + sc_len, size);
+            pos = findNext000001(data, pos + sc_len, size);
             }
         }
 
@@ -321,7 +321,7 @@ void            CKernel::ParseBPM                   (   tex_state*  t,
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              HELPERS / UTILITY / WRAPPER
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-size_t          CKernel::FindNextStartCode(u8* data, size_t pos, size_t size) const
+size_t          CKernel::findNext000001(u8* data, size_t pos, size_t size) const
 {
                 while (pos < size - 3) {
                     if ((data[pos] == 0 && data[pos+1] == 0 && data[pos+2] == 1) ||

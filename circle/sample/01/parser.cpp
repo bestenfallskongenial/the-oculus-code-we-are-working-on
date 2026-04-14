@@ -119,7 +119,7 @@ void CKernel::ParseAnnexB(  h264_state* h,
                 size_t sc_len = (data[pos + 2] == 1) ? 3 : 4;
                 u8 nal_type = data[pos + sc_len] & 0x1F;
 
-                size_t next_pos = FindNextStartCode(data, pos + sc_len, size);
+                size_t next_pos = findNext000001(data, pos + sc_len, size);
 
                 if (nal_type == NAL_TYPE_SPS)
                     {
@@ -336,7 +336,7 @@ bool CKernel::ParseSPS(  u8*     sps_data,
     return true;
 }
 
-size_t          CKernel::FindNextStartCode(u8* data, size_t pos, size_t size) const
+size_t          CKernel::findNext000001(u8* data, size_t pos, size_t size) const
 {
                 while (pos < size - 3) {
                     if ((data[pos] == 0 && data[pos+1] == 0 && data[pos+2] == 1) ||

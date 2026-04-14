@@ -362,12 +362,12 @@ bool            CKernel::Update         ()
                 return false;
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            set_pot_routing         (   bool        adc_pot_routing)
+void            CKernel::set_pot_routing         (   bool        adc_pot_routing)
 {
                 m_ChipSelectPin.Write(adc_pot_routing);
 }
 // can we use this instead of the CGPIOPin class????
-/*
+
 #include <circle/bcm2835.h>
 #include <circle/types.h>
 #include <circle/timer.h>
@@ -379,17 +379,17 @@ void            set_pot_routing         (   bool        adc_pot_routing)
 #define PULL_DOWN 1
 #define PULL_UP   2
 
-static inline u32 mmio_read32(uintptr addr)
+static inline u32 CKernel::mmio_read32(uintptr addr)
 {
     return *(volatile u32 *)addr;
 }
 
-static inline void mmio_write32(uintptr addr, u32 value)
+static inline void CKernel::mmio_write32(uintptr addr, u32 value)
 {
     *(volatile u32 *)addr = value;
 }
 
-void gpio_write(unsigned pin, unsigned state, int pull)
+void CKernel::gpio_write(unsigned pin, unsigned state, int pull)
 {
     unsigned shift = (pin % 10) * 3;
     uintptr sel = ARM_GPIO_GPFSEL0 + (pin / 10) * 4;
@@ -464,12 +464,12 @@ extern "C" {
 #endif
 
 /// \brief Read 32-bit value from MMIO address
-static inline u32 read32 (uintptr nAddress)
+static inline u32 CKernel::read32 (uintptr nAddress)
 {
 	return *(u32 volatile *) nAddress;
 }
 /// \brief Write 32-bit value to MMIO address
-static inline void write32 (uintptr nAddress, u32 nValue)
+static inline void CKernel::write32 (uintptr nAddress, u32 nValue)
 {
 	*(u32 volatile *) nAddress = nValue;
 }
@@ -486,22 +486,21 @@ static inline void write32 (uintptr nAddress, u32 nValue)
     CSpinLock m_SpinLock; // really ?!?!
 
 
-void CKernel::watchDogStart (unsigned nTimeoutSeconds)
+void            CKernel::watchDogStart (unsigned nTimeoutSeconds)
 {
-	if (nTimeoutSeconds > MaxTimeoutSeconds)
-	{
-		nTimeoutSeconds = MaxTimeoutSeconds;
-	}
-	m_SpinLock.Acquire ();
+                if (nTimeoutSeconds > MaxTimeoutSeconds)
+                    {
+                    nTimeoutSeconds = MaxTimeoutSeconds;
+                    }
+                m_SpinLock.Acquire ();  // really??
 
-	write32 (ARM_PM_WDOG, ARM_PM_PASSWD | ((nTimeoutSeconds << 16) & ARM_PM_WDOG_TIME));
+                write32 (ARM_PM_WDOG, ARM_PM_PASSWD | ((nTimeoutSeconds << 16) & ARM_PM_WDOG_TIME));
 
-	write32 (ARM_PM_RSTC,   ARM_PM_PASSWD | ARM_PM_RSTC_REBOOT
-			      | (read32 (ARM_PM_RSTC) & ARM_PM_RSTC_CLEAR));
+                write32 (ARM_PM_RSTC,   ARM_PM_PASSWD | ARM_PM_RSTC_REBOOT (read32 (ARM_PM_RSTC) & ARM_PM_RSTC_CLEAR));
 
-	m_SpinLock.Release ();
+                m_SpinLock.Release ();  // really??
 }
-*/
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -567,7 +566,7 @@ int             CKernel::chooseFrame        ( int p_channel, &p_activeFrame, &p_
 }
 */
 // NEW generic not condensed valid arrays, max number of files ( macros for example!)
-void CKernel::chooseIndexSparse(int p_channel, int& p_activeIndex, int p_maxCount, bool* flags)
+void CKernel::chooseIndex(int p_channel, int& p_activeIndex, int p_maxCount, bool* flags)
 {
     static int p_activeIndex = 0;
 
@@ -796,7 +795,7 @@ void            CKernel::calculate1BPM   (   int p_source, unsigned long   p_tri
                     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::predictedNextBeat2 ()  // love to split it but i will need additional parameters right? like LF1_MULT
+void            CKernel::predictedBeat1 ()  // love to split it but i will need additional parameters right? like LF1_MULT
 {
                 unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                      // Get the current u_time in clock ticks
 
@@ -844,7 +843,7 @@ void            CKernel::predictedNextBeat2 ()  // love to split it but i will n
                     }
 }
 
-void            CKernel::predictedNextBeat2 ( int p_source, int p_lfoMult )  // love to split it but i will need additional parameters right? like LF1_MULT
+void            CKernel::predictedBeat2 ( int p_source, int p_lfoMult )  // love to split it but i will need additional parameters right? like LF1_MULT
 {
                 unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                      // Get the current u_time in clock ticks
 
@@ -872,7 +871,7 @@ void            CKernel::predictedNextBeat2 ( int p_source, int p_lfoMult )  // 
 
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::sampleWaveTable                   () // love to split it but i will need additional parameters right? like LF1_MULT
+void            CKernel::sampleWaveTable1                  () // love to split it but i will need additional parameters right? like LF1_MULT
 {
                 unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                          // Get the current u_time in clock ticks why not the start_time_fps_calculation or currentTime from Run()??
 
@@ -891,7 +890,7 @@ void            CKernel::sampleWaveTable                   () // love to split i
                 g_inOutMatrixInt[0][LF2]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF2_WAVE]][g_sampleIndex[1]];
 }   
 
-void            CKernel::sampleWaveTable                   ( int p_source, int p_lfoOut, int p_waveTable ) // love to split it but i will need additional parameters right? like LF1_MULT
+void            CKernel::sampleWaveTable2                  ( int p_source, int p_lfoOut, int p_waveTable ) // love to split it but i will need additional parameters right? like LF1_MULT
 {
                 unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                          // Get the current u_time in clock ticks why not the start_time_fps_calculation or currentTime from Run()??
 

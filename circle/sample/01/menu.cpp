@@ -1,7 +1,7 @@
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // globals and variablesVAL used here:
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::resetMenuPickupFlags    ()
+void            CKernel::resetPickUpFlags    ()
 {
 //              or simply 
 
@@ -76,7 +76,7 @@ void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
                     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::applyModeToChannel(int channel) // this is also a wrapper right ??
+void            CKernel::setChannelMode(int channel) // this is also a wrapper right ??
 {
                 switch (g_modeMap[channel][g_centralModeBuffer[g_currentProgramBuffer][channel] + 1]) // <- is this correct! g_modeMap gives me the max of modes ( needed for mapping ), also shall it determine if i can use a channelVAL this function...
                     {

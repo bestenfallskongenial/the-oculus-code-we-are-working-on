@@ -203,7 +203,7 @@ enum modetable		// for the g_centralModeBuffer array
 	modetablecount = 21 // right?
 }
 // we need to check this, also the file menu.cpp code. 
-uint8_t g_modeMap[MENU_LAYERS*4][MENU_LAYERS*4] =	// the first element is the max of modes for each channel, than we have the order ( switch case of applyModeToChannel(int channel) )
+uint8_t g_modeMap[MENU_LAYERS*4][MENU_LAYERS*4] =	// the first element is the max of modes for each channel, than we have the order ( switch case of setChannelMode(int channel) )
 { //  A    /  B    /  LFO  / Sens  / etc     
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0} 	// layer a is adc in 0-3 
 {5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}

@@ -95,7 +95,7 @@ unsigned        CKernel::loadToBuffer               (   char*       p_buffer,   
                 return 0;                                                                                           // Buffer full, EOF not reached - this is NOT a success - 0 is equal to false !!!
 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::saveFromBufferOld          (   const char* p_fileName,
+bool            CKernel::saveFromBufferO          (   const char* p_fileName,
                                                         const char* p_buffer,
                                                         unsigned    p_bufferSize )
 {

@@ -815,7 +815,7 @@ okay, what we have done here:
 */
 // NEW generic not condensed valid arrays, max number of files ( macros for example!)
 
-void CKernel::chooseIndexSparse(int p_channel, int& p_activeIndex, int p_maxCount, bool* flags)
+void CKernel::chooseIndex(int p_channel, int& p_activeIndex, int p_maxCount, bool* flags)
 {
     static int p_activeIndex = 0;
 

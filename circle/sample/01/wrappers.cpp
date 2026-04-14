@@ -429,7 +429,7 @@ void            CKernel::wrapper_io()
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void    CKernel::wrapper_modes()
 {
-        resetMenuPickupFlags();                              // we need to reset the threshold flags each loop - why again?!
+        resetPickUpFlags();                              // we need to reset the threshold flags each loop - why again?!
 
         switch (g_current_menu_layer)                           // use than the menulayer variable the 
             {
@@ -449,14 +449,14 @@ void    CKernel::wrapper_modes()
             default:
                 break;
             }
-        applyModeToChannel(0);                               // than we apply the mapped modes for the 8 channels
-        applyModeToChannel(1);                               // other menulayer modes are handled in the background
-        applyModeToChannel(2);
-        applyModeToChannel(3);
-        applyModeToChannel(4);
-        applyModeToChannel(5);
-        applyModeToChannel(6);
-        applyModeToChannel(7);
+        setChannelMode(0);                               // than we apply the mapped modes for the 8 channels
+        setChannelMode(1);                               // other menulayer modes are handled in the background
+        setChannelMode(2);
+        setChannelMode(3);
+        setChannelMode(4);
+        setChannelMode(5);
+        setChannelMode(6);
+        setChannelMode(7);
 
         apply_state_to_led();                                   // than we update the 4 leds depending on the modes - we have to write this function 
 }

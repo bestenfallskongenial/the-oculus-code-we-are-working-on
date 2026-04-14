@@ -33,7 +33,7 @@ the idea is to have my two buttons as followed ( important note here! when no bu
 is a button pressed long the four pots are routed into the first four adc channels, look at circle/sample/01-oculus_mendax/io.cpp how i did it in the past ):
 
 on single tab event on the upper button is counted as potential tab bpm, means we need to store it,
-a hold opens up "menu layer A" ( upper button ) and "menu layer B" ( lower button ) means modeMenuAssignGroup() will map the adc to this group of parameters ( for A and B its the modes )
+a hold opens up "menu layer A" ( upper button ) and "menu layer B" ( lower button ) means mapMenuGroup() will map the adc to this group of parameters ( for A and B its the modes )
 hold the lower button and single press the upper one will circle through additional menu layers like lfo settings, 
 attenuation and sensitivity settings, filesystem operations ( i need a flag base mechanism for load setup data or initialise the firmware update here )
 

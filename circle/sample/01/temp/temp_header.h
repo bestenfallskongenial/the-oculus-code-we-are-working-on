@@ -401,7 +401,7 @@ bool                    Mount(const char* p_deviceName);
 bool                    UnMount();
 bool                    openFile(const char* p_fileName);
 unsigned                loadToBuffer(char* p_buffer, unsigned p_bufferSize);
-bool                    saveFromBufferOld(const char* p_fileName, const char* p_buffer, unsigned p_bufferSize);
+bool                    saveFromBufferO(const char* p_fileName, const char* p_buffer, unsigned p_bufferSize);
 bool                    saveFromBuffer(const char* p_deviceName, const char* p_fileName, const char* p_buffer, unsigned p_bufferSize);
 bool                    closeFile();
 void                    bulkLoad(char* p_fileNameArray[], unsigned p_byteArray[], char* p_bufferArray[], unsigned p_maxFiles, unsigned& p_loadedFiles, unsigned& p_prevFiles, unsigned p_maxFileSize);
@@ -460,9 +460,9 @@ unsigned                bufferToScreenGetGrid(unsigned& cols, unsigned& rows);
 
 // menu.cpp
 
-void                    resetMenuPickupFlags();
+void                    resetPickUpFlags();
 void                    modeMenuAssignGroup(uint8_t menu_id, uint8_t base);
-void                    applyModeToChannel(int channel);
+void                    setChannelMode(int channel);
 void                    modeADC(int channel);
 void                    modeTRG(int channel);
 void                    modeBPM(int channel);
@@ -492,7 +492,7 @@ void                    button_consumer(int p_btn_id);
 void                    randomVec8(uint32_t p_seed);
 void                    calculate2BPM(unsigned long p_triggerTimeClockA, unsigned long p_triggerTimeClockB);
 void                    calculate1BPM(int chn, unsigned long p_triggerTimeClock);
-void                    predictedNextBeat2();
+void                    predictedBeat2();
 void                    predictedNextBeat1(int chn);
 void                    sampleWaveTable();
 
