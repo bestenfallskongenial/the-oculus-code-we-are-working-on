@@ -54,6 +54,67 @@ extern "C" void vc_host_get_vchi_state(VCHI_INSTANCE_T *inst, VCHI_CONNECTION_T 
 #define         SLOTS                   34 // for the g_centralModeBuffer[SLOTS][modetablecount] array - 1 firmware / 32 user / 1 default slot
 #define         DEFAULT_SLOT            34 // or 0 ?? 
 
+#define         MAX_TEXTURE_SIZE
+
+#define         MAX_VIDEO_WIDTH
+#define         MAX_VIDEO_HEIGHT
+#define         MAX_VIDEO_PROFILE
+#define         MAX_VIDEO_LEVEL
+
+// the array for the loader constance - i think its better than scatter the values / constants everywhere around
+
+#define         VSH_SD             		1	// max number of u_vertex shader on sd
+#define         OMF_SD             		1	// max number of fragment shader on sd
+#define         FSH_SD             		1	// max number of fragment shader on sd
+#define         OMT_SD             		1	// max number of fragment shader on sd
+#define         TEX_SD             		0	// max number of textures on sd
+#define         VID_SD             		0	// max number of videos on sd
+#define         KLN_SD                  1
+
+#define         FRM_SD                  1   // i put them here because if my mem/dma allocation
+#define         LOG_SD                  24  // here is the trick:
+                                            // i will use a mix of hardwired and "open" logs. examples:
+
+                                            // m_bufferLog[0]       - startup - memory - init log
+                                            // m_bufferLog[1]       - vc_sm
+                                            // m_bufferLog[2]       - mmal
+                                            // m_bufferLog[3]       - check glsl
+                                            // m_bufferLog[4]       - glsl compile
+                                            // m_bufferLog[5  - 15] - texture parser
+                                            // m_bufferLog[16 - 23] - video parser
+
+#define         VSH_USB                 0	// max number of u_vertex shader on sd
+#define         OMF_USB            		0	// max number of fragment shader on sd
+#define         FSH_USB            		32	// max number of fragment shader on sd
+#define         OMT_USB            		0	// max number of fragment shader on sd
+#define         TEX_USB            		8	// max number of textures on sd
+#define         VID_USB            		8	// max number of videos on sd
+#define         KLN_USB                 1
+
+#define         FRM_USB                 1   // i put them here because if my mem/dma allocation
+#define         LOG_USB                 1
+
+#define         VSH_EXT                 1
+#define         OMF_EXT                 1
+#define         FSH_EXT                 1
+#define         OMT_EXT                 1
+#define         TEX_EXT                 1
+#define         VID_EXT                 1
+#define         KLN_EXT                 1
+
+#define         VSH_SIZ                 (1024*32)
+#define         OMF_SIZ                 (1024*32)
+#define         FSH_SIZ                 (1024*32)
+#define         OMT_SIZ                 (1024*1024*4)
+#define         TEX_SIZ                 (1024*1024*4)
+#define         VID_SIZ                 (1024*1024*8)
+#define         KLN_SIZ                 (1024*1024*2)
+
+#define         FRM_SIZ                 (1024*1024)
+
+#define         LOG_SIZ                 (1024*64)
+
+
 enum TShutdownMode
 {
 	ShutdownNone,
@@ -309,6 +370,7 @@ public:
                                     char* filename_array[],
                                     int fromFile,
                                     int toFile);
+private:                                    
     bool        ParseSPS        (   u8* sps_data,
                                     size_t sps_size,
                                     size_t sps_sc_len,
@@ -364,7 +426,7 @@ public:
 //  VC04_SERVICE
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 public:
-    void callbackVCSM           (   void* callback_param, VCHI_CALLBACK_REASON_T reason, void* msg_handle);
+    void callbackVCSM           (   void* callback_param, VCHI_CALLBACK_REASON_T reason, void* msg_handle); // NOT STATIC REQUIRED?!
     void callbackMMAL           (   void* callback_param, VCHI_CALLBACK_REASON_T reason, void* msg_handle);
 
     void getStateVCHI();

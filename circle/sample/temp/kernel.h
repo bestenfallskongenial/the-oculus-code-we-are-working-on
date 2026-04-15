@@ -321,44 +321,47 @@ struct tex_state
 struct h264_state
 {
     // raw input will be populated by the parser init
-    u8*     data[MAX_VIDEOS];
-    size_t  size[MAX_VIDEOS];
+    u8*             data[MAX_VIDEOS];
+    size_t          size[MAX_VIDEOS];
     // data for the poller
-    size_t  sps_off[MAX_VIDEOS][MAX_FRAMES];
-    size_t  sps_sc_len[MAX_VIDEOS][MAX_FRAMES];
-    size_t  sps_len[MAX_VIDEOS][MAX_FRAMES];
+    size_t          sps_off[MAX_VIDEOS][MAX_FRAMES];
+    size_t          sps_sc_len[MAX_VIDEOS][MAX_FRAMES];
+    size_t          sps_len[MAX_VIDEOS][MAX_FRAMES];
 
-    size_t  pps_off[MAX_VIDEOS][MAX_FRAMES];
-    size_t  pps_sc_len[MAX_VIDEOS][MAX_FRAMES];
-    size_t  pps_len[MAX_VIDEOS][MAX_FRAMES];
+    size_t          pps_off[MAX_VIDEOS][MAX_FRAMES];
+    size_t          pps_sc_len[MAX_VIDEOS][MAX_FRAMES];
+    size_t          pps_len[MAX_VIDEOS][MAX_FRAMES];
 
-    size_t  idr_off[MAX_VIDEOS][MAX_FRAMES];
-    size_t  idr_sc_len[MAX_VIDEOS][MAX_FRAMES];
-    size_t  idr_len[MAX_VIDEOS][MAX_FRAMES];
+    size_t          idr_off[MAX_VIDEOS][MAX_FRAMES];
+    size_t          idr_sc_len[MAX_VIDEOS][MAX_FRAMES];
+    size_t          idr_len[MAX_VIDEOS][MAX_FRAMES];
     // frame table
-    void*   frame_address[MAX_VIDEOS][MAX_FRAMES];
-    size_t  frame_offset[MAX_VIDEOS][MAX_FRAMES];
-    size_t  frame_length[MAX_VIDEOS][MAX_FRAMES];
-    int     idr_offset[MAX_VIDEOS]; // size_t      idr_offset[MAX_VIDEOS];
+    void*           frame_address[MAX_VIDEOS][MAX_FRAMES];
+    size_t          frame_offset[MAX_VIDEOS][MAX_FRAMES];
+    size_t          frame_length[MAX_VIDEOS][MAX_FRAMES];
+    int             idr_offset[MAX_VIDEOS]; // size_t      idr_offset[MAX_VIDEOS];
     // extradata
-    u8      extradata[MAX_VIDEOS][1024];
-    size_t  extradata_len[MAX_VIDEOS];
-    bool    extradata_valid[MAX_VIDEOS];
+    u8              extradata[MAX_VIDEOS][1024];
+    size_t          extradata_len[MAX_VIDEOS];
+    bool            extradata_valid[MAX_VIDEOS];
     // parsed metadata
-    u16     video_width[MAX_VIDEOS];
-    u16     video_height[MAX_VIDEOS];
-    u8      vid_profile[MAX_VIDEOS];
-    u8      vid_level[MAX_VIDEOS];
+    u16             video_width[MAX_VIDEOS];
+    u16             video_height[MAX_VIDEOS];
+    u8              vid_profile[MAX_VIDEOS];
+    u8              vid_level[MAX_VIDEOS];
     // state
-    int     frame_count[MAX_VIDEOS]; //     unsigned    frame_count[MAX_VIDEOS];
-    bool    vid_valid[MAX_VIDEOS];
+    int             frame_count[MAX_VIDEOS]; //     unsigned    frame_count[MAX_VIDEOS];
+    bool            vid_valid[MAX_VIDEOS];
     // shared base
-    char*   block_base; // void*   block_base;
+    char*           block_base; // void*   block_base;
     // constraints
-    u16     max_width;
-    u16     max_height;
-    u8      max_profile;
-    u8      max_level;
+    u16             max_width;
+    u16             max_height;
+    u8              max_profile;
+    u8              max_level;
+    // for my video frame texture 
+    GLuint          gl_tex_vid;      // video texture handle
+    EGLImageKHR     egl_img;        // backing (changes per frame)
 };
 
 struct glsl_state
@@ -547,6 +550,8 @@ public:
 
     tex_state               m_tex;
     tex_state               m_omt;
+
+    h264_state              m_vid;
 
 // we need also a struct for the videos, just to keep the frame hear    
 }

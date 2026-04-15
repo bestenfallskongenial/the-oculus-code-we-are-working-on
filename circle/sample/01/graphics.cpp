@@ -666,53 +666,53 @@ void            CKernel::updateOvlState             (   olg_state*  o,
                                                         glsl_state* s, 
                                                         tex_state*  t )
 {
-            const float ox = s->kMenuOrigin[0];
-            const float oy = s->kMenuOrigin[1];
-            const float tw = s->kMenuTileSize[0];
-            const float th = s->kMenuTileSize[1];
+                const float ox = s->kMenuOrigin[0];
+                const float oy = s->kMenuOrigin[1];
+                const float tw = s->kMenuTileSize[0];
+                const float th = s->kMenuTileSize[1];
 
-            for (int i = 0; i < MENU_GPU_TILE_COUNT; i++)
-                {
-                float sx = s->kMenuRelSize[i][0];
-                float sy = s->kMenuRelSize[i][1];
-
-                if (i == 14 || i == 15)
+                for (int i = 0; i < MENU_GPU_TILE_COUNT; i++)
                     {
-                    sx *= s->kMenuBackgroundScale[0];
-                    sy *= s->kMenuBackgroundScale[1];
+                    float sx = s->kMenuRelSize[i][0];
+                    float sy = s->kMenuRelSize[i][1];
+
+                    if (i == 14 || i == 15)
+                        {
+                        sx *= s->kMenuBackgroundScale[0];
+                        sy *= s->kMenuBackgroundScale[1];
+                        }
+
+                    s->tile_rect_x[i] = ox + s->kMenuRelPos[i][0] * tw;
+                    s->tile_rect_y[i] = oy + s->kMenuRelPos[i][1] * th;
+                    s->tile_rect_w[i] = sx * tw;
+                    s->tile_rect_h[i] = sy * th;
+
+                    s->tile_rect[i * 4 + 0] = s->tile_rect_x[i];
+                    s->tile_rect[i * 4 + 1] = s->tile_rect_y[i];
+                    s->tile_rect[i * 4 + 2] = s->tile_rect_w[i];
+                    s->tile_rect[i * 4 + 3] = s->tile_rect_h[i];
                     }
 
-                s->tile_rect_x[i] = ox + s->kMenuRelPos[i][0] * tw;
-                s->tile_rect_y[i] = oy + s->kMenuRelPos[i][1] * th;
-                s->tile_rect_w[i] = sx * tw;
-                s->tile_rect_h[i] = sy * th;
+                    s->tile_index[0] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH0_MODE];
+                    s->tile_index[1] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH1_MODE];
+                    s->tile_index[2] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH2_MODE];
+                    s->tile_index[3] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH3_MODE];
+                    s->tile_index[4] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH4_MODE];
+                    s->tile_index[5] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH5_MODE];
+                    s->tile_index[6] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH6_MODE];
+                    s->tile_index[7] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH7_MODE];
 
-                s->tile_rect[i * 4 + 0] = s->tile_rect_x[i];
-                s->tile_rect[i * 4 + 1] = s->tile_rect_y[i];
-                s->tile_rect[i * 4 + 2] = s->tile_rect_w[i];
-                s->tile_rect[i * 4 + 3] = s->tile_rect_h[i];
-                }
+                    const unsigned long bpm0 = g_resultBPM[0] % 10000UL;
+                    const unsigned long bpm1 = g_resultBPM[1] % 10UL;
 
-                s->tile_index[0] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH0_MODE];
-                s->tile_index[1] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH1_MODE];
-                s->tile_index[2] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH2_MODE];
-                s->tile_index[3] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH3_MODE];
-                s->tile_index[4] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH4_MODE];
-                s->tile_index[5] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH5_MODE];
-                s->tile_index[6] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH6_MODE];
-                s->tile_index[7] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH7_MODE];
-
-                const unsigned long bpm0 = g_resultBPM[0] % 10000UL;
-                const unsigned long bpm1 = g_resultBPM[1] % 10UL;
-
-                s->tile_index[8]  = (GLfloat) ((bpm0 / 1000UL) % 10UL);
-                s->tile_index[9]  = (GLfloat) ((bpm0 / 100UL) % 10UL);
-                s->tile_index[10] = (GLfloat) ((bpm0 / 10UL) % 10UL);
-                s->tile_index[11] = (GLfloat) (bpm0 % 10UL);
-                s->tile_index[12] = 10.0f;
-                s->tile_index[13] = (GLfloat) bpm1;
-                s->tile_index[14] = 48.0f;
-                s->tile_index[15] = 49.0f;
+                    s->tile_index[8]  = (GLfloat) ((bpm0 / 1000UL) % 10UL);
+                    s->tile_index[9]  = (GLfloat) ((bpm0 / 100UL) % 10UL);
+                    s->tile_index[10] = (GLfloat) ((bpm0 / 10UL) % 10UL);
+                    s->tile_index[11] = (GLfloat) (bpm0 % 10UL);
+                    s->tile_index[12] = 10.0f;
+                    s->tile_index[13] = (GLfloat) bpm1;
+                    s->tile_index[14] = 48.0f;
+                    s->tile_index[15] = 49.0f;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -764,230 +764,7 @@ void            CKernel::drawGLsOvl                 ()
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
-
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
-/*
-
-okay, what we have done here:
-
-    - we changed the shaderLog() and programLog() from void to bool, means we also removed
-      the call parameter bool* flags - its set now on caller side
-    - we simplified the function initShader() and initTexture that it give out a dense indexed
-      id / handle for the programs / textures -> we now need to refactor the select*() functions
-*/
-// NEW generic not condensed valid arrays, max number of files ( macros for example!)
-
-void CKernel::chooseIndex(int p_channel, int& p_activeIndex, int p_maxCount, bool* flags)
-{
-    static int p_activeIndex = 0;
-
-    int f_calculated = g_inOutMatrixInt[p_channel][RAW] * p_maxCount >> 10;
-
-    if (flags[f_calculated])
-    {
-        p_activeIndex = f_calculated;
-    }
-}
-
-// NEW generic condensed valid arrays, max number of files ( macros for example!)
-
-void CKernel::chooseIndexDense(int p_channel, int& p_activeIndex, int p_maxCount)
-{
-    int f_calculated = (g_inOutMatrixInt[p_channel][RAW] * p_maxCount) >> 10;
-
-    p_activeIndex = f_calculated;
-}
-
-the involved array/enums:
-
-// the array for the loader constance - i think its better than scatter the values / constants everywhere around
-
-#define         VSH_SD             		1	// max number of u_vertex shader on sd
-#define         OMF_SD             		1	// max number of fragment shader on sd
-#define         FSH_SD             		1	// max number of fragment shader on sd
-#define         OMT_SD             		1	// max number of fragment shader on sd
-#define         TEX_SD             		0	// max number of textures on sd
-#define         VID_SD             		0	// max number of videos on sd
-#define         KLN_SD                  1
-
-#define         FRM_SD                  1   // i put them here because if my mem/dma allocation
-#define         LOG_SD                  24  // here is the trick:
-                                            // i will use a mix of hardwired and "open" logs. examples:
-
-                                            // m_bufferLog[0]       - startup - memory - init log
-                                            // m_bufferLog[1]       - vc_sm
-                                            // m_bufferLog[2]       - mmal
-                                            // m_bufferLog[3]       - check glsl
-                                            // m_bufferLog[4]       - glsl compile
-                                            // m_bufferLog[5  - 15] - texture parser
-                                            // m_bufferLog[16 - 23] - video parser
-
-#define         VSH_USB                 0	// max number of u_vertex shader on sd
-#define         OMF_USB            		0	// max number of fragment shader on sd
-#define         FSH_USB            		32	// max number of fragment shader on sd
-#define         OMT_USB            		0	// max number of fragment shader on sd
-#define         TEX_USB            		8	// max number of textures on sd
-#define         VID_USB            		8	// max number of videos on sd
-#define         KLN_USB                 1
-
-#define         FRM_USB                 1   // i put them here because if my mem/dma allocation
-#define         LOG_USB                 1
-
-#define         VSH_EXT                 1
-#define         OMF_EXT                 1
-#define         FSH_EXT                 1
-#define         OMT_EXT                 1
-#define         TEX_EXT                 1
-#define         VID_EXT                 1
-#define         KLN_EXT                 1
-
-#define         VSH_SIZ                 (1024*32)
-#define         OMF_SIZ                 (1024*32)
-#define         FSH_SIZ                 (1024*32)
-#define         OMT_SIZ                 (1024*1024*4)
-#define         TEX_SIZ                 (1024*1024*4)
-#define         VID_SIZ                 (1024*1024*8)
-#define         KLN_SIZ                 (1024*1024*2)
-
-#define         FRM_SIZ                 (1024*1024)
-
-#define         LOG_SIZ                 (1024*64)
 
 
-
-
-// array to store the scanned filenames
-                char                   *g_ScnVsh[VSH_SD + VSH_USB]     	= { 0 };
-        		char				   *g_ScnOmf[OMF_SD + OMF_USB] 		= { 0 };
-                char                   *g_ScnFsh[FSH_SD + FSH_USB]     	= { 0 };
-        		char				   *g_ScnOmt[OMT_SD + OMT_USB] 		= { 0 };
-                char                   *g_ScnTex[TEX_SD + TEX_USB]     	= { 0 };
-                char                   *g_ScnVid[VID_SD + VID_USB]     	= { 0 };
-                char                   *g_ScnKln[KLN_SD + KLN_USB]     	= { 0 };
-// array to store the length of the loaded files
-                unsigned                g_bytVsh[VSH_SD + VSH_USB]      = { 0 };
-                unsigned                g_bytOmf[OMF_SD + OMF_USB]      = { 0 };
-                unsigned                g_bytFsh[FSH_SD + FSH_USB]      = { 0 };
-                unsigned                g_bytOmt[OMT_SD + OMT_USB]      = { 0 };
-                unsigned                g_bytTex[TEX_SD + TEX_USB]      = { 0 };
-                unsigned                g_bytVid[VID_SD + VID_USB]      = { 0 };
-                unsigned                g_bytKln[KLN_SD + KLN_USB]      = { 0 };
-
-
-
-// our buffers members for the allocation
-
-    olg_state                   m_ogl;
-
-    vtx_state                m_vtx;
-
-    glsl_state                  m_vsh;
-    glsl_state                  m_fsh;
-    glsl_state                  m_osh;
-
-    tex_state               m_tex;
-    tex_state               m_omt;
-
-// example calls for wrapper
-// SHADERS 
-initShader(&m_vtx, &m_vsh, &m_tex,
-           m_bufferVsh,
-           filecounter[FT_VSH][FLD_PREV],
-           filecounter[FT_VSH][FLD_LOADED],
-           GL_VERTEX_SHADER,
-           vsh_flags);
-
-initShader(&m_vtx, &m_osh, &m_omt,
-           m_bufferOmf,
-           filecounter[FT_OMF][FLD_PREV],
-           filecounter[FT_OMF][FLD_LOADED],
-           GL_FRAGMENT_SHADER,
-           omf_flags);
-
-initShader(&m_vtx, &m_fsh, &m_tex,
-           m_bufferFsh,
-           filecounter[FT_FSH][FLD_PREV],
-           filecounter[FT_FSH][FLD_LOADED],
-           GL_FRAGMENT_SHADER,
-           fsh_flags);                          // the signature is designed to have a clear pattern, the functions to use the same parameter matrix
-// PROGRAMS 
-initProgram(&m_vtx,
-             &m_vsh,
-             &m_fsh,
-             &m_tex,
-             filecounter[FT_FSH][FLD_PREV],
-             filecounter[FT_FSH][FLD_LOADED],
-             filecounter[FT_FSH][FLD_VALID],
-             vsh_flags,
-             fsh_flags);
-
-initProgram(&m_vtx,
-             &m_vsh,
-             &m_osh,
-             &m_omt,
-             filecounter[FT_OMF][FLD_PREV],
-             filecounter[FT_OMF][FLD_LOADED],
-             filecounter[FT_OMF][FLD_VALID],
-             vsh_flags,
-             omf_flags);
-// TEXTURES
-initTexture(&m_vtx,
-             &m_fsh,
-             &m_tex,
-             m_bufferTex,
-             filecounter[FT_TEX][FLD_PREV],
-             filecounter[FT_TEX][FLD_LOADED],
-             filecounter[FT_TEX][FLD_VALID],
-             tex_flags,
-             GL_REPEAT,
-             GL_REPEAT);
-
-initTexture(&m_vtx,
-             &m_osh,
-             &m_omt,
-             m_bufferOmt,
-             filecounter[FT_OMT][FLD_PREV],
-             filecounter[FT_OMT][FLD_LOADED],
-             filecounter[FT_OMT][FLD_VALID],
-             omt_flags,
-             GL_CLAMP_TO_EDGE,
-             GL_CLAMP_TO_EDGE);
-// UNIFORMS
-initUniform(&m_vtx,
-             &m_fsh,
-             &m_tex,
-             0,
-             filecounter[FT_FSH][FLD_VALID]);
-
-initUniform(&m_vtx,
-             &m_osh,
-             &m_omt,
-             0,
-             filecounter[FT_OMF][FLD_VALID]);
-
-             // runtime loop
-// RUNTIME
-if (overlay_enabled)
-    {
-    updateOvlState(&m_osh);
-    }
-
-frmBufferSet(&m_vtx);
-
-// pass 1
-setUniPrg(&m_ogl, &m_vtx, &m_fsh, &m_tex);
-setTexPrg(&m_ogl, &m_vtx, &m_fsh, &m_tex, gl_current_tex);
-drawGLsPrg(&m_ogl, &m_vtx, &m_fsh, &m_tex);
-
-// pass 2 (only if enabled)
-if (overlay_enabled)
-    {
-
-    setUniOvl(&m_ogl, &m_vtx, &m_osh, &m_omt);
-    setTexOvl(&m_ogl, &m_vtx, &m_osh, &m_omt);
-    drawGLsOvl(&m_ogl, &m_vtx, &m_osh, &m_omt);
-    }
-frmRateBreak();
-
-frmBufferSwap(&m_ogl);             

@@ -252,160 +252,164 @@ void            CKernel::wrapper_load_usb()
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::wrapper_init_gl_sd()
 {
-            //  parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
-            //    parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
+                initBMPparser   (   &m_omt,                                         // the dedicated struct for the overlay texture
+                                    m_bufferOmt,                                    // the actual mem-buffer where i have stored it
+                                    g_bytOmt,                                       // the array where i stored the loaded bytes
+                                    MAX_TEXTURE_SIZE,                               // upper bound for the size
+                                    filecounter[FT_OMT][FLD_PREV],                  // for the continuous loading between devices - lower bound
+                                    filecounter[FT_OMT][FLD_LOADED]);               // for the continuous loading between devices - upper bound
 
-                initVbuffer (   &m_ogl,
-                                &m_vtx ) 
+                ParseBPM        (   &m_omt,
+                                    g_ScnOmt,
+                                    filecounter[FT_TEX][FLD_PREV],                  // for the continuous loading between devices - lower bound
+                                    filecounter[FT_TEX][FLD_LOADED]);               // for the continuous loading between devices - upper bound
 
-            //  initVshaders    (&m_glsl, filecounter[FT_VSH][FLD_PREV], filecounter[FT_VSH][FLD_LOADED]);
+                initVbuffer     (   &m_ogl,
+                                    &m_vtx ) 
 
-                initShader(     &m_vtx,         // init vertex shader 
-                                &m_vsh, 
-                                &m_tex,
-                                m_bufferVsh,
-                                filecounter[FT_VSH][FLD_PREV],      // should be 0
-                                filecounter[FT_VSH][FLD_LOADED],    // should be 1 - BUT the code should also ensure that filecounter contains the correct values
-                                GL_VERTEX_SHADER);
+                initShader      (   &m_vtx,                                         // init vertex shader 
+                                    &m_vsh, 
+                                    &m_tex,
+                                    m_bufferVsh,
+                                    filecounter[FT_VSH][FLD_PREV],                  // should be 0
+                                    filecounter[FT_VSH][FLD_LOADED],                // should be 1 - BUT the code should also ensure that filecounter contains the correct values
+                                    GL_VERTEX_SHADER);
 
-                initShader(     &m_vtx,         // init fragment shader ( default )
-                                &m_fsh, 
-                                &m_tex,
-                                m_bufferFsh,
-                                filecounter[FT_FSH][FLD_PREV],
-                                filecounter[FT_FSH][FLD_LOADED],
-                                GL_FRAGMENT_SHADER);          
+                initShader      (   &m_vtx,                                         // init fragment shader ( default )
+                                    &m_fsh, 
+                                    &m_tex,
+                                    m_bufferFsh,                                    // the actual mem-buffer where i have stored it
+                                    filecounter[FT_FSH][FLD_PREV],                  // for the continuous loading between devices - lower bound
+                                    filecounter[FT_FSH][FLD_LOADED],                // for the continuous loading between devices - upper bound
+                                    GL_FRAGMENT_SHADER);          
 
-                initShader(     &m_vtx,         // init Overlay shader
-                                &m_osh, 
-                                &m_omt,
-                                m_bufferOmf,
-                                filecounter[FT_OMF][FLD_PREV],
-                                filecounter[FT_OMF][FLD_LOADED],
-                                GL_FRAGMENT_SHADER);
+                initShader      (   &m_vtx,                                         // init Overlay shader
+                                    &m_osh, 
+                                    &m_omt,
+                                    m_bufferOmf,                                    // the actual mem-buffer where i have stored it
+                                    filecounter[FT_OMF][FLD_PREV],                  // for the continuous loading between devices - lower bound
+                                    filecounter[FT_OMF][FLD_LOADED],                // for the continuous loading between devices - upper bound
+                                    GL_FRAGMENT_SHADER);
 
-            //  initOshader     (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);  
-
-            //  initFshaders    (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
-
-            //  initOprogram    (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);
-
-                initProgram(    &m_vtx,         // user fragment shaders
-                                &m_vsh,
-                                &m_fsh,
-                                &m_tex,
-                                filecounter[FT_FSH][FLD_PREV],
-                                filecounter[FT_FSH][FLD_LOADED],
-                                filecounter[FT_FSH][FLD_VALID]);
+                initProgram     (   &m_vtx,                                         // user fragment shaders
+                                    &m_vsh,
+                                    &m_fsh,
+                                    &m_tex,
+                                    filecounter[FT_FSH][FLD_PREV],                  // for the continuous loading between devices - lower bound
+                                    filecounter[FT_FSH][FLD_LOADED],                // for the continuous loading between devices - upper bound
+                                    filecounter[FT_FSH][FLD_VALID]);                // for the dense indexing after load and verify
                                 
-                initProgram(    &m_vtx,         // overlay fragment shader 
-                                &m_vsh,
-                                &m_osh,
-                                &m_omt,
-                                filecounter[FT_OMF][FLD_PREV],
-                                filecounter[FT_OMF][FLD_LOADED],
-                                filecounter[FT_OMF][FLD_VALID]);
+                initProgram     (   &m_vtx,                                         // overlay fragment shader 
+                                    &m_vsh,
+                                    &m_osh,
+                                    &m_omt, 
+                                    filecounter[FT_OMF][FLD_PREV],                  // for the continuous loading between devices - lower bound
+                                    filecounter[FT_OMF][FLD_LOADED],                // for the continuous loading between devices - upper bound
+                                    filecounter[FT_OMF][FLD_VALID]);                // for the dense indexing after load and verify
 
-            //  initFprograms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+                initUniform     (   &m_vtx,
+                                    &m_fsh,
+                                    &m_tex,
+                                    0,                                              // why not simply change the call signature? 
+                                    filecounter[FT_FSH][FLD_VALID]);                // for the dense indexing after load and verify *
 
-                initUniform(    &m_vtx,
-                                &m_fsh,
-                                &m_tex,
-                                0,                                  // why not simply change the call signature? 
-                                filecounter[FT_FSH][FLD_VALID]);
-
-                initUniform(    &m_vtx,
-                                &m_osh,
-                                &m_omt,
-                                0,
-                                filecounter[FT_OMF][FLD_VALID]);            
-
-            //  initOuniforms   (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);
-
-            //  initFuniforms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
-
-                initTexture(    &m_vtx,
-                                &m_fsh,
-                                &m_tex,
-                                m_bufferTex,
-                                filecounter[FT_TEX][FLD_PREV],
-                                filecounter[FT_TEX][FLD_LOADED],
-                                filecounter[FT_TEX][FLD_VALID],
-                                GL_REPEAT,
-                                GL_REPEAT);
-
-                initTexture(    &m_vtx,
-                                &m_osh,
-                                &m_omt,
-                                m_bufferOmt,
-                                filecounter[FT_OMT][FLD_PREV],
-                                filecounter[FT_OMT][FLD_LOADED],
-                                filecounter[FT_OMT][FLD_VALID],
-                                GL_CLAMP_TO_EDGE,
-                                GL_CLAMP_TO_EDGE);
-
-            //  initOtexture    (&m_glsl, filecounter[FT_OMT][FLD_PREV], filecounter[FT_OMT][FLD_LOADED]);
-
-        //      initUtextures   (&m_glsl, filecounter[FT_TEX][FLD_PREV], filecounter[FT_TEX][FLD_LOADED]); 
+                initUniform     (   &m_vtx,
+                                    &m_osh,
+                                    &m_omt,
+                                    0,
+                                    filecounter[FT_OMF][FLD_VALID]);                // for the dense indexing after load and verify *
+/*
+                initTexture     (   &m_vtx,                                         // no textures on sd!?
+                                    &m_fsh,
+                                    &m_tex,
+                                    m_bufferTex,                                    // the actual mem-buffer where i have stored it
+                                    filecounter[FT_TEX][FLD_PREV],                  // for the continuous loading between devices - lower bound
+                                    filecounter[FT_TEX][FLD_LOADED],                // for the continuous loading between devices - upper bound
+                                    filecounter[FT_TEX][FLD_VALID],                 // for the dense indexing after load and verify *
+                                    GL_REPEAT,
+                                    GL_REPEAT);
+*/
+                initTexture     (   &m_vtx,                                         // my overlay texture
+                                    &m_osh,
+                                    &m_omt,
+                                    m_bufferOmt,                                    // the actual mem-buffer where i have stored it
+                                    filecounter[FT_OMT][FLD_PREV],                  // for the continuous loading between devices - lower bound
+                                    filecounter[FT_OMT][FLD_LOADED],                // for the continuous loading between devices - upper bound
+                                    filecounter[FT_OMT][FLD_VALID],                 // for the dense indexing after load and verify *
+                                    GL_CLAMP_TO_EDGE,
+                                    GL_CLAMP_TO_EDGE);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::wrapper_init_gl_usb()
 {
-            //    parser_bmp(TEX_LOADED_OLD,TEX_LOADED_NEW);
-            //    parser_h264(VID_LOADED_OLD,VID_LOADED_NEW);
+                initBMPparser   (   &m_tex,
+                                    m_bufferTex,
+                                    g_bytTex,
+                                    MAX_TEXTURE_SIZE,
+                                    filecounter[FT_TEX][FLD_PREV],
+                                    filecounter[FT_TEX][FLD_LOADED]);                
 
-            //  initFshaders    (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+                initH264parser  (   &m_vid,
+                                    m_videoBlockBase,
+                                    m_bufferVid,
+                                    g_bytVid,
+                                    filecounter[FT_VID][FLD_PREV],
+                                    filecounter[FT_VID][FLD_LOADED],
+                                    MAX_VIDEO_WIDTH,
+                                    MAX_VIDEO_HEIGHT,
+                                    MAX_VIDEO_PROFILE,
+                                    MAX_VIDEO_LEVEL);
 
-                initShader(     &m_vtx,         // init fragment shader ( default )
-                                &m_fsh, 
-                                &m_tex,
-                                m_bufferFsh,
-                                filecounter[FT_FSH][FLD_PREV],
-                                filecounter[FT_FSH][FLD_LOADED],
-                                GL_FRAGMENT_SHADER);    
+                ParseBPM        (   &m_tex,
+                                    g_ScnTex,
+                                    filecounter[FT_TEX][FLD_PREV],
+                                    filecounter[FT_TEX][FLD_LOADED]);
 
-            //  initFprograms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+                ParseAnnexB     (   &m_vid,
+                                    g_bytVid,
+                                    filecounter[FT_VID][FLD_PREV],
+                                    filecounter[FT_VID][FLD_LOADED]);
 
-                initProgram(    &m_vtx,         // user fragment shaders
-                                &m_vsh,
-                                &m_fsh,
-                                &m_tex,
-                                filecounter[FT_FSH][FLD_PREV],
-                                filecounter[FT_FSH][FLD_LOADED],
-                                filecounter[FT_FSH][FLD_VALID]);            
+                initShader      (   &m_vtx,         // init fragment shader ( default )
+                                    &m_fsh, 
+                                    &m_tex,
+                                    m_bufferFsh,
+                                    filecounter[FT_FSH][FLD_PREV],
+                                    filecounter[FT_FSH][FLD_LOADED],
+                                    GL_FRAGMENT_SHADER);    
 
-            //  initFuniforms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
+                initProgram     (   &m_vtx,         // user fragment shaders
+                                    &m_vsh,
+                                    &m_fsh,
+                                    &m_tex,
+                                    filecounter[FT_FSH][FLD_PREV],
+                                    filecounter[FT_FSH][FLD_LOADED],
+                                    filecounter[FT_FSH][FLD_VALID]);            
 
-                initUniform(    &m_vtx,
-                                &m_fsh,
-                                &m_tex,
-                                0,                                  // why not simply change the call signature? 
-                                filecounter[FT_FSH][FLD_VALID]);            
+                initUniform     (   &m_vtx,
+                                    &m_fsh,
+                                    &m_tex,
+                                    0,                                  // why not simply change the call signature? 
+                                    filecounter[FT_FSH][FLD_VALID]);            
 
-            //  initUtextures   (&m_glsl, filecounter[FT_TEX][FLD_PREV], filecounter[FT_TEX][FLD_LOADED]); 
-
-                initTexture(    &m_vtx,
-                                &m_fsh,
-                                &m_tex,
-                                m_bufferTex,
-                                filecounter[FT_TEX][FLD_PREV],
-                                filecounter[FT_TEX][FLD_LOADED],
-                                filecounter[FT_TEX][FLD_VALID],
-                                GL_REPEAT,
-                                GL_REPEAT);
+                initTexture     (   &m_vtx,
+                                    &m_fsh,
+                                    &m_tex,
+                                    m_bufferTex,
+                                    filecounter[FT_TEX][FLD_PREV],
+                                    filecounter[FT_TEX][FLD_LOADED],
+                                    filecounter[FT_TEX][FLD_VALID],
+                                    GL_REPEAT,
+                                    GL_REPEAT);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::wrapper_io()
 {
                 readADC();                  //  we read and dampen the adc each loop
 
-            //  chooseProgram(ADC_SELECT_PRG);          // determine the shader
-            //  chooseTexture(ADC_SELECT_TEX);          // texture 
-            //  chooseVideo(ADC_SELECT_VID);            // video each loop
-
-                chooseIndexDense( ADC_SELECT_PRG, m_activePrg, filecounter[FT_FSH][FLD_VALID])
-                chooseIndexDense( ADC_SELECT_TEX, m_activeTex, filecounter[FT_TEX][FLD_VALID])
-                chooseIndexDense( ADC_SELECT_VID, m_activeVid, filecounter[FT_VID][FLD_VALID])
+                chooseIndexD( ADC_SELECT_PRG, m_activePrg, filecounter[FT_FSH][FLD_VALID])
+                chooseIndexD( ADC_SELECT_TEX, m_activeTex, filecounter[FT_TEX][FLD_VALID])
+                chooseIndexD( ADC_SELECT_VID, m_activeVid, filecounter[FT_VID][FLD_VALID])
 
                 buttonPing( 0, SW_PIN_A);                  // check button A
                 buttonPing( 1, SW_PIN_B);                  // and B
