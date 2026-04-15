@@ -159,7 +159,7 @@
 
 #define         CHANNEL			    	7		                    // 7 ( for mcp3008 )
 #define         VREF			 		5.0f	                    // Reference voltage 5 Volt
-#define         SPI_MASTER_DEVICE	 	0		                    // 0
+#define         SPI_MASTER_DEVICE	 	0		                    // 0    m_SPIMaster
 #define         SPI_CHIP_SELECT		 	0		                    // 0
 #define         SPI_CLOCK_SPEED	   		1000000		                // Hz
 // logger/assertion
@@ -231,33 +231,6 @@ uint8_t g_modeMap[MENU_LAYERS*4][MENU_LAYERS*4] =	// the first element is the ma
 {4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
 };
 
-
-enum FileType       // for the array filecounter[FT_COUNT][FLD_COUNT]
-{
-    FT_VSH = 0,
-    FT_OMF,
-    FT_FSH,
-    FT_OMT,
-    FT_TEX,
-    FT_VID,
-    FT_KLN,
-    FRM_BF,         // i decided to add the output-frames A & B
-    LOGGER,         // and logger buffer information here for convenience in the wrapper
-    FT_COUNT
-};
-
-enum FileField      // for the array filecounter[FT_COUNT][FLD_COUNT]
-{
-    FLD_MAXSD = 0,
-    FLD_MAXUSB,
-    FLD_EXTCNT,
-    FLD_SCANNED,
-    FLD_LOADED,
-    FLD_PREV,
-    FLD_SIZE,
-    FLD_COUNT
-};
-
 enum io_types       // for the array g_inOutMatrixInt[CHANNEL][IO_TYPE_COUNT] & g_inOutMatrixFlt[CHANNEL][IO_TYPE_COUNT]
 {
 int RAW = 0,        //  the position the dampened adc values per channels are stored *
@@ -304,73 +277,6 @@ public:
 
 	TShutdownMode Run (void);
 
-/* OLD !!!
-struct glsl_state
-	{
-	// EGL Window
-   	uint32_t screen_width;
-   	uint32_t screen_height;
- 
-   	DISPMANX_ELEMENT_HANDLE_T dispman_element;
-   	DISPMANX_DISPLAY_HANDLE_T dispman_display;
-
-   	EGLDisplay display;
-   	EGLSurface surface;
-   	EGLContext context;
-	// GL Handles
-   	GLuint gl_vsh_id[VSH_SD+VSH_USB];
-   	GLuint gl_fsh_id[FSH_SD+FSH_USB];
-
-   	GLuint gl_prg_id[FSH_SD+FSH_USB];
-
-	GLuint gl_tex_id[TEX_SD+TEX_USB];
-	GLint  u_tex_id[FSH_SD+FSH_USB][TEX_SD+TEX_USB];
-
-   	GLuint gl_buf; // buffer
-	GLuint gl_vtx; // vertex
-
-	GLint u_time[FSH_SD+FSH_USB];
-	GLint u_tres[FSH_SD+FSH_USB];
-	GLint u_seed[FSH_SD+FSH_USB];	
-	GLint u_aud[FSH_SD+FSH_USB];
-	GLint u_col[FSH_SD+FSH_USB];
-
-	GLint u_par_a[FSH_SD+FSH_USB];
-	GLint u_par_b[FSH_SD+FSH_USB];
-    GLint u_tex_l[FSH_SD+FSH_USB];
-	};
-
-static const int MENU_GPU_TILE_COUNT = 16;
-
-struct menu_glsl_state
-{
-    GLuint      gl_omp_id[OMF_SD+OMF_USB];
-    GLuint      gl_omt_id[OMT_SD+OMT_USB];
-
-    GLint       u_atlas[OMF_SD+OMF_USB];
-    GLint       u_tile_count[OMF_SD+OMF_USB];
-    GLint       u_tile_rect[OMF_SD+OMF_USB];
-    GLint       u_tile_index[OMF_SD+OMF_USB];
-
-    float       kMenuOrigin[2];
-    float       kMenuTileSize[2];
-    float       kMenuBackgroundScale[2];
-
-    float       kMenuRelPos[MENU_GPU_TILE_COUNT][2];
-    float       kMenuRelSize[MENU_GPU_TILE_COUNT][2];
-
-    float       tile_rect_x[MENU_GPU_TILE_COUNT];
-    float       tile_rect_y[MENU_GPU_TILE_COUNT];
-    float       tile_rect_w[MENU_GPU_TILE_COUNT];
-    float       tile_rect_h[MENU_GPU_TILE_COUNT];
-
-    GLfloat     tile_rect[MENU_GPU_TILE_COUNT * 4];
-    GLfloat     tile_index[MENU_GPU_TILE_COUNT];
-};
-*/
-
-// NEW
-
     struct vtx_state
 {
     // shared attrib/buffer
@@ -391,20 +297,76 @@ struct olg_state
     EGLSurface                  surface;
     EGLContext                  context;
 };
+
 struct tex_state
 {
+    u32         max_tex_size;   // moved from CKernel   
 
-    unsigned                    width[MAX_TEXTURE];
-    unsigned                    height[MAX_TEXTURE];
-    unsigned                    offset[MAX_TEXTURE];
-	GLuint                      gl_tex_id[MAX_TEXTURE];
-	GLint                       u_tex_id[MAX_SHADER][MAX_TEXTURE];
+    bool        tex_valid[MAX_TEXTURE];
+
+    unsigned    width[MAX_TEXTURE];
+    unsigned    height[MAX_TEXTURE];
+    unsigned    offset[MAX_TEXTURE];
+
+    unsigned    file_size[MAX_TEXTURE];
+    unsigned    image_size[MAX_TEXTURE];
+
+    u8*         data[MAX_TEXTURE];
+    size_t      size[MAX_TEXTURES];
+
+    GLuint      gl_tex_id[MAX_TEXTURE];
+    GLint       u_tex_id[MAX_SHADER][MAX_TEXTURE];
+};
+
+struct h264_state
+{
+    // raw input will be populated by the parser init
+    u8*     data[MAX_VIDEOS];
+    size_t  size[MAX_VIDEOS];
+    // data for the poller
+    size_t  sps_off[MAX_VIDEOS][MAX_FRAMES];
+    size_t  sps_sc_len[MAX_VIDEOS][MAX_FRAMES];
+    size_t  sps_len[MAX_VIDEOS][MAX_FRAMES];
+
+    size_t  pps_off[MAX_VIDEOS][MAX_FRAMES];
+    size_t  pps_sc_len[MAX_VIDEOS][MAX_FRAMES];
+    size_t  pps_len[MAX_VIDEOS][MAX_FRAMES];
+
+    size_t  idr_off[MAX_VIDEOS][MAX_FRAMES];
+    size_t  idr_sc_len[MAX_VIDEOS][MAX_FRAMES];
+    size_t  idr_len[MAX_VIDEOS][MAX_FRAMES];
+    // frame table
+    void*   frame_address[MAX_VIDEOS][MAX_FRAMES];
+    size_t  frame_offset[MAX_VIDEOS][MAX_FRAMES];
+    size_t  frame_length[MAX_VIDEOS][MAX_FRAMES];
+    int     idr_offset[MAX_VIDEOS]; // size_t      idr_offset[MAX_VIDEOS];
+    // extradata
+    u8      extradata[MAX_VIDEOS][1024];
+    size_t  extradata_len[MAX_VIDEOS];
+    bool    extradata_valid[MAX_VIDEOS];
+    // parsed metadata
+    u16     video_width[MAX_VIDEOS];
+    u16     video_height[MAX_VIDEOS];
+    u8      vid_profile[MAX_VIDEOS];
+    u8      vid_level[MAX_VIDEOS];
+    // state
+    int     frame_count[MAX_VIDEOS]; //     unsigned    frame_count[MAX_VIDEOS];
+    bool    vid_valid[MAX_VIDEOS];
+    // shared base
+    char*   block_base; // void*   block_base;
+    // constraints
+    u16     max_width;
+    u16     max_height;
+    u8      max_profile;
+    u8      max_level;
 };
 
 struct glsl_state
 {
     GLuint                      gl_shader_id[MAX_SHADER];
     GLuint                      gl_program_id[MAX_SHADER];
+
+    bool                        shader_valid[MAX_SHADER];
     // user uniforms                                            // this is the actual common shader struct we define for 
     GLint                       u_time[MAX_SHADER];
     GLint                       u_tres[MAX_SHADER];
@@ -419,7 +381,6 @@ struct glsl_state
     GLint                       u_tile_count[MAX_OMF];
     GLint                       u_tile_rect[MAX_OMF];
     GLint                       u_tile_index[MAX_OMF];
-
     // overlay data
     float                       kMenuOrigin[2];
     float                       kMenuTileSize[2];
@@ -470,17 +431,44 @@ struct glsl_state
                 char** 				    m_bufferOmf;                
                 char** 				    m_bufferFsh;
 
-int filecounter[FT_COUNT][FLD_COUNT] =
-{   //          MAXSD   MAXUSB      EXTCNT      SCANNED   LOADED  PREV    SIZE  
-    /* VSH */ { VSH_SD, VSH_USB,    VSH_EXT,    0,        0,      0,      VSH_SIZ },
-    /* OMF */ { OMF_SD, OMF_USB,    OMF_EXT,    0,        0,      0,      OMF_SIZ },
-    /* FSH */ { FSH_SD, FSH_USB,    FSH_EXT,    0,        0,      0,      FSH_SIZ },
-    /* OMT */ { OMT_SD, OMT_USB,    OMT_EXT,    0,        0,      0,      OMT_SIZ },
-    /* TEX */ { TEX_SD, TEX_USB,    TEX_EXT,    0,        0,      0,      TEX_SIZ },
-    /* VID */ { VID_SD, VID_USB,    VID_EXT,    0,        0,      0,      VID_SIZ },
-    /* KLN */ { KLN_SD, KLN_USB,    KLN_EXT,    0,        0,      0,      KLN_SIZ },
-    /* FRM */ { FRM_SD, FRM_USB,          0,    0,        0,      0,      FRM_SIZ },     // i decided to add the output-frames A & B
-    /* LOG */ { LOG_SD, LOG_USB,          0,    0,        0,      0,      LOG_SIZ }      // and logger buffer information here      
+enum FileType
+{
+    FT_VSH = 0,
+    FT_OMF,
+    FT_FSH,
+    FT_OMT,
+    FT_TEX,
+    FT_VID,
+    FT_KLN,
+    FRM_BF,         // i decided to add the output-frames A & B
+    LOGGER,         // and logger buffer information here
+    FT_COUNT
+};
+
+enum FileField
+{
+    FLD_MAXSD = 0,
+    FLD_MAXUSB,
+    FLD_EXTCNT,
+    FLD_SCANNED,    // new
+    FLD_LOADED,
+    FLD_PREV,       // new
+    FLD_VALID, // <- p_validCount 
+    FLD_SIZE,
+    FLD_COUNT
+};
+
+unsigned filecounter[FT_COUNT][FLD_COUNT] =
+{  // MAXSD   MAXUSB    EXTCNT      SCANNED   LOADED  PREV    V_CNT    SIZE  
+    { VSH_SD, VSH_USB,  VSH_EXT,    0,        0,      0,      0,       VSH_SIZ },  // VSH vertex shader
+    { OMF_SD, OMF_USB,  OMF_EXT,    0,        0,      0,      0,       OMF_SIZ },  // OMF overlay fragment shader
+    { FSH_SD, FSH_USB,  FSH_EXT,    0,        0,      0,      0,       FSH_SIZ },  // FSH user fragment shader
+    { OMT_SD, OMT_USB,  OMT_EXT,    0,        0,      0,      0,       OMT_SIZ },  // OMT overlay texture ( atlas)
+    { TEX_SD, TEX_USB,  TEX_EXT,    0,        0,      0,      0,       TEX_SIZ },  // TEX user texture
+    { VID_SD, VID_USB,  VID_EXT,    0,        0,      0,      0,       VID_SIZ },  // VID video buffer
+    { KLN_SD, KLN_USB,  KLN_EXT,    0,        0,      0,      0,       KLN_SIZ },  // KLN kernel buffer
+    { FRM_SD, FRM_USB,        0,    0,        0,      0,      0,       FRM_SIZ },  // FRM decoded frames A & B
+    { LOG_SD, LOG_USB,        0,    0,        0,      0,      0,       LOG_SIZ }   // LOG logging buffers   
 };
 // lists of extensions possible in my scanroot directory function per filetype 
         const   char                   *g_SufVsh[VSH_EXT]			    = { "vsh" }; 
@@ -490,6 +478,7 @@ int filecounter[FT_COUNT][FLD_COUNT] =
         const   char                   *g_SufTex[TEX_EXT]			    = { "bmp" };
         const   char                   *g_SufVid[VID_EXT]			    = { "264" }; // i guess i will remove the whole parse code for anything but h264
         const   char                   *g_SufKln[KLN_EXT]			    = { "img" };
+        
 // array to store the scanned filenames
                 char                   *g_ScnVsh[VSH_SD + VSH_USB]     	= { 0 };
         		char				   *g_ScnOmf[OMF_SD + OMF_USB] 		= { 0 };
@@ -497,7 +486,7 @@ int filecounter[FT_COUNT][FLD_COUNT] =
         		char				   *g_ScnOmt[OMT_SD + OMT_USB] 		= { 0 };
                 char                   *g_ScnTex[TEX_SD + TEX_USB]     	= { 0 };
                 char                   *g_ScnVid[VID_SD + VID_USB]     	= { 0 };
-                char                   *g_ScnKln[KLM_SD + KLN_USB]     	= { 0 };
+                char                   *g_ScnKln[KLN_SD + KLN_USB]     	= { 0 };
 // array to store the length of the loaded files
                 unsigned                g_bytVsh[VSH_SD + VSH_USB]      = { 0 };
                 unsigned                g_bytOmf[OMF_SD + OMF_USB]      = { 0 };
@@ -505,8 +494,7 @@ int filecounter[FT_COUNT][FLD_COUNT] =
                 unsigned                g_bytOmt[OMT_SD + OMT_USB]      = { 0 };
                 unsigned                g_bytTex[TEX_SD + TEX_USB]      = { 0 };
                 unsigned                g_bytVid[VID_SD + VID_USB]      = { 0 };
-                unsigned                g_bytKln[KLM_SD + KLN_USB]      = { 0 };
-// our buffers members for the allocation
+                unsigned                g_bytKln[KLN_SD + KLN_USB]      = { 0 };
 
 private:
 	CActLED			    m_ActLED;

@@ -347,8 +347,7 @@ void            CKernel::initShader                 (   vtx_state*  v,
                                                         char**      srcBuffer,
                                                         int         fromFile,
                                                         int         toFile,
-                                                        GLenum      type,
-                                                        bool*       flags)
+                                                        GLenum      type)
 {
                 for (int i = fromFile; i < toFile; i++)
                     {
@@ -358,7 +357,7 @@ void            CKernel::initShader                 (   vtx_state*  v,
                     glShaderSource(s->gl_shader_id[i], 1, &src, 0);
                     glCompileShader(s->gl_shader_id[i]);
 
-                    flags[i] = shaderLog(s->gl_shader_id[i], i);   // ← assign here
+                    s->shader_valid[i] = shaderLog(s->gl_shader_id[i], i);   // ← assign here
 #ifdef __GL_DEBUG__
                     check();
 #endif
@@ -371,15 +370,13 @@ void            CKernel::initProgram               (   vtx_state*  v,
                                                         tex_state*  t,
                                                         int         fromFile,
                                                         int         toFile,
-                                                        unsigned&   valid_count,
-                                                        bool*       flags_vsh,
-                                                        bool*       flags_fsh)
+                                                        unsigned&   valid_count)
 {
                 for (int i = fromFile; i < toFile; i++)
                     {
                     fsh->gl_program_id[valid_count] = glCreateProgram();
-
-                    if (flags_vsh[0] && flags_fsh[i] && fsh->gl_program_id[valid_count] != 0)
+                    if (vsh->shader_valid[0] && fsh->shader_valid[i] && fsh->gl_program_id[valid_count] != 0)
+                //  if (flags_vsh[0] && flags_fsh[i] && fsh->gl_program_id[valid_count] != 0)
                         {
                         glAttachShader(fsh->gl_program_id[valid_count], vsh->gl_shader_id[0]);
                         glAttachShader(fsh->gl_program_id[valid_count], fsh->gl_shader_id[i]);
@@ -399,57 +396,7 @@ void            CKernel::initProgram               (   vtx_state*  v,
                 m_Watchdog.Start(TIMEOUT * 3);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::initTexture                (   vtx_state*  v,
-                                                        glsl_state* s,
-                                                        tex_state*  t,
-                                                        char**      buffer,
-                                                        int         fromFile,
-                                                        int         toFile,
-                                                        unsigned&   valid_count,
-                                                        bool*       flags,
-                                                        GLint       wrap_s,
-                                                        GLint       wrap_t )
-{
-                for (int i = fromFile; i < toFile; i++)
-                    {
-                    //  t->gl_tex_id[valid_count] = 0;
-                    if (flags[i])
-                        {
-                        glGenTextures(1, &t->gl_tex_id[valid_count]);
-                        glBindTexture(GL_TEXTURE_2D, t->gl_tex_id[valid_count]);
-
-                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s);
-                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t);
-                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-                        GLvoid* bitmapData = &buffer[i][t->offset[i]];
-
-                        glTexImage2D(GL_TEXTURE_2D,
-                                    0,
-                                    GL_RGB,
-                                    t->width[i],
-                                    t->height[i],
-                                    0,
-                                    GL_RGB,
-                                    GL_UNSIGNED_BYTE,
-                                    bitmapData);
-
-                        if (glGetError() == GL_NO_ERROR)
-                            {
-                            valid_count++;
-                            }
-                        else
-                            {
-                            glDeleteTextures(1, &t->gl_tex_id[valid_count]);
-                            }
-                    //  glBindTexture(GL_TEXTURE_2D, 0); // or outside the if loop!
-                        }
-                    m_Watchdog.Start(TIMEOUT);
-                    }
-}
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::initTextureNEW             (   vtx_state*  v,                 // new. takes now all texture related data from the struct that the parser filled 
+void            CKernel::initTexture                (   vtx_state*  v,                 // new. takes now all texture related data from the struct that the parser filled 
                                                         glsl_state* s,
                                                         tex_state*  t,
                                                         int         fromFile,
@@ -471,6 +418,7 @@ void            CKernel::initTextureNEW             (   vtx_state*  v,          
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
             GLvoid* bitmapData = &t->data[i][t->offset[i]];
+        //  GLvoid* bitmapData = t->data[i] + t->offset[i]; // he claims this is the same!
 
             glTexImage2D(GL_TEXTURE_2D,
                          0,
@@ -906,53 +854,9 @@ the involved array/enums:
 
 #define         LOG_SIZ                 (1024*64)
 
-enum FileType
-{
-    FT_VSH = 0,
-    FT_OMF,
-    FT_FSH,
-    FT_OMT,
-    FT_TEX,
-    FT_VID,
-    FT_KLN,
-    FRM_BF,         // i decided to add the output-frames A & B
-    LOGGER,         // and logger buffer information here
-    FT_COUNT
-};
 
-enum FileField
-{
-    FLD_MAXSD = 0,
-    FLD_MAXUSB,
-    FLD_EXTCNT,
-    FLD_SCANNED,    // new
-    FLD_LOADED,
-    FLD_PREV,       // new
-    FLD_VALID, // <- p_validCount 
-    FLD_SIZE,
-    FLD_COUNT
-};
 
-unsigned filecounter[FT_COUNT][FLD_COUNT] =
-{  // MAXSD   MAXUSB    EXTCNT      SCANNED   LOADED  PREV    V_CNT    SIZE  
-    { VSH_SD, VSH_USB,  VSH_EXT,    0,        0,      0,      0,       VSH_SIZ },  // VSH vertex shader
-    { OMF_SD, OMF_USB,  OMF_EXT,    0,        0,      0,      0,       OMF_SIZ },  // OMF overlay fragment shader
-    { FSH_SD, FSH_USB,  FSH_EXT,    0,        0,      0,      0,       FSH_SIZ },  // FSH user fragment shader
-    { OMT_SD, OMT_USB,  OMT_EXT,    0,        0,      0,      0,       OMT_SIZ },  // OMT overlay texture ( atlas)
-    { TEX_SD, TEX_USB,  TEX_EXT,    0,        0,      0,      0,       TEX_SIZ },  // TEX user texture
-    { VID_SD, VID_USB,  VID_EXT,    0,        0,      0,      0,       VID_SIZ },  // VID video buffer
-    { KLN_SD, KLN_USB,  KLN_EXT,    0,        0,      0,      0,       KLN_SIZ },  // KLN kernel buffer
-    { FRM_SD, FRM_USB,        0,    0,        0,      0,      0,       FRM_SIZ },  // FRM decoded frames A & B
-    { LOG_SD, LOG_USB,        0,    0,        0,      0,      0,       LOG_SIZ }   // LOG logging buffers   
-};
-// lists of extensions possible in my scanroot directory function per filetype 
-        const   char                   *g_SufVsh[VSH_EXT]			    = { "vsh" }; 
-        const   char                   *g_SufOmf[OMF_EXT]			    = { "omf" };	// is a fsh file but used for the overlay atlas
-        const   char                   *g_SufFsh[FSH_EXT]			    = { "fsh" };
-        const   char                   *g_SufOmt[OMT_EXT]			    = { "omt" }; // is a bpm file but used for the overlay atlas
-        const   char                   *g_SufTex[TEX_EXT]			    = { "bmp" };
-        const   char                   *g_SufVid[VID_EXT]			    = { "264" }; // i guess i will remove the whole parse code for anything but h264
-        const   char                   *g_SufKln[KLN_EXT]			    = { "img" };
+
 // array to store the scanned filenames
                 char                   *g_ScnVsh[VSH_SD + VSH_USB]     	= { 0 };
         		char				   *g_ScnOmf[OMF_SD + OMF_USB] 		= { 0 };
@@ -970,126 +874,9 @@ unsigned filecounter[FT_COUNT][FLD_COUNT] =
                 unsigned                g_bytVid[VID_SD + VID_USB]      = { 0 };
                 unsigned                g_bytKln[KLN_SD + KLN_USB]      = { 0 };
 
-    struct vtx_state
-{
-    // shared attrib/buffer
-    GLuint                      gl_buf;                         // this is also an extra struct we need to pass too
-    GLint                       gl_vtx[MAX_SHADER];    
-};
 
-struct olg_state
-{
-    // EGL Window
-    uint32_t                    screen_width;
-    uint32_t                    screen_height;
 
-    DISPMANX_ELEMENT_HANDLE_T   dispman_element;
-    DISPMANX_DISPLAY_HANDLE_T   dispman_display;
-
-    EGLDisplay                  display;
-    EGLSurface                  surface;
-    EGLContext                  context;
-};
-
-struct tex_state
-{
-    u32     max_tex_size;   // moved from CKernel   
-
-    bool        tex_valid[MAX_TEXTURE];
-
-    unsigned    width[MAX_TEXTURE];
-    unsigned    height[MAX_TEXTURE];
-    unsigned    offset[MAX_TEXTURE];
-
-    unsigned    file_size[MAX_TEXTURE];
-    unsigned    image_size[MAX_TEXTURE];
-
-    u8*         data[MAX_TEXTURE];
-    size_t      size[MAX_TEXTURES];
-
-    GLuint      gl_tex_id[MAX_TEXTURE];
-    GLint       u_tex_id[MAX_SHADER][MAX_TEXTURE];
-};
-
-struct h264_state
-{
-    // raw input
-    u8*     data[MAX_VIDEOS];
-    size_t  size[MAX_VIDEOS];
-    // SPS
-    size_t  sps_off[MAX_VIDEOS][MAX_FRAMES];
-    size_t  sps_sc_len[MAX_VIDEOS][MAX_FRAMES];
-    size_t  sps_len[MAX_VIDEOS][MAX_FRAMES];
-    // PPS
-    size_t  pps_off[MAX_VIDEOS][MAX_FRAMES];
-    size_t  pps_sc_len[MAX_VIDEOS][MAX_FRAMES];
-    size_t  pps_len[MAX_VIDEOS][MAX_FRAMES];
-    // IDR
-    size_t  idr_off[MAX_VIDEOS][MAX_FRAMES];
-    size_t  idr_sc_len[MAX_VIDEOS][MAX_FRAMES];
-    size_t  idr_len[MAX_VIDEOS][MAX_FRAMES];
-    // frame table
-    void*   frame_address[MAX_VIDEOS][MAX_FRAMES];
-    size_t  frame_offset[MAX_VIDEOS][MAX_FRAMES];
-    size_t  frame_length[MAX_VIDEOS][MAX_FRAMES];
-    int     idr_offset[MAX_VIDEOS]; // size_t      idr_offset[MAX_VIDEOS];
-    // extradata
-    u8      extradata[MAX_VIDEOS][1024];
-    size_t  extradata_len[MAX_VIDEOS];
-    bool    extradata_valid[MAX_VIDEOS];
-    // parsed metadata
-    u16     video_width[MAX_VIDEOS];
-    u16     video_height[MAX_VIDEOS];
-    u8      vid_profile[MAX_VIDEOS];
-    u8      vid_level[MAX_VIDEOS];
-    // state
-    int     frame_count[MAX_VIDEOS]; //     unsigned    frame_count[MAX_VIDEOS];
-    bool    vid_valid[MAX_VIDEOS];
-    // shared base
-    char*   block_base; // void*   block_base;
-    // constraints
-    u16     max_width;
-    u16     max_height;
-    u8      max_profile;
-    u8      max_level;
-};
-
-struct glsl_state
-{
-    GLuint                      gl_shader_id[MAX_SHADER];
-    GLuint                      gl_program_id[MAX_SHADER];
-    // user uniforms                                            // this is the actual common shader struct we define for 
-    GLint                       u_time[MAX_SHADER];
-    GLint                       u_tres[MAX_SHADER];
-    GLint                       u_seed[MAX_SHADER];
-    GLint                       u_aud[MAX_SHADER];
-    GLint                       u_col[MAX_SHADER];
-    GLint                       u_par_a[MAX_SHADER];
-    GLint                       u_par_b[MAX_SHADER];
-    GLint                       u_tex_l[MAX_SHADER];
-    // overlay uniforms
-    GLint                       u_atlas[MAX_OMF];
-    GLint                       u_tile_count[MAX_OMF];
-    GLint                       u_tile_rect[MAX_OMF];
-    GLint                       u_tile_index[MAX_OMF];
-
-    // overlay data
-    float                       kMenuOrigin[2];
-    float                       kMenuTileSize[2];
-    float                       kMenuBackgroundScale[2];
-
-    float                       kMenuRelPos[MAX_TILES][2];
-    float                       kMenuRelSize[MAX_TILES][2];
-
-    float                       tile_rect_x[MAX_TILES];
-    float                       tile_rect_y[MAX_TILES];
-    float                       tile_rect_w[MAX_TILES];
-    float                       tile_rect_h[MAX_TILES];
-
-    GLfloat                     tile_rect[MAX_TILES * 4];
-    GLfloat                     tile_index[MAX_TILES];
-};
-
+// our buffers members for the allocation
 
     olg_state                   m_ogl;
 

@@ -1,58 +1,58 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool CKernel::wrapperInitDMA()
+bool            CKernel::wrapperInitDMA()
 {
-    bool bOK = true;
+                bool bOK = true;
 
-    if (bOK)
-        {
-        bOK = (m_bufferVid = allocBufferDMA  (  filecounter[FT_VID][FLD_MAXSD]+filecounter[FT_VID][FLD_MAXUSB], filecounter[FT_VID][FLD_SIZE], &m_videoBlockBase, &m_videoRawBlock, &m_videoBlockSize));
-        }
-    if (bOK)
-        {
-        bOK = (m_bufferFrA = allocBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB], filecounter[FRM_BF][FLD_SIZE], &m_frameBlockBaseA, &m_frameRawBlockA, &m_frameBlockSizeA));
-        }
-    if (bOK)
-        {
-        bOK = (m_bufferFrB = allocBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB], filecounter[FRM_BF][FLD_SIZE], &m_frameBlockBaseB, &m_frameRawBlockB, &m_frameBlockSizeB));
-        }
-    if (bOK)
-        {
-        bOK = (m_bufferOmt = allocBufferDMA  (  filecounter[FT_OMT][FLD_MAXSD]+filecounter[FT_OMT][FLD_MAXUSB], filecounter[FT_OMT][FLD_SIZE], &m_overlyBlockBase, &m_overlayRawBlock, &m_overlyBlockSize));
-        }
-    if (bOK)
-        {
-        bOK = (m_bufferTex = allocBufferDMA  (  filecounter[FT_TEX][FLD_MAXSD]+filecounter[FT_TEX][FLD_MAXUSB], filecounter[FT_TEX][FLD_SIZE], &m_textureBlockBase, &m_textureRawBlock, &m_textureBlockSize));
-        }
-    return bOK;
+                if (bOK)
+                    {
+                    bOK = (m_bufferVid = allocBufferDMA  (  filecounter[FT_VID][FLD_MAXSD]+filecounter[FT_VID][FLD_MAXUSB], filecounter[FT_VID][FLD_SIZE], &m_videoBlockBase, &m_videoRawBlock, &m_videoBlockSize));
+                    }
+                if (bOK)
+                    {
+                    bOK = (m_bufferFrA = allocBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB], filecounter[FRM_BF][FLD_SIZE], &m_frameBlockBaseA, &m_frameRawBlockA, &m_frameBlockSizeA));
+                    }
+                if (bOK)
+                    {
+                    bOK = (m_bufferFrB = allocBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB], filecounter[FRM_BF][FLD_SIZE], &m_frameBlockBaseB, &m_frameRawBlockB, &m_frameBlockSizeB));
+                    }
+                if (bOK)
+                    {
+                    bOK = (m_bufferOmt = allocBufferDMA  (  filecounter[FT_OMT][FLD_MAXSD]+filecounter[FT_OMT][FLD_MAXUSB], filecounter[FT_OMT][FLD_SIZE], &m_overlyBlockBase, &m_overlayRawBlock, &m_overlyBlockSize));
+                    }
+                if (bOK)
+                    {
+                    bOK = (m_bufferTex = allocBufferDMA  (  filecounter[FT_TEX][FLD_MAXSD]+filecounter[FT_TEX][FLD_MAXUSB], filecounter[FT_TEX][FLD_SIZE], &m_textureBlockBase, &m_textureRawBlock, &m_textureBlockSize));
+                    }
+                return bOK;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool CKernel::wrapperInitMEM()
+bool            CKernel::wrapperInitMEM()
 {
-    bool bOK = true;
+                bool bOK = true;
 
-    if (bOK)
-        {
-        bOK = (m_bufferKnl = allocBufferMEM( filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], filecounter[FT_KLN][FLD_SIZE]));       // same as allocBufferMEM( KLN_SD + KLN_USB, filecounter[FT_KLN][FLD_SIZE]));
-        }
-    if (bOK)
-        {
-        bOK = (m_bufferLog = allocBufferMEM( filecounter[LOGGER][FLD_MAXSD]+filecounter[LOGGER][FLD_MAXUSB], filecounter[LOGGER][FLD_SIZE]));      // 1024 *64 <- the new buffer for log/text files <- saveFromBuffer() <-
-        }                   
-    if (bOK)
-        {
-        bOK = (m_bufferVsh = allocBufferMEM( filecounter[FT_VSH][FLD_MAXSD]+filecounter[FT_VSH][FLD_MAXUSB], filecounter[FT_VSH][FLD_SIZE]));
-        }
-    if (bOK)
-        {
-        bOK = (m_bufferOmf = allocBufferMEM( filecounter[FT_OMF][FLD_MAXSD]+filecounter[FT_OMF][FLD_MAXUSB], filecounter[FT_OMF][FLD_SIZE]));
-        }
-    if (bOK)
-        {
-        bOK = (m_bufferFsh = allocBufferMEM( filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB], filecounter[FT_FSH][FLD_SIZE]));
-        }
-    return bOK;
+                if (bOK)
+                    {
+                    bOK = (m_bufferKnl = allocBufferMEM( filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], filecounter[FT_KLN][FLD_SIZE]));       // same as allocBufferMEM( KLN_SD + KLN_USB, filecounter[FT_KLN][FLD_SIZE]));
+                    }
+                if (bOK)
+                    {
+                    bOK = (m_bufferLog = allocBufferMEM( filecounter[LOGGER][FLD_MAXSD]+filecounter[LOGGER][FLD_MAXUSB], filecounter[LOGGER][FLD_SIZE]));      // 1024 *64 <- the new buffer for log/text files <- saveFromBuffer() <-
+                    }                   
+                if (bOK)
+                    {
+                    bOK = (m_bufferVsh = allocBufferMEM( filecounter[FT_VSH][FLD_MAXSD]+filecounter[FT_VSH][FLD_MAXUSB], filecounter[FT_VSH][FLD_SIZE]));
+                    }
+                if (bOK)
+                    {
+                    bOK = (m_bufferOmf = allocBufferMEM( filecounter[FT_OMF][FLD_MAXSD]+filecounter[FT_OMF][FLD_MAXUSB], filecounter[FT_OMF][FLD_SIZE]));
+                    }
+                if (bOK)
+                    {
+                    bOK = (m_bufferFsh = allocBufferMEM( filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB], filecounter[FT_FSH][FLD_SIZE]));
+                    }
+                return bOK;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::wrapperDMAcleanUp            ()
@@ -266,8 +266,7 @@ void            CKernel::wrapper_init_gl_sd()
                                 m_bufferVsh,
                                 filecounter[FT_VSH][FLD_PREV],      // should be 0
                                 filecounter[FT_VSH][FLD_LOADED],    // should be 1 - BUT the code should also ensure that filecounter contains the correct values
-                                GL_VERTEX_SHADER,
-                                vsh_flags);
+                                GL_VERTEX_SHADER);
 
                 initShader(     &m_vtx,         // init fragment shader ( default )
                                 &m_fsh, 
@@ -275,8 +274,7 @@ void            CKernel::wrapper_init_gl_sd()
                                 m_bufferFsh,
                                 filecounter[FT_FSH][FLD_PREV],
                                 filecounter[FT_FSH][FLD_LOADED],
-                                GL_FRAGMENT_SHADER,
-                                fsh_flags);          
+                                GL_FRAGMENT_SHADER);          
 
                 initShader(     &m_vtx,         // init Overlay shader
                                 &m_osh, 
@@ -284,8 +282,7 @@ void            CKernel::wrapper_init_gl_sd()
                                 m_bufferOmf,
                                 filecounter[FT_OMF][FLD_PREV],
                                 filecounter[FT_OMF][FLD_LOADED],
-                                GL_FRAGMENT_SHADER,
-                                omf_flags);
+                                GL_FRAGMENT_SHADER);
 
             //  initOshader     (&m_glsl, filecounter[FT_OMF][FLD_PREV], filecounter[FT_OMF][FLD_LOADED]);  
 
@@ -299,9 +296,7 @@ void            CKernel::wrapper_init_gl_sd()
                                 &m_tex,
                                 filecounter[FT_FSH][FLD_PREV],
                                 filecounter[FT_FSH][FLD_LOADED],
-                                filecounter[FT_FSH][FLD_VALID],
-                                vsh_flags,
-                                fsh_flags);
+                                filecounter[FT_FSH][FLD_VALID]);
                                 
                 initProgram(    &m_vtx,         // overlay fragment shader 
                                 &m_vsh,
@@ -309,9 +304,7 @@ void            CKernel::wrapper_init_gl_sd()
                                 &m_omt,
                                 filecounter[FT_OMF][FLD_PREV],
                                 filecounter[FT_OMF][FLD_LOADED],
-                                filecounter[FT_OMF][FLD_VALID],
-                                vsh_flags,
-                                omf_flags);
+                                filecounter[FT_OMF][FLD_VALID]);
 
             //  initFprograms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
 
@@ -338,7 +331,6 @@ void            CKernel::wrapper_init_gl_sd()
                                 filecounter[FT_TEX][FLD_PREV],
                                 filecounter[FT_TEX][FLD_LOADED],
                                 filecounter[FT_TEX][FLD_VALID],
-                                tex_flags,
                                 GL_REPEAT,
                                 GL_REPEAT);
 
@@ -349,7 +341,6 @@ void            CKernel::wrapper_init_gl_sd()
                                 filecounter[FT_OMT][FLD_PREV],
                                 filecounter[FT_OMT][FLD_LOADED],
                                 filecounter[FT_OMT][FLD_VALID],
-                                omt_flags,
                                 GL_CLAMP_TO_EDGE,
                                 GL_CLAMP_TO_EDGE);
 
@@ -371,8 +362,7 @@ void            CKernel::wrapper_init_gl_usb()
                                 m_bufferFsh,
                                 filecounter[FT_FSH][FLD_PREV],
                                 filecounter[FT_FSH][FLD_LOADED],
-                                GL_FRAGMENT_SHADER,
-                                fsh_flags);    
+                                GL_FRAGMENT_SHADER);    
 
             //  initFprograms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
 
@@ -382,9 +372,7 @@ void            CKernel::wrapper_init_gl_usb()
                                 &m_tex,
                                 filecounter[FT_FSH][FLD_PREV],
                                 filecounter[FT_FSH][FLD_LOADED],
-                                filecounter[FT_FSH][FLD_VALID],
-                                vsh_flags,
-                                fsh_flags);            
+                                filecounter[FT_FSH][FLD_VALID]);            
 
             //  initFuniforms   (&m_glsl, filecounter[FT_FSH][FLD_PREV], filecounter[FT_FSH][FLD_LOADED]);
 
@@ -403,7 +391,6 @@ void            CKernel::wrapper_init_gl_usb()
                                 filecounter[FT_TEX][FLD_PREV],
                                 filecounter[FT_TEX][FLD_LOADED],
                                 filecounter[FT_TEX][FLD_VALID],
-                                tex_flags,
                                 GL_REPEAT,
                                 GL_REPEAT);
 }

@@ -1,8 +1,6 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 #include "kernel.h"
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 bool            CKernel::startupScreen(char* buffer, u32& index)
 {
                 const char* machineName = m_MachineInfo.GetMachineName();
@@ -74,9 +72,7 @@ bool            CKernel::startupScreen(char* buffer, u32& index)
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
-
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 // my adc read and convert function plus audio detection!
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -351,7 +347,6 @@ bool            CKernel::checkUpdate    () // aka is a new firmware present?!
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 bool            CKernel::Update         ()
 {
                 // assumes:
@@ -370,13 +365,20 @@ bool            CKernel::Update         ()
                 return false;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::set_pot_routing         (   bool        adc_pot_routing)
 {
                 m_ChipSelectPin.Write(adc_pot_routing);
 }
 // can we use this instead of the CGPIOPin class????
-
+// the point is GPOIPin is used by multible subsystems 
+// like 
+// #include <circle/actled.h> 
+// #include <circle/machineinfo.h>
+// #include <circle/serial.h>
+// #include <circle/gpiomanager.h>
+// and i dont know which more, and also is my code this far optimized to use it
+// having my "own" GPOI code in my kernel class may not be helpful at all... but...
+/*
 #include <circle/bcm2835.h>
 #include <circle/types.h>
 #include <circle/timer.h>
@@ -485,7 +487,7 @@ static inline void CKernel::write32 (uintptr nAddress, u32 nValue)
 #ifdef __cplusplus
 }
 #endif
-
+*/
 // from bcmwatchdog.h 
 #include <circle/spinlock.h>
 
@@ -509,12 +511,7 @@ void            CKernel::watchDogStart (unsigned nTimeoutSeconds)
 
                 m_SpinLock.Release ();  // really??
 }
-
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::prepParameters       ()        // f_buffer guess here we need much more to do!
 {
                 for ( int f_buffer=0; f_buffer <= DEFAULT_SLOT; f_buffer++)
@@ -530,56 +527,6 @@ void            CKernel::prepParameters       ()        // f_buffer guess here w
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
-/*
-void            CKernel::chooseProgram        ( int p_channel, &p_activeShader )
-{
-                static int p_activeShader = 0;
-
-                int f_calculated = g_inOutMatrixInt[p_channel][RAW] * g_loaded_fsh_new >> 10; // <- why no bracelets here too? g_loaded_fsh_new doesnt exis anymore !!!
-
-                if (m_shaderStatusFlags[f_calculated])  // comes from gfx.cpp ->
-                    {
-                    p_activeShader = f_calculated;
-                    }
-}
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-void             CKernel::chooseTexture        ( int p_channel, &p_activeTexture, &p_validTextureCount) // f_buffer have three possible ways here! f_buffer can a) invent a mechanism to get the is valid table for the vids - f_buffer can also draw from parser.is_valid[x] 
-{                                                                                                       // wait, we have a parser and this parser is giving like for program a valid status array!!!
-                static int p_activeTexture = 0;
-                if (p_validTextureCount != 0) 
-                    {
-
-                    int f_calculated = g_inOutMatrixInt[p_channel][RAW] * (p_validTextureCount) >> 10;
-                    p_activeTexture = f_calculated;
-                    }
-}
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-int             CKernel::chooseVideo        ( int p_channel, &p_activeVideo, &p_validVideoCount )
-{
-                static int p_activeVideo = 0;
-                if (p_validVideoCount != 0) 
-                    {
-
-                    int f_calculated = g_inOutMatrixInt[p_channel][RAW] * (p_validVideoCount) >> 10;
-                    p_activeVideo = f_calculated;
-                    }
-}
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-int             CKernel::chooseFrame        ( int p_channel, &p_activeFrame, &p_validFrameCount ) // or direct m_H264Parser.m_frame_count[p_activeVideo]? <- why is this different?
-{
-                static int p_activeFrame = 0;
-                if (p_validFrameCount != 0) // <- !!! this is the point where i decided to include the h264 / vc_sm / parser class into the CKernel code ( again ) !!!
-                    {
-
-                    int f_calculated = g_inOutMatrixInt[p_channel][RAW] *  (p_validFrameCount) >> 10;
-                    p_activeFrame = f_calculated;
-                    }
-}
-*/
 // NEW generic not condensed valid arrays, max number of files ( macros for example!)
 void CKernel::chooseIndex(int p_channel, int& p_activeIndex, int p_maxCount, bool* flags)
 {
@@ -593,38 +540,14 @@ void CKernel::chooseIndex(int p_channel, int& p_activeIndex, int p_maxCount, boo
     }
 }
 // NEW generic condensed valid arrays, max number of files ( macros for example!)
-void CKernel::chooseIndexDense(int p_channel, int& p_activeIndex, int p_maxCount)
+void CKernel::chooseIndexD(int p_channel, int& p_activeIndex, int p_maxCount)
 {
     int f_calculated = (g_inOutMatrixInt[p_channel][RAW] * p_maxCount) >> 10;
 
     p_activeIndex = f_calculated;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
-/*
-void            CKernel::storeModesV1         ()  // faster
-{
-                
-                if (g_current_gl_program != g_last_gl_program)
-                    {    
-                    g_currentProgramBuffer = g_centralModeBuffer[g_current_gl_program][is_stored] ? g_current_gl_program : DEFAULT_SLOT;
-                    g_last_gl_program = g_current_gl_program;
-                    }               
-                if (g_centralModeBuffer[g_current_gl_program][is_stored] == true )
-                    {  
-                    memcpy(&g_centralModeBuffer[g_current_gl_program][0], &g_centralModeBuffer[DEFAULT_SLOT][0], sizeof(g_centralModeBuffer[g_current_gl_program]));
-                    
-                    g_currentProgramBuffer = g_current_gl_program;
-                    }
-                else  if (g_centralModeBuffer[g_current_gl_program][is_stored] == false )
-                    {  
-                    g_currentProgramBuffer = DEFAULT_SLOT;
-                    }
-}
-*/
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-void            CKernel::storeModesV2         ()    // "saver"
+void            CKernel::storeModes           ()    // "saver"
 {
                 
                 if (g_current_gl_program != g_last_gl_program)
@@ -644,7 +567,6 @@ void            CKernel::storeModesV2         ()    // "saver"
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::buttonPing(int p_btn_id, int pin)
 {
                 g_buttons_states[p_btn_id][BTN_SINGLE] = 0;
@@ -674,7 +596,6 @@ void            CKernel::buttonPing(int p_btn_id, int pin)
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::button_consumer(int p_btn_id) // this is where the magic happens: we need to set the states of menu layer, menu, we need to use one button for bpm input and so on 
 {
                 if (g_buttons_states[p_btn_id][BTN_SINGLE]) counter += 1;
@@ -691,10 +612,8 @@ void            CKernel::button_consumer(int p_btn_id) // this is where the magi
                     longhold += 2;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 // my abstract stuff like random, lfo, bpm needed for glsl shader uniform control
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::randomVec8           (uint32_t p_seed)                                               // create 8 unique normalised to 1.0 float and to 1024 int values
 {
                 const int       f_max_int   = 1023; // 1024;
@@ -730,62 +649,6 @@ void            CKernel::randomVec8           (uint32_t p_seed)                 
 
 // question here - should i rather have one function for both channels or should i separate the functions and call per channel?
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
-void            CKernel::calculate2BPM   (   unsigned long   p_triggerTimeClockA,       // love to split it but i will need additional parameters right?
-                                                unsigned long   p_triggerTimeClockB) 
-{
-                static unsigned long f_lastTime[2];
-                static unsigned long f_timeBuffer[2][4] = {{0}};  
-                static unsigned long f_deltaBuffer[2][3]= { 0 };
-
-                unsigned long f_intervalAverage = 0;
-                static int f_timeIndex[2] = {0};
-
-                if (p_triggerTimeClockA != f_lastTime[0])                                                          // Process button u_time (instance 0)
-                    {
-                    f_timeBuffer[0][f_timeIndex[0]] = p_triggerTimeClockA;
-        
-                    f_deltaBuffer[0][0]          =   f_timeBuffer[0][1] - f_timeBuffer[0][0];   
-                    f_deltaBuffer[0][1]          =   f_timeBuffer[0][2] - f_timeBuffer[0][1];
-                    f_deltaBuffer[0][2]          =   f_timeBuffer[0][3] - f_timeBuffer[0][2];
-
-                    if(     f_deltaBuffer[0][1]  <   f_deltaBuffer[0][0] * 1.25f &&  f_deltaBuffer[0][2]  <   f_deltaBuffer[0][0] * 1.25f &&  f_deltaBuffer[0][0]  <   f_deltaBuffer[0][2] * 1.25f ) // calculates an average and allows 25% play ( quite high right ) 
-                        {
-                        f_intervalAverage           = ( f_deltaBuffer[0][0] + f_deltaBuffer[0][1] + f_deltaBuffer[0][2]) / 3;
-            
-                        g_resultBPM[0]              =   60000000 / f_intervalAverage;
-            
-                        g_intervalCalculated[0]     =   f_intervalAverage;
-                        g_lastBpmCalculation[0]     =   m_Timer.GetClockTicks();
-                        }
-                    f_lastTime[0]                   =   p_triggerTimeClockA;
-
-                    f_timeIndex[0]                  = ( f_timeIndex[0] + 1) % 4;    
-                    }
-                if (p_triggerTimeClockB != f_lastTime[1])                                                           // Process clock u_time (instance 1)
-                    {
-                    f_timeBuffer[1][f_timeIndex[1]] = p_triggerTimeClockB;
-        
-                    f_deltaBuffer[1][0]          =   f_timeBuffer[1][1] - f_timeBuffer[1][0];
-                    f_deltaBuffer[1][1]          =   f_timeBuffer[1][2] - f_timeBuffer[1][1];
-                    f_deltaBuffer[1][2]          =   f_timeBuffer[1][3] - f_timeBuffer[1][2];
-
-                    if(     f_deltaBuffer[1][1]  <   f_deltaBuffer[1][0] * 1.25f &&  f_deltaBuffer[1][2]  <   f_deltaBuffer[1][0] * 1.25f &&  f_deltaBuffer[1][0]  <   f_deltaBuffer[1][2] * 1.25f ) 
-                        {
-                        f_intervalAverage           = ( f_deltaBuffer[1][0] + f_deltaBuffer[1][1] + f_deltaBuffer[1][2]) / 3;
-            
-                        g_resultBPM[1]              =   60000000 / f_intervalAverage;
-            
-                        g_intervalCalculated[1]     =   f_intervalAverage;
-                        g_lastBpmCalculation[1]     =   m_Timer.GetClockTicks();
-                        }
-                    f_lastTime[1]                   =   p_triggerTimeClockB;
-
-                    f_timeIndex[1]                  = ( f_timeIndex[1] + 1) % 4;    
-                    }
-                g_activeBpmChannel                  = ( g_lastBpmCalculation[0] > g_lastBpmCalculation[1]) ? 0 : 1; // what was the last bpm input? 
-}
-
 void            CKernel::calculate1BPM   (   int p_source, unsigned long   p_triggerTimeClock)       // love to split it but i will need additional parameters right?
 {
                 static unsigned long f_lastTime[2];
@@ -818,56 +681,7 @@ void            CKernel::calculate1BPM   (   int p_source, unsigned long   p_tri
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
-void            CKernel::predictedBeat1 ()  // love to split it but i will need additional parameters right? like LF1_MULT
-{
-                unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                      // Get the current u_time in clock ticks
-
-                if (currentTime >= g_nextBeatTime[0])
-                    {
-                    g_nextBeatTime[0]               +=  g_intervalCalculated[0];                                                                        // Predict the next beat u_time
-                    }
-                if (currentTime >= g_nextCircleBuffer[0]) 
-                    {
-                    g_lastCircleBuffer[0]           =   g_nextCircleBuffer[0];
-                    g_nextCircleBuffer[0]           =   g_nextCircleBuffer[0] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[0]); // why again g_lfoMultiplierTMP? isnt it stored already, do we need to back it up?
-                    g_lfoMultiplierTMP[0]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF1_MULT]];
-                    }
-                if ((g_lastBpmCalculationTMP[0]     !=  g_lastBpmCalculation[0]))
-                    {
-                    g_nextBeatTime[0]               =   g_lastBpmCalculation[0];                                                                      // Reset to current time for new BPM
-                    g_lastBpmCalculationTMP[0]      =   g_lastBpmCalculation[0];
-                    }
-                if (g_lfoMultiplierTMP[0]           !=  g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF1_MULT]])
-                    {
-                    g_lastCircleBuffer[0]           =   g_lastBpmCalculation[g_activeBpmChannel];
-                    g_nextCircleBuffer[0]           =   g_lastBpmCalculation[g_activeBpmChannel] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[0]);
-                    g_lfoMultiplierTMP[0]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF1_MULT]];
-                    }
-                if (currentTime >= g_nextBeatTime[1])
-                    {
-                    g_nextBeatTime[1]               +=  g_intervalCalculated[1];                                                                                   // Predict the next beat u_time
-                    }
-                if (currentTime >= g_nextCircleBuffer[1]) 
-                    {
-                    g_lastCircleBuffer[1]           =   g_nextCircleBuffer[1];
-                    g_nextCircleBuffer[1]           =   g_nextCircleBuffer[1] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[1] );                                  // g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF2_MULT]]);
-                    g_lfoMultiplierTMP[1]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF2_MULT]];
-                    }
-                if ((g_lastBpmCalculationTMP[1]     !=  g_lastBpmCalculation[1]))                                                                   // Handle BPM changes for instance 1
-                    {
-                    g_nextBeatTime[1]               =   g_lastBpmCalculation[1];                                                                      // Reset to current time for new BPM
-                    g_lastBpmCalculationTMP[1]      =   g_lastBpmCalculation[1];
-                    }
-                if (g_lfoMultiplierTMP[1]           !=  g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF2_MULT]])
-                    {
-                    g_lastCircleBuffer[1]           =   g_lastBpmCalculation[g_activeBpmChannel];
-                    g_nextCircleBuffer[1]           =   g_lastBpmCalculation[g_activeBpmChannel] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[1]);                                   // g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF2_MULT]]);
-                    g_lfoMultiplierTMP[1]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][LF2_MULT]];
-                    }
-}
-
-void            CKernel::predictedBeat2 ( int p_source, int p_lfoMult )  // love to split it but i will need additional parameters right? like LF1_MULT
+void            CKernel::predict1Beat ( int p_source, int p_lfoMultIn )  // love to split it but i will need additional parameters right? like LF1_MULT
 {
                 unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                      // Get the current u_time in clock ticks
 
@@ -879,43 +693,23 @@ void            CKernel::predictedBeat2 ( int p_source, int p_lfoMult )  // love
                     {
                     g_lastCircleBuffer[p_source]           =   g_nextCircleBuffer[p_source];
                     g_nextCircleBuffer[p_source]           =   g_nextCircleBuffer[p_source] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[p_source]); // why again g_lfoMultiplierTMP? isnt it stored already, do we need to back it up?
-                    g_lfoMultiplierTMP[source0]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMult]];
+                    g_lfoMultiplierTMP[source0]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]];
                     }
                 if ((g_lastBpmCalculationTMP[p_source]     !=  g_lastBpmCalculation[p_source]))
                     {
                     g_nextBeatTime[p_source]               =   g_lastBpmCalculation[p_source];                                                                      // Reset to current time for new BPM
                     g_lastBpmCalculationTMP[p_source]      =   g_lastBpmCalculation[p_source];
                     }
-                if (g_lfoMultiplierTMP[p_source]           !=  g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMult]])
+                if (g_lfoMultiplierTMP[p_source]           !=  g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]])
                     {
                     g_lastCircleBuffer[p_source]           =   g_lastBpmCalculation[g_activeBpmChannel];
                     g_nextCircleBuffer[p_source]           =   g_lastBpmCalculation[g_activeBpmChannel] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[p_source]);
-                    g_lfoMultiplierTMP[p_source]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMult]];
+                    g_lfoMultiplierTMP[p_source]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]];
                     }
 
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
-void            CKernel::sampleWaveTable1                  () // love to split it but i will need additional parameters right? like LF1_MULT
-{
-                unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                          // Get the current u_time in clock ticks why not the start_time_fps_calculation or currentTime from Run()??
-
-                g_elapsedMicroseconds[0]            =   currentTime - g_lastCircleBuffer[0];
-                g_cycleLength[0]                    =   g_nextCircleBuffer[0] - g_lastCircleBuffer[0];                                                    // Total length of the current cycle
-                int f_indexA                        =  (g_elapsedMicroseconds[0] * 255) / g_cycleLength[0];                                               // 255 is not the amplitude! its the number of samples
-                g_sampleIndex[0]                    =   f_indexA > 255 ? 255 : f_indexA;                                                                  // means i need a wraparound - on the other hand: i should have a clear calculation here that will never create a index >255!
-                g_inOutMatrixFlt[0][LF1]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF1_WAVE]][g_sampleIndex[0]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
-                g_inOutMatrixInt[0][LF1]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF1_WAVE]][g_sampleIndex[0]];
-
-                g_elapsedMicroseconds[1]            =   currentTime - g_lastCircleBuffer[1];
-                g_cycleLength[1]                    =   g_nextCircleBuffer[1] - g_lastCircleBuffer[1];                                                   // Total length of the current cycle
-                int f_indexB                        =  (g_elapsedMicroseconds[1] * 255) / g_cycleLength[1];
-                g_sampleIndex[1]                    =   f_indexB > 255 ? 255 : f_indexB;                                                                  // ! i like to get rid of this saveguard !
-                g_inOutMatrixFlt[0][LF2]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF2_WAVE]][g_sampleIndex[1]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
-                g_inOutMatrixInt[0][LF2]            =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][LF2_WAVE]][g_sampleIndex[1]];
-}   
-
-void            CKernel::sampleWaveTable2                  ( int p_source, int p_lfoOut, int p_waveTable ) // love to split it but i will need additional parameters right? like LF1_MULT
+void            CKernel::sample1WaveTable                  ( int p_source, int p_lfoOut, int p_lfoIn ) // love to split it but i will need additional parameters right? like LF1_MULT
 {
                 unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                          // Get the current u_time in clock ticks why not the start_time_fps_calculation or currentTime from Run()??
 
@@ -923,8 +717,8 @@ void            CKernel::sampleWaveTable2                  ( int p_source, int p
                 g_cycleLength[p_source]             =   g_nextCircleBuffer[p_source] - g_lastCircleBuffer[p_source];                                                    // Total length of the current cycle
                 int f_indexA                        =  (g_elapsedMicroseconds[p_source] * 255) / g_cycleLength[p_source];                                               // 255 is not the amplitude! its the number of samples
                 g_sampleIndex[p_source]             =   f_indexA > 255 ? 255 : f_indexA;                                                                  // means i need a wraparound - on the other hand: i should have a clear calculation here that will never create a index >255!
-                g_inOutMatrixFlt[0][p_lfoOut]       =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_waveTable]][g_sampleIndex[p_source]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
-                g_inOutMatrixInt[0][p_lfoOut]       =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_waveTable]][g_sampleIndex[p_source]];
+                g_inOutMatrixFlt[0][p_lfoOut]       =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]][g_sampleIndex[p_source]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
+                g_inOutMatrixInt[0][p_lfoOut]       =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]][g_sampleIndex[p_source]];
 }   
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
