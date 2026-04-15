@@ -432,7 +432,20 @@ public:
     void primePortFormatInputMMAL(  const MMAL_Port_Info_Get_Reply& src, MMAL_Port_Info_Set_Msg& tx);
     void primePortFormatOutputMMAL( const MMAL_Port_Info_Get_Reply& src, MMAL_Port_Info_Set_Msg& tx);
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//  WRAPPERS
+//  WRAPPERS - HERE THE JOY BEGINS
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    bool wrapperInitDMA();
+    bool wrapperInitMEM();
 
+    void wrapperDMAcleanUp();
+    void wrapperMEMcleanUp();
+
+    void wrapper_from_sd();
+    void wrapper_load_usb();
+
+    void wrapper_init_gl_sd();
+    void wrapper_init_gl_usb();
+
+    void wrapper_io();
+    void wrapper_modes();
 };
