@@ -1,193 +1,4 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-// logging
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-bool            CKernel::shaderLog                  (   GLint       shader,
-                                                        int         shaderIndex )
-{
-                GLint success;
-                glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-
-#ifdef __DEBUG_LOG__ 
-                storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
-                storeLog( MY_BUFFER, MY_INDEX, "Program compile status idx/success", (u32)shaderIndex, (u32)success);
-#endif // __DEBUG_LOG__
-
-                return success == GL_TRUE;
-}
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::programLog                 (   GLint       program,
-                                                        int         program_index )
-{
-            //  int internal_index = 0;                     // i wonder, if and why we need it, was the indexing in the buffer incorrect? !!! DOUBLECHECK !!!
-            //  if (program_index > 0)
-            //      internal_index = program_index - 1;
-
-                GLint success;
-                glGetProgramiv(program, GL_LINK_STATUS, &success);
-
-#ifdef __DEBUG_LOG__
-                storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
-                storeLog( MY_BUFFER, MY_INDEX, "Program link status idx/success", (u32)program_index, (u32)success);
-#endif // __DEBUG_LOG__
-            //  char name[27];
-            //  strncpy(name, &m_bufferFsh[program_index][2], 26);
-            //  name[26] = '\0';
-#ifdef __DEBUG_LOG__ 
-            //  storeMsg( MY_BUFFER, MY_INDEX, "Program short name", name, 26);
-            //  storeMsg( MY_BUFFER, MY_INDEX, "Filename", g_ScnFsh[internal_index], 64);   // same behavior conceptually
-                storeLog( MY_BUFFER, MY_INDEX, "Program byte size", (u32)g_bytFsh[program_index]);
-#endif // __DEBUG_LOG__
-                char log[1024];
-                glGetProgramInfoLog(program, sizeof(log), NULL, log);
-#ifdef __DEBUG_LOG__                 
-                storeMsg( MY_BUFFER, MY_INDEX, "Program InfoLog", log, sizeof(log));
-#endif // __DEBUG_LOG__
-                GLint numUniforms;
-                glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &numUniforms);
-#ifdef __DEBUG_LOG__ 
-                storeLog( MY_BUFFER, MY_INDEX, "Active Uniforms", (u32)numUniforms);
-#endif // __DEBUG_LOG__
-                for (GLint i = 0; i < numUniforms; ++i)
-                {
-                    char uname[256];
-                    GLsizei length;
-                    GLint size;
-                    GLenum type;
-
-                    glGetActiveUniform(program, i, sizeof(uname), &length, &size, &type, uname);
-                    GLint location = glGetUniformLocation(program, uname);
-#ifdef __DEBUG_LOG__ 
-                    storeLog( MY_BUFFER, MY_INDEX, "Uniform idx/size/type/loc", (u32)i, (u32)size, (u32)type, (u32)location);
-                    storeMsg( MY_BUFFER, MY_INDEX, "Uniform name", uname, length);
-#endif // __DEBUG_LOG__                    
-                }
-
-                GLint numAttributes;
-                glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &numAttributes);
-#ifdef __DEBUG_LOG__ 
-                storeLog( MY_BUFFER, MY_INDEX, "Active Attributes", (u32)numAttributes);
-#endif // __DEBUG_LOG__
-                for (GLint i = 0; i < numAttributes; ++i)
-                {
-                    char aname[256];
-                    GLsizei length;
-                    GLint size;
-                    GLenum type;
-
-                    glGetActiveAttrib(program, i, sizeof(aname), &length, &size, &type, aname);
-                    GLint location = glGetAttribLocation(program, aname);
-#ifdef __DEBUG_LOG__ 
-                    storeLog( MY_BUFFER, MY_INDEX, "Attribute idx/size/type/loc", (u32)i, (u32)size, (u32)type, (u32)location);
-                    storeMsg( MY_BUFFER, MY_INDEX, "Attribute name", aname, length);
-#endif // __DEBUG_LOG__                    
-                }
-#ifdef __DEBUG_LOG__
-                storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
-#endif // __DEBUG_LOG__
-
-                return success == GL_TRUE;
-}
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-// #define         check() 				gfx_check(__FILE__, __LINE__) 	// my own assertion implementation
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-void            CKernel::gfx_check                  (   const char* file, 
-                                                        unsigned    line )
-{
-                static unsigned error_count = 0;
-                static bool summary_written = false;
-                const unsigned ERROR_THRESHOLD = 1024;
-
-                if (resetFlag && !summary_written)
-                {
-                    summary_written = true;
-
-                    CTimer* pTimer = CTimer::Get();
-                    unsigned ticks = pTimer->GetTicks();
-#ifdef __DEBUG_LOG__  
-                    storeLog( MY_BUFFER, MY_INDEX, "=== Final System Status ticks/count ===", (u32)ticks, (u32)error_count);
-#endif // __DEBUG_LOG__ 
-                    GLint value;
-
-                    glGetIntegerv(GL_CURRENT_PROGRAM, &value);
-#ifdef __DEBUG_LOG__                     
-                    storeLog( MY_BUFFER, MY_INDEX, "Current Program", (u32)value);
-#endif // __DEBUG_LOG__ 
-                    glGetIntegerv(GL_ACTIVE_TEXTURE, &value);
-#ifdef __DEBUG_LOG__                     
-                    storeLog( MY_BUFFER, MY_INDEX, "Active Texture Unit", (u32)value);
-#endif // __DEBUG_LOG__ 
-                    GLint viewport[4];
-                    glGetIntegerv(GL_VIEWPORT, viewport);
-#ifdef __DEBUG_LOG__                     
-                    storeLog( MY_BUFFER, MY_INDEX, "Viewport x/y", (u32)viewport[0], (u32)viewport[1]);
-                    storeLog( MY_BUFFER, MY_INDEX, "Viewport w/h", (u32)viewport[2], (u32)viewport[3]);
-#endif // __DEBUG_LOG__ 
-                    GLint fb;
-                    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fb);
-#ifdef __DEBUG_LOG__                     
-                    storeLog( MY_BUFFER, MY_INDEX, "Current Framebuffer", (u32)fb);
-                    storeLog( MY_BUFFER, MY_INDEX, "=== End Status Report ===");
-#endif // __DEBUG_LOG__                     
-                    return;
-                }
-
-                GLenum error = glGetError();
-                if (error != GL_NO_ERROR)
-                {
-                    CTimer* pTimer = CTimer::Get();
-                    unsigned ticks = pTimer->GetTicks();
-
-                    const char* error_str;
-                    const char* severity;
-
-                    switch (error)
-                    {
-                        case GL_INVALID_ENUM:
-                            error_str = "GL_INVALID_ENUM";
-                            severity  = "WARNING";
-                            break;
-
-                        case GL_INVALID_VALUE:
-                            error_str = "GL_INVALID_VALUE";
-                            severity  = "WARNING";
-                            break;
-
-                        case GL_INVALID_OPERATION:
-                            error_str = "GL_INVALID_OPERATION";
-                            severity  = "WARNING";
-                            break;
-
-                        case GL_OUT_OF_MEMORY:
-                            error_str = "GL_OUT_OF_MEMORY";
-                            severity  = "CRITICAL";
-                            resetFlag = true;
-                            break;
-
-                        case GL_INVALID_FRAMEBUFFER_OPERATION:
-                            error_str = "GL_INVALID_FRAMEBUFFER_OPERATION";
-                            severity  = "CRITICAL";
-                            resetFlag = true;
-                            break;
-
-                        default:
-                            error_str = "UNKNOWN_ERROR";
-                            severity  = "WARNING";
-                            break;
-                    }
-#ifdef __DEBUG_LOG__ 
-                    storeLog( MY_BUFFER, MY_INDEX, "OpenGL Error err/ticks/line", (u32)error, (u32)ticks, (u32)line);
-                    storeLog( MY_BUFFER, MY_INDEX, severity);
-                    storeLog( MY_BUFFER, MY_INDEX, error_str);
-                    storeLog( MY_BUFFER, MY_INDEX, file);
-#endif // __DEBUG_LOG__ 
-                    error_count++;
-                    if (error_count >= ERROR_THRESHOLD)
-                        resetFlag = true;
-                }
-}
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 // init OGL
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initOGL                   (   olg_state*  o ) // never touch a running horse and if remove the assertions!
@@ -311,7 +122,6 @@ assert( success >= 0 );
 #endif // __OLG_DEBUG__            
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 // init GL
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initVbuffer                (   olg_state*  o,
@@ -405,43 +215,41 @@ void            CKernel::initTexture                (   vtx_state*  v,          
                                                         GLint       wrap_s,
                                                         GLint       wrap_t )
 {
-    for (int i = fromFile; i < toFile; i++)
-    {
-        if (t->tex_valid[i])
-        {
-            glGenTextures(1, &t->gl_tex_id[valid_count]);
-            glBindTexture(GL_TEXTURE_2D, t->gl_tex_id[valid_count]);
+                for (int i = fromFile; i < toFile; i++)
+                    {
+                    if (t->tex_valid[i])
+                        {
+                        glGenTextures(1, &t->gl_tex_id[valid_count]);
+                        glBindTexture(GL_TEXTURE_2D, t->gl_tex_id[valid_count]);
 
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s);
+                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t);
+                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-            GLvoid* bitmapData = &t->data[i][t->offset[i]];
-        //  GLvoid* bitmapData = t->data[i] + t->offset[i]; // he claims this is the same!
+                        GLvoid* bitmapData = &t->data[i][t->offset[i]];
+                    //  GLvoid* bitmapData = t->data[i] + t->offset[i]; // he claims this is the same!
+                        glTexImage2D(   GL_TEXTURE_2D,
+                                        0,
+                                        GL_RGB,
+                                        t->width[i],
+                                        t->height[i],
+                                        0,
+                                        GL_RGB,
+                                        GL_UNSIGNED_BYTE,
+                                        bitmapData);
 
-            glTexImage2D(GL_TEXTURE_2D,
-                         0,
-                         GL_RGB,
-                         t->width[i],
-                         t->height[i],
-                         0,
-                         GL_RGB,
-                         GL_UNSIGNED_BYTE,
-                         bitmapData);
-
-            if (glGetError() == GL_NO_ERROR)
-            {
-                valid_count++;
-            }
-            else
-            {
-                glDeleteTextures(1, &t->gl_tex_id[valid_count]);
-            }
-        }
-
-        m_Watchdog.Start(TIMEOUT);
-    }
+                        if (glGetError() == GL_NO_ERROR)
+                            {
+                            valid_count++;
+                            }
+                        else
+                            {
+                            glDeleteTextures(1, &t->gl_tex_id[valid_count]);
+                            }
+                        }
+                    m_Watchdog.Start(TIMEOUT);
+                    }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::initUniform                (   vtx_state*  v,   // since i call it after initProgram() i have a dense packing
@@ -492,7 +300,6 @@ void            CKernel::initUniform                (   vtx_state*  v,   // sinc
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // runtime buffer ( first and last )
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::frmBufferSet(vtx_state* v)
 {
                 glBindFramebuffer(GL_FRAMEBUFFER,0);
@@ -527,11 +334,11 @@ void            CKernel::setUniPrg                  (   olg_state*  o,
 #ifdef __GL_DEBUG__
                 check();
 #endif
-                GLuint cx = o->screen_width;
-                GLuint cy = o->screen_height;
+            //  GLuint cx = o->screen_width;        // why to i cast it here? 
+            //  GLuint cy = o->screen_height;
 
                 if(s->u_time[g_current_gl_program] != -1)  glUniform1f(s->u_time[g_current_gl_program], GLtime);
-                if(s->u_tres[g_current_gl_program]!= -1 )  glUniform2f(s->u_tres[g_current_gl_program], cx, cy);
+                if(s->u_tres[g_current_gl_program]!= -1 )  glUniform2f(s->u_tres[g_current_gl_program], o->screen_width, o->screen_width); // cx, cy);
                 if(s->u_seed[g_current_gl_program] != -1)  glUniform4f(s->u_seed[g_current_gl_program], g_inOutMatrixFlt[0][RND], 
                                                                                                         g_inOutMatrixFlt[1][RND], 
                                                                                                         g_inOutMatrixFlt[2][RND], 
@@ -555,7 +362,6 @@ void            CKernel::setUniPrg                  (   olg_state*  o,
 #endif
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::setTexPrg                  (   olg_state*  o, 
                                                         glsl_state* s, 
                                                         tex_state*  t,
@@ -574,7 +380,6 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
 #endif  // __H264_DEBUG_TEX__
 
 #ifndef __H264_DEBUG_TEX__
-
                 switch(g_centralModeBuffer[g_currentProgramBuffer][TEX_MODE])
                     {
                     case false:
@@ -601,7 +406,6 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
                             glBindTexture(GL_TEXTURE_2D, s->gl_tex_id[gl_current_tex]);
 
                             if (t->u_tex_id[g_current_gl_program][0] != -1) glUniform1i(t->u_tex_id[g_current_gl_program][0], 0);
-
 #ifdef __GL_DEBUG__
                             check();
 #endif  // __GL_DEBUG__
@@ -619,7 +423,6 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
                             glBindTexture(GL_TEXTURE_2D, s->gl_tex_id[gl_current_tex + 1]);
 
                             if (t->u_tex_id[g_current_gl_program][1] != -1) glUniform1i(t->u_tex_id[g_current_gl_program][1], 1);
-
 #ifdef __GL_DEBUG__
                             check();
 #endif  // __GL_DEBUG__
@@ -655,13 +458,8 @@ void            Ckernel::frmRateBreak               (   bool* noTargetFPS )
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
-
+// this is the update function, not really render, i may call it before the actual render loop as part of the menu needs a rework
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
-// this is the update function, not really render, i may call it before the actual render loop as part of the menu  
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::updateOvlState             (   olg_state*  o, 
                                                         glsl_state* s, 
                                                         tex_state*  t )
@@ -715,7 +513,6 @@ void            CKernel::updateOvlState             (   olg_state*  o,
                     s->tile_index[15] = 49.0f;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::setUniOvl                  (   olg_state*  o, 
                                                         glsl_state* s, 
                                                         tex_state*  t )

@@ -18,6 +18,11 @@ extern "C" void vc_host_get_vchi_state(VCHI_INSTANCE_T *inst, VCHI_CONNECTION_T 
 #define         EMPTYSTR ""
 #define         EMPTYLOG 255
 
+#define			TIMEOUT					10
+#define 		LOGLEVEL				4	// 0: only panic 1: also errors 2: also warnings 3: also notices 4: also debug output (default))
+
+#define 		FILENAME_KNL			"kernel.img"
+
 #define         PARTITIONSD	            "emmc1-1"	// partition sd
 #define         PARTITIONUSB	        "umsd1-1"	// partition usb
 
@@ -28,6 +33,8 @@ extern "C" void vc_host_get_vchi_state(VCHI_INSTANCE_T *inst, VCHI_CONNECTION_T 
 
 #define         ADC_CHANNELS         	8                                   // number of adc input channels ( dependency <sensor/mcp300x.h>	)
 #define         VREF			 		5.0f	                            // Reference voltage 5 Volt     ( dependency <sensor/mcp300x.h>	)
+
+#define 		ADC_BUFFER			 	4	// number of buffer cells for smoothing
 
 #define         CHANNEL			    	7		                            // im confused - is it needed to init the mcp3008?
 
@@ -49,20 +56,33 @@ extern "C" void vc_host_get_vchi_state(VCHI_INSTANCE_T *inst, VCHI_CONNECTION_T 
 #define         SD_LINE_TO_MASK(line)	(1 << (line))						// dont touch!
 #define         SD_LINES_MASK		 	(  SD_LINE_TO_MASK (SD_LINE1) )		// dont touch! all needed for <WS28XX/ws2812oversmi.h>
 
-
+#define 		CHUNK_SIZE				1024
 
 #define         SLOTS                   34 // for the g_centralModeBuffer[SLOTS][modetablecount] array - 1 firmware / 32 user / 1 default slot
 #define         DEFAULT_SLOT            34 // or 0 ?? 
 
 #define         MAX_TEXTURE_SIZE
 
-#define         MAX_VIDEO_WIDTH
-#define         MAX_VIDEO_HEIGHT
-#define         MAX_VIDEO_PROFILE
+#define         MAX_VIDEO_WIDTH         640
+#define         MAX_VIDEO_HEIGHT        480
+#define         MAX_VIDEO_PROFILE        66		// Baseline
 #define         MAX_VIDEO_LEVEL
 
-// the array for the loader constance - i think its better than scatter the values / constants everywhere around
+#define         TARGET_FPS              24      // desired frame rate !!! becomes menu !!!
+#define 		MIN_BPM					10		// min bpm for adc selector 
+#define			MAX_BPM					240 	// max bpm for adc selector
 
+#define 		NUMBER_OF_MODES			6       // is now defined in the g_modeMap array
+
+#define         WAVEFORMS             	4		// number of lfo waves
+#define         WAVESAMPLES            	256  	// number of samples per lfo waves
+#define 		LFO_Waves			    4
+#define 		LFO_INSTANCES			2
+#define			LFO_MULTIPLIERS			7
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// the array for the loader constance - i think its better than scatter the values / constants everywhere around instead unsigned filecounter[FT_COUNT][FLD_COUNT]
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define         VSH_SD             		1	// max number of u_vertex shader on sd
 #define         OMF_SD             		1	// max number of fragment shader on sd
 #define         FSH_SD             		1	// max number of fragment shader on sd
@@ -114,6 +134,10 @@ extern "C" void vc_host_get_vchi_state(VCHI_INSTANCE_T *inst, VCHI_CONNECTION_T 
 
 #define         LOG_SIZ                 (1024*64)
 
+#define         ADC_SELECT_PRG          7
+#define         ADC_SELECT_TEX          6
+#define         ADC_SELECT_VID          5
+#define			ADC_INPUT_CLK			5	// adc channel use as clock ! BIGGER THAN 3 !
 
 enum TShutdownMode
 {
@@ -134,24 +158,29 @@ enum modetable		                        // for the g_centralModeBuffer[SLOTS][mo
 	int CH6_MODE,
 	int CH7_MODE,
 
-	int LF1_WAVE,
-	int LF2_WAVE,
-	int LF1_MULT,
-	int LF2_MULT,
+	int LF1_WAVE,   // 0 to 3
+	int LF2_WAVE,   // 0 to 3
+	int LF1_MULT,   // 0 to 6
+	int LF2_MULT,   // 0 to 6
 
-	int SENS_A,
-	int SENS_B,
-	int SENS_C,
-	int SENS_D,
+	int SENS_A,     // 0 to 63
+	int SENS_B,     // 0 to 63
+	int SENS_C,     // 0 to 63
+	int SENS_D,     // 0 to 63
 
-	int FRM_MODE,
-	int TEX_MODE,
-	int CLK_MODE,
-	int VID_MODE,
+	int FRM_MODE,   // 0 or 1   ( wait - i propose a simple 4 to 7 and 0 as of, means anything else than 0 is the actual nput channel problem, it need to overrule CH*_MODE )
+	int TEX_MODE,   // 0 or 1   ( how we can do it? also, dont i want more than only channel 4-7 assignable? )
+	int CLK_MODE,   // 0 or 1   ( whats about the approach in readADC() where i modify the number of possible modes in the modematrix )
+	int VID_MODE,   // 0 or 1   ( like if i have one here CH*_MODE "opens" up for this modes - requires a constant check and update but... )
+
+    int STORE_SET,  // 0 or 1   ( if set to 1 and the menu_layer is zero again ( button released ?) the file operation starts )
+    int LOAD_SET,   // 0 or 1
+    int STORE_LOG,  // 0 or 1
+    int LOAD_KLN,   // 0 or 1
 
 	int IS_STORED,                          // not really a mode but a flag - important: obey the "4 per block" rule
 
-	modetablecount = 21                     // right?
+	modetablecount = 21 +4                    // right?
 }
 
 enum io_types                               // for the array g_inOutMatrixInt[CHANNEL][IO_TYPE_COUNT] & g_inOutMatrixFlt[CHANNEL][IO_TYPE_COUNT]
@@ -169,7 +198,7 @@ enum io_types                               // for the array g_inOutMatrixInt[CH
                                             // *means i have a unique value for each channel - the other values are singular, and/or only int/flt
     int TRL,                                //  per channel threshold low !!! dont forget to copy the values in here    128
     int TRH,                                //  per channel threshold high                                              320
-    int TRF,                                //  per channel threshold "flag" - whre do i need you again?
+    int TRF,                                //  per channel threshold "flag" - wehre do i need you again?
 
     int IO_TYPE_COUNT = 13
 }
@@ -183,6 +212,158 @@ enum ButtonTSIndex  // for the button state machine - unsigned int g_buttons_sta
     BTN_HOLD_TICK   = 4,   // COUNTER: increases while held
     BTN_INDEX_COUNT = 5
 };
+
+enum FileType
+{
+    FT_VSH = 0,
+    FT_OMF,
+    FT_FSH,
+    FT_OMT,
+    FT_TEX,
+    FT_VID,
+    FT_KLN,
+    FRM_BF,         // i decided to add the output-frames A & B
+    LOGGER,         // and logger buffer information here
+    FT_COUNT
+};
+
+enum FileField
+{
+    FLD_MAXSD = 0,
+    FLD_MAXUSB,
+    FLD_EXTCNT,
+    FLD_SCANNED,    // new
+    FLD_LOADED,
+    FLD_PREV,       // new
+    FLD_VALID, // <- p_validCount 
+    FLD_SIZE,
+    FLD_COUNT
+};
+
+struct olg_state
+{
+    // EGL Window
+    uint32_t                    screen_width;
+    uint32_t                    screen_height;
+
+    DISPMANX_ELEMENT_HANDLE_T   dispman_element;
+    DISPMANX_DISPLAY_HANDLE_T   dispman_display;
+
+    EGLDisplay                  display;
+    EGLSurface                  surface;
+    EGLContext                  context;
+};
+
+struct vtx_state
+{
+    // shared attrib/buffer
+    GLuint                      gl_buf;                         // this is also an extra struct we need to pass too
+    GLint                       gl_vtx[MAX_SHADER];    
+};
+
+struct tex_state
+{
+    u32         max_tex_size;   // moved from CKernel   
+
+    bool        tex_valid[MAX_TEXTURE];
+
+    unsigned    width[MAX_TEXTURE];
+    unsigned    height[MAX_TEXTURE];
+    unsigned    offset[MAX_TEXTURE];
+
+    unsigned    file_size[MAX_TEXTURE];
+    unsigned    image_size[MAX_TEXTURE];
+
+    u8*         data[MAX_TEXTURE];
+    size_t      size[MAX_TEXTURES];
+
+    GLuint      gl_tex_id[MAX_TEXTURE];
+    GLint       u_tex_id[MAX_SHADER][MAX_TEXTURE];
+};
+
+struct h264_state
+{
+    // raw input will be populated by the parser init
+    u8*             data[MAX_VIDEOS];
+    size_t          size[MAX_VIDEOS];
+    // data for the poller
+    size_t          sps_off[MAX_VIDEOS][MAX_FRAMES];
+    size_t          sps_sc_len[MAX_VIDEOS][MAX_FRAMES];
+    size_t          sps_len[MAX_VIDEOS][MAX_FRAMES];
+
+    size_t          pps_off[MAX_VIDEOS][MAX_FRAMES];
+    size_t          pps_sc_len[MAX_VIDEOS][MAX_FRAMES];
+    size_t          pps_len[MAX_VIDEOS][MAX_FRAMES];
+
+    size_t          idr_off[MAX_VIDEOS][MAX_FRAMES];
+    size_t          idr_sc_len[MAX_VIDEOS][MAX_FRAMES];
+    size_t          idr_len[MAX_VIDEOS][MAX_FRAMES];
+    // frame table
+    void*           frame_address[MAX_VIDEOS][MAX_FRAMES];
+    size_t          frame_offset[MAX_VIDEOS][MAX_FRAMES];
+    size_t          frame_length[MAX_VIDEOS][MAX_FRAMES];
+    int             idr_offset[MAX_VIDEOS]; // size_t      idr_offset[MAX_VIDEOS];
+    // extradata
+    u8              extradata[MAX_VIDEOS][1024];
+    size_t          extradata_len[MAX_VIDEOS];
+    bool            extradata_valid[MAX_VIDEOS];
+    // parsed metadata
+    u16             video_width[MAX_VIDEOS];
+    u16             video_height[MAX_VIDEOS];
+    u8              vid_profile[MAX_VIDEOS];
+    u8              vid_level[MAX_VIDEOS];
+    // state
+    int             frame_count[MAX_VIDEOS]; //     unsigned    frame_count[MAX_VIDEOS];
+    bool            vid_valid[MAX_VIDEOS];
+    // shared base
+    char*           block_base; // void*   block_base;
+    // constraints
+    u16             max_width;
+    u16             max_height;
+    u8              max_profile;
+    u8              max_level;
+    // for my video frame texture 
+    GLuint          gl_tex_vid;      // video texture handle
+    EGLImageKHR     egl_img;        // backing (changes per frame)
+};
+
+struct glsl_state
+{
+    GLuint                      gl_shader_id[MAX_SHADER];
+    GLuint                      gl_program_id[MAX_SHADER];
+
+    bool                        shader_valid[MAX_SHADER];
+    // user uniforms                                            // this is the actual common shader struct we define for 
+    GLint                       u_time[MAX_SHADER];
+    GLint                       u_tres[MAX_SHADER];
+    GLint                       u_seed[MAX_SHADER];
+    GLint                       u_aud[MAX_SHADER];
+    GLint                       u_col[MAX_SHADER];
+    GLint                       u_par_a[MAX_SHADER];
+    GLint                       u_par_b[MAX_SHADER];
+    GLint                       u_tex_l[MAX_SHADER];
+    // overlay uniforms
+    GLint                       u_atlas[MAX_OMF];
+    GLint                       u_tile_count[MAX_OMF];
+    GLint                       u_tile_rect[MAX_OMF];
+    GLint                       u_tile_index[MAX_OMF];
+    // overlay data
+    float                       kMenuOrigin[2];
+    float                       kMenuTileSize[2];
+    float                       kMenuBackgroundScale[2];
+
+    float                       kMenuRelPos[MAX_TILES][2];
+    float                       kMenuRelSize[MAX_TILES][2];
+
+    float                       tile_rect_x[MAX_TILES];
+    float                       tile_rect_y[MAX_TILES];
+    float                       tile_rect_w[MAX_TILES];
+    float                       tile_rect_h[MAX_TILES];
+
+    GLfloat                     tile_rect[MAX_TILES * 4];
+    GLfloat                     tile_index[MAX_TILES];
+};
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  PUBLIC / PRIVATE
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -245,12 +426,6 @@ public:
 //  GRAPHICS
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 public:
-    bool        shaderLog       (   GLint       shader, 
-                                    int         shaderIndex);
-    bool        programLog      (   GLint       program, 
-                                    int         program_index);
-    void        gfx_check       (   const char* file, 
-                                    unsigned    line);
     void        initOGL         (   olg_state*  o);
 
     void        initVbuffer     (   olg_state*  o, 
@@ -312,6 +487,58 @@ public:
                                     glsl_state* s, 
                                     tex_state* t);
     void        drawGLsOvl      ();
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  LOGGING
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    void        storeLog       (   char*       buffer, 
+                                            u32&        index,
+                                            const char* label,
+                                            u32         value1, 
+                                            u32         value2,
+                                            u32         value3, 
+                                            u32         value4)
+    void        storeLogLong  (   char*       buffer,
+                                u32&        index,
+                                const char* l1, u32 v1,
+                                const char* l2, u32 v2,
+                                const char* l3, u32 v3,
+                                const char* l4, u32 v4)
+    void        storeMsg       (   char*       buffer,
+                                            u32&        index,
+                                            const char* label,
+                                            const void* tx_msg,
+                                            u32         total_size)
+    void        nextline(char* buffer,
+                                   u32& index)
+
+static void     bufferToScreenPlot                          (   unsigned x, unsigned y, u32 color )        
+
+static void     bufferToScreenDrawChar                     (   char ch,
+                                                                        unsigned charCol,
+                                                                        unsigned charRow,
+                                                                        u32 fgColor,
+                                                                        u32 bgColor )
+
+boolean         bufferToScreenInit                              (   void )
+
+void            bufferToScreenClear                         (   u32 bgColor)
+
+void            bufferToScreenDrawBufferSegment        (   const char *pSourceBuffer,
+                                                                        u32 startIndex,
+                                                                        u32 endIndex,
+                                                                        unsigned startCol,
+                                                                        unsigned startRow,
+                                                                        u32 fgColor,
+                                                                        u32 bgColor)
+
+unsigned        bufferToScreenGetGrid                         (   unsigned &cols, unsigned &rows) 
+
+    bool        shaderLog       (   GLint       shader, 
+                                    int         shaderIndex);
+    bool        programLog      (   GLint       program, 
+                                    int         program_index);
+    void        gfx_check       (   const char* file, 
+                                    unsigned    line);
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  MENU
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -510,4 +737,152 @@ public:
 
     void wrapper_io();
     void wrapper_modes();
+
+private:
+	CActLED			    m_ActLED;
+	CKernelOptions		m_Options;
+	CMachineInfo		m_MachineInfo;
+	CDeviceNameService	m_DeviceNameService;
+	CScreenDevice		m_Screen;
+	CSerialDevice		m_Serial;
+	CExceptionHandler	m_ExceptionHandler;
+	CInterruptSystem	m_Interrupt;
+	CTimer			    m_Timer;
+	CLogger			    m_Logger;
+	CEMMCDevice			m_EMMC;
+	CUSBHCIDevice		m_USBHCI;
+	CVCHIQDevice		m_VCHIQ;
+
+	CMemorySystem		m_Memory;
+
+	volatile boolean	m_bStorageAttached;
+	CFATFileSystem		*m_pFileSystem;
+
+  	CScheduler		    m_Scheduler; // really? is it needed for the khronos stuff?
+
+	CBcmWatchdog       	m_Watchdog; // Watchdog instance - we included our own!
+
+	CSPIMaster		    m_SPIMaster;
+	CMCP300X		    m_MCP300X;
+
+	CWS2812OverSMI		m_NeoPixels;
+
+	CGPIOManager		m_GPIOManager;		// not needed in polling mode - we included our own "write to pin" but why does the constructor def uses "m_GPIOManager (&m_Interrupt),..." oh i see, the ws2812 led i assume
+
+	CGPIOPin 			m_ChipSelectPin;  	// Add this line for the chip select pin - we included our own "write to pin"
+
+// we need a struct for the videos right?
+
+                char** 				    m_bufferVid;
+                char* 				    m_videoBlockBase;
+                char* 				    m_videoRawBlock;
+                size_t 				    m_videoBlockSize;
+
+                char**				    m_bufferFrA;
+                char* 				    m_frameBlockBaseA;
+                char* 				    m_frameRawBlockA;
+                size_t 				    m_frameBlockSizeA;
+
+                char**				    m_bufferFrB;
+                char* 				    m_frameBlockBaseB;
+                char* 				    m_frameRawBlockB;
+                size_t 				    m_frameBlockSizeB;	
+
+                char** 				    m_bufferOmt;
+                char* 				    m_overlyBlockBase;
+                char* 				    m_overlayRawBlock;
+                size_t 				    m_overlyBlockSize;
+
+                char** 				    m_bufferTex;
+                char* 				    m_textureBlockBase;
+                char* 				    m_textureRawBlock;
+                size_t 				    m_textureBlockSize;
+
+                char**				    m_bufferKnl;
+                char**				    m_bufferLog;
+                char** 				    m_bufferVsh;
+                char** 				    m_bufferOmf;                
+                char** 				    m_bufferFsh;
+// local copies of my graphics related structs
+    olg_state           m_ogl;
+
+    vtx_state           m_vtx;
+
+    glsl_state          m_vsh;
+    glsl_state          m_fsh;
+    glsl_state          m_osh;
+
+    tex_state           m_tex;
+    tex_state           m_omt;
+
+    h264_state          m_vid;
+// the populated filecounter array - source and truth and hub for init and load
+    unsigned filecounter[FT_COUNT][FLD_COUNT] =
+{  // MAXSD   MAXUSB    EXTCNT      SCANNED   LOADED  PREV    V_CNT    SIZE  
+    { VSH_SD, VSH_USB,  VSH_EXT,    0,        0,      0,      0,       VSH_SIZ },  // VSH vertex shader
+    { OMF_SD, OMF_USB,  OMF_EXT,    0,        0,      0,      0,       OMF_SIZ },  // OMF overlay fragment shader
+    { FSH_SD, FSH_USB,  FSH_EXT,    0,        0,      0,      0,       FSH_SIZ },  // FSH user fragment shader
+    { OMT_SD, OMT_USB,  OMT_EXT,    0,        0,      0,      0,       OMT_SIZ },  // OMT overlay texture ( atlas)
+    { TEX_SD, TEX_USB,  TEX_EXT,    0,        0,      0,      0,       TEX_SIZ },  // TEX user texture
+    { VID_SD, VID_USB,  VID_EXT,    0,        0,      0,      0,       VID_SIZ },  // VID video buffer
+    { KLN_SD, KLN_USB,  KLN_EXT,    0,        0,      0,      0,       KLN_SIZ },  // KLN kernel buffer
+    { FRM_SD, FRM_USB,        0,    0,        0,      0,      0,       FRM_SIZ },  // FRM decoded frames A & B
+    { LOG_SD, LOG_USB,        0,    0,        0,      0,      0,       LOG_SIZ }   // LOG logging buffers   
 };
+// lists of extensions possible in my scanroot directory function per filetype 
+        const   char                   *g_SufVsh[VSH_EXT]			    = { "vsh" }; 
+        const   char                   *g_SufOmf[OMF_EXT]			    = { "omf" };	// is a fsh file but used for the overlay atlas
+        const   char                   *g_SufFsh[FSH_EXT]			    = { "fsh" };
+        const   char                   *g_SufOmt[OMT_EXT]			    = { "omt" }; // is a bpm file but used for the overlay atlas
+        const   char                   *g_SufTex[TEX_EXT]			    = { "bmp" };
+        const   char                   *g_SufVid[VID_EXT]			    = { "264" }; // i guess i will remove the whole parse code for anything but h264
+        const   char                   *g_SufKln[KLN_EXT]			    = { "img" };
+// array to store the scanned filenames
+                char                   *g_ScnVsh[VSH_SD + VSH_USB]     	= { 0 };
+        		char				   *g_ScnOmf[OMF_SD + OMF_USB] 		= { 0 };
+                char                   *g_ScnFsh[FSH_SD + FSH_USB]     	= { 0 };
+        		char				   *g_ScnOmt[OMT_SD + OMT_USB] 		= { 0 };
+                char                   *g_ScnTex[TEX_SD + TEX_USB]     	= { 0 };
+                char                   *g_ScnVid[VID_SD + VID_USB]     	= { 0 };
+                char                   *g_ScnKln[KLN_SD + KLN_USB]     	= { 0 };
+// array to store the length of the loaded files
+                unsigned                g_bytVsh[VSH_SD + VSH_USB]      = { 0 };
+                unsigned                g_bytOmf[OMF_SD + OMF_USB]      = { 0 };
+                unsigned                g_bytFsh[FSH_SD + FSH_USB]      = { 0 };
+                unsigned                g_bytOmt[OMT_SD + OMT_USB]      = { 0 };
+                unsigned                g_bytTex[TEX_SD + TEX_USB]      = { 0 };
+                unsigned                g_bytVid[VID_SD + VID_USB]      = { 0 };
+                unsigned                g_bytKln[KLN_SD + KLN_USB]      = { 0 };
+};
+
+uint8_t g_modeMap[MENU_LAYERS*4][MENU_LAYERS*4] =	// the first element is the max of modes for each channel, than we have the order ( switch case of setChannelMode(int channel) )
+{ //  A    /  B    /  LFO  / Sens  / etc     
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0} 	// layer a is adc in 0-3 
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}    // layer b is adc in 4-7
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}    // layer c is adc in 8-11
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+
+{63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}   // layer d is adc in 12-15
+{63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}    // layer c is adc in 8-11
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+{4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
+};
+
+g_inOutMatrixInt[CHANNEL][IO_TYPE_COUNT];
+g_inOutMatrixFlt[CHANNEL][IO_TYPE_COUNT];
+g_menuPickUpFlag[4*MENU_LAYER];

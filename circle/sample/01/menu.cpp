@@ -2,14 +2,10 @@
 
 // globals and variablesVAL used here:
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::resetPickUpFlags    ()
 {
-//              or simply 
 
-//              memset(menu_pickup_flag, 0, 16 * sizeof(bool)); // ?
-
-                if (g_menu_mode_new != g_menu_mode_old) 
+                if (g_menu_mode_new != g_menu_mode_old) // or simply memset(menu_pickup_flag, 0, 16 * sizeof(bool)); ?
                     {
                     for(int i = 0; i < modetablecount; i++) 
                         {
@@ -19,16 +15,6 @@ void            CKernel::resetPickUpFlags    ()
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
-// i see the logical issue here: modes are usually meant to control how the in values are processed to out values.
-// things like modes and lfo parameters are stored in g_centralModeBuffer[][]
-// THAN there are the functions where a knop uses the raw out value AFTER 
-// modes and than map it to program, texture, video, frame, sensetivity ( i could made this a g_centralModeBuffer field too ),
-// means input -> input-processing -> mode-selection -> mode-precessing -> target-selection -> target ( gl uniform OR hardware )
-// because i want for example to have bpm on channel 0 control the frame of the video.
-// i assume this is possible with gl code BUT the user may have not the knowlege or the will to program this features therefore the device must offer another way!   
-// i could indeed pass the array (like g_centralModeBuffer ) i use as target for the mapping in modeMenuAssignGroup(uint8_t menu_id, uint8_t base, &array_to_work_on )
-
 void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
 {
                 if (g_menu_mode_new != menu_id)
@@ -79,7 +65,6 @@ void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::setChannelMode(int channel) // this is also a wrapper right ??
 {
                 switch (g_modeMap[channel][g_centralModeBuffer[g_currentProgramBuffer][channel] + 1]) // <- is this correct! g_modeMap gives me the max of modes ( needed for mapping ), also shall it determine if i can use a channelVAL this function...
@@ -129,14 +114,12 @@ void            CKernel::setChannelMode(int channel) // this is also a wrapper r
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::modeADC (int channel) 
 {
                 g_inOutMatrixFlt[channel][OUT] = g_inOutMatrixFlt[channel][VAL] // adc_float_value[channel];
                 g_inOutMatrixInt[channel][OUT] = g_inOutMatrixInt[channel][VAL] // adc_int_value[channel];            
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::modeTRG (int channel)
 {
                 if (  g_inOutMatrixInt[channel][VAL] >= g_inOutMatrixInt[channel][TRH] &&
@@ -153,7 +136,6 @@ void            CKernel::modeTRG (int channel)
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::modeBPM (int channel) 
 { 
                 if (currentTime >= g_nextBeatTime[g_activeBpmChannel])
@@ -163,45 +145,38 @@ void            CKernel::modeBPM (int channel)
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::modeLF1 (int channel)
 {
                 g_inOutMatrixFlt[channel][OUT] = g_inOutMatrixFlt[0][LF1] // g_lfoFltOut[0] <- lfo comes always from [0] since it is global
                 g_inOutMatrixInt[channel][OUT] = g_inOutMatrixInt[0][LF1] // g_lfoIntOut[0];
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::modeLF2 (int channel)
 {
                 g_inOutMatrixFlt[channel][OUT] = g_inOutMatrixFlt[1][LF2] // g_lfoFltOut[1];
                 g_inOutMatrixInt[channel][OUT] = g_inOutMatrixInt[1][LF2] // g_lfoIntOut[1];    
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::modeAudioAb0 (int channel)     // 
 {
                 g_inOutMatrixFlt[channel][OUT] = g_inOutMatrixFlt[0][AU0] // g_lfoFltOut[1];  
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::modeAudioAb1 (int channel)
 {
                 g_inOutMatrixFlt[channel][OUT] = g_inOutMatrixFlt[0][AU1] // g_lfoFltOut[1];
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::modeAudioBb0 (int channel)
 {
                 g_inOutMatrixFlt[channel][OUT] = g_inOutMatrixFlt[0][AU2] // g_lfoFltOut[1];
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::modeAudioBb1 (int channel)
 {
                 g_inOutMatrixFlt[channel][OUT] = g_inOutMatrixFlt[0][AU3] // g_lfoFltOut[1];
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 

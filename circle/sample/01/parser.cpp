@@ -1,4 +1,6 @@
+// ----------------------------------------------------------------------------------------------------
 
+// ----------------------------------------------------------------------------------------------------
 bool CKernel::initBMPparser( tex_state* t,
                              char* buffer_array[],
                              size_t size_array[],
@@ -94,142 +96,144 @@ void            CKernel::ParseBPM                   (   tex_state*  t,
                     m_Watchdog.Start(TIMEOUT);
                     }
 }
-
-void CKernel::ParseAnnexB(  h264_state* h,
+// ----------------------------------------------------------------------------------------------------
+void            CKernel::ParseAnnexB(  h264_state* h,
                             char*       filename_array[],
                          // char*       buffer_array[],
                          // size_t      size_array[],
                             int         fromFile,
                             int         toFile)
 {
-        for (int file_index = fromFile; file_index < toFile; file_index++)
-            {
-            u8* data = h->data[file_index];
-            size_t size = h->size[file_index];
-        //  u8* data = (u8*)buffer_array[file_index];
-        //  size_t size = size_array[file_index];
+                for (int file_index = fromFile; file_index < toFile; file_index++)
+                    {
+                    u8* data = h->data[file_index];
+                    size_t size = h->size[file_index];
+                //  u8* data = (u8*)buffer_array[file_index];
+                //  size_t size = size_array[file_index];
 
-        //  size_t i = 0; // gpt creates a struct that has i = int, here size_t, the old struct has unsigned!!!
-            unsigned i = 0;
+                //  size_t i = 0; // gpt creates a struct that has i = int, here size_t, the old struct has unsigned!!!
+                    unsigned i = 0;
 // ----------------------------------------------------------------------------------------------------
 // PASS 1: detect + store SPS/PPS/IDR, length and startcode length (single index)
 // ----------------------------------------------------------------------------------------------------
-            for (size_t pos = 0; pos < size - 3 )
-                {
-                size_t sc_len = (data[pos + 2] == 1) ? 3 : 4;
-                u8 nal_type = data[pos + sc_len] & 0x1F;
+                    for (size_t pos = 0; pos < size - 3 )
+                        {
+                        size_t sc_len = (data[pos + 2] == 1) ? 3 : 4;
+                        u8 nal_type = data[pos + sc_len] & 0x1F;
 
-                size_t next_pos = findNext000001(data, pos + sc_len, size);
+                        size_t next_pos = findNext000001(data, pos + sc_len, size);
 
-                if (nal_type == NAL_TYPE_SPS)
-                    {
-                    h->sps_off[file_index][i] = pos;
+                        if (nal_type == NAL_TYPE_SPS)
+                            {
+                            h->sps_off[file_index][i] = pos;
 
-                    // added
-                    h->sps_sc_len[file_index][i] = sc_len;
-                    h->sps_len[file_index][i]    = next_pos - pos;
-                    }
-                if (nal_type == NAL_TYPE_PPS)
-                    {
-                    h->pps_off[file_index][i] = pos;
+                            // added
+                            h->sps_sc_len[file_index][i] = sc_len;
+                            h->sps_len[file_index][i]    = next_pos - pos;
+                            }
+                        if (nal_type == NAL_TYPE_PPS)
+                            {
+                            h->pps_off[file_index][i] = pos;
 
-                    // added
-                    h->pps_sc_len[file_index][i] = sc_len;
-                    h->pps_len[file_index][i]    = next_pos - pos;
-                    }
-                if (nal_type == NAL_TYPE_IDR)
-                    {
-                    h->idr_off[file_index][i] = pos;
+                            // added
+                            h->pps_sc_len[file_index][i] = sc_len;
+                            h->pps_len[file_index][i]    = next_pos - pos;
+                            }
+                        if (nal_type == NAL_TYPE_IDR)
+                            {
+                            h->idr_off[file_index][i] = pos;
 
-                    // added
-                    h->idr_sc_len[file_index][i] = sc_len;
-                    h->idr_len[file_index][i]    = next_pos - pos;
+                            // added
+                            h->idr_sc_len[file_index][i] = sc_len;
+                            h->idr_len[file_index][i]    = next_pos - pos;
 
-                    i++;    // complete access unit
-                    }   
+                            i++;    // complete access unit
+                            }   
 
-                pos = next_pos;
-                }
+                        pos = next_pos;
+                        }
 // ----------------------------------------------------------------------------------------------------
 // PASS 2: frame extraction (table only)
 // ----------------------------------------------------------------------------------------------------
-        for (size_t idx = 0; idx < i; idx++)
-            {
-            size_t end_off =
-                (idx + 1 < i)
-                ? h->sps_off[file_index][idx + 1]
-                : size;
+                    for (size_t idx = 0; idx < i; idx++)
+                        {
+                        size_t end_off =
+                            (idx + 1 < i)
+                            ? h->sps_off[file_index][idx + 1]
+                            : size;
 
-            h->frame_address[file_index][idx] = (void*)(data + h->sps_off[file_index][idx]);
-            h->frame_offset[file_index][idx]  = (size_t)((data + h->sps_off[file_index][idx]) - (u8*)h->block_base);
-            h->frame_length[file_index][idx]  = end_off - h->sps_off[file_index][idx];
-            h->idr_offset[file_index]         = h->idr_off[file_index][idx] - h->sps_off[file_index][idx];
+                        h->frame_address[file_index][idx] = (void*)(data + h->sps_off[file_index][idx]);
+                        h->frame_offset[file_index][idx]  = (size_t)((data + h->sps_off[file_index][idx]) - (u8*)h->block_base);
+                        h->frame_length[file_index][idx]  = end_off - h->sps_off[file_index][idx];
+                        h->idr_offset[file_index]         = h->idr_off[file_index][idx] - h->sps_off[file_index][idx];
 
-            storeLog(file_index,"SPS+PPS+IDR addr/len/off ",
-                    (u32)h->frame_address[file_index][idx],
-                    (u32)h->frame_length[file_index][idx],
-                    (u32)h->frame_offset[file_index][idx]);
-            }
+                        storeLog(file_index,"SPS+PPS+IDR addr/len/off ",
+                                (u32)h->frame_address[file_index][idx],
+                                (u32)h->frame_length[file_index][idx],
+                                (u32)h->frame_offset[file_index][idx]);
+                        }
 // ----------------------------------------------------------------------------------------------------
 // PASS 3: extradata extraction
 // ----------------------------------------------------------------------------------------------------
-        u8 tmp[1024];
-        size_t out_pos = 0;
+                    u8 tmp[1024];
+                    size_t out_pos = 0;
 
-        static const u8 sc4[4] = {0,0,0,1};
-        // SPS
-        memcpy(tmp + out_pos, sc4, 4); out_pos += 4;
-        memcpy(tmp + out_pos, data + h->sps_off[file_index][idx] + h->sps_sc_len[file_index][idx], h->sps_len[file_index][idx] - h->sps_sc_len[file_index][idx]);
-        out_pos += h->sps_len[file_index][idx] - h->sps_sc_len[file_index][idx];
-        // PPS
-        memcpy(tmp + out_pos, sc4, 4); out_pos += 4;
-        memcpy(tmp + out_pos, data + h->pps_off[file_index][idx] + h->pps_sc_len[file_index][idx], h->pps_len[file_index][idx] - h->pps_sc_len[file_index][idx]);
+                    static const u8 sc4[4] = {0,0,0,1};
+                    // SPS
+                    memcpy(tmp + out_pos, sc4, 4); out_pos += 4;
+                    memcpy(tmp + out_pos, data + h->sps_off[file_index][idx] + h->sps_sc_len[file_index][idx], 
+                                                 h->sps_len[file_index][idx] - h->sps_sc_len[file_index][idx]);
+                    out_pos += h->sps_len[file_index][idx] - h->sps_sc_len[file_index][idx];
+                    // PPS
+                    memcpy(tmp + out_pos, sc4, 4); out_pos += 4;
+                    memcpy(tmp + out_pos, data + h->pps_off[file_index][idx] + h->pps_sc_len[file_index][idx],
+                                                 h->pps_len[file_index][idx] - h->pps_sc_len[file_index][idx]);
 
-        out_pos += h->pps_len[file_index][idx] - h->pps_sc_len[file_index][idx];
+                    out_pos += h->pps_len[file_index][idx] - h->pps_sc_len[file_index][idx];
 // ----------------------------------------------------------------------------------------------------
 // PASS 4: metadata extraction & struct population
 // ----------------------------------------------------------------------------------------------------
-        ParseSPS(   data + h->sps_off[file_index][1],
-                    h->sps_len[file_index][1],
-                    h->sps_sc_len[file_index][1],
-                    &h->video_width[file_index],
-                    &h->video_height[file_index],
-                    &h->vid_profile[file_index],
-                    &h->vid_level[file_index]);
+                    ParseSPS(   data + h->sps_off[file_index][1],
+                                h->sps_len[file_index][1],
+                                h->sps_sc_len[file_index][1],
+                                &h->video_width[file_index],
+                                &h->video_height[file_index],
+                                &h->vid_profile[file_index],
+                                &h->vid_level[file_index]);
 
-                     h->frame_count[file_index] = i; // still correct like i before pass 2??  
-                     
-        if (out_pos <= sizeof(h->extradata[file_index]))
-            {
-            memcpy(h->extradata[file_index], tmp, out_pos);
-            h->extradata_len[file_index] = out_pos;
+                                h->frame_count[file_index] = i; // still correct like i before pass 2??  
+                                
+                    if (out_pos <= sizeof(h->extradata[file_index]))
+                        {
+                        memcpy(h->extradata[file_index], tmp, out_pos);
+                        h->extradata_len[file_index] = out_pos;
 
-            }
+                        }
 // ----------------------------------------------------------------------------------------------------
 // PASS 5: validation + report
 // ----------------------------------------------------------------------------------------------------
-        h->vid_valid[file_index] =
+                    h->vid_valid[file_index] =
 
-            h->video_width[file_index]  == h->max_width &&
-            h->video_height[file_index] == h->max_height &&
-            h->vid_profile[file_index]  == h->max_profile &&
-            h->vid_level[file_index]    == h->max_level;
+                        h->video_width[file_index]  == h->max_width &&
+                        h->video_height[file_index] == h->max_height &&
+                        h->vid_profile[file_index]  == h->max_profile &&
+                        h->vid_level[file_index]    == h->max_level;
 
-        storeLog(file_index,"\nParsed Frames           ", h->frame_count[file_index]);
-        storeLog(file_index,"\nParsed IDR-Offset       ", h->idr_offset[file_index]);
+                    storeLog(file_index,"\nParsed Frames           ", h->frame_count[file_index]);
+                    storeLog(file_index,"\nParsed IDR-Offset       ", h->idr_offset[file_index]);
 
-        if (h->vid_valid[file_index])
-        {
-            storeLog(file_index,"\nMetaData Valid for Video", file_index);
-        }
-        else
-        {
-            storeLog(file_index,"\nMetaData Invalid for Video", file_index);
-        }
-        m_Watchdog.Start(TIMEOUT);
-    }
+                    if (h->vid_valid[file_index])
+                        {
+                        storeLog(file_index,"\nMetaData Valid for Video", file_index);
+                        }
+                    else
+                        {
+                        storeLog(file_index,"\nMetaData Invalid for Video", file_index);
+                        }
+                    m_Watchdog.Start(TIMEOUT);
+                    }
 }
-
+// ----------------------------------------------------------------------------------------------------
 bool CKernel::ParseSPS(  u8*     sps_data,
                          size_t  sps_size,
                          size_t  sps_sc_len,
@@ -335,7 +339,7 @@ bool CKernel::ParseSPS(  u8*     sps_data,
         }
     return true;
 }
-
+// ----------------------------------------------------------------------------------------------------
 size_t          CKernel::findNext000001(u8* data, size_t pos, size_t size) const
 {
                 while (pos < size - 3) {
@@ -348,7 +352,7 @@ size_t          CKernel::findNext000001(u8* data, size_t pos, size_t size) const
                 }
                 return size;                                                                                                    // No more start codes found
 }
-
+// ----------------------------------------------------------------------------------------------------
 u32             CKernel::ReadExpGolomb(u8* data, size_t* bit_offset) const
 {
                 size_t leadingZeroBits = 0;
@@ -396,3 +400,6 @@ u32             CKernel::ReadExpGolomb(u8* data, size_t* bit_offset) const
                 *bit_offset = offset;
                 return result;
 }
+// ----------------------------------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------------------------------

@@ -407,7 +407,7 @@ void            CKernel::wrapper_io()
 {
                 readADC();                  //  we read and dampen the adc each loop
 
-                chooseIndexD( ADC_SELECT_PRG, m_activePrg, filecounter[FT_FSH][FLD_VALID])
+                chooseIndexD( ADC_SELECT_PRG, m_activePrg, filecounter[FT_FSH][FLD_VALID])      // we derive the 
                 chooseIndexD( ADC_SELECT_TEX, m_activeTex, filecounter[FT_TEX][FLD_VALID])
                 chooseIndexD( ADC_SELECT_VID, m_activeVid, filecounter[FT_VID][FLD_VALID])
 

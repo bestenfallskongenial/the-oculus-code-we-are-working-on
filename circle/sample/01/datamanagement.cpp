@@ -5,8 +5,6 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 #include "kernel.h"
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
-// new
 bool            CKernel::Mount                      (   const char* p_deviceName )   // this or the one above? are they actual the same?
 {
                 CDevice* f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);
@@ -21,7 +19,6 @@ bool            CKernel::Mount                      (   const char* p_deviceName
                 return true;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 bool            CKernel::UnMount                    ()
 {
                 if (m_pFileSystem == 0)
@@ -34,7 +31,6 @@ bool            CKernel::UnMount                    ()
                 return true;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 bool            CKernel::openFile                   (   const char* p_fileName)
 {   
 	            g_hFile = m_pFileSystem->FileOpen (p_fileName);                                                     // !!! g_hFile MUST BE GLOBAL !!!
@@ -45,7 +41,6 @@ bool            CKernel::openFile                   (   const char* p_fileName)
                 return true;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 unsigned        CKernel::loadToBuffer               (   char*       p_buffer,                                                   // destination buffer for the file data
                                                         unsigned    p_bufferSize)                                               // maximum number of bytes to read into the buffer
 {
@@ -73,7 +68,6 @@ unsigned        CKernel::loadToBuffer               (   char*       p_buffer,   
                 return 0;                                                                                           // Buffer full, EOF not reached - this is NOT a success - 0 is equal to false !!!
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 bool            CKernel::saveFromBufferO          (   const char* p_fileName,
                                                         const char* p_buffer,
                                                         unsigned    p_bufferSize )
@@ -95,7 +89,6 @@ bool            CKernel::saveFromBufferO          (   const char* p_fileName,
                 return true;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 bool            CKernel::saveFromBuffer             (   const char* p_deviceName  // we should include also the mount / unmount stuff here
                                                         const char* p_fileName,             
                                                         const char* p_buffer,
@@ -143,7 +136,6 @@ bool            CKernel::saveFromBuffer             (   const char* p_deviceName
                 return true;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 bool            CKernel::closeFile                  ()	                                                                        // close file ( release g_hFile handle ) 
 {
 	            if (!m_pFileSystem->FileClose (g_hFile))
@@ -153,7 +145,6 @@ bool            CKernel::closeFile                  ()	                         
                 return true;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::bulkLoad                   (   char*       p_fileNameArray[],                                          // where we have stored the filenames from the root directory scan
                                                         unsigned    p_loadedBytes[],                                            // where we store the size in bytes for each file 
                                                         char**      p_bufferArray,                                              // where we store the loaded file data for each file ( or dma/non-dma buffers )
@@ -190,7 +181,6 @@ void            CKernel::bulkLoad                   (   char*       p_fileNameAr
                     }   
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 bool            CKernel::IsValidFile                (   const char* pFileName,
                                                         const char* extension)
 {
@@ -225,7 +215,6 @@ bool            CKernel::IsValidFile                (   const char* pFileName,
                 return (*suffix == '\0' && *extension == '\0');                                                     // both must end at same time
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 bool            CKernel::scanRoot                   (   char**      p_fileNameArray,                                            // where we store the valid filenames we find
                                                         const char* p_fileExtension[],                                          // the array of valid file extensions for this type of file
                                                         unsigned    p_extentionCount,                                           // how many valid file extensions we have in the array above
@@ -263,7 +252,6 @@ bool            CKernel::scanRoot                   (   char**      p_fileNameAr
                 return true;                                                                                        // Return true to indicate successful scan (even if no valid files were found)    
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 bool            CKernel::updateUSB                  (   const char* p_deviceName )                                               // get a plug and play event for the USB check if the device is already a connected devices
 {
                 if (m_USBHCI.UpdatePlugAndPlay())                                                                   // Update the tree of connected USB devices
@@ -280,7 +268,6 @@ bool            CKernel::updateUSB                  (   const char* p_deviceName
                 return false;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::removeUSB                  (   CDevice*    f_partitionName,                                            // this is the handler we register for when the USB gets removed
                                                         void*       p_pContext )
 {
@@ -291,13 +278,11 @@ void            CKernel::removeUSB                  (   CDevice*    f_partitionN
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
-
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 #define __DEBUG_LOG__
 #define MY_BUFFER m_bufferLog
 #define MY_INDEX vc04_logIndex  // vc04_logIndex is a public member variable
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 char**          CKernel::allocBufferMEM             (   size_t      count, 
                                                         size_t      bufferSize ) 
 {
@@ -320,7 +305,6 @@ char**          CKernel::allocBufferMEM             (   size_t      count,
                 return buffers;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 char**          CKernel::allocBufferDMA             (   size_t      count, 
                                                         size_t      bufferSize,
                                                         char**      blockBaseOut,
@@ -363,7 +347,6 @@ char**          CKernel::allocBufferDMA             (   size_t      count,
                 return buffers;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::clearBufferMEM             (   char**      buffers, 
                                                         size_t      count) 
 {
@@ -376,7 +359,6 @@ void            CKernel::clearBufferMEM             (   char**      buffers,
                 buffers = nullptr;                
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::clearBufferDMA             (   char**      buffers, 
                                                         char*       rawBlock )
 {

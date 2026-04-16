@@ -21,23 +21,19 @@ bool            CKernel::startupScreen(char* buffer, u32& index)
 
                 unsigned dmaChannel     = m_MachineInfo.AllocateDMAChannel(DMA_CHANNEL_NORMAL);
 
-                                        m_MachineInfo.FreeDMAChannel(dmaChannel);
+                /* just clean it up */    m_MachineInfo.FreeDMAChannel(dmaChannel);
 
                 unsigned usbDelay       = m_Options.GetUSBPowerDelay();
                 unsigned usbSpeed       = m_Options.GetUSBFullSpeed();
 
-                /* text labels */
-
-                storeLog( MY_BUFFER, MY_INDEX, "Machine Model");
+                storeLog( MY_BUFFER, MY_INDEX, "Machine Model");                        // text labels
                 storeLog( MY_BUFFER, MY_INDEX, machineName);
                 nextline(buffer, index);
                 storeLog( MY_BUFFER, MY_INDEX, "SoC Name");
                 storeLog( MY_BUFFER, MY_INDEX, socName);
                 nextline(buffer, index);
 
-                /* numeric values */
-
-                storeLog( MY_BUFFER, MY_INDEX, "Model Major    ", modelMajor);
+                storeLog( MY_BUFFER, MY_INDEX, "Model Major    ", modelMajor);          // numeric values
                 storeLog( MY_BUFFER, MY_INDEX, "Model Revision ", modelRevision);
                 nextline(buffer, index);
                 storeLog( MY_BUFFER, MY_INDEX, "RAM Size     MB", ramSize);
@@ -90,7 +86,7 @@ void            CKernel::readADC()
 #ifdef __AUDIO_DETECTION__
                 const int AUDIO_THRESHOLD = 160;  // Threshold for audio detection
 
-                const int f_maxBuffer = 33;
+                const int f_maxBuffer = 33; // is defined as macro later
 
                 static float f_band0[f_maxBuffer] = {0};
                 static float f_band1[f_maxBuffer] = {0};
@@ -120,7 +116,7 @@ void            CKernel::readADC()
                 int i2 = (f_index_ring_buffer - 2) & 3;
                 int i3 = (f_index_ring_buffer - 3) & 3;
 
-                    g_modeMap[0][0] = 5;
+                    g_modeMap[0][0] = 5; // resets the max mode position to 5 ( current number of modes )
                     g_modeMap[1][0] = 5;
                     g_modeMap[2][0] = 5;
                     g_modeMap[3][0] = 5;
@@ -331,7 +327,6 @@ void            CKernel::readADC()
                 f_index_ring_buffer = (f_index_ring_buffer + 1) & 3;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 // my little helpers 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -369,132 +364,14 @@ void            CKernel::set_pot_routing         (   bool        adc_pot_routing
 {
                 m_ChipSelectPin.Write(adc_pot_routing);
 }
-// can we use this instead of the CGPIOPin class????
-// the point is GPOIPin is used by multible subsystems 
-// like 
-// #include <circle/actled.h> 
-// #include <circle/machineinfo.h>
-// #include <circle/serial.h>
-// #include <circle/gpiomanager.h>
-// and i dont know which more, and also is my code this far optimized to use it
-// having my "own" GPOI code in my kernel class may not be helpful at all... but...
-/*
-#include <circle/bcm2835.h>
-#include <circle/types.h>
-#include <circle/timer.h>
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+// look at readme !! from bcmwatchdog.h 
 
-#define LOW  0
-#define HIGH 1
+// #include <circle/spinlock.h>
 
-#define PULL_OFF  0
-#define PULL_DOWN 1
-#define PULL_UP   2
+//	static const unsigned MaxTimeoutSeconds = 15;
 
-static inline u32 CKernel::mmio_read32(uintptr addr)
-{
-    return *(volatile u32 *)addr;
-}
-
-static inline void CKernel::mmio_write32(uintptr addr, u32 value)
-{
-    *(volatile u32 *)addr = value;
-}
-
-void CKernel::gpio_write(unsigned pin, unsigned state, int pull)
-{
-    unsigned shift = (pin % 10) * 3;
-    uintptr sel = ARM_GPIO_GPFSEL0 + (pin / 10) * 4;
-
-    // set OUTPUT
-    u32 v = mmio_read32(sel);
-    v &= ~(7 << shift);
-    v |=  (1 << shift);
-    mmio_write32(sel, v);
-
-    // optional pull
-    if (pull >= 0)
-    {
-        u32 mask = 1 << (pin % 32);
-
-        mmio_write32(ARM_GPIO_GPPUD, pull);
-        CTimer::SimpleusDelay(5);
-        mmio_write32(ARM_GPIO_GPPUDCLK0 + (pin / 32) * 4, mask);
-        CTimer::SimpleusDelay(5);
-        mmio_write32(ARM_GPIO_GPPUD, 0);
-        mmio_write32(ARM_GPIO_GPPUDCLK0 + (pin / 32) * 4, 0);
-    }
-
-    // write HIGH / LOW (explicit)
-    u32 mask = 1 << (pin % 32);
-
-    if (state == HIGH)
-    {
-        mmio_write32(ARM_GPIO_GPSET0 + (pin / 32) * 4, mask);
-    }
-
-    if (state == LOW)
-    {
-        mmio_write32(ARM_GPIO_GPCLR0 + (pin / 32) * 4, mask);
-    }
-}
-
-
-// from marcos.h
-
-#define PACKED		__attribute__ ((packed))
-#define	MAXALIGN	__attribute__ ((aligned))
-#define	ALIGN(n)	__attribute__ ((aligned (n)))
-#define NORETURN	__attribute__ ((noreturn))
-#ifndef __clang__
-#define NOOPT		__attribute__ ((optimize (0)))
-#define STDOPT		__attribute__ ((optimize (2)))
-#define MAXOPT		__attribute__ ((optimize (3)))
-#else
-#define NOOPT
-#define STDOPT
-#define MAXOPT
-#endif
-#define WEAK		__attribute__ ((weak))
-
-#define likely(exp)	__builtin_expect (!!(exp), 1)
-#define unlikely(exp)	__builtin_expect (!!(exp), 0)
-
-#define BIT(n)		(1U << (n))
-
-#define IS_POWEROF_2(num) ((num) != 0 && (((num) & ((num) - 1)) == 0))
-
-// big endian (to be used for constants only)
-#define BE(value)	((((value) & 0xFF00) >> 8) | (((value) & 0x00FF) << 8))
-
-// from memio.h
-
-#include <circle/types.h>
-
-#ifdef __cplusplus      // why? 
-extern "C" {
-#endif
-
-/// \brief Read 32-bit value from MMIO address
-static inline u32 CKernel::read32 (uintptr nAddress)
-{
-	return *(u32 volatile *) nAddress;
-}
-/// \brief Write 32-bit value to MMIO address
-static inline void CKernel::write32 (uintptr nAddress, u32 nValue)
-{
-	*(u32 volatile *) nAddress = nValue;
-}
-#ifdef __cplusplus
-}
-#endif
-*/
-// from bcmwatchdog.h 
-#include <circle/spinlock.h>
-
-
-	static const unsigned MaxTimeoutSeconds = 15;
-
-    CSpinLock m_SpinLock; // really ?!?!
+//  CSpinLock m_SpinLock; // really ?!?!
 
 
 void            CKernel::watchDogStart (unsigned nTimeoutSeconds)
@@ -646,7 +523,6 @@ void            CKernel::randomVec8           (uint32_t p_seed)                 
                 g_inOutMatrixInt[7][RND] = ( g_inOutMatrixFlt[7][RND] * f_max_int);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 // question here - should i rather have one function for both channels or should i separate the functions and call per channel?
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::calculate1BPM   (   int p_source, unsigned long   p_triggerTimeClock)       // love to split it but i will need additional parameters right?
@@ -721,6 +597,5 @@ void            CKernel::sample1WaveTable                  ( int p_source, int p
                 g_inOutMatrixInt[0][p_lfoOut]       =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]][g_sampleIndex[p_source]];
 }   
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
