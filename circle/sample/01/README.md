@@ -236,10 +236,10 @@ static inline void CKernel::mmio_write32(uintptr addr, u32 value)
     *(volatile u32 *)addr = value;
 }
 
-void CKernel::gpio_write(unsigned pin, unsigned state, int pull)
+void CKernel::gpio_write(unsigned p_pin, unsigned state, int pull)
 {
-    unsigned shift = (pin % 10) * 3;
-    uintptr sel = ARM_GPIO_GPFSEL0 + (pin / 10) * 4;
+    unsigned shift = (p_pin % 10) * 3;
+    uintptr sel = ARM_GPIO_GPFSEL0 + (p_pin / 10) * 4;
 
     // set OUTPUT
     u32 v = mmio_read32(sel);
@@ -250,27 +250,27 @@ void CKernel::gpio_write(unsigned pin, unsigned state, int pull)
     // optional pull
     if (pull >= 0)
     {
-        u32 mask = 1 << (pin % 32);
+        u32 mask = 1 << (p_pin % 32);
 
         mmio_write32(ARM_GPIO_GPPUD, pull);
         CTimer::SimpleusDelay(5);
-        mmio_write32(ARM_GPIO_GPPUDCLK0 + (pin / 32) * 4, mask);
+        mmio_write32(ARM_GPIO_GPPUDCLK0 + (p_pin / 32) * 4, mask);
         CTimer::SimpleusDelay(5);
         mmio_write32(ARM_GPIO_GPPUD, 0);
-        mmio_write32(ARM_GPIO_GPPUDCLK0 + (pin / 32) * 4, 0);
+        mmio_write32(ARM_GPIO_GPPUDCLK0 + (p_pin / 32) * 4, 0);
     }
 
     // write HIGH / LOW (explicit)
-    u32 mask = 1 << (pin % 32);
+    u32 mask = 1 << (p_pin % 32);
 
     if (state == HIGH)
     {
-        mmio_write32(ARM_GPIO_GPSET0 + (pin / 32) * 4, mask);
+        mmio_write32(ARM_GPIO_GPSET0 + (p_pin / 32) * 4, mask);
     }
 
     if (state == LOW)
     {
-        mmio_write32(ARM_GPIO_GPCLR0 + (pin / 32) * 4, mask);
+        mmio_write32(ARM_GPIO_GPCLR0 + (p_pin / 32) * 4, mask);
     }
 }
 
@@ -324,7 +324,31 @@ static inline void CKernel::write32 (uintptr nAddress, u32 nValue)
 }
 #endif
 
+// from datamanagement.cpp
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+bool            CKernel::saveFromBufferO          (     const   char*       p_fileName,
+                                                        const   char*       p_bufferArray,
+                                                                unsigned    p_bufferSize )
+{
+                if (m_pFileSystem == 0 || p_fileName == 0 || p_bufferArray == 0 || p_bufferSize  == 0)
+                    {
+                    return false;
+                    }
+                g_hFile = m_pFileSystem->FileCreate(p_fileName);
+                if (g_hFile == 0)
+                    {
+                    return false;
+                    }
+                if (m_pFileSystem->FileWrite(g_hFile, p_bufferArray, p_bufferSize) != p_bufferSize)
+                    {
+                    return false;
+                    }
+                closeFile();
+                return true;
+}
+
+// the old save function without mount!
 
 // from bcmwatchdog.h 
 #include <circle/spinlock.h>
@@ -374,14 +398,14 @@ void            CKernel::watchDogStart (unsigned nTimeoutSeconds)
 
 void storeLogLong(              char*       buffer,
                                 u32&        index,
-                                const char* l1,
-                                u32         v1 = EMPTYLOG,
-                                const char* l2 = EMPTYSTR,
-                                u32         v2 = EMPTYLOG,
-                                const char* l3 = EMPTYSTR,
-                                u32         v3 = EMPTYLOG,
-                                const char* l4 = EMPTYSTR,
-                                u32         v4 = EMPTYLOG);
+                                const char* p_string0,
+                                u32         p_value0 = EMPTYLOG,
+                                const char* p_string1 = EMPTYSTR,
+                                u32         p_value1 = EMPTYLOG,
+                                const char* p_string2 = EMPTYSTR,
+                                u32         p_value2 = EMPTYLOG,
+                                const char* p_string3 = EMPTYSTR,
+                                u32         p_value3 = EMPTYLOG);
 */
 
 
@@ -430,4 +454,250 @@ storeLog(buf, idx,
 
 // output example:
 // file my_texture.bmp not found in 0x00000003
+
+# thoughts.txt — comment review for `circle/sample/01/*.*` (top-level only)
+
+Scope used for this pass:
+- Included only files directly inside `circle/sample/01`.
+- Excluded `circle/sample/01/temp/*` and deeper nested paths.
+- Summarized comment intent/themes instead of dumping every comment line.
+
+## circle/sample/01/datamanagement.cpp
+- **Mount/open/close flow uncertainty:** comments question duplicate `Mount` implementations and suggest combining mount/unmount into save paths.
+- **Global handle dependency:** explicit warning that `g_hFile` must remain global.
+- **`loadToBuffer` behavior is intentionally strict:** comments clarify EOF/read-error handling and watchdog refresh behavior.
+- **Bulk-load API semantics are documented in comments:** parameter roles and counter expectations are explained inline.
+- **USB attach/remove safety concerns:** comments mention volatile/global state and potential unmount-on-remove hardening.
+- **Allocator area has many self-review notes:** alignment/logging/slice-table behavior is repeatedly questioned and marked for cleanup.
+
+## circle/sample/01/graphics.cpp
+- **Initialization path is heavily annotated:** EGL/GL init sequence is described step-by-step (display/config/context/surface/bind/clear/viewport/buffers).
+- **Indexing/packing assumptions are flagged:** comments question dense packing assumptions and old `internal_index` logic.
+- **Render/update responsibility is blurred:** one comment says update is “not really render,” hinting at a split refactor.
+- **Uniform/feature placeholders exist:** notes label color uniform and texture slot behavior as stubs/relics.
+- **Runtime timing behavior needs rationale:** `glFinish`/fps-break comment asks for explicit explanation.
+- **Large config/reference block was embedded here:** file contains macro/struct planning notes that probably belong in headers/docs.
+
+## circle/sample/01/logging.cpp
+- **Primary intent is deterministic formatting:** comments consistently describe ordered label/value emission.
+- **Placeholder protocol is central:** `EMPTYSTR`/`EMPTYLOG` usage is documented with many example output forms.
+- **Function responsibilities are clear but verbose:** comments often restate exactly what each branch does (label 2/3/4, newline handling, etc.).
+- **Style debt is acknowledged:** inline note questions static usage and dependency boundaries.
+
+## circle/sample/01/menu.cpp
+- **Author is reasoning about control architecture:** comments outline desired pipeline from raw input → mode processing → target mapping.
+- **Channel/menu layering is still in flux:** multiple notes question whether existing buffer/flag layout is the right abstraction.
+- **Assignment groups are explicit:** slot-by-slot comments show channel grouping intent.
+- **LFO/random/audio gating behavior is partially exploratory:** comments suggest current mapping is functional but not fully settled.
+
+## circle/sample/01/parser.cpp
+- **Pass-based parser design is explicit:** comments outline PASS1..PASS5 (NAL detect, frame extraction, extradata, metadata, validation).
+- **Type/structure migration concerns remain:** comments call out old-vs-new index/type mismatches (`int` vs `size_t`).
+- **Some markers are placeholders (“added”, “still correct?”):** indicates partial verification and likely recent iterative edits.
+- **Parser metadata/state model is now centralized:** comments indicate migration from kernel-local state toward parser-owned state.
+
+## circle/sample/01/util.cpp
+- **ADC/audio path has practical calibration notes:** comments document voltage scaling, thresholds, and paired-channel sampling logic.
+- **BPM/LFO timing code has repeated refactor prompts:** many comments ask whether duplicated channel functions should be unified.
+- **State naming/ownership confusion appears in places:** comments point to legacy names and uncertainty about canonical sources.
+- **Hardware/helper wrappers are partly exploratory:** MMIO/watchdog/GPIO comments show “is this correct?” style uncertainty.
+- **Menu/event handling comments reveal intended UX behavior:** long-press/periodic triggers and per-layer mapping strategy are described.
+
+## circle/sample/01/vc04_defs.h
+- **Acts as merged protocol/reference file:** comments describe imported VCSM/MMAL definitions and wire-layout intent.
+- **Contains extensive explanatory annotations:** many comments explain field semantics, lifecycle, and buffer/message flags.
+- **Also includes program-flow notes:** setup sequence and local “own structs” notes suggest this is both spec + working notebook.
+- **Maintenance risk:** density and mixed concerns imply this should be split into protocol defs vs project-specific notes.
+
+## circle/sample/01/vc04_logger.cpp
+- **Structured TX/RX introspection intent is clear:** comments label header/body/port/format/ES/extradata sections.
+- **Wire verification support exists:** raw dumps for driver/wire structs are intentionally logged.
+- **Mostly diagnostic mapping comments:** many lines are documentation of MMAL structure fields rather than control logic.
+
+## circle/sample/01/vc04_service.cpp
+- **MMAL/VCSM integration is still being stabilized:** comments ask correctness questions about callbacks, filtering, and message handling.
+- **Transport/protocol separation is recognized:** comments distinguish semantic message type vs status axis.
+- **Buffer lifecycle is documented:** ping-pong output buffer flow and EGLImage recreation behavior are noted.
+- **Several comments mark uncertainty (“why?”, “sure?”):** indicates hotspots for verification and tightening.
+
+## circle/sample/01/vc04_service.h
+- **Declared as a staging/note header:** comments explicitly say this is a gather file for eventual kernel integration.
+- **Initialization contract is strongly documented:** parameter comments and long step-by-step MMAL flow capture intended sequence.
+- **Public member exposure is deliberate but debated:** comments indicate some fields are public “must be exposed,” likely temporary.
+
+## circle/sample/01/wrappers.cpp
+- **Wrapper orchestration is well-commented:** scan/load/parse/init order is described throughout.
+- **State counters and signature consistency are recurring concerns:** multiple notes question call signatures and counter correctness.
+- **Runtime loop intent is explicit:** comments describe input read, menu/button handling, mode mapping, and LED updates.
+- **Cache flush and DMA boundaries are questioned:** comments flag uncertainty around exact flush scope and frame buffer handling.
+
+## cross-file “diff thoughts” (what stands out)
+1. **Code comments are carrying architecture decisions**, not just local explanations.
+2. **Many comments are active questions**, which is useful but indicates unresolved design points.
+3. **MMAL/VCSM files combine spec + implementation notebook style**, increasing cognitive load.
+4. **Mode/menu/LFO pipeline is conceptually defined but scattered** across menu/util/wrappers.
+5. **Best next cleanup pass:** convert question-style comments into tracked TODOs and move protocol/reference notes to dedicated docs/headers.
+
+# thoughts.txt
+
+Scope used: `circle/sample/01/*.*` only (direct files only, no nested folders).
+
+Goal: capture **developer intent and unresolved thoughts** from comments, sorted by file, without dumping every comment line.
+
+## circle/sample/01/datamanagement.cpp
+- The author questions duplicate `Mount()` versions and whether both are needed.
+- Repeated emphasis that file handle state is global (`g_hFile`) and lifecycle-sensitive.
+- `loadToBuffer()` comments highlight edge-case handling (read error, EOF, buffer-full-not-success).
+- There are explicit notes to refactor logging call signatures and possibly fold mount/unmount into save flows.
+- **Context takeaway:** this file mixes stable I/O code with pending cleanup decisions around API shape and state ownership.
+
+## circle/sample/01/graphics.cpp
+- Multiple commented-out debug snippets suggest prior indexing/name-resolution confusion (`program_index`, shader short-name extraction).
+- Init/render comments indicate “works now, don’t destabilize” caution around EGL/GL setup.
+- Many comments are diagnostic/assertion breadcrumbs rather than feature TODOs.
+- **Context takeaway:** focus here is operational stability and diagnostics; technical debt is mostly dead debug branches and naming clarity.
+
+## circle/sample/01/logging.cpp
+- Comments define formatting guarantees for log output (label-first, optional value fields, newline discipline).
+- There is a proposal for richer/long-form log helper signatures (`storeLogLong`-style usage).
+- Included example blocks are effectively a mini spec for expected text output patterns.
+- **Context takeaway:** logging is intentionally deterministic; future work is API simplification and reducing repetitive call patterns.
+
+## circle/sample/01/menu.cpp
+- Strong architectural notes: input processing, mode processing, and target mapping are conceptually tangled.
+- Author considers routing/mapping abstraction improvements (passing target arrays into assignment functions).
+- Comments question correctness of channel-mode gating and state flag strategy.
+- **Context takeaway:** this is a design hotspot; comments are mainly system-level UX/architecture thoughts, not syntax-level fixes.
+
+## circle/sample/01/parser.cpp
+- Comments mark key parser passes (SPS/PPS/IDR discovery, frame table, extradata, validation) and type correctness concerns.
+- Several notes flag “required” fields and potential mismatch risks (`size_t` vs older integer assumptions).
+- **Context takeaway:** parser logic is staged and deliberate; risk area is silent type/offset mistakes during maintenance.
+
+## circle/sample/01/util.cpp
+- ADC/audio comments document scaling assumptions, threshold behavior, and channel pairing semantics.
+- Firmware update comments encode operational assumptions (fallback ordering, mounted FS expectations).
+- GPIO helper comments indicate uncertainty about abstraction boundaries (direct GPIO vs wrapper classes).
+- **Context takeaway:** util.cpp is a mixed bag of hardware policy + helper code; comments preserve important runtime assumptions.
+
+## circle/sample/01/vc04_defs.h
+- Most comments are definition-level documentation copied/adapted from VC/SM messaging semantics.
+- Notes include versioning expectations and protocol behavior implications.
+- **Context takeaway:** treat as protocol contract surface; comments are reference docs more than actionable TODOs.
+
+## circle/sample/01/vc04_logger.cpp
+- Comments map log lines to TX/RX/header/body sections for MMAL/VCSM message tracing.
+- Emphasis is on deterministic observability of transport payloads/metadata fields.
+- **Context takeaway:** purpose is forensic visibility during IPC bring-up and debugging.
+
+## circle/sample/01/vc04_service.cpp
+- Callback comments expose uncertainty about event routing/isolation between MMAL and VCSM paths.
+- Notes around transaction IDs and handshake/state calls indicate active bring-up/refinement.
+- **Context takeaway:** asynchronous control flow and event ownership are the main mental load here.
+
+## circle/sample/01/vc04_service.h
+- Header comments describe this as a staging/notes area before consolidating into `CKernel` interfaces.
+- Parameter comments capture expected buffer ownership and semantics for MMAL init routines.
+- **Context takeaway:** interface is still in transition; comments are design scaffolding.
+
+## circle/sample/01/wrappers.cpp
+- Comments document scan/load orchestration and file-counter semantics across asset types.
+- There are disabled blocks for texture/video paths, suggesting phased rollout or temporary narrowing.
+- **Context takeaway:** wrapper layer is orchestration-heavy; comments mainly track pipeline intent and limits.
+
+---
+
+## High-level “diff thoughts”
+1. The directory comments are less about missing code and more about **unsettled architecture choices** (state ownership, mapping flow, callback boundaries).
+2. Recurrent concern areas:
+   - global/shared state safety (`g_hFile`, mode/state buffers),
+   - API ergonomics (logging and wrapper signatures),
+   - async/event clarity (MMAL/VCSM callbacks).
+3. Practical cleanup order inferred from comments:
+   - lock down lifecycle/state contracts,
+   - then simplify APIs,
+   - then remove dead debug/commented-out branches.
+
+   # thoughts.txt — comment review for `circle/sample/01/*.*` (top-level only)
+
+Scope used for this pass:
+- Included only files directly inside `circle/sample/01`.
+- Excluded `circle/sample/01/temp/*` and deeper nested paths.
+- Summarized comment intent/themes instead of dumping every comment line.
+
+## circle/sample/01/datamanagement.cpp
+- **Mount/open/close flow uncertainty:** comments question duplicate `Mount` implementations and suggest combining mount/unmount into save paths.
+- **Global handle dependency:** explicit warning that `g_hFile` must remain global.
+- **`loadToBuffer` behavior is intentionally strict:** comments clarify EOF/read-error handling and watchdog refresh behavior.
+- **Bulk-load API semantics are documented in comments:** parameter roles and counter expectations are explained inline.
+- **USB attach/remove safety concerns:** comments mention volatile/global state and potential unmount-on-remove hardening.
+- **Allocator area has many self-review notes:** alignment/logging/slice-table behavior is repeatedly questioned and marked for cleanup.
+
+## circle/sample/01/graphics.cpp
+- **Initialization path is heavily annotated:** EGL/GL init sequence is described step-by-step (display/config/context/surface/bind/clear/viewport/buffers).
+- **Indexing/packing assumptions are flagged:** comments question dense packing assumptions and old `internal_index` logic.
+- **Render/update responsibility is blurred:** one comment says update is “not really render,” hinting at a split refactor.
+- **Uniform/feature placeholders exist:** notes label color uniform and texture slot behavior as stubs/relics.
+- **Runtime timing behavior needs rationale:** `glFinish`/fps-break comment asks for explicit explanation.
+- **Large config/reference block was embedded here:** file contains macro/struct planning notes that probably belong in headers/docs.
+
+## circle/sample/01/logging.cpp
+- **Primary intent is deterministic formatting:** comments consistently describe ordered label/value emission.
+- **Placeholder protocol is central:** `EMPTYSTR`/`EMPTYLOG` usage is documented with many example output forms.
+- **Function responsibilities are clear but verbose:** comments often restate exactly what each branch does (label 2/3/4, newline handling, etc.).
+- **Style debt is acknowledged:** inline note questions static usage and dependency boundaries.
+
+## circle/sample/01/menu.cpp
+- **Author is reasoning about control architecture:** comments outline desired pipeline from raw input → mode processing → target mapping.
+- **Channel/menu layering is still in flux:** multiple notes question whether existing buffer/flag layout is the right abstraction.
+- **Assignment groups are explicit:** slot-by-slot comments show channel grouping intent.
+- **LFO/random/audio gating behavior is partially exploratory:** comments suggest current mapping is functional but not fully settled.
+
+## circle/sample/01/parser.cpp
+- **Pass-based parser design is explicit:** comments outline PASS1..PASS5 (NAL detect, frame extraction, extradata, metadata, validation).
+- **Type/structure migration concerns remain:** comments call out old-vs-new index/type mismatches (`int` vs `size_t`).
+- **Some markers are placeholders (“added”, “still correct?”):** indicates partial verification and likely recent iterative edits.
+- **Parser metadata/state model is now centralized:** comments indicate migration from kernel-local state toward parser-owned state.
+
+## circle/sample/01/util.cpp
+- **ADC/audio path has practical calibration notes:** comments document voltage scaling, thresholds, and paired-channel sampling logic.
+- **BPM/LFO timing code has repeated refactor prompts:** many comments ask whether duplicated channel functions should be unified.
+- **State naming/ownership confusion appears in places:** comments point to legacy names and uncertainty about canonical sources.
+- **Hardware/helper wrappers are partly exploratory:** MMIO/watchdog/GPIO comments show “is this correct?” style uncertainty.
+- **Menu/event handling comments reveal intended UX behavior:** long-press/periodic triggers and per-layer mapping strategy are described.
+
+## circle/sample/01/vc04_defs.h
+- **Acts as merged protocol/reference file:** comments describe imported VCSM/MMAL definitions and wire-layout intent.
+- **Contains extensive explanatory annotations:** many comments explain field semantics, lifecycle, and buffer/message flags.
+- **Also includes program-flow notes:** setup sequence and local “own structs” notes suggest this is both spec + working notebook.
+- **Maintenance risk:** density and mixed concerns imply this should be split into protocol defs vs project-specific notes.
+
+## circle/sample/01/vc04_logger.cpp
+- **Structured TX/RX introspection intent is clear:** comments label header/body/port/format/ES/extradata sections.
+- **Wire verification support exists:** raw dumps for driver/wire structs are intentionally logged.
+- **Mostly diagnostic mapping comments:** many lines are documentation of MMAL structure fields rather than control logic.
+
+## circle/sample/01/vc04_service.cpp
+- **MMAL/VCSM integration is still being stabilized:** comments ask correctness questions about callbacks, filtering, and message handling.
+- **Transport/protocol separation is recognized:** comments distinguish semantic message type vs status axis.
+- **Buffer lifecycle is documented:** ping-pong output buffer flow and EGLImage recreation behavior are noted.
+- **Several comments mark uncertainty (“why?”, “sure?”):** indicates hotspots for verification and tightening.
+
+## circle/sample/01/vc04_service.h
+- **Declared as a staging/note header:** comments explicitly say this is a gather file for eventual kernel integration.
+- **Initialization contract is strongly documented:** parameter comments and long step-by-step MMAL flow capture intended sequence.
+- **Public member exposure is deliberate but debated:** comments indicate some fields are public “must be exposed,” likely temporary.
+
+## circle/sample/01/wrappers.cpp
+- **Wrapper orchestration is well-commented:** scan/load/parse/init order is described throughout.
+- **State counters and signature consistency are recurring concerns:** multiple notes question call signatures and counter correctness.
+- **Runtime loop intent is explicit:** comments describe input read, menu/button handling, mode mapping, and LED updates.
+- **Cache flush and DMA boundaries are questioned:** comments flag uncertainty around exact flush scope and frame buffer handling.
+
+## cross-file “diff thoughts” (what stands out)
+1. **Code comments are carrying architecture decisions**, not just local explanations.
+2. **Many comments are active questions**, which is useful but indicates unresolved design points.
+3. **MMAL/VCSM files combine spec + implementation notebook style**, increasing cognitive load.
+4. **Mode/menu/LFO pipeline is conceptually defined but scattered** across menu/util/wrappers.
+5. **Best next cleanup pass:** convert question-style comments into tracked TODOs and move protocol/reference notes to dedicated docs/headers.
 

@@ -65,116 +65,116 @@ void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::setChannelMode(int channel) // this is also a wrapper right ??
+void            CKernel::setChannelMode(int p_channel) // this is also a wrapper right ??
 {
-                switch (g_modeMap[channel][g_centralModeBuffer[g_currentProgramBuffer][channel] + 1]) // <- is this correct! g_modeMap gives me the max of modes ( needed for mapping ), also shall it determine if i can use a channelVAL this function...
+                switch (g_modeMap[p_channel][g_centralModeBuffer[g_currentProgramBuffer][p_channel] + 1]) // <- is this correct! g_modeMap gives me the max of modes ( needed for mapping ), also shall it determine if i can use a channelVAL this function...
                     {
                     case 0:
-                        modeADC (channel);
+                        modeADC (p_channel);
                     break;
 
                     case 1:
-                        modeTRG (channel);
+                        modeTRG (p_channel);
                     break;
 
                     case 2:
-                        modeBPM (channel);
+                        modeBPM (p_channel);
                     break;
 
                     case 3:
-                        modeLF1 (channel);
+                        modeLF1 (p_channel);
                     break;
                     case 4:
-                        modeLF2 (channel);
+                        modeLF2 (p_channel);
                     break;
                     case 5:
-                    //  modeTex (channel);
+                    //  modeTex (p_channel);
                     break;
                     case 6:
-                    //  modeVid (channel);
+                    //  modeVid (p_channel);
                     break;
                     case 7:
-                    //  modeFrm (channel);
+                    //  modeFrm (p_channel);
                     break;                    
                     case 8:
-                        modeAudioAb0 (channel);     // this modes will be "available" if audio is detected.
+                        modeAudioAb0 (p_channel);     // this modes will be "available" if audio is detected.
                     break;
 
                     case 9:
-                        modeAudioAb1 (channel);
+                        modeAudioAb1 (p_channel);
                     break;
 
                     case 10:
-                        modeAudioBb0 (channel);
+                        modeAudioBb0 (p_channel);
                     break;
 
                     case 11:
-                        modeAudioBb1 (channel);
+                        modeAudioBb1 (p_channel);
                     break;                    
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::modeADC (int channel) 
+void            CKernel::modeADC (int p_channel) 
 {
-                g_inOutMatrixFlt[channel][OUT] = g_inOutMatrixFlt[channel][VAL] // adc_float_value[channel];
-                g_inOutMatrixInt[channel][OUT] = g_inOutMatrixInt[channel][VAL] // adc_int_value[channel];            
+                g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[p_channel][VAL] // adc_float_value[p_channel];
+                g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[p_channel][VAL] // adc_int_value[p_channel];            
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::modeTRG (int channel)
+void            CKernel::modeTRG (int p_channel)
 {
-                if (  g_inOutMatrixInt[channel][VAL] >= g_inOutMatrixInt[channel][TRH] &&
-                    ! g_inOutMatrixInt[channel][TRF]) // treshold flag - but i need 4 each menu layer or is this different than g_menuPickUpFlag???
+                if (  g_inOutMatrixInt[p_channel][VAL] >= g_inOutMatrixInt[p_channel][TRH] &&
+                    ! g_inOutMatrixInt[p_channel][TRF]) // treshold flag - but i need 4 each menu layer or is this different than g_menuPickUpFlag???
                     {
-                    g_inOutMatrixFlt[channel][OUT]    = g_inOutMatrixFlt[channel][RND] // /* g_randomFloatValue */[channel];
-                    g_inOutMatrixInt[channel][OUT]    = g_inOutMatrixInt[channel][RND] // g_randomIntegerValue[channel];
+                    g_inOutMatrixFlt[p_channel][OUT]    = g_inOutMatrixFlt[p_channel][RND] // /* g_randomFloatValue */[p_channel];
+                    g_inOutMatrixInt[p_channel][OUT]    = g_inOutMatrixInt[p_channel][RND] // g_randomIntegerValue[p_channel];
 
-                    g_inOutMatrixInt[channel][TRF]    = true;
+                    g_inOutMatrixInt[p_channel][TRF]    = true;
                     }
-                else if ( g_inOutMatrixInt[channel][VAL] <= g_inOutMatrixInt[channel][TRL])
+                else if ( g_inOutMatrixInt[p_channel][VAL] <= g_inOutMatrixInt[p_channel][TRL])
                     {
-                    g_inOutMatrixInt[channel][TRF] = false;
+                    g_inOutMatrixInt[p_channel][TRF] = false;
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::modeBPM (int channel) 
+void            CKernel::modeBPM (int p_channel) 
 { 
                 if (currentTime >= g_nextBeatTime[g_activeBpmChannel])
                     {
-                    g_inOutMatrixFlt[channel][OUT] = g_inOutMatrixFlt[channel][RND] // /* g_randomFloatValue */[channel];
-                    g_inOutMatrixInt[channel][OUT] = g_inOutMatrixInt[channel][RND] // g_randomIntegerValue[channel];
+                    g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[p_channel][RND] // /* g_randomFloatValue */[p_channel];
+                    g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[p_channel][RND] // g_randomIntegerValue[p_channel];
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::modeLF1 (int channel)
+void            CKernel::modeLF1 (int p_channel)
 {
-                g_inOutMatrixFlt[channel][OUT] = g_inOutMatrixFlt[0][LF1] // g_lfoFltOut[0] <- lfo comes always from [0] since it is global
-                g_inOutMatrixInt[channel][OUT] = g_inOutMatrixInt[0][LF1] // g_lfoIntOut[0];
+                g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][LF1] // g_lfoFltOut[0] <- lfo comes always from [0] since it is global
+                g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][LF1] // g_lfoIntOut[0];
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::modeLF2 (int channel)
+void            CKernel::modeLF2 (int p_channel)
 {
-                g_inOutMatrixFlt[channel][OUT] = g_inOutMatrixFlt[1][LF2] // g_lfoFltOut[1];
-                g_inOutMatrixInt[channel][OUT] = g_inOutMatrixInt[1][LF2] // g_lfoIntOut[1];    
+                g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[1][LF2] // g_lfoFltOut[1];
+                g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[1][LF2] // g_lfoIntOut[1];    
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::modeAudioAb0 (int channel)     // 
+void            CKernel::modeAudioAb0 (int p_channel)     // 
 {
-                g_inOutMatrixFlt[channel][OUT] = g_inOutMatrixFlt[0][AU0] // g_lfoFltOut[1];  
+                g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU0] // g_lfoFltOut[1];  
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::modeAudioAb1 (int channel)
+void            CKernel::modeAudioAb1 (int p_channel)
 {
-                g_inOutMatrixFlt[channel][OUT] = g_inOutMatrixFlt[0][AU1] // g_lfoFltOut[1];
+                g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU1] // g_lfoFltOut[1];
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::modeAudioBb0 (int channel)
+void            CKernel::modeAudioBb0 (int p_channel)
 {
-                g_inOutMatrixFlt[channel][OUT] = g_inOutMatrixFlt[0][AU2] // g_lfoFltOut[1];
+                g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU2] // g_lfoFltOut[1];
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::modeAudioBb1 (int channel)
+void            CKernel::modeAudioBb1 (int p_channel)
 {
-                g_inOutMatrixFlt[channel][OUT] = g_inOutMatrixFlt[0][AU3] // g_lfoFltOut[1];
+                g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU3] // g_lfoFltOut[1];
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 

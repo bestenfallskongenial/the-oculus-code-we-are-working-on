@@ -177,7 +177,7 @@ union vc_sm_msg_union_t 					// Union of ALL messages //
 	struct vc_sm_vc_mem_request_result vc_request_result;
 	};
 
-// we predefine message "superstructs" that we can pass and prime the whole package to the function and also have it stored to debunk it later
+// we predefine message "super-structs" that we can pass and prime the whole package to the function and also have it stored to debunk it later
 
 struct VCSM_Import_MEM_Msg
 {
@@ -441,23 +441,23 @@ enum mmal_port_type 	// MMAL_PORT_TYPE_T //
 
 struct mmal_port 
 {
-	u32 priv;	// Private member used by the framework //
-	u32 name;	// Port name. Used for debugging purposes (RO) //
-	u32 type;	// Type of the port (RO) enum mmal_port_type //
-	u16 index;	// Index of the port in its type list (RO) //
-	u16 index_all;	// Index of the port in the list of all ports (RO) //
-	u32 is_enabled;	// Indicates whether the port is enabled or not (RO) //
-	u32 format;	// Format of the elementary stream //
-	u32 buffer_num_min;	// Minimum number of buffers the port requires (RO).  This is set by the component.
-	u32 buffer_size_min;	// Minimum size of buffers the port requires (RO).  This is set by the component.
-	u32 buffer_alignment_min;// Minimum alignment requirement for the buffers (RO).  A value of zero means no special alignment requirements.  This is set by the component.
-	u32 buffer_num_recommended;	// Number of buffers the port recommends for optimal performance (RO).  A value of zero means no special recommendation.  This is set by the component.
-	u32 buffer_size_recommended;	// Size of buffers the port recommends for optimal performance (RO).  A value of zero means no special recommendation.  This is set by the component.
-	u32 buffer_num;	// Actual number of buffers the port will use. This is set by the client.
-	u32 buffer_size; // Actual maximum size of the buffers that will be sent to the port. This is set by the client.
-	u32 component;	// Component this port belongs to (Read Only) //
-	u32 userdata;	// Field reserved for use by the client //
-	u32 capabilities;	// Flags describing the capabilities of a port (RO).  Bitwise combination of \ref portcapabilities "Port capabilities" values.
+	u32 priv;									// Private member used by the framework //
+	u32 name;									// Port name. Used for debugging purposes (RO) //
+	u32 type;									// Type of the port (RO) enum mmal_port_type //
+	u16 index;									// Index of the port in its type list (RO) //
+	u16 index_all;								// Index of the port in the list of all ports (RO) //
+	u32 is_enabled;								// Indicates whether the port is enabled or not (RO) //
+	u32 format;									// Format of the elementary stream //
+	u32 buffer_num_min;							// Minimum number of buffers the port requires (RO).  This is set by the component.
+	u32 buffer_size_min;						// Minimum size of buffers the port requires (RO).  This is set by the component.
+	u32 buffer_alignment_min;					// Minimum alignment requirement for the buffers (RO).  A value of zero means no special alignment requirements.  This is set by the component.
+	u32 buffer_num_recommended;					// Number of buffers the port recommends for optimal performance (RO).  A value of zero means no special recommendation.  This is set by the component.
+	u32 buffer_size_recommended;				// Size of buffers the port recommends for optimal performance (RO).  A value of zero means no special recommendation.  This is set by the component.
+	u32 buffer_num;								// Actual number of buffers the port will use. This is set by the client.
+	u32 buffer_size; 							// Actual maximum size of the buffers that will be sent to the port. This is set by the client.
+	u32 component;								// Component this port belongs to (Read Only) //
+	u32 userdata;								// Field reserved for use by the client //
+	u32 capabilities;							// Flags describing the capabilities of a port (RO).  Bitwise combination of \ref portcapabilities "Port capabilities" values.
 };
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-MSG.H
@@ -468,27 +468,27 @@ enum mmal_msg_type
 	MMAL_MSG_TYPE_SERVICE_CLOSED,
 	MMAL_MSG_TYPE_GET_VERSION,
 	MMAL_MSG_TYPE_COMPONENT_CREATE,
-	MMAL_MSG_TYPE_COMPONENT_DESTROY,	// 5 //
+	MMAL_MSG_TYPE_COMPONENT_DESTROY,			// 5 //
 	MMAL_MSG_TYPE_COMPONENT_ENABLE,
 	MMAL_MSG_TYPE_COMPONENT_DISABLE,
 	MMAL_MSG_TYPE_PORT_INFO_GET,
 	MMAL_MSG_TYPE_PORT_INFO_SET,
-	MMAL_MSG_TYPE_PORT_ACTION,		// 10 //
+	MMAL_MSG_TYPE_PORT_ACTION,					// 10 //
 	MMAL_MSG_TYPE_BUFFER_FROM_HOST,
 	MMAL_MSG_TYPE_BUFFER_TO_HOST,
 	MMAL_MSG_TYPE_GET_STATS,
 	MMAL_MSG_TYPE_PORT_PARAMETER_SET,
-	MMAL_MSG_TYPE_PORT_PARAMETER_GET,	// 15 //
+	MMAL_MSG_TYPE_PORT_PARAMETER_GET,			// 15 //
 	MMAL_MSG_TYPE_EVENT_TO_HOST,
 	MMAL_MSG_TYPE_GET_CORE_STATS_FOR_PORT,
 	MMAL_MSG_TYPE_OPAQUE_ALLOCATOR,
 	MMAL_MSG_TYPE_CONSUME_MEM,
-	MMAL_MSG_TYPE_LMK,			// 20 //
+	MMAL_MSG_TYPE_LMK,							// 20 //
 	MMAL_MSG_TYPE_OPAQUE_ALLOCATOR_DESC,
 	MMAL_MSG_TYPE_DRM_GET_LHS32,
 	MMAL_MSG_TYPE_DRM_GET_TIME,
 	MMAL_MSG_TYPE_BUFFER_FROM_HOST_ZEROLEN,
-	MMAL_MSG_TYPE_PORT_FLUSH,		// 25 //
+	MMAL_MSG_TYPE_PORT_FLUSH,					// 25 //
 	MMAL_MSG_TYPE_HOST_LOG,
 	MMAL_MSG_TYPE_MSG_LAST
 };
@@ -496,27 +496,27 @@ enum mmal_msg_type
 
 enum mmal_msg_port_action_type 	// port action request messages differ depending on the action type //
 {
-	MMAL_MSG_PORT_ACTION_TYPE_UNKNOWN = 0,	// Unknown action //
-	MMAL_MSG_PORT_ACTION_TYPE_ENABLE,	// Enable a port //
-	MMAL_MSG_PORT_ACTION_TYPE_DISABLE,	// Disable a port //
-	MMAL_MSG_PORT_ACTION_TYPE_FLUSH,	// Flush a port //
-	MMAL_MSG_PORT_ACTION_TYPE_CONNECT,	// Connect ports //
-	MMAL_MSG_PORT_ACTION_TYPE_DISCONNECT,	// Disconnect ports //
+	MMAL_MSG_PORT_ACTION_TYPE_UNKNOWN = 0,		// Unknown action //
+	MMAL_MSG_PORT_ACTION_TYPE_ENABLE,			// Enable a port //
+	MMAL_MSG_PORT_ACTION_TYPE_DISABLE,			// Disable a port //
+	MMAL_MSG_PORT_ACTION_TYPE_FLUSH,			// Flush a port //
+	MMAL_MSG_PORT_ACTION_TYPE_CONNECT,			// Connect ports //
+	MMAL_MSG_PORT_ACTION_TYPE_DISCONNECT,		// Disconnect ports //
 	MMAL_MSG_PORT_ACTION_TYPE_SET_REQUIREMENTS, // Set buffer requirements//
 };
 
 struct mmal_msg_header 
 {
 	u32 magic;
-	u32 type;	// enum mmal_msg_type //
-	u32 control_service; // Opaque handle to the control service //
-	u32 context;	// a u32 per message context //
-	u32 status;	// The status of the vchiq operation //
+	u32 type;									// enum mmal_msg_type //
+	u32 control_service; 						// Opaque handle to the control service //
+	u32 context;								// a u32 per message context //
+	u32 status;									// The status of the vchiq operation //
 	u32 padding;
 };
 
 
-struct mmal_msg_version 	// Send from VC to host to report version //
+struct mmal_msg_version 						// Send from VC to host to report version //
 {
 	u32 flags;
 	u32 major;
@@ -525,21 +525,21 @@ struct mmal_msg_version 	// Send from VC to host to report version //
 };
 
 
-struct mmal_msg_component_create 	// request to VC to create component //
+struct mmal_msg_component_create 				// request to VC to create component //
 {
-	u32 client_component;	// component context //
+	u32 client_component;						// component context //
 	char name[128];
-	u32 pid;		// For debug //
+	u32 pid;									// For debug //
 };
 
 
-struct mmal_msg_component_create_reply 	// reply from VC to component creation request //
+struct mmal_msg_component_create_reply 			// reply from VC to component creation request //
 {
-	u32 status;	// enum mmal_msg_status - how does this differ to the one in the header?
-	u32 component_handle; // VideoCore handle for component //
-	u32 input_num;        // Number of input ports //
-	u32 output_num;       // Number of output ports //
-	u32 clock_num;        // Number of clock ports //
+	u32 status;									// enum mmal_msg_status - how does this differ to the one in the header?
+	u32 component_handle; 						// VideoCore handle for component //
+	u32 input_num;        						// Number of input ports //
+	u32 output_num;       						// Number of output ports //
+	u32 clock_num;        						// Number of clock ports //
 };
 
 // request to VC to destroy a component //
@@ -550,7 +550,7 @@ struct mmal_msg_component_destroy
 
 struct mmal_msg_component_destroy_reply 
 {
-	u32 status; // The component destruction status //
+	u32 status; 								// The component destruction status //
 };
 
 // request and reply to VC to enable a component //
@@ -561,86 +561,86 @@ struct mmal_msg_component_enable
 
 struct mmal_msg_component_enable_reply 
 {
-	u32 status; // The component enable status //
+	u32 status; 								// The component enable status //
 };
 
 
-struct mmal_msg_component_disable 	// request and reply to VC to disable a component //
+struct mmal_msg_component_disable 				// request and reply to VC to disable a component //
 {
 	u32 component_handle;
 };
 
 struct mmal_msg_component_disable_reply 
 {
-	u32 status; // The component disable status //
+	u32 status; 								// The component disable status //
 };
 
-struct mmal_msg_port_info_get 	// request to VC to get port information //
+struct mmal_msg_port_info_get 					// request to VC to get port information //
 {
-	u32 component_handle;  // component handle port is associated with //
-	u32 port_type;         // enum mmal_msg_port_type //
-	u32 index;             // port index to query //
+	u32 component_handle;  						// component handle port is associated with //
+	u32 port_type;         						// enum mmal_msg_port_type //
+	u32 index;             						// port index to query //
 };
 
-struct mmal_msg_port_info_get_reply 	// reply from VC to get port info request //
+struct mmal_msg_port_info_get_reply 			// reply from VC to get port info request //
 {
-	u32 status;		// enum mmal_msg_status //
-	u32 component_handle;	// component handle port is associated with //
-	u32 port_type;		// enum mmal_msg_port_type //
-	u32 port_index;		// port indexed in query //
-	s32 found;		// unused //
-	u32 port_handle;	// Handle to use for this port //
+	u32 status;									// enum mmal_msg_status //
+	u32 component_handle;						// component handle port is associated with //
+	u32 port_type;								// enum mmal_msg_port_type //
+	u32 port_index;								// port indexed in query //
+	s32 found;									// unused //
+	u32 port_handle;							// Handle to use for this port //
 	struct mmal_port port;
-	struct mmal_es_format format; // elementary stream format //
-	union mmal_es_specific_format es; // es type specific data //
+	struct mmal_es_format format; 				// elementary stream format //
+	union mmal_es_specific_format es; 			// es type specific data //
 	u8 extradata[MMAL_FORMAT_EXTRADATA_MAX_SIZE]; // es extra data //
 };
 
-struct mmal_msg_port_info_set 		// request to VC to set port information //
+struct mmal_msg_port_info_set 					// request to VC to set port information //
 {
 	u32 component_handle;
-	u32 port_type;		// enum mmal_msg_port_type //
-	u32 port_index;		// port indexed in query //
+	u32 port_type;								// enum mmal_msg_port_type //
+	u32 port_index;								// port indexed in query //
 	struct mmal_port port;
 	struct mmal_es_format format;
 	union mmal_es_specific_format es;
 	u8 extradata[MMAL_FORMAT_EXTRADATA_MAX_SIZE];
 };
 
-struct mmal_msg_port_info_set_reply 	// reply from VC to port info set request //
+struct mmal_msg_port_info_set_reply 			// reply from VC to port info set request //
 {
 	u32 status;
-	u32 component_handle;	// component handle port is associated with //
-	u32 port_type;		// enum mmal_msg_port_type //
-	u32 index;		// port indexed in query //
-	s32 found;		// unused //
-	u32 port_handle;	// Handle to use for this port //
+	u32 component_handle;						// component handle port is associated with //
+	u32 port_type;								// enum mmal_msg_port_type //
+	u32 index;									// port indexed in query //
+	s32 found;									// unused //
+	u32 port_handle;							// Handle to use for this port //
 	struct mmal_port port;
 	struct mmal_es_format format;
 	union mmal_es_specific_format es;
 	u8 extradata[MMAL_FORMAT_EXTRADATA_MAX_SIZE];
 };
 
-struct mmal_msg_port_action_port 	// port action requests that take a mmal_port as a parameter //
+struct mmal_msg_port_action_port 				// port action requests that take a mmal_port as a parameter //
 {
 	u32 component_handle;
 	u32 port_handle;
-	u32 action;		// enum mmal_msg_port_action_type //
+	u32 action;									// enum mmal_msg_port_action_type //
 	struct mmal_port port;
 };
 
-struct mmal_msg_port_action_handle 	// port action requests that take handles as a parameter //
+struct mmal_msg_port_action_handle 				// port action requests that take handles as a parameter //
 {
 	u32 component_handle;
 	u32 port_handle;
-	u32 action;		// enum mmal_msg_port_action_type //
+	u32 action;									// enum mmal_msg_port_action_type //
 	u32 connect_component_handle;
 	u32 connect_port_handle;
 };
 
 struct mmal_msg_port_action_reply 
 {
-	u32 status;	// The port action operation status //
+	u32 status;									// The port action operation status //
 };
 
 // MMAL buffer transfer //

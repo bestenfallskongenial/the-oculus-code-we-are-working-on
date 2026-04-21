@@ -1,219 +1,172 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // deterministic log and print
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::storeLog       (   char*       buffer, 
+void            CKernel::storeLog       (   char*       p_buffer, 
                                             u32&        index,
                                             const char* label,
-                                            u32         value1, 
-                                            u32         value2,
-                                            u32         value3, 
-                                            u32         value4)
+                                            u32         p_value0, 
+                                            u32         p_value1,
+                                            u32         p_value2, 
+                                            u32         p_value3)
 {
                 for (const char* p = label; *p; ++p)                    // always write the label
                     {
-                    buffer[index] = *p;
-                    index++;
+                    p_buffer[index++] = *p;
                     }
-                if (value1 == EMPTYLOG &&                              // if all values are placeholders, finish
-                    value2 == EMPTYLOG &&
-                    value3 == EMPTYLOG &&
-                    value4 == EMPTYLOG )
+                if (p_value0 == EMPTYLOG &&                              // if all values are placeholders, finish
+                    p_value1 == EMPTYLOG &&
+                    p_value2 == EMPTYLOG &&
+                    p_value3 == EMPTYLOG )
                         {
-                        buffer[index] = '\n';
-                        index++;
-                        buffer[index]   = '\0';
+                        p_buffer[index++] = '\n';
+                        p_buffer[index]   = '\0';
                         return;
                         }
-                if (value1 != EMPTYLOG)                                 // write first value if valid
+                if (p_value0 != EMPTYLOG)                                 // write first value if valid
                     {
-                    buffer[index] = ' ';
-                    index++;
-                    buffer[index] = '0';
-                    index++;
-                    buffer[index] = 'x';
-                    index++;
+                    p_buffer[index++] = ' ';
+                    p_buffer[index++] = '0';
+                    p_buffer[index++] = 'x';
                     for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) 
                         {
-                        char hex = "0123456789ABCDEF"[(value1 >> (i * 4)) & 0xF];
-                        buffer[index] = hex;
-                        index++;
+                        char hex = "0123456789ABCDEF"[(p_value0 >> (i * 4)) & 0xF];
+                        p_buffer[index++] = hex;
                         }
                     }
-                if (value2 != EMPTYLOG)                                 // write second value if valid
+                if (p_value1 != EMPTYLOG)                                 // write second value if valid
                     {
-                    buffer[index] = ' ';
-                    index++;
-                    buffer[index] = '0';
-                    index++;
-                    buffer[index] = 'x';
-                    index++;
+                    p_buffer[index++] = ' ';
+                    p_buffer[index++] = '0';
+                    p_buffer[index++] = 'x';
                     for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) 
                         {
-                        char hex = "0123456789ABCDEF"[(value2 >> (i * 4)) & 0xF];
-                        buffer[index] = hex;
-                        index++;
+                        char hex = "0123456789ABCDEF"[(p_value1 >> (i * 4)) & 0xF];
+                        p_buffer[index++] = hex;
                         }
                     }
-                if (value3 != EMPTYLOG)                                 // write third value if valid
+                if (p_value2 != EMPTYLOG)                                 // write third value if valid
                     {
-                    buffer[index] = ' ';
-                    index++;
-                    buffer[index] = '0';
-                    index++;
-                    buffer[index] = 'x';
-                    index++;
+                    p_buffer[index++] = ' ';
+                    p_buffer[index++] = '0';
+                    p_buffer[index++] = 'x';
                     for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) 
                         {
-                        char hex = "0123456789ABCDEF"[(value3 >> (i * 4)) & 0xF];
-                        buffer[index] = hex;
-                        index++;
+                        char hex = "0123456789ABCDEF"[(p_value2 >> (i * 4)) & 0xF];
+                        p_buffer[index++] = hex;
                         }
                     }
-                if (value4 != EMPTYLOG)                                 // write fourth value if valid
+                if (p_value3 != EMPTYLOG)                                 // write fourth value if valid
                     {
-                    buffer[index] = ' ';
-                    index++;
-                    buffer[index] = '0';
-                    index++;
-                    buffer[index] = 'x';
-                    index++;
+                    p_buffer[index++] = ' ';
+                    p_buffer[index++] = '0';
+                    p_buffer[index++] = 'x';
                     for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) 
                         {
-                        char hex = "0123456789ABCDEF"[(value4 >> (i * 4)) & 0xF];
-                        buffer[index] = hex;
-                        index++;
+                        char hex = "0123456789ABCDEF"[(p_value3 >> (i * 4)) & 0xF];
+                        p_buffer[index++] = hex;
                         }
                 }
-                buffer[index] = '\n';                                 // terminate line
-                index++;
-                buffer[index]   = '\0';
+                p_buffer[index++] = '\n';                                 // terminate line
+                p_buffer[index]   = '\0';
 }
 
-void CKernel::storeLogLong  (   char*       buffer,
+void CKernel::storeLogLong  (   char*       p_buffer,
                                 u32&        index,
-                                const char* l1, u32 v1,
-                                const char* l2, u32 v2,
-                                const char* l3, u32 v3,
-                                const char* l4, u32 v4)
+                                const char* p_string0, u32 p_value0,
+                                const char* p_string1, u32 p_value1,
+                                const char* p_string2, u32 p_value2,
+                                const char* p_string3, u32 p_value3)
 {
-    for (const char* p = l1; *p; ++p)   // always write first label
+    for (const char* p = p_string0; *p; ++p)   // always write first label
     {
-        buffer[index] = *p;
-        index++;
+        p_buffer[index++] = *p;
     }
-    if (v1 != EMPTYLOG)
+    if (p_value0 != EMPTYLOG)
     {
-        buffer[index] = ' ';
-        index++;
-        buffer[index] = '0';
-        index++;
-        buffer[index] = 'x';
-        index++;
+        p_buffer[index++] = ' ';
+        p_buffer[index++] = '0';
+        p_buffer[index++] = 'x';
         for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i)
         {
-            char hex = "0123456789ABCDEF"[(v1 >> (i * 4)) & 0xF];
-            buffer[index] = hex;
-            index++;
+            char hex = "0123456789ABCDEF"[(p_value0 >> (i * 4)) & 0xF];
+            p_buffer[index++] = hex;
         }
     }
-    if (l2 != EMPTYSTR) // label 2
+    if (p_string1 != EMPTYSTR) // label 2
     {
-        buffer[index] = ' ';
-        index++;
-        for (const char* p = l2; *p; ++p)
+        p_buffer[index++] = ' ';
+        for (const char* p = p_string1; *p; ++p)
         {
-            buffer[index] = *p;
-            index++;
+            p_buffer[index++] = *p;
         }
     }
-    if (v2 != EMPTYLOG)
+    if (p_value1 != EMPTYLOG)
     {
-        buffer[index] = ' ';
-        index++;
-        buffer[index] = '0';
-        index++;
-        buffer[index] = 'x';
-        index++;
+        p_buffer[index++] = ' ';
+        p_buffer[index++] = '0';
+        p_buffer[index++] = 'x';
         for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i)
         {
-            char hex = "0123456789ABCDEF"[(v2 >> (i * 4)) & 0xF];
-            buffer[index] = hex;
-            index++;
+            char hex = "0123456789ABCDEF"[(p_value1 >> (i * 4)) & 0xF];
+            p_buffer[index++] = hex;
         }
     }
-    if (l3 != EMPTYSTR) // label 3
+    if (p_string2 != EMPTYSTR) // label 3
     {
-        buffer[index] = ' ';
-        index++;
-        for (const char* p = l3; *p; ++p)
+        p_buffer[index++] = ' ';
+        for (const char* p = p_string2; *p; ++p)
         {
-            buffer[index] = *p;
-            index++;
+            p_buffer[index++] = *p;
         }
     }
-    if (v3 != EMPTYLOG)
+    if (p_value2 != EMPTYLOG)
     {
-        buffer[index] = ' ';
-        index++;
-        buffer[index] = '0';
-        index++;
-        buffer[index] = 'x';
-        index++;
+        p_buffer[index++] = ' ';
+        p_buffer[index++] = '0';
+        p_buffer[index++] = 'x';
         for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i)
         {
-            char hex = "0123456789ABCDEF"[(v3 >> (i * 4)) & 0xF];
-            buffer[index] = hex;
-            index++;
+            char hex = "0123456789ABCDEF"[(p_value2 >> (i * 4)) & 0xF];
+            p_buffer[index++] = hex;
         }
     }
-    if (l4 != EMPTYSTR) // label 4
+    if (p_string3 != EMPTYSTR) // label 4
     {
-        buffer[index] = ' ';
-        index++;
-        for (const char* p = l4; *p; ++p)
+        p_buffer[index++] = ' ';
+        for (const char* p = p_string3; *p; ++p)
         {
-            buffer[index] = *p;
-            index++;
+            p_buffer[index++] = *p;
         }
     }
-    if (v4 != EMPTYLOG)
+    if (p_value3 != EMPTYLOG)
     {
-        buffer[index] = ' ';
-        index++;
-        buffer[index] = '0';
-        index++;
-        buffer[index] = 'x';
-        index++;
+        p_buffer[index++] = ' ';
+        p_buffer[index++] = '0';
+        p_buffer[index++] = 'x';
         for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i)
         {
-            char hex = "0123456789ABCDEF"[(v4 >> (i * 4)) & 0xF];
-            buffer[index] = hex;
-            index++;
+            char hex = "0123456789ABCDEF"[(p_value3 >> (i * 4)) & 0xF];
+            p_buffer[index++] = hex;
         }
     }
 
-    buffer[index] = '\n';
-    index++;
-    buffer[index] = '\0';
+    p_buffer[index++] = '\n';
+    p_buffer[index] = '\0';
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
-void            CKernel::storeMsg       (   char*       buffer,
+void            CKernel::storeMsg       (   char*       p_buffer,
                                             u32&        index,
                                             const char* label,
                                             const void* tx_msg,
                                             u32         total_size)
 {
-                buffer[index] = '\n';                                   // insert leading newline
-                index++;
+                p_buffer[index++] = '\n';                                   // insert leading newline
 
                 for (const char* p = label; *p; ++p)                    // copy label
                     {
-                    buffer[index] = *p;
-                    index++;
+                    p_buffer[index++] = *p;
                     }
-                buffer[index] = '\n';                                   // next line please
-                index++;
+                p_buffer[index++] = '\n';                                   // next line please
 
                 const unsigned char* b = (const unsigned char*)tx_msg;  // hex dump, 16 bytes per line
 
@@ -221,34 +174,27 @@ void            CKernel::storeMsg       (   char*       buffer,
                     {
                     if (i && (i % 16) == 0)
                         {
-                        buffer[index] = '\n';
-                        index++;
+                        p_buffer[index++] = '\n';
                         }
                     unsigned char v = b[i];
 
                     char hi = "0123456789ABCDEF"[v >> 4];
-                    buffer[index] = hi;
-                    index++;
+                    p_buffer[index++] = hi;
                     char lo = "0123456789ABCDEF"[v & 0xF];
-                    buffer[index] = lo;
-                    index++;
-                    buffer[index] = ' ';
-                    index++;
+                    p_buffer[index++] = lo;
+                    p_buffer[index++] = ' ';
                     }
-                buffer[index] = '\n';                                   // newline + terminator
-                index++;
-                buffer[index] = '\n';
-                index++;
-                buffer[index] = '\0';
+                p_buffer[index++] = '\n';                                   // newline + terminator
+                p_buffer[index++] = '\n';
+                p_buffer[index] = '\0';
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
-void            CKernel::nextline(char* buffer,
+void            CKernel::nextline(char* p_buffer,
                                    u32& index)
 {
-                buffer[index] = '\n';
-                index++;
-                buffer[index] = '\0';
+                p_buffer[index++] = '\n';
+                p_buffer[index] = '\0';
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              we try to avoid CString, CScreen etc
@@ -318,7 +264,7 @@ void            CKernel::bufferToScreenClear                         (   u32 bgC
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
-void            CKernel::bufferToScreenDrawBufferSegment        (   const char *pSourceBuffer,
+void            CKernel::bufferToScreenDrawBuffer        (   const char *pSourceBuffer,
                                                                         u32 startIndex,
                                                                         u32 endIndex,
                                                                         unsigned startCol,
@@ -368,13 +314,13 @@ void            CKernel::bufferToScreenDrawBufferSegment        (   const char *
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-unsigned        CKernel::bufferToScreenGetGrid                         (   unsigned &cols, unsigned &rows)
+unsigned        CKernel::bufferToScreenGetGrid                         (   unsigned& cols, unsigned& rows)
 {
                 cols = gE_Cols;
                 rows = gE_Rows;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
+// glsl logging
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 bool            CKernel::shaderLog                  (   GLint       shader,
                                                         int         shaderIndex )
@@ -391,7 +337,7 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 bool            CKernel::programLog                 (   GLint       program,
                                                         int         program_index )
 {
-            //  int internal_index = 0;                     // i wonder, if and why we need it, was the indexing in the buffer incorrect? !!! DOUBLECHECK !!!
+            //  int internal_index = 0;                     // i wonder, if and why we need it, was the indexing in the p_buffer incorrect? !!! DOUBLECHECK !!!
             //  if (program_index > 0)
             //      internal_index = program_index - 1;
                 GLint success;
@@ -475,7 +421,7 @@ void            CKernel::gfx_check                  (   const char* file,
                     CTimer* pTimer = CTimer::Get();
                     unsigned ticks = pTimer->GetTicks();
 #ifdef __DEBUG_LOG__  
-                    storeLog( MY_BUFFER, MY_INDEX, "=== Final System Status ticks/count ===", (u32)ticks, (u32)error_count);
+                    storeLog( MY_BUFFER, MY_INDEX, "=== Final System Status ticks/p_count ===", (u32)ticks, (u32)error_count);
 #endif // __DEBUG_LOG__ 
                     GLint value;
 
@@ -555,4 +501,70 @@ void            CKernel::gfx_check                  (   const char* file,
                     if (error_count >= ERROR_THRESHOLD)
                         resetFlag = true;
                     }
+}
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+bool            CKernel::startupScreen(char* p_buffer, u32& index)
+{
+                const char* machineName = m_MachineInfo.GetMachineName();
+                const char* socName     = m_MachineInfo.GetSoCName();
+
+                unsigned modelMajor     = m_MachineInfo.GetModelMajor();
+                unsigned modelRevision  = m_MachineInfo.GetModelRevision();
+                unsigned ramSize        = m_MachineInfo.GetRAMSize();
+
+                unsigned cpuSpeedMode   = (m_Options.GetCPUSpeed() == CPUSpeedMaximum) ? 1 : 0;
+                unsigned socMaxTemp     = m_Options.GetSoCMaxTemp();
+
+                unsigned coreClock      = m_MachineInfo.GetClockRate(CLOCK_ID_CORE)  / 1000000;
+                unsigned armClock       = m_MachineInfo.GetClockRate(CLOCK_ID_ARM)   / 1000000;
+                unsigned emmcClock      = m_MachineInfo.GetClockRate(CLOCK_ID_EMMC)  / 1000000;
+                unsigned emmc2Clock     = m_MachineInfo.GetClockRate(CLOCK_ID_EMMC2) / 1000000;
+                unsigned uartClock      = m_MachineInfo.GetClockRate(CLOCK_ID_UART)  / 1000000;
+
+                unsigned dmaChannel     = m_MachineInfo.AllocateDMAChannel(DMA_CHANNEL_NORMAL);
+
+                /* just clean it up */    m_MachineInfo.FreeDMAChannel(dmaChannel);
+
+                unsigned usbDelay       = m_Options.GetUSBPowerDelay();
+                unsigned usbSpeed       = m_Options.GetUSBFullSpeed();
+
+                storeLog( MY_BUFFER, MY_INDEX, "Machine Model");                        // text labels
+                storeLog( MY_BUFFER, MY_INDEX, machineName);
+                nextline(p_buffer, index);
+                storeLog( MY_BUFFER, MY_INDEX, "SoC Name");
+                storeLog( MY_BUFFER, MY_INDEX, socName);
+                nextline(p_buffer, index);
+
+                storeLog( MY_BUFFER, MY_INDEX, "Model Major    ", modelMajor);          // numeric values
+                storeLog( MY_BUFFER, MY_INDEX, "Model Revision ", modelRevision);
+                nextline(p_buffer, index);
+                storeLog( MY_BUFFER, MY_INDEX, "RAM Size     MB", ramSize);
+                storeLog( MY_BUFFER, MY_INDEX, "CPU Speed Mode ", cpuSpeedMode);
+                nextline(p_buffer, index);
+                storeLog( MY_BUFFER, MY_INDEX, "SoC Max Temp   ", socMaxTemp);
+                nextline(p_buffer, index);
+                storeLog( MY_BUFFER, MY_INDEX, "Clock CORE  MHz", coreClock);
+                storeLog( MY_BUFFER, MY_INDEX, "Clock ARM   MHz", armClock);    
+                storeLog( MY_BUFFER, MY_INDEX, "Clock EMMC  MHz", emmcClock, emmc2Clock, uartClock);
+                storeLog( MY_BUFFER, MY_INDEX, "Clock EMMC2 MHz", emmcClock, emmc2Clock, uartClock);
+                storeLog( MY_BUFFER, MY_INDEX, "Clock UART  MHz", emmcClock, emmc2Clock, uartClock);    
+                nextline(p_buffer, index);
+                storeLog( MY_BUFFER, MY_INDEX, "DMA Channel    ", dmaChannel);
+                nextline(p_buffer, index);
+                storeLog( MY_BUFFER, MY_INDEX, "USB Delay      ", usbDelay);
+                storeLog( MY_BUFFER, MY_INDEX, "USB FullSpeed  ", usbSpeed);
+                
+                screen_clear_screen(0x00000000);
+
+                screen_draw_buffer_segment  (
+                                            p_buffer,
+                                            0,
+                                            index,
+                                            0,
+                                            0,
+                                            0xFFFFFFFF,
+                                            0x00000000
+                                            );
+
+                return true;
 }

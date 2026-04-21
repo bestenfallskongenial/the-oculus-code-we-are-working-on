@@ -425,16 +425,19 @@ void    CKernel::wrapper_modes()
         switch (g_current_menu_layer)                           // use than the menulayer variable the 
             {
             case 0:
-                modeMenuAssignGroup(1,  0);                  // CH0–CH3 parameters in our global array depending on the menulayer
-                break;
+            // case zero is button b ( lower ) tab bpm
+                break;            
             case 1:
-                modeMenuAssignGroup(2,  4);   // CH4–CH7
+                modeMenuAssignGroup(1,  0);     // CH0–CH3 parameters in our global array depending on the menulayer
                 break;
             case 2:
-                modeMenuAssignGroup(3,  8);   // LFO
+                modeMenuAssignGroup(2,  4);     // CH4–CH7
                 break;
             case 3:
-                modeMenuAssignGroup(4, 12);   // sensitivity layer A..D
+                modeMenuAssignGroup(3,  8);     // LFO
+                break;
+            case 4:
+                modeMenuAssignGroup(4, 12);     // sensitivity layer A..D
                 break;
 
             default:
@@ -452,5 +455,48 @@ void    CKernel::wrapper_modes()
         apply_state_to_led();                                   // than we update the 4 leds depending on the modes - we have to write this function 
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
+bool    CKernel::wrapper_VCSM()   // for CKernel::Initialize()
+{
+                bool bOK = true;
 
+                if (bOK)
+                    {
+                    bOK = initializeVCSM(); 
+                    }
+                if (bOK)
+                    {
+                    bOK = importMemoryVCSM  (   m_videoBlockBase, 
+                                                m_videoBlockSize, 
+                                                0, 
+                                                VCSM_Import_MEM_Msg& tx, 
+                                                VCSM_Import_MEM_Reply& rx);
+                    bOK = lockMemoryVCSM    (   0, 
+                                                CSM_Lock_MEM_Msg&              tx, 
+                                                VCSM_Lock_MEM_Reply&            rx);                    
+                    }
+                if (bOK)
+                    {
+                    bOK = importMemoryVCSM  (   m_frameBlockBaseA, 
+                                                m_frameBlockSizeA, 
+                                                1, 
+                                                VCSM_Import_MEM_Msg& tx, 
+                                                VCSM_Import_MEM_Reply& rx);                    
+                    bOK = lockMemoryVCSM    (   1, 
+                                                VCSM_Lock_MEM_Msg&              tx, 
+                                                VCSM_Lock_MEM_Reply&            rx);
+                    }
+                if (bOK)
+                    {
+                    bOK = importMemoryVCSM   (  m_frameBlockBaseB, 
+                                                m_frameBlockSizeB, 
+                                                2, 
+                                                VCSM_Import_MEM_Msg& tx, 
+                                                VCSM_Import_MEM_Reply& rx);                    
+                    bOK = lockMemoryVCSM    (   2, 
+                                                VCSM_Lock_MEM_Msg&              tx, 
+                                                VCSM_Lock_MEM_Reply&            rx);                    
+                    }
+
+                return bOK;                    
+}
 //----------------------------------------------------------------------------------------------------------------------------------------------------

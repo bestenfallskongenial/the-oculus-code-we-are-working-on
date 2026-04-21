@@ -46,17 +46,17 @@ bool            CKernel::initEventsVCOS(VCOS_EVENT_T &event, const char* name)
                 return true;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-u32             CKernel::convertAddress ( void* buffer, size_t size )
+u32             CKernel::convertAddress ( void* p_busAddress, size_t p_size )
 {
-                u32 bus_addr = BUS_ADDRESS(reinterpret_cast<uintptr_t>(buffer));
+                u32 bus_addr = BUS_ADDRESS(reinterpret_cast<uintptr_t>(p_busAddress));
                 u32 vcsm_addr = (bus_addr & ~0xC0000000) | 0xC0000000;
 #ifdef __DEBUG_LOG__
                 nextline ( MY_BUFFER, MY_INDEX );
-                storeLog ( MY_BUFFER, MY_INDEX, "\nBuffer Address USR", (u32)buffer); 
+                storeLog ( MY_BUFFER, MY_INDEX, "\nBuffer Address BUS", (u32)p_busAddress); 
                 storeLog ( MY_BUFFER, MY_INDEX, "Buffer Address ARM", (u32)bus_addr); 
                 storeLog ( MY_BUFFER, MY_INDEX, "Buffer Address VPU", (u32)vcsm_addr); 
 #endif // __DEBUG_LOG__
-                CleanAndInvalidateDataCacheRange((uintptr_t)(buffer), size);
+                CleanAndInvalidateDataCacheRange((uintptr_t)(p_busAddress), p_size);
 
                 return vcsm_addr;
 }
@@ -234,13 +234,17 @@ bool bOK = true;
                 return bOK;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::importMemoryVCSM   ( void* buffer, size_t size, int slot, VCSM_Import_MEM_Msg& tx, VCSM_Import_MEM_Reply& rx)
+bool            CKernel::importMemoryVCSM   (   void* p_bufferBlockbase, 
+                                                size_t size, 
+                                                int slot, 
+                                                VCSM_Import_MEM_Msg& tx, 
+                                                VCSM_Import_MEM_Reply& rx)
 {
                 initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_IMPORT);
 
                 tx.body = {};
                 tx.body.type       = VC_SM_ALLOC_NON_CACHED;
-                tx.body.addr       = convertAddress(buffer, size);
+                tx.body.addr       = convertAddress(p_bufferBlockbase, size);
                 tx.body.size       = static_cast<u32>(size);
                 tx.body.kernel_id  = 0;
                 tx.body.allocator  = 0;
@@ -257,14 +261,16 @@ bool            CKernel::importMemoryVCSM   ( void* buffer, size_t size, int slo
 #ifdef __DEBUG_LOG__
                         nextline( MY_BUFFER, MY_INDEX );  
                         storeLog( MY_BUFFER, MY_INDEX, "Import VCSM Memory to Slot ", slot); 
-                        storeLog( MY_BUFFER, MY_INDEX, "ARM Address / GPU Address / Size / VCSM Handle ", buffer, tx.body.addr, size, rx.body.res_handle);
+                        storeLog( MY_BUFFER, MY_INDEX, "ARM Address / GPU Address / Size / VCSM Handle ", p_bufferBlockbase, tx.body.addr, size, rx.body.res_handle);
 #endif // __DEBUG_LOG__                    
                     return true;
                 }
                 return false;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::lockMemoryVCSM     ( int slot, VCSM_Lock_MEM_Msg& tx, VCSM_Lock_MEM_Reply& rx)
+bool            CKernel::lockMemoryVCSM     (   int slot, 
+                                                VCSM_Lock_MEM_Msg& tx, 
+                                                VCSM_Lock_MEM_Reply& rx)
 {
                 initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_LOCK);
 
@@ -318,7 +324,7 @@ bool            CKernel::freeMemoryVCSM     ( int slot, VCSM_Free_MEM_Msg& tx, V
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::initializeMMAL                  ( u32         InBufferHandle,         // my input buffer handle from smem
+bool            CKernel::initializeMMAL                 (   u32         InBufferHandle,         // my input buffer handle from smem
                                                             u32         InBufferPointer,        // i got the feeling i rather need this
                                                             u32         InBufferSize,           // my allocated input buffer size 
                                                             u32         OutBufferHandleA,       // my output buffer handle a from smem
@@ -511,24 +517,24 @@ bool bOK = true;
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 bool            CKernel::createTexturesMMAL       (   )
 {
-                int count = 0;
+                int f_count = 0;
 
                 glGenTextures(1, &m_Texture);
-                if(!checkGLerrorMMAL()) count++;
+                if(!checkGLerrorMMAL()) f_count++;
                 glBindTexture(GL_TEXTURE_2D, m_Texture);
-                if(!checkGLerrorMMAL()) count++;
+                if(!checkGLerrorMMAL()) f_count++;
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                if(!checkGLerrorMMAL()) count++;
+                if(!checkGLerrorMMAL()) f_count++;
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                if(!checkGLerrorMMAL()) count++;
+                if(!checkGLerrorMMAL()) f_count++;
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-                if(!checkGLerrorMMAL()) count++;
+                if(!checkGLerrorMMAL()) f_count++;
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-                if(!checkGLerrorMMAL()) count++;
+                if(!checkGLerrorMMAL()) f_count++;
                 glBindTexture(GL_TEXTURE_2D, 0);
-                if(!checkGLerrorMMAL()) count++;
+                if(!checkGLerrorMMAL()) f_count++;
 
-                if( count != 0)
+                if( f_count != 0)
                     { 
 #ifdef __DEBUG_LOG__ 
                     nextline( MY_BUFFER, MY_INDEX );                                 
@@ -546,7 +552,7 @@ bool            CKernel::createTexturesMMAL       (   )
 bool            CKernel::framePollerMMAL(u32 frame_offset, u32 frame_length)
 {
 #ifdef __DEBUG_LOG__           // Bootstrap: prime first input buffer and snapshot port state (debug)
-                if (!m_FirstFrameQueued)
+                if (!f_firstFrameQueued)
                     {
                     if (!queueInputBufferMMAL(m_BufferFromHostTx_Input, frame_offset, frame_length))
                         {
@@ -560,7 +566,7 @@ bool            CKernel::framePollerMMAL(u32 frame_offset, u32 frame_length)
                     getPortInfoMMAL(MMAL_PORT_TYPE_INPUT,  m_InputPortHandle,  m_PortInfoGetTx_Input_D, m_PortInfoGetRx_Input_D);
                     getPortInfoMMAL(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_D, m_PortInfoGetRx_Output_D);
 
-                    m_FirstFrameQueued = true;
+                    f_firstFrameQueued = true;
                     return true;
                     }
 #endif // __DEBUG_LOG__

@@ -154,14 +154,14 @@ void            CKernel::initVbuffer                (   olg_state*  o,
 void            CKernel::initShader                 (   vtx_state*  v,
                                                         glsl_state* s,
                                                         tex_state*  t,
-                                                        char**      srcBuffer,
-                                                        int         fromFile,
-                                                        int         toFile,
+                                                        char**      p_buffer,
+                                                        int         p_fromFile,
+                                                        int         p_toFile,
                                                         GLenum      type)
 {
-                for (int i = fromFile; i < toFile; i++)
+                for (int i = p_fromFile; i < p_toFile; i++)
                     {
-                    char* src = srcBuffer[i];
+                    char* src = p_buffer[i];
 
                     s->gl_shader_id[i] = glCreateShader(type);
                     glShaderSource(s->gl_shader_id[i], 1, &src, 0);
@@ -178,11 +178,11 @@ void            CKernel::initProgram               (   vtx_state*  v,
                                                         glsl_state* vsh,
                                                         glsl_state* fsh,
                                                         tex_state*  t,
-                                                        int         fromFile,
-                                                        int         toFile,
+                                                        int         p_fromFile,
+                                                        int         p_toFile,
                                                         unsigned&   valid_count)
 {
-                for (int i = fromFile; i < toFile; i++)
+                for (int i = p_fromFile; i < p_toFile; i++)
                     {
                     fsh->gl_program_id[valid_count] = glCreateProgram();
                     if (vsh->shader_valid[0] && fsh->shader_valid[i] && fsh->gl_program_id[valid_count] != 0)
@@ -209,13 +209,13 @@ void            CKernel::initProgram               (   vtx_state*  v,
 void            CKernel::initTexture                (   vtx_state*  v,                 // new. takes now all texture related data from the struct that the parser filled 
                                                         glsl_state* s,
                                                         tex_state*  t,
-                                                        int         fromFile,
-                                                        int         toFile,
+                                                        int         p_fromFile,
+                                                        int         p_toFile,
                                                         unsigned&   valid_count,       // means also we dont use the if (flags[i]) anymore but (t->tex_valid[i])
                                                         GLint       wrap_s,
                                                         GLint       wrap_t )
 {
-                for (int i = fromFile; i < toFile; i++)
+                for (int i = p_fromFile; i < p_toFile; i++)
                     {
                     if (t->tex_valid[i])
                         {
@@ -227,8 +227,7 @@ void            CKernel::initTexture                (   vtx_state*  v,          
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-                        GLvoid* bitmapData = &t->data[i][t->offset[i]];
-                    //  GLvoid* bitmapData = t->data[i] + t->offset[i]; // he claims this is the same!
+                        GLvoid* bitmapData = &t->data[i][t->offset[i]]; //  GLvoid* bitmapData = t->data[i] + t->offset[i]; - he claims this is the same!
                         glTexImage2D(   GL_TEXTURE_2D,
                                         0,
                                         GL_RGB,
@@ -255,11 +254,11 @@ void            CKernel::initTexture                (   vtx_state*  v,          
 void            CKernel::initUniform                (   vtx_state*  v,   // since i call it after initProgram() i have a dense packing
                                                         glsl_state* s,
                                                         tex_state*  t,
-                                                        int         fromFile,   // alway 0, kept the parameter for my uniform signature pattern
-                                                        int         toFile /*,
+                                                        int         p_fromFile,   // alway 0, kept the parameter for my uniform signature pattern
+                                                        int         p_toFile /*,
                                                         bool*       flags*/)  // no need since dense packing right
 {
-                for (int i = fromFile; i < toFile; i++)
+                for (int i = p_fromFile; i < p_toFile; i++)
                     {
                     //  if (!flags[i])  // no need since dense packing right
                     //      continue;
@@ -292,6 +291,31 @@ void            CKernel::initUniform                (   vtx_state*  v,   // sinc
                         t->u_tex_id[i][5] = glGetUniformLocation(s->gl_program_id[i], "tex[5]");
                         t->u_tex_id[i][6] = glGetUniformLocation(s->gl_program_id[i], "tex[6]");
                         t->u_tex_id[i][7] = glGetUniformLocation(s->gl_program_id[i], "tex[7]"); // in theory a loop up to TEX_MAX but im lazy!!
+/*
+for (int j = 0; j < MAX_TEXTURES; ++j)
+{
+    char name[8];
+
+    name[0] = 't'; name[1] = 'e'; name[2] = 'x'; name[3] = '[';
+
+    if (j < 10)
+    {
+        name[4] = '0' + j;
+        name[5] = ']';
+        name[6] = '\0';
+    }
+    else
+    {
+        name[4] = '0' + (j / 10);
+        name[5] = '0' + (j % 10);
+        name[6] = ']';
+        name[7] = '\0';
+    }
+
+    t->u_tex_id[i][j] = glGetUniformLocation(s->gl_program_id[i], name);
+}
+*/
+
 #ifdef __GL_DEBUG__
                         check();
 #endif
@@ -327,7 +351,7 @@ void            CKernel::frmBufferSwap              (   olg_state* o )
 void            CKernel::setUniPrg                  (   olg_state*  o, 
                                                         glsl_state* s, 
                                                         tex_state*  t,
-                                                        int         gl_current_tex,         // shall we add an active texture uniform for the user here?
+                                                    /*  int         gl_current_tex, */         // shall we add an active texture uniform for the user here?
                                                         unsigned    p_validTextureCount )
 {
                 glUseProgram(s->gl_program_id[g_current_gl_program]);

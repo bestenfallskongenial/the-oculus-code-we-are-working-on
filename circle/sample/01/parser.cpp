@@ -2,17 +2,17 @@
 
 // ----------------------------------------------------------------------------------------------------
 bool CKernel::initBMPparser( tex_state* t,
-                             char* buffer_array[],
+                             char* p_buffer_array[],
                              size_t size_array[],
                              u32 max_tex_size,
-                             int fromFile,
-                             int toFile )
+                             int p_fromFile,
+                             int p_toFile )
 {
     t->max_tex_size = max_tex_size;
 
-    for (int i = fromFile; i < toFile; i++)
+    for (int i = p_fromFile; i < p_toFile; i++)
         {
-        t->data[i] = (u8*)buffer_array[i];
+        t->data[i] = (u8*)p_buffer_array[i];
         t->size[i] = size_array[i];          // REQUIRED
         }
     return true;
@@ -20,10 +20,10 @@ bool CKernel::initBMPparser( tex_state* t,
 
 bool CKernel::initH264parser( h264_state* h,
                               char* blockBase,
-                              char* buffer_array[],
+                              char* p_buffer_array[],
                               size_t size_array[],
-                              int fromFile,
-                              int toFile,
+                              int p_fromFile,
+                              int p_toFile,
                               u16 max_width,
                               u16 max_height,
                               u8  max_profile,
@@ -35,9 +35,9 @@ bool CKernel::initH264parser( h264_state* h,
     h->max_profile = max_profile;
     h->max_level   = max_level;
 
-    for (int file_index = fromFile; file_index < toFile; file_index++)
+    for (int file_index = p_fromFile; file_index < p_toFile; file_index++)
         {
-        h->data[file_index] = (u8*)buffer_array[file_index];
+        h->data[file_index] = (u8*)p_buffer_array[file_index];
         h->size[file_index] = size_array[file_index];
         }
     return true;
@@ -45,16 +45,16 @@ bool CKernel::initH264parser( h264_state* h,
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::ParseBPM                   (   tex_state*  t,
                                                         char*       filename_array[],
-                                                     // char*       buffer_array[],
+                                                     // char*       p_buffer_array[],
                                                      // size_t      size_array[] ,
-                                                        int         fromFile,
-                                                        int         toFile)
+                                                        int         p_fromFile,
+                                                        int         p_toFile)
 {
-                for (int i = fromFile; i < toFile; i++)
+                for (int i = p_fromFile; i < p_toFile; i++)
                     {
                     u8*    data = t->data[i];
                     size_t size = t->size[i];   // now meaningful
-                //  u8*    data = reinterpret_cast<u8*>(buffer_array[i]);
+                //  u8*    data = reinterpret_cast<u8*>(p_buffer_array[i]);
                 //  size_t size = size_array[i];
 
                     storeLog(i, "======== Vid header parse start ========");
@@ -99,24 +99,34 @@ void            CKernel::ParseBPM                   (   tex_state*  t,
 // ----------------------------------------------------------------------------------------------------
 void            CKernel::ParseAnnexB(  h264_state* h,
                             char*       filename_array[],
-                         // char*       buffer_array[],
+                         // char*       p_buffer_array[],
                          // size_t      size_array[],
-                            int         fromFile,
-                            int         toFile)
+                            int         p_fromFile,
+                            int         p_toFile)
 {
-                for (int file_index = fromFile; file_index < toFile; file_index++)
+                for (int file_index = p_fromFile; file_index < p_toFile; file_index++)
                     {
                     u8* data = h->data[file_index];
                     size_t size = h->size[file_index];
-                //  u8* data = (u8*)buffer_array[file_index];
+                //  u8* data = (u8*)p_buffer_array[file_index];
                 //  size_t size = size_array[file_index];
 
                 //  size_t i = 0; // gpt creates a struct that has i = int, here size_t, the old struct has unsigned!!!
                     unsigned i = 0;
-// ----------------------------------------------------------------------------------------------------
-// PASS 1: detect + store SPS/PPS/IDR, length and startcode length (single index)
-// ----------------------------------------------------------------------------------------------------
-                    for (size_t pos = 0; pos < size - 3 )
+
+                    size_t sps_off[MAX_FRAMES] = {0};
+                    size_t sps_sc_len[MAX_FRAMES] = {0};
+                    size_t sps_len[MAX_FRAMES] = {0};
+
+                    size_t pps_off[MAX_FRAMES] = {0};
+                    size_t pps_sc_len[MAX_FRAMES] = {0};
+                    size_t pps_len[MAX_FRAMES] = {0};
+
+                    size_t idr_off[MAX_FRAMES] = {0};
+                    size_t idr_sc_len[MAX_FRAMES] = {0};
+                    size_t idr_len[MAX_FRAMES] = {0};
+
+                    for (size_t pos = 0; pos < size - 3 )           // PASS 1: detect + store SPS/PPS/IDR, length and startcode length (single index)
                         {
                         size_t sc_len = (data[pos + 2] == 1) ? 3 : 4;
                         u8 nal_type = data[pos + sc_len] & 0x1F;
@@ -125,83 +135,68 @@ void            CKernel::ParseAnnexB(  h264_state* h,
 
                         if (nal_type == NAL_TYPE_SPS)
                             {
-                            h->sps_off[file_index][i] = pos;
-
-                            // added
-                            h->sps_sc_len[file_index][i] = sc_len;
-                            h->sps_len[file_index][i]    = next_pos - pos;
+                            sps_off[file_index][i] = pos;
+                            sps_sc_len[file_index][i] = sc_len;
+                            sps_len[file_index][i]    = next_pos - pos;
                             }
                         if (nal_type == NAL_TYPE_PPS)
                             {
-                            h->pps_off[file_index][i] = pos;
-
-                            // added
-                            h->pps_sc_len[file_index][i] = sc_len;
-                            h->pps_len[file_index][i]    = next_pos - pos;
+                            pps_off[file_index][i] = pos;
+                            pps_sc_len[file_index][i] = sc_len;
+                            pps_len[file_index][i]    = next_pos - pos;
                             }
                         if (nal_type == NAL_TYPE_IDR)
                             {
-                            h->idr_off[file_index][i] = pos;
+                            idr_off[file_index][i] = pos;
+                            idr_sc_len[file_index][i] = sc_len;
+                            idr_len[file_index][i]    = next_pos - pos;
 
-                            // added
-                            h->idr_sc_len[file_index][i] = sc_len;
-                            h->idr_len[file_index][i]    = next_pos - pos;
-
-                            i++;    // complete access unit
+                            i++;    // complete access unit IDR = frames so i increments
                             }   
-
                         pos = next_pos;
                         }
-// ----------------------------------------------------------------------------------------------------
-// PASS 2: frame extraction (table only)
-// ----------------------------------------------------------------------------------------------------
-                    for (size_t idx = 0; idx < i; idx++)
+                    for (size_t idx = 0; idx < i; idx++)            // PASS 2: frame extraction (table only)
                         {
                         size_t end_off =
                             (idx + 1 < i)
-                            ? h->sps_off[file_index][idx + 1]
+                            ? sps_off[file_index][idx + 1]
                             : size;
 
-                        h->frame_address[file_index][idx] = (void*)(data + h->sps_off[file_index][idx]);
-                        h->frame_offset[file_index][idx]  = (size_t)((data + h->sps_off[file_index][idx]) - (u8*)h->block_base);
-                        h->frame_length[file_index][idx]  = end_off - h->sps_off[file_index][idx];
-                        h->idr_offset[file_index]         = h->idr_off[file_index][idx] - h->sps_off[file_index][idx];
+                        h->frame_address[file_index][idx] = (void*)(data + sps_off[file_index][idx]);
+                        h->frame_offset[file_index][idx]  = (size_t)((data + sps_off[file_index][idx]) - (u8*)h->block_base);
+                        h->frame_length[file_index][idx]  = end_off - sps_off[file_index][idx];
+                        h->idr_offset[file_index]         = idr_off[file_index][idx] - sps_off[file_index][idx];
 
                         storeLog(file_index,"SPS+PPS+IDR addr/len/off ",
                                 (u32)h->frame_address[file_index][idx],
                                 (u32)h->frame_length[file_index][idx],
                                 (u32)h->frame_offset[file_index][idx]);
                         }
-// ----------------------------------------------------------------------------------------------------
-// PASS 3: extradata extraction
-// ----------------------------------------------------------------------------------------------------
-                    u8 tmp[1024];
+                    u8 tmp[1024];                                   // PASS 3: extradata extraction
                     size_t out_pos = 0;
 
                     static const u8 sc4[4] = {0,0,0,1};
                     // SPS
                     memcpy(tmp + out_pos, sc4, 4); out_pos += 4;
-                    memcpy(tmp + out_pos, data + h->sps_off[file_index][idx] + h->sps_sc_len[file_index][idx], 
-                                                 h->sps_len[file_index][idx] - h->sps_sc_len[file_index][idx]);
-                    out_pos += h->sps_len[file_index][idx] - h->sps_sc_len[file_index][idx];
+                    memcpy(tmp + out_pos, data + sps_off[file_index][idx] + sps_sc_len[file_index][idx], 
+                                                 sps_len[file_index][idx] - sps_sc_len[file_index][idx]);
+                    out_pos += sps_len[file_index][idx] - sps_sc_len[file_index][idx];
                     // PPS
                     memcpy(tmp + out_pos, sc4, 4); out_pos += 4;
-                    memcpy(tmp + out_pos, data + h->pps_off[file_index][idx] + h->pps_sc_len[file_index][idx],
-                                                 h->pps_len[file_index][idx] - h->pps_sc_len[file_index][idx]);
+                    memcpy(tmp + out_pos, data + pps_off[file_index][idx] + pps_sc_len[file_index][idx],
+                                                 pps_len[file_index][idx] - pps_sc_len[file_index][idx]);
 
-                    out_pos += h->pps_len[file_index][idx] - h->pps_sc_len[file_index][idx];
-// ----------------------------------------------------------------------------------------------------
-// PASS 4: metadata extraction & struct population
-// ----------------------------------------------------------------------------------------------------
-                    ParseSPS(   data + h->sps_off[file_index][1],
-                                h->sps_len[file_index][1],
-                                h->sps_sc_len[file_index][1],
+                    out_pos += pps_len[file_index][idx] - pps_sc_len[file_index][idx];
+
+                    ParseSPS(   data + sps_off[file_index][1],      // PASS 4: metadata extraction & struct population
+                                sps_len[file_index][1],
+                                sps_sc_len[file_index][1],
                                 &h->video_width[file_index],
                                 &h->video_height[file_index],
                                 &h->vid_profile[file_index],
                                 &h->vid_level[file_index]);
 
-                                h->frame_count[file_index] = i; // still correct like i before pass 2??  
+                                h->frame_count[file_index] = i; 
                                 
                     if (out_pos <= sizeof(h->extradata[file_index]))
                         {
@@ -209,10 +204,7 @@ void            CKernel::ParseAnnexB(  h264_state* h,
                         h->extradata_len[file_index] = out_pos;
 
                         }
-// ----------------------------------------------------------------------------------------------------
-// PASS 5: validation + report
-// ----------------------------------------------------------------------------------------------------
-                    h->vid_valid[file_index] =
+                    h->vid_valid[file_index] =                      // PASS 5: validation + report
 
                         h->video_width[file_index]  == h->max_width &&
                         h->video_height[file_index] == h->max_height &&

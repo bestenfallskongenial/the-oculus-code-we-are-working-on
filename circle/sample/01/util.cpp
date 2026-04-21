@@ -1,74 +1,6 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 #include "kernel.h"
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::startupScreen(char* buffer, u32& index)
-{
-                const char* machineName = m_MachineInfo.GetMachineName();
-                const char* socName     = m_MachineInfo.GetSoCName();
-
-                unsigned modelMajor     = m_MachineInfo.GetModelMajor();
-                unsigned modelRevision  = m_MachineInfo.GetModelRevision();
-                unsigned ramSize        = m_MachineInfo.GetRAMSize();
-
-                unsigned cpuSpeedMode   = (m_Options.GetCPUSpeed() == CPUSpeedMaximum) ? 1 : 0;
-                unsigned socMaxTemp     = m_Options.GetSoCMaxTemp();
-
-                unsigned coreClock      = m_MachineInfo.GetClockRate(CLOCK_ID_CORE)  / 1000000;
-                unsigned armClock       = m_MachineInfo.GetClockRate(CLOCK_ID_ARM)   / 1000000;
-                unsigned emmcClock      = m_MachineInfo.GetClockRate(CLOCK_ID_EMMC)  / 1000000;
-                unsigned emmc2Clock     = m_MachineInfo.GetClockRate(CLOCK_ID_EMMC2) / 1000000;
-                unsigned uartClock      = m_MachineInfo.GetClockRate(CLOCK_ID_UART)  / 1000000;
-
-                unsigned dmaChannel     = m_MachineInfo.AllocateDMAChannel(DMA_CHANNEL_NORMAL);
-
-                /* just clean it up */    m_MachineInfo.FreeDMAChannel(dmaChannel);
-
-                unsigned usbDelay       = m_Options.GetUSBPowerDelay();
-                unsigned usbSpeed       = m_Options.GetUSBFullSpeed();
-
-                storeLog( MY_BUFFER, MY_INDEX, "Machine Model");                        // text labels
-                storeLog( MY_BUFFER, MY_INDEX, machineName);
-                nextline(buffer, index);
-                storeLog( MY_BUFFER, MY_INDEX, "SoC Name");
-                storeLog( MY_BUFFER, MY_INDEX, socName);
-                nextline(buffer, index);
-
-                storeLog( MY_BUFFER, MY_INDEX, "Model Major    ", modelMajor);          // numeric values
-                storeLog( MY_BUFFER, MY_INDEX, "Model Revision ", modelRevision);
-                nextline(buffer, index);
-                storeLog( MY_BUFFER, MY_INDEX, "RAM Size     MB", ramSize);
-                storeLog( MY_BUFFER, MY_INDEX, "CPU Speed Mode ", cpuSpeedMode);
-                nextline(buffer, index);
-                storeLog( MY_BUFFER, MY_INDEX, "SoC Max Temp   ", socMaxTemp);
-                nextline(buffer, index);
-                storeLog( MY_BUFFER, MY_INDEX, "Clock CORE  MHz", coreClock);
-                storeLog( MY_BUFFER, MY_INDEX, "Clock ARM   MHz", armClock);    
-                storeLog( MY_BUFFER, MY_INDEX, "Clock EMMC  MHz", emmcClock, emmc2Clock, uartClock);
-                storeLog( MY_BUFFER, MY_INDEX, "Clock EMMC2 MHz", emmcClock, emmc2Clock, uartClock);
-                storeLog( MY_BUFFER, MY_INDEX, "Clock UART  MHz", emmcClock, emmc2Clock, uartClock);    
-                nextline(buffer, index);
-                storeLog( MY_BUFFER, MY_INDEX, "DMA Channel    ", dmaChannel);
-                nextline(buffer, index);
-                storeLog( MY_BUFFER, MY_INDEX, "USB Delay      ", usbDelay);
-                storeLog( MY_BUFFER, MY_INDEX, "USB FullSpeed  ", usbSpeed);
-                
-                screen_clear_screen(0x00000000);
-
-                screen_draw_buffer_segment  (
-                                            buffer,
-                                            0,
-                                            index,
-                                            0,
-                                            0,
-                                            0xFFFFFFFF,
-                                            0x00000000
-                                            );
-
-                return true;
-}
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 // my adc read and convert function plus audio detection!
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -345,7 +277,7 @@ bool            CKernel::checkUpdate    () // aka is a new firmware present?!
 bool            CKernel::Update         ()
 {
                 // assumes:
-                // - m_bufferKnl[1] + loaded_bytes_kernel[1] already contain the "new" kernel
+                // - m_bufferKnl[1] + loaded_bytes_kernel[1] already contain the "new" kernel loaded from usb
                 // - m_bufferKnl[0] + loaded_bytes_kernel[0] already contain the fallback kernel loaded from sd ( the running kernel )
                 // - filesystem is already mounted by caller
 
@@ -405,23 +337,23 @@ void            CKernel::prepParameters       ()        // f_buffer guess here w
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // NEW generic not condensed valid arrays, max number of files ( macros for example!)
-void CKernel::chooseIndex(int p_channel, int& p_activeIndex, int p_maxCount, bool* flags)
+void            CKernel::chooseIndex(int p_channel, int& p_activeIndex, int p_maxCount, bool* flags)
 {
-    static int p_activeIndex = 0;
+                static int p_activeIndex = 0;
 
-    int f_calculated = g_inOutMatrixInt[p_channel][RAW] * p_maxCount >> 10;
+                int f_calculated = g_inOutMatrixInt[p_channel][RAW] * p_maxCount >> 10;
 
-    if (flags[f_calculated])
-    {
-        p_activeIndex = f_calculated;
-    }
+                if (flags[f_calculated])
+                    {
+                    p_activeIndex = f_calculated;
+                    }
 }
 // NEW generic condensed valid arrays, max number of files ( macros for example!)
-void CKernel::chooseIndexD(int p_channel, int& p_activeIndex, int p_maxCount)
+void            CKernel::chooseIndexD(int p_channel, int& p_activeIndex, int p_maxCount)
 {
-    int f_calculated = (g_inOutMatrixInt[p_channel][RAW] * p_maxCount) >> 10;
+                int f_calculated = (g_inOutMatrixInt[p_channel][RAW] * p_maxCount) >> 10;
 
-    p_activeIndex = f_calculated;
+                p_activeIndex = f_calculated;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::storeModes           ()    // "saver"
@@ -444,12 +376,12 @@ void            CKernel::storeModes           ()    // "saver"
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::buttonPing(int p_btn_id, int pin)
+void            CKernel::buttonPing(int p_btn_id, int p_pin)
 {
                 g_buttons_states[p_btn_id][BTN_SINGLE] = 0;
                 g_buttons_states[p_btn_id][BTN_DOUBLE] = 0;
 
-                if (CGPIOPin(pin, GPIOModeInputPullUp).Read() == BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
+                if (CGPIOPin(p_pin, GPIOModeInputPullUp).Read() == BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
                     {
                     g_buttons_states[p_btn_id][BTN_PRESS_START] = g_currentTime;
                     g_buttons_states[p_btn_id][BTN_SINGLE] = 1;
@@ -461,7 +393,7 @@ void            CKernel::buttonPing(int p_btn_id, int pin)
                     g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
                     }
 
-                if (CGPIOPin(pin, GPIOModeInputPullUp).Read() != BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] != 0)
+                if (CGPIOPin(p_pin, GPIOModeInputPullUp).Read() != BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] != 0)
                     {
                     g_buttons_states[p_btn_id][BTN_RELEASE]     = g_currentTime;
                     g_buttons_states[p_btn_id][BTN_PRESS_START] = 0;
@@ -495,31 +427,30 @@ void            CKernel::randomVec8           (uint32_t p_seed)                 
 {
                 const int       f_max_int   = 1023; // 1024;
                 const float     f_scale     = 1.0f / 4294967295.0f;
-                uint32_t        f_x         = p_seed;
 
-                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[0][RND] = / f_x * f_scale;
+                p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
+                g_inOutMatrixFlt[0][RND] = / p_seed * f_scale;
                 g_inOutMatrixInt[0][RND] = ( g_inOutMatrixFlt[0][RND] * f_max_int);
-                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[1][RND] = f_x * f_scale;
+                p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
+                g_inOutMatrixFlt[1][RND] = p_seed * f_scale;
                 g_inOutMatrixInt[1][RND] = ( g_inOutMatrixFlt[1][RND] * f_max_int);
-                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[2][RND] = f_x * f_scale;
+                p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
+                g_inOutMatrixFlt[2][RND] = p_seed * f_scale;
                 g_inOutMatrixInt[2][RND] = ( g_inOutMatrixFlt[2][RND] * f_max_int);
-                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[3][RND] = f_x * f_scale;
+                p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
+                g_inOutMatrixFlt[3][RND] = p_seed * f_scale;
                 g_inOutMatrixInt[3][RND] = ( g_inOutMatrixFlt[3][RND] * f_max_int);
-                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[4][RND] = /* (float) */ f_x * f_scale;
+                p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
+                g_inOutMatrixFlt[4][RND] = /* (float) */ p_seed * f_scale;
                 g_inOutMatrixInt[4][RND] = ( g_inOutMatrixFlt[4][RND] * f_max_int);
-                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[5][RND] = /* (float) */ f_x * f_scale;
+                p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
+                g_inOutMatrixFlt[5][RND] = /* (float) */ p_seed * f_scale;
                 g_inOutMatrixInt[5][RND] = ( g_inOutMatrixFlt[5][RND] * f_max_int);
-                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[6][RND] = /* (float) */ f_x * f_scale;
+                p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
+                g_inOutMatrixFlt[6][RND] = /* (float) */ p_seed * f_scale;
                 g_inOutMatrixInt[6][RND] = ( g_inOutMatrixFlt[6][RND] * f_max_int);
-                f_x ^= f_x << 13; f_x ^= f_x >> 17; f_x ^= f_x << 5;
-                g_inOutMatrixFlt[7][RND] = f_x * f_scale;
+                p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
+                g_inOutMatrixFlt[7][RND] = p_seed * f_scale;
                 g_inOutMatrixInt[7][RND] = ( g_inOutMatrixFlt[7][RND] * f_max_int);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -585,7 +516,7 @@ void            CKernel::predict1Beat ( int p_source, int p_lfoMultIn )  // love
 
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::sample1WaveTable                  ( int p_source, int p_lfoOut, int p_lfoIn ) // love to split it but i will need additional parameters right? like LF1_MULT
+void            CKernel::sample1WaveTable                  ( int p_source, int p_lfoIn, int p_lfoOut ) // love to split it but i will need additional parameters right? like LF1_MULT
 {
                 unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                          // Get the current u_time in clock ticks why not the start_time_fps_calculation or currentTime from Run()??
 
