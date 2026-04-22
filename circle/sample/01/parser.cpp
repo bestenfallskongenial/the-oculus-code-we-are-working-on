@@ -54,8 +54,6 @@ void            CKernel::ParseBPM                   (   tex_state*  t,
                     {
                     u8*    data = t->data[i];
                     size_t size = t->size[i];   // now meaningful
-                //  u8*    data = reinterpret_cast<u8*>(p_buffer_array[i]);
-                //  size_t size = size_array[i];
 
                     storeLog(i, "======== Vid header parse start ========");
                     storeLog(i, filename_array[i], i);
@@ -74,7 +72,7 @@ void            CKernel::ParseBPM                   (   tex_state*  t,
                     bool ok =
                         data[0]             == 'B' &&
                         data[1]             == 'M' &&
-                        fileSize            <= t->max_tex_size &&    // is passed from the parser init 
+                        fileSize            <= t->max_tex_size &&       // is passed from the parser init but also a macro... 
                         headerSize          == 40 &&
                         planes              == 1 &&
                         bpp                 == 24 &&
@@ -108,11 +106,9 @@ void            CKernel::ParseAnnexB(  h264_state* h,
                     {
                     u8* data = h->data[file_index];
                     size_t size = h->size[file_index];
-                //  u8* data = (u8*)p_buffer_array[file_index];
-                //  size_t size = size_array[file_index];
-
-                //  size_t i = 0; // gpt creates a struct that has i = int, here size_t, the old struct has unsigned!!!
-                    unsigned i = 0;
+                //  u8*    data = reinterpret_cast<u8*>(p_buffer_array[i]);
+                //  size_t size = size_array[i];
+                    size_t i = 0;
 
                     size_t sps_off[MAX_FRAMES] = {0};
                     size_t sps_sc_len[MAX_FRAMES] = {0};
@@ -126,7 +122,7 @@ void            CKernel::ParseAnnexB(  h264_state* h,
                     size_t idr_sc_len[MAX_FRAMES] = {0};
                     size_t idr_len[MAX_FRAMES] = {0};
 
-                    for (size_t pos = 0; pos < size - 3 )           // PASS 1: detect + store SPS/PPS/IDR, length and startcode length (single index)
+                    for (size_t pos = 0; pos < size - 3 )               // PASS 1: detect + store SPS/PPS/IDR, length and startcode length (single index)
                         {
                         size_t sc_len = (data[pos + 2] == 1) ? 3 : 4;
                         u8 nal_type = data[pos + sc_len] & 0x1F;
@@ -151,11 +147,11 @@ void            CKernel::ParseAnnexB(  h264_state* h,
                             idr_sc_len[file_index][i] = sc_len;
                             idr_len[file_index][i]    = next_pos - pos;
 
-                            i++;    // complete access unit IDR = frames so i increments
+                            i++;                                        // complete access unit IDR = frames so i increments
                             }   
                         pos = next_pos;
                         }
-                    for (size_t idx = 0; idx < i; idx++)            // PASS 2: frame extraction (table only)
+                    for (size_t idx = 0; idx < i; idx++)                // PASS 2: frame extraction (table only)
                         {
                         size_t end_off =
                             (idx + 1 < i)
@@ -172,7 +168,7 @@ void            CKernel::ParseAnnexB(  h264_state* h,
                                 (u32)h->frame_length[file_index][idx],
                                 (u32)h->frame_offset[file_index][idx]);
                         }
-                    u8 tmp[1024];                                   // PASS 3: extradata extraction
+                    u8 tmp[1024];                                       // PASS 3: extradata extraction
                     size_t out_pos = 0;
 
                     static const u8 sc4[4] = {0,0,0,1};
@@ -188,7 +184,7 @@ void            CKernel::ParseAnnexB(  h264_state* h,
 
                     out_pos += pps_len[file_index][idx] - pps_sc_len[file_index][idx];
 
-                    ParseSPS(   data + sps_off[file_index][1],      // PASS 4: metadata extraction & struct population
+                    ParseSPS(   data + sps_off[file_index][1],          // PASS 4: metadata extraction & struct population
                                 sps_len[file_index][1],
                                 sps_sc_len[file_index][1],
                                 &h->video_width[file_index],
@@ -197,6 +193,7 @@ void            CKernel::ParseAnnexB(  h264_state* h,
                                 &h->vid_level[file_index]);
 
                                 h->frame_count[file_index] = i; 
+                                h->idr_sc_len[file_index] = idr_sc_len[1]; // because 0 might be "out of line" llike the whole firdt set of nal units
                                 
                     if (out_pos <= sizeof(h->extradata[file_index]))
                         {
@@ -204,9 +201,9 @@ void            CKernel::ParseAnnexB(  h264_state* h,
                         h->extradata_len[file_index] = out_pos;
 
                         }
-                    h->vid_valid[file_index] =                      // PASS 5: validation + report
+                    h->vid_valid[file_index] =                          // PASS 5: validation + report
 
-                        h->video_width[file_index]  == h->max_width &&
+                        h->video_width[file_index]  == h->max_width &&      // why not the global macro settings here, and how we can make the resolution matching the config.txt settings here too?
                         h->video_height[file_index] == h->max_height &&
                         h->vid_profile[file_index]  == h->max_profile &&
                         h->vid_level[file_index]    == h->max_level;
@@ -234,7 +231,7 @@ bool CKernel::ParseSPS(  u8*     sps_data,
                          u8*     profile,
                          u8*     level) const
 {
-    u8* rbsp = sps_data + sps_sc_len + 1;   // skip startcode + NAL header (67)
+    u8* rbsp = sps_data + sps_sc_len + 1;                               // skip startcode + NAL header (67)
 
     *profile = rbsp[0];
     *level   = rbsp[2];
@@ -342,7 +339,7 @@ size_t          CKernel::findNext000001(u8* data, size_t pos, size_t size) const
                         }
                     pos++;
                 }
-                return size;                                                                                                    // No more start codes found
+                return size;                                            // No more start codes found
 }
 // ----------------------------------------------------------------------------------------------------
 u32             CKernel::ReadExpGolomb(u8* data, size_t* bit_offset) const
@@ -352,7 +349,7 @@ u32             CKernel::ReadExpGolomb(u8* data, size_t* bit_offset) const
                 size_t byte_offset = offset / 8;
                 size_t bit_pos = offset % 8;
                 
-                while (1)                                                                                                       // Count leading zeros
+                while (1)                                               // Count leading zeros
                     {
                     if (bit_pos == 8) 
                         {
@@ -368,11 +365,11 @@ u32             CKernel::ReadExpGolomb(u8* data, size_t* bit_offset) const
                     bit_pos++;
                     offset++;
                     }
-                offset++;                                                                                                       // Skip the stop bit
+                offset++;                                               // Skip the stop bit
                 bit_pos = offset % 8;
                 byte_offset = offset / 8;
                 
-                u32 result = 0;                                                                                                 // Read the coefficient bits
+                u32 result = 0;                                         // Read the coefficient bits
                 for (size_t i = 0; i < leadingZeroBits; i++) 
                     {
                     result <<= 1;

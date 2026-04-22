@@ -1,5 +1,4 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 // globals and variablesVAL used here:
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::resetPickUpFlags    ()
@@ -65,7 +64,7 @@ void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::setChannelMode(int p_channel) // this is also a wrapper right ??
+void            CKernel::getChannelModeA(int p_channel) // this is also a wrapper right ??
 {
                 switch (g_modeMap[p_channel][g_centralModeBuffer[g_currentProgramBuffer][p_channel] + 1]) // <- is this correct! g_modeMap gives me the max of modes ( needed for mapping ), also shall it determine if i can use a channelVAL this function...
                     {
@@ -112,6 +111,45 @@ void            CKernel::setChannelMode(int p_channel) // this is also a wrapper
                         modeAudioBb1 (p_channel);
                     break;                    
                     }
+}
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+Use a **member function pointer table** instead of `switch`.
+
+That lets you add modes by only extending the table.
+
+typedef void (CKernel::*ModeFunc)(int);
+
+ModeFunc g_modeTable[] =
+{
+    &CKernel::modeADC,
+    &CKernel::modeTRG,
+    &CKernel::modeBPM,
+    &CKernel::modeLF1,
+    &CKernel::modeLF2,
+    nullptr,
+    nullptr,
+    nullptr,
+    &CKernel::modeAudioAb0,
+    &CKernel::modeAudioAb1,
+    &CKernel::modeAudioBb0,
+    &CKernel::modeAudioBb1
+};
+*/
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+
+void CKernel::getChannelModeB(int p_channel)
+{
+    int mode =
+        g_modeMap[p_channel]
+                 [g_centralModeBuffer[g_currentProgramBuffer][p_channel] + 1];
+
+    ModeFunc fn = g_modeTable[mode];
+
+    if (fn)
+    {
+        (this->*fn)(p_channel);
+    }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::modeADC (int p_channel) 
@@ -179,4 +217,3 @@ void            CKernel::modeAudioBb1 (int p_channel)
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-

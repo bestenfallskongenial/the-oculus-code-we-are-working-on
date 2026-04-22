@@ -61,7 +61,7 @@ extern "C" void vc_host_get_vchi_state(VCHI_INSTANCE_T *inst, VCHI_CONNECTION_T 
 #define         SLOTS                   34 // for the g_centralModeBuffer[SLOTS][modetablecount] array - 1 firmware / 32 user / 1 default slot
 #define         DEFAULT_SLOT            34 // or 0 ?? 
 
-#define         MAX_TEXTURE_SIZE
+#define         TEX_SIZ
 
 #define         MAX_VIDEO_WIDTH         640
 #define         MAX_VIDEO_HEIGHT        480
@@ -76,7 +76,7 @@ extern "C" void vc_host_get_vchi_state(VCHI_INSTANCE_T *inst, VCHI_CONNECTION_T 
 
 #define         WAVEFORMS             	4		// number of lfo waves
 #define         WAVESAMPLES            	256  	// number of samples per lfo waves
-#define 		LFO_Waves			    4
+#define 		WAVEFORMS			    4
 #define 		LFO_INSTANCES			2
 #define			LFO_MULTIPLIERS			7
 

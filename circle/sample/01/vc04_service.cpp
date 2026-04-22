@@ -707,7 +707,7 @@ bool            CKernel::queueOutputBufferMMAL     (   MMAL_Buffer_From_Host_Msg
                 tx.msg.drvbuf.client_context                       = tx.hdr.context;  /* patch dynamic fields into already-primed msg */
 
                 tx.msg.buffer_header.data                          = vc_handle;
-                tx.msg.buffer_header.alloc_size                    = alloc_size;
+                tx.msg.buffer_header.alloc_size                    = alloc_size;  // why again?
                 tx.msg.buffer_header.length                        = 0;
                 tx.msg.buffer_header.offset                        = 0;
                 tx.msg.buffer_header.flags                         = 0;
@@ -885,7 +885,7 @@ bool            CKernel::enablePortMMAL            (   /*u32 port_handle,*/ cons
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // primer functions no return!
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::PrimeOutputBufferBodyMMAL     (   MMAL_Buffer_From_Host_Msg& tx)
+void            CKernel::PrimeOutputBufferBodyMMAL     (   MMAL_Buffer_From_Host_Msg& tx)  // here we "prime" the MMAL_Port_Info_Get_Reply for usage!
 {
                 tx.msg = {};
                 tx.msg.drvbuf.magic                                = MMAL_MAGIC;
@@ -922,7 +922,7 @@ void            CKernel::PrimeInputBufferBodyMMAL      (   MMAL_Buffer_From_Host
                 tx.msg.payload_in_message                          = 0;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::primePortFormatInputMMAL( const MMAL_Port_Info_Get_Reply    & src, MMAL_Port_Info_Set_Msg& tx)
+void            CKernel::primePortFormatInputMMAL( const MMAL_Port_Info_Get_Reply    & src, MMAL_Port_Info_Set_Msg& tx) // here we prime the port
 {
                 // SET-prefix fields (must be explicit)
                 tx.msg.component_handle = src.msg.component_handle;

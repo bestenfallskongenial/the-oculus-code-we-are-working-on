@@ -12,7 +12,7 @@ public:
 
 #include "enums.h"
 #include "structs.h"
-#include "members.h" // <- should go to the bottom, right?
+
 
 	        boolean     Initialize (void);
 
@@ -220,7 +220,7 @@ public:
                 void        mapMenuGroup                (           uint8_t                         menu_id, 
                                                                     uint8_t                         base);
 
-                void        setChannelMode              (           int                             p_channel);
+                void        getChannelModeA              (           int                             p_channel);
 
                 void        modeADC                     (           int                             p_channel);
 
@@ -239,6 +239,8 @@ public:
                 void        modeAudioBb0                (           int                             p_channel);
 
                 void        modeAudioBb1                (           int                             p_channel);
+
+                void        getChannelModeA              (           int                             p_channel);                
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  PARSER
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -287,7 +289,7 @@ public:
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  UTIL
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                void        readADC                     ();
+                void        readADC                     ();                             // can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
 
                 bool        checkUpdate                 ();
 
@@ -329,7 +331,7 @@ public:
 public:
         static  void        callbackVCSM                (           void*                           callback_param, 
                                                                     VCHI_CALLBACK_REASON_T          reason, 
-                                                                    void*                           msg_handle); // NOT STATIC REQUIRED?!
+                                                                    void*                           msg_handle);
 
         static  void        callbackMMAL                (           void*                           callback_param, 
                                                                     VCHI_CALLBACK_REASON_T          reason, 
@@ -383,27 +385,27 @@ public:
                                                                     VCSM_Free_MEM_Msg&              tx, 
                                                                     VCSM_Free_MEM_Reply&            rx);
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                bool        initializeMMAL              (           u32                             InBufferHandle,
-                                                                    u32                             InBufferPointer,
-                                                                    u32                             InBufferSize,
-                                                                    u32                             OutBufferHandleA,
-                                                                    u32                             OutBufferPointerA,
-                                                                    u32                             OutBufferHandleB,
-                                                                    u32                             OutBufferPointerB,
-                                                                    u32                             OutBufferSize,
-                                                                    u32                             ResolutionX,
-                                                                    u32                             ResolutionY,
-                                                                    EGLDisplay                      eglDisplay,
-                                                                    EGLContext                      eglContext);
+                bool        initializeMMAL              (           u32                             InBufferHandle,             // my input buffer handle  from smem ( we need to figure this out !)
+                                                                    u32                             InBufferPointer,            // OR pointer  ( this is the question No 1 here !!! ) i got the feeling i rather need this
+                                                                    u32                             InBufferSize,               // my allocated input buffer size
+                                                                    u32                             OutBufferHandleA,           // my output buffer handle a from smem
+                                                                    u32                             OutBufferPointerA,          // OR pointer?
+                                                                    u32                             OutBufferHandleB,           // my output buffer handle a from smem
+                                                                    u32                             OutBufferPointerB,          // OR pointer?
+                                                                    u32                             OutBufferSize,              // my allocated output buffer size 
+                                                                    u32                             ResolutionX,                // obvious, right? use the global macro = less confusion?
+                                                                    u32                             ResolutionY,                // obvious, right?
+                                                                    EGLDisplay                      eglDisplay,                 // isnt it done anyway globally? redundant?
+                                                                    EGLContext                      eglContext);                // isnt it done anyway globally? redundant?
                 bool        createTexturesMMAL          ();
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                bool        framePollerMMAL             (           u32                             frame_offset, 
-                                                                    u32                             frame_length);
+                bool        framePollerMMAL             (           u32                             frame_offset,               // comes from the pooler -> h264 struct 
+                                                                    u32                             frame_length);              // same same
 
-                bool        bufferReadyMMAL             (           u32                             handle);
+                bool        bufferReadyMMAL             (           u32                             handle);                    // the vcsm handle of the buffer? from a vc message?
 
                 bool        queueOutputBufferMMAL       (           MMAL_Buffer_From_Host_Msg&      tx, 
-                                                                    u32                             vc_handle, 
+                                                                    u32                             vc_handle,                  /
                                                                     u32                             alloc_size);
 
                 bool        queueInputBufferMMAL        (           MMAL_Buffer_From_Host_Msg&      tx, 
@@ -448,9 +450,9 @@ public:
         void Log_createComponent                                  (     const MMAL_Component_Create_Msg& tx, const MMAL_Component_Create_Reply    & rx);
         void Log_getPortInfo                                      (     const MMAL_Port_Info_Get_Msg& tx, const MMAL_Port_Info_Get_Reply    & rx);
         void Log_setPortInfo                                      (     const MMAL_Port_Info_Set_Msg& tx, const MMAL_Port_Info_Set_Reply    & rx);
-        void Log_enableComponentMMAL                                  (     const MMAL_Component_Enable_Msg& tx, const MMAL_Component_Enable_Reply    & rx);
+        void Log_enableComponentMMAL                              (     const MMAL_Component_Enable_Msg& tx, const MMAL_Component_Enable_Reply    & rx);
         void Log_enablePort                                       (     const MMAL_Port_Action_Msg& tx, const MMAL_Port_Action_Reply_Msg&  rx);
-        void Log_setZeroCopyModeMMAL                                  (     const MMAL_Port_Parameter_Set_Msg& tx, const MMAL_Port_Parameter_Set_Reply    & rx);
+        void Log_setZeroCopyModeMMAL                              (     const MMAL_Port_Parameter_Set_Msg& tx, const MMAL_Port_Parameter_Set_Reply    & rx);
         void Log_BufferFromHost                                   (     const MMAL_Buffer_From_Host_Msg& rx);
 //      void Log_BufferBody                                       (     const mmal_msg_buffer_from_host_wire32& msg );
 //      void Log_queueBufferFromHost                              (     const MMAL_Buffer_From_Host_Msg& tx );        
@@ -473,4 +475,7 @@ public:
 
                 void        wrapper_io                  ();
                 void        wrapper_modes               ();
+
+#include "members.h" // <- should go to the bottom, right?
+
 };

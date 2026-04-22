@@ -326,7 +326,7 @@ static inline void CKernel::write32 (uintptr nAddress, u32 nValue)
 
 // from datamanagement.cpp
 
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+//-
 bool            CKernel::saveFromBufferO          (     const   char*       p_fileName,
                                                         const   char*       p_bufferArray,
                                                                 unsigned    p_bufferSize )
@@ -605,7 +605,7 @@ Goal: capture **developer intent and unresolved thoughts** from comments, sorted
 - There are disabled blocks for texture/video paths, suggesting phased rollout or temporary narrowing.
 - **Context takeaway:** wrapper layer is orchestration-heavy; comments mainly track pipeline intent and limits.
 
----
+
 
 ## High-level “diff thoughts”
 1. The directory comments are less about missing code and more about **unsettled architecture choices** (state ownership, mapping flow, callback boundaries).
@@ -701,3 +701,132 @@ Scope used for this pass:
 4. **Mode/menu/LFO pipeline is conceptually defined but scattered** across menu/util/wrappers.
 5. **Best next cleanup pass:** convert question-style comments into tracked TODOs and move protocol/reference notes to dedicated docs/headers.
 
+
+
+// PARSER:
+
+
+Path A = Full Annex B input
+
+format->encoding         = MMAL_ENCODING_H264;
+format->encoding_variant = MMAL_ENCODING_VARIANT_H264_DEFAULT;
+
+submit per frame:
+
+00 00 00 01 SPS[nal code][payload]
+00 00 00 01 PPS[nal code][payload]
+00 00 00 01 IDR[nal code][payload]
+
+using:
+
+ptr = frame_address;
+len = frame_length;
+
+Path B = CONFIG + RAW frame input
+
+format->encoding         = MMAL_ENCODING_H264;
+format->encoding_variant = MMAL_ENCODING_VARIANT_H264_RAW;
+
+submit once:
+
+00 00 00 01 + SPS[nal code][payload] + 00 00 00 01 + PPS[nal code][payload]
+
+using:
+
+ptr = extradata;
+len = extradata_len;
+buffer->flags |= MMAL_BUFFER_HEADER_FLAG_CONFIG;
+
+submit per frame:
+
+idr[nal code][payload]
+
+using:
+
+ptr =
+    frame_address
+    + idr_offset
+    + idr_sc_len;
+
+len =
+    idr_len
+    - idr_sc_len;
+
+therefore we added:
+
+
+h->idr_sc_len[file_index] = idr_sc_len[1];
+
+-----------------------------------------------------------------------------------------
+
+// every frame: full Annex B submit (Path A)
+
+buffer->data   =
+    (u8*)h->frame_address[file_index][idx];
+
+buffer->length =
+    h->frame_length[file_index][idx];
+
+buffer->offset = 0;
+
+buffer->flags  =
+    MMAL_BUFFER_HEADER_FLAG_FRAME_END;
+
+payload:
+
+00 00 00 01 SPS
+00 00 00 01 PPS
+00 00 00 01 IDR
+
+No:
+
+MMAL_BUFFER_HEADER_FLAG_CONFIG
+
+here.
+
+No separate CONFIG submit.
+
+// once: CONFIG submit
+
+buffer->data   = h->extradata[file_index];
+buffer->length = h->extradata_len[file_index];
+buffer->offset = 0;
+
+buffer->flags  =
+    MMAL_BUFFER_HEADER_FLAG_CONFIG |
+    MMAL_BUFFER_HEADER_FLAG_FRAME_END;
+
+payload:
+
+00 00 00 01 SPS
+00 00 00 01 PPS
+
+// every frame: single IDR submit
+
+buffer->data   =
+    (u8*)h->frame_address[file_index][idx]
+    + h->idr_offset[file_index]
+    + h->idr_sc_len[file_index];
+
+buffer->length =
+    idr_len[file_index][idx]
+    - h->idr_sc_len[file_index];
+
+buffer->offset = 0;
+
+buffer->flags  =
+    MMAL_BUFFER_HEADER_FLAG_FRAME_END;
+
+payload:
+
+65 ...
+
+No:
+
+MMAL_BUFFER_HEADER_FLAG_CONFIG
+
+here.
+
+
+
+*/

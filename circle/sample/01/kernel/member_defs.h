@@ -174,7 +174,10 @@ uint8_t g_modeMap[MENU_LAYERS*4][MENU_LAYERS*4] =	// the first element is the ma
                 float                   g_inOutMatrixFlt[CHANNEL][IO_TYPE_COUNT];           // the float in/out matrix
                 bool                    g_menuPickUpFlag[4*MENU_LAYER];                     // the flags for the pickup mechanism  
                 unsigned                g_buttons_states[NR_BUTTONS][BTN_INDEX_COUNT];      // the button state machine
-                unsigned                g_centralModeBuffer[SLOTS][modetablecount]          // the general user settings, storable per program 
+                unsigned                g_centralModeBuffer[SLOTS][modetablecount];         // the general user settings, storable per program 
+                unsigned                g_lfoMultiplier[LFO_MULTIPLIERS];
+
+                unsigned                g_lfoBpmMatrix[4][LFO_BPM_COUNT];
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // VCSM and MMAL
 //----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -238,7 +241,7 @@ private:
 //----------------------------------------------------------------------------------------------------------------------------------------------------
         //  0. Open MMAL service (transport only)
         SERVICE_CREATION_T              m_ServiceCreateMMAL             = {};   //  SEND                    - sent via `openServiceVCHI()`
-                                                                                        //  RECEIVE none            - open VCHI/MMAL control channel. No MMAL protocol yet.
+                                                                                //  RECEIVE none            - open VCHI/MMAL control channel. No MMAL protocol yet.
         //  1. Create component
         MMAL_Component_Create_Msg       m_ComponentCreateTx             = {};   //  SEND
         MMAL_Component_Create_Reply     m_ComponentCreateRx             = {};   //  RECEIVE                 - create `ril.video_decode`, receive `component_handle`. This handle is stored and used everywhere later.

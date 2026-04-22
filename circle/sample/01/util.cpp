@@ -392,7 +392,6 @@ void            CKernel::buttonPing(int p_btn_id, int p_pin)
                         }
                     g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
                     }
-
                 if (CGPIOPin(p_pin, GPIOModeInputPullUp).Read() != BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] != 0)
                     {
                     g_buttons_states[p_btn_id][BTN_RELEASE]     = g_currentTime;
@@ -454,8 +453,9 @@ void            CKernel::randomVec8           (uint32_t p_seed)                 
                 g_inOutMatrixInt[7][RND] = ( g_inOutMatrixFlt[7][RND] * f_max_int);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-// question here - should i rather have one function for both channels or should i separate the functions and call per channel?
+// question here - should i rather have one function for both channels or should i separate the functions and call per channel? 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
+/*
 void            CKernel::calculate1BPM   (   int p_source, unsigned long   p_triggerTimeClock)       // love to split it but i will need additional parameters right?
 {
                 static unsigned long f_lastTime[2];
@@ -527,6 +527,75 @@ void            CKernel::sample1WaveTable                  ( int p_source, int p
                 g_inOutMatrixFlt[0][p_lfoOut]       =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]][g_sampleIndex[p_source]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
                 g_inOutMatrixInt[0][p_lfoOut]       =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]][g_sampleIndex[p_source]];
 }   
+*/                
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+// here it is - look at defs_struct.h for more!
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+void            CKernel::calculate1BPM   (   int p_source, unsigned long   p_triggerTimeClock)       // love to split it but i will need additional parameters right?
+{
+                unsigned long f_intervalAverage = 0;
+
+                if (p_triggerTimeClock != g_lfoBpmMatrix[p_source][LTIME])                                                          // Process button u_time (instance 0)
+                    {
+                    g_lfoBpmMatrix[g_lfoBpmMatrix[p_source][TIDX]][TB] = p_triggerTimeClock;
+        
+                    g_lfoBpmMatrix[0][DB]          =   g_lfoBpmMatrix[1][TB] - g_lfoBpmMatrix[0][TB];   
+                    g_lfoBpmMatrix[1][DB]          =   g_lfoBpmMatrix[2][TB] - g_lfoBpmMatrix[1][TB];
+                    g_lfoBpmMatrix[2][DB]          =   g_lfoBpmMatrix[3][TB] - g_lfoBpmMatrix[2][TB];
+
+                    if(     g_lfoBpmMatrix[1][DB]  <   g_lfoBpmMatrix[0][DB] * 1.25f &&  g_lfoBpmMatrix[2][DB]  <   g_lfoBpmMatrix[0][DB] * 1.25f &&  g_lfoBpmMatrix[0][DB]  <   g_lfoBpmMatrix[2][DB] * 1.25f ) // calculates an average and allows 25% play ( quite high right ) 
+                        {
+                        f_intervalAverage           = ( g_lfoBpmMatrix[0][DB] + g_lfoBpmMatrix[1][DB] + g_lfoBpmMatrix[2][DB]) / 3;
+            
+                        g_lfoBpmMatrix[p_source][BPM]     =   60000000 / f_intervalAverage;
+            
+                        g_lfoBpmMatrix[p_source][INTV]    =   f_intervalAverage;
+                        g_lfoBpmMatrix[p_source][LBC]     =   m_Timer.GetClockTicks();
+                        }
+                    g_lfoBpmMatrix[p_source][LTIME]       =   p_triggerTimeClock;
+
+                    g_lfoBpmMatrix[p_source][TIDX]        = ( g_lfoBpmMatrix[p_source][TIDX] + 1) % 4;    
+                    }
+}
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+void            CKernel::predict1Beat ( int p_source, int p_lfoMultIn )  // love to split it but i will need additional parameters right? like LF1_MULT
+{
+                unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                      // Get the current u_time in clock ticks
+
+                if (currentTime >= g_lfoBpmMatrix[p_source][NBT])
+                    {
+                    g_lfoBpmMatrix[p_source][NBT]         +=  g_lfoBpmMatrix[p_source][INTV];                                                                        // Predict the next beat u_time
+                    }
+                if (currentTime >= g_lfoBpmMatrix[p_source][NCB]) 
+                    {
+                    g_lfoBpmMatrix[p_source][LCB]   =   g_lfoBpmMatrix[p_source][NCB];
+                    g_lfoBpmMatrix[p_source][NCB]   =   g_lfoBpmMatrix[p_source][NCB] + (g_lfoBpmMatrix[g_activeBpmChannel][INTV] * g_lfoBpmMatrix[p_source][LMT]); // why again g_lfoMultiplierTMP? isnt it stored already, do we need to back it up?
+                    g_lfoBpmMatrix[source0][LMT]    =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]];
+                    }
+                if ((g_lfoBpmMatrix[p_source][LBCT]!=  g_lfoBpmMatrix[p_source][LBC]))
+                    {
+                    g_lfoBpmMatrix[p_source][NBT]   =   g_lfoBpmMatrix[p_source][LBC];                                                                      // Reset to current time for new BPM
+                    g_lfoBpmMatrix[p_source][LBCT]  =   g_lfoBpmMatrix[p_source][LBC];
+                    }
+                if (g_lfoBpmMatrix[p_source][LMT]  !=  g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]])
+                    {
+                    g_lfoBpmMatrix[p_source][LCB]   =   g_lfoBpmMatrix[g_activeBpmChannel][LBC];
+                    g_lfoBpmMatrix[p_source][NCB]   =   g_lfoBpmMatrix[g_activeBpmChannel][LBC] + (g_lfoBpmMatrix[g_activeBpmChannel][INTV] * g_lfoBpmMatrix[p_source][LMT]);
+                    g_lfoBpmMatrix[p_source][LMT]   =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]];
+                    }
+}
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+void            CKernel::sample1WaveTable                  ( int p_source, int p_lfoIn, int p_lfoOut ) // love to split it but i will need additional parameters right? like LF1_MULT
+{
+                unsigned long currentTime       =   m_Timer.GetClockTicks();                                                                          // Get the current u_time in clock ticks why not the start_time_fps_calculation or currentTime from Run()??
+
+                g_lfoBpmMatrix[p_source][ELP]   =   currentTime - g_lfoBpmMatrix[p_source][LCB];
+                g_lfoBpmMatrix[p_source][CYL]   =   g_lfoBpmMatrix[p_source][NCB] - g_lfoBpmMatrix[p_source][LCB];                                                    // Total length of the current cycle
+                int f_indexA                    =  (g_lfoBpmMatrix[p_source][ELP] * 255) / g_lfoBpmMatrix[p_source][CYL];                                               // 255 is not the amplitude! its the number of samples
+                g_lfoBpmMatrix[p_source][SMP]   =   f_indexA > 255 ? 255 : f_indexA;                                                                  // means i need a wraparound - on the other hand: i should have a clear calculation here that will never create a index >255!
+                g_inOutMatrixFlt[0][p_lfoOut]   =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]][g_lfoBpmMatrix[p_source][SMP]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
+                g_inOutMatrixInt[0][p_lfoOut]   =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]][g_lfoBpmMatrix[p_source][SMP]];
+}
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
