@@ -111,7 +111,7 @@ struct h264_state
     u8              vid_profile[MAX_VIDEOS];
     u8              vid_level[MAX_VIDEOS];
     // state
-    int             frame_count[MAX_VIDEOS];                // unsigned frame_count[MAX_VIDEOS]; ??
+    size_t          frame_count[MAX_VIDEOS];                // unsigned frame_count[MAX_VIDEOS]; ??
     bool            vid_valid[MAX_VIDEOS];
     // shared base
     char*           block_base; // void*   block_base;
