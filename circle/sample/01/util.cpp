@@ -2,8 +2,6 @@
 #include "kernel.h"
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // my adc read and convert function plus audio detection!
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::readADC() 
 {
                 const float maxA = 1023.0;
@@ -53,7 +51,7 @@ void            CKernel::readADC()
                     g_modeMap[2][0] = 5;
                     g_modeMap[3][0] = 5;
 #endif // __AUDIO_DETECTION__
-                f_ring_buffer[0][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(0);    // Channel 0 - First of pair for audio_sample[0]
+                f_ring_buffer[0][f_index_ring_buffer] = ReadMCP3008Raw(0); // m_MCP300X.DoSingleEndedConversionRaw(0);    // Channel 0 - First of pair for audio_sample[0]
 #ifdef __AUDIO_DETECTION__
                 g_irregularity[0]  =   f_ring_buffer[0][i0] - f_ring_buffer[0][i1] + f_ring_buffer[0][i2] - f_ring_buffer[0][i3];
 
@@ -95,7 +93,7 @@ void            CKernel::readADC()
                 
                 g_inOutMatrixFlt[0][VAL] = (g_inOutMatrixInt[0][VAL]) * 0.0009765625f;
 
-                f_ring_buffer[1][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(1);    // Channel 1 - First of pair for audio_sample[1]
+                f_ring_buffer[1][f_index_ring_buffer] = ReadMCP3008Raw(1); // m_MCP300X.DoSingleEndedConversionRaw(1);    // Channel 1 - First of pair for audio_sample[1]
 #ifdef __AUDIO_DETECTION__
                 g_irregularity[1] =    f_ring_buffer[1][i0] - f_ring_buffer[1][i1] + f_ring_buffer[1][i2] - f_ring_buffer[1][i3];
 
@@ -137,7 +135,7 @@ void            CKernel::readADC()
                 
                 g_inOutMatrixFlt[1][VAL] = (g_inOutMatrixInt[1][VAL]) * 0.0009765625f;
 
-                f_ring_buffer[2][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(2);    // Channel 2 - Second of pair for audio_sample[0]
+                f_ring_buffer[2][f_index_ring_buffer] = ReadMCP3008Raw(2); // m_MCP300X.DoSingleEndedConversionRaw(2);    // Channel 2 - Second of pair for audio_sample[0]
 #ifdef __AUDIO_DETECTION__
                 g_irregularity[2] =    f_ring_buffer[2][i0] - f_ring_buffer[2][i1] + f_ring_buffer[2][i2] - f_ring_buffer[2][i3];
                 
@@ -179,7 +177,7 @@ void            CKernel::readADC()
                 
                 g_inOutMatrixFlt[2][VAL] = (g_inOutMatrixInt[2][VAL]) * 0.0009765625f;
 
-                f_ring_buffer[3][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(3);    // Channel 3 - Second of pair for audio_sample[1]
+                f_ring_buffer[3][f_index_ring_buffer] = ReadMCP3008Raw(3); // m_MCP300X.DoSingleEndedConversionRaw(3);    // Channel 3 - Second of pair for audio_sample[1]
 #ifdef __AUDIO_DETECTION__
                 g_irregularity[3] =    f_ring_buffer[3][i0] - f_ring_buffer[3][i1] + f_ring_buffer[3][i2] - f_ring_buffer[3][i3];
 
@@ -221,7 +219,7 @@ void            CKernel::readADC()
                 
                 g_inOutMatrixFlt[3][VAL] = (g_inOutMatrixInt[3][VAL]) * 0.0009765625f;
 
-                f_ring_buffer[4][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(4);    // Channel 4 (no audio detection)
+                f_ring_buffer[4][f_index_ring_buffer] = ReadMCP3008Raw(4); // m_MCP300X.DoSingleEndedConversionRaw(4);    // Channel 4 (no audio detection)
 
                 g_inOutMatrixInt[4][RAW] =  (f_ring_buffer[4][0] + f_ring_buffer[4][1] + f_ring_buffer[4][2] + f_ring_buffer[4][3]) >>2 ; 
 
@@ -229,7 +227,7 @@ void            CKernel::readADC()
                 
                 g_inOutMatrixFlt[4][VAL] = (g_inOutMatrixInt[4][VAL]) * 0.0009765625f;
 
-                f_ring_buffer[5][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(5);
+                f_ring_buffer[5][f_index_ring_buffer] = ReadMCP3008Raw(5); // m_MCP300X.DoSingleEndedConversionRaw(5);
 
                 g_inOutMatrixInt[5][RAW] =  (f_ring_buffer[5][0] + f_ring_buffer[5][1] + f_ring_buffer[5][2] + f_ring_buffer[5][3]) >>2 ; 
 
@@ -237,7 +235,7 @@ void            CKernel::readADC()
                 
                 g_inOutMatrixFlt[5][VAL] = (g_inOutMatrixInt[5][VAL]) * 0.0009765625f;
 
-                f_ring_buffer[6][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(6);
+                f_ring_buffer[6][f_index_ring_buffer] = ReadMCP3008Raw(6); // m_MCP300X.DoSingleEndedConversionRaw(6);
 
                 g_inOutMatrixInt[6][RAW] = (f_ring_buffer[6][0] + f_ring_buffer[6][1] + f_ring_buffer[6][2] + f_ring_buffer[6][3]) >>2 ; 
 
@@ -245,7 +243,7 @@ void            CKernel::readADC()
                 
                 g_inOutMatrixFlt[6][VAL] = (g_inOutMatrixInt[6][VAL]) * 0.0009765625f;
 
-                f_ring_buffer[7][f_index_ring_buffer] = m_MCP300X.DoSingleEndedConversionRaw(7);
+                f_ring_buffer[7][f_index_ring_buffer] = ReadMCP3008Raw(7); // m_MCP300X.DoSingleEndedConversionRaw(7);
 
                 g_inOutMatrixInt[7][RAW] = (f_ring_buffer[7][0] + f_ring_buffer[7][1] + f_ring_buffer[7][2] + f_ring_buffer[7][3]) >>2 ; 
 
@@ -299,12 +297,30 @@ void            CKernel::set_pot_routing         (   bool        adc_pot_routing
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // look at readme !! from bcmwatchdog.h 
 
+
+#ifdef __cplusplus      // why? 
+extern "C" {
+#endif
+
+/// \brief Read 32-bit value from MMIO address
+static inline u32 CKernel::read32 (uintptr nAddress)
+{
+	return *(u32 volatile *) nAddress;
+}
+/// \brief Write 32-bit value to MMIO address
+static inline void CKernel::write32 (uintptr nAddress, u32 nValue)
+{
+	*(u32 volatile *) nAddress = nValue;
+}
+#ifdef __cplusplus
+}
+#endif
+
 // #include <circle/spinlock.h>
 
 //	static const unsigned MaxTimeoutSeconds = 15;
 
 //  CSpinLock m_SpinLock; // really ?!?!
-
 
 void            CKernel::watchDogStart (unsigned nTimeoutSeconds)
 {
@@ -422,7 +438,7 @@ void            CKernel::button_consumer(int p_btn_id) // this is where the magi
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // my abstract stuff like random, lfo, bpm needed for glsl shader uniform control
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::randomVec8           (uint32_t p_seed)                                               // create 8 unique normalised to 1.0 float and to 1024 int values
+void            CKernel::randomVec8           (uint32_t p_seed)         // create 8 unique normalised to 1.0 float and to 1024 int values
 {
                 const int       f_max_int   = 1023; // 1024;
                 const float     f_scale     = 1.0f / 4294967295.0f;
@@ -452,82 +468,6 @@ void            CKernel::randomVec8           (uint32_t p_seed)                 
                 g_inOutMatrixFlt[7][RND] = p_seed * f_scale;
                 g_inOutMatrixInt[7][RND] = ( g_inOutMatrixFlt[7][RND] * f_max_int);
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-// question here - should i rather have one function for both channels or should i separate the functions and call per channel? 
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-void            CKernel::calculate1BPM   (   int p_source, unsigned long   p_triggerTimeClock)       // love to split it but i will need additional parameters right?
-{
-                static unsigned long f_lastTime[2];
-                static unsigned long f_timeBuffer[2][4] = {{0}};  
-                static unsigned long f_deltaBuffer[2][3]= { 0 };
-
-                unsigned long f_intervalAverage = 0;
-                static int f_timeIndex[2] = {0};
-
-                if (p_triggerTimeClock != f_lastTime[p_source])                                                          // Process button u_time (instance 0)
-                    {
-                    f_timeBuffer[p_source][f_timeIndex[p_source]] = p_triggerTimeClock;
-        
-                    f_deltaBuffer[p_source][0]          =   f_timeBuffer[p_source][1] - f_timeBuffer[p_source][0];   
-                    f_deltaBuffer[p_source][1]          =   f_timeBuffer[p_source][2] - f_timeBuffer[p_source][1];
-                    f_deltaBuffer[p_source][2]          =   f_timeBuffer[p_source][3] - f_timeBuffer[p_source][2];
-
-                    if(     f_deltaBuffer[p_source][1]  <   f_deltaBuffer[p_source][0] * 1.25f &&  f_deltaBuffer[p_source][2]  <   f_deltaBuffer[p_source][0] * 1.25f &&  f_deltaBuffer[p_source][0]  <   f_deltaBuffer[p_source][2] * 1.25f ) // calculates an average and allows 25% play ( quite high right ) 
-                        {
-                        f_intervalAverage           = ( f_deltaBuffer[p_source][0] + f_deltaBuffer[p_source][1] + f_deltaBuffer[p_source][2]) / 3;
-            
-                        g_resultBPM[p_source]              =   60000000 / f_intervalAverage;
-            
-                        g_intervalCalculated[p_source]     =   f_intervalAverage;
-                        g_lastBpmCalculation[p_source]     =   m_Timer.GetClockTicks();
-                        }
-                    f_lastTime[p_source]                   =   p_triggerTimeClock;
-
-                    f_timeIndex[p_source]                  = ( f_timeIndex[p_source] + 1) % 4;    
-                    }
-}
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::predict1Beat ( int p_source, int p_lfoMultIn )  // love to split it but i will need additional parameters right? like LF1_MULT
-{
-                unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                      // Get the current u_time in clock ticks
-
-                if (currentTime >= g_nextBeatTime[p_source])
-                    {
-                    g_nextBeatTime[p_source]               +=  g_intervalCalculated[p_source];                                                                        // Predict the next beat u_time
-                    }
-                if (currentTime >= g_nextCircleBuffer[p_source]) 
-                    {
-                    g_lastCircleBuffer[p_source]           =   g_nextCircleBuffer[p_source];
-                    g_nextCircleBuffer[p_source]           =   g_nextCircleBuffer[p_source] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[p_source]); // why again g_lfoMultiplierTMP? isnt it stored already, do we need to back it up?
-                    g_lfoMultiplierTMP[source0]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]];
-                    }
-                if ((g_lastBpmCalculationTMP[p_source]     !=  g_lastBpmCalculation[p_source]))
-                    {
-                    g_nextBeatTime[p_source]               =   g_lastBpmCalculation[p_source];                                                                      // Reset to current time for new BPM
-                    g_lastBpmCalculationTMP[p_source]      =   g_lastBpmCalculation[p_source];
-                    }
-                if (g_lfoMultiplierTMP[p_source]           !=  g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]])
-                    {
-                    g_lastCircleBuffer[p_source]           =   g_lastBpmCalculation[g_activeBpmChannel];
-                    g_nextCircleBuffer[p_source]           =   g_lastBpmCalculation[g_activeBpmChannel] + (g_intervalCalculated[g_activeBpmChannel] * g_lfoMultiplierTMP[p_source]);
-                    g_lfoMultiplierTMP[p_source]           =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]];
-                    }
-
-}
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::sample1WaveTable                  ( int p_source, int p_lfoIn, int p_lfoOut ) // love to split it but i will need additional parameters right? like LF1_MULT
-{
-                unsigned long currentTime           =   m_Timer.GetClockTicks();                                                                          // Get the current u_time in clock ticks why not the start_time_fps_calculation or currentTime from Run()??
-
-                g_elapsedMicroseconds[p_source]     =   currentTime - g_lastCircleBuffer[p_source];
-                g_cycleLength[p_source]             =   g_nextCircleBuffer[p_source] - g_lastCircleBuffer[p_source];                                                    // Total length of the current cycle
-                int f_indexA                        =  (g_elapsedMicroseconds[p_source] * 255) / g_cycleLength[p_source];                                               // 255 is not the amplitude! its the number of samples
-                g_sampleIndex[p_source]             =   f_indexA > 255 ? 255 : f_indexA;                                                                  // means i need a wraparound - on the other hand: i should have a clear calculation here that will never create a index >255!
-                g_inOutMatrixFlt[0][p_lfoOut]       =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]][g_sampleIndex[p_source]] / 1023.0f;  // the cast is, i assume in this place pure cosmetics
-                g_inOutMatrixInt[0][p_lfoOut]       =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]][g_sampleIndex[p_source]];
-}   
-*/                
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // here it is - look at defs_struct.h for more!
 //----------------------------------------------------------------------------------------------------------------------------------------------------

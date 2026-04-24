@@ -14,7 +14,6 @@
                     m_EMMC (&m_Interrupt, &m_Timer, &m_ActLED),                                         // my CEMMCDevice device
 	                m_USBHCI (&m_Interrupt, &m_Timer, TRUE),                                            // my CUSBHCI device, i assume the usb device
 	                m_VCHIQ (CMemorySystem::Get (), &m_Interrupt),                                      // my VCHIQ device, for video and gpu communication - does it need m_Screen?
-                    m_H264Parser(),                                                                     // my H264SystemParser, for parsing the user media files
                     m_bStorageAttached (FALSE),                                                         // flag for the usb storage device
 	                m_pFileSystem (0),                                                                  // my file system, for reading files from the usb storage device
                     m_Watchdog(),                                                                       // for resetting the system if something goes wrong

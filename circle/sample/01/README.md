@@ -200,6 +200,32 @@ frmRateBreak();
 
 frmBufferSwap(&m_ogl);             
 
+// from datamanagement.cpp
+
+//-
+bool            CKernel::saveFromBufferO          (     const   char*       p_fileName,
+                                                        const   char*       p_bufferArray,
+                                                                unsigned    p_bufferSize )
+{
+                if (m_pFileSystem == 0 || p_fileName == 0 || p_bufferArray == 0 || p_bufferSize  == 0)
+                    {
+                    return false;
+                    }
+                g_hFile = m_pFileSystem->FileCreate(p_fileName);
+                if (g_hFile == 0)
+                    {
+                    return false;
+                    }
+                if (m_pFileSystem->FileWrite(g_hFile, p_bufferArray, p_bufferSize) != p_bufferSize)
+                    {
+                    return false;
+                    }
+                closeFile();
+                return true;
+}
+
+// the old save function without mount!
+
 
 // we have NO led related code jet!
 
@@ -324,31 +350,6 @@ static inline void CKernel::write32 (uintptr nAddress, u32 nValue)
 }
 #endif
 
-// from datamanagement.cpp
-
-//-
-bool            CKernel::saveFromBufferO          (     const   char*       p_fileName,
-                                                        const   char*       p_bufferArray,
-                                                                unsigned    p_bufferSize )
-{
-                if (m_pFileSystem == 0 || p_fileName == 0 || p_bufferArray == 0 || p_bufferSize  == 0)
-                    {
-                    return false;
-                    }
-                g_hFile = m_pFileSystem->FileCreate(p_fileName);
-                if (g_hFile == 0)
-                    {
-                    return false;
-                    }
-                if (m_pFileSystem->FileWrite(g_hFile, p_bufferArray, p_bufferSize) != p_bufferSize)
-                    {
-                    return false;
-                    }
-                closeFile();
-                return true;
-}
-
-// the old save function without mount!
 
 // from bcmwatchdog.h 
 #include <circle/spinlock.h>
