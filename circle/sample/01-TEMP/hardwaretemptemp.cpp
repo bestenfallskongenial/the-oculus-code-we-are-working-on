@@ -1,5 +1,75 @@
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-//  from memio.h
+// kernel.h additions
+
+private:
+    uintptr m_SPIBaseAddress = 0;                         // dependency: <circle/types.h> uintptr
+    boolean m_SPIValid = 0;                               // dependency: <circle/types.h> boolean / TRUE / FALSE
+
+    u32  my_read32(uintptr nAddress);                 // dependency: local replacement for <circle/memio.h> read32()
+    void my_write32(uintptr nAddress, u32 nValue);    // dependency: local replacement for <circle/memio.h> write32()
+
+    void my_GPIO_SetPull(unsigned nPin, unsigned nPullMode);           // dependency: local replacement for CGPIOPin::SetPullMode(GPIOPullModeOff)
+    void my_GPIO_SetAlt0(unsigned nPin);              // dependency: local replacement for CGPIOPin::SetMode(GPIOModeAlternateFunction0)
+    void my_GPIO_Write(unsigned nPin, unsigned nValue); // dependency: local replacement for CGPIOPin::Write()
+    unsigned my_GPIO_Read(unsigned nPin);             // dependency: local replacement for CGPIOPin::Read()
+
+public:
+    boolean my_SPI_init(void);
+
+    int my_WriteRead(unsigned nChipSelect,
+                  const void *pWriteBuffer,
+                  void *pReadBuffer,
+                  unsigned nCount);
+
+// kernel.cpp additions
+
+#include <circle/bcm2835.h>       // dependency: ARM_IO_BASE
+                                  // dependency: ARM_GPIO_GPFSEL0
+                                  // dependency: ARM_GPIO_GPPUD
+                                  // dependency: ARM_GPIO_GPPUDCLK0
+                                  // dependency: ARM_GPIO_GPSET0
+                                  // dependency: ARM_GPIO_GPCLR0
+                                  // dependency: ARM_GPIO_GPLEV0
+                                  // dependency: CLOCK_ID_CORE
+
+#include <circle/machineinfo.h>   // dependency: CMachineInfo::Get()->GetClockRate()
+
+#include <circle/synchronize.h>   // dependency: PeripheralEntry()
+                                  // dependency: PeripheralExit()
+
+#include <circle/timer.h>         // dependency: CTimer::SimpleusDelay()
+
+
+#define MY_SPI0_BASE        (ARM_IO_BASE + 0x204000)  // dependency: ARM_IO_BASE from <circle/bcm2835.h>
+
+#define ARM_SPI_CS          (m_SPIBaseAddress + 0x00) // dependency: m_SPIBaseAddress
+#define ARM_SPI_FIFO        (m_SPIBaseAddress + 0x04) // dependency: m_SPIBaseAddress
+#define ARM_SPI_CLK         (m_SPIBaseAddress + 0x08) // dependency: m_SPIBaseAddress
+#define ARM_SPI_DLEN        (m_SPIBaseAddress + 0x0C) // dependency: m_SPIBaseAddress
+
+#define CS_TXD              (1 << 18)                 // dependency: SPI CS register bit TXD
+#define CS_RXD              (1 << 17)                 // dependency: SPI CS register bit RXD
+#define CS_DONE             (1 << 16)                 // dependency: SPI CS register bit DONE
+#define CS_TA               (1 << 7)                  // dependency: SPI CS register bit TA
+#define CS_CLEAR_RX         (1 << 5)                  // dependency: SPI CS register bit CLEAR_RX
+#define CS_CLEAR_TX         (1 << 4)                  // dependency: SPI CS register bit CLEAR_TX
+#define CS_CPOL_SHIFT       3                         // dependency: SPI CS register CPOL shift
+#define CS_CPHA_SHIFT       2                         // dependency: SPI CS register CPHA shift
+#define CS_CS               (3 << 0)                  // dependency: SPI CS register chip-select mask
+#define CS_CS_SHIFT         0                         // dependency: SPI CS register chip-select shift
+#define CS_NONE             3                         // dependency: SPI no chip-select value
+
+#define MISO                9
+#define MOSI                10
+#define SCLK                11
+#define CE0                 8
+#define CE1                 7
+
+#define GPIO_PULL_OFF       0
+#define GPIO_PULL_DOWN      1
+#define GPIO_PULL_UP        2
+
+#define LOW                 0                         // dependency: GPIO low value
+#define HIGH                1                         // dependency: GPIO high value
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 u32 CKernel::my_read32(uintptr nAddress)
 {
@@ -11,8 +81,24 @@ void CKernel::my_write32(uintptr nAddress, u32 nValue)
     *(volatile u32 *) nAddress = nValue;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-//  my GPIOPIN implementation
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+void CKernel::my_GPIO_SetPullOff(unsigned nPin)
+{
+    uintptr nClkReg = ARM_GPIO_GPPUDCLK0 + ((nPin / 32) * 4); // dependency: ARM_GPIO_GPPUDCLK0 from <circle/bcm2835.h>
+    u32 nMask = 1 << (nPin % 32);                             // dependency: <circle/types.h> u32
+
+    my_write32(ARM_GPIO_GPPUD, 0);                             // dependency: ARM_GPIO_GPPUD from <circle/bcm2835.h>
+                                                               // dependency: my_write32()
+
+    CTimer::SimpleusDelay(5);                                  // dependency: <circle/timer.h>
+
+    my_write32(nClkReg, nMask);                                // dependency: my_write32()
+
+    CTimer::SimpleusDelay(5);                                  // dependency: <circle/timer.h>
+
+    my_write32(ARM_GPIO_GPPUD, 0);                              // dependency: ARM_GPIO_GPPUD from <circle/bcm2835.h>
+                                                               // dependency: my_write32()
+    my_write32(nClkReg, 0);                                     // dependency: my_write32()
+}
 void CKernel::my_GPIO_SetPull(unsigned nPin, unsigned nPullMode)
 {
     uintptr nClkReg = ARM_GPIO_GPPUDCLK0 + ((nPin / 32) * 4);
@@ -29,8 +115,23 @@ void CKernel::my_GPIO_SetPull(unsigned nPin, unsigned nPullMode)
     my_write32(ARM_GPIO_GPPUD, 0);
     my_write32(nClkReg, 0);
 }
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+void CKernel::my_GPIO_SetAlt0(unsigned nPin)
+{
+    my_GPIO_SetPullOff(nPin);                                   // dependency: my_GPIO_SetPullOff()
 
-void CKernel::my_GPIO_SetAlt(unsigned nPin, unsigned nAltMode, unsigned nPullMode)
+    uintptr nSelReg = ARM_GPIO_GPFSEL0 + (nPin / 10) * 4;       // dependency: ARM_GPIO_GPFSEL0 from <circle/bcm2835.h>
+    unsigned nShift = (nPin % 10) * 3;
+
+    u32 nValue = my_read32(nSelReg);                            // dependency: my_read32()
+
+    nValue &= ~(7 << nShift);
+    nValue |=  (4 << nShift);                                   // dependency: ALT0 function value for BCM2835 GPIO
+
+    my_write32(nSelReg, nValue);                                // dependency: my_write32()
+}
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+void CKernel::my_GPIO_SetAlt0(unsigned nPin, unsigned nPullMode)
 {
     my_GPIO_SetPull(nPin, nPullMode);
 
@@ -40,11 +141,11 @@ void CKernel::my_GPIO_SetAlt(unsigned nPin, unsigned nAltMode, unsigned nPullMod
     u32 nValue = my_read32(nSelReg);
 
     nValue &= ~(7 << nShift);
-    nValue |=  (nAltMode << nShift);
+    nValue |=  (4 << nShift);
 
     my_write32(nSelReg, nValue);
 }
-
+//----------------------------------------------------------------------------------------------------------------------------------------------------
 void CKernel::my_GPIO_Write(unsigned nPin, unsigned nValue)
 {
     uintptr nReg =
@@ -55,7 +156,7 @@ void CKernel::my_GPIO_Write(unsigned nPin, unsigned nValue)
 
     my_write32(nReg, nMask);                                     // dependency: my_write32()
 }
-
+//----------------------------------------------------------------------------------------------------------------------------------------------------
 unsigned CKernel::my_GPIO_Read(unsigned nPin)
 {
     uintptr nReg =
@@ -67,30 +168,7 @@ unsigned CKernel::my_GPIO_Read(unsigned nPin)
                                                                // dependency: HIGH / LOW
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-//  my watchdog implementation
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-void CKernel::my_watchdog_Start(unsigned nTimeoutSeconds)
-{
-    if (nTimeoutSeconds > WatchdogMaxTimeoutSeconds)
-    {
-        nTimeoutSeconds = WatchdogMaxTimeoutSeconds;
-    }
 
-    my_write32(
-        ARM_PM_WDOG,
-        ARM_PM_PASSWD
-        | ((nTimeoutSeconds << 16) & ARM_PM_WDOG_TIME)
-    );
-
-    my_write32(
-        ARM_PM_RSTC,
-        ARM_PM_PASSWD
-        | ARM_PM_RSTC_REBOOT
-        | (my_read32(ARM_PM_RSTC) & ARM_PM_RSTC_CLEAR)
-    );
-}
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-//  my spi
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 boolean CKernel::my_SPI_init(void)
 {
@@ -100,13 +178,11 @@ boolean CKernel::my_SPI_init(void)
     {
         return FALSE;                                            // dependency: <circle/types.h> FALSE
     }
-    // SPI (ALT0)
-    my_GPIO_SetAlt(MISO, 4, GPIO_PULL_OFF);
-    my_GPIO_SetAlt(MOSI, 4, GPIO_PULL_OFF);
-    my_GPIO_SetAlt(SCLK, 4, GPIO_PULL_OFF);
-    my_GPIO_SetAlt(CE0,  4, GPIO_PULL_OFF);
-    my_GPIO_SetAlt(CE1,  4, GPIO_PULL_OFF);
-
+    my_GPIO_SetAlt0(MISO, GPIO_PULL_OFF);
+    my_GPIO_SetAlt0(MOSI, GPIO_PULL_OFF);
+    my_GPIO_SetAlt0(SCLK, GPIO_PULL_OFF);
+    my_GPIO_SetAlt0(CE0,  GPIO_PULL_OFF);
+    my_GPIO_SetAlt0(CE1,  GPIO_PULL_OFF);
     unsigned nCoreClockRate = CMachineInfo::Get()->GetClockRate(CLOCK_ID_CORE);        // dependency: <circle/machineinfo.h> / CLOCK_ID_CORE from <circle/bcm2835.h>
 
     if (nCoreClockRate == 0)
@@ -134,13 +210,52 @@ boolean CKernel::my_SPI_init(void)
 
     return TRUE;                                                 // dependency: <circle/types.h> TRUE
 }
+//----------------------------------------------------------------------------------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+inline int CKernel::ReadMCP3008Raw(unsigned channel)
+{
+    u8 tx[3] = { 0x01, (u8)((0x08 | channel) << 4), 0x00 };
+    u8 rx[3];
+
+    if (my_WriteRead(SPI_CHIP_SELECT, tx, rx, 3) != 3)
+        return -1;
+
+    return ((rx[1] & 0x03) << 8) | rx[2];
+}
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------
 int CKernel::my_WriteRead(unsigned nChipSelect,
                        const void *pWriteBuffer,
                        void *pReadBuffer,
                        unsigned nCount)
 {
+    if (!m_SPIValid)
+    {
+        return -1;
+    }
 
+    if (m_SPIBaseAddress == 0)
+    {
+        return -1;
+    }
+
+    if (pWriteBuffer == 0 && pReadBuffer == 0)
+    {
+        return -1;
+    }
+
+    if (nCount == 0 || nCount > 0xFFFF)
+    {
+        return -1;
+    }
+
+    if (nChipSelect > 1 && nChipSelect != CS_NONE)               // dependency: CS_NONE
+    {
+        return -1;
+    }
+/*
 if (!m_SPIValid
     || m_SPIBaseAddress == 0
     || (pWriteBuffer == 0 && pReadBuffer == 0)
@@ -150,7 +265,7 @@ if (!m_SPIValid
 {
     return -1;
 }
-
+*/
     const u8 *pWritePtr = (const u8 *) pWriteBuffer;             // dependency: <circle/types.h> u8
     u8 *pReadPtr = (u8 *) pReadBuffer;                           // dependency: <circle/types.h> u8
 
@@ -235,260 +350,136 @@ if (!m_SPIValid
 
     return (int) nCount;
 }
-//---------------------------------------------------------------------------------------------------------------------
-// my SMI
-//---------------------------------------------------------------------------------------------------------------------
-boolean CKernel::my_SMI_Init(unsigned gpioPin)
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+// is #include of CBcmWatchdog 
+/*
+macros.h
+...
+#ifndef _circle_macros_h
+#define _circle_macros_h
+
+#define PACKED		__attribute__ ((packed))
+#define	MAXALIGN	__attribute__ ((aligned))
+#define	ALIGN(n)	__attribute__ ((aligned (n)))
+#define NORETURN	__attribute__ ((noreturn))
+#ifndef __clang__
+#define NOOPT		__attribute__ ((optimize (0)))
+#define STDOPT		__attribute__ ((optimize (2)))
+#define MAXOPT		__attribute__ ((optimize (3)))
+#else
+#define NOOPT
+#define STDOPT
+#define MAXOPT
+#endif
+#define WEAK		__attribute__ ((weak))
+
+#define likely(exp)	__builtin_expect (!!(exp), 1)
+#define unlikely(exp)	__builtin_expect (!!(exp), 0)
+
+#define BIT(n)		(1U << (n))
+
+#define IS_POWEROF_2(num) ((num) != 0 && (((num) & ((num) - 1)) == 0))
+
+// big endian (to be used for constants only)
+#define BE(value)	((((value) & 0xFF00) >> 8) | (((value) & 0x00FF) << 8))
+
+#endif
+
+kernel.h
+...
+static const unsigned WatchdogMaxTimeoutSeconds = 15;
+...
+*/
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+void CKernel::my_watchdog_Start(unsigned nTimeoutSeconds)
 {
-    // only GPIO8..GPIO25 are valid SMI SD lines
-    if (gpioPin < 8 || gpioPin > 25)
+    if (nTimeoutSeconds > WatchdogMaxTimeoutSeconds)
     {
-        return FALSE;
+        nTimeoutSeconds = WatchdogMaxTimeoutSeconds;
     }
 
-    m_SMIGpioPin = gpioPin;
-
-    // GPIO8 -> SD0 -> (1 << 0)
-    // GPIO9 -> SD1 -> (1 << 1)
-    m_SMISDMask = (1 << (gpioPin - 8));
-
-    // switch GPIO to SMI ALT1
-    my_GPIO_SetAlt(gpioPin, GPIO_ALT1, GPIO_PULL_OFF);
-
-    m_SMIValid = TRUE;
-
-    return TRUE;
-}
-
-void CKernel::my_SMI_SetupTiming(unsigned width,
-                                 unsigned cycle_ns,
-                                 unsigned setup,
-                                 unsigned strobe,
-                                 unsigned hold,
-                                 unsigned pace)
-{
-    u32 divi = cycle_ns / 2;
-
-    PeripheralEntry();
-
-    my_write32(ARM_SMI_CS,   0);
-    my_write32(ARM_SMI_L,    0);
-    my_write32(ARM_SMI_A,    0);
-    my_write32(ARM_SMI_DSR0, 0);
-    my_write32(ARM_SMI_DSW0, 0);
-    my_write32(ARM_SMI_DCS,  0);
-    my_write32(ARM_SMI_DCA,  0);
-
-    PeripheralExit();
-
-    PeripheralEntry();
-
-    if (my_read32(ARM_CM_SMICTL) != (divi << CM_SMIDIV_DIVI_SHIFT))
-    {
-        my_write32(ARM_CM_SMICTL, ARM_CM_PASSWD | CM_SMICTL_KILL);
-        CTimer::Get()->usDelay(10);
-
-        while (my_read32(ARM_CM_SMICTL) & CM_SMICTL_BUSY)
-        {
-        }
-
-        CTimer::Get()->usDelay(10);
-
-        my_write32(
-            ARM_CM_SMIDIV,
-            ARM_CM_PASSWD | (divi << CM_SMIDIV_DIVI_SHIFT)
-        );
-
-        CTimer::Get()->usDelay(10);
-
-        my_write32(
-            ARM_CM_SMICTL,
-            ARM_CM_PASSWD | 6 | CM_SMICTL_ENAB
-        );
-
-        CTimer::Get()->usDelay(10);
-
-        while ((my_read32(ARM_CM_SMICTL) & CM_SMICTL_BUSY) == 0)
-        {
-        }
-
-        CTimer::Get()->usDelay(100);
-    }
-
-    PeripheralExit();
-
-    PeripheralEntry();
-
-    u32 timing =
-          (width   << SMI_WWIDTH_SHIFT)
-        | (setup   << SMI_WSETUP_SHIFT)
-        | (strobe  << SMI_WSTROBE_SHIFT)
-        | (hold    << SMI_WHOLD_SHIFT)
-        | (pace    << SMI_WPACE_SHIFT);
-
-    my_write32(ARM_SMI_DSW0, timing);
-    my_write32(ARM_SMI_DSR0, timing);
-
-    PeripheralExit();
-}
-
-void            CKernel::my_SMI_SetupDMA(void)
-{
-                PeripheralEntry();
-
-                // configure SMI DMA request levels
-                my_write32(
-                    ARM_SMI_DMC,
-                    (SMI_DMA_REQUEST_THRESH << SMI_DMC_REQW_SHIFT)
-                    | (SMI_DMA_REQUEST_THRESH << SMI_DMC_REQR_SHIFT)
-                    | (SMI_DMA_PANIC_LEVEL    << SMI_DMC_PANICW_SHIFT)
-                    | (SMI_DMA_PANIC_LEVEL    << SMI_DMC_PANICR_SHIFT)
-                    | SMI_DMC_DMAEN
-                );
-
-                // enable SMI + clear FIFO + pack 16-bit data into 32-bit words
-                my_write32(
-                    ARM_SMI_CS,
-                    SMI_CS_ENABLE
-                    | SMI_CS_CLEAR
-                    | SMI_CS_PXLDAT
-                );
-
-                my_write32(
-                    ARM_SMI_L,
-                    m_BufferLength * sizeof(TXDATA_T)
-                );
-
-                my_write32(
-                    ARM_SMI_CS,
-                    my_read32(ARM_SMI_CS) | SMI_CS_WRITE
-                );
-
-                PeripheralExit();
-}
-//---------------------------------------------------------------------------------------------------------------------
-// my WS2812
-//---------------------------------------------------------------------------------------------------------------------
-boolean CKernel::my_WS2812_Init(unsigned ledCount)
-{
-    if (!m_SMIValid)
-    {
-        return FALSE;
-    }
-
-    if (ledCount == 0)
-    {
-        return FALSE;
-    }
-
-    m_LEDCount = ledCount;
-
-    m_BufferLength = TX_BUFF_LEN(ledCount);
-
-    m_pBuffer = new TXDATA_T[m_BufferLength];
-
-    if (m_pBuffer == 0)
-    {
-        return FALSE;
-    }
-
-    memset(m_pBuffer, 0, m_BufferLength * sizeof(TXDATA_T));
-
-    // WS2812-specific timing belongs here
-    my_SMI_SetupTiming(
-        SMI_WIDTH_16,
-        NEOPIXEL_SMI_NS,
-        NEOPIXEL_SMI_SETUP,
-        NEOPIXEL_SMI_STROBE,
-        NEOPIXEL_SMI_HOLD,
-        NEOPIXEL_SMI_PACE
-    );
-
-    my_SMI_SetupDMA();
-
-    return TRUE;
-}
-
-void            CKernel::my_WS2812_SetLED(unsigned index, u8 red, u8 green, u8 blue)
-{
-    if (!m_SMIValid || index >= m_LEDCount)
-    {
-        return;
-    }
-
-    TXDATA_T* tx = &m_pBuffer[LED_TX_OSET(index)];
-
-    // WS2812 byte order is GRB
-    unsigned grb =
-          ((unsigned) green << 16)
-        | ((unsigned) red   << 8)
-        | ((unsigned) blue  << 0);
-
-    for (unsigned mask = (1 << 23); mask > 0; mask >>= 1)
-    {
-        // first pulse: all lines high
-        tx[0] = 0xFFFF;
-
-        // second pulse: selected SMI line remains high only for bit 1
-        if (grb & mask)
-        {
-            tx[1] = m_SMISDMask;
-        }
-        else
-        {
-            tx[1] = 0;
-        }
-
-        // third pulse: all lines low
-        tx[2] = 0;
-
-        tx += BIT_NPULSES;
-    }
-}
-
-void            CKernel::my_WS2812_Update(void)
-{
-    if (!m_SMIValid)
-    {
-        return;
-    }
-
-    // DMA transfers prepared waveform buffer into SMI FIFO
-    m_SMITxDMA.SetupIOWrite(
-        ARM_SMI_D,
-        m_pBuffer,
-        m_BufferLength * sizeof(TXDATA_T),
-        DREQSourceSMI
-    );
-
-    m_SMITxDMA.Start();
-
-    PeripheralEntry();
-
-    // trigger SMI transfer
     my_write32(
-        ARM_SMI_CS,
-        my_read32(ARM_SMI_CS) | SMI_CS_START
+        ARM_PM_WDOG,
+        ARM_PM_PASSWD
+        | ((nTimeoutSeconds << 16) & ARM_PM_WDOG_TIME)
     );
 
-    PeripheralExit();
+    my_write32(
+        ARM_PM_RSTC,
+        ARM_PM_PASSWD
+        | ARM_PM_RSTC_REBOOT
+        | (my_read32(ARM_PM_RSTC) & ARM_PM_RSTC_CLEAR)
+    );
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-//  my MCP3008
+// old cs pin select!
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-inline int      CKernel::ReadMCP3008Raw(unsigned channel)
+// kernel.h
+private:
+    CGPIOPin m_ChipSelectPin;               // old
+
+
+// constructor
+: m_ChipSelectPin(CS_PIN, GPIOModeOutput),  // old
+
+
+if (bOK)
 {
-    u8 tx[3] = { 0x01, (u8)((0x08 | channel) << 4), 0x00 };
-    u8 rx[3];
+    m_ChipSelectPin.Write(LOW);             // old
 
-    if (my_WriteRead(SPI_CHIP_SELECT, tx, rx, 3) != 3)
-        return -1;
-
-    return ((rx[1] & 0x03) << 8) | rx[2];
+    my_GPIO_SetOutput(CS_PIN);              // new
+    my_GPIO_SetPull(CS_PIN, GPIO_PULL_OFF); // new
+    my_GPIO_Write(CS_PIN, LOW);             // new
 }
+
+
+void CKernel::my_set_pot_routing(bool adc_pot_routing)
+{
+    m_ChipSelectPin.Write(adc_pot_routing); // old
+
+    my_GPIO_Write(CS_PIN, adc_pot_routing); // new
+}
+/* ---------------------------------------------------------------------------------------------------------------------------------------------------
+// VERSION A
+// object member version
+// constructor not bloated
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-//  my "text-to-screen"
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+#include <circle/koptions.h>
+#include <circle/bcmframebuffer.h>
+#include <circle/chargenerator.h>
+
+class CKernel
+{
+public:
+        CKernel (void);
+        boolean         bufferToScreenInit (void);
+
+public:
+        CBcmFrameBuffer gE_FrameBuffer;
+        CCharGenerator  gE_CharGenerator;
+        CKernelOptions  m_Options;        
+        u32*            gE_PixelBuffer      = 0;
+        unsigned        gE_PitchBytes       = 0;
+        unsigned        gE_ScreenWidth      = 0;
+        unsigned        gE_ScreenHeight     = 0;
+        unsigned        gE_CharWidth        = 0;
+        unsigned        gE_CharHeight       = 0;
+        unsigned        gE_Cols             = 0;
+        unsigned        gE_Rows             = 0;
+
+CKernel::CKernel (void)
+:       gE_FrameBuffer (
+                m_Options.GetWidth (),
+                m_Options.GetHeight (),
+                32,
+                0,
+                TRUE
+        )
+{
+}
+//------------------------------------------------------------------------------------------------------------------------------------------------- */
 boolean         CKernel::bufferToScreenInit                              (   void )
 {
                 if (!gE_FrameBuffer.Initialize ())
@@ -519,11 +510,14 @@ boolean         CKernel::bufferToScreenInit                              (   voi
                 return TRUE;
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+//              we try to avoid CString, CScreen etc
+//----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::bufferToScreenPlot                          (   unsigned x, unsigned y, u32 color )   // why the fuck static?
 {
                 gE_PixelBuffer[y * (gE_PitchBytes >> 2) + x] = color;
 }
-
+//----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::bufferToScreenDrawChar                     (   char ch,
                                                                         unsigned charCol,
                                                                         unsigned charRow,
@@ -542,7 +536,7 @@ void            CKernel::bufferToScreenDrawChar                     (   char ch,
                         }
                     }
 }
-
+//----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::bufferToScreenClear                         (   u32 bgColor)
 {
                 const unsigned pitch32 = gE_PitchBytes >> 2;
@@ -555,7 +549,7 @@ void            CKernel::bufferToScreenClear                         (   u32 bgC
                         }
                     }
 }
-
+//----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::bufferToScreenDrawBuffer        (   const char *pSourceBuffer,
                                                                         u32 startIndex,
                                                                         u32 endIndex,
@@ -605,13 +599,10 @@ void            CKernel::bufferToScreenDrawBuffer        (   const char *pSource
                         }
                     }
 }
-
+//----------------------------------------------------------------------------------------------------------------------------------------------------
 void        CKernel::bufferToScreenGetGrid                         (   unsigned& cols, unsigned& rows)
 {
                 cols = gE_Cols;
                 rows = gE_Rows;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-//  eof
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-

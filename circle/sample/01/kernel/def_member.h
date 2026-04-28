@@ -34,8 +34,8 @@
                 CScheduler		        m_Scheduler;                        // * CScheduler: Cooperative non-preemtive scheduler which controls which task runs at a time.
                                                                             // really? who needs this? khronos stuff?
 
-                CBcmWatchdog       	    m_Watchdog;                         // * CBcmWatchdog: Driver for the BCM2835 watchdog device.
-                                                                            // Watchdog instance - tried to implement as class code!
+ //             CBcmWatchdog       	    m_Watchdog;                         // * CBcmWatchdog: Driver for the BCM2835 watchdog device.
+ //                                                                             // Watchdog instance - tried to implement as class code!
 
                 CSPIMaster		        m_SPIMaster;                        // * CSPIMaster: Driver for (non-AUX) SPI master device. Synchronous polling operation.
                                                                             // mandatory for the mpc control interfacing
@@ -52,7 +52,52 @@
 	            CGPIOPin 			    m_ChipSelectPin;  	                // * CGPIOPin: Encapsulates a GPIO pin, can be read, write or inverted. Supports interrupts. Simple initialization.
                                                                             // mandatory, but why again? 
                                                                             // Add this line for the chip select gpiopin - we try included our own "write to gpiopin"
+
+// SPI
+
+private:
+    uintptr m_SPIBaseAddress = 0;
+    boolean m_SPIValid = 0;
+
+// framebuffer
+
+public:
+    CBcmFrameBuffer gE_FrameBuffer;
+    CCharGenerator  gE_CharGenerator;
+    CKernelOptions  m_Options;
+
+    u32*            gE_PixelBuffer      = 0;
+    unsigned        gE_PitchBytes       = 0;
+    unsigned        gE_ScreenWidth      = 0;
+    unsigned        gE_ScreenHeight     = 0;
+    unsigned        gE_CharWidth        = 0;
+    unsigned        gE_CharHeight       = 0;
+    unsigned        gE_Cols             = 0;
+    unsigned        gE_Rows             = 0;
+
+// SMI / DMA / WS2812
+
+private:
+    CDMAChannel m_SMITxDMA;
+
+    unsigned    m_SMIGpioPin   = 0;
+
+    unsigned    m_SMISDMask    = 0;
+
+    unsigned    m_LEDCount     = 0;
+    unsigned    m_BufferLength = 0;
+
+    TXDATA_T*   m_pBuffer      = 0;
+
+    boolean     m_SMIValid     = FALSE;
+
+
+// watchdog
+
+static const unsigned WatchdogMaxTimeoutSeconds = 15;
+//----------------------------------------------------------------------------------------------------------------------------------------------------
 // local copies of my graphics related structs
+//----------------------------------------------------------------------------------------------------------------------------------------------------
                 olg_state               m_ogl    = {};
 
                 vtx_state               m_vtx    = {};
@@ -99,7 +144,6 @@
                 char** 				    m_bufferOmf         = nullptr;                
                 char** 				    m_bufferFsh         = nullptr; 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 // the populated filecounter array - source and truth and hub for init and load
 //----------------------------------------------------------------------------------------------------------------------------------------------------
                 unsigned                filecounter[FT_COUNT][FLD_COUNT] =
@@ -116,6 +160,7 @@
 };
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // lists of extensions possible in my scanroot directory function per filetype 
+//----------------------------------------------------------------------------------------------------------------------------------------------------
         const   char                   *g_SufVsh[VSH_EXT]			    = { "vsh" };    // vertex shaders
         const   char                   *g_SufOmf[OMF_EXT]			    = { "omf" };	// is a fsh file but used for the overlay atlas
         const   char                   *g_SufFsh[FSH_EXT]			    = { "fsh" };    // fragment shaders 
@@ -139,7 +184,6 @@
                 unsigned                g_bytTex[TEX_SD + TEX_USB]      = { 0 };
                 unsigned                g_bytVid[VID_SD + VID_USB]      = { 0 };
                 unsigned                g_bytKln[KLN_SD + KLN_USB]      = { 0 };
-
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 uint8_t g_modeMap[MENU_LAYERS*4][MENU_LAYERS*4] =	// the first element is the max of modes for each p_channel, than we have the order ( switch case of setChannelMode(int p_channel) )
                                                     // i just wonder if i need a dedicated function to edit the first element because other code might do it as read adc 
@@ -170,6 +214,26 @@ uint8_t g_modeMap[MENU_LAYERS*4][MENU_LAYERS*4] =	// the first element is the ma
                                                     { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}
                                                     };
 //----------------------------------------------------------------------------------------------------------------------------------------------------
+// Use a **member function pointer table** instead of `switch`.
+// That lets you add modes by only extending the table.
+typedef void (CKernel::*ModeFunc)(int);         // for the new menu selector -> easier to expand, right?
+
+ModeFunc g_modeTable[] =
+{
+    &CKernel::modeADC,
+    &CKernel::modeTRG,
+    &CKernel::modeBPM,
+    &CKernel::modeLF1,
+    &CKernel::modeLF2,
+    nullptr,
+    nullptr,
+    nullptr,
+    &CKernel::modeAudioAb0,
+    &CKernel::modeAudioAb1,
+    &CKernel::modeAudioBb0,
+    &CKernel::modeAudioBb1
+};                                                    
+//----------------------------------------------------------------------------------------------------------------------------------------------------
                 unsigned                g_inOutMatrixInt[CHANNEL][IO_TYPE_COUNT];           // the integer in/out matrix
                 float                   g_inOutMatrixFlt[CHANNEL][IO_TYPE_COUNT];           // the float in/out matrix
                 bool                    g_menuPickUpFlag[4*MENU_LAYER];                     // the flags for the pickup mechanism  
@@ -178,6 +242,8 @@ uint8_t g_modeMap[MENU_LAYERS*4][MENU_LAYERS*4] =	// the first element is the ma
                 unsigned                g_lfoMultiplier[LFO_MULTIPLIERS];
 
                 unsigned                g_lfoBpmMatrix[4][LFO_BPM_COUNT];
+
+                unsigned                g_hFile;                                            // file management!
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // VCSM and MMAL
 //----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -198,6 +264,8 @@ public:
 private:
         bool                            f_firstFrameQueued              = false;    
 //---------------------------------------------------------------------------------------------------------------------------------------------------- 
+// artifacs trom the earlier mmal class code initializer - what do we really need here? -> check also the mmal_init code!!!
+
         u32                             m_InputBufferHandle;
         u32                             m_InputBufferPointer;
 
@@ -224,17 +292,24 @@ private:
         
         u32                             m_CurrentHandle;
 //----------------------------------------------------------------------------------------------------------------------------------------------------        
-// VCSM predefined messages as public member here
+// VCSM predefined messages as public member here - used for 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
+/*
         SERVICE_CREATION_T              m_ServiceCreateVCSM             = {};
 
-        VCSM_Import_MEM_Msg             m_importTxVCSM                  = {};
-        VCSM_Import_MEM_Reply           m_importRxVCSM                  = {};
+        VCSM_Import_MEM_Msg             m_importTxVCSM_A                = {};           // for the video in block
+        VCSM_Import_MEM_Reply           m_importRxVCSM_A                = {};           
 
-        VCSM_Lock_MEM_Msg               m_lockTxVCSM                    = {};
+        VCSM_Import_MEM_Msg             m_importTxVCSM_B                = {};           // for the frame out A
+        VCSM_Import_MEM_Reply           m_importRxVCSM_B                = {};
+
+        VCSM_Import_MEM_Msg             m_importTxVCSM_C                = {};           // for the frame out B
+        VCSM_Import_MEM_Reply           m_importRxVCSM_C                = {};        
+
+        VCSM_Lock_MEM_Msg               m_lockTxVCSM                    = {};           // do i really need them ever?
         VCSM_Lock_MEM_Reply             m_lockRxVCSM                    = {};
 
-        VCSM_Free_MEM_Msg               m_freeTxVCSM                    = {};
+        VCSM_Free_MEM_Msg               m_freeTxVCSM                    = {};           // do i really need them ever?
         VCSM_Free_MEM_Reply             m_freeRxVCSM                    = {};
 //----------------------------------------------------------------------------------------------------------------------------------------------------        
 // MMAL predefined messages as public member here
@@ -307,3 +382,82 @@ private:
         // Snapshot **C** → build **ACTION**
         // Snapshot **D** → buffer runtime
         // Buffer TX/RX is independent of snapshots  
+*/
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+// instead of having life time long structs for my vcsm / mmal i declare pointer instead and provide wrappers to alloc and free the structs after use!
+// group A — kernel.h (pointer conversion)
+
+SERVICE_CREATION_T*              m_ServiceCreateVCSM             = nullptr;
+
+VCSM_Import_MEM_Msg*             m_importTxVCSM_A                = nullptr;
+VCSM_Import_MEM_Reply*           m_importRxVCSM_A                = nullptr;
+
+VCSM_Import_MEM_Msg*             m_importTxVCSM_B                = nullptr;
+VCSM_Import_MEM_Reply*           m_importRxVCSM_B                = nullptr;
+
+VCSM_Import_MEM_Msg*             m_importTxVCSM_C                = nullptr;
+VCSM_Import_MEM_Reply*           m_importRxVCSM_C                = nullptr;
+
+VCSM_Lock_MEM_Msg*               m_lockTxVCSM                    = nullptr;
+VCSM_Lock_MEM_Reply*             m_lockRxVCSM                    = nullptr;
+
+VCSM_Free_MEM_Msg*               m_freeTxVCSM                    = nullptr;
+VCSM_Free_MEM_Reply*             m_freeRxVCSM                    = nullptr;
+
+// group B — kernel.h (full pointer conversion)
+
+SERVICE_CREATION_T*              m_ServiceCreateMMAL             = nullptr;
+
+MMAL_Component_Create_Msg*       m_ComponentCreateTx             = nullptr;
+MMAL_Component_Create_Reply*     m_ComponentCreateRx             = nullptr;
+
+MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Input_A         = nullptr;
+MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Input_A         = nullptr;
+
+MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Output_A        = nullptr;
+MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Output_A        = nullptr;
+
+MMAL_Port_Info_Set_Msg*          m_PortInfoSetTx_Input           = nullptr;
+MMAL_Port_Info_Set_Msg*          m_PortInfoSetTx_Output          = nullptr;
+
+MMAL_Port_Info_Set_Reply*        m_PortInfoSetRx_Input           = nullptr;
+MMAL_Port_Info_Set_Reply*        m_PortInfoSetRx_Output          = nullptr;
+
+MMAL_Component_Enable_Msg*       m_ComponentEnableTx             = nullptr;
+MMAL_Component_Enable_Reply*     m_ComponentEnableRx             = nullptr;
+
+MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Input_B         = nullptr;
+MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Input_B         = nullptr;
+
+MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Output_B        = nullptr;
+MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Output_B        = nullptr;
+
+MMAL_Port_Parameter_Set_Msg*     m_PortParamTx_Input             = nullptr;
+MMAL_Port_Parameter_Set_Reply*   m_PortParamRx_Input             = nullptr;
+
+MMAL_Port_Parameter_Set_Msg*     m_PortParamTx_Output            = nullptr;
+MMAL_Port_Parameter_Set_Reply*   m_PortParamRx_Output            = nullptr;
+
+MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Input_C         = nullptr;
+MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Input_C         = nullptr;
+
+MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Output_C        = nullptr;
+MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Output_C        = nullptr;
+
+MMAL_Port_Action_Msg*            m_PortActionTx_Input            = nullptr;
+MMAL_Port_Action_Reply_Msg*      m_PortActionRx_Input            = nullptr;
+
+MMAL_Port_Action_Msg*            m_PortActionTx_Output           = nullptr;
+MMAL_Port_Action_Reply_Msg*      m_PortActionRx_Output           = nullptr;
+
+MMAL_Buffer_From_Host_Msg*       m_BufferFromHostTx_Input        = nullptr;
+MMAL_Buffer_From_Host_Msg*       m_BufferFromHostRx_Input        = nullptr;
+
+MMAL_Buffer_From_Host_Msg*       m_BufferFromHostTx_Output       = nullptr;
+MMAL_Buffer_From_Host_Msg*       m_BufferFromHostRx_Output       = nullptr;
+
+MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Input_D         = nullptr;
+MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Input_D         = nullptr;
+
+MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Output_D        = nullptr;
+MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Output_D        = nullptr;

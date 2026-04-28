@@ -1,6 +1,14 @@
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//  PUBLIC / PRIVATE
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        okay, oculus mendax software 0.001 rev B with integrated overlay texture atlas menu,
+        extended modes and video decoding for raw annex b h264 videos ( i frames only )
+
+        the idea in this header is to have a clear seperation of responsibilities since the code is that big that i lost track long time ago.
+        for example do i exclude the #define ( macros ) and #include ( libs / headers ) in seperrate heders here, also enums, structs and members.
+        the point is now to include them in the right place and order!
+
+        this file here contains all my functions - i also reitegrated some driver / utility classes back into my project class ( CKernel ),
+        sorted by file of origin - we will use this file here also as source of truth for the comments on the function of the parameters!
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 #include "include_defs.h"
 #include "macro_defs.h"
 
@@ -10,8 +18,8 @@ public:
 	            CKernel (void);
 	           ~CKernel (void);
 
-#include "enums.h"
-#include "structs.h"
+// #include "enums.h"
+// #include "structs.h"
 
 
 	        boolean     Initialize (void);
@@ -146,6 +154,87 @@ public:
                                                                     tex_state*                      t);
                 void        drawGLsOvl                  ();
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  HARDWARE
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                u32         my_read32                   (           uintptr                         nAddress);                          // MMIO
+                void        my_write32                  (           uintptr                         nAddress, 
+                                                                    u32                             nValue);
+
+
+    
+
+                void        my_GPIO_SetPull             (           unsigned                        nPin,                               // GPIO
+                                                                    unsigned                        nPullMode);
+
+                void        my_GPIO_SetAlt              (           unsigned                        nPin, 
+                                                                    unsigned                        nAltMode, 
+                                                                    unsigned                        nPullMode);
+
+                void        my_GPIO_Write               (           unsigned                        nPin, 
+                                                                    unsigned                        nValue);
+                unsigned    my_GPIO_Read                (           unsigned                        nPin);
+
+
+    
+
+                void        my_watchdog_Start           (           unsigned                        nTimeoutSeconds);                   // watchdog
+
+            boolean         my_SPI_init                 (           void);                                                              // SPI
+
+            int             my_WriteRead                (           unsigned                        nChipSelect,
+                                                            const   void*                           pWriteBuffer,
+                                                                    void*                           pReadBuffer,
+                                                                    unsigned                        nCount);
+    
+
+            boolean         my_SMI_Init                 (           unsigned                        gpioPin);                           // SMI
+                                                                   
+            void            my_SMI_SetupTiming          (           unsigned                        width,
+                                                                    unsigned                        cycle_ns,
+                                                                    unsigned                        setup,
+                                                                    unsigned                        strobe,
+                                                                    unsigned                        hold,
+                                                                    unsigned                        pace);
+
+            void            my_SMI_SetupDMA             (           void);
+     
+            boolean         my_WS2812_Init              (           unsigned                        ledCount);                          // WS2812
+            
+            void            my_WS2812_SetLED            (           unsigned                        index, 
+                                                                    u8                              red, 
+                                                                    u8                              green, 
+                                                                    u8                              blue);
+            void            my_WS2812_Update            (           void);    
+
+     
+
+    inline  int             ReadMCP3008Raw              (           unsigned                        channel);                           // MPC 3008
+
+            boolean         bufferToScreenInit          (           void);                                                              // framebuffer / screen
+
+            void            bufferToScreenPlot          (           unsigned                        x,
+                                                                    unsigned                        y,
+                                                                    u32                             color);
+
+            void            bufferToScreenDrawChar      (           char                            ch,
+                                                                    unsigned                        charCol,
+                                                                    unsigned                        charRow,
+                                                                    u32                             fgColor,
+                                                                    u32                             bgColor);
+
+            void            bufferToScreenClear         (           u32                             bgColor);
+
+            void            bufferToScreenDrawBuffer    (   const   char*                           pSourceBuffer,
+                                                                    u32                             startIndex,
+                                                                    u32                             endIndex,
+                                                                    unsigned                        startCol,
+                                                                    unsigned                        startRow,
+                                                                    u32                             fgColor,
+                                                                    u32                             bgColor);
+
+            void            bufferToScreenGetGrid       (           unsigned&                       cols,
+                                                                    unsigned&                       rows);
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  LOGGING
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 void        storeLog                    (           char*                           p_bufferArray, 
@@ -175,31 +264,6 @@ public:
 
                 void        nextline                    (           char*                           p_bufferArray,
                                                                     u32&                            index);
-
-        static  void        bufferToScreenPlot          (           unsigned                        x, 
-                                                                    unsigned                        y, 
-                                                                    u32                             color );       
-
-        static  void        bufferToScreenDrawChar      (           char                            ch,
-                                                                    unsigned                        charCol,
-                                                                    unsigned                        charRow,
-                                                                    u32                             fgColor,
-                                                                    u32                             bgColor );
-
-                boolean     bufferToScreenInit          (           void )
-
-                void        bufferToScreenClear         (           u32                             bgColor);
-
-                void        bufferToScreenDrawBuffer    (   const   char*                           pSourceBuffer,
-                                                                    u32                             startIndex,
-                                                                    u32                             endIndex,
-                                                                    unsigned                        startCol,
-                                                                    unsigned                        startRow,
-                                                                    u32                             fgColor,
-                                                                    u32                             bgColor);
-
-                unsigned    bufferToScreenGetGrid       (           unsigned&                       cols, 
-                                                                    unsigned&                       rows);
 // also "only" log / debug or really runtime requirements?
                 bool        shaderLog                   (           GLint                           shader, 
                                                                     int                             shaderIndex);
@@ -211,7 +275,7 @@ public:
                                                                     unsigned                        line);
 
                 bool        startupScreen               (           char*                           p_bufferArray,
-                                                                    u32&                            index);
+                                                                    u32&                            index);                                                                    
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  MENU
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -220,7 +284,7 @@ public:
                 void        mapMenuGroup                (           uint8_t                         menu_id, 
                                                                     uint8_t                         base);
 
-                void        getChannelModeA              (           int                             p_channel);
+                void        getChannelModeA             (           int                             p_channel);
 
                 void        modeADC                     (           int                             p_channel);
 
@@ -240,7 +304,7 @@ public:
 
                 void        modeAudioBb1                (           int                             p_channel);
 
-                void        getChannelModeA              (           int                             p_channel);                
+                void        getChannelModeA             (           int                             p_channel);                
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  PARSER
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -337,7 +401,7 @@ public:
                                                                     VCHI_CALLBACK_REASON_T          reason, 
                                                                     void*                           msg_handle);
 
-                void        getStateVCHI();
+                void        getStateVCHI                ();
                 bool        initEventsVCOS              (           VCOS_EVENT_T&                   event, 
                                                             const   char*                           name);
 

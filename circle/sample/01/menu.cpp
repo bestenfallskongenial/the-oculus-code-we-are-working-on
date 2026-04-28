@@ -113,31 +113,6 @@ void            CKernel::getChannelModeA(int p_channel) // this is also a wrappe
                     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-Use a **member function pointer table** instead of `switch`.
-
-That lets you add modes by only extending the table.
-
-typedef void (CKernel::*ModeFunc)(int);
-
-ModeFunc g_modeTable[] =
-{
-    &CKernel::modeADC,
-    &CKernel::modeTRG,
-    &CKernel::modeBPM,
-    &CKernel::modeLF1,
-    &CKernel::modeLF2,
-    nullptr,
-    nullptr,
-    nullptr,
-    &CKernel::modeAudioAb0,
-    &CKernel::modeAudioAb1,
-    &CKernel::modeAudioBb0,
-    &CKernel::modeAudioBb1
-};
-*/
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void CKernel::getChannelModeB(int p_channel)
 {
     int mode =

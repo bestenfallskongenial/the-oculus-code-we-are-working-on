@@ -38,31 +38,30 @@ extern          float                   GLtime;
 extern          float                   opaque;
 
 extern          int                     multiplier                              [LFO_MULTIPLIERS];
-extern          unsigned long           last_circle_buffer                      [LFO_INSTANCES];
-extern          unsigned long           next_circle_buffer                      [LFO_INSTANCES];
 
-extern          int                     last_multiplier                         [LFO_INSTANCES];
+
+
 
 
 //extern          float                   float_lfo_output                        [LFO_INSTANCES];         // realtime output for 2 x 4 lfo waves ( sine, saw, tri, ... )
-extern          int                     LFO_int_output                          [LFO_INSTANCES];
+
 extern          bool                    m_shaderStatusFlags                     [FSH_SD+FSH_USB]; 
 extern          bool                    menu_pickup_flag                        [ADC_CHANNELS+ADC_CHANNELS];                 // Array tracking if pot value has been "picked up"
 extern          bool                    input_threshold_flag                    [ADC_CHANNELS];             // Array tracking threshold state per channel
-extern          unsigned long           resultBPM                               [2];
+
 
 extern          int                     menu_pickup_buffer                      [ADC_CHANNELS+ADC_CHANNELS];               // Array storing previous pot values for pickup detection
 extern          unsigned long           current_time_for_bpm;                      // Array storing timing information per channel
-extern          unsigned long           next_beat_time                          [2];                     // Next beat timestamp for BPM mode
-extern          unsigned long           buffer_interval                         [2];
+
+
 extern          unsigned long           last_valid_bpm_calculation              [2];
 extern          unsigned long           last_valid_bpm_buffer                   [2];
-extern          unsigned long           intervalBuffer                          [2][3];
+
 extern          unsigned char           led_col_new                             [20][3];
 
-extern          unsigned long elapsedMicroseconds[LFO_INSTANCES];
-extern          unsigned long cycleLength[LFO_INSTANCES];
-extern          int sampleIndex[LFO_INSTANCES];
+
+
+
 
 extern          int LFO_mode[4];
 

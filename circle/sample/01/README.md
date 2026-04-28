@@ -828,6 +828,166 @@ MMAL_BUFFER_HEADER_FLAG_CONFIG
 
 here.
 
-
-
 */
+
+// ----------------------------------------------------------------------------------------------------
+// includes / init of the original triangle 2 example code
+// ----------------------------------------------------------------------------------------------------
+//  kernel.h
+#include <circle/actled.h>
+#include <circle/koptions.h>
+#include <circle/devicenameservice.h>
+#include <circle/screen.h>
+#include <circle/serial.h>
+#include <circle/exceptionhandler.h>
+#include <circle/interrupt.h>
+#include <circle/timer.h>
+#include <circle/logger.h>
+#include <circle/usb/usbhcidevice.h>
+#include <circle/input/mouse.h>
+#include <circle/sched/scheduler.h>
+#include <vc4/vchiq/vchiqdevice.h>
+#include <circle/types.h>
+//  kernel.cpp:
+#include <linux/kernel.h>
+#include <linux/delay.h>
+#include <linux/spinlock.h>
+#include <assert.h>
+#else
+#include <stdio.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <assert.h>
+#include <unistd.h>
+
+#include "bcm_host.h"
+
+#include "GLES2/gl2.h"
+#include "EGL/egl.h"
+#include "EGL/eglext.h"
+
+private:
+	// do not change this order
+	CActLED			m_ActLED;
+	CKernelOptions		m_Options;
+	CDeviceNameService	m_DeviceNameService;
+	CScreenDevice		m_Screen;
+	CSerialDevice		m_Serial;
+	CExceptionHandler	m_ExceptionHandler;
+	CInterruptSystem	m_Interrupt;
+	CTimer			m_Timer;
+	CLogger			m_Logger;
+	CUSBHCIDevice		m_USBHCI;
+	CScheduler		m_Scheduler;
+
+	CVCHIQDevice		m_VCHIQ;
+
+    CKernel::CKernel (void)
+:	m_Screen (m_Options.GetWidth (), m_Options.GetHeight ()),
+	m_Timer (&m_Interrupt),
+	m_Logger (m_Options.GetLogLevel (), &m_Timer),
+	m_USBHCI (&m_Interrupt, &m_Timer),
+	m_VCHIQ (CMemorySystem::Get (), &m_Interrupt)
+{
+	m_ActLED.Blink (5);	// show we are alive
+}
+
+CKernel::~CKernel (void)
+{
+}
+
+boolean CKernel::Initialize (void)
+{
+	boolean bOK = TRUE;
+	if (bOK) { bOK = m_Screen.Initialize (); }
+	if (bOK) { bOK = m_Serial.Initialize (115200); }
+	if (bOK)
+	    {
+		CDevice *pTarget = m_DeviceNameService.GetDevice (m_Options.GetLogDevice (), FALSE);
+		if (pTarget == 0) { pTarget = &m_Screen; }
+
+		bOK = m_Logger.Initialize (pTarget); 
+        }
+	if (bOK) { bOK = m_Interrupt.Initialize (); }
+	if (bOK) { bOK = m_Timer.Initialize (); }
+	if (bOK) { bOK = m_USBHCI.Initialize (); }
+	if (bOK) { bOK = m_VCHIQ.Initialize (); }
+	return bOK;
+}
+
+// ----------------------------------------------------------------------------------------------------
+// parser.cpp 
+/* ----------------------------------------------------------------------------------------------------
+Path A = Full Annex B input
+
+
+format->encoding         = MMAL_ENCODING_H264;
+format->encoding_variant = MMAL_ENCODING_VARIANT_H264_DEFAULT;
+
+submit per frame:
+
+00 00 00 01 SPS
+00 00 00 01 PPS
+00 00 00 01 IDR
+
+using:
+
+ptr = frame_address;
+len = frame_length;
+
+---
+
+Path B = CONFIG + RAW frame input
+
+format->encoding         = MMAL_ENCODING_H264;
+format->encoding_variant = MMAL_ENCODING_VARIANT_H264_RAW;
+
+CONFIG submit once:
+
+00 00 00 01 SPS
+00 00 00 01 PPS
+
+using:
+
+ptr = extradata;
+len = extradata_len;
+buffer->flags |= MMAL_BUFFER_HEADER_FLAG_CONFIG;
+
+
+FRAME submit per decode:
+
+65 ...
+
+using:
+
+ptr =
+    frame_address
+    + idr_offset
+    + idr_sc_len;
+
+len =
+    idr_len
+    - idr_sc_len;
+
+
+because:
+
+frame_address + idr_offset
+
+
+lands on:
+
+00 00 00 01 65 ...
+
+but RAW needs:
+
+65 ...
+
+therefore:
+
+h->idr_sc_len[file_index] = idr_sc_len[1];
+// ------------------------------------------------------------------------------------------------- */
+
+// ----------------------------------------------------------------------------------------------------
