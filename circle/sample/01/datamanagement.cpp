@@ -29,7 +29,7 @@ bool            CKernel::UnMount                    ()
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 bool            CKernel::openFile                   (   const   char*       p_fileName)
 {   
-	            g_hFile = m_pFileSystem->FileOpen (p_fileName); // !!! unsigned g_hFile !!!
+	            g_hFile = m_pFileSystem->FileOpen (p_fileName);
 	            if (g_hFile == 0)
 		            {
 		            return false;
