@@ -34,10 +34,6 @@ boolean         CKernel::Initialize (void)
                     }
                 if (bOK)
                     {
-                    bOK = display_startup_screen(&m_glsl); 
-                    }
-                if (bOK)
-                    {
                     bOK = m_Timer.Initialize(); 
                     }
                 if (bOK)
@@ -60,6 +56,11 @@ boolean         CKernel::Initialize (void)
                     }
                 if (bOK)
                     {
+                    bOK = wrapperInitVCSMstruct();
+                    bOK = wrapperInitMMALstruct();
+                    }                    
+                if (bOK)
+                    {
                     bOK = m_VCHIQ.Initialize();
                     m_Timer.MsDelay(200);
                     }
@@ -75,40 +76,9 @@ boolean         CKernel::Initialize (void)
                 }
                 if (bOK)
                     {
-                    bOK = wrapper_VCSM();
-                    }
-                if (bOK)
-                    {
-                    bOK = MMALinitialize();
-                    }
-                if (bOK)
-                    {
-                    m_Watchdog.Start(TIMEOUT);
-                    }
-                if (bOK)
-                    {
                     bOK = m_SPIMaster.Initialize();
                     }
-                if (bOK)
-                    {
-                    m_ChipSelectPin.Write(LOW);
-                    /*
-                    shall we create our own mechanism too?
-                    */
-                    }
-                if (bOK)    // we will get rid of m_button in this version
-                    {
-                    bOK = m_Button_A.Initialize();
-                    m_Button_A.RegisterEventHandler(io_event_button_A, this);
-                    /*
-                    should be not needed anymore, right
-                    */
-                    }
-                if (bOK)
-                    {
-                    bOK = m_Button_B.Initialize();
-                    m_Button_B.RegisterEventHandler(io_event_button_B, this);
-                    }
+
                 return bOK;
                 }
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -116,7 +116,7 @@ static const unsigned WatchdogMaxTimeoutSeconds = 15;
                 char** 				    m_bufferVid         = nullptr;      // thats the pointer to my "array-like" buffer allocation
                 char* 				    m_videoBlockBase    = nullptr;      // returns the aligned DMA base pointer
                 char* 				    m_videoRawBlock     = nullptr;      // returns the original pointer from new[]
-                size_t 				    m_videoBlockSize    = 0;            // size of each individual buffer
+                size_t 				    m_videoBlockSize    = 0;            // size of each individual buffer - complete size, not only blocks?
 
                 char**				    m_bufferFrA         = nullptr;      // i created a struct for it but that means i must 
                 char* 				    m_frameBlockBaseA   = nullptr;      // rewrite the wrappers and initialize the stucts properly
@@ -256,8 +256,8 @@ private:
         VCHI_SERVICE_HANDLE_T           m_ServiceHandleVCSM             = 0;
         VCHI_SERVICE_HANDLE_T           m_ServiceHandleMMAL             = 0;
         u32                             m_TransactionId                 = 0;
-        u32                             m_vc_handle[MAX_BUFFER]         = {0};
-        u32                             m_vc_pointer[MAX_BUFFER]        = {0};
+        u32                             m_vc_handle[MAX_BUFFER]         = {0};  // why an array, why not simply by u32& my_current_handle instead of slot?
+        u32                             m_vc_pointer[MAX_BUFFER]        = {0};  // why an array, why not simply by u32& my_current_pointer instead of slot?
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 public:
         GLuint                          m_Texture = 0;                                              // must be exposed
@@ -266,31 +266,31 @@ private:
 //---------------------------------------------------------------------------------------------------------------------------------------------------- 
 // artifacs trom the earlier mmal class code initializer - what do we really need here? -> check also the mmal_init code!!!
 
-        u32                             m_InputBufferHandle;
-        u32                             m_InputBufferPointer;
+        u32                             m_InputBufferHandle;            // m_vc_handle[0]
+        u32                             m_InputBufferPointer;           // m_vc_pointer[0]
 
-        u32                             m_InputBufferSize;
+        u32                             m_InputBufferSize;              // aka m_videoBlockSize ?
 
-        u32                             m_OutputBufferHandleA;
-        u32                             m_OutputBufferPointerA;
+        u32                             m_OutputBufferHandleA;          // m_vc_handle[1]
+        u32                             m_OutputBufferPointerA;         // m_vc_pointer[1]
 
-        u32                             m_OutputBufferHandleB;
-        u32                             m_OutputBufferPointerB;
+        u32                             m_OutputBufferHandleB;          // m_vc_handle[2]
+        u32                             m_OutputBufferPointerB;         // m_vc_pointer[2]
 
-        u32                             m_OutputBufferSize;
+        u32                             m_OutputBufferSize;             // aka m_frameBlockSizeA / m_frameBlockSizeB ?
 
-        u32                             m_ResolutionX;
-        u32                             m_ResolutionY;
+        u32                             m_ResolutionX;                  // m_Options.GetWidth()
+        u32                             m_ResolutionY;                  // m_Options.GetHeight()
 
-        u32                             m_ComponentHandle;
+        u32                             m_ComponentHandle;              // from createComponent() 
 
-        u32                             m_VCSMHandleA;
-        u32                             m_VCSMHandleB;
+        u32                             m_VCSMHandleA;                  // obsolete - we now have a different mechanism in bufferReadyMMAL
+        u32                             m_VCSMHandleB;                  // obsolete - we now have a different mechanism in bufferReadyMMAL
 
-        u32                             m_InputPortHandle;
-        u32                             m_OutputPortHandle;  
+        u32                             m_InputPortHandle;              // getPortInfoMMAL(   u32 port_type, u32& port_handle, MMAL_Port_Info_Get_Msg& tx, MMAL_Port_Info_Get_Reply& rx)
+        u32                             m_OutputPortHandle;             // getPortInfoMMAL(   u32 port_type, u32& port_handle, MMAL_Port_Info_Get_Msg& tx, MMAL_Port_Info_Get_Reply& rx)
         
-        u32                             m_CurrentHandle;
+        u32                             m_CurrentHandle;                // u32 m_CurrentHandle = m_BufferFromHostTx_Output.msg.buffer_header.data;
 //----------------------------------------------------------------------------------------------------------------------------------------------------        
 // VCSM predefined messages as public member here - used for 
 //----------------------------------------------------------------------------------------------------------------------------------------------------

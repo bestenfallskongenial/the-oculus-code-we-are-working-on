@@ -237,6 +237,7 @@ bool bOK = true;
 bool            CKernel::importMemoryVCSM   (   void* p_bufferBlockbase, 
                                                 size_t size, 
                                                 int slot, 
+                                            /*  u32& vcsm_handle,  */ 
                                                 VCSM_Import_MEM_Msg& tx, 
                                                 VCSM_Import_MEM_Reply& rx)
 {
@@ -257,7 +258,8 @@ bool            CKernel::importMemoryVCSM   (   void* p_bufferBlockbase,
 
                 if (rx.body.res_handle != 0)
                 {
-                    m_vc_handle[slot] = rx.body.res_handle;
+                    m_vc_handle[slot]   = rx.body.res_handle;     // why an array, why not simply by u32& my_current_handle ?
+                /*  vcsm_handle         = rx.body.res_handle;     // like this ? */                   
 #ifdef __DEBUG_LOG__
                         nextline( MY_BUFFER, MY_INDEX );  
                         storeLog( MY_BUFFER, MY_INDEX, "Import VCSM Memory to Slot ", slot); 
@@ -268,7 +270,8 @@ bool            CKernel::importMemoryVCSM   (   void* p_bufferBlockbase,
                 return false;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::lockMemoryVCSM     (   int slot, 
+bool            CKernel::lockMemoryVCSM     (   int slot,
+                                            /*  u32& vcsm_pointer,  */ 
                                                 VCSM_Lock_MEM_Msg& tx, 
                                                 VCSM_Lock_MEM_Reply& rx)
 {
@@ -285,7 +288,8 @@ bool            CKernel::lockMemoryVCSM     (   int slot,
 
                 if (rx.body.res_mem != 0)
                 {
-                    m_vc_pointer[slot] = rx.body.res_mem;
+                    m_vc_pointer[slot]  = rx.body.res_mem;   // why an array, why not simply by u32& my_current_pointer instead of slot?
+                /*  vcsm_pointer        = rx.body.res_mem;   // like this ?   */                 
 #ifdef __DEBUG_LOG__
                         nextline( MY_BUFFER, MY_INDEX );  
                         storeLog( MY_BUFFER, MY_INDEX, "Lock VCSM Memory in Slot   ", slot);  
@@ -296,7 +300,11 @@ bool            CKernel::lockMemoryVCSM     (   int slot,
                 return false;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::freeMemoryVCSM     ( int slot, VCSM_Free_MEM_Msg& tx, VCSM_Free_MEM_Reply& rx)
+bool            CKernel::freeMemoryVCSM     (   int                     slot, 
+                                            /*  u32& vcsm_handle, */
+                                            /*  u32& vcsm_pointer, */                                            
+                                                VCSM_Free_MEM_Msg&      tx, 
+                                                VCSM_Free_MEM_Reply&    rx)
 {
                 initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_FREE);
 
@@ -311,8 +319,10 @@ bool            CKernel::freeMemoryVCSM     ( int slot, VCSM_Free_MEM_Msg& tx, V
 
                 if (rx.body.success == 0)
                 {
-                    m_vc_handle[slot]  = 0;
-                    m_vc_pointer[slot] = 0;
+                    m_vc_handle[slot]   = 0;
+                    m_vc_pointer[slot]  = 0;
+                //  vcsm_handle         = 0;
+                //  vcsm_pointer        = 0;
 #ifdef __DEBUG_LOG__
                         nextline( MY_BUFFER, MY_INDEX );  
                         storeLog( MY_BUFFER, MY_INDEX, "Free VCSM Memory in Slot ", slot);  
