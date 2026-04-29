@@ -7,22 +7,17 @@
                 static  const char              FromKernel[] = "kernel";                                // for logging? here not in kernel.h?
                 
                 CKernel::CKernel (void)                                                                 // my constructor
-                :	m_Screen (m_Options.GetWidth (), m_Options.GetHeight ()),                           // for char output or the global framebuffer?
+                // my sreen 
                     m_Interrupt (),                                                                     // i assume someone needs interupts here, not me!
 	                m_Timer (&m_Interrupt),                                                             // this i use frequently for timeouts, delays           
-	                m_Logger (LOGLEVEL, &m_Timer),                                                      // for logging, but do i actually use or need it?
+                // my spi
+                // my smi
+                // my mcp 3008 ?
                     m_EMMC (&m_Interrupt, &m_Timer, &m_ActLED),                                         // my CEMMCDevice device
 	                m_USBHCI (&m_Interrupt, &m_Timer, TRUE),                                            // my CUSBHCI device, i assume the usb device
 	                m_VCHIQ (CMemorySystem::Get (), &m_Interrupt),                                      // my VCHIQ device, for video and gpu communication - does it need m_Screen?
                     m_bStorageAttached (FALSE),                                                         // flag for the usb storage device
 	                m_pFileSystem (0),                                                                  // my file system, for reading files from the usb storage device
-                    m_Watchdog(),                                                                       // for resetting the system if something goes wrong
-	                m_SPIMaster (SPI_CLOCK_SPEED, 0, 0, SPI_MASTER_DEVICE),                             // what again? the 3008 or the ws2812
-	                m_MCP300X (&m_SPIMaster, ADC_VOLT_REF, SPI_CHIP_SELECT, SPI_CLOCK_SPEED),           // for reading the potentiometer
-                    m_NeoPixels (SD_LINES_MASK, LED_COUNT),                                             // for controlling the ws2812 leds, but do i actually use it? 
-                    m_GPIOManager (&m_Interrupt),                                                       // for direct read/write of pins ?
-                    m_ChipSelectPin(CS_PIN, GPIOModeOutput),                                            // the same again?
-	                m_Button_A (SW_PIN_A), m_Button_B (SW_PIN_B),                                       // the two buttons i have
 
                     m_USBhasLoadOnes(false),                                                            // we load only one time from usb, sorry user!
                     m_resetFlag(false)                                                                  // determine if the main while loop runs

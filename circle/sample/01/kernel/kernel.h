@@ -9,8 +9,8 @@
         this file here contains all my functions - i also reitegrated some driver / utility classes back into my project class ( CKernel ),
         sorted by file of origin - we will use this file here also as source of truth for the comments on the function of the parameters!
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
-#include "include_defs.h"
-#include "macro_defs.h"
+#include "def_include.h"
+#include "def_macro.h"
 
 class CKernel
 {
@@ -18,9 +18,8 @@ public:
 	            CKernel (void);
 	           ~CKernel (void);
 
-// #include "enums.h"
-// #include "structs.h"
-
+#include "def_enum.h"
+#include "def_struct.h"
 
 	        boolean     Initialize (void);
 
@@ -34,7 +33,7 @@ public:
 
                 unsigned    loadToBuffer                (           char*                           p_bufferArray,               // destination buffer for the file data
                                                                     unsigned                        p_bufferSize);          // maximum number of bytes to read into the buffer
-
+//5
                 bool        saveFromBufferO             (   const   char*                           p_fileName,             // filename format "8.3" 
                                                             const   char*                           p_bufferArray,               // my allocated buffer
                                                                     unsigned                        p_bufferSize);          // max buffer size
@@ -56,7 +55,7 @@ public:
 
                 bool        IsValidFile                 (   const   char*                           pFileName, 
                                                             const   char*                           extension);
-
+//10
                 bool        scanRoot                    (           char**                          p_fileNameArray,        // where we store the valid filenames we find
                                                                     const char*                     p_fileExtArray[],       // the array of valid file extensions for this type of file
                                                                     unsigned                        p_extentionCount,       // how many valid file extensions we have in the array above
@@ -76,7 +75,7 @@ public:
                                                                     char**                          blockBaseOut,
                                                                     char**                          rawBlockOut,
                                                                     size_t*                         alignedSizeOut);
-
+//15
                 void        clearBufferMEM              (           char**                          buffers, 
                                                                     size_t                          p_count);
 
@@ -97,7 +96,7 @@ public:
                                                                     int                             p_fromFile,
                                                                     int                             p_toFile,
                                                                     GLenum                          type);
-
+//20
                 void        initProgram                 (           vtx_state*                      v,
                                                                     glsl_state*                     vsh,
                                                                     glsl_state*                     fsh,
@@ -125,7 +124,7 @@ public:
                 void        frmBufferSet                (           vtx_state*                      v);
 
                 void        frmBufferSwap               (           olg_state*                      o);
-
+//25
                 void        setUniPrg                   (           olg_state*                      o,
                                                                     glsl_state*                     s,
                                                                     tex_state*                      t,
@@ -144,7 +143,7 @@ public:
                 void        updateOvlState              (           olg_state*                      o, 
                                                                     glsl_state*                     s, 
                                                                     tex_state*                      t);
-
+//30
                 void        setUniOvl                   (           olg_state*                      o, 
                                                                     glsl_state*                     s, 
                                                                     tex_state*                      t);
@@ -165,7 +164,7 @@ public:
 
                 void        my_GPIO_SetPull             (           unsigned                        nPin,                               // GPIO
                                                                     unsigned                        nPullMode);
-
+//35
                 void        my_GPIO_SetAlt              (           unsigned                        nPin, 
                                                                     unsigned                        nAltMode, 
                                                                     unsigned                        nPullMode);
@@ -179,52 +178,52 @@ public:
 
                 void        my_watchdog_Start           (           unsigned                        nTimeoutSeconds);                   // watchdog
 
-            boolean         my_SPI_init                 (           void);                                                              // SPI
-
-            int             my_WriteRead                (           unsigned                        nChipSelect,
+                boolean     my_SPI_init                 (           void);                                                              // SPI
+//40
+                int         my_WriteRead                (           unsigned                        nChipSelect,
                                                             const   void*                           pWriteBuffer,
                                                                     void*                           pReadBuffer,
                                                                     unsigned                        nCount);
     
 
-            boolean         my_SMI_Init                 (           unsigned                        gpioPin);                           // SMI
+                boolean     my_SMI_Init                 (           unsigned                        gpioPin);                           // SMI
                                                                    
-            void            my_SMI_SetupTiming          (           unsigned                        width,
+                void        my_SMI_SetupTiming          (           unsigned                        width,
                                                                     unsigned                        cycle_ns,
                                                                     unsigned                        setup,
                                                                     unsigned                        strobe,
                                                                     unsigned                        hold,
                                                                     unsigned                        pace);
 
-            void            my_SMI_SetupDMA             (           void);
+                void        my_SMI_SetupDMA             (           void);
      
-            boolean         my_WS2812_Init              (           unsigned                        ledCount);                          // WS2812
-            
-            void            my_WS2812_SetLED            (           unsigned                        index, 
+                boolean     my_WS2812_Init              (           unsigned                        ledCount);                          // WS2812
+//45            
+                void        my_WS2812_SetLED            (           unsigned                        index, 
                                                                     u8                              red, 
                                                                     u8                              green, 
                                                                     u8                              blue);
-            void            my_WS2812_Update            (           void);    
+                void        my_WS2812_Update            (           void);    
 
      
 
-    inline  int             ReadMCP3008Raw              (           unsigned                        channel);                           // MPC 3008
+        inline  int         ReadMCP3008Raw              (           unsigned                        channel);                           // MPC 3008
 
-            boolean         bufferToScreenInit          (           void);                                                              // framebuffer / screen
+                boolean     bufferToScreenInit          (           void);                                                              // framebuffer / screen
 
-            void            bufferToScreenPlot          (           unsigned                        x,
+                void        bufferToScreenPlot          (           unsigned                        x,
                                                                     unsigned                        y,
                                                                     u32                             color);
-
-            void            bufferToScreenDrawChar      (           char                            ch,
+//50
+                void        bufferToScreenDrawChar      (           char                            ch,
                                                                     unsigned                        charCol,
                                                                     unsigned                        charRow,
                                                                     u32                             fgColor,
                                                                     u32                             bgColor);
 
-            void            bufferToScreenClear         (           u32                             bgColor);
+                void        bufferToScreenClear         (           u32                             bgColor);
 
-            void            bufferToScreenDrawBuffer    (   const   char*                           pSourceBuffer,
+                void        bufferToScreenDrawBuffer    (   const   char*                           pSourceBuffer,
                                                                     u32                             startIndex,
                                                                     u32                             endIndex,
                                                                     unsigned                        startCol,
@@ -232,7 +231,7 @@ public:
                                                                     u32                             fgColor,
                                                                     u32                             bgColor);
 
-            void            bufferToScreenGetGrid       (           unsigned&                       cols,
+                void        bufferToScreenGetGrid       (           unsigned&                       cols,
                                                                     unsigned&                       rows);
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  LOGGING
@@ -244,7 +243,7 @@ public:
                                                                     u32                             p_value1,
                                                                     u32                             p_value2, 
                                                                     u32                             p_value3);
-
+//55
                 void        storeLogLong                (           char*                           p_bufferArray,
                                                                     u32&                            index,
                                                             const   char*                           p_string0, 
@@ -270,7 +269,7 @@ public:
 
                 bool        programLog                  (           GLint                           program, 
                                                                     int                             program_index);
-
+//60
                 void        gfx_check                   (   const   char*                           file, 
                                                                     unsigned                        line);
 
@@ -285,7 +284,7 @@ public:
                                                                     uint8_t                         base);
 
                 void        getChannelModeA             (           int                             p_channel);
-
+//65
                 void        modeADC                     (           int                             p_channel);
 
                 void        modeTRG                     (           int                             p_channel);
@@ -295,7 +294,7 @@ public:
                 void        modeLF1                     (           int                             p_channel);
 
                 void        modeLF2                     (           int                             p_channel);
-
+//70
                 void        modeAudioAb0                (           int                             p_channel);
 
                 void        modeAudioAb1                (           int                             p_channel);
@@ -308,6 +307,7 @@ public:
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  PARSER
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//75
                 bool        initBMPparser               (           tex_state*                      t,
                                                                     char*                           p_buffer_array[],
                                                                     size_t                          size_array[],
@@ -343,7 +343,7 @@ public:
                                                                     u16*                            height,
                                                                     u8*                             profile,
                                                                     u8*                             level) const;
-
+//80
                 size_t      findNext000001              (           u8*                             data, 
                                                                     size_t                          pos, 
                                                                     size_t                          size) const;
@@ -358,7 +358,7 @@ public:
                 bool        checkUpdate                 ();
 
                 bool        Update                      ();
-
+//85
                 void        set_pot_routing             (           bool                            adc_pot_routing);
 
                 void        prepParameters              ();
@@ -372,7 +372,7 @@ public:
                                                                     int&                            p_activeIndex, 
                                                                     int                             p_maxCount);
                 void        storeModes                  ();
-
+//90
                 void        buttonPing                  (           int                             p_btn_id, 
                                                                     int                             p_pin);
 
@@ -385,7 +385,7 @@ public:
 
                 void        predict1Beat                (           int                             p_source, 
                                                                     int                             p_lfoMult);
-
+//95
                 void        sample1WaveTable            (           int                             p_source, 
                                                                     int                             p_lfoIn, 
                                                                     int                             p_lfoOut );
@@ -402,9 +402,10 @@ public:
                                                                     void*                           msg_handle);
 
                 void        getStateVCHI                ();
+
                 bool        initEventsVCOS              (           VCOS_EVENT_T&                   event, 
                                                             const   char*                           name);
-
+//100
                 u32         convertAddress              (           void*                           p_busAddress, 
                                                                     size_t                          p_size);
                 bool        checkGLerrorMMAL            ();
@@ -416,7 +417,7 @@ public:
 
                 void        initHeaderMMAL              (           mmal_msg_header&                hdr, 
                                                                     u32                             type);
-
+//105
                 bool        sendAndWaitVCHI             (           VCHI_SERVICE_HANDLE_T           ServiceHandle,
                                                                     VCOS_EVENT_T&                   VCOSevent,
                                                                     const void*                     msg,
@@ -435,6 +436,7 @@ public:
                                                                     VCHI_SERVICE_HANDLE_T&          ServiceHandle);
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 bool        initializeVCSM              ();
+
                 bool        importMemoryVCSM            (           void*                           p_bufferBlockbase, 
                                                                     size_t                          size, 
                                                                     int                             slot, 
@@ -444,7 +446,7 @@ public:
                 bool        lockMemoryVCSM              (           int                             slot, 
                                                                     VCSM_Lock_MEM_Msg&              tx, 
                                                                     VCSM_Lock_MEM_Reply&            rx);
-
+//110
                 bool        freeMemoryVCSM              (           int                             slot, 
                                                                     VCSM_Free_MEM_Msg&              tx, 
                                                                     VCSM_Free_MEM_Reply&            rx);
@@ -467,7 +469,7 @@ public:
                                                                     u32                             frame_length);              // same same
 
                 bool        bufferReadyMMAL             (           u32                             handle);                    // the vcsm handle of the buffer? from a vc message?
-
+//115
                 bool        queueOutputBufferMMAL       (           MMAL_Buffer_From_Host_Msg&      tx, 
                                                                     u32                             vc_handle,                  /
                                                                     u32                             alloc_size);
@@ -486,7 +488,7 @@ public:
 
                 bool        setPortInfoMMAL             (           MMAL_Port_Info_Set_Msg&         tx, 
                                                                     MMAL_Port_Info_Set_Reply&       rx);
-
+//120
                 bool        enableComponentMMAL         (           MMAL_Component_Enable_Msg&      tx, 
                                                                     MMAL_Component_Enable_Reply&    rx);
 
@@ -501,7 +503,7 @@ public:
                 void        PrimeOutputBufferBodyMMAL   (           MMAL_Buffer_From_Host_Msg&      tx);
 
                 void        PrimeInputBufferBodyMMAL    (           MMAL_Buffer_From_Host_Msg&      tx);
-
+//125
                 void        primePortFormatInputMMAL    (   const   MMAL_Port_Info_Get_Reply&       src, 
                                                                     MMAL_Port_Info_Set_Msg&         tx);
 
@@ -521,25 +523,49 @@ public:
 //      void Log_BufferBody                                       (     const mmal_msg_buffer_from_host_wire32& msg );
 //      void Log_queueBufferFromHost                              (     const MMAL_Buffer_From_Host_Msg& tx );        
 #endif // __DEBUG_LOG__
-*/                                                                    
+*/                                                
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  STUBS
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                void            Log_createComponent( const MMAL_Component_Create_Msg& tx, const MMAL_Component_Create_Reply& rx);
+                void            Log_getPortInfo( const MMAL_Port_Info_Get_Msg& tx, const MMAL_Port_Info_Get_Reply& rx);
+                void            Log_setPortInfo( const MMAL_Port_Info_Set_Msg& tx, const MMAL_Port_Info_Set_Reply& rx);
+                void            Log_enableComponentMMAL( const MMAL_Component_Enable_Msg& tx, const MMAL_Component_Enable_Reply& rx);
+                void            Log_setZeroCopyModeMMAL( const MMAL_Port_Parameter_Set_Msg& tx, const MMAL_Port_Parameter_Set_Reply& rx);
+                void            Log_enablePort( const MMAL_Port_Action_Msg& tx, const MMAL_Port_Action_Reply_Msg&  rx);
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  WRAPPERS - HERE THE JOY BEGINS
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                bool        wrapperInitDMA              ();
-                bool        wrapperInitMEM              ();
+                bool        wrapperInitDMA              ();             // init/alloc the dma buffers 
 
-                void        wrapperDMAcleanUp           ();
-                void        wrapperMEMcleanUp           ();
+                bool        wrapperInitMEM              ();             // init/alloc the mem buffers
 
-                void        wrapper_from_sd             ();
-                void        wrapper_load_usb            ();
+                void        wrapperDMAcleanUp           ();             // clean/delete the dma buffers
+//130                
+                void        wrapperMEMcleanUp           ();             // clean delete the mem buffers
 
-                void        wrapper_init_gl_sd          ();
-                void        wrapper_init_gl_usb         ();
+                void        wrapper_from_sd             ();             // mount/scan/load and validate memory for sd
 
-                void        wrapper_io                  ();
-                void        wrapper_modes               ();
+                void        wrapper_load_usb            ();             // mount/scan/load and validate memory for usb
 
-#include "members.h" // <- should go to the bottom, right?
+                void        wrapper_init_gl_sd          ();             // parse/init vertex/default shader and overlay texture 
+
+                void        wrapper_init_gl_usb         ();             // parse/init user shader/texture/video 
+//135
+                void        wrapper_io                  ();             // hardware io ( led/adc/ctrl_pin/button )
+
+                void        wrapper_menu                ();             // the true gui, menulayer
+
+                void        wrapper_modes               ();             // the hardware->gui->glsl pipeline 
+
+                bool        wrapperInitVCSMstruct       ();             // for the dynamical vcsm structs allocation
+
+                bool        wrapperInitMMALstruct       ();             // for the dynamical mmal structs allocation
+//140
+                bool        wrapperFreeVCSMstruct       ();             // for the cleanup of the vcsm structs
+
+                bool        wrapperFreeMMALstruct       ();             // for the cleanup of the mmal structs
+
+#include "def_member.h" // <- should go to the bottom, right?
 
 };

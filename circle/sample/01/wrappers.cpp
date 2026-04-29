@@ -255,7 +255,7 @@ void            CKernel::wrapper_init_gl_sd()
                 initBMPparser   (   &m_omt,                                         // the dedicated struct for the overlay texture
                                     m_bufferOmt,                                    // the actual mem-buffer where i have stored it
                                     g_bytOmt,                                       // the array where i stored the loaded bytes
-                                    TEX_SIZ,                               // upper bound for the size
+                                    filecounter[FT_TEX][FLD_SIZE],                  // upper bound for the size
                                     filecounter[FT_OMT][FLD_PREV],                  // for the continuous loading between devices - lower bound
                                     filecounter[FT_OMT][FLD_LOADED]);               // for the continuous loading between devices - upper bound
 
@@ -345,7 +345,7 @@ void            CKernel::wrapper_init_gl_usb()
                 initBMPparser   (   &m_tex,
                                     m_bufferTex,
                                     g_bytTex,
-                                    TEX_SIZ,
+                                    filecounter[FT_TEX][FLD_SIZE],
                                     filecounter[FT_TEX][FLD_PREV],
                                     filecounter[FT_TEX][FLD_LOADED]);                
 
@@ -507,7 +507,7 @@ bool            CKernel::wrapperInitVCSMstruct()
 {
                 bool bOK = true;
 
-                if (bOK) { m_ServiceCreateVCSM = new SERVICE_CREATION_T();            bOK = (m_ServiceCreateVCSM != nullptr); }
+                if (bOK) { m_ServiceCreateVCSM = new SERVICE_CREATION_T();           bOK = (m_ServiceCreateVCSM != nullptr); }
                 if (bOK) { m_importTxVCSM_A    = new VCSM_Import_MEM_Msg();          bOK = (m_importTxVCSM_A != nullptr); }
                 if (bOK) { m_importRxVCSM_A    = new VCSM_Import_MEM_Reply();        bOK = (m_importRxVCSM_A != nullptr); }
                 if (bOK) { m_importTxVCSM_B    = new VCSM_Import_MEM_Msg();          bOK = (m_importTxVCSM_B != nullptr); }
