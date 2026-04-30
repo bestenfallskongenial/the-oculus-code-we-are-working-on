@@ -1,62 +1,129 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-// 										Based on VCSM_defs.h from the vmcs_sm driver Copyright Broadcom Corporation.
-// 										All IPC messages are copied across to this file, even if the vc-sm-cma
-// 										driver is not currently using them.
+
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-#ifndef __VC04_DEFS_H__INCLUDED__
-#define __VC04_DEFS_H__INCLUDED__
+struct olg_state
+{
+    // EGL Window
+    uint32_t                    screen_width;
+    uint32_t                    screen_height;
 
+    DISPMANX_ELEMENT_HANDLE_T   dispman_element;
+    DISPMANX_DISPLAY_HANDLE_T   dispman_display;
 
-#define VC_SM_VER  1
-#define VC_SM_MIN_VER 0
+    EGLDisplay                  display;
+    EGLSurface                  surface;
+    EGLContext                  context;
+};
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+struct buffer_def                                               // really? extra hustle !!
+{
+    char** 				        m_bufferName    = nullptr;
+    char* 				        m_BlockBase     = nullptr;
+    char* 				        m_RawBlock      = nullptr;
+    size_t 				        m_BlockSize     = 0;
+}              
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+struct vtx_state
+{
+    // shared attrib/buffer
+    GLuint                      gl_buf;
+    GLint                       gl_vtx[MAX_SHADER];    
+};
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+struct glsl_state
+{
+    GLuint                      gl_shader_id[MAX_SHADER];
+    GLuint                      gl_program_id[MAX_SHADER];
 
-#define MAX_BUFFER 8
+    bool                        shader_valid[MAX_SHADER];
+    // user uniforms                                            // this is the actual common shader struct we define for 
+    GLint                       u_time[MAX_SHADER];
+    GLint                       u_tres[MAX_SHADER];
+    GLint                       u_seed[MAX_SHADER];
+    GLint                       u_aud[MAX_SHADER];
+    GLint                       u_col[MAX_SHADER];
+    GLint                       u_par_a[MAX_SHADER];
+    GLint                       u_par_b[MAX_SHADER];
+    GLint                       u_tex_l[MAX_SHADER];
+    // overlay uniforms
+    GLint                       u_atlas[MAX_OMF];
+    GLint                       u_tile_count[MAX_OMF];
+    GLint                       u_tile_rect[MAX_OMF];
+    GLint                       u_tile_index[MAX_OMF];
+    // overlay data
+    float                       kMenuOrigin[2];
+    float                       kMenuTileSize[2];
+    float                       kMenuBackgroundScale[2];
 
-#define MAX_DEBUG_FILE_LENGTH (1024 * 16)
+    float                       kMenuRelPos[MAX_TILES][2];
+    float                       kMenuRelSize[MAX_TILES][2];
 
-#define SERVICEVERSIONSTRING 02092025 // 0207202501 // !!! WE WILL UPDATE IT FROM NOW FORMAT DDMMYYYYVV
-#define SERVICENAMESTRING "VC-SM ( SMEM ) SERVICE "
-/* Maximum message length */
-#define VC_SM_MAX_MSG_LEN (sizeof(union vc_sm_msg_union_t) + \
-	sizeof(struct vc_sm_msg_hdr_t))
-#define VC_SM_MAX_RSP_LEN (sizeof(union vc_sm_msg_union_t))
+    float                       tile_rect_x[MAX_TILES];
+    float                       tile_rect_y[MAX_TILES];
+    float                       tile_rect_w[MAX_TILES];
+    float                       tile_rect_h[MAX_TILES];
 
-#define VC_SM_RESOURCE_NAME 32				// Resource name maximum size //
+    GLfloat                     tile_rect[MAX_TILES * 4];
+    GLfloat                     tile_index[MAX_TILES];
+};
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+struct tex_state
+{
+    u32         max_tex_size;
 
-// Version to be reported to the VPU
-// VPU assumes 0 (aka 1) which does not require the released callback, nor
-// expect the client to handle VC_MEM_REQUESTS.
-// Version 2 requires the released callback, and must support VC_MEM_REQUESTS.
+    bool        tex_valid[MAX_TEXTURE];
 
-#define VC_SM_PROTOCOL_VERSION	2
+    unsigned    width[MAX_TEXTURE];
+    unsigned    height[MAX_TEXTURE];
+    unsigned    offset[MAX_TEXTURE];
 
-enum vc_sm_msg_type 						// Message types supported for HOST->VC direction //			
-	{				
-	VC_SM_MSG_TYPE_ALLOC,					// Allocate shared memory block //
-	VC_SM_MSG_TYPE_LOCK,					// Lock allocated shared memory block //
-	VC_SM_MSG_TYPE_UNLOCK,					// Unlock allocated shared memory block //
-	VC_SM_MSG_TYPE_UNLOCK_NOANS,			// Unlock allocated shared memory block, do not answer command //
-	VC_SM_MSG_TYPE_FREE,					// Free shared memory block //
-	VC_SM_MSG_TYPE_RESIZE,					// Resize a shared memory block //
-	VC_SM_MSG_TYPE_WALK_ALLOC,				// Walk the allocated shared memory block(s) //
-	VC_SM_MSG_TYPE_ACTION_CLEAN,			// A previously applied action will need to be reverted //
-	VC_SM_MSG_TYPE_IMPORT,					// Import a physical address and wrap into a MEM_HANDLE_T - Release with VC_SM_MSG_TYPE_FREE.
-	VC_SM_MSG_TYPE_CLIENT_VERSION,			// Tells VC the protocol version supported by this client. 2 supports the async/cmd messages from the VPU for final release of memory, and for VC allocations.
-	VC_SM_MSG_TYPE_VC_MEM_REQUEST_REPLY,	// Response to VC request for memory //
-											// Asynchronous/cmd messages supported for VC->HOST direction.
-											// Signalled by setting the top bit in vc_sm_result_t trans_id.
-											// VC has finished with an imported memory allocation.
-											// Release any Linux reference counts on the underlying block.
-	VC_SM_MSG_TYPE_RELEASED,
-	VC_SM_MSG_TYPE_VC_MEM_REQUEST,			// VC request for memory //
+    unsigned    file_size[MAX_TEXTURE];
+    unsigned    image_size[MAX_TEXTURE];
 
-	VC_SM_MSG_TYPE_MAX
-	};
-enum vc_sm_alloc_type_t 					// Type of memory to be allocated //
-	{
-	VC_SM_ALLOC_CACHED,
-	VC_SM_ALLOC_NON_CACHED,
-	};
+    u8*         data[MAX_TEXTURE];
+    size_t      size[MAX_TEXTURES];
+
+    GLuint      gl_tex_id[MAX_TEXTURE];
+    GLint       u_tex_id[MAX_SHADER][MAX_TEXTURE];
+       // for my video frame texture 
+    GLuint          gl_tex_vid;                 // video texture handle
+    EGLImageKHR     m_EGLimage = nullptr;       // backing (changes per frame) 
+};
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+struct h264_state
+{
+    // raw input will be populated by parser_init
+    u8*             data[MAX_VIDEOS];
+    size_t          size[MAX_VIDEOS];
+    // frame table -  the actual data we need for decoding 
+    void*           frame_address[MAX_VIDEOS][MAX_FRAMES];
+    size_t          frame_offset[MAX_VIDEOS][MAX_FRAMES];
+    size_t          frame_length[MAX_VIDEOS][MAX_FRAMES];
+    size_t          idr_offset[MAX_VIDEOS];                 // size_t idr_offset[MAX_VIDEOS]; ??
+	size_t			idr_sc_len[MAX_VIDEOS];
+    // extradata
+    u8              extradata[MAX_VIDEOS][1024];
+    size_t          extradata_len[MAX_VIDEOS];
+    bool            extradata_valid[MAX_VIDEOS];
+    // parsed metadata
+    u16             video_width[MAX_VIDEOS];
+    u16             video_height[MAX_VIDEOS];
+    u8              vid_profile[MAX_VIDEOS];
+    u8              vid_level[MAX_VIDEOS];
+    // state
+    size_t          frame_count[MAX_VIDEOS];                // unsigned frame_count[MAX_VIDEOS]; ??
+    bool            vid_valid[MAX_VIDEOS];
+    // shared base
+    char*           block_base; // void*   block_base;
+    // constraints from the firmware
+    u16             max_width;
+    u16             max_height;
+    u8              max_profile;
+    u8              max_level;
+};
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+//  VCSM
+//----------------------------------------------------------------------------------------------------------------------------------------------------
 struct vc_sm_msg_hdr_t 						// Message header for all messages in HOST->VC direction //
 	{
 	u32 type;
@@ -158,7 +225,7 @@ struct vc_sm_vc_mem_request_result 			// Response from the kernel to provide the
 	u32 addr;								// pointer to the physical address of the allocated memory //
 	u32 kernel_id;							// opaque handle returned in RELEASED messages //
 	};
-union vc_sm_msg_union_t 					// Union of ALL messages //
+union vc_sm_msg_union_t 					// Union of ALL messages ??
 	{
 	struct vc_sm_alloc_t alloc;
 	struct vc_sm_alloc_result_t alloc_result;
@@ -176,121 +243,9 @@ union vc_sm_msg_union_t 					// Union of ALL messages //
 	struct vc_sm_vc_mem_request vc_request;
 	struct vc_sm_vc_mem_request_result vc_request_result;
 	};
-
-// we predefine message "super-structs" that we can pass and prime the whole package to the function and also have it stored to debunk it later
-
-struct VCSM_Import_MEM_Msg
-{
-        vc_sm_msg_hdr_t                 hdr;
-        vc_sm_import                    body;
-};
-
-struct VCSM_Import_MEM_Reply
-{
-        vc_sm_import_result             body;
-};
-
-struct VCSM_Lock_MEM_Msg
-{
-        vc_sm_msg_hdr_t                 hdr;
-        vc_sm_lock_unlock_t             body;
-};
-
-struct VCSM_Lock_MEM_Reply    
-{
-        vc_sm_lock_result_t             body;
-};
-
-struct VCSM_Free_MEM_Msg
-{
-        vc_sm_msg_hdr_t                 hdr;
-        vc_sm_free_t                    body;
-};
-
-struct VCSM_Free_MEM_Reply    
-{
-        vc_sm_result_t                  body;
-};
-
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-//              H264_DECODER_DEFS.H
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-#define STOREDEBUG_WHITESPACE 255
-#define STOREDEBUG_NEWLINE '\n'
-
-#define MMAL_FOURCC(a, b, c, d) ((a) | (b << 8) | (c << 16) | (d << 24)) // two times!
-#define MMAL_MAGIC 						MMAL_FOURCC('m', 'm', 'a', 'l')
-
-
-#define MMAL_EVENT_ERROR				MMAL_FOURCC('E', 'R', 'R', 'O')	// really????
-#define MMAL_EVENT_EOS					MMAL_FOURCC('E', 'E', 'O', 'S')
-#define MMAL_EVENT_FORMAT_CHANGED		MMAL_FOURCC('E', 'F', 'C', 'H')
-#define MMAL_EVENT_PARAMETER_CHANGED	MMAL_FOURCC('E', 'P', 'C', 'H')
-
-#define VC_MMAL_VER 15
-#define VC_MMAL_MIN_VER 10
-
-// max total message size is 512 bytes //
-#define MMAL_MSG_MAX_SIZE 512
-// with six 32bit header elements max payload is therefore 488 bytes //
-#define MMAL_MSG_MAX_PAYLOAD 488
-
-
-// #define MMAL_TIME_UNKNOWN BIT_ULL(63)                               // Special value signalling that time is not known //
-// #define MMAL_TIME_UNKNOWN (1ULL << 63)
-
-#define BIT(n)          (1U << (n))
-#define BIT_ULL(n)      (1ULL << (n))
-#define MMAL_TIME_UNKNOWN BIT_ULL(63)
-#define NUMBER_INPUTBUFFER 1
-#define NUMBER_OUTPUTBUFFER 2
-
-#define MIN_BUFFERS 2                                                 // from CKernel ??
-#define FIXED_BUFFER_SIZE (1024 * 1024) // 1024 KB
-
-#define MMAL_MAX_DEBUG_FILE_LENGTH (1024 * 64)
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-//              FROM MMAL-VCHIQ.H
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-#define MAX_PORT_COUNT 4
-
-// Maximum size of the format extradata. //
-#define MMAL_FORMAT_EXTRADATA_MAX_SIZE 128
-
-enum vchiq_mmal_es_type 
-{
-	MMAL_ES_TYPE_UNKNOWN,     // Unknown elementary stream type //
-	MMAL_ES_TYPE_CONTROL,     // Elementary stream of control commands //
-	MMAL_ES_TYPE_AUDIO,       // Audio elementary stream //
-	MMAL_ES_TYPE_VIDEO,       // Video elementary stream //
-	MMAL_ES_TYPE_SUBPICTURE   // Sub-picture elementary stream //
-};
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-MSG-COMMON.H
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-enum mmal_msg_status 
-{
-	MMAL_MSG_STATUS_SUCCESS = 0, // Success //
-	MMAL_MSG_STATUS_ENOMEM,      // Out of memory //
-	MMAL_MSG_STATUS_ENOSPC,      // Out of resources other than memory //
-	MMAL_MSG_STATUS_EINVAL,      // Argument is invalid //
-	MMAL_MSG_STATUS_ENOSYS,      // Function not implemented //
-	MMAL_MSG_STATUS_ENOENT,      // No such file or directory //
-	MMAL_MSG_STATUS_ENXIO,       // No such device or address //
-	MMAL_MSG_STATUS_EIO,         // I/O error //
-	MMAL_MSG_STATUS_ESPIPE,      // Illegal seek //
-	MMAL_MSG_STATUS_ECORRUPT,    // Data is corrupt \attention //
-	MMAL_MSG_STATUS_ENOTREADY,   // Component is not ready //
-	MMAL_MSG_STATUS_ECONFIG,     // Component is not configured //
-	MMAL_MSG_STATUS_EISCONN,     // Port is already connected //
-	MMAL_MSG_STATUS_ENOTCONN,    // Port is disconnected //
-	MMAL_MSG_STATUS_EAGAIN,      // Resource temporarily unavailable. //
-	MMAL_MSG_STATUS_EFAULT,      // Bad address //
-};
-
-// <------------------------------------------------------------ do i need you??
-
 struct mmal_rect 
 {
 	s32 x;      // x coordinate (from left) //
@@ -303,46 +258,6 @@ struct mmal_rational
 {
 	s32 num;    // Numerator //
 	s32 den;    // Denominator //
-};
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-//              FROM MMAL-PARAMETERS.H
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-#define MMAL_PARAMETER_GROUP_COMMON		(0 << 16)
-
-
-enum mmal_parameter_common_type 	/* Common parameters */
-{
-	/**< Never a valid parameter ID */
-	MMAL_PARAMETER_UNUSED = MMAL_PARAMETER_GROUP_COMMON,
-
-		/**< MMAL_PARAMETER_ENCODING_T */
-	MMAL_PARAMETER_SUPPORTED_ENCODINGS,
-		/**< MMAL_PARAMETER_URI_T */
-	MMAL_PARAMETER_URI,
-		/** MMAL_PARAMETER_CHANGE_EVENT_REQUEST_T */
-	MMAL_PARAMETER_CHANGE_EVENT_REQUEST,
-		/** MMAL_PARAMETER_BOOLEAN_T */
-	MMAL_PARAMETER_ZERO_COPY,
-		/**< MMAL_PARAMETER_BUFFER_REQUIREMENTS_T */
-	MMAL_PARAMETER_BUFFER_REQUIREMENTS,
-		/**< MMAL_PARAMETER_STATISTICS_T */
-	MMAL_PARAMETER_STATISTICS,
-		/**< MMAL_PARAMETER_CORE_STATISTICS_T */
-	MMAL_PARAMETER_CORE_STATISTICS,
-		/**< MMAL_PARAMETER_MEM_USAGE_T */
-	MMAL_PARAMETER_MEM_USAGE,
-		/**< MMAL_PARAMETER_UINT32_T */
-	MMAL_PARAMETER_BUFFER_FLAG_FILTER,
-		/**< MMAL_PARAMETER_SEEK_T */
-	MMAL_PARAMETER_SEEK,
-		/**< MMAL_PARAMETER_BOOLEAN_T */
-	MMAL_PARAMETER_POWERMON_ENABLE,
-		/**< MMAL_PARAMETER_LOGGING_T */
-	MMAL_PARAMETER_LOGGING,
-		/**< MMAL_PARAMETER_UINT64_T */
-	MMAL_PARAMETER_SYSTEM_TIME,
-		/**< MMAL_PARAMETER_BOOLEAN_T */
-	MMAL_PARAMETER_NO_IMAGE_PADDING,
 };
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-MSG-FORMAT.H
@@ -379,7 +294,7 @@ union mmal_es_specific_format
 };
 
 /*
-struct mmal_es_format_local 	// Definition of an elementary stream format (MMAL_ES_FORMAT_T) //
+struct mmal_es_format_local 	// Definition of an elementary stream format (MMAL_ES_FORMAT_T) - we must investigate how this end up here!!
 {
 	u32 type;	// enum mmal_es_type //
 	u32 encoding;	// FourCC specifying encoding of the elementary stream.
@@ -406,39 +321,6 @@ struct mmal_es_format 	// Remote definition of an elementary stream format (MMAL
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-MSG-PORT.H
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
-enum mmal_port_type 	// MMAL_PORT_TYPE_T //
-{
-	MMAL_PORT_TYPE_UNKNOWN = 0,	// Unknown port type //
-	MMAL_PORT_TYPE_CONTROL,		// Control port //
-	MMAL_PORT_TYPE_INPUT,		// Input port //
-	MMAL_PORT_TYPE_OUTPUT,		// Output port //
-	MMAL_PORT_TYPE_CLOCK,		// Clock port //
-};
-
-// The port is pass-through and doesn't need buffer headers allocated //
-#define MMAL_PORT_CAPABILITY_PASSTHROUGH                       0x01
-
- //The port wants to allocate the buffer payloads.
- // This signals a preference that payload allocation should be done
- // on this port for efficiency reasons.
-
-#define MMAL_PORT_CAPABILITY_ALLOCATION                        0x02
-
- // The port supports format change events.
- // This applies to input ports and is used to let the client know
- // whether the port supports being reconfigured via a format
- // change event (i.e. without having to disable the port).
-
-#define MMAL_PORT_CAPABILITY_SUPPORTS_EVENT_FORMAT_CHANGE      0x04
-
- // mmal port structure (MMAL_PORT_T)
- //
- // most elements are informational only, the pointer values for
- // interogation messages are generally provided as additional
- // structures within the message. When used to set values only the
- // buffer_num, buffer_size and userdata parameters are writable.
-
 struct mmal_port 
 {
 	u32 priv;									// Private member used by the framework //
@@ -462,49 +344,6 @@ struct mmal_port
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-MSG.H
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-enum mmal_msg_type 
-{
-	MMAL_MSG_TYPE_QUIT = 1,
-	MMAL_MSG_TYPE_SERVICE_CLOSED,
-	MMAL_MSG_TYPE_GET_VERSION,
-	MMAL_MSG_TYPE_COMPONENT_CREATE,
-	MMAL_MSG_TYPE_COMPONENT_DESTROY,			// 5 //
-	MMAL_MSG_TYPE_COMPONENT_ENABLE,
-	MMAL_MSG_TYPE_COMPONENT_DISABLE,
-	MMAL_MSG_TYPE_PORT_INFO_GET,
-	MMAL_MSG_TYPE_PORT_INFO_SET,
-	MMAL_MSG_TYPE_PORT_ACTION,					// 10 //
-	MMAL_MSG_TYPE_BUFFER_FROM_HOST,
-	MMAL_MSG_TYPE_BUFFER_TO_HOST,
-	MMAL_MSG_TYPE_GET_STATS,
-	MMAL_MSG_TYPE_PORT_PARAMETER_SET,
-	MMAL_MSG_TYPE_PORT_PARAMETER_GET,			// 15 //
-	MMAL_MSG_TYPE_EVENT_TO_HOST,
-	MMAL_MSG_TYPE_GET_CORE_STATS_FOR_PORT,
-	MMAL_MSG_TYPE_OPAQUE_ALLOCATOR,
-	MMAL_MSG_TYPE_CONSUME_MEM,
-	MMAL_MSG_TYPE_LMK,							// 20 //
-	MMAL_MSG_TYPE_OPAQUE_ALLOCATOR_DESC,
-	MMAL_MSG_TYPE_DRM_GET_LHS32,
-	MMAL_MSG_TYPE_DRM_GET_TIME,
-	MMAL_MSG_TYPE_BUFFER_FROM_HOST_ZEROLEN,
-	MMAL_MSG_TYPE_PORT_FLUSH,					// 25 //
-	MMAL_MSG_TYPE_HOST_LOG,
-	MMAL_MSG_TYPE_MSG_LAST
-};
-
-
-enum mmal_msg_port_action_type 	// port action request messages differ depending on the action type //
-{
-	MMAL_MSG_PORT_ACTION_TYPE_UNKNOWN = 0,		// Unknown action //
-	MMAL_MSG_PORT_ACTION_TYPE_ENABLE,			// Enable a port //
-	MMAL_MSG_PORT_ACTION_TYPE_DISABLE,			// Disable a port //
-	MMAL_MSG_PORT_ACTION_TYPE_FLUSH,			// Flush a port //
-	MMAL_MSG_PORT_ACTION_TYPE_CONNECT,			// Connect ports //
-	MMAL_MSG_PORT_ACTION_TYPE_DISCONNECT,		// Disconnect ports //
-	MMAL_MSG_PORT_ACTION_TYPE_SET_REQUIREMENTS, // Set buffer requirements//
-};
-
 struct mmal_msg_header 
 {
 	u32 magic;
@@ -514,8 +353,6 @@ struct mmal_msg_header
 	u32 status;									// The status of the vchiq operation //
 	u32 padding;
 };
-
-
 struct mmal_msg_version 						// Send from VC to host to report version //
 {
 	u32 flags;
@@ -523,16 +360,12 @@ struct mmal_msg_version 						// Send from VC to host to report version //
 	u32 minor;
 	u32 minimum;
 };
-
-
 struct mmal_msg_component_create 				// request to VC to create component //
 {
 	u32 client_component;						// component context //
 	char name[128];
 	u32 pid;									// For debug //
 };
-
-
 struct mmal_msg_component_create_reply 			// reply from VC to component creation request //
 {
 	u32 status;									// enum mmal_msg_status - how does this differ to the one in the header?
@@ -541,9 +374,7 @@ struct mmal_msg_component_create_reply 			// reply from VC to component creation
 	u32 output_num;       						// Number of output ports //
 	u32 clock_num;        						// Number of clock ports //
 };
-
-// request to VC to destroy a component //
-struct mmal_msg_component_destroy 
+struct mmal_msg_component_destroy 				// request to VC to destroy a component //
 {
 	u32 component_handle;
 };
@@ -552,36 +383,28 @@ struct mmal_msg_component_destroy_reply
 {
 	u32 status; 								// The component destruction status //
 };
-
-// request and reply to VC to enable a component //
-struct mmal_msg_component_enable 
+struct mmal_msg_component_enable 				// request and reply to VC to enable a component //
 {
 	u32 component_handle;
 };
-
 struct mmal_msg_component_enable_reply 
 {
 	u32 status; 								// The component enable status //
 };
-
-
 struct mmal_msg_component_disable 				// request and reply to VC to disable a component //
 {
 	u32 component_handle;
 };
-
 struct mmal_msg_component_disable_reply 
 {
 	u32 status; 								// The component disable status //
 };
-
 struct mmal_msg_port_info_get 					// request to VC to get port information //
 {
 	u32 component_handle;  						// component handle port is associated with //
 	u32 port_type;         						// enum mmal_msg_port_type //
 	u32 index;             						// port index to query //
 };
-
 struct mmal_msg_port_info_get_reply 			// reply from VC to get port info request //
 {
 	u32 status;									// enum mmal_msg_status //
@@ -595,7 +418,6 @@ struct mmal_msg_port_info_get_reply 			// reply from VC to get port info request
 	union mmal_es_specific_format es; 			// es type specific data //
 	u8 extradata[MMAL_FORMAT_EXTRADATA_MAX_SIZE]; // es extra data //
 };
-
 struct mmal_msg_port_info_set 					// request to VC to set port information //
 {
 	u32 component_handle;
@@ -606,7 +428,6 @@ struct mmal_msg_port_info_set 					// request to VC to set port information //
 	union mmal_es_specific_format es;
 	u8 extradata[MMAL_FORMAT_EXTRADATA_MAX_SIZE];
 };
-
 struct mmal_msg_port_info_set_reply 			// reply from VC to port info set request //
 {
 	u32 status;
@@ -620,7 +441,6 @@ struct mmal_msg_port_info_set_reply 			// reply from VC to port info set request
 	union mmal_es_specific_format es;
 	u8 extradata[MMAL_FORMAT_EXTRADATA_MAX_SIZE];
 };
-
 struct mmal_msg_port_action_port 				// port action requests that take a mmal_port as a parameter //
 {
 	u32 component_handle;
@@ -637,57 +457,12 @@ struct mmal_msg_port_action_handle 				// port action requests that take handles
 	u32 connect_component_handle;
 	u32 connect_port_handle;
 };
-
 struct mmal_msg_port_action_reply 
 {
 	u32 status;									// The port action operation status //
 };
 
-// MMAL buffer transfer //
 
-// Size of space reserved in a buffer message for short messages. //
-#define MMAL_VC_SHORT_DATA 128
-// Signals that the current payload is the end of the stream of data //
-#define MMAL_BUFFER_HEADER_FLAG_EOS                    BIT(0)
-// Signals that the start of the current payload starts a frame //
-#define MMAL_BUFFER_HEADER_FLAG_FRAME_START            BIT(1)
-// Signals that the end of the current payload ends a frame //
-#define MMAL_BUFFER_HEADER_FLAG_FRAME_END              BIT(2)
-// Signals that the current payload contains only complete frames (>1) //
-#define MMAL_BUFFER_HEADER_FLAG_FRAME                  \
-	(MMAL_BUFFER_HEADER_FLAG_FRAME_START | \
-	 MMAL_BUFFER_HEADER_FLAG_FRAME_END)
-// Signals that the current payload is a keyframe (i.e. self decodable) //
-#define MMAL_BUFFER_HEADER_FLAG_KEYFRAME               BIT(3)
-// Signals a discontinuity in the stream of data (e.g. after a seek). Can be used for instance by a decoder to reset its state
-#define MMAL_BUFFER_HEADER_FLAG_DISCONTINUITY          BIT(4)
-// Signals a buffer containing some kind of config data for the component (e.g. codec config data)
-#define MMAL_BUFFER_HEADER_FLAG_CONFIG                 BIT(5)
-// Signals an encrypted payload //
-#define MMAL_BUFFER_HEADER_FLAG_ENCRYPTED              BIT(6)
-// Signals a buffer containing side information //
-#define MMAL_BUFFER_HEADER_FLAG_CODECSIDEINFO          BIT(7)
-// Signals a buffer which is the snapshot/postview image from a stills capture
-#define MMAL_BUFFER_HEADER_FLAGS_SNAPSHOT              BIT(8)
-// Signals a buffer which contains data known to be corrupted //
-#define MMAL_BUFFER_HEADER_FLAG_CORRUPTED              BIT(9)
-// Signals that a buffer failed to be transmitted //
-#define MMAL_BUFFER_HEADER_FLAG_TRANSMISSION_FAILED    BIT(10)
-// Video buffer header flags
-// videobufferheaderflags
-// The following flags describe properties of a video buffer header.
-// As there is no collision with the MMAL_BUFFER_HEADER_FLAGS_ defines, these
-// flags will also be present in the MMAL_BUFFER_HEADER_T flags field.
-#define MMAL_BUFFER_HEADER_FLAG_FORMAT_SPECIFIC_START_BIT 16
-#define MMAL_BUFFER_HEADER_FLAG_FORMAT_SPECIFIC_START \
-			(1 << MMAL_BUFFER_HEADER_FLAG_FORMAT_SPECIFIC_START_BIT)
-// Signals an interlaced video frame //
-#define MMAL_BUFFER_HEADER_VIDEO_FLAG_INTERLACED \
-			(MMAL_BUFFER_HEADER_FLAG_FORMAT_SPECIFIC_START << 0)
-// Signals that the top field of the current interlaced frame should be
-// displayed first
-#define MMAL_BUFFER_HEADER_VIDEO_FLAG_TOP_FIELD_FIRST \
-			(MMAL_BUFFER_HEADER_FLAG_FORMAT_SPECIFIC_START << 1)
 
 struct mmal_driver_buffer 
 {
@@ -746,10 +521,6 @@ struct mmal_msg_buffer_from_host
 	u8 short_data[MMAL_VC_SHORT_DATA];
 };
 
-// port parameter setting //
-
-#define MMAL_WORKER_PORT_PARAMETER_SPACE      96
-
 struct mmal_msg_port_parameter_set 
 {
 	u32 component_handle;	// component //
@@ -781,17 +552,6 @@ struct mmal_msg_port_parameter_get_reply
 	u32 size;		// Parameter size //
 	u32 value[MMAL_WORKER_PORT_PARAMETER_SPACE];
 };
-
-// event messages //
-#define MMAL_WORKER_EVENT_SPACE 256
-
-// Four CC's for events //
-#define MMAL_FOURCC(a, b, c, d) ((a) | (b << 8) | (c << 16) | (d << 24))
-
-#define MMAL_EVENT_ERROR		MMAL_FOURCC('E', 'R', 'R', 'O')
-#define MMAL_EVENT_EOS			MMAL_FOURCC('E', 'E', 'O', 'S')
-#define MMAL_EVENT_FORMAT_CHANGED	MMAL_FOURCC('E', 'F', 'C', 'H')
-#define MMAL_EVENT_PARAMETER_CHANGED	MMAL_FOURCC('E', 'P', 'C', 'H')
 
 
 struct mmal_msg_event_eos 		// Structs for each of the event message payloads //
@@ -872,9 +632,8 @@ struct mmal_msg 	// all mmal messages are serialised through this structure //
 	} u;
 };
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-//              MY OWN STRUCTS NEEDED FOR MY PROGRAM FLOW
+//  MY OWN STRUCTS NEEDED FOR MY MMAL PROGRAM FLOW i need to ensure the correct alignment and length, somehow the compiler mess up here
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 struct mmal_buffer_header_wire32 {
     u32 next;
     u32 priv;
@@ -903,44 +662,62 @@ struct mmal_msg_buffer_from_host_wire32
     s32 has_reference;             // 4
     u32 payload_in_message;        // 4
 
-    u8 short_data[128];           // unchanged, stays zero
-}; // total: 16 + 16 + 56 + 40 + 4 + 4 + 4 + 128 = 268 bytes
+    u8 short_data[128];           // unchanged, stays zero - total: 16 + 16 + 56 + 40 + 4 + 4 + 4 + 128 = 268 bytes
+};
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-//  1. Create component
-struct MMAL_Component_Create_Msg            // correct
+struct VCSM_Import_MEM_Msg          // i need to define them before i can use them !!!
+{
+        vc_sm_msg_hdr_t                 hdr;
+        vc_sm_import                    body;
+};
+
+struct VCSM_Import_MEM_Reply
+{
+        vc_sm_import_result             body;
+};
+struct VCSM_Lock_MEM_Msg
+{
+        vc_sm_msg_hdr_t                 hdr;
+        vc_sm_lock_unlock_t             body;
+};
+struct VCSM_Lock_MEM_Reply    
+{
+        vc_sm_lock_result_t             body;
+};
+struct VCSM_Free_MEM_Msg
+{
+        vc_sm_msg_hdr_t                 hdr;
+        vc_sm_free_t                    body;
+};
+struct VCSM_Free_MEM_Reply    
+{
+        vc_sm_result_t                  body;
+};
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+//  okay, i create my own structs with header and payload since i want them to be stored globally because i am backward engineering the vc04 decoder,
+//  means i have to debug a lot and between the states, look at initializeMMAL() and def_members.h section "MMAL predefined messages" to get the idea.
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+struct MMAL_Component_Create_Msg            //  1. Create component
 {
     mmal_msg_header                 hdr;
     mmal_msg_component_create       msg;
 };
-struct MMAL_Component_Create_Reply          // correct
+struct MMAL_Component_Create_Reply
 {
     mmal_msg_header                 hdr;
     mmal_msg_component_create_reply msg;
 };
-//  5. Enable component
-struct MMAL_Component_Enable_Msg            // correct
-{
-    mmal_msg_header                 hdr;
-    mmal_msg_component_enable       msg;
-};
-struct MMAL_Component_Enable_Reply          // correct
-{
-    mmal_msg_header                 hdr;
-    mmal_msg_component_enable_reply msg;
-};
-//  2. Snapshot – get initial port state (before any modification)
-struct MMAL_Port_Info_Get_Msg               // correct
+struct MMAL_Port_Info_Get_Msg               //  2 & 3. Snapshot – get initial port state in and out (before primePortFormat*MMAL)
 {
     mmal_msg_header                 hdr;
     mmal_msg_port_info_get          msg;
 };
-struct MMAL_Port_Info_Get_Reply             // correct
+struct MMAL_Port_Info_Get_Reply
 {
     mmal_msg_header                 hdr;
     mmal_msg_port_info_get_reply    msg;
 };
-//  4. Send SET (this is where data from step 3 is sent)
-struct MMAL_Port_Info_Set_Msg
+struct MMAL_Port_Info_Set_Msg               //  4 & 5. Send SET in and out (this is where data from step 2 & 3 is sent)
 {
     mmal_msg_header                 hdr;
     mmal_msg_port_info_set          msg;
@@ -950,8 +727,17 @@ struct MMAL_Port_Info_Set_Reply
     mmal_msg_header                 hdr;
     mmal_msg_port_info_set_reply    msg;
 };
-//  7. Zero-copy parameter set
-struct MMAL_Port_Parameter_Set_Msg
+struct MMAL_Component_Enable_Msg            //  5. Enable component
+{
+    mmal_msg_header                 hdr;
+    mmal_msg_component_enable       msg;
+};
+struct MMAL_Component_Enable_Reply          // correct
+{
+    mmal_msg_header                 hdr;
+    mmal_msg_component_enable_reply msg;
+};
+struct MMAL_Port_Parameter_Set_Msg          //  6 & 7. Zero-copy parameter set in and out
 {
     mmal_msg_header                 hdr;
     mmal_msg_port_parameter_set     msg;
@@ -961,8 +747,7 @@ struct MMAL_Port_Parameter_Set_Reply
     mmal_msg_header                 hdr;
     mmal_msg_port_parameter_set_reply msg;
 };
-//  9. Enable ports
-struct MMAL_Port_Action_Msg
+struct MMAL_Port_Action_Msg                 //  8. Enable ports
 {
     mmal_msg_header                 hdr;
     mmal_msg_port_action_port       msg;
@@ -972,59 +757,11 @@ struct MMAL_Port_Action_Reply_Msg
     mmal_msg_header                 hdr;
     mmal_msg_port_action_reply      msg;
 };
-//  10. Runtime buffer flow
-struct MMAL_Buffer_From_Host_Msg
+struct MMAL_Buffer_From_Host_Msg            //  9. Runtime buffer flow bidirectional
 {
     mmal_msg_header                   hdr;
     mmal_msg_buffer_from_host_wire32  msg;
 };
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-//              FROM MMAL-ENCODINGS.H
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-#define MMAL_ENCODING_H264             MMAL_FOURCC('H', '2', '6', '4')
-
-#define MMAL_ENCODING_I420             MMAL_FOURCC('I', '4', '2', '0')
-
-// An EGL image handle
-#define MMAL_ENCODING_EGL_IMAGE        MMAL_FOURCC('E', 'G', 'L', 'I')
-
-// Pre-defined H264 encoding variants //
-
-// ISO 14496-10 Annex B byte stream format //
-#define MMAL_ENCODING_VARIANT_H264_DEFAULT   0
-// ISO 14496-15 AVC stream format //
-#define MMAL_ENCODING_VARIANT_H264_AVC1      MMAL_FOURCC('A', 'V', 'C', '1')
-// Implicitly delineated NAL units without emulation prevention //
-#define MMAL_ENCODING_VARIANT_H264_RAW       MMAL_FOURCC('R', 'A', 'W', ' ')
-
-// \defgroup MmalColorSpace List of pre-defined video color spaces
-// This defines a list of common color spaces. This list isn't exhaustive and
-// is only provided as a convenience to avoid clients having to use FourCC
-// codes directly. However components are allowed to define and use their own
-// FourCC codes.
-
-// Unknown color space //
-#define MMAL_COLOR_SPACE_UNKNOWN       0
-// ITU-R BT.601-5 [SDTV] //
-#define MMAL_COLOR_SPACE_ITUR_BT601    MMAL_FOURCC('Y', '6', '0', '1')
-// ITU-R BT.709-3 [HDTV] //
-#define MMAL_COLOR_SPACE_ITUR_BT709    MMAL_FOURCC('Y', '7', '0', '9')
-// JPEG JFIF //
-#define MMAL_COLOR_SPACE_JPEG_JFIF     MMAL_FOURCC('Y', 'J', 'F', 'I')
-// Title 47 Code of Federal Regulations (2003) 73.682 (a) (20) //
-#define MMAL_COLOR_SPACE_FCC           MMAL_FOURCC('Y', 'F', 'C', 'C')
-// Society of Motion Picture and Television Engineers 240M (1999) //
-#define MMAL_COLOR_SPACE_SMPTE240M     MMAL_FOURCC('Y', '2', '4', '0')
-// ITU-R BT.470-2 System M //
-#define MMAL_COLOR_SPACE_BT470_2_M     MMAL_FOURCC('Y', '_', '_', 'M')
-// ITU-R BT.470-2 System BG //
-#define MMAL_COLOR_SPACE_BT470_2_BG    MMAL_FOURCC('Y', '_', 'B', 'G')
-// JPEG JFIF, but with 16..255 luma //
-#define MMAL_COLOR_SPACE_JFIF_Y16_255  MMAL_FOURCC('Y', 'Y', '1', '6')
-// @} MmalColorSpace List //
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-//              H264 Decoder Setup Code
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-#endif // __VC04_DEFS_H__INCLUDED__ //
