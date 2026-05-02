@@ -199,7 +199,7 @@ public:
 
         inline  int         ReadMCP3008Raw              (           unsigned                        channel);                           // MPC 3008
 
-                boolean     bufferToScreenInit          (           void);                                                              // framebuffer / screen
+                boolean     frameBufferInit          (           void);                                                              // framebuffer / screen
 
                 void        bufferToScreenPlot          (           unsigned                        x,
                                                                     unsigned                        y,

@@ -93,7 +93,6 @@ boolean CKernel::my_SPI_init(void)
     {
         return FALSE;
     }
-    // SPI (ALT0)
     my_GPIO_SetAlt(MISO, 4, GPIO_PULL_OFF);
     my_GPIO_SetAlt(MOSI, 4, GPIO_PULL_OFF);
     my_GPIO_SetAlt(SCLK, 4, GPIO_PULL_OFF);
@@ -379,7 +378,6 @@ because `m_BufferLength` is already valid from `my_WS2812_Init()`.
 
     memset(m_pBuffer, 0, m_BufferLength * sizeof(TXDATA_T));
 
-    // WS2812-specific timing belongs here
     my_SMI_SetupTiming(
         SMI_WIDTH_16,
         NEOPIXEL_SMI_NS,
@@ -466,7 +464,7 @@ inline int      CKernel::ReadMCP3008Raw(unsigned channel)
     return ((rx[1] & 0x03) << 8) | rx[2];
 }
 
-boolean         CKernel::bufferToScreenInit                              (   void )
+boolean         CKernel::frameBufferInit                              (   void )
 {
                 if (!gE_FrameBuffer.Initialize ())
                     {
@@ -480,7 +478,7 @@ boolean         CKernel::bufferToScreenInit                              (   voi
                 gE_CharWidth    = gE_CharGenerator.GetCharWidth ();
                 gE_CharHeight   = gE_CharGenerator.GetCharHeight ();
 
-                if (gE_PixelBuffer == 0 || gE_CharWidth == 0 || gE_CharHeight == 0)     // failsave for missing framebuffer/chargenerator?
+                if (gE_PixelBuffer == 0 || gE_CharWidth == 0 || gE_CharHeight == 0)
                     {
                     return FALSE;
                     }
@@ -496,7 +494,7 @@ boolean         CKernel::bufferToScreenInit                              (   voi
                 return TRUE;
 }
 
-void            CKernel::bufferToScreenPlot                          (   unsigned x, unsigned y, u32 color )   // why the fuck static?
+void            CKernel::bufferToScreenPlot                          (   unsigned x, unsigned y, u32 color )
 {
                 gE_PixelBuffer[y * (gE_PitchBytes >> 2) + x] = color;
 }

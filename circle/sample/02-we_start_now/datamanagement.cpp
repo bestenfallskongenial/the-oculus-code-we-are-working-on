@@ -217,7 +217,7 @@ bool            CKernel::scanRoot                   (           char**      p_fi
                                 {
                                 p_fileNameArray[p_scannedFiles] = new char[strlen(f_directoryEntry.chTitle) + 1];
                                 strcpy(p_fileNameArray[p_scannedFiles], f_directoryEntry.chTitle);
-                                p_scannedFiles++;   // inc. via reference
+                                p_scannedFiles++;
                                 break;
                                 }
                             }
@@ -248,7 +248,7 @@ void            CKernel::removeUSB                  (           CDevice*    pDev
 {
 	            CKernel *pThis = (CKernel *) pContext;
 	            assert (pThis != 0);
-	        //  assert (pThis->m_bStorageAttached);         // outcommented it since the beginning of time here...
+	        /*  assert (pThis->m_bStorageAttached);         -> outcommented it since the beginning of time here... */
 	            pThis->m_bStorageAttached = FALSE;
 }
 

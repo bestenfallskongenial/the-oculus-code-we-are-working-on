@@ -4,7 +4,7 @@
 void            CKernel::resetPickUpFlags    () 
 {
 
-                if (g_menu_mode_new != g_menu_mode_old) // or simply memset(menu_pickup_flag, 0, 16 * sizeof(bool)); ? ****
+                if (g_menu_mode_new != g_menu_mode_old) /* or simply memset(menu_pickup_flag, 0, 16 * sizeof(bool)); ? **** */
                     {
                     for(int i = 0; i < modetablecount; i++) 
                         {
@@ -117,13 +117,13 @@ void            CKernel::getChannelModeA(int p_channel)
                         modeLF2 (p_channel);
                     break;
                     case 5:
-                    //  modeTex (p_channel);
+                    /*  modeTex (p_channel); */
                     break;
                     case 6:
-                    //  modeVid (p_channel);
+                    /*  modeVid (p_channel); */
                     break;
                     case 7:
-                    //  modeFrm (p_channel);
+                    /*  modeFrm (p_channel); */
                     break;                    
                     case 8:
                         modeAudioAb0 (p_channel);
@@ -166,7 +166,7 @@ void            CKernel::modeADC (int p_channel)
 void            CKernel::modeTRG (int p_channel)
 {
                 if (  g_inOutMatrixInt[p_channel][VAL] >= g_inOutMatrixInt[p_channel][TRH] &&
-                    ! g_inOutMatrixInt[p_channel][TRF]) // treshold flag - but i need 4 each menu layer or is this different than g_menuPickUpFlag???
+                    ! g_inOutMatrixInt[p_channel][TRF]) /* treshold flag - but i need 4 each menu layer or is this different than g_menuPickUpFlag??? */
                     {
                     g_inOutMatrixFlt[p_channel][OUT]    = g_inOutMatrixFlt[p_channel][RND];
                     g_inOutMatrixInt[p_channel][OUT]    = g_inOutMatrixInt[p_channel][RND];

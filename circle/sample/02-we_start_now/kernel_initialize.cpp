@@ -4,7 +4,7 @@ boolean         CKernel::Initialize (void)
 
                 if (bOK)
                     {
-                    bOK = bufferToScreenInit();                     // framebuffer
+                    bOK = frameBufferInit();
                     }
                 if (bOK)
                 {
@@ -25,7 +25,7 @@ boolean         CKernel::Initialize (void)
                 if (bOK)
                     {
                     m_USBHCI.UpdatePlugAndPlay(); 
-                    m_Timer.MsDelay(1000);                          // ?
+                    m_Timer.MsDelay(1000);
                     }
                 if (bOK)
                     {
@@ -56,18 +56,18 @@ boolean         CKernel::Initialize (void)
                     }                                        
                 if (bOK)
                     {
-                    my_GPIO_SetAlt(MY_CTRL_PIN, 1, GPIO_PULL_OFF);   // 001 = output
-                    my_GPIO_Write(MY_CTRL_PIN, LOW); // LOW OR HIGH?
+                    my_GPIO_SetAlt(MY_CTRL_PIN, 1, GPIO_PULL_OFF);
+                    my_GPIO_Write(MY_CTRL_PIN, LOW);
                     }
 
                 if (bOK)
                     {
-                    my_GPIO_SetAlt(SW_PIN_A, 0, GPIO_PULL_UP);       // 000 = input
+                    my_GPIO_SetAlt(SW_PIN_A, 0, GPIO_PULL_UP);
                     }
 
                 if (bOK)
                     {
-                    my_GPIO_SetAlt(SW_PIN_B, 0, GPIO_PULL_UP);       // 000 = input
+                    my_GPIO_SetAlt(SW_PIN_B, 0, GPIO_PULL_UP);
                     }
                 return bOK;
 }
