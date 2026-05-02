@@ -30,7 +30,7 @@ enum modetable
 	int SENS_C,     // 0 to 63
 	int SENS_D,     // 0 to 63
 
-	int FRM_MODE,   // 0 or 1   ( wait - i propose a simple 4 to 7 and 0 as of, means anything else than 0 is the actual input p_channel problem, it need to overrule CH*_MODE ) *****
+	int FRM_MODE,   // 0 or 1   ( wait - i propose a simple 4 to 7 and 0 as of, means anything else than 0 is the actual input p_channel problem, it need to overrule CH*_MODE )
 	int TEX_MODE,   // 0 or 1   ( how we can do it? also, dont i want more than only p_channel 4-7 assignable? )
 	int CLK_MODE,   // 0 or 1   ( whats about the approach in readADC() where i modify the number of possible modes in the modematrix )
 	int VID_MODE,   // 0 or 1   ( like if i have one here CH*_MODE "opens" up for this modes - requires a constant check and update but... )
@@ -119,6 +119,18 @@ enum lfo_bpm_types
     DB,             // deltaBuffer
 
     LFO_BPM_COUNT
+};
+//------------------------------------------------- // g_modeLengthAdd[MODELEN_FLAG_COUNT] 
+enum ModeLengthFlag
+{
+                MODELENDEFAULT  = 0,
+                MODELEN_AUDIO_A,            // any extra mode that modifies the number of max modes per channel must have an enum
+                MODELEN_AUDIO_B,
+                MODELEN_AUDIO_C,
+                MODELEN_LFO_A,
+                MODELEN_SENS_A,
+
+                MODELEN_FLAG_COUNT
 };
 //------------------------------------------------- // unsigned int g_buttons_states[NR_BUTTONS][5] = {0} !!!
 enum ButtonTSIndex  

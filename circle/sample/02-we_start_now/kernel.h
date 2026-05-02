@@ -25,14 +25,14 @@ public:
 
 	        TShutdownMode Run (void);
 
-                bool        Mount                       (   const   char*                           p_deviceName);          // "emmc1-1" cd ( root ), "umsd1-1" usb
+                bool        Mount                       (   const   char*                           p_deviceName);          // "emmc1-1" cd ( root ), "umsd1-1" usb returns success
 
-                bool        UnMount                     ();
+                bool        UnMount                     ();                                                                 // returns success
 
                 bool        openFile                    (   const   char*                           p_fileName);            // filename format "8.3"
 
-                unsigned    loadToBuffer                (           char*                           p_bufferArray,               // destination buffer for the file data
-                                                                    unsigned                        p_bufferSize);          // maximum number of bytes to read into the buffer
+                unsigned    loadToBuffer                (           char*                           p_bufferArray,          // destination buffer for file
+                                                                    unsigned                        p_bufferSize);          // max bytes to read into the buffer returns loaded bytes - 0 is false/failed !!!
 //5
                 bool        saveFromBufferO             (   const   char*                           p_fileName,             // filename format "8.3" 
                                                             const   char*                           p_bufferArray,               // my allocated buffer
@@ -43,7 +43,7 @@ public:
                                                             const   char*                           p_bufferArray,               // my allocated buffer 
                                                                     unsigned                        p_bufferSize);          // max buffer size
 
-                bool        closeFile                   ();
+                bool        closeFile                   ();                                                                 // release g_hFile handle 
 
                 void        bulkLoad                    (           char*                           p_fileNameArray[],      // where we have stored the filenames from the root directory scan
                                                                     unsigned                        p_loadedBytes[],        // where we store the size in bytes for each file
@@ -59,28 +59,28 @@ public:
                 bool        scanRoot                    (           char**                          p_fileNameArray,        // where we store the valid filenames we find
                                                                     const char*                     p_fileExtArray[],       // the array of valid file extensions for this type of file
                                                                     unsigned                        p_extentionCount,       // how many valid file extensions we have in the array above
-                                                                    unsigned&                       p_scannedFiles,         // our counter of found files
-                                                                    unsigned                        p_maxFiles);            // how many files are allowed to scan and stored in the array
+                                                                    unsigned&                       p_scannedFiles,         // our counter of found files per device / call
+                                                                    unsigned                        p_maxFiles);            // how many files are allowed to scan and stored in the array returns success not files found!
 
-                bool        updateUSB                   (   const   char*                           p_deviceName);
+                bool        updateUSB                   (   const   char*                           p_deviceType);          // "umsd1" is the type, not "umsd1-1"needs volatile boolean	m_bStorageAttached ! 
 
-        static  void        removeUSB                   (           CDevice*                        pDevice, 
-                                                                    void*                           pContext);
+        static  void        removeUSB                   (           CDevice*                        pDevice,                // USB device that was removed
+                                                                    void*                           pContext);              // user context pointer; expected to be CKernel*
 
-                char**      allocBufferMEM              (           size_t                          p_count, 
-                                                                    size_t                          bufferSize);
+                char**      allocBufferMEM              (           size_t                          p_count,                // number of buffer slots
+                                                                    size_t                          bufferSize);            // size of each buffer in bytes *** msleep ?!
 
-                char**      allocBufferDMA              (           size_t                          p_count,
-                                                                    size_t                          bufferSize,
-                                                                    char**                          blockBaseOut,
-                                                                    char**                          rawBlockOut,
-                                                                    size_t*                         alignedSizeOut);
+                char**      allocBufferDMA              (           size_t                          p_count,                // number of buffer slots
+                                                                    size_t                          bufferSize,             // size of each buffer in bytes
+                                                                    char**                          blockBaseOut,           // receives 4K-aligned DMA block base
+                                                                    char**                          rawBlockOut,            // receives original raw allocation pointer
+                                                                    size_t*                         alignedSizeOut);        // receives total aligned allocation size *** msleep ?!
 //15
-                void        clearBufferMEM              (           char**                          buffers, 
-                                                                    size_t                          p_count);
+                void        clearBufferMEM              (           char**                          buffers,                // buffer pointer table returned by allocBufferMEM()
+                                                                    size_t                          p_count);               // number of buffers in the table
 
-                void        clearBufferDMA              (           char**                          buffers, 
-                                                                    char*                           rawBlock);
+                void        clearBufferDMA              (           char**                          buffers,                // buffer pointer table returned by allocBufferDMA()
+                                                                    char*                           rawBlock);              // original raw allocation pointer to delete
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  GRAPHICS
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -140,9 +140,6 @@ public:
 
                 void        frmRateBreak                (           bool*                           noTargetFPS);
 
-                void        updateOvlState              (           olg_state*                      o, 
-                                                                    glsl_state*                     s, 
-                                                                    tex_state*                      t);
 //30
                 void        setUniOvl                   (           olg_state*                      o, 
                                                                     glsl_state*                     s, 
@@ -158,10 +155,6 @@ public:
                 u32         my_read32                   (           uintptr                         nAddress);                          // MMIO
                 void        my_write32                  (           uintptr                         nAddress, 
                                                                     u32                             nValue);
-
-
-    
-
                 void        my_GPIO_SetPull             (           unsigned                        nPin,                               // GPIO
                                                                     unsigned                        nPullMode);
 //35
@@ -172,9 +165,6 @@ public:
                 void        my_GPIO_Write               (           unsigned                        nPin, 
                                                                     unsigned                        nValue);
                 unsigned    my_GPIO_Read                (           unsigned                        nPin);
-
-
-    
 
                 void        my_watchdog_Start           (           unsigned                        nTimeoutSeconds);                   // watchdog
 
@@ -278,32 +268,38 @@ public:
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  MENU
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                void        resetPickUpFlags            ();
+                void        resetPickUpFlags            ();                                                             // **** okay, i have multiple flags that may or may not be reset ! maybe i will do it centralized here???
 
-                void        mapMenuGroup                (           uint8_t                         menu_id, 
-                                                                    uint8_t                         base);
+                void        set_mode_length             (           uint8_t                         base);              // the "base" of "channels" to process, groups of 4!
 
-                void        getChannelModeA             (           int                             p_channel);
+                void        mapMenuGroup                (           uint8_t                         menu_id,            // for comparison / exit condition **** here we use a parameter to compair against a global member... nononogo, we can rely only on "m_current_menu" vs "m_last_menu" right? !!! 
+                                                                    uint8_t                         base);              // the "base" of "channels" to process, groups of 4!
+
+                void        getChannelModeA             (           int                             p_channel);         // channel to process
 //65
-                void        modeADC                     (           int                             p_channel);
+                void        getChannelModeB             (           int                             p_channel);         // channel to process 
 
-                void        modeTRG                     (           int                             p_channel);
+                void        modeADC                     (           int                             p_channel);         // channel passed by caller
 
-                void        modeBPM                     (           int                             p_channel);
+                void        modeTRG                     (           int                             p_channel);         // channel passed by caller
 
-                void        modeLF1                     (           int                             p_channel);
+                void        modeBPM                     (           int                             p_channel);         // channel passed by caller
 
-                void        modeLF2                     (           int                             p_channel);
+                void        modeLF1                     (           int                             p_channel);         // channel passed by caller
 //70
-                void        modeAudioAb0                (           int                             p_channel);
+                void        modeLF2                     (           int                             p_channel);         // channel passed by caller
 
-                void        modeAudioAb1                (           int                             p_channel);
+                void        modeAudioAb0                (           int                             p_channel);         // channel passed by caller
 
-                void        modeAudioBb0                (           int                             p_channel);
+                void        modeAudioAb1                (           int                             p_channel);         // channel passed by caller
 
-                void        modeAudioBb1                (           int                             p_channel);
+                void        modeAudioBb0                (           int                             p_channel);         // channel passed by caller
 
-                void        getChannelModeA             (           int                             p_channel);                
+                void        modeAudioBb1                (           int                             p_channel);         // channel passed by caller  
+                
+                void        updateOvlState              (           olg_state*                      o,                  // because we are concerned with the overlay menu here!
+                                                                    glsl_state*                     s, 
+                                                                    tex_state*                      t);                
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  PARSER
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -401,7 +397,7 @@ public:
                                                                     VCHI_CALLBACK_REASON_T          reason, 
                                                                     void*                           msg_handle);
 
-                void        getStateVCHI                ();
+                void        getStateVCHI                ();                                                             // get the VCHI instance and the connection handle from bcm_host.h
 
                 bool        initEventsVCOS              (           VCOS_EVENT_T&                   event, 
                                                             const   char*                           name);
@@ -500,7 +496,7 @@ public:
                                                                     MMAL_Port_Action_Msg&           tx, 
                                                                     MMAL_Port_Action_Reply_Msg&     rx);
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                void        PrimeOutputBufferBodyMMAL   (           MMAL_Buffer_From_Host_Msg&      tx);
+                void        PrimeOutputBufferBodyMMAL   (           MMAL_Buffer_From_Host_Msg&      tx);                          // here we "prime" the messages for usage!
 
                 void        PrimeInputBufferBodyMMAL    (           MMAL_Buffer_From_Host_Msg&      tx);
 //125
@@ -522,7 +518,7 @@ public:
         void Log_BufferFromHost                                   (     const MMAL_Buffer_From_Host_Msg& rx);
 //      void Log_BufferBody                                       (     const mmal_msg_buffer_from_host_wire32& msg );
 //      void Log_queueBufferFromHost                              (     const MMAL_Buffer_From_Host_Msg& tx );        
-#endif  
+#endif 
 */                                                
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  STUBS

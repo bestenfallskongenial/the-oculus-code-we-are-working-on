@@ -110,10 +110,8 @@ static const unsigned WatchdogMaxTimeoutSeconds = 15;
                 tex_state               m_omt    = {};
 
                 h264_state              m_vid    = {};    
-
-                float                   g_opaque = 0.5;     // is a stub for a potential color mode, alfa was to see my text display
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-    volatile    boolean	                m_bStorageAttached  = false;
+    volatile    boolean	                            m_bStorageAttached  = false;
 
                 char** 				    m_bufferVid         = nullptr;      // thats the pointer to my "array-like" buffer allocation
                 char* 				    m_videoBlockBase    = nullptr;      // returns the aligned DMA base pointer
@@ -187,7 +185,14 @@ static const unsigned WatchdogMaxTimeoutSeconds = 15;
                 unsigned                g_bytVid[VID_SD + VID_USB]      = { 0 };
                 unsigned                g_bytKln[KLN_SD + KLN_USB]      = { 0 };
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-        const   int                     m_scaleFactors[3] = {2047, 1551, 1023};
+// okay, we need for each separate log buffer our own logIndex[MAX_LOG_LENGTH]
+                uint32_t                logIndex_vc04[MAX_LOG_LENGTH];
+// than we  #define MY_BUFFER buffer* and #define MY_INDEX logIndex* to assign a log buffer ti the functions that log / parse
+
+        const   int                     m_scaleFactors[3] = {   2047,       // 2.5V max (1023 * 2)
+                                                                1551,       // 3.3V max (1023 * 1.515555...)
+                                                                1023    };  // 5.0V max     
+
                 int                     m_adc_ring[ADC_CHANNELS][ADC_BUFFER];
                 int                     m_adc_index;
 

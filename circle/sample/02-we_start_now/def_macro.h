@@ -91,6 +91,8 @@
 #define NEOPIXEL_SMI_SETUP             10
 #define NEOPIXEL_SMI_STROBE            20
 #define NEOPIXEL_SMI_HOLD              10
+
+#define NEOPIXEL_SMI_WIDTH		    (LED_NCHANS > 8 ? SMI16Bits : SMI8Bits) // ?
 #define NEOPIXEL_SMI_PACE              0
 
 //---------------------------------------------------------------------------------------------------------------------

@@ -1,10 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // init OGL
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::initOGL                   (   olg_state*  o ) // never touch a running horse and if remove the assertions!
+void            CKernel::initOGL                   (   olg_state*  o )
 {
-                int32_t success = 0;
-                EGLBoolean result;
                 EGLint num_config;
 
                 static EGL_DISPMANX_WINDOW_T nativewindow;
@@ -26,47 +24,41 @@ void            CKernel::initOGL                   (   olg_state*  o ) // never 
 
                 EGLConfig config;
                 
-                o->display                  = eglGetDisplay             (   EGL_DEFAULT_DISPLAY     );  // get an EGL display connection
-#ifdef __OLG_DEBUG__                
-assert(o->display!=EGL_NO_DISPLAY);
-                check();
-#endif // __OLG_DEBUG__
-                result                      = eglInitialize             (   o->display,         // initialize the EGL display connection
+                o->display                  = eglGetDisplay             (   EGL_DEFAULT_DISPLAY     );
+#ifdef __OLG_DEBUG__        
+                check();        
+#endif  
+                                             eglInitialize              (   o->display,
                                                                             NULL, 
                                                                             NULL                    );
 #ifdef __OLG_DEBUG__
-assert(EGL_FALSE != result);//?
                 check();
-#endif // __OLG_DEBUG__
-                result                      = eglChooseConfig           (   o->display,         // get an appropriate EGL frame buffer configuration 
+#endif  
+                                             eglChooseConfig            (   o->display, 
                                                                             attribute_list, 
                                                                             &config, 
                                                                             1, 
                                                                             &num_config             );
-#ifdef __OLG_DEBUG__                
-assert(EGL_FALSE != result); //?
-                check();
-#endif // __OLG_DEBUG__
-                result                      = eglBindAPI                (   EGL_OPENGL_ES_API); // get an appropriate EGL frame buffer configuration
+#ifdef __OLG_DEBUG__       
+                check();         
+#endif  
+                                             eglBindAPI                 (   EGL_OPENGL_ES_API);
 #ifdef __OLG_DEBUG__
-assert(EGL_FALSE != result);//?
                 check();
-#endif // __OLG_DEBUG__
-                o->context                  = eglCreateContext          (   o->display,         // create an EGL rendering context
+#endif  
+                o->context                  = eglCreateContext          (   o->display,
                                                                             config, 
                                                                             EGL_NO_CONTEXT, 
                                                                             context_attributes      );
 #ifdef __OLG_DEBUG__
-assert(o->context!=EGL_NO_CONTEXT);//?
                 check();
-#endif // __OLG_DEBUG__
-                success                     = graphics_get_display_size (   0 /* LCD */,            // create an EGL window surface
+#endif  
+                                             graphics_get_display_size  (   0,
                                                                             &o->screen_width, 
                                                                             &o->screen_height   );
 #ifdef __OLG_DEBUG__
-assert( success >= 0 );
                 check();
-#endif // __OLG_DEBUG__
+#endif  
                 dst_rect.x                  = 0;
                 dst_rect.y                  = 0;
                 dst_rect.width              = o->screen_width;
@@ -77,19 +69,19 @@ assert( success >= 0 );
                 src_rect.width              = o->screen_width << 16;
                 src_rect.height             = o->screen_height << 16;        
 
-                o->dispman_display          = vc_dispmanx_display_open  (   0 /* LCD */ );
+                o->dispman_display          = vc_dispmanx_display_open  (   0 );
                 dispman_update              = vc_dispmanx_update_start  (   0 );
       
                 o->dispman_element          = vc_dispmanx_element_add   (   dispman_update, 
                                                                             o->dispman_display,
-                                                                            0/*layer*/, 
+                                                                            0, 
                                                                             &dst_rect, 
-                                                                            0/*src*/,
+                                                                            0,
                                                                             &src_rect, 
-                                                                            DISPMANX_PROTECTION_NONE, /*protection*/
-                                                                            0 /*alpha*/, 
-                                                                            0 /*clamp*/, 
-                                                                            DISPMANX_NO_ROTATE /*transform*/ );   // was 0/*transform*/ before DISPMANX_ROTATE_90 
+                                                                            DISPMANX_PROTECTION_NONE,
+                                                                            0, 
+                                                                            0, 
+                                                                            DISPMANX_NO_ROTATE);
       
                 nativewindow.element        = o->dispman_element;
                 nativewindow.width          = o->screen_width;
@@ -98,34 +90,30 @@ assert( success >= 0 );
                 vc_dispmanx_update_submit_sync                          (   dispman_update  );
 #ifdef __OLG_DEBUG__
                 check();
-#endif // __OLG_DEBUG__            
+#endif              
                 o->surface                  = eglCreateWindowSurface    (   o->display, 
                                                                             config, 
                                                                             &nativewindow, 
                                                                             NULL            );
 #ifdef __OLG_DEBUG__
-                assert(o->surface != EGL_NO_SURFACE);   //?
                 check();
-#endif // __OLG_DEBUG__                
-                result                      = eglMakeCurrent            (   o->display,     // connect the context to the surface
+#endif                  
+                                             eglMakeCurrent             (   o->display,
                                                                             o->surface, 
                                                                             o->surface, 
                                                                             o->context  );
 #ifdef __OLG_DEBUG__
-                assert(EGL_FALSE != result);    //?
                 check();
-#endif // __OLG_DEBUG__
-                                              glClearColor              (   0.15f, 0.25f, 0.35f, 1.0f); // Set background color and clear buffers
+#endif  
+                                              glClearColor              (   0.15f, 0.25f, 0.35f, 1.0f);
                                               glClear                   (   GL_COLOR_BUFFER_BIT );
 #ifdef __OLG_DEBUG__
                 check();
-#endif // __OLG_DEBUG__            
+#endif              
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-// init GL
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void            CKernel::initVbuffer                (   olg_state*  o,
-                                                        vtx_state*  v )                              // Function to initialize Buffers 
+                                                        vtx_state*  v )
 {
                 static const GLfloat vertex_data[] =  {  -1.0,-1.0, 1.0, 1.0, 1.0,-1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0  };
 
@@ -138,11 +126,11 @@ void            CKernel::initVbuffer                (   olg_state*  o,
 #ifdef __GL_DEBUG__
                 check();
 #endif  
-                glViewport(0, 0, o->screen_width, o->screen_height);                        // Prepare viewport
+                glViewport(0, 0, o->screen_width, o->screen_height);
 #ifdef __GL_DEBUG__
                 check();
 #endif  
-                glBindBuffer(GL_ARRAY_BUFFER, v->gl_buf);                                          // Upload vertex data to a buffer
+                glBindBuffer(GL_ARRAY_BUFFER, v->gl_buf);
                 glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_data), vertex_data, GL_STATIC_DRAW);
                 glVertexAttribPointer(v->gl_vtx[0], 4, GL_FLOAT, 0, 16, 0);
                 glEnableVertexAttribArray(v->gl_vtx[0]);
@@ -150,7 +138,7 @@ void            CKernel::initVbuffer                (   olg_state*  o,
                 check();
 #endif  
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void            CKernel::initShader                 (   vtx_state*  v,
                                                         glsl_state* s,
                                                         tex_state*  t,
@@ -167,13 +155,13 @@ void            CKernel::initShader                 (   vtx_state*  v,
                     glShaderSource(s->gl_shader_id[i], 1, &src, 0);
                     glCompileShader(s->gl_shader_id[i]);
 
-                    s->shader_valid[i] = shaderLog(s->gl_shader_id[i], i);   // ← assign here
+                    s->shader_valid[i] = shaderLog(s->gl_shader_id[i], i);
 #ifdef __GL_DEBUG__
                     check();
 #endif
                     }
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void            CKernel::initProgram               (   vtx_state*  v,
                                                         glsl_state* vsh,
                                                         glsl_state* fsh,
@@ -186,7 +174,6 @@ void            CKernel::initProgram               (   vtx_state*  v,
                     {
                     fsh->gl_program_id[valid_count] = glCreateProgram();
                     if (vsh->shader_valid[0] && fsh->shader_valid[i] && fsh->gl_program_id[valid_count] != 0)
-                //  if (flags_vsh[0] && flags_fsh[i] && fsh->gl_program_id[valid_count] != 0)
                         {
                         glAttachShader(fsh->gl_program_id[valid_count], vsh->gl_shader_id[0]);
                         glAttachShader(fsh->gl_program_id[valid_count], fsh->gl_shader_id[i]);
@@ -200,18 +187,17 @@ void            CKernel::initProgram               (   vtx_state*  v,
                     else
                         {
                         glDeleteProgram(fsh->gl_program_id[valid_count]);
-                    //  fsh->gl_program_id[valid_count] = 0;
                         }
                 }
                 m_Watchdog.Start(TIMEOUT * 3);
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::initTexture                (   vtx_state*  v,                 // new. takes now all texture related data from the struct that the parser filled 
+
+void            CKernel::initTexture                (   vtx_state*  v,
                                                         glsl_state* s,
                                                         tex_state*  t,
                                                         int         p_fromFile,
                                                         int         p_toFile,
-                                                        unsigned&   valid_count,       // means also we dont use the if (flags[i]) anymore but (t->tex_valid[i])
+                                                        unsigned&   valid_count,
                                                         GLint       wrap_s,
                                                         GLint       wrap_t )
 {
@@ -227,7 +213,7 @@ void            CKernel::initTexture                (   vtx_state*  v,          
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-                        GLvoid* bitmapData = &t->data[i][t->offset[i]]; //  GLvoid* bitmapData = t->data[i] + t->offset[i]; - he claims this is the same!
+                        GLvoid* bitmapData = &t->data[i][t->offset[i]];
                         glTexImage2D(   GL_TEXTURE_2D,
                                         0,
                                         GL_RGB,
@@ -250,80 +236,63 @@ void            CKernel::initTexture                (   vtx_state*  v,          
                     m_Watchdog.Start(TIMEOUT);
                     }
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::initUniform                (   vtx_state*  v,   // since i call it after initProgram() i have a dense packing
+
+void            CKernel::initUniform                (   vtx_state*  v,
                                                         glsl_state* s,
                                                         tex_state*  t,
-                                                        int         p_fromFile,   // alway 0, kept the parameter for my uniform signature pattern
-                                                        int         p_toFile /*,
-                                                        bool*       flags*/)  // no need since dense packing right
+                                                        int         p_fromFile,
+                                                        int         p_toFile )
 {
                 for (int i = p_fromFile; i < p_toFile; i++)
                     {
-                    //  if (!flags[i])  // no need since dense packing right
-                    //      continue;
-                        glUseProgram(s->gl_program_id[i]);
+                    glUseProgram(s->gl_program_id[i]);
 #ifdef __GL_DEBUG__
-                        check();
+                    check();
 #endif
-                        v->gl_vtx[i]       = glGetAttribLocation(s->gl_program_id[i], "vertex");
+                    v->gl_vtx[i]       = glGetAttribLocation(s->gl_program_id[i], "vertex");
 
-                        s->u_time[i]       = glGetUniformLocation(s->gl_program_id[i], "time");
-                        s->u_tres[i]       = glGetUniformLocation(s->gl_program_id[i], "tres");
-                        s->u_seed[i]       = glGetUniformLocation(s->gl_program_id[i], "p_seed");
-                        s->u_aud[i]        = glGetUniformLocation(s->gl_program_id[i], "audio");
-                        s->u_col[i]        = glGetUniformLocation(s->gl_program_id[i], "color");
-                        s->u_par_a[i]      = glGetUniformLocation(s->gl_program_id[i], "par_a");
-                        s->u_par_b[i]      = glGetUniformLocation(s->gl_program_id[i], "par_b");
+                    s->u_time[i]       = glGetUniformLocation(s->gl_program_id[i], "time");
+                    s->u_tres[i]       = glGetUniformLocation(s->gl_program_id[i], "tres");
+                    s->u_seed[i]       = glGetUniformLocation(s->gl_program_id[i], "p_seed");
+                    s->u_aud[i]        = glGetUniformLocation(s->gl_program_id[i], "audio");
+                    s->u_col[i]        = glGetUniformLocation(s->gl_program_id[i], "color");
+                    s->u_par_a[i]      = glGetUniformLocation(s->gl_program_id[i], "par_a");
+                    s->u_par_b[i]      = glGetUniformLocation(s->gl_program_id[i], "par_b");
 
-                        s->u_tex_l[i]      = glGetUniformLocation(s->gl_program_id[i], "tex_l");
+                    s->u_tex_l[i]      = glGetUniformLocation(s->gl_program_id[i], "tex_l");
 
-                        s->u_atlas[i]      = glGetUniformLocation(s->gl_program_id[i], "u_menu_atlas");
-                        s->u_tile_count[i] = glGetUniformLocation(s->gl_program_id[i], "u_menu_tile_count");
-                        s->u_tile_rect[i]  = glGetUniformLocation(s->gl_program_id[i], "u_menu_tile_rect");
-                        s->u_tile_index[i] = glGetUniformLocation(s->gl_program_id[i], "u_menu_tile_index");
+                    s->u_atlas[i]      = glGetUniformLocation(s->gl_program_id[i], "u_menu_atlas");
+                    s->u_tile_count[i] = glGetUniformLocation(s->gl_program_id[i], "u_menu_tile_count");
+                    s->u_tile_rect[i]  = glGetUniformLocation(s->gl_program_id[i], "u_menu_tile_rect");
+                    s->u_tile_index[i] = glGetUniformLocation(s->gl_program_id[i], "u_menu_tile_index");
 
-                        t->u_tex_id[i][0] = glGetUniformLocation(s->gl_program_id[i], "tex[0]");
-                        t->u_tex_id[i][1] = glGetUniformLocation(s->gl_program_id[i], "tex[1]");
-                        t->u_tex_id[i][2] = glGetUniformLocation(s->gl_program_id[i], "tex[2]");
-                        t->u_tex_id[i][3] = glGetUniformLocation(s->gl_program_id[i], "tex[3]");
-                        t->u_tex_id[i][4] = glGetUniformLocation(s->gl_program_id[i], "tex[4]");
-                        t->u_tex_id[i][5] = glGetUniformLocation(s->gl_program_id[i], "tex[5]");
-                        t->u_tex_id[i][6] = glGetUniformLocation(s->gl_program_id[i], "tex[6]");
-                        t->u_tex_id[i][7] = glGetUniformLocation(s->gl_program_id[i], "tex[7]"); // in theory a loop up to TEX_MAX but im lazy!!
-/*
-for (int j = 0; j < MAX_TEXTURES; ++j)
-{
-    char name[8];
+                for (int j = 0; j < MAX_TEXTURES; ++j)
+                    {
+                    char name[8];
 
-    name[0] = 't'; name[1] = 'e'; name[2] = 'x'; name[3] = '[';
+                    name[0] = 't'; name[1] = 'e'; name[2] = 'x'; name[3] = '[';
 
-    if (j < 10)
-    {
-        name[4] = '0' + j;
-        name[5] = ']';
-        name[6] = '\0';
-    }
-    else
-    {
-        name[4] = '0' + (j / 10);
-        name[5] = '0' + (j % 10);
-        name[6] = ']';
-        name[7] = '\0';
-    }
-
-    t->u_tex_id[i][j] = glGetUniformLocation(s->gl_program_id[i], name);
-}
-*/
-
+                    if (j < 10)
+                        {
+                        name[4] = '0' + j;
+                        name[5] = ']';
+                        name[6] = '\0';
+                        }
+                    else
+                        {
+                        name[4] = '0' + (j / 10);
+                        name[5] = '0' + (j % 10);
+                        name[6] = ']';
+                        name[7] = '\0';
+                        }
+                    t->u_tex_id[i][j] = glGetUniformLocation(s->gl_program_id[i], name);
+                    }
 #ifdef __GL_DEBUG__
-                        check();
+                check();
 #endif
     }
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-// runtime buffer ( first and last )
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void            CKernel::frmBufferSet(vtx_state* v)
 {
                 glBindFramebuffer(GL_FRAMEBUFFER,0);
@@ -337,7 +306,7 @@ void            CKernel::frmBufferSet(vtx_state* v)
                 check();
 #endif
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void            CKernel::frmBufferSwap              (   olg_state* o )
 {
                 eglSwapBuffers(o->display, o->surface);
@@ -345,24 +314,19 @@ void            CKernel::frmBufferSwap              (   olg_state* o )
                 check();
 #endif
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::setUniPrg                  (   olg_state*  o, 
                                                         glsl_state* s, 
                                                         tex_state*  t,
-                                                    /*  int         gl_current_tex, */         // shall we add an active texture uniform for the user here?
+                                                    /*  int         gl_current_tex, */
                                                         unsigned    p_validTextureCount )
 {
                 glUseProgram(s->gl_program_id[g_current_gl_program]);
 #ifdef __GL_DEBUG__
                 check();
 #endif
-            //  GLuint cx = o->screen_width;        // why to i cast it here? 
-            //  GLuint cy = o->screen_height;
-
                 if(s->u_time[g_current_gl_program] != -1)  glUniform1f(s->u_time[g_current_gl_program], GLtime);
-                if(s->u_tres[g_current_gl_program]!= -1 )  glUniform2f(s->u_tres[g_current_gl_program], o->screen_width, o->screen_width); // cx, cy);
+                if(s->u_tres[g_current_gl_program]!= -1 )  glUniform2f(s->u_tres[g_current_gl_program], o->screen_width, o->screen_width);
                 if(s->u_seed[g_current_gl_program] != -1)  glUniform4f(s->u_seed[g_current_gl_program], g_inOutMatrixFlt[0][RND], 
                                                                                                         g_inOutMatrixFlt[1][RND], 
                                                                                                         g_inOutMatrixFlt[2][RND], 
@@ -371,7 +335,7 @@ void            CKernel::setUniPrg                  (   olg_state*  o,
                                                                                                         g_inOutMatrixFlt[0][AU1], 
                                                                                                         g_inOutMatrixFlt[0][AU2], 
                                                                                                         g_inOutMatrixFlt[0][AU3]);
-                if(s->u_col[g_current_gl_program] != -1)   glUniform4f(s->u_col[g_current_gl_program],  0.0f, 0.0f, 0.0f, g_opaque);    // is a stub for a potential color mode, alfa was to see my text display
+                if(s->u_col[g_current_gl_program] != -1)   glUniform4f(s->u_col[g_current_gl_program],  0.0f, 0.0f, 0.0f, g_opaque);
                 if(s->u_par_a[g_current_gl_program] != -1) glUniform4f(s->u_par_a[g_current_gl_program],g_inOutMatrixFlt[0][OUT], 
                                                                                                         g_inOutMatrixFlt[1][OUT], 
                                                                                                         g_inOutMatrixFlt[2][OUT], 
@@ -380,12 +344,13 @@ void            CKernel::setUniPrg                  (   olg_state*  o,
                                                                                                         g_inOutMatrixFlt[5][OUT], 
                                                                                                         g_inOutMatrixFlt[6][OUT], 
                                                                                                         g_inOutMatrixFlt[7][OUT]);
-                if(s->u_tex_l[g_current_gl_program] != -1) glUniform1i(s->u_tex_l[g_current_gl_program],p_validTextureCount);           // relict? 
+                if(s->u_tex_l[g_current_gl_program] != -1) glUniform1i(s->u_tex_l[g_current_gl_program],p_validTextureCount); 
+
 #ifdef __GL_DEBUG__
                 check();
 #endif
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void            CKernel::setTexPrg                  (   olg_state*  o, 
                                                         glsl_state* s, 
                                                         tex_state*  t,
@@ -401,7 +366,7 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
                 check();
 #endif   
 
-#endif  // __H264_DEBUG_TEX__
+#endif   
 
 #ifndef __H264_DEBUG_TEX__
                 switch(g_centralModeBuffer[g_currentProgramBuffer][TEX_MODE])
@@ -442,7 +407,6 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
 #ifdef __GL_DEBUG__
                             check();
 #endif   
-
                             glActiveTexture(GL_TEXTURE1);
                             glBindTexture(GL_TEXTURE_2D, s->gl_tex_id[gl_current_tex + 1]);
 
@@ -454,10 +418,8 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
                         }
                     break;
                     }
-
-#endif  // __H264_DEBUG_TEX__
+#endif   
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 
 void            CKernel::drawGLsPrg()
 {
@@ -467,13 +429,12 @@ void            CKernel::drawGLsPrg()
 #endif
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 
 void            Ckernel::frmRateBreak               (   bool* noTargetFPS )
 {
                 glFlush();
 
-                if ( noTargetFPS )  // <- this is my "fps break" - explain why
+                if ( noTargetFPS )
                     {
                     glFinish();
 #ifdef __GL_DEBUG__
@@ -481,62 +442,7 @@ void            Ckernel::frmRateBreak               (   bool* noTargetFPS )
 #endif
                     }
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-// this is the update function, not really render, i may call it before the actual render loop as part of the menu needs a rework
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::updateOvlState             (   olg_state*  o, 
-                                                        glsl_state* s, 
-                                                        tex_state*  t )
-{
-                const float ox = s->kMenuOrigin[0];
-                const float oy = s->kMenuOrigin[1];
-                const float tw = s->kMenuTileSize[0];
-                const float th = s->kMenuTileSize[1];
 
-                for (int i = 0; i < MENU_GPU_TILE_COUNT; i++)
-                    {
-                    float sx = s->kMenuRelSize[i][0];
-                    float sy = s->kMenuRelSize[i][1];
-
-                    if (i == 14 || i == 15)
-                        {
-                        sx *= s->kMenuBackgroundScale[0];
-                        sy *= s->kMenuBackgroundScale[1];
-                        }
-
-                    s->tile_rect_x[i] = ox + s->kMenuRelPos[i][0] * tw;
-                    s->tile_rect_y[i] = oy + s->kMenuRelPos[i][1] * th;
-                    s->tile_rect_w[i] = sx * tw;
-                    s->tile_rect_h[i] = sy * th;
-
-                    s->tile_rect[i * 4 + 0] = s->tile_rect_x[i];
-                    s->tile_rect[i * 4 + 1] = s->tile_rect_y[i];
-                    s->tile_rect[i * 4 + 2] = s->tile_rect_w[i];
-                    s->tile_rect[i * 4 + 3] = s->tile_rect_h[i];
-                    }
-
-                    s->tile_index[0] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH0_MODE];
-                    s->tile_index[1] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH1_MODE];
-                    s->tile_index[2] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH2_MODE];
-                    s->tile_index[3] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH3_MODE];
-                    s->tile_index[4] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH4_MODE];
-                    s->tile_index[5] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH5_MODE];
-                    s->tile_index[6] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH6_MODE];
-                    s->tile_index[7] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH7_MODE];
-
-                    const unsigned long bpm0 = g_resultBPM[0] % 10000UL;
-                    const unsigned long bpm1 = g_resultBPM[1] % 10UL;
-
-                    s->tile_index[8]  = (GLfloat) ((bpm0 / 1000UL) % 10UL);
-                    s->tile_index[9]  = (GLfloat) ((bpm0 / 100UL) % 10UL);
-                    s->tile_index[10] = (GLfloat) ((bpm0 / 10UL) % 10UL);
-                    s->tile_index[11] = (GLfloat) (bpm0 % 10UL);
-                    s->tile_index[12] = 10.0f;
-                    s->tile_index[13] = (GLfloat) bpm1;
-                    s->tile_index[14] = 48.0f;
-                    s->tile_index[15] = 49.0f;
-}
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::setUniOvl                  (   olg_state*  o, 
                                                         glsl_state* s, 
                                                         tex_state*  t )
@@ -545,7 +451,6 @@ void            CKernel::setUniOvl                  (   olg_state*  o,
 #ifdef __GL_DEBUG__
                 check();
 #endif
-
                 if (s->u_tile_count[0] != -1) glUniform1i(s->u_tile_count[0], MENU_GPU_TILE_COUNT);
 
                 if (s->u_tile_rect[0] != -1) glUniform4fv(s->u_tile_rect[0], MENU_GPU_TILE_COUNT, s->tile_rect);
@@ -555,7 +460,6 @@ void            CKernel::setUniOvl                  (   olg_state*  o,
                 check();
 #endif
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 
 void            CKernel::setTexOvl                  (   olg_state*  o, 
                                                         glsl_state* s, 
@@ -569,7 +473,6 @@ void            CKernel::setTexOvl                  (   olg_state*  o,
                 check();
 #endif
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 
 void            CKernel::drawGLsOvl                 ()
 {
@@ -584,8 +487,5 @@ void            CKernel::drawGLsOvl                 ()
 #endif
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
+// END OF FILE
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-

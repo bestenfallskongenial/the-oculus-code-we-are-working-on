@@ -9,11 +9,11 @@ void            CKernel::storeLog       (   char*       p_buffer,
                                             u32         p_value2, 
                                             u32         p_value3)
 {
-                for (const char* p = label; *p; ++p)                    // always write the label
+                for (const char* p = label; *p; ++p)
                     {
                     p_buffer[index++] = *p;
                     }
-                if (p_value0 == EMPTYLOG &&                              // if all values are placeholders, finish
+                if (p_value0 == EMPTYLOG &&
                     p_value1 == EMPTYLOG &&
                     p_value2 == EMPTYLOG &&
                     p_value3 == EMPTYLOG )
@@ -22,7 +22,7 @@ void            CKernel::storeLog       (   char*       p_buffer,
                         p_buffer[index]   = '\0';
                         return;
                         }
-                if (p_value0 != EMPTYLOG)                                 // write first value if valid
+                if (p_value0 != EMPTYLOG)
                     {
                     p_buffer[index++] = ' ';
                     p_buffer[index++] = '0';
@@ -33,7 +33,7 @@ void            CKernel::storeLog       (   char*       p_buffer,
                         p_buffer[index++] = hex;
                         }
                     }
-                if (p_value1 != EMPTYLOG)                                 // write second value if valid
+                if (p_value1 != EMPTYLOG)
                     {
                     p_buffer[index++] = ' ';
                     p_buffer[index++] = '0';
@@ -44,7 +44,7 @@ void            CKernel::storeLog       (   char*       p_buffer,
                         p_buffer[index++] = hex;
                         }
                     }
-                if (p_value2 != EMPTYLOG)                                 // write third value if valid
+                if (p_value2 != EMPTYLOG)
                     {
                     p_buffer[index++] = ' ';
                     p_buffer[index++] = '0';
@@ -55,7 +55,7 @@ void            CKernel::storeLog       (   char*       p_buffer,
                         p_buffer[index++] = hex;
                         }
                     }
-                if (p_value3 != EMPTYLOG)                                 // write fourth value if valid
+                if (p_value3 != EMPTYLOG)
                     {
                     p_buffer[index++] = ' ';
                     p_buffer[index++] = '0';
@@ -66,10 +66,10 @@ void            CKernel::storeLog       (   char*       p_buffer,
                         p_buffer[index++] = hex;
                         }
                 }
-                p_buffer[index++] = '\n';                                 // terminate line
+                p_buffer[index++] = '\n';
                 p_buffer[index]   = '\0';
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void CKernel::storeLogLong  (   char*       p_buffer,
                                 u32&        index,
                                 const char* p_string0, u32 p_value0,
@@ -77,7 +77,7 @@ void CKernel::storeLogLong  (   char*       p_buffer,
                                 const char* p_string2, u32 p_value2,
                                 const char* p_string3, u32 p_value3)
 {
-    for (const char* p = p_string0; *p; ++p)   // always write first label
+    for (const char* p = p_string0; *p; ++p)
     {
         p_buffer[index++] = *p;
     }
@@ -92,7 +92,7 @@ void CKernel::storeLogLong  (   char*       p_buffer,
             p_buffer[index++] = hex;
         }
     }
-    if (p_string1 != EMPTYSTR) // label 2
+    if (p_string1 != EMPTYSTR)
     {
         p_buffer[index++] = ' ';
         for (const char* p = p_string1; *p; ++p)
@@ -111,7 +111,7 @@ void CKernel::storeLogLong  (   char*       p_buffer,
             p_buffer[index++] = hex;
         }
     }
-    if (p_string2 != EMPTYSTR) // label 3
+    if (p_string2 != EMPTYSTR)
     {
         p_buffer[index++] = ' ';
         for (const char* p = p_string2; *p; ++p)
@@ -130,7 +130,7 @@ void CKernel::storeLogLong  (   char*       p_buffer,
             p_buffer[index++] = hex;
         }
     }
-    if (p_string3 != EMPTYSTR) // label 4
+    if (p_string3 != EMPTYSTR)
     {
         p_buffer[index++] = ' ';
         for (const char* p = p_string3; *p; ++p)
@@ -153,22 +153,22 @@ void CKernel::storeLogLong  (   char*       p_buffer,
     p_buffer[index++] = '\n';
     p_buffer[index] = '\0';
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void            CKernel::storeMsg       (   char*       p_buffer,
                                             u32&        index,
                                             const char* label,
                                             const void* tx_msg,
                                             u32         total_size)
 {
-                p_buffer[index++] = '\n';                                   // insert leading newline
+                p_buffer[index++] = '\n';
 
-                for (const char* p = label; *p; ++p)                    // copy label
+                for (const char* p = label; *p; ++p)
                     {
                     p_buffer[index++] = *p;
                     }
-                p_buffer[index++] = '\n';                                   // next line please
+                p_buffer[index++] = '\n';
 
-                const unsigned char* b = (const unsigned char*)tx_msg;  // hex dump, 16 bytes per line
+                const unsigned char* b = (const unsigned char*)tx_msg;
 
                 for (u32 i = 0; i < total_size; ++i) 
                     {
@@ -184,20 +184,18 @@ void            CKernel::storeMsg       (   char*       p_buffer,
                     p_buffer[index++] = lo;
                     p_buffer[index++] = ' ';
                     }
-                p_buffer[index++] = '\n';                                   // newline + terminator
+                p_buffer[index++] = '\n';
                 p_buffer[index++] = '\n';
                 p_buffer[index] = '\0';
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void            CKernel::nextline(char* p_buffer,
                                    u32& index)
 {
                 p_buffer[index++] = '\n';
                 p_buffer[index] = '\0';
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-// glsl logging
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 bool            CKernel::shaderLog                  (   GLint       shader,
                                                         int         shaderIndex )
 {
@@ -206,10 +204,10 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 #ifdef __DEBUG_LOG__ 
                 storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
                 storeLog( MY_BUFFER, MY_INDEX, "Program compile status idx/success", (u32)shaderIndex, (u32)success);
-#endif  
+#endif 
                 return success == GL_TRUE;
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 bool            CKernel::programLog                 (   GLint       program,
                                                         int         program_index )
 {
@@ -221,7 +219,7 @@ bool            CKernel::programLog                 (   GLint       program,
 #ifdef __DEBUG_LOG__
                 storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
                 storeLog( MY_BUFFER, MY_INDEX, "Program link status idx/success", (u32)program_index, (u32)success);
-#endif  
+#endif 
             //  char name[27];
             //  strncpy(name, &m_bufferFsh[program_index][2], 26);
             //  name[26] = '\0';
@@ -229,17 +227,17 @@ bool            CKernel::programLog                 (   GLint       program,
             //  storeMsg( MY_BUFFER, MY_INDEX, "Program short name", name, 26);
             //  storeMsg( MY_BUFFER, MY_INDEX, "Filename", g_ScnFsh[internal_index], 64);   // same behavior conceptually
                 storeLog( MY_BUFFER, MY_INDEX, "Program byte size", (u32)g_bytFsh[program_index]);
-#endif  
+#endif 
                 char log[1024];
                 glGetProgramInfoLog(program, sizeof(log), NULL, log);
 #ifdef __DEBUG_LOG__                 
                 storeMsg( MY_BUFFER, MY_INDEX, "Program InfoLog", log, sizeof(log));
-#endif  
+#endif 
                 GLint numUniforms;
                 glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &numUniforms);
 #ifdef __DEBUG_LOG__ 
                 storeLog( MY_BUFFER, MY_INDEX, "Active Uniforms", (u32)numUniforms);
-#endif  
+#endif 
                 for (GLint i = 0; i < numUniforms; ++i)
                     {
                     char uname[256];
@@ -252,14 +250,14 @@ bool            CKernel::programLog                 (   GLint       program,
 #ifdef __DEBUG_LOG__ 
                     storeLog( MY_BUFFER, MY_INDEX, "Uniform idx/size/type/loc", (u32)i, (u32)size, (u32)type, (u32)location);
                     storeMsg( MY_BUFFER, MY_INDEX, "Uniform name", uname, length);
-#endif                      
+#endif                     
                     }
 
                 GLint numAttributes;
                 glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &numAttributes);
 #ifdef __DEBUG_LOG__ 
                 storeLog( MY_BUFFER, MY_INDEX, "Active Attributes", (u32)numAttributes);
-#endif  
+#endif 
                 for (GLint i = 0; i < numAttributes; ++i)
                     {
                     char aname[256];
@@ -272,17 +270,15 @@ bool            CKernel::programLog                 (   GLint       program,
 #ifdef __DEBUG_LOG__ 
                     storeLog( MY_BUFFER, MY_INDEX, "Attribute idx/size/type/loc", (u32)i, (u32)size, (u32)type, (u32)location);
                     storeMsg( MY_BUFFER, MY_INDEX, "Attribute name", aname, length);
-#endif                      
+#endif                     
                     }
 #ifdef __DEBUG_LOG__
                 storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
-#endif  
+#endif 
 
                 return success == GL_TRUE;
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-// #define         check() 				gfx_check(__FILE__, __LINE__) 	// my own assertion implementation
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void            CKernel::gfx_check                  (   const char* file, 
                                                         unsigned    line )
 {
@@ -298,29 +294,29 @@ void            CKernel::gfx_check                  (   const char* file,
                     unsigned ticks = pTimer->GetTicks();
 #ifdef __DEBUG_LOG__  
                     storeLog( MY_BUFFER, MY_INDEX, "=== Final System Status ticks/p_count ===", (u32)ticks, (u32)error_count);
-#endif   
+#endif  
                     GLint value;
 
                     glGetIntegerv(GL_CURRENT_PROGRAM, &value);
 #ifdef __DEBUG_LOG__                     
                     storeLog( MY_BUFFER, MY_INDEX, "Current Program", (u32)value);
-#endif   
+#endif  
                     glGetIntegerv(GL_ACTIVE_TEXTURE, &value);
 #ifdef __DEBUG_LOG__                     
                     storeLog( MY_BUFFER, MY_INDEX, "Active Texture Unit", (u32)value);
-#endif   
+#endif  
                     GLint viewport[4];
                     glGetIntegerv(GL_VIEWPORT, viewport);
 #ifdef __DEBUG_LOG__                     
                     storeLog( MY_BUFFER, MY_INDEX, "Viewport x/y", (u32)viewport[0], (u32)viewport[1]);
                     storeLog( MY_BUFFER, MY_INDEX, "Viewport w/h", (u32)viewport[2], (u32)viewport[3]);
-#endif   
+#endif  
                     GLint fb;
                     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fb);
 #ifdef __DEBUG_LOG__                     
                     storeLog( MY_BUFFER, MY_INDEX, "Current Framebuffer", (u32)fb);
                     storeLog( MY_BUFFER, MY_INDEX, "=== End Status Report ===");
-#endif                       
+#endif                      
                     return;
                     }
 
@@ -372,15 +368,13 @@ void            CKernel::gfx_check                  (   const char* file,
                     storeLog( MY_BUFFER, MY_INDEX, severity);
                     storeLog( MY_BUFFER, MY_INDEX, error_str);
                     storeLog( MY_BUFFER, MY_INDEX, file);
-#endif   
+#endif  
                     error_count++;
                     if (error_count >= ERROR_THRESHOLD)
                         resetFlag = true;
                     }
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 bool            CKernel::startupScreen(char* p_buffer, u32& index)
 {
                 const char* machineName = m_MachineInfo.GetMachineName();
@@ -406,14 +400,14 @@ bool            CKernel::startupScreen(char* p_buffer, u32& index)
                 unsigned usbDelay       = m_Options.GetUSBPowerDelay();
                 unsigned usbSpeed       = m_Options.GetUSBFullSpeed();
 
-                storeLog( MY_BUFFER, MY_INDEX, "Machine Model");                        // text labels
+                storeLog( MY_BUFFER, MY_INDEX, "Machine Model");
                 storeLog( MY_BUFFER, MY_INDEX, machineName);
                 nextline(p_buffer, index);
                 storeLog( MY_BUFFER, MY_INDEX, "SoC Name");
                 storeLog( MY_BUFFER, MY_INDEX, socName);
                 nextline(p_buffer, index);
 
-                storeLog( MY_BUFFER, MY_INDEX, "Model Major    ", modelMajor);          // numeric values
+                storeLog( MY_BUFFER, MY_INDEX, "Model Major    ", modelMajor);
                 storeLog( MY_BUFFER, MY_INDEX, "Model Revision ", modelRevision);
                 nextline(p_buffer, index);
                 storeLog( MY_BUFFER, MY_INDEX, "RAM Size     MB", ramSize);
