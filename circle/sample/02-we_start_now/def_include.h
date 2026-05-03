@@ -26,7 +26,7 @@
 
 #include <circle/actled.h>                                  // onboard LED
 #include <circle/koptions.h>                                // rasppi hardware options
-#include <circle/machineinfo.h>     // dependency: CMachineInfo::Get()->GetClockRate()
+#include <circle/machineinfo.h>                             // dependency: CMachineInfo::Get()->GetClockRate()
 #include <circle/devicenameservice.h>						
 #include <circle/screen.h>
 #include <circle/serial.h>

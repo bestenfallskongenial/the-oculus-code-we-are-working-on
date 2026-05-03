@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::wrapperInitDMA()
+bool            CKernel::wrapperInitDMA             (   )
 {
                 bool bOK = true;
 
@@ -28,7 +28,7 @@ bool            CKernel::wrapperInitDMA()
                 return bOK;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-bool            CKernel::wrapperInitMEM()
+bool            CKernel::wrapperInitMEM             (   )
 {
                 bool bOK = true;
 
@@ -55,7 +55,7 @@ bool            CKernel::wrapperInitMEM()
                 return bOK;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::wrapperDMAcleanUp            ()
+void            CKernel::wrapperDMAcleanUp          (   )
 {
                     clearBufferDMA( m_bufferVid, m_videoRawBlock); 
 
@@ -68,7 +68,7 @@ void            CKernel::wrapperDMAcleanUp            ()
                     clearBufferDMA( m_bufferTex, m_textureRawBlock); 
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::wrapperMEMcleanUp            ()
+void            CKernel::wrapperMEMcleanUp          (   )
 {
                     clearBufferMEM( m_bufferKnl, filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB] ); 
 
@@ -81,7 +81,7 @@ void            CKernel::wrapperMEMcleanUp            ()
                     clearBufferMEM( m_bufferFsh, filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB] );        
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void                CKernel::wrapper_from_sd()
+void            CKernel::wrapper_from_sd            (   )
 {
                 if(Mount( PARTITION_NAME_SD ))
                     {
@@ -189,7 +189,7 @@ void                CKernel::wrapper_from_sd()
                 CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::wrapper_load_usb()
+void            CKernel::wrapper_load_usb           (   )
 {
                 if(Mount( PARTITION_NAME_USB ))
                     {
@@ -254,7 +254,7 @@ void            CKernel::wrapper_load_usb()
                 CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::wrapper_init_gl_sd()
+void            CKernel::wrapper_init_gl_sd         (   )
 {
                 initBMPparser   (   &m_omt,                                         // the dedicated struct for the overlay texture
                                     m_bufferOmt,                                    // the actual mem-buffer where i have stored it
@@ -322,17 +322,7 @@ void            CKernel::wrapper_init_gl_sd()
                                     &m_omt,
                                     0,
                                     filecounter[FT_OMF][FLD_VALID]);                // for the dense indexing after load and verify *
-/*
-                initTexture     (   &m_vtx,                                         // no textures on sd!?
-                                    &m_fsh,
-                                    &m_tex,
-                                    m_bufferTex,                                    // the actual mem-buffer where i have stored it
-                                    filecounter[FT_TEX][FLD_PREV],                  // for the continuous loading between devices - lower bound
-                                    filecounter[FT_TEX][FLD_LOADED],                // for the continuous loading between devices - upper bound
-                                    filecounter[FT_TEX][FLD_VALID],                 // for the dense indexing after load and verify *
-                                    GL_REPEAT,
-                                    GL_REPEAT);
-*/
+
                 initTexture     (   &m_vtx,                                         // my overlay texture
                                     &m_osh,
                                     &m_omt,
@@ -342,9 +332,19 @@ void            CKernel::wrapper_init_gl_sd()
                                     filecounter[FT_OMT][FLD_VALID],                 // for the dense indexing after load and verify *
                                     GL_CLAMP_TO_EDGE,
                                     GL_CLAMP_TO_EDGE);
+
+                initTexture     (   &m_vtx,                                         // no textures on sd!?
+                                    &m_fsh,
+                                    &m_tex,
+                                    m_bufferTex,                                    // the actual mem-buffer where i have stored it
+                                    filecounter[FT_TEX][FLD_PREV],                  // for the continuous loading between devices - lower bound
+                                    filecounter[FT_TEX][FLD_LOADED],                // for the continuous loading between devices - upper bound
+                                    filecounter[FT_TEX][FLD_VALID],                 // for the dense indexing after load and verify *
+                                    GL_REPEAT,
+                                    GL_REPEAT);
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::wrapper_init_gl_usb()
+
+void            CKernel::wrapper_init_gl_usb        (   )
 {
                 initBMPparser   (   &m_tex,
                                     m_bufferTex,
@@ -406,8 +406,8 @@ void            CKernel::wrapper_init_gl_usb()
                                     GL_REPEAT,
                                     GL_REPEAT);
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::wrapper_io()
+
+void            CKernel::wrapper_io                 (   )
 {
                 readADC();                  //  we read and dampen the adc each loop
 
@@ -422,44 +422,45 @@ void            CKernel::wrapper_io()
                 button_consumer(1);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void    CKernel::wrapper_modes()
+void            CKernel::wrapper_modes              (   )
 {
-        resetPickUpFlags();                              // we need to reset the threshold flags each loop - why again?!
+                resetPickUpFlags();                              // we need to reset the threshold flags each loop - why again?!
 
-        switch (g_current_menu_layer)                           // use than the menulayer variable the 
-            {
-            case 0:
-            // case zero is button b ( lower ) tab bpm
-                break;            
-            case 1:
-                modeMenuAssignGroup(1,  0);     // CH0–CH3 parameters in our global array depending on the menulayer
-                break;
-            case 2:
-                modeMenuAssignGroup(2,  4);     // CH4–CH7
-                break;
-            case 3:
-                modeMenuAssignGroup(3,  8);     // LFO
-                break;
-            case 4:
-                modeMenuAssignGroup(4, 12);     // sensitivity layer A..D
-                break;
+                switch (g_current_menu_layer)                           // use than the menulayer variable the 
+                    {
+                    case 0:
+                    // case zero is button b ( lower ) tab bpm
+                        break;            
+                    case 1:
+                        modeMenuAssignGroup(1,  0);     // CH0–CH3 parameters in our global array depending on the menulayer
+                        break;
+                    case 2:
+                        modeMenuAssignGroup(2,  4);     // CH4–CH7
+                        break;
+                    case 3:
+                        modeMenuAssignGroup(3,  8);     // LFO
+                        break;
+                    case 4:
+                        modeMenuAssignGroup(4, 12);     // sensitivity layer A..D
+                        break;
 
-            default:
-                break;
-            }
-        setChannelMode(0);                               // than we apply the mapped modes for the 8 channels
-        setChannelMode(1);                               // other menulayer modes are handled in the background
-        setChannelMode(2);
-        setChannelMode(3);
-        setChannelMode(4);
-        setChannelMode(5);
-        setChannelMode(6);
-        setChannelMode(7);
+                    default:
+                        break;
+                    }
+                    
+                setChannelMode(0);                               // than we apply the mapped modes for the 8 channels
+                setChannelMode(1);                               // other menulayer modes are handled in the background
+                setChannelMode(2);
+                setChannelMode(3);
+                setChannelMode(4);
+                setChannelMode(5);
+                setChannelMode(6);
+                setChannelMode(7);
 
-        apply_state_to_led();                                   // than we update the 4 leds depending on the modes - we have to write this function 
+                apply_state_to_led();                                   // than we update the 4 leds depending on the modes - we have to write this function 
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-bool    CKernel::wrapper_VCSM()   // for CKernel::Initialize()
+
+bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Initialize()
 {
                 bool bOK = true;
 
@@ -503,11 +504,9 @@ bool    CKernel::wrapper_VCSM()   // for CKernel::Initialize()
 
                 return bOK;                    
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 // instead of having life time long structs for my vcsm / mmal i declare pointer instead and provide wrappers to alloc and free the structs after use!
 // means also i have to call the wrapper here at the CKernel init phase ( presumably after the memory alloc ) and after the init phase of the vc04 
-
-bool            CKernel::wrapperInitVCSMstruct()
+bool            CKernel::wrapperInitVCSMstruct      (   )
 {
                 bool bOK = true;
 
@@ -547,7 +546,7 @@ bool            CKernel::wrapperInitVCSMstruct()
                 return bOK;
 }
 
-bool            CKernel::wrapperInitMMALstruct()
+bool            CKernel::wrapperInitMMALstruct      (   )
 {
                 bool bOK = true;
 
@@ -665,7 +664,7 @@ bool            CKernel::wrapperInitMMALstruct()
                 return bOK;
 }
 
-void            CKernel::wrapperFreeVCSMstruct() // here i must check what structs are init/debug and what are runtime code!
+void            CKernel::wrapperFreeVCSMstruct      (   ) // here i must check what structs are init/debug and what are runtime code!
 {
                 delete  m_ServiceCreateVCSM;     
                         m_ServiceCreateVCSM             = nullptr;
@@ -701,7 +700,7 @@ void            CKernel::wrapperFreeVCSMstruct() // here i must check what struc
                         m_freeRxVCSM                    = nullptr;
 }
 
-void            CKernel::wrapperFreeMMALstruct() // here i must check what structs are init/debug and what are runtime code!
+void            CKernel::wrapperFreeMMALstruct      (   ) // here i must check what structs are init/debug and what are runtime code!
 {
                 delete  m_ServiceCreateMMAL;       
                         m_ServiceCreateMMAL             = nullptr;

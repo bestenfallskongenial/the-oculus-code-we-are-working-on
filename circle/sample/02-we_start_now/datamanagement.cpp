@@ -15,7 +15,7 @@ bool            CKernel::Mount                      (   const   char*       p_de
                 return true;
 }
 
-bool            CKernel::UnMount                    ()
+bool            CKernel::UnMount                    (   )
 {
                 if (m_pFileSystem == 0)
                     {
@@ -59,7 +59,7 @@ unsigned        CKernel::loadToBuffer               (           char*       p_bu
                         }
                     f_totalBytesRead += f_bytesRead;
 
-                    m_Watchdog.Start(TIMEOUT);
+                     // m_Watchdog.Start(TIMEOUT);
                     }
                 return 0;
 }
@@ -72,46 +72,66 @@ bool            CKernel::saveFromBufferM            (   const   char*       p_de
                 if(!Mount( p_deviceName ))
                     {
 #ifdef __DEBUG_LOG__                        
-                    storeLog( MY_BUFFER, MY_INDEX, "Failed to Mount Device");
-                    storeLog( MY_BUFFER, MY_INDEX, p_deviceName);    
+                    storeLogLong(   MY_BUFFER, MY_INDEX,
+                                    "Failed to Mount Device",   EMPTYLOG,
+                                    p_deviceName,               EMPTYLOG,
+                                    EMPTYSTR,                   EMPTYLOG,
+                                    EMPTYSTR,                   EMPTYLOG );
 #endif                    
                     return false;
                     }
-                if (m_pFileSystem == 0 || p_fileName == 0 || p_bufferArray == 0 || p_bufferSize  == 0)
+
+                if (m_pFileSystem == 0 || p_fileName == 0 || p_bufferArray == 0 || p_bufferSize == 0)
                     {
+#ifdef __DEBUG_LOG__
+                    storeLogLong(   MY_BUFFER, MY_INDEX,
+                                    "Failed Store Input",       EMPTYLOG,
+                                    "file",                     EMPTYLOG,
+                                    p_fileName,                 EMPTYLOG,
+                                    "size",                     (u32)p_bufferSize );
+#endif
                     return false;
                     }
+
                 g_hFile = m_pFileSystem->FileCreate(p_fileName);
                 if (g_hFile == 0)
                     {
 #ifdef __DEBUG_LOG__                        
-                    storeLog( MY_BUFFER, MY_INDEX, "Failed to Create File");
-                    storeLog( MY_BUFFER, MY_INDEX, p_fileName);    
+                    storeLogLong(   MY_BUFFER, MY_INDEX,
+                                    "Failed to Create File",    EMPTYLOG,
+                                    p_fileName,                 EMPTYLOG,
+                                    "on Device",                EMPTYLOG,
+                                    p_deviceName,               EMPTYLOG );
 #endif                    
                     return false;
                     }
+
                 if (m_pFileSystem->FileWrite(g_hFile, p_bufferArray, p_bufferSize) != p_bufferSize)
                     {
 #ifdef __DEBUG_LOG__                        
-                    storeLog( MY_BUFFER, MY_INDEX, "Failed to Store File");
-                    storeLog( MY_BUFFER, MY_INDEX, p_fileName);      
+                    storeLogLong(   MY_BUFFER, MY_INDEX,
+                                    "Failed to Store File",     EMPTYLOG,
+                                    p_fileName,                 EMPTYLOG,
+                                    "size",                     (u32)p_bufferSize,
+                                    EMPTYSTR,                   EMPTYLOG );
 #endif                                      
                     return false;
                     }
+
                 closeFile();
                 UnMount();
+
 #ifdef __DEBUG_LOG__
-                storeLog( MY_BUFFER, MY_INDEX, "Successful Stored")
-                storeLog( MY_BUFFER, MY_INDEX, p_fileName);
-                storeLog( MY_BUFFER, MY_INDEX, "into Buffer");
-                storeLog( MY_BUFFER, MY_INDEX, p_bufferArray, p_bufferSize);
-                storeLog( MY_BUFFER, MY_INDEX, "on Device");
-                storeLog( MY_BUFFER, MY_INDEX, p_deviceName);
+                storeLogLong(   MY_BUFFER, MY_INDEX,
+                                "Successful Stored",    EMPTYLOG,
+                                p_fileName,             EMPTYLOG,
+                                "from Buffer",          EMPTYLOG,
+                                p_bufferArray,          (u32)p_bufferSize );
 #endif                                 
                 return true;
 }
 
-bool            CKernel::closeFile                  ()	                                                                        
+bool            CKernel::closeFile                  (   )	                                                                        
 {
 	            if (!m_pFileSystem->FileClose(g_hFile)) 
 		            {
@@ -131,7 +151,11 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                 p_prevFiles = p_validFiles;
 
 #ifdef __DEBUG_LOG__
-                storeLog (MY_BUFFER, MY_INDEX, "BULKLOAD begin max/valid/size", (u32) p_maxFiles, (u32) p_validFiles, (u32) p_fileSize);
+                storeLogLong(   MY_BUFFER, MY_INDEX,
+                                "BULKLOAD Start max",   (u32)p_maxFiles,
+                                "valid",                (u32)p_validFiles,
+                                "size",                 (u32)p_fileSize,
+                                EMPTYSTR,               EMPTYLOG );
 #endif
 
                 for (unsigned i = 0; i < p_maxFiles; ++i) 
@@ -143,17 +167,25 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                             {
                             p_loadedBytes[p_validFiles] = f_bytesRead;
 #ifdef __DEBUG_LOG__
-                            storeLog (MY_BUFFER, MY_INDEX, p_fileNameArray[i], (u32) f_bytesRead);
-                            storeLog (MY_BUFFER, MY_INDEX, p_bufferArray, (u32) p_validFiles);
+                            storeLogLong(   MY_BUFFER, MY_INDEX,
+                                            "file",              (u32)i,
+                                            p_fileNameArray[i],  EMPTYLOG,
+                                            "bytes read",        (u32)f_bytesRead,
+                                            "in buffer",         (u32)p_validFiles );
 #endif                            
                             p_validFiles++;   
                             }
                         closeFile();
                         }
+                    }
+
 #ifdef __DEBUG_LOG__
-                storeLog (MY_BUFFER, MY_INDEX, "BULKLOAD end prev/new/loaded", (u32) p_prevFiles, (u32) p_validFiles, (u32) (p_validFiles - p_prevFiles));
+                storeLogLong(   MY_BUFFER, MY_INDEX,
+                                "BULKLOAD End prev",    (u32)p_prevFiles,
+                                "new",                  (u32)p_validFiles,
+                                "loaded",               (u32)(p_validFiles - p_prevFiles),
+                                EMPTYSTR,               EMPTYLOG );
 #endif
-                    }   
 }
 
 bool            CKernel::IsValidFile                (   const   char*       pFileName,
@@ -256,20 +288,36 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                                                                 size_t      bufferSize ) 
 {
                 char** buffers = (char**)malloc(p_count * sizeof(char*));
-#ifdef ALLOC_DEBUG                   ␊
-                storeLog( MY_BUFFER, MY_INDEX, "ALLOC-DMA buffers", (u32) buffers);
-#endif
-                for (size_t i = 0; i < p_count; ++i) 
-                {
-                    buffers[i] = (char*)calloc(bufferSize, sizeof(char));
-#ifdef ALLOC_DEBUG                    
-                storeLog( MY_BUFFER, MY_INDEX, "ALLOC-DMA buffers[i]", (u32) i, (u32) buffers[i]);
-#endif
-                }
-#ifdef ALLOC_DEBUG   
 
-                storeLog( MY_BUFFER, MY_INDEX, "ALLOC-DMA final", (u32) buffers, (u32) p_count, (u32) bufferSize);
+#ifdef ALLOC_DEBUG
+                storeLogLong(   MY_BUFFER, MY_INDEX,
+                                "ALLOC-MEM base",      (u32)buffers,
+                                "count",               (u32)p_count,
+                                "size",                (u32)bufferSize,
+                                EMPTYSTR,              EMPTYLOG );
+#endif
+
+                for (size_t i = 0; i < p_count; ++i) 
+                    {
+                    buffers[i] = (char*)calloc(bufferSize, sizeof(char));
+
+#ifdef ALLOC_DEBUG
+                    storeLogLong(   MY_BUFFER, MY_INDEX,
+                                    "ALLOC-MEM slice", (u32)i,
+                                    "ptr",             (u32)buffers[i],
+                                    EMPTYSTR,          EMPTYLOG,
+                                    EMPTYSTR,          EMPTYLOG );
+#endif
+                    }
+
+#ifdef ALLOC_DEBUG
+                storeLogLong(   MY_BUFFER, MY_INDEX,
+                                "ALLOC-MEM done",      (u32)buffers,
+                                "count",               (u32)p_count,
+                                "size",                (u32)bufferSize,
+                                EMPTYSTR,              EMPTYLOG );
 #endif         
+
                 msleep(100);
                 return buffers;
 }
@@ -288,24 +336,31 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
 
                 char* dma_block = (char*)(((uintptr_t)raw + 4095) & ~4095);
 #ifdef ALLOC_DEBUG                  
-                storeLog( MY_BUFFER, MY_INDEX,  "Alloc RAW:", (u32) raw, 
-                                                " / Alloc DMA Block:", (u32) dma_block )
+                storeLogLong(   MY_BUFFER, MY_INDEX,
+                                "ALLOC-DMA raw",        (u32)raw,
+                                "block",                (u32)dma_block,
+                                EMPTYSTR,               EMPTYLOG,
+                                EMPTYSTR,               EMPTYLOG );
 #endif
                 char** buffers = new char*[p_count];
                 for (size_t i = 0; i < p_count; ++i)
                     {
                     buffers[i] = dma_block + i * bufferSize;
 #ifdef ALLOC_DEBUG   
-                storeLog( MY_BUFFER, MY_INDEX,  "ALLOC-DMA buffers[", (u32) i, 
-                                                "] -" (u32) sizeof(buffers[i]));
+                    storeLogLong(   MY_BUFFER, MY_INDEX,
+                                    "ALLOC-DMA slice",  (u32)i,
+                                    "ptr",              (u32)buffers[i],
+                                    "size",             (u32)bufferSize,
+                                    EMPTYSTR,           EMPTYLOG );
 #endif  
                     memset(buffers[i], 0, bufferSize);
                     }
 #ifdef ALLOC_DEBUG   
-                storeLog( MY_BUFFER, MY_INDEX,  "ALLOC-DMA RAW", (u32) raw,
-                                                "in Block", (u32) dma_block, 
-                                                "Buffer Size", (u32) total_size, 
-                                                "Aligned Size",  (u32) aligned_total_size);
+                storeLogLong(   MY_BUFFER, MY_INDEX,
+                                "ALLOC-DMA raw",        (u32)raw,
+                                "block",                (u32)dma_block,
+                                "total",                (u32)total_size,
+                                "aligned",              (u32)aligned_total_size );
 #endif
                 *blockBaseOut = dma_block;
                 *rawBlockOut = raw;

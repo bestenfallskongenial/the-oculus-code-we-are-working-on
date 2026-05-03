@@ -1,46 +1,46 @@
 //----------------------------------------------------------------------------------------------------
 #include "kernel.h"
 //----------------------------------------------------------------------------------------------------
-bool CKernel::initBMPparser( tex_state* t,
-                             char* p_buffer_array[],
-                             size_t size_array[],
-                             u32 max_tex_size,
-                             int p_fromFile,
-                             int p_toFile )
+bool            CKernel::initBMPparser              (   tex_state* t,
+                                                        char* p_buffer_array[],
+                                                        size_t size_array[],
+                                                        u32 max_tex_size,
+                                                        int p_fromFile,
+                                                        int p_toFile )
 {
-    t->max_tex_size = max_tex_size;
+                t->max_tex_size = max_tex_size;
 
-    for (int i = p_fromFile; i < p_toFile; i++)
-        {
-        t->data[i] = (u8*)p_buffer_array[i];
-        t->size[i] = size_array[i];
-        }
-    return true;
+                for (int i = p_fromFile; i < p_toFile; i++)
+                    {
+                    t->data[i] = (u8*)p_buffer_array[i];
+                    t->size[i] = size_array[i];
+                    }
+                return true;
 }
 
-bool CKernel::initH264parser( h264_state* h,
-                              char* blockBase,
-                              char* p_buffer_array[],
-                              size_t size_array[],
-                              int p_fromFile,
-                              int p_toFile,
-                              u16 max_width,
-                              u16 max_height,
-                              u8  max_profile,
-                              u8  max_level )
+bool            CKernel::initH264parser             (    h264_state* h,
+                                                        char* blockBase,
+                                                        char* p_buffer_array[],
+                                                        size_t size_array[],
+                                                        int p_fromFile,
+                                                        int p_toFile,
+                                                        u16 max_width,
+                                                        u16 max_height,
+                                                        u8  max_profile,
+                                                        u8  max_level )
 {
-    h->block_base  = blockBase;
-    h->max_width   = max_width;
-    h->max_height  = max_height;
-    h->max_profile = max_profile;
-    h->max_level   = max_level;
+                h->block_base  = blockBase;
+                h->max_width   = max_width;
+                h->max_height  = max_height;
+                h->max_profile = max_profile;
+                h->max_level   = max_level;
 
-    for (int file_index = p_fromFile; file_index < p_toFile; file_index++)
-        {
-        h->data[file_index] = (u8*)p_buffer_array[file_index];
-        h->size[file_index] = size_array[file_index];
-        }
-    return true;
+                for (int file_index = p_fromFile; file_index < p_toFile; file_index++)
+                    {
+                    h->data[file_index] = (u8*)p_buffer_array[file_index];
+                    h->size[file_index] = size_array[file_index];
+                    }
+                return true;
 }
 
 void            CKernel::ParseBPM                   (   tex_state*  t,
@@ -54,10 +54,7 @@ void            CKernel::ParseBPM                   (   tex_state*  t,
                     {
                     u8*    data = t->data[i];
                     size_t size = t->size[i];
-
-                    storeLog(i, "======== Vid header parse start ========");
-                    storeLog(i, filename_array[i], i);
-                    storeLog(i, "========================================");
+                    storeLogLong( MY_BUFFER, MY_INDEX, "Parse BMP File No.", i, "Name",EMPTYLOG, filename_array[i])            
 
                     u32 fileSize    = data[2]  | (data[3]<<8)  | (data[4]<<16)  | (data[5]<<24);
                     u32 dataOffset  = data[10] | (data[11]<<8) | (data[12]<<16) | (data[13]<<24);
@@ -89,18 +86,18 @@ void            CKernel::ParseBPM                   (   tex_state*  t,
                     t->image_size[i]= imgSize;
                     t->data[i]      = data;
 
-                    storeLog(i, ok ? "BMP header VALID" : "BMP header FAILED");
+                    storeLogLong(MY_BUFFER, MY_INDEX, ok ? "BMP header VALID" : "BMP header FAILED");
 
-                    m_Watchdog.Start(TIMEOUT);
+                     // m_Watchdog.Start(TIMEOUT);
                     }
 }
 
-void            CKernel::ParseAnnexB(  h264_state* h,
-                            char*       filename_array[],
-                         /* char*       p_buffer_array[], */
-                         /* size_t      size_array[], */
-                            int         p_fromFile,
-                            int         p_toFile)
+void            CKernel::ParseAnnexB                (   h264_state* h,
+                                                        char*       filename_array[],
+                                                    /*  char*       p_buffer_array[], */
+                                                    /*  size_t      size_array[], */
+                                                        int         p_fromFile,
+                                                        int         p_toFile)
 {
                 for (int file_index = p_fromFile; file_index < p_toFile; file_index++)
                     {
@@ -163,10 +160,7 @@ void            CKernel::ParseAnnexB(  h264_state* h,
                         h->frame_length[file_index][idx]  = end_off - sps_off[file_index][idx];
                         h->idr_offset[file_index]         = idr_off[file_index][idx] - sps_off[file_index][idx];
 
-                        storeLog(file_index,"SPS+PPS+IDR addr/len/off ",
-                                (u32)h->frame_address[file_index][idx],
-                                (u32)h->frame_length[file_index][idx],
-                                (u32)h->frame_offset[file_index][idx]);
+                        storeLogLong(file_index,"SPS+PPS+IDR", EMPTYLOG, "addr", (u32)h->frame_address[file_index][idx], "length", (u32)h->frame_length[file_index][idx], "offset" (u32)h->frame_offset[file_index][idx]);
                         }
 
                     u8 tmp[1024];
@@ -208,128 +202,128 @@ void            CKernel::ParseAnnexB(  h264_state* h,
                         h->vid_profile[file_index]  == h->max_profile &&
                         h->vid_level[file_index]    == h->max_level;
 
-                    storeLog(file_index,"\nParsed Frames           ", h->frame_count[file_index]);
-                    storeLog(file_index,"\nParsed IDR-Offset       ", h->idr_offset[file_index]);
+                    storeLogLong(file_index,"Parsed Frames", h->frame_count[file_index], "Parsed IDR-Offset", h->idr_offset[file_index]);
+                //  storeLog(file_index,"Parsed IDR-Offset       ", h->idr_offset[file_index]);
 
                     if (h->vid_valid[file_index])
                         {
-                        storeLog(file_index,"\nMetaData Valid for Video", file_index);
+                        storeLogLong(file_index,"MetaData VALID for Video", file_index);
                         }
                     else
                         {
-                        storeLog(file_index,"\nMetaData Invalid for Video", file_index);
+                        storeLogLong(file_index,"MetaData INVALID for Video", file_index);
                         }
-                    m_Watchdog.Start(TIMEOUT);
+                     // m_Watchdog.Start(TIMEOUT);
                     }
 }
 
-bool CKernel::ParseSPS(  u8*     sps_data,
-                         size_t  sps_size,
-                         size_t  sps_sc_len,
-                         u16*    width,
-                         u16*    height,
-                         u8*     profile,
-                         u8*     level) const
+bool            CKernel::ParseSPS                   (   u8*     sps_data,
+                                                        size_t  sps_size,
+                                                        size_t  sps_sc_len,
+                                                        u16*    width,
+                                                        u16*    height,
+                                                        u8*     profile,
+                                                        u8*     level) const
 {
-    u8* rbsp = sps_data + sps_sc_len + 1;                               /* skip startcode + NAL header (67) */
+                u8* rbsp = sps_data + sps_sc_len + 1;                               /* skip startcode + NAL header (67) */
 
-    *profile = rbsp[0];
-    *level   = rbsp[2];
+                *profile = rbsp[0];
+                *level   = rbsp[2];
 
-    size_t bit_offset = 24;
+                size_t bit_offset = 24;
 
-    ReadExpGolomb(rbsp, &bit_offset);
+                ReadExpGolomb(rbsp, &bit_offset);
 
-    if (*profile >= 100)
-        {
-        u32 chroma_format_idc = ReadExpGolomb(rbsp, &bit_offset);
+                if (*profile >= 100)
+                    {
+                    u32 chroma_format_idc = ReadExpGolomb(rbsp, &bit_offset);
 
-        if (chroma_format_idc == 3)
-            {
-            bit_offset++;
-            }
-        ReadExpGolomb(rbsp, &bit_offset);
-        ReadExpGolomb(rbsp, &bit_offset);
+                    if (chroma_format_idc == 3)
+                        {
+                        bit_offset++;
+                        }
+                    ReadExpGolomb(rbsp, &bit_offset);
+                    ReadExpGolomb(rbsp, &bit_offset);
 
-        bit_offset++;
+                    bit_offset++;
 
-        u8 seq_scaling_matrix_present_flag = (rbsp[bit_offset / 8] >> (7 - (bit_offset % 8))) & 0x01;
-        bit_offset++;
+                    u8 seq_scaling_matrix_present_flag = (rbsp[bit_offset / 8] >> (7 - (bit_offset % 8))) & 0x01;
+                    bit_offset++;
 
-        if (seq_scaling_matrix_present_flag)
-            {
-            bit_offset += 8;
-            }
-        }
-    ReadExpGolomb(rbsp, &bit_offset);
+                    if (seq_scaling_matrix_present_flag)
+                        {
+                        bit_offset += 8;
+                        }
+                    }
+                ReadExpGolomb(rbsp, &bit_offset);
 
-    u32 pic_order_cnt_type = ReadExpGolomb(rbsp, &bit_offset);
+                u32 pic_order_cnt_type = ReadExpGolomb(rbsp, &bit_offset);
 
-    if (pic_order_cnt_type == 0)
-        {
-        ReadExpGolomb(rbsp, &bit_offset);
-        }
-    else if (pic_order_cnt_type == 1)
-        {
-        bit_offset++;
-        ReadExpGolomb(rbsp, &bit_offset);
-        ReadExpGolomb(rbsp, &bit_offset);
+                if (pic_order_cnt_type == 0)
+                    {
+                    ReadExpGolomb(rbsp, &bit_offset);
+                    }
+                else if (pic_order_cnt_type == 1)
+                    {
+                    bit_offset++;
+                    ReadExpGolomb(rbsp, &bit_offset);
+                    ReadExpGolomb(rbsp, &bit_offset);
 
-        u32 num_ref_frames_in_pic_order_cnt_cycle = ReadExpGolomb(rbsp, &bit_offset);
+                    u32 num_ref_frames_in_pic_order_cnt_cycle = ReadExpGolomb(rbsp, &bit_offset);
 
-        for (u32 i = 0; i < num_ref_frames_in_pic_order_cnt_cycle; i++)
-            {
-            ReadExpGolomb(rbsp, &bit_offset);
-            }
-        }
-    ReadExpGolomb(rbsp, &bit_offset);
+                    for (u32 i = 0; i < num_ref_frames_in_pic_order_cnt_cycle; i++)
+                        {
+                        ReadExpGolomb(rbsp, &bit_offset);
+                        }
+                    }
+                ReadExpGolomb(rbsp, &bit_offset);
 
-    bit_offset++;
+                bit_offset++;
 
-    u32 pic_width_in_mbs_minus1  = ReadExpGolomb(rbsp, &bit_offset);
-    u32 pic_height_in_map_units_minus1 = ReadExpGolomb(rbsp, &bit_offset);
+                u32 pic_width_in_mbs_minus1  = ReadExpGolomb(rbsp, &bit_offset);
+                u32 pic_height_in_map_units_minus1 = ReadExpGolomb(rbsp, &bit_offset);
 
-    u8 frame_mbs_only_flag = (rbsp[bit_offset / 8] >> (7 - (bit_offset % 8))) & 0x01;
-    bit_offset++;
+                u8 frame_mbs_only_flag = (rbsp[bit_offset / 8] >> (7 - (bit_offset % 8))) & 0x01;
+                bit_offset++;
 
-    *width = (pic_width_in_mbs_minus1 + 1) * 16;
+                *width = (pic_width_in_mbs_minus1 + 1) * 16;
 
-    if (frame_mbs_only_flag)
-        {
-        *height = (pic_height_in_map_units_minus1 + 1) * 16;
-        }
-    else
-        {
-        *height = (pic_height_in_map_units_minus1 + 1) * 32;
-        bit_offset++;
-        }
-    bit_offset++;
+                if (frame_mbs_only_flag)
+                    {
+                    *height = (pic_height_in_map_units_minus1 + 1) * 16;
+                    }
+                else
+                    {
+                    *height = (pic_height_in_map_units_minus1 + 1) * 32;
+                    bit_offset++;
+                    }
+                bit_offset++;
 
-    u8 frame_cropping_flag = (rbsp[bit_offset / 8] >> (7 - (bit_offset % 8))) & 0x01;
-    bit_offset++;
+                u8 frame_cropping_flag = (rbsp[bit_offset / 8] >> (7 - (bit_offset % 8))) & 0x01;
+                bit_offset++;
 
-    if (frame_cropping_flag)
-        {
-        u32 frame_crop_left_offset   = ReadExpGolomb(rbsp, &bit_offset);
-        u32 frame_crop_right_offset  = ReadExpGolomb(rbsp, &bit_offset);
-        u32 frame_crop_top_offset    = ReadExpGolomb(rbsp, &bit_offset);
-        u32 frame_crop_bottom_offset = ReadExpGolomb(rbsp, &bit_offset);
+                if (frame_cropping_flag)
+                    {
+                    u32 frame_crop_left_offset   = ReadExpGolomb(rbsp, &bit_offset);
+                    u32 frame_crop_right_offset  = ReadExpGolomb(rbsp, &bit_offset);
+                    u32 frame_crop_top_offset    = ReadExpGolomb(rbsp, &bit_offset);
+                    u32 frame_crop_bottom_offset = ReadExpGolomb(rbsp, &bit_offset);
 
-        *width -= (frame_crop_left_offset + frame_crop_right_offset) * 2;
+                    *width -= (frame_crop_left_offset + frame_crop_right_offset) * 2;
 
-        if (frame_mbs_only_flag)
-            {
-            *height -= (frame_crop_top_offset + frame_crop_bottom_offset) * 2;
-            }
-        else
-            {
-            *height -= (frame_crop_top_offset + frame_crop_bottom_offset) * 4;
-            }
-        }
-    return true;
+                    if (frame_mbs_only_flag)
+                        {
+                        *height -= (frame_crop_top_offset + frame_crop_bottom_offset) * 2;
+                        }
+                    else
+                        {
+                        *height -= (frame_crop_top_offset + frame_crop_bottom_offset) * 4;
+                        }
+                    }
+                return true;
 }
 
-size_t          CKernel::findNext000001(u8* data, size_t pos, size_t size) const
+size_t          CKernel::findNext000001             (   u8* data, size_t pos, size_t size) const
 {
                 while (pos < size - 3) {
                     if ((data[pos] == 0 && data[pos+1] == 0 && data[pos+2] == 1) ||
@@ -342,7 +336,7 @@ size_t          CKernel::findNext000001(u8* data, size_t pos, size_t size) const
                 return size;
 }
 
-u32             CKernel::ReadExpGolomb(u8* data, size_t* bit_offset) const
+u32             CKernel::ReadExpGolomb              (   u8* data, size_t* bit_offset) const
 {
                 size_t leadingZeroBits = 0;
                 size_t offset = *bit_offset;

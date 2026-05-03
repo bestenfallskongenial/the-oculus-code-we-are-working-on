@@ -230,20 +230,24 @@ public:
                                                                     u32&                            index,
                                                             const   char*                           label,
                                                                     u32                             p_value0, 
-                                                                    u32                             p_value1,
-                                                                    u32                             p_value2, 
-                                                                    u32                             p_value3);
+                                                                    u32                             p_value1    = EMPTYLOG,
+                                                                    u32                             p_value2    = EMPTYLOG, 
+                                                                    u32                             p_value3    = EMPTYLOG);
 //55
                 void        storeLogLong                (           char*                           p_bufferArray,
                                                                     u32&                            index,
                                                             const   char*                           p_string0, 
-                                                                    u32                             p_value0,
-                                                            const   char*                           p_string1, 
-                                                                    u32                             p_value1,
-                                                            const   char*                           p_string2, 
-                                                                    u32                             p_value2,
-                                                            const   char*                           p_string3, 
-                                                                    u32                             p_value3);
+                                                                    u32                             p_value0    = EMPTYLOG,
+                                                            const   char*                           p_string1   = EMPTYSTR, 
+                                                                    u32                             p_value1    = EMPTYLOG,
+                                                            const   char*                           p_string2   = EMPTYSTR, 
+                                                                    u32                             p_value2    = EMPTYLOG,
+                                                            const   char*                           p_string3   = EMPTYSTR, 
+                                                                    u32                             p_value3    = EMPTYLOG);
+
+// #define EMPTYSTR ""
+// #define EMPTYLOG 255
+
 
                 void        storeMsg                    (           char*                           p_bufferArray,
                                                                     u32&                            index,
@@ -251,7 +255,7 @@ public:
                                                                     const void*                     tx_msg,
                                                                     u32                             total_size);
 
-                void        nextline                    (           char*                           p_bufferArray,
+                void    //  nextline                    (           char*                           p_bufferArray,
                                                                     u32&                            index);
 // also "only" log / debug or really runtime requirements?
                 bool        shaderLog                   (           GLint                           shader, 

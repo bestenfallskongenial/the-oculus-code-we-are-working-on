@@ -1,40 +1,40 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
                 CActLED			        m_ActLED;                           // * CActLED: Switch the Act LED on and off, checks the Raspberry Pi model to use the right LED pin.
                                                                             // still not sure if i want to keep it
-                CKernelOptions		    m_Options;                          // * CKernelOptions: Providing kernel options from file cmdline.txt (see doc/cmdline.txt).
+                CKernelOptions		        m_Options;                          // * CKernelOptions: Providing kernel options from file cmdline.txt (see doc/cmdline.txt).
                                                                             // mandatory of need for my stuff?
-                CMachineInfo		    m_MachineInfo;                      // * CMachineInfo: Helper class to get different information about the running computer.
+                CMachineInfo		        m_MachineInfo;                      // * CMachineInfo: Helper class to get different information about the running computer.
                                                                             // mandatory of need for my stuff?
-                CDeviceNameService	    m_DeviceNameService;                // * CDeviceNameService: Devices can be registered by name and retrieved later by this name
+                CDeviceNameService	        m_DeviceNameService;                // * CDeviceNameService: Devices can be registered by name and retrieved later by this name
                                                                             // mandatory - but for what?
-                CScreenDevice		    m_Screen;                           // * CScreenDevice: Writing characters to screen, some escape sequences (some are not yet implemented)
+                CScreenDevice		        m_Screen;                           // * CScreenDevice: Writing characters to screen, some escape sequences (some are not yet implemented)
                                                                             // tried to replace it -> logging.cpp
-                CSerialDevice		    m_Serial;                           // * CSerialDevice: Driver for PL011 UART, interrupt or polling mode
+                CSerialDevice		        m_Serial;                           // * CSerialDevice: Driver for PL011 UART, interrupt or polling mode
                                                                             // who needs this?
-                CExceptionHandler	    m_ExceptionHandler;                 // * CExceptionHandler: Generates a stack-trace and a panic message if an abort exception occurs.
+                CExceptionHandler	        m_ExceptionHandler;                 // * CExceptionHandler: Generates a stack-trace and a panic message if an abort exception occurs.
                                                                             // why we need it?
-                CInterruptSystem	    m_Interrupt;                        // * CInterruptSystem: Connecting to interrupts, an interrupt handler will be called on interrupt.
+                CInterruptSystem	        m_Interrupt;                        // * CInterruptSystem: Connecting to interrupts, an interrupt handler will be called on interrupt.
                                                                             // really? for time? and what else?
                 CTimer			        m_Timer;                            // * CTimer: Manages the system clock, supports kernel timers and a calibrated delay loop.
                                                                             // what is controlled here? is there a different simpler way to delay?
                 CLogger			        m_Logger;                           // * CLogger: Writing logging messages to a target device
                                                                             // i got my own, is this mandatory?
-                CEMMCDevice			    m_EMMC;                             // *The SD card device driver CEMMCDevice does not use DMA and does not need cache-aligned DMA buffers. 
+                CEMMCDevice		        m_EMMC;                             // *The SD card device driver CEMMCDevice does not use DMA and does not need cache-aligned DMA buffers. 
                                                                             // mandatory for the sd device
-                CUSBHCIDevice		    m_USBHCI;                           // * CUSBHCIDevice: Alias for CDWHCIDevice or CXHCIDevice, depending on Raspberry Pi model.
+                CUSBHCIDevice		        m_USBHCI;                           // * CUSBHCIDevice: Alias for CDWHCIDevice or CXHCIDevice, depending on Raspberry Pi model.
                                                                             // mandatory for the usb device
-                CVCHIQDevice		    m_VCHIQ;                            // mandatory for the vc04 device ( uses high level linux emulation, correct? )
+                CVCHIQDevice		        m_VCHIQ;                            // mandatory for the vc04 device ( uses high level linux emulation, correct? )
 
-                CMemorySystem		    m_Memory;                           // * CMemorySystem: Enabling MMU if requested, switching page tables (not used here).
+                CMemorySystem		        m_Memory;                           // * CMemorySystem: Enabling MMU if requested, switching page tables (not used here).
                                                                             // mandatory for my mem allocation
 
-                CFATFileSystem*         m_pFileSystem;                      // * CFATFileSystem: File system driver for FAT16 and FAT32 storage partitions.
+                CFATFileSystem*                 m_pFileSystem;                      // * CFATFileSystem: File system driver for FAT16 and FAT32 storage partitions.
                                                                             // mandatory for file operation -> datamanagement.cpp
 
                 CScheduler		        m_Scheduler;                        // * CScheduler: Cooperative non-preemtive scheduler which controls which task runs at a time.
                                                                             // really? who needs this? khronos stuff?
 
- //             CBcmWatchdog       	    m_Watchdog;                         // * CBcmWatchdog: Driver for the BCM2835 watchdog device.
+ //             CBcmWatchdog       	        m_Watchdog;                         // * CBcmWatchdog: Driver for the BCM2835 watchdog device.
  //                                                                             // Watchdog instance - tried to implement as class code!
 
                 CSPIMaster		        m_SPIMaster;                        // * CSPIMaster: Driver for (non-AUX) SPI master device. Synchronous polling operation.
@@ -42,54 +42,54 @@
                 CMCP300X		        m_MCP300X;                          // *  Driver for MCP3004/3008 DAC with SPI interface
                                                                             // mandatory for the adc
 
-                CWS2812OverSMI		    m_NeoPixels;                        // * Driver for multiple WS2812 controlled LED strips
+                CWS2812OverSMI		        m_NeoPixels;                        // * Driver for multiple WS2812 controlled LED strips
                                                                             // mandatory for the ws2812 rgb led´s
 
-                CGPIOManager		    m_GPIOManager;		                // * CGPIOManager: Interrupt multiplexer for CGPIOPin (only required if GPIO interrupt is used).
+                CGPIOManager		        m_GPIOManager;		                // * CGPIOManager: Interrupt multiplexer for CGPIOPin (only required if GPIO interrupt is used).
                                                                             // mandatory for the pin control BUT not needed in polling mode 
                                                                             // we included our own "write to gpiopin" but why does the constructor def uses "m_GPIOManager (&m_Interrupt),..." oh i see, the ws2812 led i assume
 
-	            CGPIOPin 			    m_ChipSelectPin;  	                // * CGPIOPin: Encapsulates a GPIO pin, can be read, write or inverted. Supports interrupts. Simple initialization.
+	        CGPIOPin 		        m_ChipSelectPin;  	                // * CGPIOPin: Encapsulates a GPIO pin, can be read, write or inverted. Supports interrupts. Simple initialization.
                                                                             // mandatory, but why again? 
                                                                             // Add this line for the chip select gpiopin - we try included our own "write to gpiopin"
 
 // SPI
 
 private:
-    uintptr m_SPIBaseAddress = 0;
-    boolean m_SPIValid = 0;
+                uintptr m_SPIBaseAddress = 0;
+                boolean m_SPIValid = 0;
 
 // framebuffer
 
 public:
-    CBcmFrameBuffer gE_FrameBuffer;
-    CCharGenerator  gE_CharGenerator;
-    CKernelOptions  m_Options;
+                CBcmFrameBuffer gE_FrameBuffer;
+                CCharGenerator  gE_CharGenerator;
+                CKernelOptions  m_Options;
 
-    u32*            gE_PixelBuffer      = 0;
-    unsigned        gE_PitchBytes       = 0;
-    unsigned        gE_ScreenWidth      = 0;
-    unsigned        gE_ScreenHeight     = 0;
-    unsigned        gE_CharWidth        = 0;
-    unsigned        gE_CharHeight       = 0;
-    unsigned        gE_Cols             = 0;
-    unsigned        gE_Rows             = 0;
+                u32*            gE_PixelBuffer      = 0;
+                unsigned        gE_PitchBytes       = 0;
+                unsigned        gE_ScreenWidth      = 0;
+                unsigned        gE_ScreenHeight     = 0;
+                unsigned        gE_CharWidth        = 0;
+                unsigned        gE_CharHeight       = 0;
+                unsigned        gE_Cols             = 0;
+                unsigned        gE_Rows             = 0;
 
 // SMI / DMA / WS2812
 
 private:
-    CDMAChannel m_SMITxDMA;
+                CDMAChannel m_SMITxDMA;
 
-    unsigned    m_SMIGpioPin   = 0;
+                unsigned    m_SMIGpioPin   = 0;
 
-    unsigned    m_SMISDMask    = 0;
+                unsigned    m_SMISDMask    = 0;
 
-    unsigned    m_LEDCount     = 0;
-    unsigned    m_BufferLength = 0;
+                unsigned    m_LEDCount     = 0;
+                unsigned    m_BufferLength = 0;
 
-    TXDATA_T*   m_pBuffer      = 0;
+                TXDATA_T*   m_pBuffer      = 0;
 
-    boolean     m_SMIValid     = FALSE;
+                boolean     m_SMIValid     = FALSE;
 
 
 // watchdog
@@ -249,20 +249,20 @@ uint8_t g_modeMap[MENU_LAYERS*4][MENU_LAYERS*4] =	// the first element is the ma
 typedef void (CKernel::*ModeFunc)(int);         // for the new menu selector -> easier to expand, right?
 
 ModeFunc g_modeTable[] =
-{
-    &CKernel::modeADC,
-    &CKernel::modeTRG,
-    &CKernel::modeBPM,
-    &CKernel::modeLF1,
-    &CKernel::modeLF2,
-    nullptr,
-    nullptr,
-    nullptr,
-    &CKernel::modeAudioAb0,
-    &CKernel::modeAudioAb1,
-    &CKernel::modeAudioBb0,
-    &CKernel::modeAudioBb1
-};                                                    
+                                                        {   
+                                                        &CKernel::modeADC,
+                                                        &CKernel::modeTRG,
+                                                        &CKernel::modeBPM,
+                                                        &CKernel::modeLF1,
+                                                        &CKernel::modeLF2,
+                                                        nullptr,
+                                                        nullptr,
+                                                        nullptr,
+                                                        &CKernel::modeAudioAb0,
+                                                        &CKernel::modeAudioAb1,
+                                                        &CKernel::modeAudioBb0,
+                                                        &CKernel::modeAudioBb1
+                                                        };                                                    
 //----------------------------------------------------------------------------------------------------------------------------------------------------
                 unsigned                g_inOutMatrixInt[CHANNEL][IO_TYPE_COUNT];           // the integer in/out matrix
                 float                   g_inOutMatrixFlt[CHANNEL][IO_TYPE_COUNT];           // the float in/out matrix
@@ -271,13 +271,12 @@ ModeFunc g_modeTable[] =
                 unsigned                g_centralModeBuffer[SLOTS][modetablecount];         // the general user settings, storable per program 
                 unsigned                g_lfoMultiplier[LFO_MULTIPLIERS];
 
-                unsigned                g_lfoBpmMatrix[4][LFO_BPM_COUNT];
+                unsigned                g_lfoBpmMatrix[4][LFO_BPM_COUNT]        = {   64, 32, 16, 8, 4, 2, 1 };
 
                 unsigned                g_hFile;                                            // file management!
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // VCSM and MMAL
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
 private:
         VCHI_INSTANCE_T                 m_VCHIInstance                  = 0;
         VCHI_CONNECTION_T*              m_Connection                    = 0;

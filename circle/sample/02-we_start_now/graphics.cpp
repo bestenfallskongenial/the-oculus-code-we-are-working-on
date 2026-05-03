@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // init OGL
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::initOGL                   (   olg_state*  o )
+void            CKernel::initOGL                    (   olg_state*  o )
 {
                 EGLint num_config;
 
@@ -162,7 +162,7 @@ void            CKernel::initShader                 (   vtx_state*  v,
                     }
 }
 
-void            CKernel::initProgram               (   vtx_state*  v,
+void            CKernel::initProgram                (   vtx_state*  v,
                                                         glsl_state* vsh,
                                                         glsl_state* fsh,
                                                         tex_state*  t,
@@ -189,7 +189,7 @@ void            CKernel::initProgram               (   vtx_state*  v,
                         glDeleteProgram(fsh->gl_program_id[valid_count]);
                         }
                 }
-                m_Watchdog.Start(TIMEOUT * 3);
+                 // m_Watchdog.Start(TIMEOUT * 3);
 }
 
 void            CKernel::initTexture                (   vtx_state*  v,
@@ -233,7 +233,7 @@ void            CKernel::initTexture                (   vtx_state*  v,
                             glDeleteTextures(1, &t->gl_tex_id[valid_count]);
                             }
                         }
-                    m_Watchdog.Start(TIMEOUT);
+                     // m_Watchdog.Start(TIMEOUT);
                     }
 }
 
@@ -293,7 +293,7 @@ void            CKernel::initUniform                (   vtx_state*  v,
     }
 }
 
-void            CKernel::frmBufferSet(vtx_state* v)
+void            CKernel::frmBufferSet               (   vtx_state* v)
 {
                 glBindFramebuffer(GL_FRAMEBUFFER,0);
 
@@ -421,7 +421,7 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
 #endif   
 }
 
-void            CKernel::drawGLsPrg()
+void            CKernel::drawGLsPrg                 (   )
 {
                 glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 #ifdef __GL_DEBUG__
@@ -474,7 +474,7 @@ void            CKernel::setTexOvl                  (   olg_state*  o,
 #endif
 }
 
-void            CKernel::drawGLsOvl                 ()
+void            CKernel::drawGLsOvl                 (   )
 {
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

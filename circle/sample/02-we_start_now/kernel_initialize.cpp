@@ -25,7 +25,7 @@ boolean         CKernel::Initialize (void)
                 if (bOK)
                     {
                     m_USBHCI.UpdatePlugAndPlay(); 
-                    m_Timer.MsDelay(1000);
+                //  m_Timer.MsDelay(1000);
                     }
                 if (bOK)
                     {
@@ -35,12 +35,12 @@ boolean         CKernel::Initialize (void)
                 if (bOK)
                     {
                     bcm_host_init();
-                    m_Timer.MsDelay(200);
+                //  m_Timer.MsDelay(200);
                     }               
                 if (bOK)
                     {
                     initOGL   (&m_ogl);
-                    m_Timer.MsDelay(200);
+                //  m_Timer.MsDelay(200);
                     }                     
                if (bOK)
                     {

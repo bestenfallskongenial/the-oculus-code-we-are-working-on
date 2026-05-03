@@ -1,11 +1,7 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //  MACROS for CKernel
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-// MACROS / DEFINITIONS
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
 // SPI
-
 #define MY_SPI0_BASE        (ARM_IO_BASE + 0x204000)
 
 #define ARM_SPI_CS          (m_SPIBaseAddress + 0x00)
@@ -26,7 +22,7 @@
 #define CS_CS               (3 << 0)
 #define CS_CS_SHIFT         0
 #define CS_NONE             3
-// GPIO ?
+// GPIO PINS FOR THE SPI
 #define MISO                9
 #define MOSI                10
 #define SCLK                11
@@ -36,11 +32,7 @@
 
 #define GPIO_ALT0           4
 #define GPIO_ALT1           5
-
-//---------------------------------------------------------------------------------------------------------------------
 // SMI
-//---------------------------------------------------------------------------------------------------------------------
-
 #define MY_SMI_BASE                    (ARM_IO_BASE + 0x600000)
 
 #define ARM_SMI_CS                     (MY_SMI_BASE + 0x00)
@@ -82,11 +74,7 @@
 #define CM_SMIDIV_DIVI_SHIFT           12
 
 #define SMI_WIDTH_16                   1
-
-//---------------------------------------------------------------------------------------------------------------------
 // WS2812 timing
-//---------------------------------------------------------------------------------------------------------------------
-
 #define NEOPIXEL_SMI_NS                10
 #define NEOPIXEL_SMI_SETUP             10
 #define NEOPIXEL_SMI_STROBE            20
@@ -94,11 +82,7 @@
 
 #define NEOPIXEL_SMI_WIDTH		    (LED_NCHANS > 8 ? SMI16Bits : SMI8Bits) // ?
 #define NEOPIXEL_SMI_PACE              0
-
-//---------------------------------------------------------------------------------------------------------------------
 // WS2812 buffer layout
-//---------------------------------------------------------------------------------------------------------------------
-
 #define LED_NBITS                      24
 #define BIT_NPULSES                    3
 #define LED_PREBITS                    4
@@ -109,9 +93,7 @@
 #define TX_BUFF_LEN(n)                 (LED_TX_OSET(n) + LED_POSTBITS)
 
 #define TXDATA_T                       u16
-
 // MPC 3008 
-
 #define SPI_CHIP_SELECT     0
 // GPIO
 #define GPIO_PULL_OFF       0
@@ -120,10 +102,7 @@
 
 #define LOW                 0
 #define HIGH                1
-
-
 // watchdog / macros.h
-
 #define PACKED             __attribute__ ((packed))
 #define MAXALIGN           __attribute__ ((aligned))
 #define ALIGN(n)           __attribute__ ((aligned (n)))
@@ -217,7 +196,6 @@
 
 #define         AUDIO_THRESHOLD         160
 #define         MAX_AUDIO_BUFFER        63
-
 // vcsm and mmal 
 #define VC_SM_VER  1    // Version to be reported to the VPU VPU assumes 0 (aka 1) which does not require the released callback
 #define VC_SM_MIN_VER 0 // nor expect the client to handle VC_MEM_REQUESTS. Version 2 requires the released callback, and must support VC_MEM_REQUESTS.
@@ -234,82 +212,56 @@
 #define MMAL_FOURCC(a, b, c, d) ((a) | (b << 8) | (c << 16) | (d << 24)) // two times!
 #define MMAL_MAGIC 						MMAL_FOURCC('m', 'm', 'a', 'l')
 
-
 #define MMAL_EVENT_ERROR				MMAL_FOURCC('E', 'R', 'R', 'O')	// really????
 #define MMAL_EVENT_EOS					MMAL_FOURCC('E', 'E', 'O', 'S')
 #define MMAL_EVENT_FORMAT_CHANGED		MMAL_FOURCC('E', 'F', 'C', 'H')
 #define MMAL_EVENT_PARAMETER_CHANGED	MMAL_FOURCC('E', 'P', 'C', 'H')
-
-
-
 // max total message size is 512 bytes //
 #define MMAL_MSG_MAX_SIZE 512
 // with six 32bit header elements max payload is therefore 488 bytes //
 #define MMAL_MSG_MAX_PAYLOAD 488
-
-
 // #define MMAL_TIME_UNKNOWN BIT_ULL(63)                               // Special value signalling that time is not known //
 // #define MMAL_TIME_UNKNOWN (1ULL << 63)
-
 #define BIT(n)          (1U << (n))
 #define BIT_ULL(n)      (1ULL << (n))
 #define MMAL_TIME_UNKNOWN BIT_ULL(63)
 #define NUMBER_INPUTBUFFER 1
 #define NUMBER_OUTPUTBUFFER 2
 
-
 #define MIN_BUFFERS 2                                                 // from CKernel ??
 #define MAX_BUFFER 8 // ???
 
 #define VC_SM_PROTOCOL_VERSION	2 // ???
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-VCHIQ.H
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 #define MAX_PORT_COUNT 4
-
 // Maximum size of the format extradata. //
 #define MMAL_FORMAT_EXTRADATA_MAX_SIZE 128
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-VCHIQ.H
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 #define MAX_PORT_COUNT 4
-
 // Maximum size of the format extradata. //
 #define MMAL_FORMAT_EXTRADATA_MAX_SIZE 128
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-PARAMETERS.H
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 #define MMAL_PARAMETER_GROUP_COMMON		(0 << 16)
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-MSG-PORT.H what do we really need here?
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 // The port is pass-through and doesn't need buffer headers allocated //
 #define MMAL_PORT_CAPABILITY_PASSTHROUGH                       0x01
-
  //The port wants to allocate the buffer payloads.
  // This signals a preference that payload allocation should be done
  // on this port for efficiency reasons.
-
 #define MMAL_PORT_CAPABILITY_ALLOCATION                        0x02
-
  // The port supports format change events.
  // This applies to input ports and is used to let the client know
  // whether the port supports being reconfigured via a format
  // change event (i.e. without having to disable the port).
-
 #define MMAL_PORT_CAPABILITY_SUPPORTS_EVENT_FORMAT_CHANGE      0x04
-
  // mmal port structure (MMAL_PORT_T)
  //
  // most elements are informational only, the pointer values for
  // interogation messages are generally provided as additional
  // structures within the message. When used to set values only the
  // buffer_num, buffer_size and userdata parameters are writable.
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-MSG.H
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 // MMAL buffer transfer //
-
 // Size of space reserved in a buffer message for short messages. //
 #define MMAL_VC_SHORT_DATA 128
 // Signals that the current payload is the end of the stream of data //
@@ -354,76 +306,61 @@
 #define MMAL_BUFFER_HEADER_VIDEO_FLAG_TOP_FIELD_FIRST \
 			(MMAL_BUFFER_HEADER_FLAG_FORMAT_SPECIFIC_START << 1)
 // port parameter setting //
-
 #define MMAL_WORKER_PORT_PARAMETER_SPACE      96        
 // event messages //
 #define MMAL_WORKER_EVENT_SPACE 256
-
 // Four CC's for events //
 #define MMAL_FOURCC(a, b, c, d) ((a) | (b << 8) | (c << 16) | (d << 24))
 
-#define MMAL_EVENT_ERROR		MMAL_FOURCC('E', 'R', 'R', 'O')
-#define MMAL_EVENT_EOS			MMAL_FOURCC('E', 'E', 'O', 'S')
-#define MMAL_EVENT_FORMAT_CHANGED	MMAL_FOURCC('E', 'F', 'C', 'H')
-#define MMAL_EVENT_PARAMETER_CHANGED	MMAL_FOURCC('E', 'P', 'C', 'H')
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+#define MMAL_EVENT_ERROR		            MMAL_FOURCC('E', 'R', 'R', 'O')
+#define MMAL_EVENT_EOS			            MMAL_FOURCC('E', 'E', 'O', 'S')
+#define MMAL_EVENT_FORMAT_CHANGED	        MMAL_FOURCC('E', 'F', 'C', 'H')
+#define MMAL_EVENT_PARAMETER_CHANGED        MMAL_FOURCC('E', 'P', 'C', 'H')
 //              FROM MMAL-ENCODINGS.H
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-#define MMAL_ENCODING_H264             MMAL_FOURCC('H', '2', '6', '4')
+#define MMAL_ENCODING_H264                  MMAL_FOURCC('H', '2', '6', '4')
 
-#define MMAL_ENCODING_I420             MMAL_FOURCC('I', '4', '2', '0')
-
+#define MMAL_ENCODING_I420                  MMAL_FOURCC('I', '4', '2', '0')
 // An EGL image handle
-#define MMAL_ENCODING_EGL_IMAGE        MMAL_FOURCC('E', 'G', 'L', 'I')
-
+#define MMAL_ENCODING_EGL_IMAGE             MMAL_FOURCC('E', 'G', 'L', 'I')
 // Pre-defined H264 encoding variants //
+#define MMAL_ENCODING_VARIANT_H264_DEFAULT  0                                  // ISO 14496-10 Annex B byte stream format //
 
-// ISO 14496-10 Annex B byte stream format //
-#define MMAL_ENCODING_VARIANT_H264_DEFAULT   0
-// ISO 14496-15 AVC stream format //
-#define MMAL_ENCODING_VARIANT_H264_AVC1      MMAL_FOURCC('A', 'V', 'C', '1')
-// Implicitly delineated NAL units without emulation prevention //
-#define MMAL_ENCODING_VARIANT_H264_RAW       MMAL_FOURCC('R', 'A', 'W', ' ')
+#define MMAL_ENCODING_VARIANT_H264_AVC1      MMAL_FOURCC('A', 'V', 'C', '1')    // ISO 14496-15 AVC stream format //
 
+#define MMAL_ENCODING_VARIANT_H264_RAW       MMAL_FOURCC('R', 'A', 'W', ' ')    // Implicitly delineated NAL units without emulation prevention //
 // \defgroup MmalColorSpace List of pre-defined video color spaces
 // This defines a list of common color spaces. This list isn't exhaustive and
 // is only provided as a convenience to avoid clients having to use FourCC
 // codes directly. However components are allowed to define and use their own
 // FourCC codes.
+#define MMAL_COLOR_SPACE_UNKNOWN            0                                        // Unknown color space //
 
-// Unknown color space //
-#define MMAL_COLOR_SPACE_UNKNOWN       0
-// ITU-R BT.601-5 [SDTV] //
-#define MMAL_COLOR_SPACE_ITUR_BT601    MMAL_FOURCC('Y', '6', '0', '1')
-// ITU-R BT.709-3 [HDTV] //
-#define MMAL_COLOR_SPACE_ITUR_BT709    MMAL_FOURCC('Y', '7', '0', '9')
-// JPEG JFIF //
-#define MMAL_COLOR_SPACE_JPEG_JFIF     MMAL_FOURCC('Y', 'J', 'F', 'I')
-// Title 47 Code of Federal Regulations (2003) 73.682 (a) (20) //
-#define MMAL_COLOR_SPACE_FCC           MMAL_FOURCC('Y', 'F', 'C', 'C')
-// Society of Motion Picture and Television Engineers 240M (1999) //
-#define MMAL_COLOR_SPACE_SMPTE240M     MMAL_FOURCC('Y', '2', '4', '0')
-// ITU-R BT.470-2 System M //
-#define MMAL_COLOR_SPACE_BT470_2_M     MMAL_FOURCC('Y', '_', '_', 'M')
-// ITU-R BT.470-2 System BG //
-#define MMAL_COLOR_SPACE_BT470_2_BG    MMAL_FOURCC('Y', '_', 'B', 'G')
-// JPEG JFIF, but with 16..255 luma //
-#define MMAL_COLOR_SPACE_JFIF_Y16_255  MMAL_FOURCC('Y', 'Y', '1', '6')
-// @} MmalColorSpace List //
+#define MMAL_COLOR_SPACE_ITUR_BT601         MMAL_FOURCC('Y', '6', '0', '1')          // ITU-R BT.601-5 [SDTV] //
 
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+#define MMAL_COLOR_SPACE_ITUR_BT709         MMAL_FOURCC('Y', '7', '0', '9')          // ITU-R BT.709-3 [HDTV] //
+
+#define MMAL_COLOR_SPACE_JPEG_JFIF          MMAL_FOURCC('Y', 'J', 'F', 'I')          // JPEG JFIF //
+
+#define MMAL_COLOR_SPACE_FCC                MMAL_FOURCC('Y', 'F', 'C', 'C')          // Title 47 Code of Federal Regulations (2003) 73.682 (a) (20) //
+
+#define MMAL_COLOR_SPACE_SMPTE240M          MMAL_FOURCC('Y', '2', '4', '0')          // Society of Motion Picture and Television Engineers 240M (1999) //
+
+#define MMAL_COLOR_SPACE_BT470_2_M          MMAL_FOURCC('Y', '_', '_', 'M')          // ITU-R BT.470-2 System M //
+
+#define MMAL_COLOR_SPACE_BT470_2_BG         MMAL_FOURCC('Y', '_', 'B', 'G')          // ITU-R BT.470-2 System BG //
+
+#define MMAL_COLOR_SPACE_JFIF_Y16_255       MMAL_FOURCC('Y', 'Y', '1', '6')          // JPEG JFIF, but with 16..255 luma //
 // to prepare filecounter[FT_COUNT][FLD_COUNT]
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-#define         VSH_SD             		1	// max number of u_vertex shader on sd
-#define         OMF_SD             		1	// max number of fragment shader on sd
-#define         FSH_SD             		1	// max number of fragment shader on sd
-#define         OMT_SD             		1	// max number of fragment shader on sd
-#define         TEX_SD             		0	// max number of textures on sd
-#define         VID_SD             		0	// max number of videos on sd
-#define         KLN_SD                  1
+#define         VSH_SD             		    1	// max number of u_vertex shader on sd
+#define         OMF_SD             		    1	// max number of fragment shader on sd
+#define         FSH_SD             		    1	// max number of fragment shader on sd
+#define         OMT_SD             		    1	// max number of fragment shader on sd
+#define         TEX_SD             		    0	// max number of textures on sd
+#define         VID_SD             		    0	// max number of videos on sd
+#define         KLN_SD                      1
 
-#define         FRM_SD                  1   // i put them here because if my mem/dma allocation
-#define         LOG_SD                  24  // here is the trick:
+#define         FRM_SD                      1   // i put them here because if my mem/dma allocation
+#define         LOG_SD                      24  // here is the trick:
                                             // i will use a mix of hardwired and "open" logs. examples:
 
                                             // m_bufferLog[0]       - startup - memory - init log
@@ -434,43 +371,43 @@
                                             // m_bufferLog[5  - 15] - texture parser
                                             // m_bufferLog[16 - 23] - video parser
 
-#define         VSH_USB                 0	// max number of u_vertex shader on sd
-#define         OMF_USB            		0	// max number of fragment shader on sd
-#define         FSH_USB            		32	// max number of fragment shader on sd
-#define         OMT_USB            		0	// max number of fragment shader on sd
-#define         TEX_USB            		8	// max number of textures on sd
-#define         VID_USB            		8	// max number of videos on sd
-#define         KLN_USB                 1
+#define         VSH_USB                     0	// max number of u_vertex shader on sd
+#define         OMF_USB            		    0	// max number of fragment shader on sd
+#define         FSH_USB            		    32	// max number of fragment shader on sd
+#define         OMT_USB            		    0	// max number of fragment shader on sd
+#define         TEX_USB            		    8	// max number of textures on sd
+#define         VID_USB            		    8	// max number of videos on sd
+#define         KLN_USB                     1
 
-#define         FRM_USB                 1   // i put them here because if my mem/dma allocation
-#define         LOG_USB                 1
+#define         FRM_USB                     1   // i put them here because if my mem/dma allocation
+#define         LOG_USB                     1
 
-#define         VSH_EXT                 1
-#define         OMF_EXT                 1
-#define         FSH_EXT                 1
-#define         OMT_EXT                 1
-#define         TEX_EXT                 1
-#define         VID_EXT                 1
-#define         KLN_EXT                 1
+#define         VSH_EXT                     1
+#define         OMF_EXT                     1
+#define         FSH_EXT                     1
+#define         OMT_EXT                     1
+#define         TEX_EXT                     1
+#define         VID_EXT                     1
+#define         KLN_EXT                     1
 
-#define         VSH_SIZ                 (1024*32)
-#define         OMF_SIZ                 (1024*32)
-#define         FSH_SIZ                 (1024*32)
-#define         OMT_SIZ                 (1024*1024*4)
-#define         TEX_SIZ                 (1024*1024*4)
-#define         VID_SIZ                 (1024*1024*8)
-#define         KLN_SIZ                 (1024*1024*2)
+#define         VSH_SIZ                     (1024*32)
+#define         OMF_SIZ                     (1024*32)
+#define         FSH_SIZ                     (1024*32)
+#define         OMT_SIZ                     (1024*1024*4)
+#define         TEX_SIZ                     (1024*1024*4)
+#define         VID_SIZ                     (1024*1024*8)
+#define         KLN_SIZ                     (1024*1024*2)
 
-#define         FRM_SIZ                 (1024*1024)
+#define         FRM_SIZ                     (1024*1024)
 
-#define         LOG_SIZ                 (1024*64)
+#define         LOG_SIZ                     (1024*64)
 
-#define         ADC_SELECT_PRG          7
-#define         ADC_SELECT_TEX          6
-#define         ADC_SELECT_VID          5
-#define			ADC_INPUT_CLK			5	// adc p_channel use as clock ! BIGGER THAN 3 !
+#define         ADC_SELECT_PRG              7
+#define         ADC_SELECT_TEX              6
+#define         ADC_SELECT_VID              5
+#define			ADC_INPUT_CLK			    5	// adc p_channel use as clock ! BIGGER THAN 3 !
 
-#define         check() 				gfx_check(__FILE__, __LINE__) 	// my own assertion implementation
+#define         check() 				    gfx_check(__FILE__, __LINE__) 	// my own assertion implementation
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------

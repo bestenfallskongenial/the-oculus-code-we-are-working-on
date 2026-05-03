@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 #include "kernel.h"
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::resetPickUpFlags    () 
+void            CKernel::resetPickUpFlags           (   ) 
 {
 
                 if (g_menu_mode_new != g_menu_mode_old) /* or simply memset(menu_pickup_flag, 0, 16 * sizeof(bool)); ? **** */
@@ -14,7 +14,7 @@ void            CKernel::resetPickUpFlags    ()
                     }
 }
 
-void CKernel::set_mode_length(uint8_t base)
+void            CKernel::set_mode_length            (   uint8_t base)
 {
                 uint8_t length0;
                 uint8_t length1;
@@ -44,7 +44,7 @@ void CKernel::set_mode_length(uint8_t base)
                 g_modeMap[base + 3][0] = length3;
 }
 
-void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
+void            CKernel::modeMenuAssignGroup        (   uint8_t menu_id, uint8_t base)
 {
                 if (g_menu_mode_new != menu_id)
                     {
@@ -94,7 +94,7 @@ void            CKernel::modeMenuAssignGroup(uint8_t menu_id, uint8_t base)
                     }
 }
 
-void            CKernel::getChannelModeA(int p_channel)
+void            CKernel::getChannelModeA            (   int p_channel)
 {
                 switch (g_modeMap[p_channel][g_centralModeBuffer[g_currentProgramBuffer][p_channel] + 1])
                     {
@@ -143,27 +143,27 @@ void            CKernel::getChannelModeA(int p_channel)
                     }
 }
 
-void CKernel::getChannelModeB(int p_channel)
+void            CKernel::getChannelModeB            (   int p_channel)
 {
-    int mode =
-        g_modeMap[p_channel]
-                 [g_centralModeBuffer[g_currentProgramBuffer][p_channel] + 1];
+                int mode =
+                    g_modeMap[p_channel]
+                            [g_centralModeBuffer[g_currentProgramBuffer][p_channel] + 1];
 
-    ModeFunc fn = g_modeTable[mode];
+                ModeFunc fn = g_modeTable[mode];
 
-    if (fn)
-    {
-        (this->*fn)(p_channel);
-    }
+                if (fn)
+                {
+                    (this->*fn)(p_channel);
+                }
 }
 
-void            CKernel::modeADC (int p_channel) 
+void            CKernel::modeADC                    (   int p_channel) 
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[p_channel][VAL];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[p_channel][VAL];         
 }
 
-void            CKernel::modeTRG (int p_channel)
+void            CKernel::modeTRG                    (   int p_channel)
 {
                 if (  g_inOutMatrixInt[p_channel][VAL] >= g_inOutMatrixInt[p_channel][TRH] &&
                     ! g_inOutMatrixInt[p_channel][TRF]) /* treshold flag - but i need 4 each menu layer or is this different than g_menuPickUpFlag??? */
@@ -179,7 +179,7 @@ void            CKernel::modeTRG (int p_channel)
                     }
 }
 
-void            CKernel::modeBPM (int p_channel) 
+void            CKernel::modeBPM                    (   int p_channel) 
 { 
                 if (currentTime >= g_nextBeatTime[g_activeBpmChannel])
                     {
@@ -188,34 +188,34 @@ void            CKernel::modeBPM (int p_channel)
                     }
 }
 
-void            CKernel::modeLF1 (int p_channel)
+void            CKernel::modeLF1                    (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][LF1];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][LF1];
 }
 
-void            CKernel::modeLF2 (int p_channel)
+void            CKernel::modeLF2                    (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][LF2];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][LF2]; 
 }
 
-void            CKernel::modeAudioAb0 (int p_channel)
+void            CKernel::modeAudioAb0               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU0]
 }
 
-void            CKernel::modeAudioAb1 (int p_channel)
+void            CKernel::modeAudioAb1               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU1];
 }
 
-void            CKernel::modeAudioBb0 (int p_channel)
+void            CKernel::modeAudioBb0               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU2];
 }
 
-void            CKernel::modeAudioBb1 (int p_channel)
+void            CKernel::modeAudioBb1               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU3];
 }

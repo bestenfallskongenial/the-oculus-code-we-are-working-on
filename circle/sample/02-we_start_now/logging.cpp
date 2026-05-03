@@ -1,13 +1,13 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // deterministic log and print
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::storeLog       (   char*       p_buffer, 
-                                            u32&        index,
-                                            const char* label,
-                                            u32         p_value0, 
-                                            u32         p_value1,
-                                            u32         p_value2, 
-                                            u32         p_value3)
+void            CKernel::storeLog                   (   char*       p_buffer, 
+                                                        u32&        index,
+                                                        const char* label,
+                                                        u32         p_value0, 
+                                                        u32         p_value1,
+                                                        u32         p_value2, 
+                                                        u32         p_value3)
 {
                 for (const char* p = label; *p; ++p)
                     {
@@ -70,12 +70,12 @@ void            CKernel::storeLog       (   char*       p_buffer,
                 p_buffer[index]   = '\0';
 }
 
-void CKernel::storeLogLong  (   char*       p_buffer,
-                                u32&        index,
-                                const char* p_string0, u32 p_value0,
-                                const char* p_string1, u32 p_value1,
-                                const char* p_string2, u32 p_value2,
-                                const char* p_string3, u32 p_value3)
+void            CKernel::storeLogLong               (   char*       p_buffer,
+                                                        u32&        index,
+                                                        const char* p_string0, u32 p_value0,
+                                                        const char* p_string1, u32 p_value1,
+                                                        const char* p_string2, u32 p_value2,
+                                                        const char* p_string3, u32 p_value3)
 {
     for (const char* p = p_string0; *p; ++p)
     {
@@ -154,11 +154,11 @@ void CKernel::storeLogLong  (   char*       p_buffer,
     p_buffer[index] = '\0';
 }
 
-void            CKernel::storeMsg       (   char*       p_buffer,
-                                            u32&        index,
-                                            const char* label,
-                                            const void* tx_msg,
-                                            u32         total_size)
+void            CKernel::storeMsg                   (   char*       p_buffer,
+                                                        u32&        index,
+                                                        const char* label,
+                                                        const void* tx_msg,
+                                                        u32         total_size)
 {
                 p_buffer[index++] = '\n';
 
@@ -189,8 +189,8 @@ void            CKernel::storeMsg       (   char*       p_buffer,
                 p_buffer[index] = '\0';
 }
 
-void            CKernel::nextline(char* p_buffer,
-                                   u32& index)
+void            CKernel::nextline                   (   char* p_buffer,
+                                                        u32& index)
 {
                 p_buffer[index++] = '\n';
                 p_buffer[index] = '\0';
@@ -202,8 +202,8 @@ bool            CKernel::shaderLog                  (   GLint       shader,
                 GLint success;
                 glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 #ifdef __DEBUG_LOG__ 
-                storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
-                storeLog( MY_BUFFER, MY_INDEX, "Program compile status idx/success", (u32)shaderIndex, (u32)success);
+                storeLogLong( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
+                storeLogLong( MY_BUFFER, MY_INDEX, "Program compile status idx", (u32)shaderIndex, "success" ,(u32)success);
 #endif 
                 return success == GL_TRUE;
 }
@@ -217,16 +217,16 @@ bool            CKernel::programLog                 (   GLint       program,
                 GLint success;
                 glGetProgramiv(program, GL_LINK_STATUS, &success);
 #ifdef __DEBUG_LOG__
-                storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
-                storeLog( MY_BUFFER, MY_INDEX, "Program link status idx/success", (u32)program_index, (u32)success);
+                storeLogLong( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
+                storeLogLong( MY_BUFFER, MY_INDEX, "Program link status idx", (u32)program_index, "success", (u32)success);
 #endif 
             //  char name[27];
             //  strncpy(name, &m_bufferFsh[program_index][2], 26);
             //  name[26] = '\0';
 #ifdef __DEBUG_LOG__ 
             //  storeMsg( MY_BUFFER, MY_INDEX, "Program short name", name, 26);
-            //  storeMsg( MY_BUFFER, MY_INDEX, "Filename", g_ScnFsh[internal_index], 64);   // same behavior conceptually
-                storeLog( MY_BUFFER, MY_INDEX, "Program byte size", (u32)g_bytFsh[program_index]);
+                storeMsg( MY_BUFFER, MY_INDEX, "Filename F-Shader", g_ScnFsh[program_index/*internal_index*/], 64);   // same behavior conceptually
+                storeLogLong( MY_BUFFER, MY_INDEX, "Program byte size", (u32)g_bytFsh[program_index]);
 #endif 
                 char log[1024];
                 glGetProgramInfoLog(program, sizeof(log), NULL, log);
@@ -236,7 +236,7 @@ bool            CKernel::programLog                 (   GLint       program,
                 GLint numUniforms;
                 glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &numUniforms);
 #ifdef __DEBUG_LOG__ 
-                storeLog( MY_BUFFER, MY_INDEX, "Active Uniforms", (u32)numUniforms);
+                storeLogLong( MY_BUFFER, MY_INDEX, "Active Uniforms", (u32)numUniforms);
 #endif 
                 for (GLint i = 0; i < numUniforms; ++i)
                     {
@@ -248,7 +248,7 @@ bool            CKernel::programLog                 (   GLint       program,
                     glGetActiveUniform(program, i, sizeof(uname), &length, &size, &type, uname);
                     GLint location = glGetUniformLocation(program, uname);
 #ifdef __DEBUG_LOG__ 
-                    storeLog( MY_BUFFER, MY_INDEX, "Uniform idx/size/type/loc", (u32)i, (u32)size, (u32)type, (u32)location);
+                    storeLogLong( MY_BUFFER, MY_INDEX, "Uniform idx", (u32)i, "size", (u32)size, "type", (u32)type, "loc", (u32)location);
                     storeMsg( MY_BUFFER, MY_INDEX, "Uniform name", uname, length);
 #endif                     
                     }
@@ -256,7 +256,7 @@ bool            CKernel::programLog                 (   GLint       program,
                 GLint numAttributes;
                 glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &numAttributes);
 #ifdef __DEBUG_LOG__ 
-                storeLog( MY_BUFFER, MY_INDEX, "Active Attributes", (u32)numAttributes);
+                storeLogLong( MY_BUFFER, MY_INDEX, "Active Attributes", (u32)numAttributes);
 #endif 
                 for (GLint i = 0; i < numAttributes; ++i)
                     {
@@ -268,12 +268,12 @@ bool            CKernel::programLog                 (   GLint       program,
                     glGetActiveAttrib(program, i, sizeof(aname), &length, &size, &type, aname);
                     GLint location = glGetAttribLocation(program, aname);
 #ifdef __DEBUG_LOG__ 
-                    storeLog( MY_BUFFER, MY_INDEX, "Attribute idx/size/type/loc", (u32)i, (u32)size, (u32)type, (u32)location);
+                    storeLogLong( MY_BUFFER, MY_INDEX, "Attribute idx", (u32)i,"size", (u32)size,"type", (u32)type,"loc", (u32)location);
                     storeMsg( MY_BUFFER, MY_INDEX, "Attribute name", aname, length);
 #endif                     
                     }
 #ifdef __DEBUG_LOG__
-                storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
+                storeLogLong( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
 #endif 
 
                 return success == GL_TRUE;
@@ -293,29 +293,28 @@ void            CKernel::gfx_check                  (   const char* file,
                     CTimer* pTimer = CTimer::Get();
                     unsigned ticks = pTimer->GetTicks();
 #ifdef __DEBUG_LOG__  
-                    storeLog( MY_BUFFER, MY_INDEX, "=== Final System Status ticks/p_count ===", (u32)ticks, (u32)error_count);
+                    storeLogLong( MY_BUFFER, MY_INDEX, "*** Final System Status ticks", (u32)ticks, "/ Errorcount", (u32)error_count);
 #endif  
                     GLint value;
 
                     glGetIntegerv(GL_CURRENT_PROGRAM, &value);
 #ifdef __DEBUG_LOG__                     
-                    storeLog( MY_BUFFER, MY_INDEX, "Current Program", (u32)value);
+                    storeLogLong( MY_BUFFER, MY_INDEX, "Current Program", (u32)value);
 #endif  
                     glGetIntegerv(GL_ACTIVE_TEXTURE, &value);
 #ifdef __DEBUG_LOG__                     
-                    storeLog( MY_BUFFER, MY_INDEX, "Active Texture Unit", (u32)value);
+                    storeLogLong( MY_BUFFER, MY_INDEX, "Active Texture Unit", (u32)value);
 #endif  
                     GLint viewport[4];
                     glGetIntegerv(GL_VIEWPORT, viewport);
 #ifdef __DEBUG_LOG__                     
-                    storeLog( MY_BUFFER, MY_INDEX, "Viewport x/y", (u32)viewport[0], (u32)viewport[1]);
-                    storeLog( MY_BUFFER, MY_INDEX, "Viewport w/h", (u32)viewport[2], (u32)viewport[3]);
+                    storeLogLong( MY_BUFFER, MY_INDEX, "Viewport x/", (u32)viewport[0], "y", (u32)viewport[1],"w", (u32)viewport[2], "h", (u32)viewport[3]);
 #endif  
                     GLint fb;
                     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fb);
 #ifdef __DEBUG_LOG__                     
-                    storeLog( MY_BUFFER, MY_INDEX, "Current Framebuffer", (u32)fb);
-                    storeLog( MY_BUFFER, MY_INDEX, "=== End Status Report ===");
+                    storeLogLong( MY_BUFFER, MY_INDEX, "Current Framebuffer", (u32)fb);
+                    storeLogLong( MY_BUFFER, MY_INDEX, "=== End Status Report ===");
 #endif                      
                     return;
                     }
@@ -364,10 +363,10 @@ void            CKernel::gfx_check                  (   const char* file,
                             break;
                         }
 #ifdef __DEBUG_LOG__ 
-                    storeLog( MY_BUFFER, MY_INDEX, "OpenGL Error err/ticks/line", (u32)error, (u32)ticks, (u32)line);
-                    storeLog( MY_BUFFER, MY_INDEX, severity);
-                    storeLog( MY_BUFFER, MY_INDEX, error_str);
-                    storeLog( MY_BUFFER, MY_INDEX, file);
+                    storeLogLong( MY_BUFFER, MY_INDEX, "OpenGL Error", (u32)error, "ticks", (u32)ticks, "line", (u32)line);
+                    storeLogLong( MY_BUFFER, MY_INDEX, severity, EMPTYLOG, error_str, EMPTYLOG, file);
+                //  storeLog( MY_BUFFER, MY_INDEX, error_str);
+                //  storeLog( MY_BUFFER, MY_INDEX, file);
 #endif  
                     error_count++;
                     if (error_count >= ERROR_THRESHOLD)
@@ -375,7 +374,7 @@ void            CKernel::gfx_check                  (   const char* file,
                     }
 }
 
-bool            CKernel::startupScreen(char* p_buffer, u32& index)
+bool            CKernel::startupScreen              (   char* p_buffer, u32& index)
 {
                 const char* machineName = m_MachineInfo.GetMachineName();
                 const char* socName     = m_MachineInfo.GetSoCName();
@@ -400,31 +399,31 @@ bool            CKernel::startupScreen(char* p_buffer, u32& index)
                 unsigned usbDelay       = m_Options.GetUSBPowerDelay();
                 unsigned usbSpeed       = m_Options.GetUSBFullSpeed();
 
-                storeLog( MY_BUFFER, MY_INDEX, "Machine Model");
-                storeLog( MY_BUFFER, MY_INDEX, machineName);
-                nextline(p_buffer, index);
-                storeLog( MY_BUFFER, MY_INDEX, "SoC Name");
-                storeLog( MY_BUFFER, MY_INDEX, socName);
-                nextline(p_buffer, index);
+                storeLogLong( MY_BUFFER, MY_INDEX, "Machine Model", EMPTYLOG, machineName);
+            //  storeLog( MY_BUFFER, MY_INDEX, machineName);
+            //  nextline(p_buffer, index);
+                storeLogLong( MY_BUFFER, MY_INDEX, "SoC Name", EMPTYLOG, socName, EMPTYLOG, "Model Major    ", modelMajor, "Model Revision ", modelRevision);
+            //  storeLog( MY_BUFFER, MY_INDEX, socName);
+            //  nextline(p_buffer, index);
 
-                storeLog( MY_BUFFER, MY_INDEX, "Model Major    ", modelMajor);
-                storeLog( MY_BUFFER, MY_INDEX, "Model Revision ", modelRevision);
-                nextline(p_buffer, index);
-                storeLog( MY_BUFFER, MY_INDEX, "RAM Size     MB", ramSize);
-                storeLog( MY_BUFFER, MY_INDEX, "CPU Speed Mode ", cpuSpeedMode);
-                nextline(p_buffer, index);
-                storeLog( MY_BUFFER, MY_INDEX, "SoC Max Temp   ", socMaxTemp);
-                nextline(p_buffer, index);
-                storeLog( MY_BUFFER, MY_INDEX, "Clock CORE  MHz", coreClock);
-                storeLog( MY_BUFFER, MY_INDEX, "Clock ARM   MHz", armClock);    
-                storeLog( MY_BUFFER, MY_INDEX, "Clock EMMC  MHz", emmcClock, emmc2Clock, uartClock);
-                storeLog( MY_BUFFER, MY_INDEX, "Clock EMMC2 MHz", emmcClock, emmc2Clock, uartClock);
-                storeLog( MY_BUFFER, MY_INDEX, "Clock UART  MHz", emmcClock, emmc2Clock, uartClock);    
-                nextline(p_buffer, index);
-                storeLog( MY_BUFFER, MY_INDEX, "DMA Channel    ", dmaChannel);
-                nextline(p_buffer, index);
-                storeLog( MY_BUFFER, MY_INDEX, "USB Delay      ", usbDelay);
-                storeLog( MY_BUFFER, MY_INDEX, "USB FullSpeed  ", usbSpeed);
+            //  storeLogLongLong( MY_BUFFER, MY_INDEX, "Model Major    ", modelMajor, "Model Revision ", modelRevision);
+            //  storeLog( MY_BUFFER, MY_INDEX, "Model Revision ", modelRevision);
+            //  nextline(p_buffer, index);
+                storeLogLong( MY_BUFFER, MY_INDEX, "RAM Size     MB", ramSize);
+                storeLogLong( MY_BUFFER, MY_INDEX, "CPU Speed Mode ", cpuSpeedMode);
+            //  nextline(p_buffer, index);
+                storeLogLong( MY_BUFFER, MY_INDEX, "SoC Max Temp   ", socMaxTemp);
+            //  nextline(p_buffer, index);
+                storeLogLong( MY_BUFFER, MY_INDEX, "Clock COREMHz", coreClock, "Clock ARM MHz", armClock);
+            //  storeLog( MY_BUFFER, MY_INDEX, "Clock ARM   MHz", armClock);    
+                storeLogLong( MY_BUFFER, MY_INDEX, "Clock EMMC  MHz", emmcClock, "EMMC2 MHz", emmc2Clock);
+            //  storeLog( MY_BUFFER, MY_INDEX, "Clock EMMC2 MHz", emmc2Clock);
+                storeLogLong( MY_BUFFER, MY_INDEX, "Clock UART  MHz", uartClock);    
+            //  nextline(p_buffer, index);
+                storeLogLong( MY_BUFFER, MY_INDEX, "DMA Channel    ", dmaChannel);
+            //  nextline(p_buffer, index);
+                storeLogLong( MY_BUFFER, MY_INDEX, "USB Delay      ", usbDelay, "USB FullSpeed  ", usbSpeed);
+            //  storeLog( MY_BUFFER, MY_INDEX, "USB FullSpeed  ", usbSpeed);
                 
                 screen_clear_screen(0x00000000);
 
