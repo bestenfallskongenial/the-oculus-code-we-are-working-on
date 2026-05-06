@@ -199,7 +199,7 @@ public:
 
         inline  int         ReadMCP3008Raw              (           unsigned                        channel);                           // MPC 3008
 
-                boolean     frameBufferInit          (           void);                                                              // framebuffer / screen
+                boolean     frameBufferInit             (           void);                                                              // framebuffer / screen
 
                 void        bufferToScreenPlot          (           unsigned                        x,
                                                                     unsigned                        y,
@@ -226,14 +226,6 @@ public:
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  LOGGING
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                void        storeLog                    (           char*                           p_bufferArray, 
-                                                                    u32&                            index,
-                                                            const   char*                           label,
-                                                                    u32                             p_value0, 
-                                                                    u32                             p_value1    = EMPTYLOG,
-                                                                    u32                             p_value2    = EMPTYLOG, 
-                                                                    u32                             p_value3    = EMPTYLOG);
-//55
                 void        storeLogLong                (           char*                           p_bufferArray,
                                                                     u32&                            index,
                                                             const   char*                           p_string0, 
@@ -255,7 +247,7 @@ public:
                                                                     const void*                     tx_msg,
                                                                     u32                             total_size);
 
-                void    //  nextline                    (           char*                           p_bufferArray,
+                void        nextline                    (           char*                           p_bufferArray,
                                                                     u32&                            index);
 // also "only" log / debug or really runtime requirements?
                 bool        shaderLog                   (           GLint                           shader, 
@@ -308,34 +300,26 @@ public:
 //  PARSER
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //75
-                bool        initBMPparser               (           tex_state*                      t,
+                bool        BMPparser                   (           tex_state*                      t,
                                                                     char*                           p_buffer_array[],
+                                                                    char*                           filename_array[],
                                                                     size_t                          size_array[],
                                                                     u32                             max_tex_size,
                                                                     int                             p_fromFile,
-                                                                    int                             p_toFile);
-
-                bool        initH264parser              (           h264_state*                     h,
+                                                                    int                             p_toFile );
+                                
+                bool        264parser                   (           h264_state*                     h,
                                                                     char*                           blockBase,
                                                                     char*                           p_buffer_array[],
+                                                                    char*                           filename_array[],
                                                                     size_t                          size_array[],
                                                                     int                             p_fromFile,
                                                                     int                             p_toFile,
                                                                     u16                             max_width,
                                                                     u16                             max_height,
                                                                     u8                              max_profile,
-                                                                    u8                              max_level);
+                                                                    u8                              max_level );
 
-                void        ParseBPM                    (           tex_state*                      t,
-                                                                    char*                           filename_array[],
-                                                                    int                             p_fromFile,
-                                                                    int                             p_toFile);
-
-                void        ParseAnnexB                 (           h264_state*                     h,
-                                                                    char*                           filename_array[],
-                                                                    int                             p_fromFile,
-                                                                    int                             p_toFile);
-                                 
                 bool        ParseSPS                    (           u8*                             sps_data,
                                                                     size_t                          sps_size,
                                                                     size_t                          sps_sc_len,

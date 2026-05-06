@@ -1,60 +1,21 @@
 //----------------------------------------------------------------------------------------------------
 #include "kernel.h"
 //----------------------------------------------------------------------------------------------------
-bool            CKernel::initBMPparser              (   tex_state* t,
-                                                        char* p_buffer_array[],
-                                                        size_t size_array[],
-                                                        u32 max_tex_size,
-                                                        int p_fromFile,
-                                                        int p_toFile )
+bool            CKernel::BMPparser                  (   tex_state*  t,
+                                                        char*       p_buffer_array[],
+                                                        char*       filename_array[],
+                                                        size_t      size_array[],
+                                                        u32         max_tex_size,
+                                                        int         p_fromFile,
+                                                        int         p_toFile )
 {
                 t->max_tex_size = max_tex_size;
 
                 for (int i = p_fromFile; i < p_toFile; i++)
                     {
-                    t->data[i] = (u8*)p_buffer_array[i];
-                    t->size[i] = size_array[i];
-                    }
-                return true;
-}
+                    u8* data = (u8*)p_buffer_array[i];
 
-bool            CKernel::initH264parser             (    h264_state* h,
-                                                        char* blockBase,
-                                                        char* p_buffer_array[],
-                                                        size_t size_array[],
-                                                        int p_fromFile,
-                                                        int p_toFile,
-                                                        u16 max_width,
-                                                        u16 max_height,
-                                                        u8  max_profile,
-                                                        u8  max_level )
-{
-                h->block_base  = blockBase;
-                h->max_width   = max_width;
-                h->max_height  = max_height;
-                h->max_profile = max_profile;
-                h->max_level   = max_level;
-
-                for (int file_index = p_fromFile; file_index < p_toFile; file_index++)
-                    {
-                    h->data[file_index] = (u8*)p_buffer_array[file_index];
-                    h->size[file_index] = size_array[file_index];
-                    }
-                return true;
-}
-
-void            CKernel::ParseBPM                   (   tex_state*  t,
-                                                        char*       filename_array[],
-                                                     /* char*       p_buffer_array[],*/
-                                                     /* size_t      size_array[] ,*/
-                                                        int         p_fromFile,
-                                                        int         p_toFile)
-{
-                for (int i = p_fromFile; i < p_toFile; i++)
-                    {
-                    u8*    data = t->data[i];
-                    size_t size = t->size[i];
-                    storeLogLong( MY_BUFFER, MY_INDEX, "Parse BMP File No.", i, "Name",EMPTYLOG, filename_array[i])            
+                //  storeLogLong( MY_BUFFER, MY_INDEX, "Parse BMP File No.", i, "Name",EMPTYLOG, filename_array[i]);           
 
                     u32 fileSize    = data[2]  | (data[3]<<8)  | (data[4]<<16)  | (data[5]<<24);
                     u32 dataOffset  = data[10] | (data[11]<<8) | (data[12]<<16) | (data[13]<<24);
@@ -66,58 +27,89 @@ void            CKernel::ParseBPM                   (   tex_state*  t,
                     u32 height      = data[22] | (data[23]<<8) | (data[24]<<16) | (data[25]<<24);
                     u32 imgSize     = data[34] | (data[35]<<8) | (data[36]<<16) | (data[37]<<24);
 
-                    bool ok =
-                        data[0]             == 'B' &&
-                        data[1]             == 'M' &&
-                        fileSize            <= t->max_tex_size &&       /* is passed from the parser init but also a macro **** */
-                        headerSize          == 40 &&
-                        planes              == 1 &&
-                        bpp                 == 24 &&
-                        compression         == 0 &&
-                        width * height * 3  == imgSize &&
-                        ((width & 3)        == 0) &&
-                        ((height & 3)       == 0);
+                    t->tex_valid[i] =   data[0]             == 'B' &&
+                                        data[1]             == 'M' &&
+                                        fileSize            <= t->max_tex_size &&       /* is passed from the parser init but also a macro **** */
+                                        headerSize          == 40 &&
+                                        planes              == 1 &&
+                                        bpp                 == 24 &&
+                                        compression         == 0 &&
+                                        width * height * 3  == imgSize &&
+                                        ((width & 3)        == 0) &&
+                                        ((height & 3)       == 0);
 
-                    t->tex_valid[i] = ok;
                     t->width[i]     = width;
                     t->height[i]    = height;
                     t->offset[i]    = dataOffset;
                     t->file_size[i] = fileSize;
                     t->image_size[i]= imgSize;
                     t->data[i]      = data;
+                    t->size[i]      = size_array[i];
 
-                    storeLogLong(MY_BUFFER, MY_INDEX, ok ? "BMP header VALID" : "BMP header FAILED");
-
-                     // m_Watchdog.Start(TIMEOUT);
+                    if (t->tex_valid[i])
+                        {
+                        storeLogLong(   MY_BUFFER, MY_INDEX,
+                                        "BMP header VALID for File No.", i,
+                                        "Name", EMPTYLOG,
+                                        filename_array[i - p_fromFile],
+                                        "Size", size_array[i - p_fromFile]);
+                        }
+                    else
+                        {
+                        storeLogLong(   MY_BUFFER, MY_INDEX,
+                                        "BMP header FAILED for File No.", i,
+                                        "Name", EMPTYLOG,
+                                        filename_array[i - p_fromFile],
+                                        "Size", size_array[i - p_fromFile]);
+                        }
                     }
+                return true;
 }
 
-void            CKernel::ParseAnnexB                (   h264_state* h,
+bool            CKernel::264parser                  (   h264_state* h,
+                                                        char*       blockBase,
+                                                        char*       p_buffer_array[],
                                                         char*       filename_array[],
-                                                    /*  char*       p_buffer_array[], */
-                                                    /*  size_t      size_array[], */
+                                                        size_t      size_array[],
                                                         int         p_fromFile,
-                                                        int         p_toFile)
+                                                        int         p_toFile,
+                                                        u16         max_width,
+                                                        u16         max_height,
+                                                        u8          max_profile,
+                                                        u8          max_level )
 {
+                h->block_base  = blockBase;
+                h->max_width   = max_width;
+                h->max_height  = max_height;
+                h->max_profile = max_profile;
+                h->max_level   = max_level;
+
+                size_t sps_off[MAX_FILES][MAX_FRAMES] = {0};
+                size_t sps_sc_len[MAX_FILES][MAX_FRAMES] = {0};
+                size_t sps_len[MAX_FILES][MAX_FRAMES] = {0};
+
+                size_t pps_off[MAX_FILES][MAX_FRAMES] = {0};
+                size_t pps_sc_len[MAX_FILES][MAX_FRAMES] = {0};
+                size_t pps_len[MAX_FILES][MAX_FRAMES] = {0};
+
+                size_t idr_off[MAX_FILES][MAX_FRAMES] = {0};
+                size_t idr_sc_len[MAX_FILES][MAX_FRAMES] = {0};
+                size_t idr_len[MAX_FILES][MAX_FRAMES] = {0};
+
                 for (int file_index = p_fromFile; file_index < p_toFile; file_index++)
                     {
-                    u8* data = h->data[file_index];
-                    size_t size = h->size[file_index];
+                    u8*    data = reinterpret_cast<u8*>(p_buffer_array[file_index]);
+                    size_t size = size_array[file_index];
+
                 /*  u8*    data = reinterpret_cast<u8*>(p_buffer_array[i]); */
                 /*  size_t size = size_array[i]; */
                     size_t i = 0;
 
-                    size_t sps_off[MAX_FRAMES] = {0};
-                    size_t sps_sc_len[MAX_FRAMES] = {0};
-                    size_t sps_len[MAX_FRAMES] = {0};
-
-                    size_t pps_off[MAX_FRAMES] = {0};
-                    size_t pps_sc_len[MAX_FRAMES] = {0};
-                    size_t pps_len[MAX_FRAMES] = {0};
-
-                    size_t idr_off[MAX_FRAMES] = {0};
-                    size_t idr_sc_len[MAX_FRAMES] = {0};
-                    size_t idr_len[MAX_FRAMES] = {0};
+                    storeLogLong( MY_BUFFER, MY_INDEX,
+                                  "Parse H264 File No.", file_index,
+                                  "Name", EMPTYLOG,
+                                  filename_array[file_index - p_fromFile],
+                                  "FileSize", (u32)size_array[file_index - p_fromFile]);
 
                     for (size_t pos = 0; pos < size - 3 )
                         {
@@ -160,13 +152,19 @@ void            CKernel::ParseAnnexB                (   h264_state* h,
                         h->frame_length[file_index][idx]  = end_off - sps_off[file_index][idx];
                         h->idr_offset[file_index]         = idr_off[file_index][idx] - sps_off[file_index][idx];
 
-                        storeLogLong(file_index,"SPS+PPS+IDR", EMPTYLOG, "addr", (u32)h->frame_address[file_index][idx], "length", (u32)h->frame_length[file_index][idx], "offset" (u32)h->frame_offset[file_index][idx]);
+                        storeLogLong(   MY_BUFFER, MY_INDEX,
+                                        "SPS+PPS+IDR", EMPTYLOG, 
+                                        "addr", (u32)h->frame_address[file_index][idx], 
+                                        "length", (u32)h->frame_length[file_index][idx], 
+                                        "offset", (u32)h->frame_offset[file_index][idx]);
                         }
 
                     u8 tmp[1024];
                     size_t out_pos = 0;
 
                     static const u8 sc4[4] = {0,0,0,1};
+
+                    size_t idx = 1;
 
                     memcpy(tmp + out_pos, sc4, 4); out_pos += 4;
                     memcpy(tmp + out_pos, data + sps_off[file_index][idx] + sps_sc_len[file_index][idx], 
@@ -187,8 +185,11 @@ void            CKernel::ParseAnnexB                (   h264_state* h,
                                 &h->vid_profile[file_index],
                                 &h->vid_level[file_index]);
 
+                                h->data[file_index]        = data;
+                                h->size[file_index]        = size;
+
                                 h->frame_count[file_index] = i; 
-                                h->idr_sc_len[file_index] = idr_sc_len[1]; /* because 0 might be "out of line" like the whole first set of nal units */
+                                h->idr_sc_len[file_index]  = idr_sc_len[file_index][1]; /* because 0 might be "out of line" like the whole first set of nal units */
                                 
                     if (out_pos <= sizeof(h->extradata[file_index]))
                         {
@@ -202,19 +203,33 @@ void            CKernel::ParseAnnexB                (   h264_state* h,
                         h->vid_profile[file_index]  == h->max_profile &&
                         h->vid_level[file_index]    == h->max_level;
 
-                    storeLogLong(file_index,"Parsed Frames", h->frame_count[file_index], "Parsed IDR-Offset", h->idr_offset[file_index]);
+                    storeLogLong(   MY_BUFFER, MY_INDEX,
+                                    "Parsed Frames", h->frame_count[file_index], 
+                                    "Parsed IDR-Offset", h->idr_offset[file_index]);
                 //  storeLog(file_index,"Parsed IDR-Offset       ", h->idr_offset[file_index]);
 
                     if (h->vid_valid[file_index])
                         {
-                        storeLogLong(file_index,"MetaData VALID for Video", file_index);
+                    //  storeLogLong(file_index,"MetaData VALID for Video", file_index);
+                        storeLogLong(   MY_BUFFER, MY_INDEX,
+                                        "MetaData VALID for Video No.", file_index,
+                                        "Name", EMPTYLOG,
+                                        filename_array[file_index - p_fromFile],
+                                        "FileSize", (u32)size_array[file_index  - p_fromFile]);
                         }
                     else
                         {
-                        storeLogLong(file_index,"MetaData INVALID for Video", file_index);
+                    //  storeLogLong(file_index,"MetaData INVALID for Video", file_index);
+                        storeLogLong(   MY_BUFFER, MY_INDEX,
+                                        "MetaData INVALID for Video No.", file_index,
+                                        "Name", EMPTYLOG,
+                                        filename_array[file_index - p_fromFile],
+                                        "FileSize", (u32)size_array[file_index  - p_fromFile]);                                  
                         }
                      // m_Watchdog.Start(TIMEOUT);
                     }
+
+                return true;
 }
 
 bool            CKernel::ParseSPS                   (   u8*     sps_data,

@@ -1,75 +1,6 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-// deterministic log and print
+#include "kernel.h"
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-void            CKernel::storeLog                   (   char*       p_buffer, 
-                                                        u32&        index,
-                                                        const char* label,
-                                                        u32         p_value0, 
-                                                        u32         p_value1,
-                                                        u32         p_value2, 
-                                                        u32         p_value3)
-{
-                for (const char* p = label; *p; ++p)
-                    {
-                    p_buffer[index++] = *p;
-                    }
-                if (p_value0 == EMPTYLOG &&
-                    p_value1 == EMPTYLOG &&
-                    p_value2 == EMPTYLOG &&
-                    p_value3 == EMPTYLOG )
-                        {
-                        p_buffer[index++] = '\n';
-                        p_buffer[index]   = '\0';
-                        return;
-                        }
-                if (p_value0 != EMPTYLOG)
-                    {
-                    p_buffer[index++] = ' ';
-                    p_buffer[index++] = '0';
-                    p_buffer[index++] = 'x';
-                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) 
-                        {
-                        char hex = "0123456789ABCDEF"[(p_value0 >> (i * 4)) & 0xF];
-                        p_buffer[index++] = hex;
-                        }
-                    }
-                if (p_value1 != EMPTYLOG)
-                    {
-                    p_buffer[index++] = ' ';
-                    p_buffer[index++] = '0';
-                    p_buffer[index++] = 'x';
-                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) 
-                        {
-                        char hex = "0123456789ABCDEF"[(p_value1 >> (i * 4)) & 0xF];
-                        p_buffer[index++] = hex;
-                        }
-                    }
-                if (p_value2 != EMPTYLOG)
-                    {
-                    p_buffer[index++] = ' ';
-                    p_buffer[index++] = '0';
-                    p_buffer[index++] = 'x';
-                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) 
-                        {
-                        char hex = "0123456789ABCDEF"[(p_value2 >> (i * 4)) & 0xF];
-                        p_buffer[index++] = hex;
-                        }
-                    }
-                if (p_value3 != EMPTYLOG)
-                    {
-                    p_buffer[index++] = ' ';
-                    p_buffer[index++] = '0';
-                    p_buffer[index++] = 'x';
-                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i) 
-                        {
-                        char hex = "0123456789ABCDEF"[(p_value3 >> (i * 4)) & 0xF];
-                        p_buffer[index++] = hex;
-                        }
-                }
-                p_buffer[index++] = '\n';
-                p_buffer[index]   = '\0';
-}
-
 void            CKernel::storeLogLong               (   char*       p_buffer,
                                                         u32&        index,
                                                         const char* p_string0, u32 p_value0,
@@ -149,7 +80,6 @@ void            CKernel::storeLogLong               (   char*       p_buffer,
             p_buffer[index++] = hex;
         }
     }
-
     p_buffer[index++] = '\n';
     p_buffer[index] = '\0';
 }
@@ -189,8 +119,8 @@ void            CKernel::storeMsg                   (   char*       p_buffer,
                 p_buffer[index] = '\0';
 }
 
-void            CKernel::nextline                   (   char* p_buffer,
-                                                        u32& index)
+void            CKernel::nextline                   (   char*       p_buffer,
+                                                        u32&        index)
 {
                 p_buffer[index++] = '\n';
                 p_buffer[index] = '\0';
@@ -211,22 +141,14 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 bool            CKernel::programLog                 (   GLint       program,
                                                         int         program_index )
 {
-            //  int internal_index = 0;                     // i wonder, if and why we need it, was the indexing in the p_buffer incorrect? !!! DOUBLECHECK !!!
-            //  if (program_index > 0)
-            //      internal_index = program_index - 1;
                 GLint success;
                 glGetProgramiv(program, GL_LINK_STATUS, &success);
 #ifdef __DEBUG_LOG__
                 storeLogLong( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
-                storeLogLong( MY_BUFFER, MY_INDEX, "Program link status idx", (u32)program_index, "success", (u32)success);
-#endif 
-            //  char name[27];
-            //  strncpy(name, &m_bufferFsh[program_index][2], 26);
-            //  name[26] = '\0';
-#ifdef __DEBUG_LOG__ 
-            //  storeMsg( MY_BUFFER, MY_INDEX, "Program short name", name, 26);
-                storeMsg( MY_BUFFER, MY_INDEX, "Filename F-Shader", g_ScnFsh[program_index/*internal_index*/], 64);   // same behavior conceptually
-                storeLogLong( MY_BUFFER, MY_INDEX, "Program byte size", (u32)g_bytFsh[program_index]);
+                storeLogLong( MY_BUFFER, MY_INDEX,  "Filename F-Shader", g_ScnFsh[program_index, 
+                                                    "Program link status idx", (u32)program_index,
+                                                    "Program byte size", (u32)g_bytFsh[program_index], 
+                                                    "success", (u32)success);
 #endif 
                 char log[1024];
                 glGetProgramInfoLog(program, sizeof(log), NULL, log);
@@ -365,8 +287,6 @@ void            CKernel::gfx_check                  (   const char* file,
 #ifdef __DEBUG_LOG__ 
                     storeLogLong( MY_BUFFER, MY_INDEX, "OpenGL Error", (u32)error, "ticks", (u32)ticks, "line", (u32)line);
                     storeLogLong( MY_BUFFER, MY_INDEX, severity, EMPTYLOG, error_str, EMPTYLOG, file);
-                //  storeLog( MY_BUFFER, MY_INDEX, error_str);
-                //  storeLog( MY_BUFFER, MY_INDEX, file);
 #endif  
                     error_count++;
                     if (error_count >= ERROR_THRESHOLD)
@@ -400,30 +320,24 @@ bool            CKernel::startupScreen              (   char* p_buffer, u32& ind
                 unsigned usbSpeed       = m_Options.GetUSBFullSpeed();
 
                 storeLogLong( MY_BUFFER, MY_INDEX, "Machine Model", EMPTYLOG, machineName);
-            //  storeLog( MY_BUFFER, MY_INDEX, machineName);
-            //  nextline(p_buffer, index);
-                storeLogLong( MY_BUFFER, MY_INDEX, "SoC Name", EMPTYLOG, socName, EMPTYLOG, "Model Major    ", modelMajor, "Model Revision ", modelRevision);
-            //  storeLog( MY_BUFFER, MY_INDEX, socName);
-            //  nextline(p_buffer, index);
 
-            //  storeLogLongLong( MY_BUFFER, MY_INDEX, "Model Major    ", modelMajor, "Model Revision ", modelRevision);
-            //  storeLog( MY_BUFFER, MY_INDEX, "Model Revision ", modelRevision);
-            //  nextline(p_buffer, index);
+                storeLogLong( MY_BUFFER, MY_INDEX, "SoC Name", EMPTYLOG, socName, EMPTYLOG, "Model Major    ", modelMajor, "Model Revision ", modelRevision);
+
                 storeLogLong( MY_BUFFER, MY_INDEX, "RAM Size     MB", ramSize);
-                storeLogLong( MY_BUFFER, MY_INDEX, "CPU Speed Mode ", cpuSpeedMode);
-            //  nextline(p_buffer, index);
-                storeLogLong( MY_BUFFER, MY_INDEX, "SoC Max Temp   ", socMaxTemp);
-            //  nextline(p_buffer, index);
-                storeLogLong( MY_BUFFER, MY_INDEX, "Clock COREMHz", coreClock, "Clock ARM MHz", armClock);
-            //  storeLog( MY_BUFFER, MY_INDEX, "Clock ARM   MHz", armClock);    
+                storeLogLong( MY_BUFFER, MY_INDEX, "CPU Speed Mode", cpuSpeedMode);
+
+                storeLogLong( MY_BUFFER, MY_INDEX, "SoC Max Temperature", socMaxTemp);
+
+                storeLogLong( MY_BUFFER, MY_INDEX, "Clock CORE MHz", coreClock, "Clock ARM MHz", armClock);
+
                 storeLogLong( MY_BUFFER, MY_INDEX, "Clock EMMC  MHz", emmcClock, "EMMC2 MHz", emmc2Clock);
-            //  storeLog( MY_BUFFER, MY_INDEX, "Clock EMMC2 MHz", emmc2Clock);
+
                 storeLogLong( MY_BUFFER, MY_INDEX, "Clock UART  MHz", uartClock);    
-            //  nextline(p_buffer, index);
-                storeLogLong( MY_BUFFER, MY_INDEX, "DMA Channel    ", dmaChannel);
-            //  nextline(p_buffer, index);
-                storeLogLong( MY_BUFFER, MY_INDEX, "USB Delay      ", usbDelay, "USB FullSpeed  ", usbSpeed);
-            //  storeLog( MY_BUFFER, MY_INDEX, "USB FullSpeed  ", usbSpeed);
+
+                storeLogLong( MY_BUFFER, MY_INDEX, "DMA Channel", dmaChannel);
+
+                storeLogLong( MY_BUFFER, MY_INDEX, "USB Delay", usbDelay, "USB FullSpeed", usbSpeed);
+
                 
                 screen_clear_screen(0x00000000);
 

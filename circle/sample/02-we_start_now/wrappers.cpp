@@ -1,6 +1,8 @@
 //----------------------------------------------------------------------------------------------------------------------------------------------------
-
+#include "kernel.h"
 //----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 bool            CKernel::wrapperInitDMA             (   )
 {
                 bool bOK = true;
@@ -281,17 +283,13 @@ void            CKernel::wrapper_load_usb           (   )
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::wrapper_init_gl_sd         (   )
 {
-                initBMPparser   (   &m_omt,                                         // the dedicated struct for the overlay texture
+                BMPparser       (   &m_omt,                                         // the dedicated struct for the overlay texture
                                     m_bufferOmt,                                    // the actual mem-buffer where i have stored it
+                                    g_ScnOmt,
                                     g_bytOmt,                                       // the array where i stored the loaded bytes
                                     filecounter[FT_TEX][FLD_SIZE],                  // upper bound for the size
                                     filecounter[FT_OMT][FLD_PREV],                  // for the continuous loading between devices - lower bound
                                     filecounter[FT_OMT][FLD_LOADED]);               // for the continuous loading between devices - upper bound
-
-                ParseBPM        (   &m_omt,
-                                    g_ScnOmt,
-                                    filecounter[FT_TEX][FLD_PREV],                  // for the continuous loading between devices - lower bound
-                                    filecounter[FT_TEX][FLD_LOADED]);               // for the continuous loading between devices - upper bound
 
                 initVbuffer     (   &m_ogl,
                                     &m_vtx ) 
@@ -371,8 +369,9 @@ void            CKernel::wrapper_init_gl_sd         (   )
 
 void            CKernel::wrapper_init_gl_usb        (   )
 {
-                initBMPparser   (   &m_tex,
+                BMPparser       (   &m_tex,
                                     m_bufferTex,
+                                    g_ScnTex,
                                     g_bytTex,
                                     filecounter[FT_TEX][FLD_SIZE],
                                     filecounter[FT_TEX][FLD_PREV],
@@ -381,6 +380,7 @@ void            CKernel::wrapper_init_gl_usb        (   )
                 initH264parser  (   &m_vid,
                                     m_videoBlockBase,
                                     m_bufferVid,
+                                    g_ScnVid,
                                     g_bytVid,
                                     filecounter[FT_VID][FLD_PREV],
                                     filecounter[FT_VID][FLD_LOADED],
@@ -388,16 +388,6 @@ void            CKernel::wrapper_init_gl_usb        (   )
                                     MAX_VIDEO_HEIGHT,
                                     MAX_VIDEO_PROFILE,
                                     MAX_VIDEO_LEVEL);
-
-                ParseBPM        (   &m_tex,
-                                    g_ScnTex,
-                                    filecounter[FT_TEX][FLD_PREV],
-                                    filecounter[FT_TEX][FLD_LOADED]);
-
-                ParseAnnexB     (   &m_vid,
-                                    g_bytVid,
-                                    filecounter[FT_VID][FLD_PREV],
-                                    filecounter[FT_VID][FLD_LOADED]);
 
                 initShader      (   &m_vtx,         // init fragment shader ( default )
                                     &m_fsh, 
