@@ -407,7 +407,7 @@
 #define         ADC_SELECT_VID              5
 #define			ADC_INPUT_CLK			    5	// adc p_channel use as clock ! BIGGER THAN 3 !
 
-#define         check() 				    gfx_check(__FILE__, __LINE__) 	// my own assertion implementation
+#define         check() 				    gfx_check(__FILE__, __LINE__) 	// my own glcheck implementation
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------

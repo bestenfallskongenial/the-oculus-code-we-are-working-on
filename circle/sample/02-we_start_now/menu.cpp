@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 #include "kernel.h"
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void            CKernel::resetPickUpFlags           (   ) 
 {
 
@@ -91,55 +91,6 @@ void            CKernel::modeMenuAssignGroup        (   uint8_t menu_id, uint8_t
                 else if (g_menuPickUpFlag[base + 3])
                     {
                     g_centralModeBuffer[g_currentProgramBuffer][base + 3] = v;
-                    }
-}
-
-void            CKernel::getChannelModeA            (   int p_channel)
-{
-                switch (g_modeMap[p_channel][g_centralModeBuffer[g_currentProgramBuffer][p_channel] + 1])
-                    {
-                    case 0:
-                        modeADC (p_channel);
-                    break;
-
-                    case 1:
-                        modeTRG (p_channel);
-                    break;
-
-                    case 2:
-                        modeBPM (p_channel);
-                    break;
-
-                    case 3:
-                        modeLF1 (p_channel);
-                    break;
-                    case 4:
-                        modeLF2 (p_channel);
-                    break;
-                    case 5:
-                    /*  modeTex (p_channel); */
-                    break;
-                    case 6:
-                    /*  modeVid (p_channel); */
-                    break;
-                    case 7:
-                    /*  modeFrm (p_channel); */
-                    break;                    
-                    case 8:
-                        modeAudioAb0 (p_channel);
-                    break;
-
-                    case 9:
-                        modeAudioAb1 (p_channel);
-                    break;
-
-                    case 10:
-                        modeAudioBb0 (p_channel);
-                    break;
-
-                    case 11:
-                        modeAudioBb1 (p_channel);
-                    break;                    
                     }
 }
 
@@ -272,6 +223,4 @@ void            CKernel::updateOvlState             (   olg_state*  o,
                     s->tile_index[14] = 48.0f;
                     s->tile_index[15] = 49.0f;
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 // END OF FILE
-//----------------------------------------------------------------------------------------------------------------------------------------------------

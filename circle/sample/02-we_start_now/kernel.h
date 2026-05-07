@@ -81,9 +81,7 @@ public:
 
                 void        clearBufferDMA              (           char**                          buffers,                // buffer pointer table returned by allocBufferDMA()
                                                                     char*                           rawBlock);              // original raw allocation pointer to delete
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  GRAPHICS
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 void        initOGL                     (           olg_state*                      o);
 
                 void        initVbuffer                 (           olg_state*                      o, 
@@ -118,9 +116,7 @@ public:
                                                                     tex_state*                      t,
                                                                     int                             p_fromFile,
                                                                     int                             p_toFile);
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  RUNTIME RENDER
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 void        frmBufferSet                (           vtx_state*                      v);
 
                 void        frmBufferSwap               (           olg_state*                      o);
@@ -149,9 +145,7 @@ public:
                                                                     glsl_state*                     s, 
                                                                     tex_state*                      t);
                 void        drawGLsOvl                  ();
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  HARDWARE
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 u32         my_read32                   (           uintptr                         nAddress);                          // MMIO
                 void        my_write32                  (           uintptr                         nAddress, 
                                                                     u32                             nValue);
@@ -223,9 +217,7 @@ public:
 
                 void        bufferToScreenGetGrid       (           unsigned&                       cols,
                                                                     unsigned&                       rows);
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  LOGGING
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 void        storeLogLong                (           char*                           p_bufferArray,
                                                                     u32&                            index,
                                                             const   char*                           p_string0, 
@@ -236,11 +228,8 @@ public:
                                                                     u32                             p_value2    = EMPTYLOG,
                                                             const   char*                           p_string3   = EMPTYSTR, 
                                                                     u32                             p_value3    = EMPTYLOG);
-
 // #define EMPTYSTR ""
 // #define EMPTYLOG 255
-
-
                 void        storeMsg                    (           char*                           p_bufferArray,
                                                                     u32&                            index,
                                                                     const char*                     label,
@@ -261,9 +250,8 @@ public:
 
                 bool        startupScreen               (           char*                           p_bufferArray,
                                                                     u32&                            index);                                                                    
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 //  MENU
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 void        resetPickUpFlags            ();                                                             // **** okay, i have multiple flags that may or may not be reset ! maybe i will do it centralized here???
 
                 void        set_mode_length             (           uint8_t                         base);              // the "base" of "channels" to process, groups of 4!
@@ -296,10 +284,8 @@ public:
                 void        updateOvlState              (           olg_state*                      o,                  // because we are concerned with the overlay menu here!
                                                                     glsl_state*                     s, 
                                                                     tex_state*                      t);                
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  PARSER
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//75
+
                 bool        BMPparser                   (           tex_state*                      t,
                                                                     char*                           p_buffer_array[],
                                                                     char*                           filename_array[],
@@ -334,16 +320,21 @@ public:
 
                 u32         ReadExpGolomb               (           u8*                             data, 
                                                                     size_t*                         bit_offset) const;
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  UTIL
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                void        readADC                     ();                             // can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
+                void        adc_AcquireConvert                     ();                             // can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
+
+                void        adc_ProcessAudio            (   void    );
+
+                void        adc_AdvanceIndex            ();
 
                 bool        checkUpdate                 ();
 
                 bool        Update                      ();
 //85
                 void        set_pot_routing             (           bool                            adc_pot_routing);
+
+
+                char*       make83FileName              (   const   char*                           ext ;)
 
                 void        prepParameters              ();
 
@@ -361,8 +352,10 @@ public:
                                                                     int                             p_pin);
 
                 void        button_consumer             (           int                             p_btn_id);
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 
                 void        randomVec8                  (           uint32_t                        p_seed);
+
+
 
                 void        calculate1BPM               (           int                             p_source, 
                                                                     unsigned long                   p_triggerTimeClock);
@@ -373,9 +366,7 @@ public:
                 void        sample1WaveTable            (           int                             p_source, 
                                                                     int                             p_lfoIn, 
                                                                     int                             p_lfoOut );
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  VC04_SERVICE
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 public:
         static  void        callbackVCSM                (           void*                           callback_param, 
                                                                     VCHI_CALLBACK_REASON_T          reason, 
@@ -418,7 +409,7 @@ public:
                                                                     void*                           cb_param,
                                                                     VCHI_INSTANCE_T                 VCHIInstance,
                                                                     VCHI_SERVICE_HANDLE_T&          ServiceHandle);
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
                 bool        initializeVCSM              ();
 
                 bool        importMemoryVCSM            (           void*                           p_bufferBlockbase, 
@@ -434,7 +425,7 @@ public:
                 bool        freeMemoryVCSM              (           int                             slot, 
                                                                     VCSM_Free_MEM_Msg&              tx, 
                                                                     VCSM_Free_MEM_Reply&            rx);
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
                 bool        initializeMMAL              (           u32                             InBufferHandle,             // my input buffer handle  from smem ( we need to figure this out !)
                                                                     u32                             InBufferPointer,            // OR pointer  ( this is the question No 1 here !!! ) i got the feeling i rather need this
                                                                     u32                             InBufferSize,               // my allocated input buffer size
@@ -448,7 +439,7 @@ public:
                                                                     EGLDisplay                      eglDisplay,                 // isnt it done anyway globally? redundant?
                                                                     EGLContext                      eglContext);                // isnt it done anyway globally? redundant?
                 bool        createTexturesMMAL          ();
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
                 bool        framePollerMMAL             (           u32                             frame_offset,               // comes from the pooler -> h264 struct 
                                                                     u32                             frame_length);              // same same
 
@@ -461,7 +452,7 @@ public:
                 bool        queueInputBufferMMAL        (           MMAL_Buffer_From_Host_Msg&      tx, 
                                                                     u32                             frame_offset, 
                                                                     u32                             frame_length);
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
                 bool        createComponent             (           MMAL_Component_Create_Msg&      tx, 
                                                                     MMAL_Component_Create_Reply&    rx);
 
@@ -483,7 +474,7 @@ public:
                 bool        enablePortMMAL              (   const   MMAL_Port_Info_Get_Reply&       src, 
                                                                     MMAL_Port_Action_Msg&           tx, 
                                                                     MMAL_Port_Action_Reply_Msg&     rx);
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
                 void        PrimeOutputBufferBodyMMAL   (           MMAL_Buffer_From_Host_Msg&      tx);                          // here we "prime" the messages for usage!
 
                 void        PrimeInputBufferBodyMMAL    (           MMAL_Buffer_From_Host_Msg&      tx);
@@ -508,18 +499,14 @@ public:
 //      void Log_queueBufferFromHost                              (     const MMAL_Buffer_From_Host_Msg& tx );        
 #endif 
 */                                                
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  STUBS
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 void            Log_createComponent( const MMAL_Component_Create_Msg& tx, const MMAL_Component_Create_Reply& rx);
                 void            Log_getPortInfo( const MMAL_Port_Info_Get_Msg& tx, const MMAL_Port_Info_Get_Reply& rx);
                 void            Log_setPortInfo( const MMAL_Port_Info_Set_Msg& tx, const MMAL_Port_Info_Set_Reply& rx);
                 void            Log_enableComponentMMAL( const MMAL_Component_Enable_Msg& tx, const MMAL_Component_Enable_Reply& rx);
                 void            Log_setZeroCopyModeMMAL( const MMAL_Port_Parameter_Set_Msg& tx, const MMAL_Port_Parameter_Set_Reply& rx);
                 void            Log_enablePort( const MMAL_Port_Action_Msg& tx, const MMAL_Port_Action_Reply_Msg&  rx);
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //  WRAPPERS - HERE THE JOY BEGINS
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 bool        wrapperInitDMA              ();             // init/alloc the dma buffers 
 
                 bool        wrapperInitMEM              ();             // init/alloc the mem buffers

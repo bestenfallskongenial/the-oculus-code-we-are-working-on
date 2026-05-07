@@ -1,16 +1,7 @@
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 #include "kernel.h"
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-/*  NEW AUDIO AND ADC SEPERATED !
 
-    adc_AcquireConvert()
-    adc_ProcessAudio()
-    advance_adc_index()
-
-    set_mode_length(0)
-    modeMenuAssignGroup(...)
-*/
-void            CKernel::adc_AcquireConvert         (   void)
+void            CKernel::adc_AcquireConvert         (   void    )
 {
                 const int f_scale = m_scaleFactors[attenuation];
 
@@ -55,12 +46,10 @@ void            CKernel::adc_AcquireConvert         (   void)
                 g_inOutMatrixFlt[7][VAL] = g_inOutMatrixInt[7][VAL] * 0.0009765625f;
 }
 
-void            CKernel::adc_ProcessAudio           (   void)
+void            CKernel::adc_ProcessAudio           (   void    )
 {
-                if (!m_audio_mode_activated)
-                    {
-                    return;
-                    }
+                if (!m_audio_mode_activated) // is a fixed position in g_centralModeBuffer mapped by modeMenuAssignGroup()
+
                 int i0 = m_adc_index;
                 int i1 = (m_adc_index - 1) & 3;
                 int i2 = (m_adc_index - 2) & 3;
@@ -174,7 +163,7 @@ void            CKernel::adc_ProcessAudio           (   void)
                 m_audio_flag_B = (m_audio_hold_B > 0);
 }
 
-void            CKernel::adc_AdvanceIndex           (   void)
+void            CKernel::adc_AdvanceIndex           (   void    )
 {
                 m_adc_index = (m_adc_index + 1) & 3;
 }
@@ -209,9 +198,31 @@ bool            CKernel::Update                     (   )
                 return false;
 }
 
-void            CKernel::set_pot_routing            (   bool        adc_pot_routing)
+void            CKernel::set_pot_routing            (   bool            adc_pot_routing)
 {
                 m_ChipSelectPin.Write(adc_pot_routing);
+}
+
+char*           CKernel::make83FileName             (   const char*     ext )
+{
+                static const char map[] = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
+
+                m_83FileName[0] = map[g_inOutMatrixInt[0][RND] & 31];
+                m_83FileName[1] = map[g_inOutMatrixInt[1][RND] & 31];
+                m_83FileName[2] = map[g_inOutMatrixInt[2][RND] & 31];
+                m_83FileName[3] = map[g_inOutMatrixInt[3][RND] & 31];
+                m_83FileName[4] = map[g_inOutMatrixInt[4][RND] & 31];
+                m_83FileName[5] = map[g_inOutMatrixInt[5][RND] & 31];
+                m_83FileName[6] = map[g_inOutMatrixInt[6][RND] & 31];
+                m_83FileName[7] = map[g_inOutMatrixInt[7][RND] & 31];
+
+                m_83FileName[8]  = '.';
+                m_83FileName[9]  = ext[0];
+                m_83FileName[10] = ext[1];
+                m_83FileName[11] = ext[2];
+                m_83FileName[12] = '\0';
+
+                return m_83FileName;
 }
 
 void            CKernel::prepParameters             (   )               // f_buffer guess here we need much more to do!
@@ -229,10 +240,10 @@ void            CKernel::prepParameters             (   )               // f_buf
                     }
 }
 
-void            CKernel::chooseIndex                (   int p_channel, 
-                                                        int& p_activeIndex, 
-                                                        int p_maxCount, 
-                                                        bool* flags)    // non-condensed valid arrays, max number of files ( macros for example!)
+void            CKernel::chooseIndex                (   int             p_channel, 
+                                                        int&            p_activeIndex, 
+                                                        int             p_maxCount, 
+                                                        bool*           flags)    // non-condensed valid arrays, max number of files ( macros for example!)
 {
                 static int p_activeIndex = 0;
 
@@ -244,9 +255,9 @@ void            CKernel::chooseIndex                (   int p_channel,
                     }
 }
 
-void            CKernel::chooseIndexD               (   int p_channel, 
-                                                        int& p_activeIndex, 
-                                                        int p_maxCount) // condensed valid arrays, max number of files ( macros for example!)
+void            CKernel::chooseIndexD               (   int             p_channel, 
+                                                        int&            p_activeIndex, 
+                                                        int             p_maxCount) // condensed valid arrays, max number of files ( macros for example!)
 {
                 int f_calculated = (g_inOutMatrixInt[p_channel][RAW] * p_maxCount) >> 10;
 
@@ -273,8 +284,8 @@ void            CKernel::storeModes                 (   )
                     }
 }
 
-void            CKernel::buttonPing                 (   int p_btn_id, 
-                                                        int p_pin)
+void            CKernel::buttonPing                 (   int             p_btn_id, 
+                                                        int             p_pin )
 {
                 g_buttons_states[p_btn_id][BTN_SINGLE] = 0;
                 g_buttons_states[p_btn_id][BTN_DOUBLE] = 0;
@@ -302,7 +313,7 @@ void            CKernel::buttonPing                 (   int p_btn_id,
                     }
 }
 
-void            CKernel::button_consumer            (   int p_btn_id) // this is where the magic happens: we need to set the states of menu layer, menu, we need to use one button for bpm input and so on 
+void            CKernel::button_consumer            (   int                 p_btn_id ) // this is where the magic happens: we need to set the states of menu layer, menu, we need to use one button for bpm input and so on 
 {
                 if (g_buttons_states[p_btn_id][BTN_SINGLE]) counter += 1;
                 if (g_buttons_states[p_btn_id][BTN_DOUBLE]) counter -= 1;
@@ -316,7 +327,7 @@ void            CKernel::button_consumer            (   int p_btn_id) // this is
                     longhold += 2;
 }
 
-void            CKernel::randomVec8                 (   uint32_t p_seed)
+void            CKernel::randomVec8                 (   uint32_t            p_seed )
 {
                 const int       f_max_int   = 1023; // 1024;
                 const float     f_scale     = 1.0f / 4294967295.0f;
@@ -347,8 +358,8 @@ void            CKernel::randomVec8                 (   uint32_t p_seed)
                 g_inOutMatrixInt[7][RND] = ( g_inOutMatrixFlt[7][RND] * f_max_int);
 }
 
-void            CKernel::calculate1BPM              (   int p_source, 
-                                                        unsigned long p_triggerTimeClock)  // p_triggerTimeClock ****
+void            CKernel::calculate1BPM              (   int             p_source, 
+                                                        unsigned long   p_triggerTimeClock)  // p_triggerTimeClock ****
 {
                 unsigned long f_intervalAverage = 0;
 
@@ -375,8 +386,8 @@ void            CKernel::calculate1BPM              (   int p_source,
                     }
 }
 
-void            CKernel::predict1Beat               (   int p_source, 
-                                                        int p_lfoMultIn )
+void            CKernel::predict1Beat               (   int             p_source, 
+                                                        int             p_lfoMultIn )
 {
                 unsigned long currentTime               =   m_Timer.GetClockTicks();
 
@@ -403,9 +414,9 @@ void            CKernel::predict1Beat               (   int p_source,
                     }
 }
 
-void            CKernel::sample1WaveTable           (   int p_source, 
-                                                        int p_lfoIn, 
-                                                        int p_lfoOut )
+void            CKernel::sample1WaveTable           (   int             p_source, 
+                                                        int             p_lfoIn, 
+                                                        int             p_lfoOut )
 {
                 unsigned long currentTime               =   m_Timer.GetClockTicks();    // ? ****
 
@@ -416,6 +427,3 @@ void            CKernel::sample1WaveTable           (   int p_source,
                 g_inOutMatrixFlt[0][p_lfoOut]           =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]][g_lfoBpmMatrix[p_source][SMP]] / 1023.0f;
                 g_inOutMatrixInt[0][p_lfoOut]           =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]][g_lfoBpmMatrix[p_source][SMP]];
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 #include "kernel.h"
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 bool            CKernel::Mount                      (   const   char*       p_deviceName )
 {
                 CDevice* f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);
@@ -17,10 +17,8 @@ bool            CKernel::Mount                      (   const   char*       p_de
 
 bool            CKernel::UnMount                    (   )
 {
-                if (m_pFileSystem == 0)
-                    {
-                    return false;
-                    }
+                if (m_pFileSystem == 0) return false;
+
                 m_pFileSystem->UnMount();
                 delete m_pFileSystem;
                 m_pFileSystem = 0;
@@ -30,10 +28,9 @@ bool            CKernel::UnMount                    (   )
 bool            CKernel::openFile                   (   const   char*       p_fileName)
 {   
 	            g_hFile = m_pFileSystem->FileOpen (p_fileName);
-	            if (g_hFile == 0)
-		            {
-		            return false;
-		            }	
+
+	            if (g_hFile == 0) return false;
+	
                 return true;
 }
 
@@ -49,14 +46,10 @@ unsigned        CKernel::loadToBuffer               (           char*       p_bu
 
                     f_bytesRead = m_pFileSystem->FileRead(g_hFile, p_bufferArray + f_totalBytesRead, f_currentChunkSize);
 
-                    if (f_bytesRead == FS_ERROR)
-                        {
-                        return 0;
-                        }
-                    if (f_bytesRead == 0)
-                        {
-                        return f_totalBytesRead;
-                        }
+                    if (f_bytesRead == FS_ERROR) return 0;
+
+                    if (f_bytesRead == 0)return f_totalBytesRead;
+
                     f_totalBytesRead += f_bytesRead;
 
                      // m_Watchdog.Start(TIMEOUT);
@@ -133,10 +126,8 @@ bool            CKernel::saveFromBufferM            (   const   char*       p_de
 
 bool            CKernel::closeFile                  (   )	                                                                        
 {
-	            if (!m_pFileSystem->FileClose(g_hFile)) 
-		            {
-		            return false;
-		            }
+	            if (!m_pFileSystem->FileClose(g_hFile)) return false;
+
                 return true;
 }
 
@@ -191,33 +182,31 @@ void            CKernel::bulkLoad                   (           char*       p_fi
 bool            CKernel::IsValidFile                (   const   char*       pFileName,
                                                         const   char*       extension)
 {
-                if (!pFileName || !extension)
-                    return false;
+                if (!pFileName || !extension) return false;
                 const char* dot = 0;
                 const char* p = pFileName;
                 int index = 0;
                 
-                while (*p)
-                    {
-                    if (*p == '.')
-                        dot = p;
-                    p++;
-                    index++;
-                    }
-                if (!dot)
-                    return false;
+                while (*p)                              {
+                                                        if (*p == '.') dot = p;
+
+                                                        p++;
+                                                        index++;
+                                                        }
+                if (!dot) return false;
+
                 int dotPos = dot - pFileName;
-                if (dotPos == 0 || dotPos > 8)
-                    return false;
+
+                if (dotPos == 0 || dotPos > 8) return false;
+
                 const char* suffix = dot + 1;
                 
-                while (*suffix && *extension)
-                    {
-                    if (*suffix != *extension)
-                        return false;
-                    suffix++;
-                    extension++;
-                    }
+                while (*suffix && *extension)           {
+                                                        if (*suffix != *extension) return false;
+
+                                                        suffix++;
+                                                        extension++;
+                                                        }
                 
                 return (*suffix == '\0' && *extension == '\0');
 }
@@ -235,10 +224,8 @@ bool            CKernel::scanRoot                   (           char**      p_fi
                 
                 unsigned            f_nextEntry                 = m_pFileSystem->RootFindFirst(&f_directoryEntry, &f_currentDirectoryEntry);
 
-                if(f_nextEntry == 0)
-                        {
-                    return false;
-                        }
+                if(f_nextEntry == 0) return false;
+
                 while (f_nextEntry != 0 && p_scannedFiles < p_maxFiles) 
                     {
                     if (!(f_directoryEntry.nAttributes & FS_ATTRIB_SYSTEM)) 
@@ -261,26 +248,24 @@ bool            CKernel::scanRoot                   (           char**      p_fi
 
 bool            CKernel::updateUSB                  (   const   char*       p_deviceName )
 {
-                if (m_USBHCI.UpdatePlugAndPlay())
-                    {
-                    CDevice* pDevice = m_DeviceNameService.GetDevice(p_deviceName, TRUE);
-                    if (pDevice != nullptr)
-                        {
-                        m_bStorageAttached = true;
+                if (!m_USBHCI.UpdatePlugAndPlay()) return false;
 
-                        pDevice->RegisterRemovedHandler(removeUSB, this);
-                        return true;
-                        }
-                    }
-                return false;
+                CDevice* pDevice = m_DeviceNameService.GetDevice(p_deviceName, TRUE);
+
+                if (pDevice == nullptr) return false;
+
+                m_bStorageAttached = true;
+
+                pDevice->RegisterRemovedHandler(removeUSB, this);
+
+                return true;
 }
 
 void            CKernel::removeUSB                  (           CDevice*    pDevice,
                                                                 void*       pContext )
 {
 	            CKernel *pThis = (CKernel *) pContext;
-	            assert (pThis != 0);
-	        /*  assert (pThis->m_bStorageAttached);         -> outcommented it since the beginning of time here... */
+	            assert (pThis != 0); // ???
 	            pThis->m_bStorageAttached = FALSE;
 }
 
@@ -288,7 +273,6 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                                                                 size_t      bufferSize ) 
 {
                 char** buffers = (char**)malloc(p_count * sizeof(char*));
-
 #ifdef ALLOC_DEBUG
                 storeLogLong(   MY_BUFFER, MY_INDEX,
                                 "ALLOC-MEM base",      (u32)buffers,
@@ -300,7 +284,6 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                 for (size_t i = 0; i < p_count; ++i) 
                     {
                     buffers[i] = (char*)calloc(bufferSize, sizeof(char));
-
 #ifdef ALLOC_DEBUG
                     storeLogLong(   MY_BUFFER, MY_INDEX,
                                     "ALLOC-MEM slice", (u32)i,
@@ -309,7 +292,6 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                                     EMPTYSTR,          EMPTYLOG );
 #endif
                     }
-
 #ifdef ALLOC_DEBUG
                 storeLogLong(   MY_BUFFER, MY_INDEX,
                                 "ALLOC-MEM done",      (u32)buffers,
@@ -317,8 +299,7 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                                 "size",                (u32)bufferSize,
                                 EMPTYSTR,              EMPTYLOG );
 #endif         
-
-                msleep(100);
+                msDelay(100);
                 return buffers;
 }
 
@@ -329,9 +310,9 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
                                                                 size_t*     alignedSizeOut )
 {
                 size_t total_size = p_count * bufferSize;
+
                 size_t aligned_total_size = (total_size + 4095) & ~4095;
 
-                
                 char* raw = new (HEAP_DMA30) char[aligned_total_size + 4096];
 
                 char* dma_block = (char*)(((uintptr_t)raw + 4095) & ~4095);
@@ -343,6 +324,7 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
                                 EMPTYSTR,               EMPTYLOG );
 #endif
                 char** buffers = new char*[p_count];
+
                 for (size_t i = 0; i < p_count; ++i)
                     {
                     buffers[i] = dma_block + i * bufferSize;
@@ -362,21 +344,19 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
                                 "total",                (u32)total_size,
                                 "aligned",              (u32)aligned_total_size );
 #endif
-                *blockBaseOut = dma_block;
-                *rawBlockOut = raw;
+                *blockBaseOut   = dma_block;
+                *rawBlockOut    = raw;
                 *alignedSizeOut = aligned_total_size;
 
-                msleep(100);
+                msDelay(100);
                 return buffers;
 }
 
 void            CKernel::clearBufferMEM             (           char**      buffers, 
                                                                 size_t      p_count) 
 {
-                for (size_t i = 0; i < p_count; ++i)
-                    {
-                    free(buffers[i]);
-                    }
+                for (size_t i = 0; i < p_count; ++i) free(buffers[i]);
+
                 free(buffers);
 
                 buffers = nullptr;                
@@ -391,6 +371,3 @@ void            CKernel::clearBufferDMA             (           char**      buff
                 rawBlock = nullptr;
                 buffers  = nullptr;
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------------------------------------------------------------------------ 341

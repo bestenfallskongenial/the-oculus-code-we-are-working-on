@@ -7,11 +7,11 @@
                                     m_Options.GetHeight(),
                                     32, 0, TRUE),                                                       
                     m_Interrupt (),
-	                m_Timer     (   &m_Interrupt),         
+	                m_Timer     (   &m_Interrupt ),         
                     m_EMMC      (   &m_Interrupt,   &m_Timer, &m_ActLED),
 	                m_USBHCI    (   &m_Interrupt,   &m_Timer, TRUE),
                     m_VCHIQ     (   &m_Memory,      &m_Interrupt),
-                    m_SMITxDMA(DMA_CHANNEL_LITE)                
+                    m_SMITxDMA( DMA_CHANNEL_LITE )      // DMA_CHANNEL_LITE comes from machineinfo.h          
                     {
                     m_ActLED.Blink (5);	
                     }

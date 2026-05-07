@@ -9,43 +9,28 @@ bool            CKernel::wrapperInitDMA             (   )
 
                 if (bOK)
                     {
-                    bOK = (m_bufferVid = allocBufferDMA  (  filecounter[FT_VID][FLD_MAXSD]+filecounter[FT_VID][FLD_MAXUSB], 
-                                                            filecounter[FT_VID][FLD_SIZE], 
-                                                            &m_videoBlockBase, 
-                                                            &m_videoRawBlock, 
-                                                            &m_videoBlockSize));
+                    bOK = (m_bufferVid = allocBufferDMA  (  filecounter[FT_VID][FLD_MAXSD]+filecounter[FT_VID][FLD_MAXUSB], filecounter[FT_VID][FLD_SIZE], 
+                                                            &m_videoBlockBase, &m_videoRawBlock, &m_videoBlockSize));
                     }
                 if (bOK)
                     {
-                    bOK = (m_bufferFrA = allocBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB], 
-                                                            filecounter[FRM_BF][FLD_SIZE], 
-                                                            &m_frameBlockBaseA, 
-                                                            &m_frameRawBlockA, 
-                                                            &m_frameBlockSizeA));
+                    bOK = (m_bufferFrA = allocBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB], filecounter[FRM_BF][FLD_SIZE], 
+                                                            &m_frameBlockBaseA, &m_frameRawBlockA, &m_frameBlockSizeA));
                     }
                 if (bOK)
                     {
-                    bOK = (m_bufferFrB = allocBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB], 
-                                                            filecounter[FRM_BF][FLD_SIZE], 
-                                                            &m_frameBlockBaseB, 
-                                                            &m_frameRawBlockB, 
-                                                            &m_frameBlockSizeB));
+                    bOK = (m_bufferFrB = allocBufferDMA  (  filecounter[FRM_BF][FLD_MAXSD]+filecounter[FRM_BF][FLD_MAXUSB], filecounter[FRM_BF][FLD_SIZE], 
+                                                            &m_frameBlockBaseB, &m_frameRawBlockB, &m_frameBlockSizeB));
                     }
                 if (bOK)
                     {
-                    bOK = (m_bufferOmt = allocBufferDMA  (  filecounter[FT_OMT][FLD_MAXSD]+filecounter[FT_OMT][FLD_MAXUSB], 
-                                                            filecounter[FT_OMT][FLD_SIZE], 
-                                                            &m_overlyBlockBase, 
-                                                            &m_overlayRawBlock, 
-                                                            &m_overlyBlockSize));
+                    bOK = (m_bufferOmt = allocBufferDMA  (  filecounter[FT_OMT][FLD_MAXSD]+filecounter[FT_OMT][FLD_MAXUSB], filecounter[FT_OMT][FLD_SIZE], 
+                                                            &m_overlyBlockBase, &m_overlayRawBlock, &m_overlyBlockSize));
                     }
                 if (bOK)
                     {
-                    bOK = (m_bufferTex = allocBufferDMA  (  filecounter[FT_TEX][FLD_MAXSD]+filecounter[FT_TEX][FLD_MAXUSB], 
-                                                            filecounter[FT_TEX][FLD_SIZE], 
-                                                            &m_textureBlockBase, 
-                                                            &m_textureRawBlock, 
-                                                            &m_textureBlockSize));
+                    bOK = (m_bufferTex = allocBufferDMA  (  filecounter[FT_TEX][FLD_MAXSD]+filecounter[FT_TEX][FLD_MAXUSB], filecounter[FT_TEX][FLD_SIZE], 
+                                                            &m_textureBlockBase, &m_textureRawBlock, &m_textureBlockSize));
                     }
                 return bOK;
 }
