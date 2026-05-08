@@ -29,12 +29,12 @@ LIBS =  $(CIRCLEHOME)/lib/usb/libusb.a \                  				# USB
         $(CIRCLEHOME)/lib/fs/libfs.a \                    				# FS core
         $(CIRCLEHOME)/lib/libcircle.a \                   				# Circle base
         $(CIRCLEHOME)/lib/sched/libsched.a \              				# scheduler
-        $(CIRCLEHOME)/addon/vc4/interface/bcm_host/libbcm_host.a \   	# VC host
-        $(CIRCLEHOME)/addon/vc4/interface/khronos/libkhrn_client.a \ 	# GLES
-        $(CIRCLEHOME)/addon/vc4/interface/vmcs_host/libvmcs_host.a \ 	# VMCS
-        $(CIRCLEHOME)/addon/vc4/interface/vcos/libvcos.a \           	# VCOS
-        $(CIRCLEHOME)/addon/vc4/vchiq/libvchiq.a \                   	# VCHIQ
-        $(CIRCLEHOME)/addon/linux/liblinuxemu.a                      	# linux emu
+        $(CIRCLEHOME)/addon/vc4/interface/bcm_host/libbcm_host.a \   	                # VC host
+        $(CIRCLEHOME)/addon/vc4/interface/khronos/libkhrn_client.a \ 	                # GLES
+        $(CIRCLEHOME)/addon/vc4/interface/vmcs_host/libvmcs_host.a \ 	                # VMCS
+        $(CIRCLEHOME)/addon/vc4/interface/vcos/libvcos.a \           	                # VCOS
+        $(CIRCLEHOME)/addon/vc4/vchiq/libvchiq.a \                   	                # VCHIQ
+        $(CIRCLEHOME)/addon/linux/liblinuxemu.a                      	                # linux emu
 
 include $(CIRCLEHOME)/Rules.mk   										# build rules
 

@@ -287,26 +287,33 @@ private:
         VCHI_SERVICE_HANDLE_T           m_ServiceHandleVCSM             = 0;
         VCHI_SERVICE_HANDLE_T           m_ServiceHandleMMAL             = 0;
         u32                             m_TransactionId                 = 0;
-        u32                             m_vc_handle[MAX_BUFFER]         = {0};  // why an array, why not simply by u32& my_current_handle instead of slot?
-        u32                             m_vc_pointer[MAX_BUFFER]        = {0};  // why an array, why not simply by u32& my_current_pointer instead of slot?
+    //  u32                             m_vc_handle[MAX_BUFFER]         = {0};  // why an array, why not simply by u32& my_current_handle instead of slot?
+    //  u32                             m_vc_pointer[MAX_BUFFER]        = {0};  // why an array, why not simply by u32& my_current_pointer instead of slot?
+        u32                             m_input_buffer_handle           = 0;            // wait, thats all already below
+        u32                             m_output_buffer_handle_a        = 0;
+        u32                             m_output_buffer_handle_b        = 0;
+
+        u32                             m_input_buffer_pointer          = 0;
+        u32                             m_output_buffer_pointer_a       = 0;
+        u32                             m_output_buffer_pointer_b       = 0;
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 public:
         GLuint                          m_Texture = 0;                                              // must be exposed
 private:
         bool                            f_firstFrameQueued              = false;    
 //---------------------------------------------------------------------------------------------------------------------------------------------------- 
-// artifacs trom the earlier mmal class code initializer - what do we really need here? -> check also the mmal_init code!!!
+// artifacts from the earlier mmal class code initializer - what do we really need here? -> check also the mmal_init code!!!
 
-        u32                             m_InputBufferHandle;            // m_vc_handle[0]
-        u32                             m_InputBufferPointer;           // m_vc_pointer[0]
+        u32                             m_InputBufferHandle;
+        u32                             m_InputBufferPointer;
 
         u32                             m_InputBufferSize;              // aka m_videoBlockSize ?
 
-        u32                             m_OutputBufferHandleA;          // m_vc_handle[1]
-        u32                             m_OutputBufferPointerA;         // m_vc_pointer[1]
+        u32                             m_OutputBufferHandleA;
+        u32                             m_OutputBufferPointerA;
 
-        u32                             m_OutputBufferHandleB;          // m_vc_handle[2]
-        u32                             m_OutputBufferPointerB;         // m_vc_pointer[2]
+        u32                             m_OutputBufferHandleB;
+        u32                             m_OutputBufferPointerB;
 
         u32                             m_OutputBufferSize;             // aka m_frameBlockSizeA / m_frameBlockSizeB ?
 
@@ -323,100 +330,15 @@ private:
         
         u32                             m_CurrentHandle;                // u32 m_CurrentHandle = m_BufferFromHostTx_Output.msg.buffer_header.data;
 //----------------------------------------------------------------------------------------------------------------------------------------------------        
-// VCSM predefined messages as public member here - used for 
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-        SERVICE_CREATION_T              m_ServiceCreateVCSM             = {};
-
-        VCSM_Import_MEM_Msg             m_importTxVCSM_A                = {};           // for the video in block
-        VCSM_Import_MEM_Reply           m_importRxVCSM_A                = {};           
-
-        VCSM_Import_MEM_Msg             m_importTxVCSM_B                = {};           // for the frame out A
-        VCSM_Import_MEM_Reply           m_importRxVCSM_B                = {};
-
-        VCSM_Import_MEM_Msg             m_importTxVCSM_C                = {};           // for the frame out B
-        VCSM_Import_MEM_Reply           m_importRxVCSM_C                = {};        
-
-        VCSM_Lock_MEM_Msg               m_lockTxVCSM                    = {};           // do i really need them ever?
-        VCSM_Lock_MEM_Reply             m_lockRxVCSM                    = {};
-
-        VCSM_Free_MEM_Msg               m_freeTxVCSM                    = {};           // do i really need them ever?
-        VCSM_Free_MEM_Reply             m_freeRxVCSM                    = {};
-//----------------------------------------------------------------------------------------------------------------------------------------------------        
-// MMAL predefined messages as public member here
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-        //  0. Open MMAL service (transport only)
-        SERVICE_CREATION_T              m_ServiceCreateMMAL             = {};   //  SEND                    - sent via `openServiceVCHI()`
-                                                                                //  RECEIVE none            - open VCHI/MMAL control channel. No MMAL protocol yet.
-        //  1. Create component
-        MMAL_Component_Create_Msg       m_ComponentCreateTx             = {};   //  SEND
-        MMAL_Component_Create_Reply     m_ComponentCreateRx             = {};   //  RECEIVE                 - create `ril.video_decode`, receive `component_handle`. This handle is stored and used everywhere later.
-        //  2. Snapshot A – get initial port state (before any modification)
-        MMAL_Port_Info_Get_Msg          m_PortInfoGetTx_Input_A         = {};   //  Input port SEND
-        MMAL_Port_Info_Get_Reply        m_PortInfoGetRx_Input_A         = {};   //  Input port RECEIVE
-
-        MMAL_Port_Info_Get_Msg          m_PortInfoGetTx_Output_A        = {};   //  Output port SEND
-        MMAL_Port_Info_Get_Reply        m_PortInfoGetRx_Output_A        = {};   //  Output port RECEIVE     - Snapshot A is the **authoritative VPU-owned baseline**. You must base `PORT_INFO_SET` on this snapshot.
-        //  3. Build SET messages locally (nothing sent yet)
-        MMAL_Port_Info_Set_Msg          m_PortInfoSetTx_Input           = {};   //  Input port WRITE
-
-        MMAL_Port_Info_Set_Msg          m_PortInfoSetTx_Output          = {};   //  Output port WRITE       - * This step **does not send anything**. It only prepares TX structs using Snapshot A.
-        //  4. Send SET (this is where data from step 3 is sent)
-        // MMAL_Port_Info_Set_Msg       m_PortInfoSetTx_Input           = {};   //  Input port SEND
-        MMAL_Port_Info_Set_Reply        m_PortInfoSetRx_Input           = {};   //  Input port RECEIVE
-
-        // MMAL_Port_Info_Set_Msg       m_PortInfoSetTx_Output          = {};   //  Output port SEND
-        MMAL_Port_Info_Set_Reply        m_PortInfoSetRx_Output          = {};   //  Output port RECEIVE     - Commit format/buffer changes to the VPU.
-        //  5. Enable component
-        MMAL_Component_Enable_Msg       m_ComponentEnableTx             = {};   //  SEND
-        MMAL_Component_Enable_Reply     m_ComponentEnableRx             = {};   //  RECEIVE                 - Component must be enabled before parameters or port actions.
-        //  6. Snapshot B – get port state after enable
-        MMAL_Port_Info_Get_Msg          m_PortInfoGetTx_Input_B         = {};   //  Input port SEND
-        MMAL_Port_Info_Get_Reply        m_PortInfoGetRx_Input_B         = {};   //  Input port RECEIVE
-
-        MMAL_Port_Info_Get_Msg          m_PortInfoGetTx_Output_B        = {};   //  Output port SEND
-        MMAL_Port_Info_Get_Reply        m_PortInfoGetRx_Output_B        = {};   //  Output port RECEIVE     - Snapshot B reflects VPU state **after enable**. Used as the base for zero-copy parameters.
-        //  7. Zero-copy parameter set
-        MMAL_Port_Parameter_Set_Msg     m_PortParamTx_Input             = {};   //  Input port SEND         - built using `m_PortInfoGetRx_Input_B`
-        MMAL_Port_Parameter_Set_Reply   m_PortParamRx_Input             = {};   //  Input port RECEIVE
-
-        MMAL_Port_Parameter_Set_Msg     m_PortParamTx_Output            = {};   //  Output port SEND        - built using `m_PortInfoGetRx_Output_B`
-        MMAL_Port_Parameter_Set_Reply   m_PortParamRx_Output            = {};   //  Output port RECEIVE     - Enable zero-copy **before** ports are enabled.
-        //  8. Snapshot C – get port state after zero-copy
-        MMAL_Port_Info_Get_Msg          m_PortInfoGetTx_Input_C         = {};   //  Input port SEND
-        MMAL_Port_Info_Get_Reply        m_PortInfoGetRx_Input_C         = {};   //  Input port RECEIVE
-
-        MMAL_Port_Info_Get_Msg          m_PortInfoGetTx_Output_C        = {};   //  Output port SEND
-        MMAL_Port_Info_Get_Reply        m_PortInfoGetRx_Output_C        = {};   //  Output port RECEIVE     - Snapshot C is the **final authoritative state** before enabling ports.
-        //  9. Enable ports
-        MMAL_Port_Action_Msg            m_PortActionTx_Input            = {};   //  Input port SEND         - uses handle from `m_PortInfoGetRx_Input_C`
-        MMAL_Port_Action_Reply_Msg      m_PortActionRx_Input            = {};   //  Input port RECEIVE
-
-        MMAL_Port_Action_Msg            m_PortActionTx_Output           = {};   //  Output port SEND        - uses handle from `m_PortInfoGetRx_Output_C`
-        MMAL_Port_Action_Reply_Msg      m_PortActionRx_Output           = {};   //  Output port RECEIVE     - Ports become live. After this, buffers may flow.
-        //  10. Runtime buffer flow
-        MMAL_Buffer_From_Host_Msg       m_BufferFromHostTx_Input        = {};   //  Input buffers SEND
-        MMAL_Buffer_From_Host_Msg       m_BufferFromHostRx_Input        = {};   //  Input buffers RECEIVE   (same physical layout, semantic RX)
-
-        MMAL_Buffer_From_Host_Msg       m_BufferFromHostTx_Output       = {};   //  Output buffers SEND     (ping/pong)
-        MMAL_Buffer_From_Host_Msg       m_BufferFromHostRx_Output       = {};   //  Output buffers RECEIVE  (ping/pong) - Buffer ownership transfer and frame delivery.
-        
-        MMAL_Port_Info_Get_Msg          m_PortInfoGetTx_Input_D         = {};   //  Input port SEND
-        MMAL_Port_Info_Get_Reply        m_PortInfoGetRx_Input_D         = {};   //  Input port RECEIVE
-
-        MMAL_Port_Info_Get_Msg          m_PortInfoGetTx_Output_D        = {};   //  Output port SEND
-        MMAL_Port_Info_Get_Reply        m_PortInfoGetRx_Output_D        = {};   //  Output port RECEIVE
-//----------------------------------------------------------------------------------------------------------------------------------------------------        
         // Core invariant (unchanged, explicit)
         // Snapshot **A** → build **SET**
         // Snapshot **B** → build **PARAM**
         // Snapshot **C** → build **ACTION**
         // Snapshot **D** → buffer runtime
         // Buffer TX/RX is independent of snapshots  
-*/
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 // instead of having life time long structs for my vcsm / mmal i declare pointer instead and provide wrappers to alloc and free the structs after use!
-// group A — kernel.h (pointer conversion)
+// VCSM predefined messages as public member here group A — kernel.h (pointer conversion)
 
 SERVICE_CREATION_T*              m_ServiceCreateVCSM             = nullptr;
 
@@ -435,7 +357,7 @@ VCSM_Lock_MEM_Reply*             m_lockRxVCSM                    = nullptr;
 VCSM_Free_MEM_Msg*               m_freeTxVCSM                    = nullptr;
 VCSM_Free_MEM_Reply*             m_freeRxVCSM                    = nullptr;
 
-// group B — kernel.h (full pointer conversion)
+// MMAL predefined messages as public member here group B — kernel.h (full pointer conversion)
 
 SERVICE_CREATION_T*              m_ServiceCreateMMAL             = nullptr;
 

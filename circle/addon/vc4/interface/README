@@ -39,3 +39,7 @@ The source code for porting this accelerated graphics support has been taken
 from:
 
 	https://github.com/raspberrypi/userland
+
+
+**** had to add the ext/egl_khr_image_client.o \ in circle/addon/vc4/interface/khronos/Makefile to make the egl texture code work
+
