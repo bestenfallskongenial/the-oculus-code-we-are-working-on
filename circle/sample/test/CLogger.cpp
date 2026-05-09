@@ -1,6 +1,6 @@
 
-#include <circle/logger.h>
-#include <circle/util.h>
+#include "CLogger.h"
+
 #include <stdio.h>
 #include <string.h>
 
