@@ -3,6 +3,7 @@
 
 #include <circle/actled.h>
 #include <circle/koptions.h>
+#include <circle/machineinfo.h>
 #include <circle/bcmframebuffer.h>
 #include <circle/chargenerator.h>
 #include <circle/exceptionhandler.h>
@@ -13,7 +14,7 @@
 
 #include <circle/types.h>
 
-#define         EMPTYSTR                ""                                                 // for the logger
+#define         EMPTYSTR                0 // ""                                                 // for the logger
 #define         EMPTYLOG                255                                                // for the logger
 
 
@@ -88,6 +89,7 @@ private:
 private:
                 CActLED             m_ActLED;
                 CKernelOptions      m_Options;
+                CMachineInfo        m_MachineInfo;                
 
 public:
                 CBcmFrameBuffer     gE_FrameBuffer;
