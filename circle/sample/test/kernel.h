@@ -9,7 +9,7 @@
 #include <circle/interrupt.h>
 #include <circle/timer.h>
 
-#include "CLogger.h"
+#include "clogger.h"
 
 #include <circle/types.h>
 
@@ -62,6 +62,17 @@ public:
 
                 void            bufferToScreenGetGrid      (    unsigned& cols,
                                                                 unsigned& rows );
+
+                void            storeLogLong                (           char*                           p_bufferArray,
+                                                                        u32&                            index,
+                                                                const   char*                           p_string0, 
+                                                                        u32                             p_value0    = EMPTYLOG,
+                                                                const   char*                           p_string1   = EMPTYSTR, 
+                                                                        u32                             p_value1    = EMPTYLOG,
+                                                                const   char*                           p_string2   = EMPTYSTR, 
+                                                                        u32                             p_value2    = EMPTYLOG,
+                                                                const   char*                           p_string3   = EMPTYSTR, 
+                                                                        u32                             p_value3    = EMPTYLOG);                                                              
 
                 boolean         startupScreen               (   void );                                                                
 
