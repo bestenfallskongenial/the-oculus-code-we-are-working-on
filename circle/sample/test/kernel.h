@@ -82,6 +82,10 @@ public:
                 boolean         startupScreen               (   void );                                                                
 
 private:
+        static  void            TimerHandler               (    TKernelTimerHandle hTimer, 
+                                                                void *pParam, 
+                                                                void *pContext);
+                                                                
         static  void            LoggerSink                 (    void*       pContext,
                                                                 const char* pText,
                                                                 unsigned    nLength );
