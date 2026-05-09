@@ -9,7 +9,7 @@
 #include <circle/interrupt.h>
 #include <circle/timer.h>
 
-#include "clogger.h"
+#include "CLogger.h"
 
 #include <circle/types.h>
 
