@@ -81,7 +81,7 @@ void CLogger::Write(const char* pSource,
 
                 va_end(Args);
 }
-
+/*
 void CLogger::WriteV(const char* pSource,
                      TLogSeverity Severity,
                      const char* pMessage,
@@ -97,6 +97,27 @@ void CLogger::WriteV(const char* pSource,
                 WriteCString(pSource);
                 WriteCString(": ");
                 WriteCString(Message);
+                WriteCString("\n");
+
+                if (Severity == LogPanic && m_pPanicHandler != 0)
+                    {
+                    (*m_pPanicHandler)();
+                    }
+}
+*/
+void CLogger::WriteV(const char* pSource,
+                     TLogSeverity Severity,
+                     const char* pMessage,
+                     va_list Args)
+{
+                (void) Args;
+
+                if (Severity > m_nLogLevel) return;
+                if (pMessage == 0) return;
+
+                WriteCString(pSource);
+                WriteCString(": ");
+                WriteCString(pMessage);
                 WriteCString("\n");
 
                 if (Severity == LogPanic && m_pPanicHandler != 0)
