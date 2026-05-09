@@ -1,6 +1,9 @@
 	#include "kernel.h"
 	#include <string.h>
 
+    static const char FromKernel[] = "kernel";
+
+
 				CKernel::CKernel						(	void )
 				:	gE_FrameBuffer(m_Options.GetWidth(), m_Options.GetHeight(), 32, 0, TRUE ),
                 m_Timer(&m_Interrupt),
