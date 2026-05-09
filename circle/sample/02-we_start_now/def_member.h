@@ -66,7 +66,7 @@ public:
                 CCharGenerator  gE_CharGenerator;
                 CKernelOptions  m_Options;
 
-                u32*            gE_PixelBuffer      = 0;
+                u32*            gE_PixelBuffer      = nullptr;
                 unsigned        gE_PitchBytes       = 0;
                 unsigned        gE_ScreenWidth      = 0;
                 unsigned        gE_ScreenHeight     = 0;

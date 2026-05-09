@@ -6,6 +6,7 @@
 
 CLogger*        CLogger::s_pThis = 0;
 TLoggerRawSink* CLogger::s_pSink = 0;
+void*           CLogger::s_pSinkContext = 0;
 
 CLogger::CLogger(unsigned nLogLevel, CTimer* pTimer, boolean bOverwriteOldest)
 :               m_nLogLevel(nLogLevel),
