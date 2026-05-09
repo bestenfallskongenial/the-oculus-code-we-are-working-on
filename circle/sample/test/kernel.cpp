@@ -42,7 +42,7 @@ boolean			CKernel::Initialize						(	void )
                 return bOK;
 }
 
-boolean 		CKernel::frameBufferInit				(	void)
+boolean         CKernel::frameBufferInit            	(   void )
 {
                 if (!gE_FrameBuffer.Initialize()) return FALSE;
 
@@ -52,27 +52,6 @@ boolean 		CKernel::frameBufferInit				(	void)
                 gE_ScreenHeight = gE_FrameBuffer.GetHeight();
                 gE_CharWidth    = gE_CharGenerator.GetCharWidth();
                 gE_CharHeight   = gE_CharGenerator.GetCharHeight();
-
-                if (gE_PixelBuffer == 0 || gE_CharWidth == 0 || gE_CharHeight == 0) return FALSE;
-
-                gE_Cols = gE_ScreenWidth / gE_CharWidth;
-                gE_Rows = gE_ScreenHeight / gE_CharHeight;
-
-                if (gE_Cols == 0 || gE_Rows == 0) return FALSE;
-
-                return TRUE;
-}
-
-boolean         CKernel::frameBufferInit            	(   void )
-{
-                if (!gE_FrameBuffer.Initialize ()) return FALSE;
-
-                gE_PixelBuffer  = (u32 *) gE_FrameBuffer.GetBuffer ();
-                gE_PitchBytes   = gE_FrameBuffer.GetPitch ();
-                gE_ScreenWidth  = gE_FrameBuffer.GetWidth ();
-                gE_ScreenHeight = gE_FrameBuffer.GetHeight ();
-                gE_CharWidth    = gE_CharGenerator.GetCharWidth ();
-                gE_CharHeight   = gE_CharGenerator.GetCharHeight ();
 
                 if (gE_PixelBuffer == 0 || gE_CharWidth == 0 || gE_CharHeight == 0) return FALSE;
 
