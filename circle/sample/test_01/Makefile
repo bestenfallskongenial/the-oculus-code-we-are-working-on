@@ -8,6 +8,7 @@ OBJS	= main.o kernel.o kernel_initialize.o kernel_run.o datamanagement.o hardwar
 
 # libraries
 LIBS =  $(CIRCLEHOME)/lib/usb/libusb.a \
+        $(CIRCLEHOME)/lib/input/libinput.a \
         $(CIRCLEHOME)/addon/SDCard/libsdcard.a \
         $(CIRCLEHOME)/lib/fs/fat/libfatfs.a \
         $(CIRCLEHOME)/lib/fs/libfs.a \
