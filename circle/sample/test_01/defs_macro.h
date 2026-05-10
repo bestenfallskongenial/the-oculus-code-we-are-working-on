@@ -5,6 +5,7 @@
 #define LOG_BUFFER_SIZE (1024 * 64)
 #define LOGLEVEL        LogDebug
 
+#define 		CHUNK_SIZE				1024                                // for the file load 
 
 // SPI
     #define SPI0_BASE                   (ARM_IO_BASE + 0x204000)

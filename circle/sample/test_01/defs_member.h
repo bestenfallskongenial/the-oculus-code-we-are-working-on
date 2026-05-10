@@ -46,6 +46,8 @@ static const    unsigned WatchdogMaxTimeoutSeconds      = 15;
 unsigned                g_hFile;                                            // file management!
 // debug
 public:
+    volatile    boolean	            m_bStorageAttached  = false;
+    
                 char                m_logBuffer[LOG_BUFFER_SIZE] = {0};
                 u32                 m_logBufferIndex = 0;
                 char                m_startupBuffer[LOG_BUFFER_SIZE] = {0};
