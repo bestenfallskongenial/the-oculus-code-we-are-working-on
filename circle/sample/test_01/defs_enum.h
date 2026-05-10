@@ -81,9 +81,38 @@ enum io_types
 // `[2]`            | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | timeBuffer[2] | deltaBuffer[2] |
 // `[3]`            | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | timeBuffer[3] | unused         |
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+enum lfo_bpm_types
+{
+    BPM =0,         									// result BPM
+    INTV,           									// intervalCalculated
+    NBT,            									// nextBeatTime
+    LCB,            									// lastCircleBuffer
+   	NCB,            									// nextCircleBuffer
+    LBC,            									// lastBpmCalculation
+    LBCT,           									// lastBpmCalculationTMP
+    LMT,            									// lfoMultiplierTMP
+    ELP,            									// elapsedMicroseconds
+    CYL,            									// cycleLength
+    SMP,            									// sampleIndex
+    LTIME,          									// lastTime
+    TIDX,           									// timeIndex
+    TB,             									// timeBuffer
+    DB,             									// deltaBuffer
 
+    LFO_BPM_COUNT										// 15
+};
+//------------------------------------------------- // g_modeLengthAdd[MODELEN_FLAG_COUNT] 
+enum ModeLengthFlag
+{
+                MODELENDEFAULT  = 0,
+                MODELEN_AUDIO_A,            				// any extra mode that modifies the number of max modes per channel must have an enum
+                MODELEN_AUDIO_B,
+                MODELEN_AUDIO_C,
+                MODELEN_LFO_A,
+                MODELEN_SENS_A,
 
-
+                MODELEN_FLAG_COUNT
+};
 //------------------------------------------------- // unsigned int g_buttons_states[NR_BUTTONS][5] = {0} !!!
 enum ButtonTSIndex  
 {
