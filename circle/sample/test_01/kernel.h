@@ -60,7 +60,7 @@ inline          void        msDelay(unsigned ms);
                                                                     unsigned                        hold,
                                                                     unsigned                        pace);
 
-                void        SMI_SetupDMA             (           void);
+                void        SMI_SetupDMA             (           size_t byteLength);
      
                 boolean     WS2812_Init              (           unsigned                        ledCount);                          // WS2812
 //45            
