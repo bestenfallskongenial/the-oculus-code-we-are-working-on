@@ -4,6 +4,13 @@
 #include "defs_include.h"
 #include "defs_macro.h"
 
+enum TShutdownMode
+{
+                ShutdownNone,
+                ShutdownHalt,
+                ShutdownReboot
+};
+
 class CKernel
 {
 public:
