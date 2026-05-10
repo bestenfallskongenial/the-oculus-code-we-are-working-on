@@ -3,7 +3,9 @@
 
 
 #define LOG_BUFFER_SIZE (1024 * 64)
-#define LOGLEVEL        LogDebug
+#define LOGLEVEL        4 //LogDebug
+
+#define __DEBUG_LOG__
 
 #define 		CHUNK_SIZE				1024                                // for the file load 
 
