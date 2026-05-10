@@ -1,8 +1,8 @@
 #ifndef _kernel_h
 #define _kernel_h
 
-#include "def_include.h"
-#include "def_macro.h"
+#include "defs_include.h"
+#include "defs_macro.h"
 
 class CKernel
 {
@@ -10,8 +10,8 @@ public:
                                 CKernel                    (    void );
                                ~CKernel                    (    void );
 
-#include "def_enum.h"
-#include "def_struct.h"
+#include "defs_enum.h"
+#include "defs_struct.h"
 
                 boolean         Initialize                 (    void );
 
@@ -72,7 +72,7 @@ private:
                                                                 const char* pText,
                                                                 unsigned    nLength );
 
-#include "def_member.h" // <- should go to the bottom, right?                
+#include "defs_member.h" // <- should go to the bottom, right?                
 };
 
 #endif
