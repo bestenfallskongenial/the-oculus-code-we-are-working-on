@@ -1,3 +1,5 @@
+#include "kernel.h"
+
 boolean			CKernel::Initialize						(	void )
 {
                 boolean bOK = TRUE;

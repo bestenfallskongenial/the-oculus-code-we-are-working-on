@@ -1,3 +1,5 @@
+#include "kernel.h"
+
 TShutdownMode CKernel::Run                              (   void )
 {
                 unsigned tick = 0;
