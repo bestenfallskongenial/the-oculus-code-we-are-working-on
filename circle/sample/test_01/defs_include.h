@@ -8,6 +8,10 @@
 #include <circle/timer.h>
 #include <circle/dmachannel.h>
 
+#include "/home/bestenfalls/circle/addon/SDCard/emmc.h"
+#include <circle/usb/usbhcidevice.h>
+#include <circle/fs/fat/fatfs.h>
+
 #include "CLogger.h"                        // my CLogger shimm layer
 
 #include <circle/types.h>
