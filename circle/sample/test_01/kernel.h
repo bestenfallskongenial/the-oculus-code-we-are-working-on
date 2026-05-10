@@ -189,7 +189,7 @@ public:
                 void        set_pot_routing             (           bool                            adc_pot_routing);
 
 
-                char*       make83FileName              (   const   char*                           ext ;)
+                char*       make83FileName              (   const   char*                           ext );
 
                 void        prepParameters              ();
 
@@ -221,7 +221,7 @@ public:
                 void        sample1WaveTable            (           int                             p_source, 
                                                                     int                             p_lfoIn, 
                                                                     int                             p_lfoOut );
-                                                                                                                                            
+
                 boolean         startupScreen               (   void );                                                                
 
 private:
