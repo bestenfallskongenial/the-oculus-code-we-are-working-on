@@ -1,6 +1,6 @@
 
 #include "kernel.h"
-
+/*
 inline void CKernel::usDelay(unsigned us)
 {
                 if (us == 0) return;
@@ -363,7 +363,7 @@ inline int      CKernel::ReadMCP3008Raw             (   unsigned    channel)
 
                 return ((rx[1] & 0x03) << 8) | rx[2];
 }
-
+*/
 boolean         CKernel::frameBufferInit            (   void )
 {
                 if (!gE_FrameBuffer.Initialize ()) return FALSE;
