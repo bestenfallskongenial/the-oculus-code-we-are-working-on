@@ -1,6 +1,9 @@
 #define         EMPTYSTR                0 // ""                                                 // for the logger
 #define         EMPTYLOG                255                                                // for the logger
 
+#define LOG_BUFFER_SIZE (1024 * 64)
+#define LOGLEVEL        4 //LogDebug
+
     #define 		LOGLEVEL				4	                                // 0: only panic 
                                                                                 // 1: also errors 
                                                                                 // 2: also warnings 
