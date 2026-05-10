@@ -175,7 +175,7 @@ public:
                 void            nextline                   (            char*                           p_buffer,
                                                                         u32&                            index);
 
-/  UTIL
+//  UTIL
                 void        adc_AcquireConvert                     ();                             // can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
 
                 void        adc_ProcessAudio            (   void    );
