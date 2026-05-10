@@ -57,6 +57,9 @@ public:
                 int             g_current_gl_program;
                 int             g_last_gl_program;
                 int             g_activeBpmChannel;
+
+                unsigned long   g_double_click_time = 50;
+                unsigned long   g_long_click_time   = 250;
                 unsigned        g_currentTime;
 
                 unsigned                g_inOutMatrixInt[CHANNEL][IO_TYPE_COUNT];           // the integer in/out matrix
@@ -98,3 +101,76 @@ public:
                                                                 2,                          // MODELEN_AUDIO_B
                                                                 };
                                                             
+                char** 				    m_bufferVid         = nullptr;      // thats the pointer to my "array-like" buffer allocation
+                char* 				    m_videoBlockBase    = nullptr;      // returns the aligned DMA base pointer
+                char* 				    m_videoRawBlock     = nullptr;      // returns the original pointer from new[]
+                size_t 				    m_videoBlockSize    = 0;            // size of each individual buffer - complete size, not only blocks?
+
+                char**				    m_bufferFrA         = nullptr;      // i created a struct for it but that means i must 
+                char* 				    m_frameBlockBaseA   = nullptr;      // rewrite the wrappers and initialize the stucts properly
+                char* 				    m_frameRawBlockA    = nullptr;      // and that is actually not really progress
+                size_t 				    m_frameBlockSizeA   = 0;
+
+                char**				    m_bufferFrB         = nullptr;
+                char* 				    m_frameBlockBaseB   = nullptr;
+                char* 				    m_frameRawBlockB    = nullptr;
+                size_t 				    m_frameBlockSizeB   = 0;	
+
+                char** 				    m_bufferOmt         = nullptr;
+                char* 				    m_overlyBlockBase   = nullptr;
+                char* 				    m_overlayRawBlock   = nullptr;
+                size_t 				    m_overlyBlockSize   = 0;
+
+                char** 				    m_bufferTex         = nullptr;
+                char* 				    m_textureBlockBase  = nullptr;
+                char* 				    m_textureRawBlock   = nullptr;
+                size_t 				    m_textureBlockSize  = 0;
+
+                char**				    m_bufferKnl         = nullptr;
+                char**				    m_bufferLog         = nullptr;
+                char** 				    m_bufferVsh         = nullptr;
+                char** 				    m_bufferOmf         = nullptr;                
+                char** 				    m_bufferFsh         = nullptr; 
+                
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+// the populated filecounter array - source and truth and hub for init and load
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+                unsigned                filecounter[FT_COUNT][FLD_COUNT] =
+{                                       // MAXSD   MAXUSB    EXTCNT      SCANNED   LOADED  PREV    V_CNT    SIZE  
+                                        { VSH_SD, VSH_USB,  VSH_EXT,    0,        0,      0,      0,       VSH_SIZ },  // VSH vertex shader
+                                        { OMF_SD, OMF_USB,  OMF_EXT,    0,        0,      0,      0,       OMF_SIZ },  // OMF overlay fragment shader
+                                        { FSH_SD, FSH_USB,  FSH_EXT,    0,        0,      0,      0,       FSH_SIZ },  // FSH user fragment shader
+                                        { OMT_SD, OMT_USB,  OMT_EXT,    0,        0,      0,      0,       OMT_SIZ },  // OMT overlay texture ( atlas)
+                                        { TEX_SD, TEX_USB,  TEX_EXT,    0,        0,      0,      0,       TEX_SIZ },  // TEX user texture
+                                        { VID_SD, VID_USB,  VID_EXT,    0,        0,      0,      0,       VID_SIZ },  // VID video buffer
+                                        { KLN_SD, KLN_USB,  KLN_EXT,    0,        0,      0,      0,       KLN_SIZ },  // KLN kernel buffer
+                                        { FRM_SD, FRM_USB,        0,    0,        0,      0,      0,       FRM_SIZ },  // FRM decoded frames A & B
+                                        { LOG_SD, LOG_USB,        0,    0,        0,      0,      0,       LOG_SIZ }   // LOG logging buffers   
+};
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+// lists of extensions possible in my scanroot directory function per filetype 
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+        const   char                   *g_SufVsh[VSH_EXT]			    = { "vsh" };    // vertex shaders
+        const   char                   *g_SufOmf[OMF_EXT]			    = { "omf" };	// is a fsh file but used for the overlay atlas
+        const   char                   *g_SufFsh[FSH_EXT]			    = { "fsh" };    // fragment shaders 
+        const   char                   *g_SufOmt[OMT_EXT]			    = { "omt" };    // is a bpm file but used for the overlay atlas
+        const   char                   *g_SufTex[TEX_EXT]			    = { "bmp" };    // for textures 24bit rgb
+        const   char                   *g_SufVid[VID_EXT]			    = { "264" };    // video in raw h264 annex b encoded 
+        const   char                   *g_SufKln[KLN_EXT]			    = { "img" };    // kernel.img for the update mechanism
+// array to store the scanned filenames
+                char                   *g_ScnVsh[VSH_SD + VSH_USB]     	= { 0 };    
+        		char				   *g_ScnOmf[OMF_SD + OMF_USB] 		= { 0 };
+                char                   *g_ScnFsh[FSH_SD + FSH_USB]     	= { 0 };
+        		char				   *g_ScnOmt[OMT_SD + OMT_USB] 		= { 0 };
+                char                   *g_ScnTex[TEX_SD + TEX_USB]     	= { 0 };
+                char                   *g_ScnVid[VID_SD + VID_USB]     	= { 0 };
+                char                   *g_ScnKln[KLN_SD + KLN_USB]     	= { 0 };
+// array to store the length of the loaded files
+                unsigned                g_bytVsh[VSH_SD + VSH_USB]      = { 0 };
+                unsigned                g_bytOmf[OMF_SD + OMF_USB]      = { 0 };
+                unsigned                g_bytFsh[FSH_SD + FSH_USB]      = { 0 };
+                unsigned                g_bytOmt[OMT_SD + OMT_USB]      = { 0 };
+                unsigned                g_bytTex[TEX_SD + TEX_USB]      = { 0 };
+                unsigned                g_bytVid[VID_SD + VID_USB]      = { 0 };
+                unsigned                g_bytKln[KLN_SD + KLN_USB]      = { 0 };
+//----------------------------------------------------------------------------------------------------------------------------------------------------                
