@@ -6,7 +6,10 @@ private:
                 CExceptionHandler   m_ExceptionHandler;
                 CInterruptSystem    m_Interrupt;
                 CTimer              m_Timer;
-                CLogger             m_Logger;                       
+                CLogger             m_Logger;  
+                CEMMCDevice		    m_EMMC;
+                CUSBHCIDevice		m_USBHCI; 
+
 // framebuffer
 public:
                 CBcmFrameBuffer     gE_FrameBuffer;
@@ -36,6 +39,8 @@ private:
                 boolean             m_SMIValid          = FALSE;
 // watchdog
 static const    unsigned WatchdogMaxTimeoutSeconds      = 15;                
+// datamanagement.cpp
+unsigned                g_hFile;                                            // file management!
 // debug
 public:
                 char                m_logBuffer[LOG_BUFFER_SIZE] = {0};

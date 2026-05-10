@@ -8,7 +8,9 @@
                                     32, 
                                     0, 
                                     TRUE ),
-                    m_SMITxDMA( DMA_CHANNEL_LITE )      // DMA_CHANNEL_LITE comes from machineinfo.h
+                    m_SMITxDMA( DMA_CHANNEL_LITE ),      // DMA_CHANNEL_LITE comes from machineinfo.h
+                    m_EMMC(&m_Interrupt, &m_Timer, &m_ActLED),
+                    m_USBHCI(&m_Interrupt, &m_Timer, TRUE)
 {                    
                 m_ActLED.Blink(5);
 }
