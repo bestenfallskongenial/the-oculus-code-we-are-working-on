@@ -3,6 +3,7 @@
 #include <circle/actled.h>
 #include <circle/koptions.h>
 #include <circle/machineinfo.h>
+#include <circle/devicenameservice.h>
 #include <circle/bcmframebuffer.h>
 #include <circle/chargenerator.h>
 #include <circle/exceptionhandler.h>

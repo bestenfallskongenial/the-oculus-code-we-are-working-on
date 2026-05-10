@@ -2,7 +2,8 @@
 private:
                 CActLED             m_ActLED;
                 CKernelOptions      m_Options;
-                CMachineInfo        m_MachineInfo;     
+                CMachineInfo        m_MachineInfo;
+                CDeviceNameService	m_DeviceNameService;
                 CExceptionHandler   m_ExceptionHandler;
                 CInterruptSystem    m_Interrupt;
                 CTimer              m_Timer;
