@@ -146,48 +146,48 @@ public:
                                                                     tex_state*                      t);
                 void        drawGLsOvl                  ();
 //  HARDWARE
-                u32         my_read32                   (           uintptr                         nAddress);                          // MMIO
-                void        my_write32                  (           uintptr                         nAddress, 
+                u32         read32                   (           uintptr                         nAddress);                          // MMIO
+                void        write32                  (           uintptr                         nAddress, 
                                                                     u32                             nValue);
-                void        my_GPIO_SetPull             (           unsigned                        nPin,                               // GPIO
+                void        GPIO_SetPull             (           unsigned                        nPin,                               // GPIO
                                                                     unsigned                        nPullMode);
 //35
-                void        my_GPIO_SetAlt              (           unsigned                        nPin, 
+                void        GPIO_SetAlt              (           unsigned                        nPin, 
                                                                     unsigned                        nAltMode, 
                                                                     unsigned                        nPullMode);
 
-                void        my_GPIO_Write               (           unsigned                        nPin, 
+                void        GPIO_Write               (           unsigned                        nPin, 
                                                                     unsigned                        nValue);
-                unsigned    my_GPIO_Read                (           unsigned                        nPin);
+                unsigned    GPIO_Read                (           unsigned                        nPin);
 
-                void        my_watchdog_Start           (           unsigned                        nTimeoutSeconds);                   // watchdog
+                void        watchdog_Start           (           unsigned                        nTimeoutSeconds);                   // watchdog
 
-                boolean     my_SPI_init                 (           void);                                                              // SPI
+                boolean     SPI_init                 (           void);                                                              // SPI
 //40
-                int         my_WriteRead                (           unsigned                        nChipSelect,
+                int         WriteRead                (           unsigned                        nChipSelect,
                                                             const   void*                           pWriteBuffer,
                                                                     void*                           pReadBuffer,
                                                                     unsigned                        nCount);
     
 
-                boolean     my_SMI_Init                 (           unsigned                        gpioPin);                           // SMI
+                boolean     SMI_Init                 (           unsigned                        gpioPin);                           // SMI
                                                                    
-                void        my_SMI_SetupTiming          (           unsigned                        width,
+                void        SMI_SetupTiming          (           unsigned                        width,
                                                                     unsigned                        cycle_ns,
                                                                     unsigned                        setup,
                                                                     unsigned                        strobe,
                                                                     unsigned                        hold,
                                                                     unsigned                        pace);
 
-                void        my_SMI_SetupDMA             (           void);
+                void        SMI_SetupDMA             (           void);
      
-                boolean     my_WS2812_Init              (           unsigned                        ledCount);                          // WS2812
+                boolean     WS2812_Init              (           unsigned                        ledCount);                          // WS2812
 //45            
-                void        my_WS2812_SetLED            (           unsigned                        index, 
+                void        WS2812_SetLED            (           unsigned                        index, 
                                                                     u8                              red, 
                                                                     u8                              green, 
                                                                     u8                              blue);
-                void        my_WS2812_Update            (           void);    
+                void        WS2812_Update            (           void);    
 
      
 
