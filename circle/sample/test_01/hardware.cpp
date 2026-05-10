@@ -354,7 +354,7 @@ void            CKernel::WS2812_Update              (   void)
                 PeripheralExit();
 }
 
-inline int      CKernel::ReadMCP3008Raw             (   unsigned    channel)
+int             CKernel::ReadMCP3008Raw             (   unsigned    channel)
 {
                 u8 tx[3] = { 0x01, (u8)((0x08 | channel) << 4), 0x00 };
                 u8 rx[3];

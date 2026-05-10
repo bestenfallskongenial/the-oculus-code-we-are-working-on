@@ -72,7 +72,7 @@ inline          void        msDelay(unsigned ms);
 
      
 
-        inline  int         ReadMCP3008Raw              (           unsigned                        channel);                           // MPC 3008
+                int         ReadMCP3008Raw              (           unsigned                        channel);                           // MPC 3008
 
                 boolean         frameBufferInit            (    void );
 
