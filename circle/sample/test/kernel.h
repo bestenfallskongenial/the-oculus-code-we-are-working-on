@@ -13,6 +13,7 @@
 #include "CLogger.h"
 
 #include <circle/types.h>
+#include <string.h>
 
 #define         EMPTYSTR                0 // ""                                                 // for the logger
 #define         EMPTYLOG                255                                                // for the logger
