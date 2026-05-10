@@ -1,0 +1,1236 @@
+Archive member included to satisfy reference by file (symbol)
+
+../../lib/libcircle.a(actled.o)
+                              kernel.o (CActLED::CActLED(bool))
+../../lib/libcircle.a(bcmframebuffer.o)
+                              kernel.o (CBcmFrameBuffer::CBcmFrameBuffer(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, bool))
+../../lib/libcircle.a(bcmpropertytags.o)
+                              ../../lib/libcircle.a(bcmframebuffer.o) (CBcmPropertyTags::CBcmPropertyTags(bool))
+../../lib/libcircle.a(chargenerator.o)
+                              kernel.o (CCharGenerator::CCharGenerator())
+../../lib/libcircle.a(gpiopin.o)
+                              ../../lib/libcircle.a(actled.o) (CGPIOPin::Write(unsigned int))
+../../lib/libcircle.a(koptions.o)
+                              kernel.o (CKernelOptions::~CKernelOptions())
+../../lib/libcircle.a(machineinfo.o)
+                              kernel.o (CMachineInfo::CMachineInfo())
+../../lib/libcircle.a(sysinit.o)
+                              main.o (halt)
+../../lib/libcircle.a(timer.o)
+                              kernel.o (CTimer::CTimer(CInterruptSystem*))
+../../lib/libcircle.a(util.o)
+                              CLogger.o (strlen)
+../../lib/libcircle.a(util_fast.o)
+                              kernel.o (memset)
+../../lib/libcircle.a(virtualgpiopin.o)
+                              ../../lib/libcircle.a(actled.o) (CVirtualGPIOPin::Write(unsigned int))
+../../lib/libcircle.a(chainboot.o)
+                              ../../lib/libcircle.a(sysinit.o) (IsChainBootEnabled)
+../../lib/libcircle.a(new.o)  CLogger.o (operator new(unsigned int))
+../../lib/libcircle.a(heapallocator.o)
+                              ../../lib/libcircle.a(new.o) (CHeapAllocator::Allocate(unsigned int))
+../../lib/libcircle.a(exceptionhandler.o)
+                              kernel.o (CExceptionHandler::~CExceptionHandler())
+../../lib/libcircle.a(exceptionstub.o)
+                              ../../lib/libcircle.a(exceptionhandler.o) (PrefetchAbortStub)
+../../lib/libcircle.a(memory.o)
+                              ../../lib/libcircle.a(sysinit.o) (CMemorySystem::Destructor())
+../../lib/libcircle.a(pagetable.o)
+                              ../../lib/libcircle.a(memory.o) (CPageTable::CPageTable(unsigned int))
+../../lib/libcircle.a(startup.o)
+                              (_start)
+../../lib/libcircle.a(synchronize.o)
+                              ../../lib/libcircle.a(gpiopin.o) (EnterCritical)
+../../lib/libcircle.a(interrupt.o)
+                              kernel.o (CInterruptSystem::CInterruptSystem())
+../../lib/libcircle.a(assert.o)
+                              ../../lib/libcircle.a(bcmpropertytags.o) (assertion_failed)
+../../lib/libcircle.a(bcmmailbox.o)
+                              ../../lib/libcircle.a(bcmpropertytags.o) (CBcmMailBox::CBcmMailBox(unsigned int, bool))
+../../lib/libcircle.a(debug.o)
+                              ../../lib/libcircle.a(exceptionhandler.o) (debug_stacktrace(unsigned int const*, char const*))
+../../lib/libcircle.a(delayloop.o)
+                              ../../lib/libcircle.a(timer.o) (DelayLoop)
+../../lib/libcircle.a(gpiomanager.o)
+                              ../../lib/libcircle.a(gpiopin.o) (CGPIOManager::ConnectInterrupt(CGPIOPin*))
+../../lib/libcircle.a(ptrlist.o)
+                              ../../lib/libcircle.a(timer.o) (CPtrList::CPtrList())
+../../lib/libcircle.a(string.o)
+                              ../../lib/libcircle.a(sysinit.o) (CString::CString())
+../../lib/libcircle.a(pageallocator.o)
+                              ../../lib/libcircle.a(memory.o) (CPageAllocator::CPageAllocator())
+/home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivsi3.o)
+                              hardware.o (__aeabi_uidiv)
+/home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_dvmd_tls.o)
+                              /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivsi3.o) (__aeabi_idiv0)
+/home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_aeabi_uldivmod.o)
+                              ../../lib/libcircle.a(string.o) (__aeabi_uldivmod)
+/home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivmoddi4.o)
+                              /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_aeabi_uldivmod.o) (__udivmoddi4)
+
+There are no discarded input sections
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+Address of section .init set to 0x8000
+
+.init           0x00008000       0x64
+ *(.init)
+ .init          0x00008000       0x64 ../../lib/libcircle.a(startup.o)
+                0x00008000                _start
+
+.text           0x00008068     0x95d8
+ *(.text*)
+ .text          0x00008068        0x0 main.o
+ .text.startup  0x00008068       0x3c main.o
+                0x00008068                main
+ *fill*         0x000080a4        0x4 
+ .text          0x000080a8      0x208 kernel.o
+                0x000080a8                CKernel::CKernel()
+                0x000080a8                CKernel::CKernel()
+                0x000081d8                CKernel::TimerHandler(unsigned int, void*, void*)
+                0x000081e0                CKernel::LoggerSink(void*, char const*, unsigned int)
+                0x0000824c                CKernel::~CKernel()
+                0x0000824c                CKernel::~CKernel()
+ .text          0x000082b0       0x64 kernel_initialize.o
+                0x000082b0                CKernel::Initialize()
+ .text          0x00008314      0x244 kernel_run.o
+                0x00008314                CKernel::Run()
+ .text          0x00008558      0x2dc hardware.o
+                0x00008558                CKernel::frameBufferInit()
+                0x00008640                CKernel::bufferToScreenPlot(unsigned int, unsigned int, unsigned int)
+                0x00008660                CKernel::bufferToScreenDrawChar(char, unsigned int, unsigned int, unsigned int)
+                0x00008714                CKernel::bufferToScreenClear()
+                0x00008730                CKernel::bufferToScreenDrawBuffer(char const*, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)
+                0x0000881c                CKernel::bufferToScreenGetGrid(unsigned int&, unsigned int&)
+ .text          0x00008834      0x77c logging.o
+                0x00008834                CKernel::storeLog(char*, unsigned int&, char const*, unsigned int, char const*, unsigned int, char const*, unsigned int, char const*, unsigned int)
+                0x00008b4c                CKernel::storeMsg(char*, unsigned int&, char const*, void const*, unsigned int)
+                0x00008c64                CKernel::nextline(char*, unsigned int&)
+                0x00008c8c                CKernel::startupScreen()
+ .text          0x00008fb0      0x33c CLogger.o
+                0x00008fb0                CLogger::CLogger(unsigned int, CTimer*, bool)
+                0x00008fb0                CLogger::CLogger(unsigned int, CTimer*, bool)
+                0x00008fc8                CLogger::~CLogger()
+                0x00008fc8                CLogger::~CLogger()
+                0x00008fe4                CLogger::Initialize(CDevice*)
+                0x00008fec                CLogger::SetNewTarget(CDevice*)
+                0x00008ff0                CLogger::Get()
+                0x00009024                CLogger::SetRawSink(void (*)(void*, char const*, unsigned int), void*)
+                0x00009034                CLogger::RegisterPanicHandler(void (*)())
+                0x0000903c                CLogger::WriteRaw(char const*, unsigned int)
+                0x00009064                CLogger::WriteCString(char const*)
+                0x000090a4                CLogger::WriteV(char const*, TLogSeverity, char const*, std::__va_list)
+                0x000091b4                CLogger::Write(char const*, TLogSeverity, char const*, ...)
+                0x000091e4                CLogger::WriteNoAlloc(char const*, TLogSeverity, char const*)
+ .text          0x000092ec      0x1ec ../../lib/libcircle.a(actled.o)
+                0x000092ec                CActLED::CActLED(bool)
+                0x000092ec                CActLED::CActLED(bool)
+                0x000093c4                CActLED::~CActLED()
+                0x000093c4                CActLED::~CActLED()
+                0x000093d8                CActLED::On()
+                0x00009400                CActLED::Off()
+                0x00009430                CActLED::Blink(unsigned int, unsigned int, unsigned int)
+                0x000094c8                CActLED::Get()
+ .text          0x000094d8      0x51c ../../lib/libcircle.a(bcmframebuffer.o)
+                0x000094d8                CBcmFrameBuffer::CBcmFrameBuffer(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, bool)
+                0x000094d8                CBcmFrameBuffer::CBcmFrameBuffer(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, bool)
+                0x00009640                CBcmFrameBuffer::~CBcmFrameBuffer()
+                0x00009640                CBcmFrameBuffer::~CBcmFrameBuffer()
+                0x00009664                CBcmFrameBuffer::SetPalette(unsigned char, unsigned short)
+                0x000096bc                CBcmFrameBuffer::SetPalette32(unsigned char, unsigned int)
+                0x000096f4                CBcmFrameBuffer::GetWidth() const
+                0x000096fc                CBcmFrameBuffer::GetHeight() const
+                0x00009704                CBcmFrameBuffer::GetVirtWidth() const
+                0x0000970c                CBcmFrameBuffer::GetVirtHeight() const
+                0x00009714                CBcmFrameBuffer::GetPitch() const
+                0x0000971c                CBcmFrameBuffer::GetDepth() const
+                0x00009724                CBcmFrameBuffer::GetBuffer() const
+                0x0000972c                CBcmFrameBuffer::GetSize() const
+                0x00009734                CBcmFrameBuffer::UpdatePalette()
+                0x00009804                CBcmFrameBuffer::Initialize()
+                0x000098cc                CBcmFrameBuffer::SetVirtualOffset(unsigned int, unsigned int)
+                0x00009948                CBcmFrameBuffer::WaitForVerticalSync()
+                0x00009994                CBcmFrameBuffer::SetBacklightBrightness(unsigned int)
+                0x000099e8                CBcmFrameBuffer::SetDisplay()
+                0x000099ec                CBcmFrameBuffer::GetNumDisplays()
+ .text          0x000099f4      0x238 ../../lib/libcircle.a(bcmpropertytags.o)
+                0x000099f4                CBcmPropertyTags::CBcmPropertyTags(bool)
+                0x000099f4                CBcmPropertyTags::CBcmPropertyTags(bool)
+                0x00009a10                CBcmPropertyTags::~CBcmPropertyTags()
+                0x00009a10                CBcmPropertyTags::~CBcmPropertyTags()
+                0x00009a24                CBcmPropertyTags::GetTags(void*, unsigned int)
+                0x00009b38                CBcmPropertyTags::GetTag(unsigned int, void*, unsigned int, unsigned int)
+ .text          0x00009c2c       0x94 ../../lib/libcircle.a(chargenerator.o)
+                0x00009c2c                CCharGenerator::CCharGenerator()
+                0x00009c2c                CCharGenerator::CCharGenerator()
+                0x00009c38                CCharGenerator::~CCharGenerator()
+                0x00009c38                CCharGenerator::~CCharGenerator()
+                0x00009c3c                CCharGenerator::GetCharWidth() const
+                0x00009c44                CCharGenerator::GetCharHeight() const
+                0x00009c4c                CCharGenerator::GetUnderline() const
+                0x00009c54                CCharGenerator::GetPixel(char, unsigned int, unsigned int) const
+ .text          0x00009cc0      0xcd0 ../../lib/libcircle.a(gpiopin.o)
+                0x00009cc0                CGPIOPin::~CGPIOPin()
+                0x00009cc0                CGPIOPin::~CGPIOPin()
+                0x00009cc4                CGPIOPin::~CGPIOPin()
+                0x00009cdc                CGPIOPin::CGPIOPin()
+                0x00009cdc                CGPIOPin::CGPIOPin()
+                0x00009d14                CGPIOPin::AssignPin(unsigned int)
+                0x00009d98                CGPIOPin::Write(unsigned int)
+                0x00009e28                CGPIOPin::Read() const
+                0x00009ea0                CGPIOPin::Invert()
+                0x00009f38                CGPIOPin::ConnectInterrupt(void (*)(void*), void*, bool)
+                0x0000a008                CGPIOPin::DisconnectInterrupt()
+                0x0000a0b8                CGPIOPin::EnableInterrupt(TGPIOInterrupt)
+                0x0000a1b0                CGPIOPin::DisableInterrupt()
+                0x0000a260                CGPIOPin::EnableInterrupt2(TGPIOInterrupt)
+                0x0000a368                CGPIOPin::DisableInterrupt2()
+                0x0000a418                CGPIOPin::AcknowledgeInterrupt()
+                0x0000a47c                CGPIOPin::WriteAll(unsigned int, unsigned int)
+                0x0000a4ac                CGPIOPin::ReadAll()
+                0x0000a4c8                CGPIOPin::SetPullMode(TGPIOPullMode)
+                0x0000a56c                CGPIOPin::SetAlternateFunction(unsigned int)
+                0x0000a630                CGPIOPin::SetMode(TGPIOMode, bool)
+                0x0000a7d8                CGPIOPin::CGPIOPin(unsigned int, TGPIOMode, CGPIOManager*)
+                0x0000a7d8                CGPIOPin::CGPIOPin(unsigned int, TGPIOMode, CGPIOManager*)
+                0x0000a87c                CGPIOPin::InterruptHandler()
+                0x0000a900                CGPIOPin::DisableAllInterrupts(unsigned int)
+ .text.startup  0x0000a990       0x14 ../../lib/libcircle.a(gpiopin.o)
+ .text          0x0000a9a4      0x8a0 ../../lib/libcircle.a(koptions.o)
+                0x0000a9a4                CKernelOptions::~CKernelOptions()
+                0x0000a9a4                CKernelOptions::~CKernelOptions()
+                0x0000aa10                CKernelOptions::GetWidth() const
+                0x0000aa18                CKernelOptions::GetHeight() const
+                0x0000aa20                CKernelOptions::GetLogDevice() const
+                0x0000aa2c                CKernelOptions::GetLogLevel() const
+                0x0000aa34                CKernelOptions::GetKeyMap() const
+                0x0000aa3c                CKernelOptions::GetUSBPowerDelay() const
+                0x0000aa44                CKernelOptions::GetUSBFullSpeed() const
+                0x0000aa4c                CKernelOptions::GetUSBBoost() const
+                0x0000aa54                CKernelOptions::GetUSBIgnore() const
+                0x0000aa60                CKernelOptions::GetUSBSoundChannels() const
+                0x0000aa68                CKernelOptions::GetSoundDevice() const
+                0x0000aa74                CKernelOptions::GetSoundOption() const
+                0x0000aa7c                CKernelOptions::GetCPUSpeed() const
+                0x0000aa84                CKernelOptions::GetSoCMaxTemp() const
+                0x0000aa8c                CKernelOptions::GetGPIOFanPin() const
+                0x0000aa94                CKernelOptions::GetTouchScreen() const
+                0x0000aaa8                CKernelOptions::GetAppOptionString(char const*, char const*) const
+                0x0000aaf4                CKernelOptions::Get()
+                0x0000ab04                CKernelOptions::GetToken()
+                0x0000ab84                CKernelOptions::GetOptionValue(char*)
+                0x0000abbc                CKernelOptions::GetDecimal(char const*)
+                0x0000ac24                CKernelOptions::GetAppOptionDecimal(char const*, unsigned int) const
+                0x0000ac80                CKernelOptions::GetDecimals(char*, unsigned int*, unsigned int)
+                0x0000ad50                CKernelOptions::CKernelOptions()
+                0x0000ad50                CKernelOptions::CKernelOptions()
+ .text          0x0000b244      0x8cc ../../lib/libcircle.a(machineinfo.o)
+                0x0000b244                CMachineInfo::CMachineInfo()
+                0x0000b244                CMachineInfo::CMachineInfo()
+                0x0000b698                CMachineInfo::~CMachineInfo()
+                0x0000b698                CMachineInfo::~CMachineInfo()
+                0x0000b6b4                CMachineInfo::GetMachineModel() const
+                0x0000b6bc                CMachineInfo::GetMachineName() const
+                0x0000b6d0                CMachineInfo::GetModelMajor() const
+                0x0000b6d8                CMachineInfo::GetModelRevision() const
+                0x0000b6e0                CMachineInfo::GetSoCType() const
+                0x0000b6e8                CMachineInfo::GetRAMSize() const
+                0x0000b6f0                CMachineInfo::GetSoCName() const
+                0x0000b708                CMachineInfo::GetRevisionRaw() const
+                0x0000b710                CMachineInfo::GetActLEDInfo() const
+                0x0000b728                CMachineInfo::GetClockRate(unsigned int) const
+                0x0000b868                CMachineInfo::GetGPIOPin(TGPIOVirtualPin) const
+                0x0000b8cc                CMachineInfo::GetGPIOClockSourceRate(unsigned int)
+                0x0000b928                CMachineInfo::GetDevice(TDeviceId) const
+                0x0000b95c                CMachineInfo::ArePWMChannelsSwapped() const
+                0x0000b978                CMachineInfo::AllocateDMAChannel(unsigned int)
+                0x0000ba50                CMachineInfo::FreeDMAChannel(unsigned int)
+                0x0000bae0                CMachineInfo::Get()
+ .text          0x0000bb10      0x168 ../../lib/libcircle.a(sysinit.o)
+                0x0000bb10                __aeabi_atexit
+                0x0000bb14                __errno
+                0x0000bb20                set_qemu_exit_status
+                0x0000bb24                halt
+                0x0000bb30                reboot
+                0x0000bb5c                sysinit
+ .text          0x0000bc78      0xdf4 ../../lib/libcircle.a(timer.o)
+                0x0000bc78                CTimer::CTimer(CInterruptSystem*)
+                0x0000bc78                CTimer::CTimer(CInterruptSystem*)
+                0x0000bd00                CTimer::~CTimer()
+                0x0000bd00                CTimer::~CTimer()
+                0x0000bddc                CTimer::SetTimeZone(int)
+                0x0000be04                CTimer::GetTimeZone() const
+                0x0000be0c                CTimer::SetTime(unsigned int, bool)
+                0x0000bea8                CTimer::GetClockTicks()
+                0x0000bec4                CTimer::GetTicks() const
+                0x0000becc                CTimer::GetUptime() const
+                0x0000bed4                CTimer::GetTime() const
+                0x0000bedc                CTimer::GetLocalTime(unsigned int*, unsigned int*)
+                0x0000bfa4                CTimer::GetUniversalTime() const
+                0x0000bfc4                CTimer::GetUniversalTime(unsigned int*, unsigned int*)
+                0x0000c0a8                CTimer::GetTimeString()
+                0x0000c294                CTimer::StartKernelTimer(unsigned int, void (*)(unsigned int, void*, void*), void*, void*)
+                0x0000c3e8                CTimer::CancelKernelTimer(unsigned int)
+                0x0000c494                CTimer::PollKernelTimers()
+                0x0000c5e0                CTimer::InterruptHandler()
+                0x0000c704                CTimer::InterruptHandler(void*)
+                0x0000c72c                CTimer::TuneMsDelay()
+                0x0000c7dc                CTimer::Initialize()
+                0x0000c85c                CTimer::RegisterUpdateTimeHandler(bool (*)(unsigned int, unsigned int))
+                0x0000c8a8                CTimer::RegisterPeriodicHandler(void (*)())
+                0x0000c918                CTimer::SimpleMsDelay(unsigned int)
+                0x0000c964                CTimer::SimpleusDelay(unsigned int)
+                0x0000c9a0                CTimer::IsLeapYear(unsigned int)
+                0x0000c9e4                CTimer::GetDaysOfMonth(unsigned int, unsigned int)
+                0x0000ca3c                CTimer::Get()
+ .text          0x0000ca6c      0x854 ../../lib/libcircle.a(util.o)
+                0x0000ca6c                memmove
+                0x0000caa4                memcmp
+                0x0000caf4                strlen
+                0x0000cb1c                strcmp
+                0x0000cb8c                strcasecmp
+                0x0000cc14                strncmp
+                0x0000cc94                strncasecmp
+                0x0000cd78                strcpy
+                0x0000cda4                strncpy
+                0x0000cdd8                strcat
+                0x0000ce1c                strchr
+                0x0000ce44                strstr
+                0x0000cea8                strtok_r
+                0x0000cf84                strtoul
+                0x0000d0fc                strtoull
+                0x0000d2b0                atoi
+                0x0000d2bc                char2int
+ .text          0x0000d2c0       0xb8 ../../lib/libcircle.a(util_fast.o)
+                0x0000d2c0                memset
+                0x0000d31c                memcpy
+ .text          0x0000d378      0x2a0 ../../lib/libcircle.a(virtualgpiopin.o)
+                0x0000d378                CVirtualGPIOPin::~CVirtualGPIOPin()
+                0x0000d378                CVirtualGPIOPin::~CVirtualGPIOPin()
+                0x0000d37c                CVirtualGPIOPin::~CVirtualGPIOPin()
+                0x0000d394                CVirtualGPIOPin::Write(unsigned int)
+                0x0000d4b8                CVirtualGPIOPin::CVirtualGPIOPin(unsigned int, bool)
+                0x0000d4b8                CVirtualGPIOPin::CVirtualGPIOPin(unsigned int, bool)
+                0x0000d60c                CVirtualGPIOPin::Invert()
+ .text.startup  0x0000d618       0x14 ../../lib/libcircle.a(virtualgpiopin.o)
+ .text          0x0000d62c       0xbc ../../lib/libcircle.a(chainboot.o)
+                0x0000d674                EnableChainBoot
+                0x0000d6bc                IsChainBootEnabled
+                0x0000d6d4                DoChainBoot
+ .text          0x0000d6e8       0xf0 ../../lib/libcircle.a(new.o)
+                0x0000d6e8                operator new(unsigned int, int)
+                0x0000d710                operator new[](unsigned int, int)
+                0x0000d738                operator new(unsigned int, void*)
+                0x0000d740                operator new[](unsigned int, void*)
+                0x0000d748                operator new(unsigned int)
+                0x0000d760                operator new[](unsigned int)
+                0x0000d778                operator delete(void*)
+                0x0000d790                operator delete[](void*)
+                0x0000d7a8                operator delete(void*, unsigned int)
+                0x0000d7c0                operator delete[](void*, unsigned int)
+ .text          0x0000d7d8      0x458 ../../lib/libcircle.a(heapallocator.o)
+                0x0000d7d8                CHeapAllocator::CHeapAllocator(char const*)
+                0x0000d7d8                CHeapAllocator::CHeapAllocator(char const*)
+                0x0000d83c                CHeapAllocator::~CHeapAllocator()
+                0x0000d83c                CHeapAllocator::~CHeapAllocator()
+                0x0000d840                CHeapAllocator::Setup(unsigned int, unsigned int, unsigned int)
+                0x0000d84c                CHeapAllocator::GetFreeSpace() const
+                0x0000d858                CHeapAllocator::Allocate(unsigned int)
+                0x0000da3c                CHeapAllocator::Free(void*)
+                0x0000db48                CHeapAllocator::ReAllocate(void*, unsigned int)
+ .text          0x0000dc30      0x368 ../../lib/libcircle.a(exceptionhandler.o)
+                0x0000dc30                CExceptionHandler::~CExceptionHandler()
+                0x0000dc30                CExceptionHandler::~CExceptionHandler()
+                0x0000dc44                CExceptionHandler::~CExceptionHandler()
+                0x0000dc6c                CExceptionHandler::Throw(unsigned int)
+                0x0000dcac                CExceptionHandler::Throw(unsigned int, TAbortFrame*)
+                0x0000dd9c                CExceptionHandler::CExceptionHandler()
+                0x0000dd9c                CExceptionHandler::CExceptionHandler()
+                0x0000de70                CExceptionHandler::Get()
+                0x0000dea0                ExceptionHandler
+                0x0000df00                raise
+ .text          0x0000df98      0x188 ../../lib/libcircle.a(exceptionstub.o)
+                0x0000df98                UndefinedInstructionInternal
+                0x0000dfe8                PrefetchAbortStub
+                0x0000e038                DataAbortStub
+                0x0000e088                UndefinedInstructionStub
+                0x0000e0a4                IRQStub
+                0x0000e0bc                FIQStub
+ .text          0x0000e120      0x2e0 ../../lib/libcircle.a(memory.o)
+                0x0000e120                CMemorySystem::Destructor()
+                0x0000e170                CMemorySystem::~CMemorySystem()
+                0x0000e170                CMemorySystem::~CMemorySystem()
+                0x0000e194                CMemorySystem::GetMemSize() const
+                0x0000e1cc                CMemorySystem::Get()
+                0x0000e1f8                CMemorySystem::EnableMMU()
+                0x0000e2b0                CMemorySystem::CMemorySystem(bool)
+                0x0000e2b0                CMemorySystem::CMemorySystem(bool)
+                0x0000e3f4                CMemorySystem::GetCoherentPage(unsigned int)
+ .text          0x0000e400       0x9c ../../lib/libcircle.a(pagetable.o)
+                0x0000e400                CPageTable::CPageTable(unsigned int)
+                0x0000e400                CPageTable::CPageTable(unsigned int)
+                0x0000e48c                CPageTable::~CPageTable()
+                0x0000e48c                CPageTable::~CPageTable()
+                0x0000e490                CPageTable::GetBaseAddress() const
+ .text          0x0000e49c        0x0 ../../lib/libcircle.a(startup.o)
+ .text          0x0000e49c      0x174 ../../lib/libcircle.a(synchronize.o)
+                0x0000e49c                CurrentExecutionLevel
+                0x0000e4b4                EnterCritical
+                0x0000e55c                LeaveCritical
+                0x0000e5b4                CleanAndInvalidateDataCacheRange
+                0x0000e5f0                SyncDataAndInstructionCache
+ .text          0x0000e610      0x6e8 ../../lib/libcircle.a(interrupt.o)
+                0x0000e610                CInterruptSystem::CInterruptSystem()
+                0x0000e610                CInterruptSystem::CInterruptSystem()
+                0x0000e63c                CInterruptSystem::~CInterruptSystem()
+                0x0000e63c                CInterruptSystem::~CInterruptSystem()
+                0x0000e678                CInterruptSystem::Initialize()
+                0x0000e714                CInterruptSystem::ConnectIRQ(unsigned int, void (*)(void*), void*)
+                0x0000e7b0                CInterruptSystem::DisconnectIRQ(unsigned int)
+                0x0000e850                CInterruptSystem::ConnectFIQ(unsigned int, void (*)(void*), void*)
+                0x0000e920                CInterruptSystem::DisconnectFIQ()
+                0x0000e9a0                CInterruptSystem::EnableIRQ(unsigned int)
+                0x0000ea14                CInterruptSystem::DisableIRQ(unsigned int)
+                0x0000ea88                CInterruptSystem::EnableFIQ(unsigned int)
+                0x0000eacc                CInterruptSystem::DisableFIQ()
+                0x0000eae8                CInterruptSystem::Get()
+                0x0000eb18                CInterruptSystem::CallIRQHandler(unsigned int)
+                0x0000eba8                CInterruptSystem::InterruptHandler()
+                0x0000ece0                InterruptHandler
+ .text          0x0000ecf8       0x84 ../../lib/libcircle.a(assert.o)
+                0x0000ecf8                assertion_failed
+ .text          0x0000ed7c      0x1d4 ../../lib/libcircle.a(bcmmailbox.o)
+                0x0000ed7c                CBcmMailBox::CBcmMailBox(unsigned int, bool)
+                0x0000ed7c                CBcmMailBox::CBcmMailBox(unsigned int, bool)
+                0x0000ed88                CBcmMailBox::~CBcmMailBox()
+                0x0000ed88                CBcmMailBox::~CBcmMailBox()
+                0x0000ed8c                CBcmMailBox::WriteRead(unsigned int)
+                0x0000eea4                CBcmMailBox::Flush()
+                0x0000eed8                CBcmMailBox::Read()
+                0x0000ef08                CBcmMailBox::Write(unsigned int)
+ .text.startup  0x0000ef50       0x14 ../../lib/libcircle.a(bcmmailbox.o)
+ .text          0x0000ef64      0x198 ../../lib/libcircle.a(debug.o)
+                0x0000ef64                debug_hexdump(void const*, unsigned int, char const*)
+                0x0000f070                debug_stacktrace(unsigned int const*, char const*)
+ *fill*         0x0000f0fc        0x4 
+ .text          0x0000f100       0x14 ../../lib/libcircle.a(delayloop.o)
+                0x0000f100                DelayLoop
+ .text          0x0000f114      0x334 ../../lib/libcircle.a(gpiomanager.o)
+                0x0000f114                CGPIOManager::CGPIOManager(CInterruptSystem*)
+                0x0000f114                CGPIOManager::CGPIOManager(CInterruptSystem*)
+                0x0000f138                CGPIOManager::~CGPIOManager()
+                0x0000f138                CGPIOManager::~CGPIOManager()
+                0x0000f1b4                CGPIOManager::Initialize()
+                0x0000f220                CGPIOManager::ConnectInterrupt(CGPIOPin*)
+                0x0000f2b0                CGPIOManager::DisconnectInterrupt(CGPIOPin*)
+                0x0000f344                CGPIOManager::InterruptHandler()
+                0x0000f420                CGPIOManager::InterruptStub(void*)
+ .text          0x0000f448      0x418 ../../lib/libcircle.a(ptrlist.o)
+                0x0000f448                CPtrList::CPtrList()
+                0x0000f448                CPtrList::CPtrList()
+                0x0000f454                CPtrList::~CPtrList()
+                0x0000f454                CPtrList::~CPtrList()
+                0x0000f47c                CPtrList::GetFirst()
+                0x0000f484                CPtrList::GetNext(TPtrListElement*)
+                0x0000f4d8                CPtrList::GetPtr(TPtrListElement*)
+                0x0000f52c                CPtrList::InsertBefore(TPtrListElement*, void*)
+                0x0000f614                CPtrList::InsertAfter(TPtrListElement*, void*)
+                0x0000f6f8                CPtrList::Remove(TPtrListElement*)
+                0x0000f808                CPtrList::Find(void*)
+ .text          0x0000f860     0x18b8 ../../lib/libcircle.a(string.o)
+                0x0000f860                CString::~CString()
+                0x0000f860                CString::~CString()
+                0x0000f88c                CString::~CString()
+                0x0000f92c                CString::CString()
+                0x0000f92c                CString::CString()
+                0x0000f944                CString::CString(char const*)
+                0x0000f944                CString::CString(char const*)
+                0x0000f984                CString::CString(CString const&)
+                0x0000f984                CString::CString(CString const&)
+                0x0000f9dc                CString::CString(CString&&)
+                0x0000f9dc                CString::CString(CString&&)
+                0x0000fa08                CString::operator char const*() const
+                0x0000fa20                CString::operator=(char const*)
+                0x0000fa64                CString::operator=(CString const&)
+                0x0000fac0                CString::operator=(CString&&)
+                0x0000fb00                CString::GetLength() const
+                0x0000fb10                CString::Append(char const*)
+                0x0000fb94                CString::Compare(char const*) const
+                0x0000fb9c                CString::Find(char) const
+                0x0000fbd0                CString::Replace(char const*, char const*)
+                0x0000fd6c                CString::PutChar(char, unsigned int)
+                0x0000fdac                CString::PutString(char const*)
+                0x0000fdf0                CString::ReserveSpace(unsigned int)
+                0x0000fe60                CString::ntoa(char*, unsigned long, unsigned int, bool)
+                0x0000ff24                CString::lltoa(char*, unsigned long long, unsigned int, bool)
+                0x00010068                CString::ftoa(char*, double, unsigned int)
+                0x000102f8                CString::FormatV(char const*, std::__va_list)
+                0x000110ec                CString::Format(char const*, ...)
+ .text          0x00011118      0x1bc ../../lib/libcircle.a(pageallocator.o)
+                0x00011118                CPageAllocator::CPageAllocator()
+                0x00011118                CPageAllocator::CPageAllocator()
+                0x00011134                CPageAllocator::~CPageAllocator()
+                0x00011134                CPageAllocator::~CPageAllocator()
+                0x00011138                CPageAllocator::Setup(unsigned int, unsigned int)
+                0x000111a0                CPageAllocator::GetFreeSpace() const
+                0x000111ac                CPageAllocator::Allocate()
+                0x00011274                CPageAllocator::Free(void*)
+ .text          0x000112d4      0x20c /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivsi3.o)
+                0x000112d4                __udivsi3
+                0x000112d4                __aeabi_uidiv
+                0x000114c0                __aeabi_uidivmod
+ .text          0x000114e0        0x4 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_dvmd_tls.o)
+                0x000114e0                __aeabi_ldiv0
+                0x000114e0                __aeabi_idiv0
+ .text          0x000114e4       0x3c /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_aeabi_uldivmod.o)
+                0x000114e4                __aeabi_uldivmod
+ .text          0x00011520        0x0 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivmoddi4.o)
+ .text.__udivmoddi4
+                0x00011520      0x120 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivmoddi4.o)
+                0x00011520                __udivmoddi4
+                0x00011640                        _etext = .
+
+.glue_7         0x00011640        0x0
+ .glue_7        0x00011640        0x0 linker stubs
+
+.glue_7t        0x00011640        0x0
+ .glue_7t       0x00011640        0x0 linker stubs
+
+.vfp11_veneer   0x00011640        0x0
+ .vfp11_veneer  0x00011640        0x0 linker stubs
+
+.v4_bx          0x00011640        0x0
+ .v4_bx         0x00011640        0x0 linker stubs
+
+.iplt           0x00011640        0x0
+ .iplt          0x00011640        0x0 main.o
+
+.rodata         0x00011640     0x2244
+ *(.rodata*)
+ .rodata        0x00011640       0xa5 kernel_run.o
+ *fill*         0x000116e5        0x3 
+ .rodata        0x000116e8       0xf6 logging.o
+ *fill*         0x000117de        0x2 
+ .rodata.str1.4
+                0x000117e0      0x86f CLogger.o
+                                  0x6 (size before relaxing)
+ *fill*         0x0001204f        0x1 
+ .rodata        0x00012050       0x70 ../../lib/libcircle.a(bcmframebuffer.o)
+                0x00012050                CBcmFrameBuffer::s_InitTags
+ .rodata        0x000120c0       0x98 ../../lib/libcircle.a(bcmpropertytags.o)
+ .rodata.str1.4
+                0x00012158       0x29 ../../lib/libcircle.a(chargenerator.o)
+ .rodata        0x00012158      0xdf0 ../../lib/libcircle.a(chargenerator.o)
+ .rodata        0x00012f48      0x2e5 ../../lib/libcircle.a(gpiopin.o)
+                0x00012f48                vtable for CGPIOPin
+ .rodata.str1.4
+                0x0001322d       0xd4 ../../lib/libcircle.a(koptions.o)
+ *fill*         0x0001322d        0x3 
+ .rodata        0x00013230        0x2 ../../lib/libcircle.a(koptions.o)
+ *fill*         0x00013232        0x2 
+ .rodata        0x00013234      0x4d6 ../../lib/libcircle.a(machineinfo.o)
+ .rodata.str1.4
+                0x0001370a        0x9 ../../lib/libcircle.a(sysinit.o)
+ .rodata.str1.4
+                0x0001370a      0x1d4 ../../lib/libcircle.a(timer.o)
+ *fill*         0x0001370a        0x2 
+ .rodata        0x0001370c       0x36 ../../lib/libcircle.a(timer.o)
+                0x0001370c                CTimer::s_nDaysOfMonth
+ *fill*         0x00013742        0x2 
+ .rodata        0x00013744       0x30 ../../lib/libcircle.a(virtualgpiopin.o)
+                0x00013764                vtable for CVirtualGPIOPin
+ .rodata.str1.4
+                0x00013774       0x7b ../../lib/libcircle.a(heapallocator.o)
+ .rodata.str1.4
+                0x00013774       0xe4 ../../lib/libcircle.a(exceptionhandler.o)
+ .rodata        0x00013774       0x20 ../../lib/libcircle.a(exceptionhandler.o)
+                0x0001377c                vtable for CExceptionHandler
+ .rodata        0x00013794       0x90 ../../lib/libcircle.a(memory.o)
+ .rodata.str1.4
+                0x00013824       0xb5 ../../lib/libcircle.a(synchronize.o)
+ .rodata.str1.4
+                0x00013824       0xbd ../../lib/libcircle.a(interrupt.o)
+ .rodata.str1.4
+                0x00013824       0x1d ../../lib/libcircle.a(assert.o)
+ .rodata.str1.4
+                0x00013824       0x23 ../../lib/libcircle.a(bcmmailbox.o)
+ .rodata.str1.4
+                0x00013824       0x93 ../../lib/libcircle.a(debug.o)
+ .rodata        0x00013824        0x6 ../../lib/libcircle.a(debug.o)
+ .rodata.str1.4
+                0x0001382a       0x9c ../../lib/libcircle.a(gpiomanager.o)
+ .rodata.str1.4
+                0x0001382a      0x176 ../../lib/libcircle.a(ptrlist.o)
+ .rodata.str1.4
+                0x0001382a       0x17 ../../lib/libcircle.a(string.o)
+ *fill*         0x0001382a        0x2 
+ .rodata        0x0001382c       0x10 ../../lib/libcircle.a(string.o)
+                0x0001382c                vtable for CString
+ .rodata        0x0001383c       0x48 ../../lib/libcircle.a(pageallocator.o)
+
+.ARM.extab.text.__udivmoddi4
+                0x00013884        0x0
+ .ARM.extab.text.__udivmoddi4
+                0x00013884        0x0 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivmoddi4.o)
+
+.init_array     0x00013884        0xc
+                0x00013884                        __init_start = .
+ *(.init_array*)
+ .init_array    0x00013884        0x4 ../../lib/libcircle.a(gpiopin.o)
+ .init_array    0x00013888        0x4 ../../lib/libcircle.a(virtualgpiopin.o)
+ .init_array    0x0001388c        0x4 ../../lib/libcircle.a(bcmmailbox.o)
+                0x00013890                        __init_end = .
+
+.ARM.exidx      0x00013890        0x8
+                0x00013890                        __exidx_start = .
+ *(.ARM.exidx*)
+ .ARM.exidx.text.__udivmoddi4
+                0x00013890        0x8 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivmoddi4.o)
+                0x00013898                        __exidx_end = .
+
+.rel.dyn        0x00013898        0x0
+ .rel.iplt      0x00013898        0x0 main.o
+
+.eh_frame
+ *(.eh_frame*)
+
+.data           0x00013898       0x70
+ *(.data*)
+ .data          0x00013898        0x0 main.o
+ .data          0x00013898        0x0 kernel.o
+ .data          0x00013898        0x0 kernel_initialize.o
+ .data          0x00013898        0x0 kernel_run.o
+ .data          0x00013898        0x0 hardware.o
+ .data          0x00013898        0x0 logging.o
+ .data          0x00013898        0x0 CLogger.o
+ .data          0x00013898        0x0 ../../lib/libcircle.a(actled.o)
+ .data          0x00013898        0x0 ../../lib/libcircle.a(bcmframebuffer.o)
+ .data          0x00013898        0x0 ../../lib/libcircle.a(bcmpropertytags.o)
+ .data          0x00013898        0x0 ../../lib/libcircle.a(chargenerator.o)
+ .data          0x00013898        0x0 ../../lib/libcircle.a(gpiopin.o)
+ .data          0x00013898        0x0 ../../lib/libcircle.a(koptions.o)
+ .data          0x00013898        0x0 ../../lib/libcircle.a(machineinfo.o)
+ .data          0x00013898        0x0 ../../lib/libcircle.a(sysinit.o)
+ .data          0x00013898       0x30 ../../lib/libcircle.a(timer.o)
+                0x00013898                CTimer::s_pMonthName
+ .data          0x000138c8        0x0 ../../lib/libcircle.a(util.o)
+ .data          0x000138c8        0x0 ../../lib/libcircle.a(util_fast.o)
+ .data          0x000138c8        0x0 ../../lib/libcircle.a(virtualgpiopin.o)
+ .data          0x000138c8        0x0 ../../lib/libcircle.a(chainboot.o)
+ .data          0x000138c8        0x0 ../../lib/libcircle.a(new.o)
+ .data          0x000138c8       0x1c ../../lib/libcircle.a(heapallocator.o)
+                0x000138c8                CHeapAllocator::s_nBucketSize
+ .data          0x000138e4       0x14 ../../lib/libcircle.a(exceptionhandler.o)
+                0x000138e4                CExceptionHandler::s_pExceptionName
+ .data          0x000138f8       0x10 ../../lib/libcircle.a(exceptionstub.o)
+                0x000138f8                FIQData
+                0x00013904                IRQReturnAddress
+ .data          0x00013908        0x0 ../../lib/libcircle.a(memory.o)
+ .data          0x00013908        0x0 ../../lib/libcircle.a(pagetable.o)
+ .data          0x00013908        0x0 ../../lib/libcircle.a(startup.o)
+ .data          0x00013908        0x0 ../../lib/libcircle.a(synchronize.o)
+ .data          0x00013908        0x0 ../../lib/libcircle.a(interrupt.o)
+ .data          0x00013908        0x0 ../../lib/libcircle.a(assert.o)
+ .data          0x00013908        0x0 ../../lib/libcircle.a(bcmmailbox.o)
+ .data          0x00013908        0x0 ../../lib/libcircle.a(debug.o)
+ .data          0x00013908        0x0 ../../lib/libcircle.a(delayloop.o)
+ .data          0x00013908        0x0 ../../lib/libcircle.a(gpiomanager.o)
+ .data          0x00013908        0x0 ../../lib/libcircle.a(ptrlist.o)
+ .data          0x00013908        0x0 ../../lib/libcircle.a(string.o)
+ .data          0x00013908        0x0 ../../lib/libcircle.a(pageallocator.o)
+ .data          0x00013908        0x0 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivsi3.o)
+ .data          0x00013908        0x0 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_dvmd_tls.o)
+ .data          0x00013908        0x0 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_aeabi_uldivmod.o)
+ .data          0x00013908        0x0 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivmoddi4.o)
+
+.igot.plt       0x00013908        0x0
+ .igot.plt      0x00013908        0x0 main.o
+
+.bss            0x00013908       0xa8
+                0x00013908                        __bss_start = .
+ *(.bss*)
+ .bss           0x00013908        0x0 main.o
+ .bss           0x00013908        0x0 kernel.o
+ .bss           0x00013908        0x0 kernel_initialize.o
+ .bss           0x00013908        0x0 kernel_run.o
+ .bss           0x00013908        0x0 hardware.o
+ .bss           0x00013908        0x0 logging.o
+ .bss           0x00013908        0xc CLogger.o
+                0x00013908                CLogger::s_pThis
+                0x0001390c                CLogger::s_pSink
+                0x00013910                CLogger::s_pSinkContext
+ .bss           0x00013914        0x4 ../../lib/libcircle.a(actled.o)
+                0x00013914                CActLED::s_pThis
+ .bss           0x00013918        0x0 ../../lib/libcircle.a(bcmframebuffer.o)
+ .bss           0x00013918        0x0 ../../lib/libcircle.a(bcmpropertytags.o)
+ .bss           0x00013918        0x0 ../../lib/libcircle.a(chargenerator.o)
+ .bss           0x00013918        0x4 ../../lib/libcircle.a(gpiopin.o)
+                0x00013918                CGPIOPin::s_SpinLock
+ .bss           0x0001391c        0x4 ../../lib/libcircle.a(koptions.o)
+                0x0001391c                CKernelOptions::s_pThis
+ .bss           0x00013920        0x4 ../../lib/libcircle.a(machineinfo.o)
+                0x00013920                CMachineInfo::s_pThis
+ .bss           0x00013924       0x14 ../../lib/libcircle.a(sysinit.o)
+                0x00013928                circle_version_string
+                0x00013934                __dso_handle
+ .bss           0x00013938        0x4 ../../lib/libcircle.a(timer.o)
+                0x00013938                CTimer::s_pThis
+ .bss           0x0001393c        0x0 ../../lib/libcircle.a(util.o)
+ .bss           0x0001393c        0x0 ../../lib/libcircle.a(util_fast.o)
+ .bss           0x0001393c        0x8 ../../lib/libcircle.a(virtualgpiopin.o)
+                0x0001393c                CVirtualGPIOPin::s_nGPIOBaseAddress
+                0x00013940                CVirtualGPIOPin::s_SpinLock
+ .bss           0x00013944        0x8 ../../lib/libcircle.a(chainboot.o)
+ .bss           0x0001394c        0x0 ../../lib/libcircle.a(new.o)
+ .bss           0x0001394c        0x0 ../../lib/libcircle.a(heapallocator.o)
+ .bss           0x0001394c        0x4 ../../lib/libcircle.a(exceptionhandler.o)
+                0x0001394c                CExceptionHandler::s_pThis
+ .bss           0x00013950        0x0 ../../lib/libcircle.a(exceptionstub.o)
+ .bss           0x00013950        0x4 ../../lib/libcircle.a(memory.o)
+                0x00013950                CMemorySystem::s_pThis
+ .bss           0x00013954        0x0 ../../lib/libcircle.a(pagetable.o)
+ .bss           0x00013954        0x0 ../../lib/libcircle.a(startup.o)
+ .bss           0x00013954       0x54 ../../lib/libcircle.a(synchronize.o)
+ .bss           0x000139a8        0x4 ../../lib/libcircle.a(interrupt.o)
+                0x000139a8                CInterruptSystem::s_pThis
+ .bss           0x000139ac        0x0 ../../lib/libcircle.a(assert.o)
+ .bss           0x000139ac        0x4 ../../lib/libcircle.a(bcmmailbox.o)
+                0x000139ac                CBcmMailBox::s_SpinLock
+ .bss           0x000139b0        0x0 ../../lib/libcircle.a(debug.o)
+ .bss           0x000139b0        0x0 ../../lib/libcircle.a(delayloop.o)
+ .bss           0x000139b0        0x0 ../../lib/libcircle.a(gpiomanager.o)
+ .bss           0x000139b0        0x0 ../../lib/libcircle.a(ptrlist.o)
+ .bss           0x000139b0        0x0 ../../lib/libcircle.a(string.o)
+ .bss           0x000139b0        0x0 ../../lib/libcircle.a(pageallocator.o)
+ .bss           0x000139b0        0x0 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivsi3.o)
+ .bss           0x000139b0        0x0 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_dvmd_tls.o)
+ .bss           0x000139b0        0x0 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_aeabi_uldivmod.o)
+ .bss           0x000139b0        0x0 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivmoddi4.o)
+ *(COMMON)
+                0x000139b0                        _end = .
+LOAD main.o
+LOAD kernel.o
+LOAD kernel_initialize.o
+LOAD kernel_run.o
+LOAD hardware.o
+LOAD logging.o
+LOAD CLogger.o
+START GROUP
+LOAD ../../lib/libcircle.a
+LOAD /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a
+LOAD /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/arm/v5te/hard/libm.a
+END GROUP
+OUTPUT(kernel.elf elf32-littlearm)
+LOAD linker stubs
+
+.debug_info     0x00000000    0x28bd4
+ .debug_info    0x00000000     0x201f main.o
+ .debug_info    0x0000201f     0x263d kernel.o
+ .debug_info    0x0000465c     0x2014 kernel_initialize.o
+ .debug_info    0x00006670     0x234d kernel_run.o
+ .debug_info    0x000089bd     0x2394 hardware.o
+ .debug_info    0x0000ad51     0x29ca logging.o
+ .debug_info    0x0000d71b     0x112a CLogger.o
+ .debug_info    0x0000e845     0x1390 ../../lib/libcircle.a(actled.o)
+ .debug_info    0x0000fbd5     0x1095 ../../lib/libcircle.a(bcmframebuffer.o)
+ .debug_info    0x00010c6a      0xce9 ../../lib/libcircle.a(bcmpropertytags.o)
+ .debug_info    0x00011953      0x3ac ../../lib/libcircle.a(chargenerator.o)
+ .debug_info    0x00011cff     0x2a64 ../../lib/libcircle.a(gpiopin.o)
+ .debug_info    0x00014763     0x17b3 ../../lib/libcircle.a(koptions.o)
+ .debug_info    0x00015f16      0xf51 ../../lib/libcircle.a(machineinfo.o)
+ .debug_info    0x00016e67      0xf53 ../../lib/libcircle.a(sysinit.o)
+ .debug_info    0x00017dba     0x27cf ../../lib/libcircle.a(timer.o)
+ .debug_info    0x0001a589      0x8d0 ../../lib/libcircle.a(util.o)
+ .debug_info    0x0001ae59     0x109e ../../lib/libcircle.a(virtualgpiopin.o)
+ .debug_info    0x0001bef7      0x239 ../../lib/libcircle.a(chainboot.o)
+ .debug_info    0x0001c130      0xaad ../../lib/libcircle.a(new.o)
+ .debug_info    0x0001cbdd     0x158b ../../lib/libcircle.a(heapallocator.o)
+ .debug_info    0x0001e168     0x14e0 ../../lib/libcircle.a(exceptionhandler.o)
+ .debug_info    0x0001f648      0xec7 ../../lib/libcircle.a(memory.o)
+ .debug_info    0x0002050f      0x29d ../../lib/libcircle.a(pagetable.o)
+ .debug_info    0x000207ac      0x248 ../../lib/libcircle.a(synchronize.o)
+ .debug_info    0x000209f4      0xf63 ../../lib/libcircle.a(interrupt.o)
+ .debug_info    0x00021957      0xe8a ../../lib/libcircle.a(assert.o)
+ .debug_info    0x000227e1     0x10bb ../../lib/libcircle.a(bcmmailbox.o)
+ .debug_info    0x0002389c      0xe7f ../../lib/libcircle.a(debug.o)
+ .debug_info    0x0002471b      0xa31 ../../lib/libcircle.a(gpiomanager.o)
+ .debug_info    0x0002514c      0x7ea ../../lib/libcircle.a(ptrlist.o)
+ .debug_info    0x00025936     0x2cc7 ../../lib/libcircle.a(string.o)
+ .debug_info    0x000285fd      0x5d7 ../../lib/libcircle.a(pageallocator.o)
+
+.debug_abbrev   0x00000000     0x7f12
+ .debug_abbrev  0x00000000      0x48e main.o
+ .debug_abbrev  0x0000048e      0x574 kernel.o
+ .debug_abbrev  0x00000a02      0x443 kernel_initialize.o
+ .debug_abbrev  0x00000e45      0x4b4 kernel_run.o
+ .debug_abbrev  0x000012f9      0x544 hardware.o
+ .debug_abbrev  0x0000183d      0x4d5 logging.o
+ .debug_abbrev  0x00001d12      0x363 CLogger.o
+ .debug_abbrev  0x00002075      0x464 ../../lib/libcircle.a(actled.o)
+ .debug_abbrev  0x000024d9      0x49c ../../lib/libcircle.a(bcmframebuffer.o)
+ .debug_abbrev  0x00002975      0x338 ../../lib/libcircle.a(bcmpropertytags.o)
+ .debug_abbrev  0x00002cad      0x1c8 ../../lib/libcircle.a(chargenerator.o)
+ .debug_abbrev  0x00002e75      0x611 ../../lib/libcircle.a(gpiopin.o)
+ .debug_abbrev  0x00003486      0x4a4 ../../lib/libcircle.a(koptions.o)
+ .debug_abbrev  0x0000392a      0x435 ../../lib/libcircle.a(machineinfo.o)
+ .debug_abbrev  0x00003d5f      0x43b ../../lib/libcircle.a(sysinit.o)
+ .debug_abbrev  0x0000419a      0x6a5 ../../lib/libcircle.a(timer.o)
+ .debug_abbrev  0x0000483f      0x249 ../../lib/libcircle.a(util.o)
+ .debug_abbrev  0x00004a88      0x4db ../../lib/libcircle.a(virtualgpiopin.o)
+ .debug_abbrev  0x00004f63      0x145 ../../lib/libcircle.a(chainboot.o)
+ .debug_abbrev  0x000050a8      0x2a4 ../../lib/libcircle.a(new.o)
+ .debug_abbrev  0x0000534c      0x4b6 ../../lib/libcircle.a(heapallocator.o)
+ .debug_abbrev  0x00005802      0x50b ../../lib/libcircle.a(exceptionhandler.o)
+ .debug_abbrev  0x00005d0d      0x40f ../../lib/libcircle.a(memory.o)
+ .debug_abbrev  0x0000611c      0x1b0 ../../lib/libcircle.a(pagetable.o)
+ .debug_abbrev  0x000062cc      0x124 ../../lib/libcircle.a(synchronize.o)
+ .debug_abbrev  0x000063f0      0x479 ../../lib/libcircle.a(interrupt.o)
+ .debug_abbrev  0x00006869      0x2d6 ../../lib/libcircle.a(assert.o)
+ .debug_abbrev  0x00006b3f      0x44e ../../lib/libcircle.a(bcmmailbox.o)
+ .debug_abbrev  0x00006f8d      0x2dc ../../lib/libcircle.a(debug.o)
+ .debug_abbrev  0x00007269      0x38c ../../lib/libcircle.a(gpiomanager.o)
+ .debug_abbrev  0x000075f5      0x1f3 ../../lib/libcircle.a(ptrlist.o)
+ .debug_abbrev  0x000077e8      0x49a ../../lib/libcircle.a(string.o)
+ .debug_abbrev  0x00007c82      0x290 ../../lib/libcircle.a(pageallocator.o)
+
+.debug_loclists
+                0x00000000     0xa349
+ .debug_loclists
+                0x00000000       0x20 main.o
+ .debug_loclists
+                0x00000020      0x125 kernel.o
+ .debug_loclists
+                0x00000145       0x78 kernel_initialize.o
+ .debug_loclists
+                0x000001bd       0x71 kernel_run.o
+ .debug_loclists
+                0x0000022e      0x2a2 hardware.o
+ .debug_loclists
+                0x000004d0      0x3ca logging.o
+ .debug_loclists
+                0x0000089a      0x824 CLogger.o
+ .debug_loclists
+                0x000010be      0x189 ../../lib/libcircle.a(actled.o)
+ .debug_loclists
+                0x00001247      0x4eb ../../lib/libcircle.a(bcmframebuffer.o)
+ .debug_loclists
+                0x00001732      0x2bd ../../lib/libcircle.a(bcmpropertytags.o)
+ .debug_loclists
+                0x000019ef      0x149 ../../lib/libcircle.a(chargenerator.o)
+ .debug_loclists
+                0x00001b38     0x13b9 ../../lib/libcircle.a(gpiopin.o)
+ .debug_loclists
+                0x00002ef1      0x5bf ../../lib/libcircle.a(koptions.o)
+ .debug_loclists
+                0x000034b0      0x4c8 ../../lib/libcircle.a(machineinfo.o)
+ .debug_loclists
+                0x00003978       0x87 ../../lib/libcircle.a(sysinit.o)
+ .debug_loclists
+                0x000039ff      0xf77 ../../lib/libcircle.a(timer.o)
+ .debug_loclists
+                0x00004976      0xfdf ../../lib/libcircle.a(util.o)
+ .debug_loclists
+                0x00005955      0x292 ../../lib/libcircle.a(virtualgpiopin.o)
+ .debug_loclists
+                0x00005be7      0x10e ../../lib/libcircle.a(chainboot.o)
+ .debug_loclists
+                0x00005cf5      0x1ed ../../lib/libcircle.a(new.o)
+ .debug_loclists
+                0x00005ee2      0x467 ../../lib/libcircle.a(heapallocator.o)
+ .debug_loclists
+                0x00006349      0x258 ../../lib/libcircle.a(exceptionhandler.o)
+ .debug_loclists
+                0x000065a1      0x1da ../../lib/libcircle.a(memory.o)
+ .debug_loclists
+                0x0000677b       0x59 ../../lib/libcircle.a(pagetable.o)
+ .debug_loclists
+                0x000067d4       0xf0 ../../lib/libcircle.a(synchronize.o)
+ .debug_loclists
+                0x000068c4      0x92d ../../lib/libcircle.a(interrupt.o)
+ .debug_loclists
+                0x000071f1       0x55 ../../lib/libcircle.a(assert.o)
+ .debug_loclists
+                0x00007246      0x2d9 ../../lib/libcircle.a(bcmmailbox.o)
+ .debug_loclists
+                0x0000751f      0x13c ../../lib/libcircle.a(debug.o)
+ .debug_loclists
+                0x0000765b      0x453 ../../lib/libcircle.a(gpiomanager.o)
+ .debug_loclists
+                0x00007aae      0x3aa ../../lib/libcircle.a(ptrlist.o)
+ .debug_loclists
+                0x00007e58     0x232a ../../lib/libcircle.a(string.o)
+ .debug_loclists
+                0x0000a182      0x1c7 ../../lib/libcircle.a(pageallocator.o)
+
+.debug_aranges  0x00000000      0x438
+ .debug_aranges
+                0x00000000       0x20 main.o
+ .debug_aranges
+                0x00000020       0x20 kernel.o
+ .debug_aranges
+                0x00000040       0x20 kernel_initialize.o
+ .debug_aranges
+                0x00000060       0x20 kernel_run.o
+ .debug_aranges
+                0x00000080       0x20 hardware.o
+ .debug_aranges
+                0x000000a0       0x20 logging.o
+ .debug_aranges
+                0x000000c0       0x20 CLogger.o
+ .debug_aranges
+                0x000000e0       0x20 ../../lib/libcircle.a(actled.o)
+ .debug_aranges
+                0x00000100       0x20 ../../lib/libcircle.a(bcmframebuffer.o)
+ .debug_aranges
+                0x00000120       0x20 ../../lib/libcircle.a(bcmpropertytags.o)
+ .debug_aranges
+                0x00000140       0x20 ../../lib/libcircle.a(chargenerator.o)
+ .debug_aranges
+                0x00000160       0x28 ../../lib/libcircle.a(gpiopin.o)
+ .debug_aranges
+                0x00000188       0x20 ../../lib/libcircle.a(koptions.o)
+ .debug_aranges
+                0x000001a8       0x20 ../../lib/libcircle.a(machineinfo.o)
+ .debug_aranges
+                0x000001c8       0x20 ../../lib/libcircle.a(sysinit.o)
+ .debug_aranges
+                0x000001e8       0x20 ../../lib/libcircle.a(timer.o)
+ .debug_aranges
+                0x00000208       0x20 ../../lib/libcircle.a(util.o)
+ .debug_aranges
+                0x00000228       0x28 ../../lib/libcircle.a(virtualgpiopin.o)
+ .debug_aranges
+                0x00000250       0x20 ../../lib/libcircle.a(chainboot.o)
+ .debug_aranges
+                0x00000270       0x20 ../../lib/libcircle.a(new.o)
+ .debug_aranges
+                0x00000290       0x20 ../../lib/libcircle.a(heapallocator.o)
+ .debug_aranges
+                0x000002b0       0x20 ../../lib/libcircle.a(exceptionhandler.o)
+ .debug_aranges
+                0x000002d0       0x20 ../../lib/libcircle.a(memory.o)
+ .debug_aranges
+                0x000002f0       0x20 ../../lib/libcircle.a(pagetable.o)
+ .debug_aranges
+                0x00000310       0x20 ../../lib/libcircle.a(synchronize.o)
+ .debug_aranges
+                0x00000330       0x20 ../../lib/libcircle.a(interrupt.o)
+ .debug_aranges
+                0x00000350       0x20 ../../lib/libcircle.a(assert.o)
+ .debug_aranges
+                0x00000370       0x28 ../../lib/libcircle.a(bcmmailbox.o)
+ .debug_aranges
+                0x00000398       0x20 ../../lib/libcircle.a(debug.o)
+ .debug_aranges
+                0x000003b8       0x20 ../../lib/libcircle.a(gpiomanager.o)
+ .debug_aranges
+                0x000003d8       0x20 ../../lib/libcircle.a(ptrlist.o)
+ .debug_aranges
+                0x000003f8       0x20 ../../lib/libcircle.a(string.o)
+ .debug_aranges
+                0x00000418       0x20 ../../lib/libcircle.a(pageallocator.o)
+
+.debug_rnglists
+                0x00000000      0xe90
+ .debug_rnglists
+                0x00000000       0x13 main.o
+ .debug_rnglists
+                0x00000013       0x2c kernel.o
+ .debug_rnglists
+                0x0000003f       0x13 kernel_initialize.o
+ .debug_rnglists
+                0x00000052       0x13 kernel_run.o
+ .debug_rnglists
+                0x00000065       0x57 hardware.o
+ .debug_rnglists
+                0x000000bc       0x79 logging.o
+ .debug_rnglists
+                0x00000135       0x4e CLogger.o
+ .debug_rnglists
+                0x00000183       0x50 ../../lib/libcircle.a(actled.o)
+ .debug_rnglists
+                0x000001d3       0x2b ../../lib/libcircle.a(bcmframebuffer.o)
+ .debug_rnglists
+                0x000001fe      0x196 ../../lib/libcircle.a(gpiopin.o)
+ .debug_rnglists
+                0x00000394      0x142 ../../lib/libcircle.a(koptions.o)
+ .debug_rnglists
+                0x000004d6       0x17 ../../lib/libcircle.a(machineinfo.o)
+ .debug_rnglists
+                0x000004ed       0x1a ../../lib/libcircle.a(sysinit.o)
+ .debug_rnglists
+                0x00000507      0x215 ../../lib/libcircle.a(timer.o)
+ .debug_rnglists
+                0x0000071c       0xcb ../../lib/libcircle.a(util.o)
+ .debug_rnglists
+                0x000007e7       0x85 ../../lib/libcircle.a(virtualgpiopin.o)
+ .debug_rnglists
+                0x0000086c       0x33 ../../lib/libcircle.a(new.o)
+ .debug_rnglists
+                0x0000089f       0x98 ../../lib/libcircle.a(heapallocator.o)
+ .debug_rnglists
+                0x00000937       0x5b ../../lib/libcircle.a(exceptionhandler.o)
+ .debug_rnglists
+                0x00000992       0x21 ../../lib/libcircle.a(memory.o)
+ .debug_rnglists
+                0x000009b3       0x1a ../../lib/libcircle.a(pagetable.o)
+ .debug_rnglists
+                0x000009cd       0xfa ../../lib/libcircle.a(interrupt.o)
+ .debug_rnglists
+                0x00000ac7       0xc6 ../../lib/libcircle.a(bcmmailbox.o)
+ .debug_rnglists
+                0x00000b8d       0x36 ../../lib/libcircle.a(debug.o)
+ .debug_rnglists
+                0x00000bc3       0x4a ../../lib/libcircle.a(gpiomanager.o)
+ .debug_rnglists
+                0x00000c0d       0x1e ../../lib/libcircle.a(ptrlist.o)
+ .debug_rnglists
+                0x00000c2b      0x202 ../../lib/libcircle.a(string.o)
+ .debug_rnglists
+                0x00000e2d       0x63 ../../lib/libcircle.a(pageallocator.o)
+
+.debug_line     0x00000000     0xa73a
+ .debug_line    0x00000000      0x1ae main.o
+ .debug_line    0x000001ae      0x2dc kernel.o
+ .debug_line    0x0000048a      0x1c3 kernel_initialize.o
+ .debug_line    0x0000064d      0x2aa kernel_run.o
+ .debug_line    0x000008f7      0x47b hardware.o
+ .debug_line    0x00000d72      0x809 logging.o
+ .debug_line    0x0000157b      0x48c CLogger.o
+ .debug_line    0x00001a07      0x326 ../../lib/libcircle.a(actled.o)
+ .debug_line    0x00001d2d      0x408 ../../lib/libcircle.a(bcmframebuffer.o)
+ .debug_line    0x00002135      0x2af ../../lib/libcircle.a(bcmpropertytags.o)
+ .debug_line    0x000023e4      0x117 ../../lib/libcircle.a(chargenerator.o)
+ .debug_line    0x000024fb     0x1099 ../../lib/libcircle.a(gpiopin.o)
+ .debug_line    0x00003594      0x812 ../../lib/libcircle.a(koptions.o)
+ .debug_line    0x00003da6      0x51f ../../lib/libcircle.a(machineinfo.o)
+ .debug_line    0x000042c5      0x259 ../../lib/libcircle.a(sysinit.o)
+ .debug_line    0x0000451e     0x105c ../../lib/libcircle.a(timer.o)
+ .debug_line    0x0000557a      0x97d ../../lib/libcircle.a(util.o)
+ .debug_line    0x00005ef7      0x3c6 ../../lib/libcircle.a(virtualgpiopin.o)
+ .debug_line    0x000062bd       0xec ../../lib/libcircle.a(chainboot.o)
+ .debug_line    0x000063a9      0x19e ../../lib/libcircle.a(new.o)
+ .debug_line    0x00006547      0x540 ../../lib/libcircle.a(heapallocator.o)
+ .debug_line    0x00006a87      0x395 ../../lib/libcircle.a(exceptionhandler.o)
+ .debug_line    0x00006e1c      0x306 ../../lib/libcircle.a(memory.o)
+ .debug_line    0x00007122      0x11d ../../lib/libcircle.a(pagetable.o)
+ .debug_line    0x0000723f      0x164 ../../lib/libcircle.a(synchronize.o)
+ .debug_line    0x000073a3      0x847 ../../lib/libcircle.a(interrupt.o)
+ .debug_line    0x00007bea      0x13a ../../lib/libcircle.a(assert.o)
+ .debug_line    0x00007d24      0x42e ../../lib/libcircle.a(bcmmailbox.o)
+ .debug_line    0x00008152      0x1c3 ../../lib/libcircle.a(debug.o)
+ .debug_line    0x00008315      0x3ec ../../lib/libcircle.a(gpiomanager.o)
+ .debug_line    0x00008701      0x404 ../../lib/libcircle.a(ptrlist.o)
+ .debug_line    0x00008b05     0x1996 ../../lib/libcircle.a(string.o)
+ .debug_line    0x0000a49b      0x29f ../../lib/libcircle.a(pageallocator.o)
+
+.debug_str      0x00000000     0x545e
+ .debug_str     0x00000000     0x545e main.o
+                               0x273a (size before relaxing)
+ .debug_str     0x0000545e     0x29df kernel.o
+ .debug_str     0x0000545e     0x2712 kernel_initialize.o
+ .debug_str     0x0000545e     0x2751 kernel_run.o
+ .debug_str     0x0000545e     0x2781 hardware.o
+ .debug_str     0x0000545e     0x2817 logging.o
+ .debug_str     0x0000545e      0x572 CLogger.o
+ .debug_str     0x0000545e     0x15a5 ../../lib/libcircle.a(actled.o)
+ .debug_str     0x0000545e      0xa3c ../../lib/libcircle.a(bcmframebuffer.o)
+ .debug_str     0x0000545e      0xa82 ../../lib/libcircle.a(bcmpropertytags.o)
+ .debug_str     0x0000545e      0x32b ../../lib/libcircle.a(chargenerator.o)
+ .debug_str     0x0000545e     0x1c34 ../../lib/libcircle.a(gpiopin.o)
+ .debug_str     0x0000545e      0xb43 ../../lib/libcircle.a(koptions.o)
+ .debug_str     0x0000545e      0xbc2 ../../lib/libcircle.a(machineinfo.o)
+ .debug_str     0x0000545e      0xfe0 ../../lib/libcircle.a(sysinit.o)
+ .debug_str     0x0000545e     0x1345 ../../lib/libcircle.a(timer.o)
+ .debug_str     0x0000545e      0x304 ../../lib/libcircle.a(util.o)
+ .debug_str     0x0000545e      0xcbe ../../lib/libcircle.a(virtualgpiopin.o)
+ .debug_str     0x0000545e      0x229 ../../lib/libcircle.a(chainboot.o)
+ .debug_str     0x0000545e      0x85d ../../lib/libcircle.a(new.o)
+ .debug_str     0x0000545e     0x12ca ../../lib/libcircle.a(heapallocator.o)
+ .debug_str     0x0000545e     0x133b ../../lib/libcircle.a(exceptionhandler.o)
+ .debug_str     0x0000545e      0xb28 ../../lib/libcircle.a(memory.o)
+ .debug_str     0x0000545e      0x25d ../../lib/libcircle.a(pagetable.o)
+ .debug_str     0x0000545e      0x22a ../../lib/libcircle.a(synchronize.o)
+ .debug_str     0x0000545e      0x5bb ../../lib/libcircle.a(interrupt.o)
+ .debug_str     0x0000545e     0x10bf ../../lib/libcircle.a(assert.o)
+ .debug_str     0x0000545e      0xe39 ../../lib/libcircle.a(bcmmailbox.o)
+ .debug_str     0x0000545e     0x107c ../../lib/libcircle.a(debug.o)
+ .debug_str     0x0000545e      0x6dd ../../lib/libcircle.a(gpiomanager.o)
+ .debug_str     0x0000545e      0x349 ../../lib/libcircle.a(ptrlist.o)
+ .debug_str     0x0000545e      0x705 ../../lib/libcircle.a(string.o)
+ .debug_str     0x0000545e      0x3c5 ../../lib/libcircle.a(pageallocator.o)
+
+.comment        0x00000000       0x44
+ .comment       0x00000000       0x44 main.o
+                                 0x45 (size before relaxing)
+ .comment       0x00000044       0x45 kernel.o
+ .comment       0x00000044       0x45 kernel_initialize.o
+ .comment       0x00000044       0x45 kernel_run.o
+ .comment       0x00000044       0x45 hardware.o
+ .comment       0x00000044       0x45 logging.o
+ .comment       0x00000044       0x45 CLogger.o
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(actled.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(bcmframebuffer.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(bcmpropertytags.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(chargenerator.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(gpiopin.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(koptions.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(machineinfo.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(sysinit.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(timer.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(util.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(virtualgpiopin.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(chainboot.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(new.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(heapallocator.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(exceptionhandler.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(memory.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(pagetable.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(synchronize.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(interrupt.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(assert.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(bcmmailbox.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(debug.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(gpiomanager.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(ptrlist.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(string.o)
+ .comment       0x00000044       0x45 ../../lib/libcircle.a(pageallocator.o)
+
+.ARM.attributes
+                0x00000000       0x31
+ .ARM.attributes
+                0x00000000       0x33 main.o
+ .ARM.attributes
+                0x00000033       0x33 kernel.o
+ .ARM.attributes
+                0x00000066       0x33 kernel_initialize.o
+ .ARM.attributes
+                0x00000099       0x33 kernel_run.o
+ .ARM.attributes
+                0x000000cc       0x33 hardware.o
+ .ARM.attributes
+                0x000000ff       0x33 logging.o
+ .ARM.attributes
+                0x00000132       0x33 CLogger.o
+ .ARM.attributes
+                0x00000165       0x31 ../../lib/libcircle.a(actled.o)
+ .ARM.attributes
+                0x00000196       0x31 ../../lib/libcircle.a(bcmframebuffer.o)
+ .ARM.attributes
+                0x000001c7       0x31 ../../lib/libcircle.a(bcmpropertytags.o)
+ .ARM.attributes
+                0x000001f8       0x31 ../../lib/libcircle.a(chargenerator.o)
+ .ARM.attributes
+                0x00000229       0x31 ../../lib/libcircle.a(gpiopin.o)
+ .ARM.attributes
+                0x0000025a       0x31 ../../lib/libcircle.a(koptions.o)
+ .ARM.attributes
+                0x0000028b       0x31 ../../lib/libcircle.a(machineinfo.o)
+ .ARM.attributes
+                0x000002bc       0x31 ../../lib/libcircle.a(sysinit.o)
+ .ARM.attributes
+                0x000002ed       0x31 ../../lib/libcircle.a(timer.o)
+ .ARM.attributes
+                0x0000031e       0x31 ../../lib/libcircle.a(util.o)
+ .ARM.attributes
+                0x0000034f       0x1f ../../lib/libcircle.a(util_fast.o)
+ .ARM.attributes
+                0x0000036e       0x31 ../../lib/libcircle.a(virtualgpiopin.o)
+ .ARM.attributes
+                0x0000039f       0x31 ../../lib/libcircle.a(chainboot.o)
+ .ARM.attributes
+                0x000003d0       0x31 ../../lib/libcircle.a(new.o)
+ .ARM.attributes
+                0x00000401       0x31 ../../lib/libcircle.a(heapallocator.o)
+ .ARM.attributes
+                0x00000432       0x31 ../../lib/libcircle.a(exceptionhandler.o)
+ .ARM.attributes
+                0x00000463       0x1f ../../lib/libcircle.a(exceptionstub.o)
+ .ARM.attributes
+                0x00000482       0x31 ../../lib/libcircle.a(memory.o)
+ .ARM.attributes
+                0x000004b3       0x31 ../../lib/libcircle.a(pagetable.o)
+ .ARM.attributes
+                0x000004e4       0x1f ../../lib/libcircle.a(startup.o)
+ .ARM.attributes
+                0x00000503       0x31 ../../lib/libcircle.a(synchronize.o)
+ .ARM.attributes
+                0x00000534       0x31 ../../lib/libcircle.a(interrupt.o)
+ .ARM.attributes
+                0x00000565       0x31 ../../lib/libcircle.a(assert.o)
+ .ARM.attributes
+                0x00000596       0x31 ../../lib/libcircle.a(bcmmailbox.o)
+ .ARM.attributes
+                0x000005c7       0x31 ../../lib/libcircle.a(debug.o)
+ .ARM.attributes
+                0x000005f8       0x1f ../../lib/libcircle.a(delayloop.o)
+ .ARM.attributes
+                0x00000617       0x31 ../../lib/libcircle.a(gpiomanager.o)
+ .ARM.attributes
+                0x00000648       0x31 ../../lib/libcircle.a(ptrlist.o)
+ .ARM.attributes
+                0x00000679       0x31 ../../lib/libcircle.a(string.o)
+ .ARM.attributes
+                0x000006aa       0x31 ../../lib/libcircle.a(pageallocator.o)
+ .ARM.attributes
+                0x000006db       0x1f /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivsi3.o)
+ .ARM.attributes
+                0x000006fa       0x1f /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_dvmd_tls.o)
+ .ARM.attributes
+                0x00000719       0x1f /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_aeabi_uldivmod.o)
+ .ARM.attributes
+                0x00000738       0x2f /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivmoddi4.o)
+
+.debug_frame    0x00000000     0x1f94
+ .debug_frame   0x00000000       0x30 main.o
+ .debug_frame   0x00000030       0x84 kernel.o
+ .debug_frame   0x000000b4       0x34 kernel_initialize.o
+ .debug_frame   0x000000e8       0x38 kernel_run.o
+ .debug_frame   0x00000120       0xcc hardware.o
+ .debug_frame   0x000001ec       0xa4 logging.o
+ .debug_frame   0x00000290      0x134 CLogger.o
+ .debug_frame   0x000003c4       0x90 ../../lib/libcircle.a(actled.o)
+ .debug_frame   0x00000454      0x1c0 ../../lib/libcircle.a(bcmframebuffer.o)
+ .debug_frame   0x00000614       0x7c ../../lib/libcircle.a(bcmpropertytags.o)
+ .debug_frame   0x00000690       0x78 ../../lib/libcircle.a(chargenerator.o)
+ .debug_frame   0x00000708      0x2bc ../../lib/libcircle.a(gpiopin.o)
+ .debug_frame   0x000009c4      0x200 ../../lib/libcircle.a(koptions.o)
+ .debug_frame   0x00000bc4      0x198 ../../lib/libcircle.a(machineinfo.o)
+ .debug_frame   0x00000d5c       0x7c ../../lib/libcircle.a(sysinit.o)
+ .debug_frame   0x00000dd8      0x2c4 ../../lib/libcircle.a(timer.o)
+ .debug_frame   0x0000109c      0x170 ../../lib/libcircle.a(util.o)
+ .debug_frame   0x0000120c       0xb8 ../../lib/libcircle.a(virtualgpiopin.o)
+ .debug_frame   0x000012c4       0x58 ../../lib/libcircle.a(chainboot.o)
+ .debug_frame   0x0000131c       0xb0 ../../lib/libcircle.a(new.o)
+ .debug_frame   0x000013cc       0xd0 ../../lib/libcircle.a(heapallocator.o)
+ .debug_frame   0x0000149c      0x10c ../../lib/libcircle.a(exceptionhandler.o)
+ .debug_frame   0x000015a8       0xc0 ../../lib/libcircle.a(memory.o)
+ .debug_frame   0x00001668       0x50 ../../lib/libcircle.a(pagetable.o)
+ .debug_frame   0x000016b8       0x70 ../../lib/libcircle.a(synchronize.o)
+ .debug_frame   0x00001728      0x17c ../../lib/libcircle.a(interrupt.o)
+ .debug_frame   0x000018a4       0x2c ../../lib/libcircle.a(assert.o)
+ .debug_frame   0x000018d0       0xac ../../lib/libcircle.a(bcmmailbox.o)
+ .debug_frame   0x0000197c       0x64 ../../lib/libcircle.a(debug.o)
+ .debug_frame   0x000019e0       0xb4 ../../lib/libcircle.a(gpiomanager.o)
+ .debug_frame   0x00001a94       0xe8 ../../lib/libcircle.a(ptrlist.o)
+ .debug_frame   0x00001b7c      0x2f8 ../../lib/libcircle.a(string.o)
+ .debug_frame   0x00001e74       0xa0 ../../lib/libcircle.a(pageallocator.o)
+ .debug_frame   0x00001f14       0x20 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivsi3.o)
+ .debug_frame   0x00001f34       0x2c /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_aeabi_uldivmod.o)
+ .debug_frame   0x00001f60       0x34 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivmoddi4.o)
+
+.debug_line_str
+                0x00000000       0xc8
+ .debug_line_str
+                0x00000000       0xc8 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_udivsi3.o)
+                                 0xc0 (size before relaxing)
+ .debug_line_str
+                0x000000c8       0xc0 /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_dvmd_tls.o)
+ .debug_line_str
+                0x000000c8       0xbc /home/bestenfalls/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/13.2.1/arm/v5te/hard/libgcc.a(_aeabi_uldivmod.o)
