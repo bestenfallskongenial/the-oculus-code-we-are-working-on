@@ -290,3 +290,37 @@ void CLogger::WriteNoAlloc(const char* pSource,
                     (*m_pPanicHandler)();
                     }
 }
+
+/*
+With the formatter shown, you can use:
+
+%u   unsigned decimal
+%d   signed decimal
+%i   signed decimal
+%x   unsigned hex, lowercase
+%X   unsigned hex, uppercase
+%s   C string
+%c   character
+%%   literal percent sign
+
+Examples:
+
+m_Logger.Write(FromKernel, LogNotice, "tick %u", tick);
+m_Logger.Write(FromKernel, LogNotice, "value %d", signedValue);
+m_Logger.Write(FromKernel, LogNotice, "addr %X", address);
+m_Logger.Write(FromKernel, LogNotice, "name %s", name);
+m_Logger.Write(FromKernel, LogNotice, "char %c", ch);
+m_Logger.Write(FromKernel, LogNotice, "load %% done");
+
+Not supported by that minimal formatter:
+
+%p
+%lu
+%llu
+%zu
+%08X
+%.2f
+%f
+field width / padding / precision
+
+*/

@@ -125,4 +125,3 @@ void CLogger::WriteNoAlloc(const char* pSource,
                     (*m_pPanicHandler)();
                     }
 }
-

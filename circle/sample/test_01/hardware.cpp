@@ -432,7 +432,7 @@ void            CKernel::bufferToScreenDrawBuffer   (   const char* pSourceBuffe
 
                     if (ch == '\n')
                         {
-                        col = startCol;
+                        col = startCol; // or 0 when i dont want the wrapp-around 
                         row++;
                         if (row >= gE_Rows) break;
 
@@ -443,7 +443,7 @@ void            CKernel::bufferToScreenDrawBuffer   (   const char* pSourceBuffe
                     col++;
                     if (col >= gE_Cols)
                         {
-                        col = startCol;
+                        col = startCol; // or 0 when i dont want the wrapp-around 
                         row++;
                         if (row >= gE_Rows) break;
                         }
