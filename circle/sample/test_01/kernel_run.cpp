@@ -1,7 +1,7 @@
 #include "kernel.h"
 
     static const char FromKernel[] = "kernel";
-    
+
 TShutdownMode CKernel::Run                              (   void )
 {
                 unsigned tick = 0;
@@ -96,7 +96,7 @@ TShutdownMode CKernel::Run                              (   void )
                                             14,
                                             0xFFFFFFFF
                                             );
-
+/*
                     if (!bExceptionTimerStarted && tick == 10)
                         {
                         bExceptionTimerStarted = TRUE;
@@ -109,7 +109,7 @@ TShutdownMode CKernel::Run                              (   void )
                                         LogNotice,
                                         "starting exception timer"
                                         );
-
+*/
                         bufferToScreenDrawBuffer(
                                                 m_logBuffer,
                                                 0,
