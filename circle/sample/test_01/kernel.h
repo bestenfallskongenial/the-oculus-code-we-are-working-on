@@ -25,6 +25,8 @@ public:
                 TShutdownMode   Run                        (    void );
 
 public:
+inline          void        usDelay(unsigned us);
+inline          void        msDelay(unsigned ms);
                 u32         read32                   (           uintptr                         nAddress);                          // MMIO
                 void        write32                  (           uintptr                         nAddress, 
                                                                     u32                             nValue);
