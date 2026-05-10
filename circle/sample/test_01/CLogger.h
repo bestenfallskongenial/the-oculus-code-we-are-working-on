@@ -1,5 +1,5 @@
-#ifndef _CLogger_h
-#define _CLogger_h
+#ifndef _circle_logger_h
+#define _circle_logger_h
 
 #include <circle/types.h>
 #include <stdarg.h>

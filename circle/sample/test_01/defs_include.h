@@ -1,3 +1,5 @@
+#include "CLogger.h"                        // my CLogger shimm layer <-because i have to redirect all other includes of CLogger !!
+
 #include <circle/actled.h>
 #include <circle/koptions.h>
 #include <circle/machineinfo.h>
@@ -12,7 +14,7 @@
 #include <circle/usb/usbhcidevice.h>
 #include <circle/fs/fat/fatfs.h>
 
-#include "CLogger.h"                        // my CLogger shimm layer
+
 
 #include <circle/types.h>
 #include <string.h>
