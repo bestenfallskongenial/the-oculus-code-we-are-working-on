@@ -25,6 +25,64 @@ public:
                 TShutdownMode   Run                        (    void );
 
 public:
+// datamanagement.cpp:
+                bool        Mount                       (   const   char*                           p_deviceName);          // "emmc1-1" cd ( root ), "umsd1-1" usb returns success
+
+                bool        UnMount                     ();                                                                 // returns success
+
+                bool        openFile                    (   const   char*                           p_fileName);            // filename format "8.3"
+
+                unsigned    loadToBuffer                (           char*                           p_bufferArray,          // destination buffer for file
+                                                                    unsigned                        p_bufferSize);          // max bytes to read into the buffer returns loaded bytes - 0 is false/failed !!!
+//5
+                bool        saveFromBufferO             (   const   char*                           p_fileName,             // filename format "8.3" 
+                                                            const   char*                           p_bufferArray,               // my allocated buffer
+                                                                    unsigned                        p_bufferSize);          // max buffer size
+
+                bool        saveFromBufferM             (   const   char*                           p_deviceName,           // "emmc1-1" cd ( root ), "umsd1-1" usb
+                                                            const   char*                           p_fileName,             // filename format "8.3"
+                                                            const   char*                           p_bufferArray,               // my allocated buffer 
+                                                                    unsigned                        p_bufferSize);          // max buffer size
+
+                bool        closeFile                   ();                                                                 // release g_hFile handle 
+
+                void        bulkLoad                    (           char*                           p_fileNameArray[],      // where we have stored the filenames from the root directory scan
+                                                                    unsigned                        p_loadedBytes[],        // where we store the size in bytes for each file
+                                                                    char**                          p_bufferArray,          // where we store the loaded file data for each file ( or dma/non-dma buffers )
+                                                                    unsigned                        p_maxFiles,             // how many files we are allowed to process ( os limitations )
+                                                                    unsigned&                       p_validFiles,           // counts successful loads - we need to keep track here <- MUST initialised with 0
+                                                                    unsigned&                       p_prevFiles,            // number of loads from the last call - we need it to init the files correctly
+                                                                    unsigned                        p_fileSize);            // maximum size for each file
+
+                bool        IsValidFile                 (   const   char*                           pFileName, 
+                                                            const   char*                           extension);
+//10
+                bool        scanRoot                    (           char**                          p_fileNameArray,        // where we store the valid filenames we find
+                                                                    const char*                     p_fileExtArray[],       // the array of valid file extensions for this type of file
+                                                                    unsigned                        p_extentionCount,       // how many valid file extensions we have in the array above
+                                                                    unsigned&                       p_scannedFiles,         // our counter of found files per device / call
+                                                                    unsigned                        p_maxFiles);            // how many files are allowed to scan and stored in the array returns success not files found!
+
+                bool        updateUSB                   (   const   char*                           p_deviceType);          // "umsd1" is the type, not "umsd1-1"needs volatile boolean	m_bStorageAttached ! 
+
+        static  void        removeUSB                   (           CDevice*                        pDevice,                // USB device that was removed
+                                                                    void*                           pContext);              // user context pointer; expected to be CKernel*
+
+                char**      allocBufferMEM              (           size_t                          p_count,                // number of buffer slots
+                                                                    size_t                          bufferSize);            // size of each buffer in bytes *** msleep ?!
+
+                char**      allocBufferDMA              (           size_t                          p_count,                // number of buffer slots
+                                                                    size_t                          bufferSize,             // size of each buffer in bytes
+                                                                    char**                          blockBaseOut,           // receives 4K-aligned DMA block base
+                                                                    char**                          rawBlockOut,            // receives original raw allocation pointer
+                                                                    size_t*                         alignedSizeOut);        // receives total aligned allocation size *** msleep ?!
+//15
+                void        clearBufferMEM              (           char**                          buffers,                // buffer pointer table returned by allocBufferMEM()
+                                                                    size_t                          p_count);               // number of buffers in the table
+
+                void        clearBufferDMA              (           char**                          buffers,                // buffer pointer table returned by allocBufferDMA()
+                                                                    char*                           rawBlock);              // original raw allocation pointer to delete
+// hardware.cpp:
 inline          void        usDelay(unsigned us);
 inline          void        msDelay(unsigned ms);
                 u32         read32                   (           uintptr                         nAddress);                          // MMIO
