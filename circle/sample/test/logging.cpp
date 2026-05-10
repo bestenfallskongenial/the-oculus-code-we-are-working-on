@@ -124,7 +124,7 @@ void            CKernel::nextline                   (   char*       p_buffer,
                 p_buffer[index++] = '\n';
                 p_buffer[index] = '\0';
 }
-
+/*
 bool            CKernel::shaderLog                  (   GLint       shader,
                                                         int         shaderIndex )
 {
@@ -292,7 +292,8 @@ void            CKernel::gfx_check                  (   const char* file,
                         resetFlag = true;
                     }
 }
-                boolean CKernel::startupScreen          (   void )
+*/
+boolean         CKernel::startupScreen          (   void )
 {
             //  m_startupBufferIndex = 0;
             //  m_startupBuffer[0] = '\0';

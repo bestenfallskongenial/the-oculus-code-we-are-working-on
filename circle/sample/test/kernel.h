@@ -79,6 +79,15 @@ public:
                                                                 const   char*                           p_string3   = EMPTYSTR, 
                                                                         u32                             p_value3    = EMPTYLOG);                                                              
 
+                void            storeMsg                   (            char*                           p_buffer,
+                                                                        u32&                            index,
+                                                                        const char*                     label,
+                                                                        const void*                     tx_msg,
+                                                                        u32                             total_size);
+                                                                        
+                void            nextline                   (            char*                           p_buffer,
+                                                                        u32&                            index)                                                                        
+
                 boolean         startupScreen               (   void );                                                                
 
 private:
