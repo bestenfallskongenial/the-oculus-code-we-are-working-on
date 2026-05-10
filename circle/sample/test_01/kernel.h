@@ -83,8 +83,8 @@ public:
                 void        clearBufferDMA              (           char**                          buffers,                // buffer pointer table returned by allocBufferDMA()
                                                                     char*                           rawBlock);              // original raw allocation pointer to delete
 // hardware.cpp:
-inline          void        usDelay(unsigned us);
-inline          void        msDelay(unsigned ms);
+                void        usDelay(unsigned us);
+                void        msDelay(unsigned ms);
                 u32         read32                   (           uintptr                         nAddress);                          // MMIO
                 void        write32                  (           uintptr                         nAddress, 
                                                                     u32                             nValue);
