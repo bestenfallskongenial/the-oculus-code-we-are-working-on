@@ -1,13 +1,32 @@
 #define         EMPTYSTR                0 // ""                                                 // for the logger
 #define         EMPTYLOG                255                                                // for the logger
 
+    #define 		LOGLEVEL				4	                                // 0: only panic 
+                                                                                // 1: also errors 
+                                                                                // 2: also warnings 
+                                                                                // 3: also notices 
+                                                                                // 4: also debug output (default))
 
-#define LOG_BUFFER_SIZE (1024 * 64)
-#define LOGLEVEL        4 //LogDebug
+    #define			TIMEOUT					10                                  // for my watchdog                                                                  
+
+    #define         CS_PIN                 	12                                  // for menu input selector!!!
+
+    #define         NR_BUTTONS              2                                   // was addon/sensors/buttons.h is now buttonPing()  no class required 
+    #define         SW_PIN_A	           	13                                  // button A ( lower )
+    #define         SW_PIN_B	          	6                                   // button B ( upper )
 
 #define __DEBUG_LOG__
 
 #define 		CHUNK_SIZE				1024                                // for the file load 
+
+#define CHANNEL     8
+
+    #define         SLOTS                   34                                  // for the g_centralModeBuffer[SLOTS][modetablecount] array -  
+                                                                                // 1 firmware / 32 user / 1 default slot
+    #define         DEFAULT_SLOT            33                                  //  because 0 plus 34 = 33 ?? 
+
+    #define         AUDIO_THRESHOLD         160
+    #define         MAX_AUDIO_BUFFER        63
 
 // SPI
     #define SPI0_BASE                   (ARM_IO_BASE + 0x204000)
