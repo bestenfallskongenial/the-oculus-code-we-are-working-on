@@ -186,6 +186,8 @@ private:
                                                                 const char* pText,
                                                                 unsigned    nLength );
 
+                void            debug();
+
 #include "defs_member.h" // <- should go to the bottom, right?                
 };
 
