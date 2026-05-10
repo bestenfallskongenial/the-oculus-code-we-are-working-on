@@ -11,10 +11,12 @@
 #include <circle/timer.h>
 #include <circle/dmachannel.h>
 
+#include <circle/memory.h>										// new for dma allocated buffers!
+#include <circle/new.h>												// new for dma allocated buffers!
+
 #include "/home/bestenfalls/circle/addon/SDCard/emmc.h"
 #include <circle/usb/usbhcidevice.h>
 #include <circle/fs/fat/fatfs.h>
-
 
 
 #include <circle/types.h>
