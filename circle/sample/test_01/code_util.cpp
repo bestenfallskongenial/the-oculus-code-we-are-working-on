@@ -188,12 +188,12 @@ bool            CKernel::Update                     (   )
                 // - m_bufferKnl[0] + loaded_bytes_kernel[0] already contain the fallback kernel loaded from sd ( the running kernel )
                 // - filesystem is already mounted by caller
 
-                if (saveFromBuffer(PARTITION_NAME_SD, m_bufferKnl[1], loaded_bytes_kernel[1]))
+                if (saveFromBufferM(PARTITION_NAME_SD, m_bufferKnl[1], loaded_bytes_kernel[1]))
                     {
                     return true;
                     }
 
-                saveFromBuffer(FILENAME_KERNEL, m_bufferKnl[0], loaded_bytes_kernel[0]); // fail - try to restore the original kernel
+                saveFromBufferM(FILENAME_KERNEL, m_bufferKnl[0], loaded_bytes_kernel[0]); // fail - try to restore the original kernel
 
                 return false;
 }
@@ -312,9 +312,10 @@ void            CKernel::buttonPing                 (   int             p_btn_id
                     g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
                     }
 }
-
+/*
 void            CKernel::button_consumer            (   int                 p_btn_id ) // this is where the magic happens: we need to set the states of menu layer, menu, we need to use one button for bpm input and so on 
 {
+
                 if (g_buttons_states[p_btn_id][BTN_SINGLE]) counter += 1;
                 if (g_buttons_states[p_btn_id][BTN_DOUBLE]) counter -= 1;
 
@@ -326,14 +327,14 @@ void            CKernel::button_consumer            (   int                 p_bt
                 if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] =20)
                     longhold += 2;
 }
-
+*/
 void            CKernel::randomVec8                 (   uint32_t            p_seed )
 {
                 const int       f_max_int   = 1023; // 1024;
                 const float     f_scale     = 1.0f / 4294967295.0f;
 
                 p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
-                g_inOutMatrixFlt[0][RND] = / p_seed * f_scale;
+                g_inOutMatrixFlt[0][RND] = p_seed * f_scale;
                 g_inOutMatrixInt[0][RND] = ( g_inOutMatrixFlt[0][RND] * f_max_int);
                 p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
                 g_inOutMatrixFlt[1][RND] = p_seed * f_scale;
@@ -345,13 +346,13 @@ void            CKernel::randomVec8                 (   uint32_t            p_se
                 g_inOutMatrixFlt[3][RND] = p_seed * f_scale;
                 g_inOutMatrixInt[3][RND] = ( g_inOutMatrixFlt[3][RND] * f_max_int);
                 p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
-                g_inOutMatrixFlt[4][RND] = /* (float) */ p_seed * f_scale;
+                g_inOutMatrixFlt[4][RND] = p_seed * f_scale;
                 g_inOutMatrixInt[4][RND] = ( g_inOutMatrixFlt[4][RND] * f_max_int);
                 p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
-                g_inOutMatrixFlt[5][RND] = /* (float) */ p_seed * f_scale;
+                g_inOutMatrixFlt[5][RND] = p_seed * f_scale;
                 g_inOutMatrixInt[5][RND] = ( g_inOutMatrixFlt[5][RND] * f_max_int);
                 p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
-                g_inOutMatrixFlt[6][RND] = /* (float) */ p_seed * f_scale;
+                g_inOutMatrixFlt[6][RND] = p_seed * f_scale;
                 g_inOutMatrixInt[6][RND] = ( g_inOutMatrixFlt[6][RND] * f_max_int);
                 p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
                 g_inOutMatrixFlt[7][RND] = p_seed * f_scale;
@@ -399,7 +400,7 @@ void            CKernel::predict1Beat               (   int             p_source
                     {
                     g_lfoBpmMatrix[p_source][LCB]       =   g_lfoBpmMatrix[p_source][NCB];
                     g_lfoBpmMatrix[p_source][NCB]       =   g_lfoBpmMatrix[p_source][NCB] + (g_lfoBpmMatrix[g_activeBpmChannel][INTV] * g_lfoBpmMatrix[p_source][LMT]); // why again g_lfoMultiplierTMP? isnt it stored already, do we need to back it up?
-                    g_lfoBpmMatrix[source0][LMT]        =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]];
+                    g_lfoBpmMatrix[p_source][LMT]        =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]];
                     }
                 if ((g_lfoBpmMatrix[p_source][LBCT]    !=  g_lfoBpmMatrix[p_source][LBC]))
                     {
