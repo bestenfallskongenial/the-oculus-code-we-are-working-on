@@ -60,9 +60,9 @@ void            CKernel::adc_ProcessAudio           (   void    )
                 int w2 = g_centralModeBuffer[g_currentProgramBuffer][SENS_C] & 63;
                 int w3 = g_centralModeBuffer[g_currentProgramBuffer][SENS_D] & 63;
 
-                g_irregularity[0] = m_adc_ring[0][i0] - m_adc_ring[0][i1] + m_adc_ring[0][i2] - m_adc_ring[0][i3];
+                g_lfoBpmMatrix[0][IREG] = m_adc_ring[0][i0] - m_adc_ring[0][i1] + m_adc_ring[0][i2] - m_adc_ring[0][i3];
 
-                if (g_irregularity[0] > AUDIO_THRESHOLD || g_irregularity[0] < -AUDIO_THRESHOLD)
+                if (g_lfoBpmMatrix[0][IREG] > AUDIO_THRESHOLD || g_lfoBpmMatrix[0][IREG] < -AUDIO_THRESHOLD)
                 {
                     is_audio[0] = 0;
 
@@ -84,9 +84,9 @@ void            CKernel::adc_ProcessAudio           (   void    )
                     if (++m_idx1 == w1) m_idx1 = 0;
                 }
 
-                g_irregularity[1] = m_adc_ring[1][i0] - m_adc_ring[1][i1] + m_adc_ring[1][i2] - m_adc_ring[1][i3];
+                g_lfoBpmMatrix[1][IREG] = m_adc_ring[1][i0] - m_adc_ring[1][i1] + m_adc_ring[1][i2] - m_adc_ring[1][i3];
 
-                if (g_irregularity[1] > AUDIO_THRESHOLD || g_irregularity[1] < -AUDIO_THRESHOLD)
+                if (g_lfoBpmMatrix[1][IREG] > AUDIO_THRESHOLD || g_lfoBpmMatrix[1][IREG] < -AUDIO_THRESHOLD)
                 {
                     is_audio[1] = 1;
 
@@ -108,9 +108,9 @@ void            CKernel::adc_ProcessAudio           (   void    )
                     if (++m_idx3 == w3) m_idx3 = 0;
                 }
 
-                g_irregularity[2] = m_adc_ring[2][i0] - m_adc_ring[2][i1] + m_adc_ring[2][i2] - m_adc_ring[2][i3];
+                g_lfoBpmMatrix[2][IREG] = m_adc_ring[2][i0] - m_adc_ring[2][i1] + m_adc_ring[2][i2] - m_adc_ring[2][i3];
 
-                if (g_irregularity[2] > AUDIO_THRESHOLD || g_irregularity[2] < -AUDIO_THRESHOLD)
+                if (g_lfoBpmMatrix[2][IREG] > AUDIO_THRESHOLD || g_lfoBpmMatrix[2][IREG] < -AUDIO_THRESHOLD)
                 {
                     is_audio[0] = 2;
 
@@ -132,9 +132,9 @@ void            CKernel::adc_ProcessAudio           (   void    )
                     if (++m_idx1 == w1) m_idx1 = 0;
                 }
 
-                g_irregularity[3] = m_adc_ring[3][i0] - m_adc_ring[3][i1] + m_adc_ring[3][i2] - m_adc_ring[3][i3];
+                g_lfoBpmMatrix[3][IREG] = m_adc_ring[3][i0] - m_adc_ring[3][i1] + m_adc_ring[3][i2] - m_adc_ring[3][i3];
 
-                if (g_irregularity[3] > AUDIO_THRESHOLD || g_irregularity[3] < -AUDIO_THRESHOLD)
+                if (g_lfoBpmMatrix[3][IREG] > AUDIO_THRESHOLD || g_lfoBpmMatrix[3][IREG] < -AUDIO_THRESHOLD)
                 {
                     is_audio[1] = 3;
 

@@ -67,9 +67,9 @@ public:
                 bool                    g_menuPickUpFlag[4*MENU_LAYER_COUNT];                     // the flags for the pickup mechanism  
                 unsigned                g_buttons_states[NR_BUTTONS][BTN_INDEX_COUNT];      // the button state machine
                 unsigned                g_centralModeBuffer[SLOTS][MODETABLE_COUNT];         // the general user settings, storable per program 
-                unsigned                g_lfoMultiplier[LFO_MULTIPLIERS];
+                unsigned                g_lfoMultiplier[LFO_MULTIPLIERS]        = {   64, 32, 16, 8, 4, 2, 1 };
 
-                unsigned                g_lfoBpmMatrix[4][LFO_BPM_COUNT]        = {   64, 32, 16, 8, 4, 2, 1 };
+                unsigned                g_lfoBpmMatrix[4][LFO_BPM_COUNT];
 // datamanagement.cpp
                 unsigned                g_hFile;
 
