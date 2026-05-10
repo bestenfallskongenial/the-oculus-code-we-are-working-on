@@ -1,13 +1,13 @@
 	#include "kernel.h"
 
 				CKernel::CKernel						(	void )
-				:	gE_FrameBuffer( m_Options.GetWidth(), 
+				:	m_Timer(&m_Interrupt),
+                    m_Logger(LOGLEVEL, &m_Timer),
+                    gE_FrameBuffer( m_Options.GetWidth(), 
                                     m_Options.GetHeight(), 
                                     32, 
                                     0, 
-                                    TRUE ),
-                    m_Timer(&m_Interrupt),
-                    m_Logger(LOGLEVEL, &m_Timer)
+                                    TRUE )
 {
                 m_ActLED.Blink(5);
 }
