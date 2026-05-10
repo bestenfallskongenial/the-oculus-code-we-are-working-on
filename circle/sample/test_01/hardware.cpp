@@ -283,7 +283,7 @@ void            CKernel::SMI_SetupDMA            (   size_t byteLength)
                 PeripheralEntry();
 
                 write32( ARM_SMI_DMC,   (SMI_DMA_REQUEST_THRESH << SMI_DMC_REQW_SHIFT) | (SMI_DMA_REQUEST_THRESH << SMI_DMC_REQR_SHIFT) | 
-                                        (SMI_DMA_PANIC_LEVEL m<< SMI_DMC_PANICW_SHIFT) | (SMI_DMA_PANIC_LEVEL << SMI_DMC_PANICR_SHIFT)  | SMI_DMC_DMAEN );
+                                        (SMI_DMA_PANIC_LEVEL << SMI_DMC_PANICW_SHIFT) | (SMI_DMA_PANIC_LEVEL << SMI_DMC_PANICR_SHIFT)  | SMI_DMC_DMAEN );
                 
                 write32( ARM_SMI_CS, SMI_CS_ENABLE | SMI_CS_CLEAR | SMI_CS_PXLDAT );
 
