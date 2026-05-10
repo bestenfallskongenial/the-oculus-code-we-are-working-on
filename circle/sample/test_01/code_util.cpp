@@ -48,7 +48,7 @@ void            CKernel::adc_AcquireConvert         (   void    )
 
 void            CKernel::adc_ProcessAudio           (   void    )
 {
-                if (!m_audio_mode_activated) // is a fixed position in g_centralModeBuffer mapped by modeMenuAssignGroup()
+                if (!m_audio_mode_activated) return; // is a fixed position in g_centralModeBuffer mapped by modeMenuAssignGroup()
 
                 int i0 = m_adc_index;
                 int i1 = (m_adc_index - 1) & 3;
