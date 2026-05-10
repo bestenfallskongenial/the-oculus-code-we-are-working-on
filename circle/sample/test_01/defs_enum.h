@@ -98,7 +98,7 @@ enum lfo_bpm_types
     TIDX,           									// timeIndex
     TB,             									// timeBuffer
     DB,             									// deltaBuffer
-    IREG,                                               // irregularity 
+    IREG,                                               // irregularity ... is not really bpm/lfo but audio therefore... it fits so nicely here
     LFO_BPM_COUNT										// 15
 };
 //------------------------------------------------- // g_modeLengthAdd[MODELEN_FLAG_COUNT] 
