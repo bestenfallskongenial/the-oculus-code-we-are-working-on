@@ -51,8 +51,6 @@
     #define         MAX_MODES               5
     #define         MENU_LAYER_COUNT              4
 
-    #define         LFO_BPM_COUNT           2
-
     #define 		LFO_INSTANCES			2
     #define			LFO_MULTIPLIERS			7
 
