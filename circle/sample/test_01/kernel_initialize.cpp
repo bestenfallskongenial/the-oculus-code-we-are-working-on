@@ -26,5 +26,19 @@ boolean			CKernel::Initialize						(	void )
                     bOK = m_Logger.Initialize(0);
                     }
 
+                if (bOK)
+                    {
+                    bOK = SPI_init();
+                    }
+
+                if (bOK)
+                    {
+                    bOK = SMI_Init(LED_PIN);        // example GPIO18, choose your actual WS2812 SMI GPIO
+                    }
+
+                if (bOK)
+                    {
+                    bOK = WS2812_Init(LED_COUNT);      // example LED count, choose your actual count
+                    }
                 return bOK;
 }

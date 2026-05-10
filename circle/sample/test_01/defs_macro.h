@@ -83,6 +83,9 @@
     #define CM_SMIDIV_DIVI_SHIFT            12
 
     #define SMI_WIDTH_16                    1
+// WS2812 pin
+    #define         LED_PIN		           	19		                            // led ( must be between 8 .. 23 )
+    #define         LED_COUNT		       	4		                            // number of LEDs on the stripes    
 // WS2812 timing
     #define NEOPIXEL_SMI_NS                 10
     #define NEOPIXEL_SMI_SETUP              10
