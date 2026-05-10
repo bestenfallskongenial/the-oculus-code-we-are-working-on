@@ -333,7 +333,7 @@ void            CKernel::randomVec8                 (   uint32_t            p_se
                 const float     f_scale     = 1.0f / 4294967295.0f;
 
                 p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
-                g_inOutMatrixFlt[0][RND] = / p_seed * f_scale;
+                g_inOutMatrixFlt[0][RND] = p_seed * f_scale;
                 g_inOutMatrixInt[0][RND] = ( g_inOutMatrixFlt[0][RND] * f_max_int);
                 p_seed ^= p_seed << 13; p_seed ^= p_seed >> 17; p_seed ^= p_seed << 5;
                 g_inOutMatrixFlt[1][RND] = p_seed * f_scale;

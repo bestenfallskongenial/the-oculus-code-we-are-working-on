@@ -25,14 +25,14 @@ enum modetable
 	CLK_MODE,   // 0 or 1   ( whats about the approach in readADC() where i modify the number of possible modes in the modematrix )
 	VID_MODE,   // 0 or 1   ( like if i have one here CH*_MODE "opens" up for this modes - requires a constant check and update but... )
 
-    STORE_SET,  // 0 or 1   ( if set to 1 and the menu_layer is zero again ( button released ?) the file operation starts )
+    STORE_SET,  // 0 or 1   ( if set to 1 and the MENU_LAYER_COUNT is zero again ( button released ?) the file operation starts )
     LOAD_SET,   // 0 or 1
     STORE_LOG,  // 0 or 1
     LOAD_KLN,   // 0 or 1
 
 	IS_STORED,                          // not really a mode but a flag - important: obey the "4 per block" rule
 
-	modetablecount               // right?
+    MODETABLE_COUNT
 };
 //------------------------------------------------- // for the array unsigned/float g_inOutMatrix*[CHANNEL][IO_TYPE_COUNT]
 //	INT	    ADC_RAW     (SCALED IN)VAL 	(SCALED)OUT 	RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH

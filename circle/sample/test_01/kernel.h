@@ -2,6 +2,9 @@
 #define _kernel_h
 
 #include "defs_include.h"
+
+#include "o_c_setup.h"
+
 #include "defs_macro.h"
 
 enum TShutdownMode
@@ -235,7 +238,11 @@ private:
 
                 void            debug();
 
-#include "defs_member.h" // <- should go to the bottom, right?                
+#include "defs_member.h" // <- should go to the bottom, right?    
+
+#include "table_lfo.cpp"
+
+#include "table_col.cpp"
 };
 
 #endif

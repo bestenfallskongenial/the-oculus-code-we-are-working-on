@@ -53,25 +53,25 @@ public:
 // global
                 unsigned                g_inOutMatrixInt[CHANNEL][IO_TYPE_COUNT];           // the integer in/out matrix
                 float                   g_inOutMatrixFlt[CHANNEL][IO_TYPE_COUNT];           // the float in/out matrix
-                bool                    g_menuPickUpFlag[4*MENU_LAYER];                     // the flags for the pickup mechanism  
+                bool                    g_menuPickUpFlag[4*MENU_LAYER_COUNT];                     // the flags for the pickup mechanism  
                 unsigned                g_buttons_states[NR_BUTTONS][BTN_INDEX_COUNT];      // the button state machine
-                unsigned                g_centralModeBuffer[SLOTS][modetablecount];         // the general user settings, storable per program 
+                unsigned                g_centralModeBuffer[SLOTS][MODETABLE_COUNT];         // the general user settings, storable per program 
                 unsigned                g_lfoMultiplier[LFO_MULTIPLIERS];
 
                 unsigned                g_lfoBpmMatrix[4][LFO_BPM_COUNT]        = {   64, 32, 16, 8, 4, 2, 1 };
 // datamanagement.cpp
                 unsigned                g_hFile;
 
-                char                    m_83FileName[13];
+                char                    m_83FileName[MAX_FILE_NAME_LENGTH];
 // util
         const   int                     m_scaleFactors[3] = {   2047,       // 2.5V max (1023 * 2)
                                                                 1551,       // 3.3V max (1023 * 1.515555...)
                                                                 1023    };  // 5.0V max     
 
-                int                     m_adc_ring[ADC_CHANNELS][ADC_BUFFER];
+                int                     m_adc_ring[ADC_CHANNELS][ADC_BUFFER_COUNT];
                 int                     m_adc_index;
 
-                float                   m_band[4][MAX_AUDIO_BUFFER];
+                float                   m_band[4][AUDIO_BUFFER_COUNT];
 
                 float                   m_sum[4];  
 

@@ -18,6 +18,8 @@
     #define         SW_PIN_A	           	13                                  // button A ( lower )
     #define         SW_PIN_B	          	6                                   // button B ( upper )
 
+#define MAX_FILE_NAME_LENGTH    13
+
 #define __DEBUG_LOG__
 
 #define 		CHUNK_SIZE				1024                                // for the file load 
@@ -28,23 +30,23 @@
     #define         VREF			 		5.0f
 
 
-    #define 		ADC_BUFFER			 	4	
+    #define 		ADC_BUFFER_COUNT			 	4	
 
     #define         WAVEFORMS             	4		// number of lfo waves
     #define         WAVESAMPLES            	256  	// number of samples per lfo waves
 
     #define         MAX_MODES               5
-    #define         MENU_LAYER              4
+    #define         MENU_LAYER_COUNT              4
 
     #define 		LFO_INSTANCES			2
     #define			LFO_MULTIPLIERS			7
 
-    #define         SLOTS                   34                                  // for the g_centralModeBuffer[SLOTS][modetablecount] array -  
+    #define         SLOTS                   34                                  // for the g_centralModeBuffer[SLOTS][MODETABLE_COUNT] array -  
                                                                                 // 1 firmware / 32 user / 1 default slot
     #define         DEFAULT_SLOT            33                                  //  because 0 plus 34 = 33 ?? 
 
     #define         AUDIO_THRESHOLD         160
-    #define         MAX_AUDIO_BUFFER        63
+    #define         AUDIO_BUFFER_COUNT        63
 
 // SPI
     #define SPI0_BASE                   (ARM_IO_BASE + 0x204000)
