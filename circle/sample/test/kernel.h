@@ -86,7 +86,7 @@ public:
                                                                         u32                             total_size);
                                                                         
                 void            nextline                   (            char*                           p_buffer,
-                                                                        u32&                            index)                                                                        
+                                                                        u32&                            index);
 
                 boolean         startupScreen               (   void );                                                                
 
