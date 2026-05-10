@@ -82,3 +82,15 @@ enum io_types
 // `[3]`            | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | timeBuffer[3] | unused         |
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+
+//------------------------------------------------- // unsigned int g_buttons_states[NR_BUTTONS][5] = {0} !!!
+enum ButtonTSIndex  
+{
+    BTN_PRESS_START = 0,
+    BTN_DOUBLE      = 1,
+    BTN_RELEASE     = 2,
+    BTN_SINGLE      = 3,
+    BTN_HOLD_TICK   = 4,                            		// COUNTER: increases while held ( runtime loop iterations - unstable but sufficient - needs measurement )
+    BTN_INDEX_COUNT = 5
+};

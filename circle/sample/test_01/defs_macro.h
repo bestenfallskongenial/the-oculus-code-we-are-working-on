@@ -24,6 +24,12 @@
 
 #define CHANNEL     8
 
+    #define         WAVEFORMS             	4		// number of lfo waves
+    #define         WAVESAMPLES            	256  	// number of samples per lfo waves
+
+    #define 		LFO_INSTANCES			2
+    #define			LFO_MULTIPLIERS			7
+
     #define         SLOTS                   34                                  // for the g_centralModeBuffer[SLOTS][modetablecount] array -  
                                                                                 // 1 firmware / 32 user / 1 default slot
     #define         DEFAULT_SLOT            33                                  //  because 0 plus 34 = 33 ?? 
