@@ -15,30 +15,41 @@ TShutdownMode CKernel::Run                              (   void )
 
                     bufferToScreenClear();
 
+                    unsigned mytestCol = tick % gE_Cols;
+                    unsigned mytestRow = 0;
+
                     bufferToScreenDrawBuffer(
                                             "mytest",
                                             0,
                                             sizeof("mytest"),
-                                            tick % gE_Cols,
-                                            0,
+                                            mytestCol,
+                                            mytestRow,
                                             0xFFFFFFFF
                                             );
 
+                    unsigned alphabetStart = tick % 20;
+                    unsigned alphabetEnd   = alphabetStart + 8;
+                    unsigned alphabetCol   = 0;
+                    unsigned alphabetRow   = 2;
+
                     bufferToScreenDrawBuffer(
                                             "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-                                            tick % 20,
-                                            (tick % 20) + 8,
-                                            0,
-                                            2,
+                                            alphabetStart,
+                                            alphabetEnd,
+                                            alphabetCol,
+                                            alphabetRow,
                                             0xFFFFFFFF
                                             );
+
+                    unsigned columnRowCol = (tick * 2) % gE_Cols;
+                    unsigned columnRowRow = 4 + ((tick / 2) % 4);
 
                     bufferToScreenDrawBuffer(
                                             "column and row test",
                                             0,
                                             sizeof("column and row test"),
-                                            (tick * 2) % gE_Cols,
-                                            4 + ((tick / 2) % 4),
+                                            columnRowCol,
+                                            columnRowRow,
                                             0xFFFFFFFF
                                             );
 
@@ -48,8 +59,10 @@ TShutdownMode CKernel::Run                              (   void )
                     m_Logger.Write(
                                     FromKernel,
                                     LogNotice,
-                                    "individual log tick %u",
-                                    tick
+                                    "tick %u mytest col %u row %u",
+                                    tick,
+                                    mytestCol,
+                                    mytestRow
                                     );
 
                     bufferToScreenDrawBuffer(
@@ -67,7 +80,11 @@ TShutdownMode CKernel::Run                              (   void )
                     m_Logger.Write(
                                     FromKernel,
                                     LogWarning,
-                                    "warning level test"
+                                    "alphabet start %u end %u col %u row %u",
+                                    alphabetStart,
+                                    alphabetEnd,
+                                    alphabetCol,
+                                    alphabetRow
                                     );
 
                     bufferToScreenDrawBuffer(
@@ -85,7 +102,9 @@ TShutdownMode CKernel::Run                              (   void )
                     m_Logger.Write(
                                     FromKernel,
                                     LogError,
-                                    "error level test"
+                                    "columnrow col %u row %u",
+                                    columnRowCol,
+                                    columnRowRow
                                     );
 
                     bufferToScreenDrawBuffer(
