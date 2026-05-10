@@ -33,6 +33,9 @@
     #define         WAVEFORMS             	4		// number of lfo waves
     #define         WAVESAMPLES            	256  	// number of samples per lfo waves
 
+    #define         MAX_MODES               5
+    #define         MENU_LAYER              4
+
     #define 		LFO_INSTANCES			2
     #define			LFO_MULTIPLIERS			7
 
