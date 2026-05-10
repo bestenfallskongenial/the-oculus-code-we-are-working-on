@@ -1,3 +1,5 @@
+#include "kernel.h"
+
 void CKernel::debug()
 {
 unsigned tick = 0;
