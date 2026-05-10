@@ -175,6 +175,53 @@ public:
                 void            nextline                   (            char*                           p_buffer,
                                                                         u32&                            index);
 
+/  UTIL
+                void        adc_AcquireConvert                     ();                             // can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
+
+                void        adc_ProcessAudio            (   void    );
+
+                void        adc_AdvanceIndex            ();
+
+                bool        checkUpdate                 ();
+
+                bool        Update                      ();
+//85
+                void        set_pot_routing             (           bool                            adc_pot_routing);
+
+
+                char*       make83FileName              (   const   char*                           ext ;)
+
+                void        prepParameters              ();
+
+                void        chooseIndex                 (           int                             p_channel, 
+                                                                    int&                            p_activeIndex, 
+                                                                    int                             p_maxCount, 
+                                                                    bool*                           flags);
+
+                void        chooseIndexD                (           int                             p_channel, 
+                                                                    int&                            p_activeIndex, 
+                                                                    int                             p_maxCount);
+                void        storeModes                  ();
+//90
+                void        buttonPing                  (           int                             p_btn_id, 
+                                                                    int                             p_pin);
+
+                void        button_consumer             (           int                             p_btn_id);
+// 
+                void        randomVec8                  (           uint32_t                        p_seed);
+
+
+
+                void        calculate1BPM               (           int                             p_source, 
+                                                                    unsigned long                   p_triggerTimeClock);
+
+                void        predict1Beat                (           int                             p_source, 
+                                                                    int                             p_lfoMult);
+//95
+                void        sample1WaveTable            (           int                             p_source, 
+                                                                    int                             p_lfoIn, 
+                                                                    int                             p_lfoOut );
+                                                                                                                                            
                 boolean         startupScreen               (   void );                                                                
 
 private:
