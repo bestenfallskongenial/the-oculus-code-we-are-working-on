@@ -24,6 +24,12 @@
 
 #define CHANNEL     8
 
+    #define         ADC_CHANNELS         	8                                   // number of adc input channels ( dependency <sensor/mcp300x.h>	)
+    #define         VREF			 		5.0f
+
+
+    #define 		ADC_BUFFER			 	4	
+
     #define         WAVEFORMS             	4		// number of lfo waves
     #define         WAVESAMPLES            	256  	// number of samples per lfo waves
 
