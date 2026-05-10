@@ -1,4 +1,4 @@
-void debug()
+void CKernel::debug()
 {
 unsigned tick = 0;
                 boolean  bExceptionTimerStarted = FALSE;

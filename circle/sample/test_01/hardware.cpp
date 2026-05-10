@@ -1,7 +1,7 @@
 
 #include "kernel.h"
 
-inline void CKernel::usDelay(unsigned us)
+void            CKernel::usDelay(unsigned us)
 {
                 if (us == 0) return;
 
@@ -18,7 +18,7 @@ inline void CKernel::usDelay(unsigned us)
                 PeripheralExit();
 }
 
-inline void CKernel::msDelay(unsigned ms)
+void            CKernel::msDelay(unsigned ms)
 {
                 if (ms == 0) return;
 
