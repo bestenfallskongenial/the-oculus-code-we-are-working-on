@@ -6,8 +6,9 @@
 #include <circle/exceptionhandler.h>
 #include <circle/interrupt.h>
 #include <circle/timer.h>
+#include <circle/dmachannel.h>
 
-#include "CLogger.h"
+#include "CLogger.h"                        // my CLogger shimm layer
 
 #include <circle/types.h>
 #include <string.h>
