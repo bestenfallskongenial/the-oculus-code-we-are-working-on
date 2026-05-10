@@ -40,7 +40,7 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
 
                     if (t->tex_valid[i])
                         {
-                        storeLogLong(   MY_BUFFER, MY_INDEX,
+                        storeLog(   MY_BUFFER, MY_INDEX,
                                         "BMP header VALID for File No.", i,
                                         "Name", EMPTYLOG,
                                         filename_array[i - p_fromFile],
@@ -48,7 +48,7 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                         }
                     else
                         {
-                        storeLogLong(   MY_BUFFER, MY_INDEX,
+                        storeLog(   MY_BUFFER, MY_INDEX,
                                         "BMP header FAILED for File No.", i,
                                         "Name", EMPTYLOG,
                                         filename_array[i - p_fromFile],
@@ -97,7 +97,7 @@ bool            CKernel::264parser                  (   h264_state* h,
                 /*  size_t size = size_array[i]; */
                     size_t i = 0;
 
-                    storeLogLong( MY_BUFFER, MY_INDEX,
+                    storeLog( MY_BUFFER, MY_INDEX,
                                   "Parse H264 File No.", file_index,
                                   "Name", EMPTYLOG,
                                   filename_array[file_index - p_fromFile],
@@ -141,7 +141,7 @@ bool            CKernel::264parser                  (   h264_state* h,
                         h->frame_length[file_index][idx]  = end_off - sps_off[file_index][idx];
                         h->idr_offset[file_index]         = idr_off[file_index][idx] - sps_off[file_index][idx];
 
-                        storeLogLong(   MY_BUFFER, MY_INDEX,
+                        storeLog(   MY_BUFFER, MY_INDEX,
                                         "SPS+PPS+IDR", EMPTYLOG, 
                                         "addr", (u32)h->frame_address[file_index][idx], 
                                         "length", (u32)h->frame_length[file_index][idx], 
@@ -192,12 +192,12 @@ bool            CKernel::264parser                  (   h264_state* h,
                         h->vid_profile[file_index]  == h->max_profile &&
                         h->vid_level[file_index]    == h->max_level;
 
-                    storeLogLong(   MY_BUFFER, MY_INDEX,
+                    storeLog(   MY_BUFFER, MY_INDEX,
                                     "Parsed Frames", h->frame_count[file_index], 
                                     "Parsed IDR-Offset", h->idr_offset[file_index]);
                     if (h->vid_valid[file_index])
                         {
-                        storeLogLong(   MY_BUFFER, MY_INDEX,
+                        storeLog(   MY_BUFFER, MY_INDEX,
                                         "MetaData VALID for Video No.", file_index,
                                         "Name", EMPTYLOG,
                                         filename_array[file_index - p_fromFile],
@@ -205,7 +205,7 @@ bool            CKernel::264parser                  (   h264_state* h,
                         }
                     else
                         {
-                        storeLogLong(   MY_BUFFER, MY_INDEX,
+                        storeLog(   MY_BUFFER, MY_INDEX,
                                         "MetaData INVALID for Video No.", file_index,
                                         "Name", EMPTYLOG,
                                         filename_array[file_index - p_fromFile],

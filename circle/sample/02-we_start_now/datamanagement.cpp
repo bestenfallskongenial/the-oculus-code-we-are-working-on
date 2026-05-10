@@ -65,7 +65,7 @@ bool            CKernel::saveFromBufferM            (   const   char*       p_de
                 if(!Mount( p_deviceName ))
                     {
 #ifdef __DEBUG_LOG__                        
-                    storeLogLong(   MY_BUFFER, MY_INDEX,
+                    storeLog(   MY_BUFFER, MY_INDEX,
                                     "Failed to Mount Device",   EMPTYLOG,
                                     p_deviceName,               EMPTYLOG,
                                     EMPTYSTR,                   EMPTYLOG,
@@ -77,7 +77,7 @@ bool            CKernel::saveFromBufferM            (   const   char*       p_de
                 if (m_pFileSystem == 0 || p_fileName == 0 || p_bufferArray == 0 || p_bufferSize == 0)
                     {
 #ifdef __DEBUG_LOG__
-                    storeLogLong(   MY_BUFFER, MY_INDEX,
+                    storeLog(   MY_BUFFER, MY_INDEX,
                                     "Failed Store Input",       EMPTYLOG,
                                     "file",                     EMPTYLOG,
                                     p_fileName,                 EMPTYLOG,
@@ -90,7 +90,7 @@ bool            CKernel::saveFromBufferM            (   const   char*       p_de
                 if (g_hFile == 0)
                     {
 #ifdef __DEBUG_LOG__                        
-                    storeLogLong(   MY_BUFFER, MY_INDEX,
+                    storeLog(   MY_BUFFER, MY_INDEX,
                                     "Failed to Create File",    EMPTYLOG,
                                     p_fileName,                 EMPTYLOG,
                                     "on Device",                EMPTYLOG,
@@ -102,7 +102,7 @@ bool            CKernel::saveFromBufferM            (   const   char*       p_de
                 if (m_pFileSystem->FileWrite(g_hFile, p_bufferArray, p_bufferSize) != p_bufferSize)
                     {
 #ifdef __DEBUG_LOG__                        
-                    storeLogLong(   MY_BUFFER, MY_INDEX,
+                    storeLog(   MY_BUFFER, MY_INDEX,
                                     "Failed to Store File",     EMPTYLOG,
                                     p_fileName,                 EMPTYLOG,
                                     "size",                     (u32)p_bufferSize,
@@ -115,7 +115,7 @@ bool            CKernel::saveFromBufferM            (   const   char*       p_de
                 UnMount();
 
 #ifdef __DEBUG_LOG__
-                storeLogLong(   MY_BUFFER, MY_INDEX,
+                storeLog(   MY_BUFFER, MY_INDEX,
                                 "Successful Stored",    EMPTYLOG,
                                 p_fileName,             EMPTYLOG,
                                 "from Buffer",          EMPTYLOG,
@@ -142,7 +142,7 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                 p_prevFiles = p_validFiles;
 
 #ifdef __DEBUG_LOG__
-                storeLogLong(   MY_BUFFER, MY_INDEX,
+                storeLog(   MY_BUFFER, MY_INDEX,
                                 "BULKLOAD Start max",   (u32)p_maxFiles,
                                 "valid",                (u32)p_validFiles,
                                 "size",                 (u32)p_fileSize,
@@ -158,7 +158,7 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                             {
                             p_loadedBytes[p_validFiles] = f_bytesRead;
 #ifdef __DEBUG_LOG__
-                            storeLogLong(   MY_BUFFER, MY_INDEX,
+                            storeLog(   MY_BUFFER, MY_INDEX,
                                             "file",              (u32)i,
                                             p_fileNameArray[i],  EMPTYLOG,
                                             "bytes read",        (u32)f_bytesRead,
@@ -171,7 +171,7 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                     }
 
 #ifdef __DEBUG_LOG__
-                storeLogLong(   MY_BUFFER, MY_INDEX,
+                storeLog(   MY_BUFFER, MY_INDEX,
                                 "BULKLOAD End prev",    (u32)p_prevFiles,
                                 "new",                  (u32)p_validFiles,
                                 "loaded",               (u32)(p_validFiles - p_prevFiles),
@@ -274,7 +274,7 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
 {
                 char** buffers = (char**)malloc(p_count * sizeof(char*));
 #ifdef ALLOC_DEBUG
-                storeLogLong(   MY_BUFFER, MY_INDEX,
+                storeLog(   MY_BUFFER, MY_INDEX,
                                 "ALLOC-MEM base",      (u32)buffers,
                                 "count",               (u32)p_count,
                                 "size",                (u32)bufferSize,
@@ -285,7 +285,7 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                     {
                     buffers[i] = (char*)calloc(bufferSize, sizeof(char));
 #ifdef ALLOC_DEBUG
-                    storeLogLong(   MY_BUFFER, MY_INDEX,
+                    storeLog(   MY_BUFFER, MY_INDEX,
                                     "ALLOC-MEM slice", (u32)i,
                                     "ptr",             (u32)buffers[i],
                                     EMPTYSTR,          EMPTYLOG,
@@ -293,7 +293,7 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
 #endif
                     }
 #ifdef ALLOC_DEBUG
-                storeLogLong(   MY_BUFFER, MY_INDEX,
+                storeLog(   MY_BUFFER, MY_INDEX,
                                 "ALLOC-MEM done",      (u32)buffers,
                                 "count",               (u32)p_count,
                                 "size",                (u32)bufferSize,
@@ -317,7 +317,7 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
 
                 char* dma_block = (char*)(((uintptr_t)raw + 4095) & ~4095);
 #ifdef ALLOC_DEBUG                  
-                storeLogLong(   MY_BUFFER, MY_INDEX,
+                storeLog(   MY_BUFFER, MY_INDEX,
                                 "ALLOC-DMA raw",        (u32)raw,
                                 "block",                (u32)dma_block,
                                 EMPTYSTR,               EMPTYLOG,
@@ -329,7 +329,7 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
                     {
                     buffers[i] = dma_block + i * bufferSize;
 #ifdef ALLOC_DEBUG   
-                    storeLogLong(   MY_BUFFER, MY_INDEX,
+                    storeLog(   MY_BUFFER, MY_INDEX,
                                     "ALLOC-DMA slice",  (u32)i,
                                     "ptr",              (u32)buffers[i],
                                     "size",             (u32)bufferSize,
@@ -338,7 +338,7 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
                     memset(buffers[i], 0, bufferSize);
                     }
 #ifdef ALLOC_DEBUG   
-                storeLogLong(   MY_BUFFER, MY_INDEX,
+                storeLog(   MY_BUFFER, MY_INDEX,
                                 "ALLOC-DMA raw",        (u32)raw,
                                 "block",                (u32)dma_block,
                                 "total",                (u32)total_size,

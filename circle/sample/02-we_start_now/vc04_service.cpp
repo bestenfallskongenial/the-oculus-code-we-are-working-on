@@ -27,7 +27,7 @@ void            CKernel::getStateVCHI               (   )
 {
                 vc_host_get_vchi_state(&m_VCHIInstance, &m_Connection);
 #ifdef __DEBUG_LOG__
-                storeLogLong ( MY_BUFFER, MY_INDEX, "VCHI State Instance", (u32)m_VCHIInstance, "VCHI State Connection", (u32)m_Connection);   
+                storeLog ( MY_BUFFER, MY_INDEX, "VCHI State Instance", (u32)m_VCHIInstance, "VCHI State Connection", (u32)m_Connection);   
 #endif             
 }
 
@@ -37,7 +37,7 @@ bool            CKernel::initEventsVCOS             (   VCOS_EVENT_T&           
                 if (vcos_event_create(&event, name) != VCOS_SUCCESS)
                     {
 #ifdef __DEBUG_LOG__
-                    storeLogLong ( MY_BUFFER, MY_INDEX, "VCOS Event Init Failed!", (u32)&event);  
+                    storeLog ( MY_BUFFER, MY_INDEX, "VCOS Event Init Failed!", (u32)&event);  
 #endif               
                     return false;
                     }
@@ -50,7 +50,7 @@ u32             CKernel::convertAddress             (   void*                   
                 u32 bus_addr = BUS_ADDRESS(reinterpret_cast<uintptr_t>(p_busAddress));
                 u32 vcsm_addr = (bus_addr & ~0xC0000000) | 0xC0000000;
 #ifdef __DEBUG_LOG__
-                storeLogLong ( MY_BUFFER, MY_INDEX, "Buffer Address BUS", (u32)p_busAddress, "Buffer Address ARM", (u32)bus_addr, "Buffer Address VPU", (u32)vcsm_addr); 
+                storeLog ( MY_BUFFER, MY_INDEX, "Buffer Address BUS", (u32)p_busAddress, "Buffer Address ARM", (u32)bus_addr, "Buffer Address VPU", (u32)vcsm_addr); 
 #endif 
                 CleanAndInvalidateDataCacheRange((uintptr_t)(p_busAddress), p_size);
 
@@ -74,7 +74,7 @@ bool            CKernel::checkGLerrorMMAL           (   )
                         default:                                        error_str = "UNKNOWN_ERROR"; break;
                         }
 #ifdef __DEBUG_LOG__  
-                    storeLogLong ( MY_BUFFER, MY_INDEX, error_str);
+                    storeLog ( MY_BUFFER, MY_INDEX, error_str);
 #endif 
                     return false;
                     }
@@ -117,7 +117,7 @@ bool            CKernel::sendAndWaitVCHI            (   VCHI_SERVICE_HANDLE_T   
 {
 #ifdef __DEBUG_LOG__
             //  nextline( MY_BUFFER, MY_INDEX );
-                storeLogLong( MY_BUFFER, MY_INDEX, "TX MSG", (u32)msg_size);
+                storeLog( MY_BUFFER, MY_INDEX, "TX MSG", (u32)msg_size);
                 storeMsg( MY_BUFFER, MY_INDEX, "Raw TX", msg, msg_size);
 #endif 
 
@@ -130,7 +130,7 @@ bool            CKernel::sendAndWaitVCHI            (   VCHI_SERVICE_HANDLE_T   
                     if (vchi_msg_dequeue(ServiceHandle, rx_msg, max_reply_len, &ReplyLength, VCHI_FLAGS_NONE) == 0)
                         {
 #ifdef __DEBUG_LOG__
-                        storeLogLong( MY_BUFFER, MY_INDEX, "RX MSG", ReplyLength);
+                        storeLog( MY_BUFFER, MY_INDEX, "RX MSG", ReplyLength);
                         storeMsg( MY_BUFFER, MY_INDEX, "Raw RX", rx_msg, ReplyLength);
 #endif 
                         break;
@@ -147,7 +147,7 @@ bool            CKernel::sendAndWaitVCHI            (   VCHI_SERVICE_HANDLE_T   
 #ifdef __DEBUG_LOG__
                 //  const mmal_msg_header* h = (const mmal_msg_header*)msg; 
                 //  nextline( MY_BUFFER, MY_INDEX );
-                    storeLogLong( MY_BUFFER, MY_INDEX, "ANSWER TO SHORT - MSG #" /*, h->context*/ ); // is only available with mmal, not for vcsm
+                    storeLog( MY_BUFFER, MY_INDEX, "ANSWER TO SHORT - MSG #" /*, h->context*/ ); // is only available with mmal, not for vcsm
 #endif 
                     return false;
                     }
@@ -197,7 +197,7 @@ bool bOK = true;
                     {
                     bOK = initEventsVCOS(m_EventSMEM, "SMEM");
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "VCSM initEventsVCOS FAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "VCSM initEventsVCOS FAILED");
 #endif 
                     if (!bOK) return false;
                     }
@@ -214,14 +214,14 @@ bool bOK = true;
                                             m_ServiceHandleVCSM
                                             );
 #ifdef __DEBUG_LOG__            
-                    if (!bOK) storeLogLong ( MY_BUFFER, MY_INDEX, "VCHI openService FAILED!");      
+                    if (!bOK) storeLog ( MY_BUFFER, MY_INDEX, "VCHI openService FAILED!");      
 #endif                     
                     if (!bOK) return false;
                     }
 #ifdef __DEBUG_LOG__ 
             //  nextline ( MY_BUFFER, MY_INDEX );
-                storeLogLong ( MY_BUFFER, MY_INDEX, "VCSM Successful Initialized");
-                storeLogLong ( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");                
+                storeLog ( MY_BUFFER, MY_INDEX, "VCSM Successful Initialized");
+                storeLog ( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");                
 #endif 
                 return bOK;
 }
@@ -254,8 +254,8 @@ bool            CKernel::importMemoryVCSM           (   void*                   
                 /*  vcsm_handle         = rx.body.res_handle;      like this ? */                   
 #ifdef __DEBUG_LOG__
                     //  nextline( MY_BUFFER, MY_INDEX );  
-                        storeLogLong( MY_BUFFER, MY_INDEX, "Import VCSM Memory to Slot", slot /*vcsm_handle*/); 
-                        storeLogLong( MY_BUFFER, MY_INDEX, "ARM Address", p_bufferBlockbase, "GPU Address", tx.body.addr, "Size", size, "VCSM Handle", rx.body.res_handle);
+                        storeLog( MY_BUFFER, MY_INDEX, "Import VCSM Memory to Slot", slot /*vcsm_handle*/); 
+                        storeLog( MY_BUFFER, MY_INDEX, "ARM Address", p_bufferBlockbase, "GPU Address", tx.body.addr, "Size", size, "VCSM Handle", rx.body.res_handle);
 #endif                     
                     return true;
                 }
@@ -285,8 +285,8 @@ bool            CKernel::lockMemoryVCSM             (   int                     
                 /*  vcsm_pointer        = rx.body.res_mem;   like this ?   */                 
 #ifdef __DEBUG_LOG__
                     //  nextline( MY_BUFFER, MY_INDEX );  
-                        storeLogLong( MY_BUFFER, MY_INDEX, "Lock VCSM Memory in Slot   ", slot /*vcsm_handle*/);  
-                        storeLogLong( MY_BUFFER, MY_INDEX, "Lock  Memory in VCSM Handle", rx.body.res_handle, "VCSM Pointer", rx.body.res_mem);
+                        storeLog( MY_BUFFER, MY_INDEX, "Lock VCSM Memory in Slot   ", slot /*vcsm_handle*/);  
+                        storeLog( MY_BUFFER, MY_INDEX, "Lock  Memory in VCSM Handle", rx.body.res_handle, "VCSM Pointer", rx.body.res_mem);
 #endif         
                     return true;
                 }
@@ -318,7 +318,7 @@ bool            CKernel::freeMemoryVCSM             (   int                     
                 /*  vcsm_pointer        = 0; */
 #ifdef __DEBUG_LOG__
                     //  nextline( MY_BUFFER, MY_INDEX );  
-                        storeLogLong( MY_BUFFER, MY_INDEX, "Free  Memory in VCSM Handle", vcsm_handle, "VCSM Pointer", vcsm_pointer);  
+                        storeLog( MY_BUFFER, MY_INDEX, "Free  Memory in VCSM Handle", vcsm_handle, "VCSM Pointer", vcsm_pointer);  
 #endif        
                     return true;
                 }
@@ -359,27 +359,27 @@ bool            CKernel::initializeMMAL             (   u32                     
 bool bOK = true;
 
 #ifdef __DEBUG_LOG__                
-                storeLogLong ( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
+                storeLog ( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
 #endif
                 getStateVCHI                ( );
                 if (bOK)
                     {
                     bOK = initEventsVCOS( m_EventMMAL, "MMAL" );
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMAL initEventsVCOS FAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMAL initEventsVCOS FAILED");
 #endif                   
                     if (!bOK) return false;
                     }
 
 #ifdef __DEBUG_LOG__
-                storeLogLong ( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");   
-                storeLogLong ( MY_BUFFER, MY_INDEX, "Input    Buffer Handle",m_InputBufferHandle,   "Pointer", m_InputBufferPointer,    "Size", m_InputBufferSize);
-                storeLogLong ( MY_BUFFER, MY_INDEX, "Output A Buffer Handle",m_OutputBufferHandleA, "Pointer", m_OutputBufferPointerA,  "Size", m_OutputBufferSize);
-                storeLogLong ( MY_BUFFER, MY_INDEX, "Output B Buffer Handle",m_OutputBufferHandleB, "Pointer", m_OutputBufferPointerB,  "Size", m_OutputBufferSize); 
+                storeLog ( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");   
+                storeLog ( MY_BUFFER, MY_INDEX, "Input    Buffer Handle",m_InputBufferHandle,   "Pointer", m_InputBufferPointer,    "Size", m_InputBufferSize);
+                storeLog ( MY_BUFFER, MY_INDEX, "Output A Buffer Handle",m_OutputBufferHandleA, "Pointer", m_OutputBufferPointerA,  "Size", m_OutputBufferSize);
+                storeLog ( MY_BUFFER, MY_INDEX, "Output B Buffer Handle",m_OutputBufferHandleB, "Pointer", m_OutputBufferPointerB,  "Size", m_OutputBufferSize); 
             //  nextline ( MY_BUFFER, MY_INDEX );       
-                storeLogLong ( MY_BUFFER, MY_INDEX, "Resolution      Height", m_ResolutionX, "Width", m_ResolutionY, "EGL Display", (u32)m_eglDisplay, "EGL Context", (u32)m_eglContext);
-            //  storeLogLong ( MY_BUFFER, MY_INDEX, "EGL Display", (u32)m_eglDisplay, "EGL Context", (u32)m_eglContext);
-                storeLogLong ( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
+                storeLog ( MY_BUFFER, MY_INDEX, "Resolution      Height", m_ResolutionX, "Width", m_ResolutionY, "EGL Display", (u32)m_eglDisplay, "EGL Context", (u32)m_eglContext);
+            //  storeLog ( MY_BUFFER, MY_INDEX, "EGL Display", (u32)m_eglDisplay, "EGL Context", (u32)m_eglContext);
+                storeLog ( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
 #endif 
 
                 if (bOK)
@@ -393,7 +393,7 @@ bool bOK = true;
                                             m_VCHIInstance,
                                             m_ServiceHandleMMAL);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMAL openService FAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMAL openService FAILED");
 #endif 
                     if (!bOK) return false;
                     }
@@ -401,21 +401,21 @@ bool bOK = true;
                     {
                     bOK = createComponent(m_ComponentCreateTx, m_ComponentCreateRx);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMALcreateComponent FAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMALcreateComponent FAILED");
 #endif 
                     }
                 if (bOK)
                     {
                     bOK = getPortInfoMMAL(MMAL_PORT_TYPE_INPUT, m_InputPortHandle, m_PortInfoGetTx_Input_A, m_PortInfoGetRx_Input_A);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMALgetPortInfo Input A FAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMALgetPortInfo Input A FAILED");
 #endif 
                     }
                 if (bOK)
                     {
                     bOK = getPortInfoMMAL(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_A, m_PortInfoGetRx_Output_A);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMALgetPortInfo Output A FAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMALgetPortInfo Output A FAILED");
 #endif 
                     }
 
@@ -426,77 +426,77 @@ bool bOK = true;
                     {
                     bOK = setPortInfoMMAL(m_PortInfoSetTx_Input, m_PortInfoSetRx_Input);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMALsetPortInfo Input FAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMALsetPortInfo Input FAILED");
 #endif 
                     }
                 if (bOK)
                     {
                     bOK = setPortInfoMMAL(m_PortInfoSetTx_Output, m_PortInfoSetRx_Output);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMALsetPortInfo Output FAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMALsetPortInfo Output FAILED");
 #endif 
                     }
                 if (bOK)
                     {
                     bOK = enableComponentMMAL(m_ComponentEnableTx, m_ComponentEnableRx);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMALenableComponentMMAL FAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMALenableComponentMMAL FAILED");
 #endif 
                     }
                 if (bOK)
                     {
                     bOK = getPortInfoMMAL(MMAL_PORT_TYPE_INPUT, m_InputPortHandle, m_PortInfoGetTx_Input_B, m_PortInfoGetRx_Input_B);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMALgetPortInfo Input B FAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMALgetPortInfo Input B FAILED");
 #endif 
                     }
                 if (bOK)
                     {
                     bOK = getPortInfoMMAL(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_B, m_PortInfoGetRx_Output_B);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMALgetPortInfo Output B BFAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMALgetPortInfo Output B BFAILED");
 #endif 
                     }
                 if (bOK)
                     {
                     bOK = setZeroCopyModeMMAL(m_PortInfoGetRx_Input_B, m_PortParamTx_Input, m_PortParamRx_Input);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMALsetZeroCopyModeMMAL Input FAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMALsetZeroCopyModeMMAL Input FAILED");
 #endif 
                     }
                 if (bOK)
                     {
                     bOK = setZeroCopyModeMMAL(m_PortInfoGetRx_Output_B, m_PortParamTx_Output, m_PortParamRx_Output);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMALsetZeroCopyModeMMAL Output FAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMALsetZeroCopyModeMMAL Output FAILED");
 #endif 
                     }
                 if (bOK)
                     {
                     bOK = getPortInfoMMAL(MMAL_PORT_TYPE_INPUT, m_InputPortHandle, m_PortInfoGetTx_Input_C, m_PortInfoGetRx_Input_C);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMALgetPortInfo Input C FAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMALgetPortInfo Input C FAILED");
 #endif 
                     }
                 if (bOK)
                     {
                     bOK = getPortInfoMMAL(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_C, m_PortInfoGetRx_Output_C);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMALgetPortInfo Output C FAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMALgetPortInfo Output C FAILED");
 #endif 
                     }
                 if (bOK)
                     {
                     bOK = enablePortMMAL(m_PortInfoGetRx_Input_C, m_PortActionTx_Input, m_PortActionRx_Input);
 #ifdef __DEBUG_LOG__
-                if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMALenablePort Input FAILED");
+                if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMALenablePort Input FAILED");
 #endif 
                     }
                 if (bOK)
                     {
                     bOK = enablePortMMAL(m_PortInfoGetRx_Output_C, m_PortActionTx_Output, m_PortActionRx_Output);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLogLong( MY_BUFFER, MY_INDEX, "MMALenablePort Output FAILED");
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMALenablePort Output FAILED");
 #endif 
                     }
             /*
@@ -509,8 +509,8 @@ bool bOK = true;
             */
 #ifdef __DEBUG_LOG__ 
             //  nextline ( MY_BUFFER, MY_INDEX );
-                storeLogLong( MY_BUFFER, MY_INDEX, "MMAL Successful Initialized");
-                storeLogLong( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");                
+                storeLog( MY_BUFFER, MY_INDEX, "MMAL Successful Initialized");
+                storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");                
 #endif 
                 return bOK;
 }
@@ -538,13 +538,13 @@ bool            CKernel::createTexturesMMAL         (   )
                     { 
 #ifdef __DEBUG_LOG__ 
                 //  nextline( MY_BUFFER, MY_INDEX );                                 
-                    storeLogLong( MY_BUFFER, MY_INDEX, "Texture Creation FAILED");
+                    storeLog( MY_BUFFER, MY_INDEX, "Texture Creation FAILED");
 #endif                   
                     return false;
                     }
 #ifdef __DEBUG_LOG__             
             //  nextline( MY_BUFFER, MY_INDEX );
-                storeLogLong( MY_BUFFER, MY_INDEX, "Texture Creation SUCCESS");
+                storeLog( MY_BUFFER, MY_INDEX, "Texture Creation SUCCESS");
 #endif               
                 return true;
 }
@@ -557,11 +557,11 @@ bool            CKernel::framePollerMMAL            (   u32 frame_offset, u32 fr
                     if (!queueInputBufferMMAL(m_BufferFromHostTx_Input, frame_offset, frame_length))
                         {
                     //  nextline( MY_BUFFER, MY_INDEX );
-                        storeLogLong( MY_BUFFER, MY_INDEX, "very first frame queue ERROR!", EMPTYLOG, "Frame offset", frame_offset, "length", frame_length);
+                        storeLog( MY_BUFFER, MY_INDEX, "very first frame queue ERROR!", EMPTYLOG, "Frame offset", frame_offset, "length", frame_length);
                         return false;
                         }
                 //  nextline( MY_BUFFER, MY_INDEX );
-                    storeLogLong( MY_BUFFER, MY_INDEX, "very first frame queue SUCCESS", EMPTYLOG, "Frame offset", frame_offset, "length", frame_length);
+                    storeLog( MY_BUFFER, MY_INDEX, "very first frame queue SUCCESS", EMPTYLOG, "Frame offset", frame_offset, "length", frame_length);
 
                     getPortInfoMMAL(MMAL_PORT_TYPE_INPUT,  m_InputPortHandle,  m_PortInfoGetTx_Input_D, m_PortInfoGetRx_Input_D);
                     getPortInfoMMAL(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_D, m_PortInfoGetRx_Output_D);
@@ -589,7 +589,7 @@ bool            CKernel::framePollerMMAL            (   u32 frame_offset, u32 fr
                                     u32 m_CurrentHandle = m_BufferFromHostTx_Output.msg.buffer_header.data;  // Payload layout reused: buffer_from_host
 #ifdef __DEBUG_LOG__   
                                 //  nextline( MY_BUFFER, MY_INDEX );
-                                    storeLogLong( MY_BUFFER, MY_INDEX, "frame offset", frame_offset, "length", frame_length, "status", m_BufferFromHostTx_Output.hdr.status, "handle", m_CurrentHandle);
+                                    storeLog( MY_BUFFER, MY_INDEX, "frame offset", frame_offset, "length", frame_length, "status", m_BufferFromHostTx_Output.hdr.status, "handle", m_CurrentHandle);
 #endif 
                                     if (m_CurrentHandle != m_OutputBufferHandleA && m_CurrentHandle != m_OutputBufferHandleB)
                                         {
@@ -613,7 +613,7 @@ bool            CKernel::framePollerMMAL            (   u32 frame_offset, u32 fr
 #ifdef __DEBUG_LOG__   
                                     message = "MMAL_MSG_STATUS_SUCCESS      - All is Fine";
                                 //  nextline( MY_BUFFER, MY_INDEX );
-                                    storeLogLong( MY_BUFFER, MY_INDEX, message, EMPTYLOG, "frame offset", frame_offset, "length", frame_length);
+                                    storeLog( MY_BUFFER, MY_INDEX, message, EMPTYLOG, "frame offset", frame_offset, "length", frame_length);
 #endif                       
                                     return true;
                                     }
@@ -638,7 +638,7 @@ bool            CKernel::framePollerMMAL            (   u32 frame_offset, u32 fr
                                 }
 #ifdef __DEBUG_LOG__   
                         //  nextline( MY_BUFFER, MY_INDEX );
-                            storeLogLong( MY_BUFFER, MY_INDEX, message, EMPTYLOG, "Frame offset", frame_offset, "length", frame_length);
+                            storeLog( MY_BUFFER, MY_INDEX, message, EMPTYLOG, "Frame offset", frame_offset, "length", frame_length);
                             storeMsg( MY_BUFFER, MY_INDEX, "Poller ERROR (BUFFER_TO_HOST)", &m_BufferFromHostTx_Output, msg_len);
 #endif               
                             return false;
@@ -649,7 +649,7 @@ bool            CKernel::framePollerMMAL            (   u32 frame_offset, u32 fr
                             message = "UNEXPECTED MESSAGE";
 #ifdef __DEBUG_LOG__    
                         //  nextline( MY_BUFFER, MY_INDEX );
-                            storeLogLong( MY_BUFFER, MY_INDEX, message,  EMPTYLOG, "Frame offset", frame_offset, "Type",  m_BufferFromHostTx_Output.hdr.type, "Status", m_BufferFromHostTx_Output.hdr.status);
+                            storeLog( MY_BUFFER, MY_INDEX, message,  EMPTYLOG, "Frame offset", frame_offset, "Type",  m_BufferFromHostTx_Output.hdr.type, "Status", m_BufferFromHostTx_Output.hdr.status);
                             storeMsg( MY_BUFFER, MY_INDEX, "Poller ERROR (UNEXPECTED MESSAGE)", &m_BufferFromHostTx_Output, msg_len);
 #endif 
                             break;
@@ -657,13 +657,13 @@ bool            CKernel::framePollerMMAL            (   u32 frame_offset, u32 fr
                         }
 #ifdef __DEBUG_LOG__ 
                 //  nextline( MY_BUFFER, MY_INDEX );
-                    storeLogLong( MY_BUFFER, MY_INDEX, "Unexpected Reply", EMPTYLOG, "Frame offset", frame_offset, "length", frame_length);
+                    storeLog( MY_BUFFER, MY_INDEX, "Unexpected Reply", EMPTYLOG, "Frame offset", frame_offset, "length", frame_length);
                     storeMsg( MY_BUFFER, MY_INDEX, "Unexpected Reply", &m_BufferFromHostTx_Output, msg_len);
 #endif       
                     }
 #ifdef __DEBUG_LOG__   
             //  nextline( MY_BUFFER, MY_INDEX );
-                storeLogLong( MY_BUFFER, MY_INDEX, "Nothing in the Pipeline", EMPTYLOG, "Frame offset", frame_offset, "length", frame_length);    // Nothing relevant received
+                storeLog( MY_BUFFER, MY_INDEX, "Nothing in the Pipeline", EMPTYLOG, "Frame offset", frame_offset, "length", frame_length);    // Nothing relevant received
 #endif 
                 return true;
 }
@@ -689,7 +689,7 @@ bool            CKernel::bufferReadyMMAL            (   u32 handle)
                 if (m_EGLimage == EGL_NO_IMAGE_KHR)
                     {
 #ifdef __DEBUG_LOG__        
-                    storeLogLong( MY_BUFFER, MY_INDEX, "EGLImage creation FAILED", handle);
+                    storeLog( MY_BUFFER, MY_INDEX, "EGLImage creation FAILED", handle);
 #endif 
                     return false;
                     }
@@ -715,7 +715,7 @@ bool            CKernel::queueOutputBufferMMAL      (   MMAL_Buffer_From_Host_Ms
                 tx.msg.buffer_header.flags                         = 0;
 
 #ifdef __DEBUG_LOG__
-                storeLogLong( MY_BUFFER, MY_INDEX, "BUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
+                storeLog( MY_BUFFER, MY_INDEX, "BUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
                 storeMsg( MY_BUFFER, MY_INDEX, "QueueOutputBuffer", &tx, (u32)sizeof(tx));
 #endif 
                 return (vchi_msg_queue(m_ServiceHandleMMAL, &tx, (u32)sizeof(tx), VCHI_FLAGS_BLOCK_UNTIL_QUEUED, nullptr) == 0);
@@ -735,7 +735,7 @@ bool            CKernel::queueInputBufferMMAL       (   MMAL_Buffer_From_Host_Ms
                 u32 flags                                           = MMAL_BUFFER_HEADER_FLAG_FRAME | MMAL_BUFFER_HEADER_FLAG_KEYFRAME;
                 tx.msg.buffer_header.flags                         = flags;
 #ifdef __DEBUG_LOG__
-                storeLogLong( MY_BUFFER, MY_INDEX, "BUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
+                storeLog( MY_BUFFER, MY_INDEX, "BUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
                 storeMsg( MY_BUFFER, MY_INDEX, "QueueInputBuffer", &tx, (u32)sizeof(tx));
 #endif 
                 return (vchi_msg_queue(m_ServiceHandleMMAL, &tx, (u32)sizeof(tx), VCHI_FLAGS_BLOCK_UNTIL_QUEUED, nullptr) == 0);
@@ -756,7 +756,7 @@ bool            CKernel::createComponent            (   MMAL_Component_Create_Ms
                 if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __DEBUG_LOG__
-                    storeLogLong( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif 
                     return false;
                     }
@@ -784,7 +784,7 @@ bool            CKernel::getPortInfoMMAL            (   u32 port_type,
                 if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __DEBUG_LOG__
-                    storeLogLong( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif 
                     return false;
                     }
@@ -805,7 +805,7 @@ bool            CKernel::setPortInfoMMAL            (   MMAL_Port_Info_Set_Msg& 
                 if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __DEBUG_LOG__
-                    storeLogLong( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif 
                     return false;
                     }
@@ -828,7 +828,7 @@ bool            CKernel::enableComponentMMAL        (   MMAL_Component_Enable_Ms
                 if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __DEBUG_LOG__
-                    storeLogLong( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif 
                     return false;
                     }
@@ -859,7 +859,7 @@ bool            CKernel::setZeroCopyModeMMAL        ( /*u32 port_handle,*/
                 if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __DEBUG_LOG__
-                    storeLogLong( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif 
                     return false;
                     }
@@ -887,7 +887,7 @@ bool            CKernel::enablePortMMAL             ( /*u32 port_handle,*/
                 if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __DEBUG_LOG__
-                    storeLogLong( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif 
                     return false;
                     }

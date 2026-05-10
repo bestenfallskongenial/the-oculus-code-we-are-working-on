@@ -68,7 +68,7 @@ public:
                 void            bufferToScreenGetGrid      (    unsigned& cols,
                                                                 unsigned& rows );
 
-                void            storeLogLong                (           char*                           p_bufferArray,
+                void            storeLog                   (            char*                           p_bufferArray,
                                                                         u32&                            index,
                                                                 const   char*                           p_string0, 
                                                                         u32                             p_value0    = EMPTYLOG,

@@ -292,9 +292,11 @@ void            CKernel::gfx_check                  (   const char* file,
                         resetFlag = true;
                     }
 }
-
-bool            CKernel::startupScreen              (   char* p_buffer, u32& index)
+                boolean CKernel::startupScreen          (   void )
 {
+            //  m_startupBufferIndex = 0;
+            //  m_startupBuffer[0] = '\0';
+
                 const char* machineName = m_MachineInfo.GetMachineName();
                 const char* socName     = m_MachineInfo.GetSoCName();
 
@@ -312,43 +314,44 @@ bool            CKernel::startupScreen              (   char* p_buffer, u32& ind
                 unsigned uartClock      = m_MachineInfo.GetClockRate(CLOCK_ID_UART)  / 1000000;
 
                 unsigned dmaChannel     = m_MachineInfo.AllocateDMAChannel(DMA_CHANNEL_NORMAL);
-
-                /* just clean it up */    m_MachineInfo.FreeDMAChannel(dmaChannel);
+                m_MachineInfo.FreeDMAChannel(dmaChannel);
 
                 unsigned usbDelay       = m_Options.GetUSBPowerDelay();
                 unsigned usbSpeed       = m_Options.GetUSBFullSpeed();
 
-                storeLog( MY_BUFFER, MY_INDEX, "Machine Model", EMPTYLOG, machineName);
+                storeLog(m_startupBuffer, m_startupBufferIndex, "Machine Model", EMPTYLOG, machineName);
 
-                storeLog( MY_BUFFER, MY_INDEX, "SoC Name", EMPTYLOG, socName, EMPTYLOG, "Model Major    ", modelMajor, "Model Revision ", modelRevision);
+                storeLog(m_startupBuffer, m_startupBufferIndex, "SoC Name", EMPTYLOG, socName,
+                                                                  	EMPTYLOG, "Model Major    ", modelMajor,
+                                                                  	"Model Revision ", modelRevision);
 
-                storeLog( MY_BUFFER, MY_INDEX, "RAM Size     MB", ramSize);
-                storeLog( MY_BUFFER, MY_INDEX, "CPU Speed Mode", cpuSpeedMode);
+                storeLog(m_startupBuffer, m_startupBufferIndex, "RAM Size     MB", ramSize);
+                storeLog(m_startupBuffer, m_startupBufferIndex, "CPU Speed Mode", cpuSpeedMode);
+                storeLog(m_startupBuffer, m_startupBufferIndex, "SoC Max Temperature", socMaxTemp);
 
-                storeLog( MY_BUFFER, MY_INDEX, "SoC Max Temperature", socMaxTemp);
+                storeLog(m_startupBuffer, m_startupBufferIndex, "Clock CORE MHz", coreClock,
+                                                                  	"Clock ARM MHz", armClock);
 
-                storeLog( MY_BUFFER, MY_INDEX, "Clock CORE MHz", coreClock, "Clock ARM MHz", armClock);
+                storeLog(m_startupBuffer, m_startupBufferIndex, "Clock EMMC  MHz", emmcClock,
+                                                                  	"EMMC2 MHz", emmc2Clock);
 
-                storeLog( MY_BUFFER, MY_INDEX, "Clock EMMC  MHz", emmcClock, "EMMC2 MHz", emmc2Clock);
+                storeLog(m_startupBuffer, m_startupBufferIndex, "Clock UART  MHz", uartClock);
 
-                storeLog( MY_BUFFER, MY_INDEX, "Clock UART  MHz", uartClock);    
+                storeLog(m_startupBuffer, m_startupBufferIndex, "DMA Channel", dmaChannel);
 
-                storeLog( MY_BUFFER, MY_INDEX, "DMA Channel", dmaChannel);
+                storeLog(m_startupBuffer, m_startupBufferIndex, "USB Delay", usbDelay,
+                                                                  	"USB FullSpeed", usbSpeed);
 
-                storeLog( MY_BUFFER, MY_INDEX, "USB Delay", usbDelay, "USB FullSpeed", usbSpeed);
+                bufferToScreenClear();
 
-                
-                screen_clear_screen(0x00000000);
+                bufferToScreenDrawBuffer(
+                                        m_startupBuffer,
+                                        0,
+                                        m_startupBufferIndex,
+                                        0,
+                                        0,
+                                        0xFFFFFFFF
+                                        );
 
-                screen_draw_buffer_segment  (
-                                            p_buffer,
-                                            0,
-                                            index,
-                                            0,
-                                            0,
-                                            0xFFFFFFFF,
-                                            0x00000000
-                                            );
-
-                return true;
+                return TRUE;
 }
