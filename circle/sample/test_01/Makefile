@@ -8,11 +8,12 @@ OBJS  = main.o \
         kernel.o \
         kernel_initialize.o \
         kernel_run.o \
-        datamanagement.o \
-        hardware.o \
-        logging.o \
         CLogger.o \
-        debug.o
+        code_datamanagement.o \
+        code_hardware.o \
+        code_logging.o \
+        code_util.o \
+        code_debug.o
 
 # libraries
 LIBS =  $(CIRCLEHOME)/lib/usb/libusb.a \

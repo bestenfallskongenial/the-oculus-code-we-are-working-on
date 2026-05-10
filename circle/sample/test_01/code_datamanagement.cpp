@@ -1,6 +1,9 @@
 
 #include "kernel.h"
 
+#define MY_BUFFER   m_logBuffer
+#define MY_INDEX    m_logBufferIndex
+
 bool            CKernel::Mount                      (   const   char*       p_deviceName )
 {
                 CDevice* f_partitionName = m_DeviceNameService.GetDevice(p_deviceName, TRUE);
