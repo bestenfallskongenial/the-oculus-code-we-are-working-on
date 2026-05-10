@@ -188,19 +188,19 @@ bool            CKernel::Update                     (   )
                 // - m_bufferKnl[0] + loaded_bytes_kernel[0] already contain the fallback kernel loaded from sd ( the running kernel )
                 // - filesystem is already mounted by caller
 
-                if (saveFromBufferM(PARTITION_NAME_SD, m_bufferKnl[1], loaded_bytes_kernel[1]))
+                if (saveFromBufferM(PARTITION_NAME_SD, FILENAME_KNL, m_bufferKnl[1], g_bytKln[1]))
                     {
                     return true;
                     }
 
-                saveFromBufferM(FILENAME_KERNEL, m_bufferKnl[0], loaded_bytes_kernel[0]); // fail - try to restore the original kernel
+                saveFromBufferM(PARTITION_NAME_SD, FILENAME_KNL, m_bufferKnl[0], g_bytKln[0]); // fail - try to restore the original kernel
 
                 return false;
 }
 
 void            CKernel::set_pot_routing            (   bool            adc_pot_routing)
 {
-                m_ChipSelectPin.Write(adc_pot_routing);
+            //  m_ChipSelectPin.Write(adc_pot_routing);
 }
 
 char*           CKernel::make83FileName             (   const char*     ext )
