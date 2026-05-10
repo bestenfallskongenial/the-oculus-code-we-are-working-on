@@ -51,6 +51,14 @@ public:
                 char                m_startupBuffer[LOG_BUFFER_SIZE] = {0};
                 u32                 m_startupBufferIndex = 0;
 // global
+
+// missing globals / shared state
+                int             g_currentProgramBuffer;
+                int             g_current_gl_program;
+                int             g_last_gl_program;
+                int             g_activeBpmChannel;
+                unsigned        g_currentTime;
+
                 unsigned                g_inOutMatrixInt[CHANNEL][IO_TYPE_COUNT];           // the integer in/out matrix
                 float                   g_inOutMatrixFlt[CHANNEL][IO_TYPE_COUNT];           // the float in/out matrix
                 bool                    g_menuPickUpFlag[4*MENU_LAYER_COUNT];                     // the flags for the pickup mechanism  
