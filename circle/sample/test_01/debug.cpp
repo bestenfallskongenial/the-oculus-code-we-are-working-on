@@ -1,5 +1,7 @@
 #include "kernel.h"
 
+static const char FromKernel[] = "kernel";
+
 void CKernel::debug()
 {
 unsigned tick = 0;
