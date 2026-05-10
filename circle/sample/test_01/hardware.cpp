@@ -125,7 +125,7 @@ boolean         CKernel::SPI_init                (   void)
 
                 unsigned nCoreClockRate = CMachineInfo::Get()->GetClockRate(CLOCK_ID_CORE);
 
-                f (nCoreClockRate == 0 || SPI_CLOCK_SPEED < 4000 || SPI_CLOCK_SPEED > 125000000) return FALSE;
+                if (nCoreClockRate == 0 || SPI_CLOCK_SPEED < 4000 || SPI_CLOCK_SPEED > 125000000) return FALSE;
 
                 PeripheralEntry();
 
