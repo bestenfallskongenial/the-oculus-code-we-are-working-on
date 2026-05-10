@@ -20,6 +20,8 @@
 
 #define MAX_FILE_NAME_LENGTH    13
 
+#define BTN_PRESSED 0
+
 #define __DEBUG_LOG__
 
 #define 		CHUNK_SIZE				1024                                // for the file load 

@@ -269,16 +269,16 @@ void            CKernel::storeModes                 (   )
                 
                 if (g_current_gl_program != g_last_gl_program)
                     {    
-                    g_currentProgramBuffer = g_centralModeBuffer[g_current_gl_program][is_stored] ? g_current_gl_program : DEFAULT_SLOT;
+                    g_currentProgramBuffer = g_centralModeBuffer[g_current_gl_program][IS_STORED] ? g_current_gl_program : DEFAULT_SLOT;
                     g_last_gl_program = g_current_gl_program;
                     }               
 
-                if (g_centralModeBuffer[g_current_gl_program][is_stored] == true /* && g_currentProgramBuffer != g_current_gl_program */)
+                if (g_centralModeBuffer[g_current_gl_program][IS_STORED] == true /* && g_currentProgramBuffer != g_current_gl_program */)
                     {  
                     memcpy(&g_centralModeBuffer[g_current_gl_program][0], &g_centralModeBuffer[DEFAULT_SLOT][0], sizeof(g_centralModeBuffer[g_current_gl_program])); // replaces 16 * sizeof(int)
                     g_currentProgramBuffer = g_current_gl_program;
                     }
-                else if (g_centralModeBuffer[g_current_gl_program][is_stored] == false /* && g_currentProgramBuffer != DEFAULT_SLOT */)
+                else if (g_centralModeBuffer[g_current_gl_program][IS_STORED] == false /* && g_currentProgramBuffer != DEFAULT_SLOT */)
                     {  
                     g_currentProgramBuffer = DEFAULT_SLOT;
                     }
