@@ -121,6 +121,7 @@ TShutdownMode CKernel::Run                              (   void )
 
                         m_Timer.StartKernelTimer(5 * HZ, TimerHandler);
                         }
+*/     
                     }
-*/
+
 }
