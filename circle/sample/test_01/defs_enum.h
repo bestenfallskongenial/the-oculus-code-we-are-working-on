@@ -98,7 +98,7 @@ enum lfo_bpm_types
     TIDX,           									// timeIndex
     TB,             									// timeBuffer
     DB,             									// deltaBuffer
-
+    IREG,                                               // iregularity 
     LFO_BPM_COUNT										// 15
 };
 //------------------------------------------------- // g_modeLengthAdd[MODELEN_FLAG_COUNT] 
