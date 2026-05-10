@@ -12,6 +12,26 @@ TShutdownMode CKernel::Run                              (   void )
                     m_Timer.MsDelay(1000);
 
                     tick++;
+                    
+                    for (unsigned i = 0; i < m_LEDCount; i++)
+                        {
+                        unsigned phase = (tick + i) % 6;
+
+                        u8 r = 0;
+                        u8 g = 0;
+                        u8 b = 0;
+
+                        if      (phase == 0) { r = 255; g = 0;   b = 0;   }
+                        else if (phase == 1) { r = 255; g = 128; b = 0;   }
+                        else if (phase == 2) { r = 0;   g = 255; b = 0;   }
+                        else if (phase == 3) { r = 0;   g = 255; b = 255; }
+                        else if (phase == 4) { r = 0;   g = 0;   b = 255; }
+                        else                 { r = 255; g = 0;   b = 255; }
+
+                        WS2812_SetLED(i, r, g, b);
+                        }
+
+                    WS2812_Update();
 
                     bufferToScreenClear();
 
