@@ -7,7 +7,11 @@
 
 
 // SPI
-    #define MY_SPI0_BASE                   (ARM_IO_BASE + 0x204000)
+    #define SPI0_BASE                   (ARM_IO_BASE + 0x204000)
+
+    #define         SPI_MASTER_DEVICE	 	0		                            // 0    m_SPIMaster ( also for the mcp3008 )
+    #define         SPI_CHIP_SELECT		 	0		                            // 0
+    #define         SPI_CLOCK_SPEED	   		1000000		                        // Hz
 
     #define ARM_SPI_CS                     (m_SPIBaseAddress + 0x00)
     #define ARM_SPI_FIFO                   (m_SPIBaseAddress + 0x04)
