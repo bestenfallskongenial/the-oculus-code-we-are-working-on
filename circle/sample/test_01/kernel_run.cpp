@@ -109,7 +109,7 @@ TShutdownMode CKernel::Run                              (   void )
                                         LogNotice,
                                         "starting exception timer"
                                         );
-*/
+
                         bufferToScreenDrawBuffer(
                                                 m_logBuffer,
                                                 0,
@@ -122,4 +122,5 @@ TShutdownMode CKernel::Run                              (   void )
                         m_Timer.StartKernelTimer(5 * HZ, TimerHandler);
                         }
                     }
+*/
 }
