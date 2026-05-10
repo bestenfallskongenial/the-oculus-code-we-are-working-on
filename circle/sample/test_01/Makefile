@@ -4,7 +4,7 @@
 
 CIRCLEHOME = ../..
 
-OBJS	= main.o kernel.o kernel_initialize.o kernel_run.o hardware.o logging.o CLogger.o
+OBJS	= main.o kernel.o kernel_initialize.o kernel_run.o datamanagement.o hardware.o logging.o CLogger.o
 
 LIBS	= $(CIRCLEHOME)/lib/libcircle.a
 
