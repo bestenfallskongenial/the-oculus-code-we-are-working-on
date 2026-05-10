@@ -1,8 +1,5 @@
 	#include "kernel.h"
 
-    static const char FromKernel[] = "kernel";
-
-
 				CKernel::CKernel						(	void )
 				:	gE_FrameBuffer( m_Options.GetWidth(), 
                                     m_Options.GetHeight(), 
