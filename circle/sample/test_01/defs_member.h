@@ -94,6 +94,9 @@ public:
                 uint32_t                m_audio_hold_A;
                 uint32_t                m_audio_hold_B;
 
+                bool                    m_audio_flag_A = false;          
+                bool                    m_audio_flag_B = false;
+
                 uint8_t                 g_modeLengthAdd[MODELEN_FLAG_COUNT] =
                                                                 {
                                                                 MAX_MODES,                  // 5 for now    
