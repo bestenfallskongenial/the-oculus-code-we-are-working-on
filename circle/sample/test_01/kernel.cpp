@@ -8,7 +8,8 @@
                                     32, 
                                     0, 
                                     TRUE ),
-                    m_SMITxDMA( DMA_CHANNEL_LITE )      // DMA_CHANNEL_LITE comes from machineinfo.h   
+                    m_SMITxDMA( DMA_CHANNEL_LITE )      // DMA_CHANNEL_LITE comes from machineinfo.h
+{                    
                 m_ActLED.Blink(5);
 }
 
