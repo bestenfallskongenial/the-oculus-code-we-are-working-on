@@ -123,3 +123,29 @@ enum ButtonTSIndex
     BTN_HOLD_TICK   = 4,                            		// COUNTER: increases while held ( runtime loop iterations - unstable but sufficient - needs measurement )
     BTN_INDEX_COUNT = 5
 };
+//------------------------------------------------- // for unsigned filecounter[FT_COUNT][FLD_COUNT]
+enum FileType
+{
+    FT_VSH = 0,                                     		// vertex shader 
+    FT_OMF,                                         		// overlay fragment shader 
+    FT_FSH,                                         		// user fragment shader
+    FT_OMT,                                         		// overlay texture
+    FT_TEX,                                         		// user texture
+    FT_VID,                                         		// user video 
+    FT_KLN,                                         		// kernel
+    FRM_BF,                                         		// output-frames A & B
+    LOGGER,                                         		// log-buffer
+    FT_COUNT
+};
+enum FileField
+{
+    FLD_MAXSD = 0,                                  		// number of maximal files on sd
+    FLD_MAXUSB,                                     		// number of maximal files on usb
+    FLD_EXTCNT,                                     		// number of possible file extensions const char *g_Suf*[]
+    FLD_SCANNED,                                    		// number of files scanned via scanRoot(...)  
+    FLD_LOADED,                                     		// number of actual loaded files after bulkLoad(...)
+    FLD_PREV,                                       		// number of actual loaded files before bulkLoad(...)
+    FLD_VALID,                                      		// number of valid files after gfx_init / parsing
+    FLD_SIZE,                                       		// maximal size of the files / buffer-size
+    FLD_COUNT
+};
