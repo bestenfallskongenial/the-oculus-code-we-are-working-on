@@ -295,8 +295,8 @@ void            CKernel::gfx_check                  (   const char* file,
 */
 boolean         CKernel::startupScreen          (   void )
 {
-            //  m_startupBufferIndex = 0;
-            //  m_startupBuffer[0] = '\0';
+            //  m_logBufferIndex = 0;
+            //  m_logBuffer[0] = '\0';
 
                 const char* machineName =  m_MachineInfo.GetMachineName();
                 const char* socName     =  m_MachineInfo.GetSoCName();
@@ -327,45 +327,45 @@ boolean         CKernel::startupScreen          (   void )
                 unsigned fbWidth        =  gE_FrameBuffer.GetWidth();
                 unsigned fbHeight       =  gE_FrameBuffer.GetHeight();
 
-                storeLog(m_startupBuffer, m_startupBufferIndex, "Machine Model", EMPTYLOG, machineName);
+                storeLog(m_logBuffer, m_logBufferIndex, "Machine Model", EMPTYLOG, machineName);
 
-                storeLog(m_startupBuffer, m_startupBufferIndex, "SoC Name", EMPTYLOG, socName,
+                storeLog(m_logBuffer, m_logBufferIndex, "SoC Name", EMPTYLOG, socName,
                                                                 EMPTYLOG, "Model Major    ", modelMajor,
                                                                 "Model Revision ", modelRevision);
-                nextline(m_startupBuffer, m_startupBufferIndex);
-                storeLog(m_startupBuffer, m_startupBufferIndex, "RAM Size     MB", ramSize);
-                nextline(m_startupBuffer, m_startupBufferIndex);                
-                storeLog(m_startupBuffer, m_startupBufferIndex, "CPU Speed Mode", cpuSpeedMode);
-                storeLog(m_startupBuffer, m_startupBufferIndex, "SoC Max Temperature", socMaxTemp);
-                nextline(m_startupBuffer, m_startupBufferIndex);
-                storeLog(m_startupBuffer, m_startupBufferIndex, "Clock CORE MHz", coreClock,
+                nextline(m_logBuffer, m_logBufferIndex);
+                storeLog(m_logBuffer, m_logBufferIndex, "RAM Size     MB", ramSize);
+                nextline(m_logBuffer, m_logBufferIndex);                
+                storeLog(m_logBuffer, m_logBufferIndex, "CPU Speed Mode", cpuSpeedMode);
+                storeLog(m_logBuffer, m_logBufferIndex, "SoC Max Temperature", socMaxTemp);
+                nextline(m_logBuffer, m_logBufferIndex);
+                storeLog(m_logBuffer, m_logBufferIndex, "Clock CORE MHz", coreClock,
                                                                 "Clock ARM MHz", armClock);
 
-                storeLog(m_startupBuffer, m_startupBufferIndex, "Clock EMMC  MHz", emmcClock,
+                storeLog(m_logBuffer, m_logBufferIndex, "Clock EMMC  MHz", emmcClock,
                                                                 "EMMC2 MHz", emmc2Clock);
 
-                storeLog(m_startupBuffer, m_startupBufferIndex, "Clock UART  MHz", uartClock);
-                nextline(m_startupBuffer, m_startupBufferIndex);
-                storeLog(m_startupBuffer, m_startupBufferIndex, "DMA Channel", dmaChannel);
-                nextline(m_startupBuffer, m_startupBufferIndex);
-                storeLog(m_startupBuffer, m_startupBufferIndex, "USB Delay", usbDelay,
+                storeLog(m_logBuffer, m_logBufferIndex, "Clock UART  MHz", uartClock);
+                nextline(m_logBuffer, m_logBufferIndex);
+                storeLog(m_logBuffer, m_logBufferIndex, "DMA Channel", dmaChannel);
+                nextline(m_logBuffer, m_logBufferIndex);
+                storeLog(m_logBuffer, m_logBufferIndex, "USB Delay", usbDelay,
                                                                 "USB FullSpeed", usbSpeed);
-                nextline(m_startupBuffer, m_startupBufferIndex);
-                storeLog(m_startupBuffer, m_startupBufferIndex, "Screen X", conWidth,
+                nextline(m_logBuffer, m_logBufferIndex);
+                storeLog(m_logBuffer, m_logBufferIndex, "Screen X", conWidth,
                                                                 "Screen Y", conHeight);  
 
-                storeLog(m_startupBuffer, m_startupBufferIndex, "Framebuffer X", fbWidth,
+                storeLog(m_logBuffer, m_logBufferIndex, "Framebuffer X", fbWidth,
                                                                 "Framebuffer Y", fbHeight);
          
-                storeLog(m_startupBuffer, m_startupBufferIndex, "Screen X", gE_ScreenWidth,
+                storeLog(m_logBuffer, m_logBufferIndex, "Screen X", gE_ScreenWidth,
                                                                 "Screen Y", gE_ScreenHeight);
 
                 bufferToScreenClear();
 
                 bufferToScreenDrawBuffer(
-                                        m_startupBuffer,
+                                        m_logBuffer,
                                         0,
-                                        m_startupBufferIndex,
+                                        m_logBufferIndex,
                                         0,
                                         0,
                                         0xFFFFFFFF

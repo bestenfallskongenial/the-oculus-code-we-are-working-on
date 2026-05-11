@@ -11,8 +11,8 @@ unsigned tick = 0;
                     {
                     m_Timer.MsDelay(1000);
                     
-                    m_startupBufferIndex = 0;
-                    m_startupBuffer[0] = '\0';
+                    m_logBufferIndex = 0;
+                    m_logBuffer[0] = '\0';
                     
                     startupScreen();
 

@@ -48,8 +48,7 @@ public:
     
                 char                m_logBuffer[LOG_BUFFER_SIZE] = {0};
                 u32                 m_logBufferIndex = 0;
-                char                m_startupBuffer[LOG_BUFFER_SIZE] = {0};
-                u32                 m_startupBufferIndex = 0;
+
 // global
 
 // missing globals / shared state / dummies for now
