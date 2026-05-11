@@ -1,3 +1,11 @@
+    #define 		LOGLEVEL				    4	                            // 0: only panic 
+                                                                                // 1: also errors 
+                                                                                // 2: also warnings 
+                                                                                // 3: also notices 
+                                                                                // 4: also debug output (default))
+    
+    #define __DEBUG_LOG__
+
     // to prepare filecounter[FT_COUNT][FLD_COUNT]
     #define         VSH_SD             		    1	// max number of u_vertex shader on sd
     #define         OMF_SD             		    1	// max number of fragment shader on sd
@@ -56,3 +64,44 @@
     #define         ADC_SELECT_TEX              6
     #define         ADC_SELECT_VID              5
     #define			ADC_INPUT_CLK			    5	// adc p_channel use as clock ! BIGGER THAN 3 !
+
+    #define         PARTITION_NAME_SD	        "emmc1-1"	                         // name partition sd dont confuse with device type    
+    #define         PARTITION_NAME_USB	        "umsd1-1"	
+
+    #define 		FILENAME_KNL			    "kernel.img"                         // for logger
+
+    #define         Filename_SYS_LOG            "LOG-SYS.txt"
+    #define 		FILENAME_GL_LOG			    "LOG-GLES.txt"                       // names for my log files 
+    #define 		FILENAME_GLERROR		    "LOG-GLER.txt"
+    #define 		FILENAME_VCSM_LOG		    "LOG-VCSM.txt"
+    #define 		FILENAME_MMAL_LOG		    "LOG-MMAL.txt"    
+
+    #define         WAVEFORMS             	    4		// number of lfo waves
+    #define         WAVESAMPLES            	    256  	// number of samples per lfo waves
+
+    #define         MAX_MODES                   5
+    #define         MENU_LAYER_COUNT            4
+
+    #define 		LFO_INSTANCES			    2
+    #define			LFO_MULTIPLIERS			    7
+
+    #define         SLOTS                       34                                  // for the g_centralModeBuffer[SLOTS][MODETABLE_COUNT] array -  
+                                                                                    // 1 firmware / 32 user / 1 default slot
+    #define         DEFAULT_SLOT                33                                  //  because 0 plus 34 = 33 ?? 
+
+    #define         AUDIO_THRESHOLD             160
+    #define         AUDIO_BUFFER_COUNT          63
+    #define         AUDIO_MENU_HOLD             3000
+
+    #define 		CHUNK_SIZE				    1024                                // for the file load 
+
+    #define			TIMEOUT					    10                                  // for my watchdog         
+    // WS2812 pin
+    #define         LED_PIN		           	    19		                            // led ( must be between 8 .. 23 )
+    #define         LED_COUNT		       	    4		                            // number of LEDs on the stripes   
+
+    #define         BUTTON_COUNT                2                                   // was addon/sensors/buttons.h is now buttonPing()  no class required 
+    #define         SW_PIN_A	           	    13                                  // button A ( lower )
+    #define         SW_PIN_B	          	    6                                   // button B ( upper )
+
+    #define         CS_PIN                 	    12                                  // for menu input selector!!!

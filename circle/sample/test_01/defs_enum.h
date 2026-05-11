@@ -113,7 +113,7 @@ enum ModeLengthFlag
 
                 MODELEN_FLAG_COUNT
 };
-//------------------------------------------------- // unsigned int g_buttons_states[NR_BUTTONS][5] = {0} !!!
+//------------------------------------------------- // unsigned int g_buttons_states[BUTTON_COUNT][5] = {0} !!!
 enum ButtonTSIndex  
 {
     BTN_PRESS_START = 0,

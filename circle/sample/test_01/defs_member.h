@@ -70,7 +70,7 @@ public:
                 unsigned                g_inOutMatrixInt[CHANNEL][IO_TYPE_COUNT];           // the integer in/out matrix
                 float                   g_inOutMatrixFlt[CHANNEL][IO_TYPE_COUNT];           // the float in/out matrix
                 bool                    g_menuPickUpFlag[4*MENU_LAYER_COUNT];                     // the flags for the pickup mechanism  
-                unsigned                g_buttons_states[NR_BUTTONS][BTN_INDEX_COUNT];      // the button state machine
+                unsigned                g_buttons_states[BUTTON_COUNT][BTN_INDEX_COUNT];      // the button state machine
                 unsigned                g_centralModeBuffer[SLOTS][MODETABLE_COUNT];         // the general user settings, storable per program 
                 unsigned                g_lfoMultiplier[LFO_MULTIPLIERS]        = {   64, 32, 16, 8, 4, 2, 1 };
 
