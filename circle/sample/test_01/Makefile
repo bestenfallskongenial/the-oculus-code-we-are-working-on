@@ -13,6 +13,7 @@ OBJS  = main.o \
         code_hardware.o \
         code_logging.o \
         code_util.o \
+        code_wrappers.cpp \
         code_debug.o
 
 # libraries

@@ -146,10 +146,10 @@ void            CKernel::bulkLoad                   (           char*       p_fi
 
 #ifdef __DEBUG_LOG__
                 storeLog(   MY_BUFFER, MY_INDEX,
-                                "BULKLOAD Start max",   (u32)p_maxFiles,
-                                "valid",                (u32)p_validFiles,
-                                "size",                 (u32)p_fileSize,
-                                EMPTYSTR,               EMPTYLOG );
+                            "BULKLOAD Start max",   (u32)p_maxFiles,
+                            "valid",                (u32)p_validFiles,
+                            "size",                 (u32)p_fileSize,
+                            EMPTYSTR,               EMPTYLOG );
 #endif
 
                 for (unsigned i = 0; i < p_maxFiles; ++i) 
@@ -162,10 +162,10 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                             p_loadedBytes[p_validFiles] = f_bytesRead;
 #ifdef __DEBUG_LOG__
                             storeLog(   MY_BUFFER, MY_INDEX,
-                                            "file",              (u32)i,
-                                            p_fileNameArray[i],  EMPTYLOG,
-                                            "bytes read",        (u32)f_bytesRead,
-                                            "in buffer",         (u32)p_validFiles );
+                                        "file",              (u32)i,
+                                        p_fileNameArray[i],  EMPTYLOG,
+                                        "bytes read",        (u32)f_bytesRead,
+                                        "in buffer",         (u32)p_validFiles );
 #endif                            
                             p_validFiles++;   
                             }
