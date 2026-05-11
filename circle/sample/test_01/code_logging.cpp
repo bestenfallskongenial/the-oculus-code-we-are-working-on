@@ -315,10 +315,14 @@ boolean         CKernel::startupScreen          (   void )
                 unsigned uartClock      = m_MachineInfo.GetClockRate(CLOCK_ID_UART)  / 1000000;
 
                 unsigned dmaChannel     = m_MachineInfo.AllocateDMAChannel(DMA_CHANNEL_NORMAL);
-                m_MachineInfo.FreeDMAChannel(dmaChannel);
 
+                m_MachineInfo.FreeDMAChannel(dmaChannel);
+            
                 unsigned usbDelay       = m_Options.GetUSBPowerDelay();
                 unsigned usbSpeed       = m_Options.GetUSBFullSpeed();
+
+                unsigned width          = m_Options.GetWidth();
+                unsigned height         = m_Options.GetHeight();
 
                 storeLog(m_startupBuffer, m_startupBufferIndex, "Machine Model", EMPTYLOG, machineName);
 
@@ -343,6 +347,9 @@ boolean         CKernel::startupScreen          (   void )
                 storeLog(m_startupBuffer, m_startupBufferIndex, "USB Delay", usbDelay,
                                                                   	"USB FullSpeed", usbSpeed);
 
+                storeLog(m_startupBuffer, m_startupBufferIndex, "Screen X", width,
+                                                                "Screen Y", height);  
+                                                                                                                                  
                 bufferToScreenClear();
 
                 bufferToScreenDrawBuffer(
