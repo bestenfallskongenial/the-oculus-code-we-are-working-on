@@ -93,14 +93,37 @@ void            CKernel::wrapperMEMcleanUp          (   )
 
 void            CKernel::wrapper_from_sd            (   )
 {
+                bufferToScreenDrawBuffer(   "wrapper start",
+                                            0,
+                                            sizeof("wrapper start"),
+                                            0,
+                                            0,
+                                            0xFFFFFFFF );
+                                            m_Timer.MsDelay(1000); 
+
                 if(Mount( PARTITION_NAME_SD ))
                     {
+                bufferToScreenDrawBuffer(   "mount success",
+                                            0,
+                                            sizeof("mount success"),
+                                            0,
+                                            0,
+                                            0xFFFFFFFF );
+                                            m_Timer.MsDelay(1000); 
+
                     scanRoot                (   g_ScnVsh,                           // where we store the valid filenames we find
                                                 g_SufVsh,                           // the array of valid file extensions for this type of file
                                                 filecounter[FT_VSH][FLD_EXTCNT],                         // how many valid file extensions we have in the array above also part of filecounter?
                                                 filecounter[FT_VSH][FLD_SCANNED],         
                                                 filecounter[FT_VSH][FLD_MAXSD]);           // how many files are allowed to scan and stored in the array
-                    
+                bufferToScreenDrawBuffer(   "scan vsh success",
+                                            0,
+                                            sizeof("scan vsh success"),
+                                            0,
+                                            0,
+                                            0xFFFFFFFF );
+                                            m_Timer.MsDelay(1000); 
+/*
                     scanRoot                (   g_ScnOmf, 
                                                 g_SufOmf, 
                                                 filecounter[FT_OMF][FLD_EXTCNT], 
@@ -192,7 +215,7 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_KLN][FLD_LOADED], 
                                                 filecounter[FT_KLN][FLD_PREV],
                                                 filecounter[FT_KLN][FLD_SIZE]); 
-
+*/
                     UnMount();   
                     }
                 // Flush CPU->RAM so the VPU sees the loaded bitstream
