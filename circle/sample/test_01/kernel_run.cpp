@@ -4,6 +4,8 @@
 
 TShutdownMode CKernel::Run(void)
 {
+                unsigned    start_time_fps_calculation = m_Timer.GetClockTicks();     
+                randomVec8              ( start_time_fps_calculation );
                 saveFromBufferM         (   PARTITION_NAME_SD,
                                             make83FileName("TXT"),
                                             m_logBuffer,
@@ -17,7 +19,8 @@ TShutdownMode CKernel::Run(void)
                                             0xFFFFFFFF );
 
                 wrapper_from_sd();
-                
+                            start_time_fps_calculation = m_Timer.GetClockTicks();     
+                randomVec8              ( start_time_fps_calculation );                
                 saveFromBufferM         (   PARTITION_NAME_SD,
                                             make83FileName("TXT"),
                                             m_logBuffer,
@@ -29,7 +32,7 @@ TShutdownMode CKernel::Run(void)
                                             0,
                                             0,
                                             0xFFFFFFFF );
-                
+                randomVec8              ( )
                 while (1)
                     {
                     }
