@@ -32,7 +32,7 @@ bool            CKernel::wrapperInitDMA             (   )
                     }
                 return bOK;
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 bool            CKernel::wrapperInitMEM             (   )
 {
                 bool bOK = true;
@@ -64,8 +64,7 @@ bool            CKernel::wrapperInitMEM             (   )
                     }
                 return bOK;
 }
-/*
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void            CKernel::wrapperDMAcleanUp          (   )
 {
                     clearBufferDMA( m_bufferVid, m_videoRawBlock); 
@@ -78,7 +77,7 @@ void            CKernel::wrapperDMAcleanUp          (   )
 
                     clearBufferDMA( m_bufferTex, m_textureRawBlock); 
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void            CKernel::wrapperMEMcleanUp          (   )
 {
                     clearBufferMEM( m_bufferKnl, filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB] ); 
@@ -91,6 +90,7 @@ void            CKernel::wrapperMEMcleanUp          (   )
 
                     clearBufferMEM( m_bufferFsh, filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB] );        
 }
+/*
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::wrapper_from_sd            (   )
 {

@@ -224,6 +224,14 @@ public:
                 void        sample1WaveTable            (           int                             p_source, 
                                                                     int                             p_lfoIn, 
                                                                     int                             p_lfoOut );
+//  WRAPPERS - HERE THE JOY BEGINS
+                bool        wrapperInitDMA              ();             // init/alloc the dma buffers 
+
+                bool        wrapperInitMEM              ();             // init/alloc the mem buffers
+
+                void        wrapperDMAcleanUp           ();             // clean/delete the dma buffers
+//130                
+                void        wrapperMEMcleanUp           ();             // clean delete the mem buffers                                                                    
 
                 boolean         startupScreen               (   void );                                                                
 
