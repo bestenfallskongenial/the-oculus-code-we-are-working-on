@@ -9,7 +9,7 @@ while (1)
     saveFromBufferM         (   PARTITION_NAME_SD,
                                 make83FileName("TXT"),
                                 m_logBuffer,
-                                m_logBufferIndex )
+                                m_logBufferIndex );
     bufferToScreenDrawBuffer(   m_logBuffer,
                                 0,
                                 m_logBufferIndex,
