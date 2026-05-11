@@ -32,6 +32,9 @@ TShutdownMode CKernel::Run(void)
 
                 m_Timer.MsDelay(1000); 
 
+m_logBufferIndex = 0;
+m_logBuffer[0] = '\0';
+
                 wrapper_from_sd();
 
                 bufferToScreenDrawBuffer(   "wrapper successful",
