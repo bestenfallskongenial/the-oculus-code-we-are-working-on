@@ -330,13 +330,14 @@ boolean         CKernel::startupScreen          (   void )
                 storeLog(m_startupBuffer, m_startupBufferIndex, "Machine Model", EMPTYLOG, machineName);
 
                 storeLog(m_startupBuffer, m_startupBufferIndex, "SoC Name", EMPTYLOG, socName,
-                                                                  	EMPTYLOG, "Model Major    ", modelMajor,
-                                                                  	"Model Revision ", modelRevision);
-
+                                                                EMPTYLOG, "Model Major    ", modelMajor,
+                                                                "Model Revision ", modelRevision);
+                nextline(m_startupBuffer, m_startupBufferIndex);
                 storeLog(m_startupBuffer, m_startupBufferIndex, "RAM Size     MB", ramSize);
+                nextline(m_startupBuffer, m_startupBufferIndex);                
                 storeLog(m_startupBuffer, m_startupBufferIndex, "CPU Speed Mode", cpuSpeedMode);
                 storeLog(m_startupBuffer, m_startupBufferIndex, "SoC Max Temperature", socMaxTemp);
-
+                nextline(m_startupBuffer, m_startupBufferIndex);
                 storeLog(m_startupBuffer, m_startupBufferIndex, "Clock CORE MHz", coreClock,
                                                                 "Clock ARM MHz", armClock);
 
@@ -344,12 +345,12 @@ boolean         CKernel::startupScreen          (   void )
                                                                 "EMMC2 MHz", emmc2Clock);
 
                 storeLog(m_startupBuffer, m_startupBufferIndex, "Clock UART  MHz", uartClock);
-
+                nextline(m_startupBuffer, m_startupBufferIndex);
                 storeLog(m_startupBuffer, m_startupBufferIndex, "DMA Channel", dmaChannel);
-
+                nextline(m_startupBuffer, m_startupBufferIndex);
                 storeLog(m_startupBuffer, m_startupBufferIndex, "USB Delay", usbDelay,
                                                                 "USB FullSpeed", usbSpeed);
-
+                nextline(m_startupBuffer, m_startupBufferIndex);
                 storeLog(m_startupBuffer, m_startupBufferIndex, "Screen X", conWidth,
                                                                 "Screen Y", conHeight);  
 
