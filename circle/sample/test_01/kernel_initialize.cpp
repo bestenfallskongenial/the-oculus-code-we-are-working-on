@@ -48,7 +48,7 @@ boolean			CKernel::Initialize						(	void )
 
                 if (bOK)
                     {
-                    bOK = allocBufferMEM();
+                    bOK = wrapperInitMEM();
                     }
 
                 return bOK;
