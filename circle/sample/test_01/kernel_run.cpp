@@ -47,7 +47,7 @@ TShutdownMode CKernel::Run(void)
                 randomVec8              ( start_time_fps_calculation );            
 
                 saveFromBufferM         (   PARTITION_NAME_SD,
-                                            /*make83FileName("TXT")*/,
+                                            /*make83FileName("TXT"),*/
                                             "logb.txt"
                                             m_logBuffer,
                                             m_logBufferIndex );
