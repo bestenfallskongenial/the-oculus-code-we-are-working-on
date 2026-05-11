@@ -4,7 +4,7 @@
 
 TShutdownMode CKernel::Run(void)
 {
-                unsigned    start_time_fps_calculation = m_Timer.GetClockTicks();     
+                uint32_t    start_time_fps_calculation = m_Timer.GetClockTicks();     
                 randomVec8              ( start_time_fps_calculation );
                 saveFromBufferM         (   PARTITION_NAME_SD,
                                             make83FileName("TXT"),
