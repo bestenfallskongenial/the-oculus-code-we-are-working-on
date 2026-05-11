@@ -71,7 +71,7 @@ unsigned tick = 0;
                     int adc5 = ReadMCP3008Raw(5);
                     int adc6 = ReadMCP3008Raw(6);
                     int adc7 = ReadMCP3008Raw(7);
-
+/*
                     unsigned mytestCol = tick % gE_Cols;
                     unsigned mytestRow = 0;
 
@@ -216,7 +216,7 @@ unsigned tick = 0;
                                             18,
                                             colorCycle[(tick + 7) & 7]
                                             );
-/*
+
                     if (!bExceptionTimerStarted && tick == 10)
                         {
                         bExceptionTimerStarted = TRUE;
