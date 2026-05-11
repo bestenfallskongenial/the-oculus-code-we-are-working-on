@@ -10,7 +10,7 @@ TShutdownMode CKernel::Run(void)
 
                 saveFromBufferM         (   PARTITION_NAME_SD,
                                             /*make83FileName("TXT"),*/
-                                            "loga.txt"
+                                            "loga.txt",
                                             m_logBuffer,
                                             m_logBufferIndex );
                 m_Timer.MsDelay(1000);
@@ -48,7 +48,7 @@ TShutdownMode CKernel::Run(void)
 
                 saveFromBufferM         (   PARTITION_NAME_SD,
                                             /*make83FileName("TXT"),*/
-                                            "logb.txt"
+                                            "logb.txt",
                                             m_logBuffer,
                                             m_logBufferIndex );
                 m_Timer.MsDelay(1000);    
