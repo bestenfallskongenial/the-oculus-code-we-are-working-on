@@ -6,11 +6,6 @@ boolean			CKernel::Initialize						(	void )
 
                 if (bOK)
                     {
-                    bOK = frameBufferInit();
-                    }
-
-                if (bOK)
-                    {
                     bOK = m_Interrupt.Initialize();
                     }
 
@@ -24,6 +19,11 @@ boolean			CKernel::Initialize						(	void )
                     CLogger::SetRawSink(CKernel::LoggerSink, this);
 
                     bOK = m_Logger.Initialize(0);
+                    }
+
+                if (bOK)
+                    {
+                    bOK = frameBufferInit();
                     }
 
                 if (bOK)
