@@ -169,13 +169,13 @@ public:
                                                                 const   char*                           p_string3   = EMPTYSTR, 
                                                                         u32                             p_value3    = EMPTYLOG);                                                              
 
-                void            storeMsg                   (            char*                           p_buffer,
+                void        storeMsg                   (            char*                           p_buffer,
                                                                         u32&                            index,
                                                                         const char*                     label,
                                                                         const void*                     tx_msg,
                                                                         u32                             total_size);
                                                                         
-                void            nextline                   (            char*                           p_buffer,
+                void        nextline                   (            char*                           p_buffer,
                                                                         u32&                            index);
 
 //  UTIL
@@ -233,18 +233,18 @@ public:
 //130                
                 void        wrapperMEMcleanUp           ();             // clean delete the mem buffers                                                                    
 
-                boolean         startupScreen               (   void );                                                                
+                boolean     startupScreen               (   void );                                                                
 
 private:
-        static  void            TimerHandler               (    TKernelTimerHandle hTimer, 
+        static  void        TimerHandler               (    TKernelTimerHandle hTimer, 
                                                                 void *pParam, 
                                                                 void *pContext);
                                                                 
-        static  void            LoggerSink                 (    void*       pContext,
+        static  void        LoggerSink                 (    void*       pContext,
                                                                 const char* pText,
                                                                 unsigned    nLength );
 
-                void            debug();
+                void        debug();
 
 #include "defs_member.h" // <- should go to the bottom, right?    
 

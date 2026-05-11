@@ -28,6 +28,22 @@ boolean			CKernel::Initialize						(	void )
 
                 if (bOK)
                     {
+                    bOK = m_EMMC.Initialize(); 
+                    }
+
+                if (bOK)
+                    {
+                    bOK = m_USBHCI.Initialize(); 
+                    }
+                    
+                if (bOK)
+                    {
+                    m_USBHCI.UpdatePlugAndPlay(); 
+                //  m_Timer.MsDelay(1000);
+                    }
+
+                if (bOK)
+                    {
                     bOK = SPI_init();
                     }
 

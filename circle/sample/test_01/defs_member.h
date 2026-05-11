@@ -10,7 +10,7 @@ private:
                 CLogger             m_Logger;  
                 CEMMCDevice		    m_EMMC;
                 CUSBHCIDevice		m_USBHCI; 
-                CMemorySystem		        m_Memory;
+                CMemorySystem		m_Memory;
                 CFATFileSystem*     m_pFileSystem; 
 
 // framebuffer
