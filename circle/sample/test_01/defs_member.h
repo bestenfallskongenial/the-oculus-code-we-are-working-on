@@ -74,7 +74,7 @@ public:
                 unsigned                g_centralModeBuffer[SLOTS][MODETABLE_COUNT];         // the general user settings, storable per program 
                 unsigned                g_lfoMultiplier[LFO_MULTIPLIERS]        = {   64, 32, 16, 8, 4, 2, 1 };
 
-                unsigned                g_lfoBpmMatrix[4][LFO_BPM_COUNT];
+                long long               g_lfoBpmMatrix[4][LFO_BPM_COUNT]; // was unsigned !
 // datamanagement.cpp
                 unsigned                g_hFile;
 
