@@ -52,7 +52,7 @@ public:
                 u32                 m_startupBufferIndex = 0;
 // global
 
-// missing globals / shared state
+// missing globals / shared state / dummies for now
                 int             g_currentProgramBuffer;
                 int             g_current_gl_program;
                 int             g_last_gl_program;
@@ -61,6 +61,11 @@ public:
                 unsigned long   g_double_click_time = 50;
                 unsigned long   g_long_click_time   = 250;
                 unsigned        g_currentTime;
+
+                int             attenuation = 0;
+                bool            m_audio_mode_activated = true;
+
+                bool is_audio[2];
 
                 unsigned                g_inOutMatrixInt[CHANNEL][IO_TYPE_COUNT];           // the integer in/out matrix
                 float                   g_inOutMatrixFlt[CHANNEL][IO_TYPE_COUNT];           // the float in/out matrix

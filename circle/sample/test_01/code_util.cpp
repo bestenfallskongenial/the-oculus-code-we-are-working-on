@@ -245,7 +245,7 @@ void            CKernel::chooseIndex                (   int             p_channe
                                                         int             p_maxCount, 
                                                         bool*           flags)    // non-condensed valid arrays, max number of files ( macros for example!)
 {
-                static int p_activeIndex = 0;
+//              static int p_activeIndex = 0;
 
                 int f_calculated = g_inOutMatrixInt[p_channel][RAW] * p_maxCount >> 10;
 

@@ -60,6 +60,7 @@
 
     #define         AUDIO_THRESHOLD         160
     #define         AUDIO_BUFFER_COUNT        63
+    #define         AUDIO_MENU_HOLD         3000
 
 // SPI
     #define SPI0_BASE                   (ARM_IO_BASE + 0x204000)
