@@ -16,6 +16,20 @@ TShutdownMode CKernel::Run(void)
                                             0,
                                             0xFFFFFFFF );
 
+                wrapper_from_sd();
+                
+                saveFromBufferM         (   PARTITION_NAME_SD,
+                                            make83FileName("TXT"),
+                                            m_logBuffer,
+                                            m_logBufferIndex );
+
+                bufferToScreenDrawBuffer(   m_logBuffer,
+                                            0,
+                                            m_logBufferIndex,
+                                            0,
+                                            0,
+                                            0xFFFFFFFF );
+                
                 while (1)
                     {
                     }
