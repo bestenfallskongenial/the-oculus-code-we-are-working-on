@@ -40,5 +40,16 @@ boolean			CKernel::Initialize						(	void )
                     {
                     bOK = WS2812_Init(LED_COUNT);      // example LED count, choose your actual count
                     }
+
+                if (bOK)
+                    {
+                    bOK = wrapperInitDMA();
+                    }
+
+                if (bOK)
+                    {
+                    bOK = allocBufferMEM();
+                    }
+
                 return bOK;
 }
