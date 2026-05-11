@@ -331,7 +331,7 @@ boolean         CKernel::startupScreen          (   void )
                                                         machineName);
 
                 storeLog(m_logBuffer, m_logBufferIndex, "SoC Name       ", EMPTYLOG, 
-                                                        socName          ,n EMPTYLOG, 
+                                                        socName          , EMPTYLOG, 
                                                         "Model Major    ", modelMajor,
                                                         "Model Revision ", modelRevision);
                 nextline(m_logBuffer, m_logBufferIndex);
