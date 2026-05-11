@@ -35,7 +35,16 @@ TShutdownMode CKernel::Run(void)
 m_logBufferIndex = 0;
 m_logBuffer[0] = '\0';
 
-                wrapper_from_sd();
+                if (!m_SD_has_load) 
+                    {
+                    wrapper_from_sd();
+                    m_SD_has_load = true;
+                    }
+                if (updateUSB("umsd1") == true && m_USB_has_load == false)
+                    { 
+                    wrapper_load_usb();
+                    m_USB_has_load = true;                            
+                    }
 
                 bufferToScreenDrawBuffer(   "wrapper successful",
                                             0,
@@ -74,7 +83,7 @@ m_logBuffer[0] = '\0';
                                             0,
                                             0xFFFFFFFF );
                                          
-                while (1)
+                while (m_resetFlag == false)
                     {
                     }
 

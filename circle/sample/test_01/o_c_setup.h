@@ -65,6 +65,9 @@
     #define         ADC_SELECT_VID              5
     #define			ADC_INPUT_CLK			    5	// adc p_channel use as clock ! BIGGER THAN 3 !
 
+    #define         DEVICE_NAME_SD              "emmc1"
+    #define         DEVICE_NAME_USB             "umsd1"
+    
     #define         PARTITION_NAME_SD	        "emmc1-1"	                         // name partition sd dont confuse with device type    
     #define         PARTITION_NAME_USB	        "umsd1-1"	
 

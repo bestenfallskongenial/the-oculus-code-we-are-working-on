@@ -104,7 +104,7 @@ unsigned        CKernel::GPIO_Read               (   unsigned nPin)
 
 void            CKernel::watchdog_Start          (   unsigned nTimeoutSeconds)
 {
-                if (nTimeoutSeconds > WatchdogMaxTimeoutSeconds) nTimeoutSeconds = WatchdogMaxTimeoutSeconds;
+                if (nTimeoutSeconds > MAX_WATCHDOG_SEC) nTimeoutSeconds = MAX_WATCHDOG_SEC;
 
                 write32( ARM_PM_WDOG, ARM_PM_PASSWD | ((nTimeoutSeconds << 16) & ARM_PM_WDOG_TIME) );
 

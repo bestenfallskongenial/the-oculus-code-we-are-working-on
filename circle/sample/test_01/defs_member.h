@@ -40,18 +40,21 @@ private:
                 unsigned            m_BufferLength      = 0;
                 TXDATA_T*           m_pBuffer           = 0;
                 boolean             m_SMIValid          = FALSE;
-// watchdog
-static const    unsigned WatchdogMaxTimeoutSeconds      = 15;                
 // debug
 public:
-    volatile    boolean	            m_bStorageAttached  = false;
-    
-                char                m_logBuffer[LOG_BUFFER_SIZE] = {0};
+                char                m_logBuffer[LOG_SIZ] = {0};
                 u32                 m_logBufferIndex = 0;
 
 // global
 
 // missing globals / shared state / dummies for now
+                bool            m_resetFlag     = false;
+
+    volatile    boolean	            m_bStorageAttached  = false;
+
+                bool            m_SD_has_load   = false;
+                bool            m_USB_has_load  = false;
+
                 int             g_currentProgramBuffer;
                 int             g_current_gl_program;
                 int             g_last_gl_program;

@@ -221,7 +221,7 @@ void            CKernel::wrapper_from_sd            (   )
                 // Flush CPU->RAM so the VPU sees the loaded bitstream
                 CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
 }
-/*
+
 void            CKernel::wrapper_load_usb           (   )
 {
                 if(Mount( PARTITION_NAME_USB ))
@@ -286,7 +286,7 @@ void            CKernel::wrapper_load_usb           (   )
                 // Flush CPU->RAM so the VPU sees the loaded bitstream
                 CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // !!! every memory allocation/operation like load?! do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
 }
-
+/*
 void            CKernel::wrapper_init_gl_sd         (   )
 {
                 BMPparser       (   &m_omt,                                         // the dedicated struct for the overlay texture

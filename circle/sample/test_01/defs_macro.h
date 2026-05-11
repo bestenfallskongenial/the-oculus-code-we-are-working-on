@@ -1,11 +1,8 @@
 #define         EMPTYSTR                0 // ""                                                 // for the logger
 #define         EMPTYLOG                255                                                // for the logger
 
-#define LOG_BUFFER_SIZE (1024 * 64)
 
-
-
-
+#define         MAX_WATCHDOG_SEC 15
 
 #define MAX_FILE_NAME_LENGTH    13
 

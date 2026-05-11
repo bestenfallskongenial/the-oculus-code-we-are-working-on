@@ -178,7 +178,7 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                     }
 
 #ifdef __DEBUG_LOG__
-                nextline(   MY_BUFFER, MY_INDEX);
+            //  nextline(   MY_BUFFER, MY_INDEX);
                 storeLog(   MY_BUFFER, MY_INDEX,
                                 "BULKLOAD End prev",    (u32)p_prevFiles,
                                 "new",                  (u32)p_validFiles,
