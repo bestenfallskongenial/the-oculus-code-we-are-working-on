@@ -32,7 +32,6 @@ TShutdownMode CKernel::Run(void)
                                             0,
                                             0,
                                             0xFFFFFFFF );
-                randomVec8              ( )
                 while (1)
                     {
                     }
