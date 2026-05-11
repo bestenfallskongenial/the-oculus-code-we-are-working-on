@@ -9,10 +9,12 @@ unsigned tick = 0;
 
                 while (1)
                     {
+                    startupScreen();
+
                     m_Timer.MsDelay(1000);
 
-                    startupScreen();
                     
+
                     tick++;
                     
                     for (unsigned i = 0; i < m_LEDCount; i++)
