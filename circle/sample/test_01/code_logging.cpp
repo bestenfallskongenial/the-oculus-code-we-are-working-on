@@ -321,8 +321,11 @@ boolean         CKernel::startupScreen          (   void )
                 unsigned usbDelay       = m_Options.GetUSBPowerDelay();
                 unsigned usbSpeed       = m_Options.GetUSBFullSpeed();
 
-                unsigned width          = m_Options.GetWidth();
-                unsigned height         = m_Options.GetHeight();
+                unsigned conWidth          = m_Options.GetWidth();
+                unsigned conHeight         = m_Options.GetHeight();
+
+                unsigned fbWidth  = gE_FrameBuffer.GetWidth();
+                unsigned fbHeight = gE_FrameBuffer.GetHeight();
 
                 storeLog(m_startupBuffer, m_startupBufferIndex, "Machine Model", EMPTYLOG, machineName);
 
@@ -335,21 +338,27 @@ boolean         CKernel::startupScreen          (   void )
                 storeLog(m_startupBuffer, m_startupBufferIndex, "SoC Max Temperature", socMaxTemp);
 
                 storeLog(m_startupBuffer, m_startupBufferIndex, "Clock CORE MHz", coreClock,
-                                                                  	"Clock ARM MHz", armClock);
+                                                                "Clock ARM MHz", armClock);
 
                 storeLog(m_startupBuffer, m_startupBufferIndex, "Clock EMMC  MHz", emmcClock,
-                                                                  	"EMMC2 MHz", emmc2Clock);
+                                                                "EMMC2 MHz", emmc2Clock);
 
                 storeLog(m_startupBuffer, m_startupBufferIndex, "Clock UART  MHz", uartClock);
 
                 storeLog(m_startupBuffer, m_startupBufferIndex, "DMA Channel", dmaChannel);
 
                 storeLog(m_startupBuffer, m_startupBufferIndex, "USB Delay", usbDelay,
-                                                                  	"USB FullSpeed", usbSpeed);
+                                                                "USB FullSpeed", usbSpeed);
 
-                storeLog(m_startupBuffer, m_startupBufferIndex, "Screen X", width,
-                                                                "Screen Y", height);  
-                                                                                                                                  
+                storeLog(m_startupBuffer, m_startupBufferIndex, "Screen X", conWidth,
+                                                                "Screen Y", conHeight);  
+
+                storeLog(m_startupBuffer, m_startupBufferIndex, "Framebuffer X", fbWidth,
+                                                                "Framebuffer Y", fbHeight);
+         
+                storeLog(m_startupBuffer, m_startupBufferIndex, "Screen X", gE_ScreenWidth,
+                                                                "Screen Y", gE_ScreenHeight);
+
                 bufferToScreenClear();
 
                 bufferToScreenDrawBuffer(
