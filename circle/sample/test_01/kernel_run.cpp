@@ -4,6 +4,9 @@
 
 TShutdownMode CKernel::Run                              (   void )
 {
+while (1)
+{    
 debug();
-
+}
+return ShutdownHalt;
 } 
