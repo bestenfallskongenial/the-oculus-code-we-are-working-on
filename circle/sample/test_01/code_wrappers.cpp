@@ -90,8 +90,7 @@ void            CKernel::wrapperMEMcleanUp          (   )
 
                     clearBufferMEM( m_bufferFsh, filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB] );        
 }
-/*
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void            CKernel::wrapper_from_sd            (   )
 {
                 if(Mount( PARTITION_NAME_SD ))
@@ -199,7 +198,7 @@ void            CKernel::wrapper_from_sd            (   )
                 // Flush CPU->RAM so the VPU sees the loaded bitstream
                 CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+/*
 void            CKernel::wrapper_load_usb           (   )
 {
                 if(Mount( PARTITION_NAME_USB ))
@@ -264,7 +263,7 @@ void            CKernel::wrapper_load_usb           (   )
                 // Flush CPU->RAM so the VPU sees the loaded bitstream
                 CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // !!! every memory allocation/operation like load?! do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void            CKernel::wrapper_init_gl_sd         (   )
 {
                 BMPparser       (   &m_omt,                                         // the dedicated struct for the overlay texture
@@ -420,7 +419,7 @@ void            CKernel::wrapper_io                 (   )
                 button_consumer(0);               // and transpose the button input in menulayer information each time
                 button_consumer(1);
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 void            CKernel::wrapper_modes              (   )
 {
                 resetPickUpFlags();                              // we need to reset the threshold flags each loop - why again?!
@@ -505,6 +504,7 @@ bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Init
 }
 // instead of having life time long structs for my vcsm / mmal i declare pointer instead and provide wrappers to alloc and free the structs after use!
 // means also i have to call the wrapper here at the CKernel init phase ( presumably after the memory alloc ) and after the init phase of the vc04 
+
 bool            CKernel::wrapperInitVCSMstruct      (   )
 {
                 bool bOK = true;
