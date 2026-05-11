@@ -20,6 +20,11 @@ boolean			CKernel::Initialize						(	void )
 
                     bOK = m_Logger.Initialize(0);
                     }
+                if (bOK)
+                    {
+                    bOK = startupScreen();
+                    m_Timer.MsDelay(1000);
+                    }
 
                 if (bOK)
                     {
@@ -28,18 +33,20 @@ boolean			CKernel::Initialize						(	void )
 
                 if (bOK)
                     {
-                    bOK = m_EMMC.Initialize(); 
+                    bOK = m_EMMC.Initialize();
+                    m_Timer.MsDelay(1000); 
                     }
 
                 if (bOK)
                     {
-                    bOK = m_USBHCI.Initialize(); 
+                    bOK = m_USBHCI.Initialize();
+                    m_Timer.MsDelay(1000); 
                     }
                     
                 if (bOK)
                     {
                     m_USBHCI.UpdatePlugAndPlay(); 
-                //  m_Timer.MsDelay(1000);
+                    m_Timer.MsDelay(1000);
                     }
 
                 if (bOK)

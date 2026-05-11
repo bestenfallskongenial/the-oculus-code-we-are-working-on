@@ -89,13 +89,13 @@ void            CKernel::storeMsg                   (   char*       p_buffer,
                                                         const void* tx_msg,
                                                         u32         total_size)
 {
-                p_buffer[index++] = '\n';
+                p_buffer[index++]           = '\n';
 
                 for (const char* p = label; *p; ++p)
                     {
                     p_buffer[index++] = *p;
                     }
-                p_buffer[index++] = '\n';
+                p_buffer[index++]           = '\n';
 
                 const unsigned char* b = (const unsigned char*)tx_msg;
 
@@ -103,26 +103,26 @@ void            CKernel::storeMsg                   (   char*       p_buffer,
                     {
                     if (i && (i % 16) == 0)
                         {
-                        p_buffer[index++] = '\n';
+                        p_buffer[index++]   = '\n';
                         }
-                    unsigned char v = b[i];
+                    unsigned char v         = b[i];
 
                     char hi = "0123456789ABCDEF"[v >> 4];
-                    p_buffer[index++] = hi;
+                    p_buffer[index++]       = hi;
                     char lo = "0123456789ABCDEF"[v & 0xF];
-                    p_buffer[index++] = lo;
-                    p_buffer[index++] = ' ';
+                    p_buffer[index++]       = lo;
+                    p_buffer[index++]       = ' ';
                     }
-                p_buffer[index++] = '\n';
-                p_buffer[index++] = '\n';
-                p_buffer[index] = '\0';
+                p_buffer[index++]           = '\n';
+                p_buffer[index++]           = '\n';
+                p_buffer[index]             = '\0';
 }
 
 void            CKernel::nextline                   (   char*       p_buffer,
                                                         u32&        index)
 {
-                p_buffer[index++] = '\n';
-                p_buffer[index] = '\0';
+                p_buffer[index++]           = '\n';
+                p_buffer[index]             = '\0';
 }
 /*
 bool            CKernel::shaderLog                  (   GLint       shader,
@@ -298,34 +298,34 @@ boolean         CKernel::startupScreen          (   void )
             //  m_startupBufferIndex = 0;
             //  m_startupBuffer[0] = '\0';
 
-                const char* machineName = m_MachineInfo.GetMachineName();
-                const char* socName     = m_MachineInfo.GetSoCName();
+                const char* machineName =  m_MachineInfo.GetMachineName();
+                const char* socName     =  m_MachineInfo.GetSoCName();
 
-                unsigned modelMajor     = m_MachineInfo.GetModelMajor();
-                unsigned modelRevision  = m_MachineInfo.GetModelRevision();
-                unsigned ramSize        = m_MachineInfo.GetRAMSize();
+                unsigned modelMajor     =  m_MachineInfo.GetModelMajor();
+                unsigned modelRevision  =  m_MachineInfo.GetModelRevision();
+                unsigned ramSize        =  m_MachineInfo.GetRAMSize();
 
                 unsigned cpuSpeedMode   = (m_Options.GetCPUSpeed() == CPUSpeedMaximum) ? 1 : 0;
-                unsigned socMaxTemp     = m_Options.GetSoCMaxTemp();
+                unsigned socMaxTemp     =  m_Options.GetSoCMaxTemp();
 
-                unsigned coreClock      = m_MachineInfo.GetClockRate(CLOCK_ID_CORE)  / 1000000;
-                unsigned armClock       = m_MachineInfo.GetClockRate(CLOCK_ID_ARM)   / 1000000;
-                unsigned emmcClock      = m_MachineInfo.GetClockRate(CLOCK_ID_EMMC)  / 1000000;
-                unsigned emmc2Clock     = m_MachineInfo.GetClockRate(CLOCK_ID_EMMC2) / 1000000;
-                unsigned uartClock      = m_MachineInfo.GetClockRate(CLOCK_ID_UART)  / 1000000;
+                unsigned coreClock      =  m_MachineInfo.GetClockRate(CLOCK_ID_CORE)  / 1000000;
+                unsigned armClock       =  m_MachineInfo.GetClockRate(CLOCK_ID_ARM)   / 1000000;
+                unsigned emmcClock      =  m_MachineInfo.GetClockRate(CLOCK_ID_EMMC)  / 1000000;
+                unsigned emmc2Clock     =  m_MachineInfo.GetClockRate(CLOCK_ID_EMMC2) / 1000000;
+                unsigned uartClock      =  m_MachineInfo.GetClockRate(CLOCK_ID_UART)  / 1000000;
 
-                unsigned dmaChannel     = m_MachineInfo.AllocateDMAChannel(DMA_CHANNEL_NORMAL);
+                unsigned dmaChannel     =  m_MachineInfo.AllocateDMAChannel(DMA_CHANNEL_NORMAL);
 
-                m_MachineInfo.FreeDMAChannel(dmaChannel);
+                                           m_MachineInfo.FreeDMAChannel(dmaChannel);
             
-                unsigned usbDelay       = m_Options.GetUSBPowerDelay();
-                unsigned usbSpeed       = m_Options.GetUSBFullSpeed();
+                unsigned usbDelay       =  m_Options.GetUSBPowerDelay();
+                unsigned usbSpeed       =  m_Options.GetUSBFullSpeed();
 
-                unsigned conWidth          = m_Options.GetWidth();
-                unsigned conHeight         = m_Options.GetHeight();
+                unsigned conWidth       =  m_Options.GetWidth();
+                unsigned conHeight      =  m_Options.GetHeight();
 
-                unsigned fbWidth  = gE_FrameBuffer.GetWidth();
-                unsigned fbHeight = gE_FrameBuffer.GetHeight();
+                unsigned fbWidth        =  gE_FrameBuffer.GetWidth();
+                unsigned fbHeight       =  gE_FrameBuffer.GetHeight();
 
                 storeLog(m_startupBuffer, m_startupBufferIndex, "Machine Model", EMPTYLOG, machineName);
 
