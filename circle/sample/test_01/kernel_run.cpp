@@ -63,6 +63,9 @@ m_logBuffer[0] = '\0';
                                             0,
                                             0xFFFFFFFF );
                 m_Timer.MsDelay(1000); 
+                
+m_logBufferIndex = 0;
+m_logBuffer[0] = '\0';
 
                 bufferToScreenDrawBuffer(   m_logBuffer,
                                             0,

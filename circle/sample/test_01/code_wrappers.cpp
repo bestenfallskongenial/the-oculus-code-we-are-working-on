@@ -159,7 +159,7 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_KLN][FLD_EXTCNT], 
                                                 filecounter[FT_KLN][FLD_SCANNED], 
                                                 filecounter[FT_KLN][FLD_MAXSD]);    
-
+*/
                     bulkLoad                (   g_ScnVsh,                           // where we have stored the filenames 
                                                 g_bytVsh,                           // where we store the loaded bytes for each file 
                                                 m_bufferVsh,                        // where we store the loaded file data for each file
@@ -167,7 +167,7 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_VSH][FLD_LOADED],            // <- is directly modified in the function, we dont need to return it
                                                 filecounter[FT_VSH][FLD_PREV],
                                                 filecounter[FT_VSH][FLD_SIZE]);                     // maximum size for each file
-                                                                            
+/*                                                                            
                     bulkLoad                (   g_ScnOmf, 
                                                 g_bytOmf, 
                                                 m_bufferOmf, 
