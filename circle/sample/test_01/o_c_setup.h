@@ -38,7 +38,7 @@
     #define         KLN_USB                     1
 
     #define         FRM_USB                     1   // i put them here because if my mem/dma allocation
-    #define         LOG_USB                     1
+    #define         LOG_USB                     0
 
     #define         VSH_EXT                     1
     #define         OMF_EXT                     1
