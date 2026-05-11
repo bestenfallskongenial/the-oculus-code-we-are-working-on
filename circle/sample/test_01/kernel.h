@@ -231,7 +231,11 @@ public:
 
                 void        wrapperDMAcleanUp           ();             // clean/delete the dma buffers
 //130                
-                void        wrapperMEMcleanUp           ();             // clean delete the mem buffers                                                                    
+                void        wrapperMEMcleanUp           ();             // clean delete the mem buffers          
+                
+                void        wrapper_from_sd             ();             // mount/scan/load and validate memory for sd
+
+                void        wrapper_load_usb            ();             // mount/scan/load and validate memory for usb                
 
                 boolean     startupScreen               (   void );                                                                
 
