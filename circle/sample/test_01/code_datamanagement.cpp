@@ -150,7 +150,7 @@ void            CKernel::bulkLoad                   (           char*       p_fi
 #ifdef __DEBUG_LOG__
                 nextline(   MY_BUFFER, MY_INDEX);
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            "BULKLOAD Start max",   (u32)p_maxFiles,
+                            "BULKLOAD Start scanned",   (u32)p_maxFiles,
                             "valid",                (u32)p_validFiles,
                             "size",                 (u32)p_fileSize,
                             EMPTYSTR,               EMPTYLOG );

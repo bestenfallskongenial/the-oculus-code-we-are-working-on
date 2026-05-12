@@ -37,7 +37,7 @@
     #define         VID_USB            		    8	// max number of videos on sd
     #define         KLN_USB                     1
 
-    #define         FRM_USB                     1   // i put them here because if my mem/dma allocation
+    #define         FRM_USB                     0   // i put them here because if my mem/dma allocation
     #define         LOG_USB                     0
 
     #define         VSH_EXT                     1
@@ -67,7 +67,7 @@
 
     #define         DEVICE_NAME_SD              "emmc1"
     #define         DEVICE_NAME_USB             "umsd1"
-    
+
     #define         PARTITION_NAME_SD	        "emmc1-1"	                         // name partition sd dont confuse with device type    
     #define         PARTITION_NAME_USB	        "umsd1-1"	
 
