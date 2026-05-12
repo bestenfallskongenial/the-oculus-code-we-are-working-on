@@ -149,7 +149,7 @@ bool            CKernel::programLog                 (   GLint       program,
                 glGetProgramiv(program, GL_LINK_STATUS, &success);
 #ifdef __DEBUG_LOG__
                 storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
-                storeLog( MY_BUFFER, MY_INDEX,  "Filename F-Shader", g_ScnFsh[program_index, 
+                storeLog( MY_BUFFER, MY_INDEX,  "Filename F-Shader", g_ScnFsh[program_index], 
                                                     "Program link status idx", (u32)program_index,
                                                     "Program byte size", (u32)g_bytFsh[program_index], 
                                                     "success", (u32)success);
