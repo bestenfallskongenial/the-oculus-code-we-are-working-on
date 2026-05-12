@@ -152,7 +152,7 @@ void            CKernel::initShader                 (   vtx_state*  v,
 {
                 for (int i = p_fromFile; i < p_toFile; i++)
                     {
-                    char* src = p_buffer[i];
+                    const char* src = p_buffer[i];
 
                     s->gl_shader_id[i] = glCreateShader(type);
                     glShaderSource(s->gl_shader_id[i], 1, &src, 0);
@@ -433,7 +433,7 @@ void            CKernel::drawGLsPrg                 (   )
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void            Ckernel::frmRateBreak               (   bool* noTargetFPS )
+void            CKernel::frmRateBreak               (   bool* noTargetFPS )
 {
                 glFlush();
 
