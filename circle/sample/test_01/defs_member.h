@@ -45,9 +45,23 @@ public:
                 char                m_logBuffer[LOG_SIZ] = {0};
                 u32                 m_logBufferIndex = 0;
 
-// global
+// local copies of my graphics related structs
+
+                olg_state               m_ogl    = {};
+
+                vtx_state               m_vtx    = {};
+
+                glsl_state              m_vsh    = {};
+                glsl_state              m_fsh    = {};
+                glsl_state              m_osh    = {};
+
+                tex_state               m_tex    = {};
+                tex_state               m_omt    = {};
+
+                h264_state              m_vid    = {};    
 
 // missing globals / shared state / dummies for now
+
                 bool            m_resetFlag     = false;
 
     volatile    boolean	            m_bStorageAttached  = false;
