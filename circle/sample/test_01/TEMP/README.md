@@ -1,4 +1,4 @@
-MEMORY ALLOCATION:
+***MEMORY ALLOCATION :
 
 | type  | buffer member | alloc kind | SD count | USB count | total slices | size per slice | total reserved | location / source role    | purpose                                 |
 | ----- | ------------- | ---------: | -------: | --------: | -----------: | -------------: | -------------: | ------------------------- | --------------------------------------- |
@@ -11,7 +11,7 @@ MEMORY ALLOCATION:
 | KLN   | `m_bufferKnl` |        MEM |        1 |         1 |            2 |        2048 KB |        4096 KB | SD + USB                  | kernel fallback + USB update kernel     |
 | FRM A | `m_bufferFrA` |        DMA |        2 |         0 |            2 |        1024 KB |        2048 KB | internal / decoder output | decoded frame buffer bank A             | <- changed to 1 not 2
 | FRM B | `m_bufferFrB` |        DMA |        2 |         0 |            2 |        1024 KB |        2048 KB | internal / decoder output | decoded frame buffer bank B             |
-| LOG   | `m_bufferLog` |        MEM |       24 |         0 |           24 |          64 KB |        1536 KB | internal logs             | startup, vc_sm, mmal, glsl, parser logs |
+| LOG   | `m_bufferLog` |        MEM |       24 |         0 |           24 |          64 KB |        1536 KB | internal logs             | startup, vc_sm, mmal, glsl, parser logs | <- too small, also do i combine parsing etc in one files
 
 
 | buffer        |      total |
@@ -23,7 +23,7 @@ MEMORY ALLOCATION:
 | `m_bufferTex` |      32 MB |
 | **DMA total** | **104 MB** |
 
-K-OPTION LOG:
+***K-OPTION LOG:
 
 Machine Model   Raspberry Pi Zero
 SoC Name        BCM2835 Model Major     0x00000001 Model Revision  0x00000004
@@ -50,7 +50,7 @@ CONSTUCTOR / INIT LOG:
 emmc: Found a valid version 4.xx SD card
 dwhci: No device connected to root port
 
-MEMORY ALLOCATION LOG:
+***MEMORY ALLOCATION LOG:
 
 ALLOC-DMA raw 0x005057E0 block 0x00506000
 ALLOC-DMA slice 0x00000000 ptr 0x00506000 size 0x00800000
@@ -156,7 +156,7 @@ ALLOC-MEM slice 0x00000020 ptr 0x074ABB40
 ALLOC-MEM done 0x072AB320 count 0x00000021 size 0x00008000
 
 
-LOADER LOG SD:
+***LOADER LOG SD:
 
 fatinfo: FAT32: 1946656 clusters of 16.0K
 
@@ -187,7 +187,7 @@ file 0x00000000 kernel.img bytes read 0x00037428 in buffer 0x00000000
 BULKLOAD End prev 0x00000000 new 0x00000001 loaded 0x00000001
 
 
-LOADER LOG USB:
+***LOADER LOG USB:
 
 fatinfo: FAT32: 1924864 clusters of 8.0K
 

@@ -51,28 +51,43 @@ boolean			CKernel::Initialize						(	void )
 
                 if (bOK)
                     {
-                    bOK = SPI_init();
+                    bOK =   SPI_init();
                     }
 
                 if (bOK)
                     {
-                    bOK = SMI_Init(LED_PIN);        // example GPIO18, choose your actual WS2812 SMI GPIO
+                    bOK =   SMI_Init(LED_PIN);        // example GPIO18, choose your actual WS2812 SMI GPIO
                     }
 
                 if (bOK)
                     {
-                    bOK = WS2812_Init(LED_COUNT);      // example LED count, choose your actual count
+                    bOK =   WS2812_Init(LED_COUNT);      // example LED count, choose your actual count
                     }
 
                 if (bOK)
                     {
-                    bOK = wrapperInitDMA();
+                    bOK =   wrapperInitDMA();
                     }
 
                 if (bOK)
                     {
-                    bOK = wrapperInitMEM();
+                    bOK =   wrapperInitMEM();
                     }
 
+                if (bOK)
+                    {
+                    bOK =   m_VCHIQ.Initialize();
+                    }
+
+                    if (bOK)
+                    {
+                            bcm_host_init();
+                    }    
+
+                    if (bOK)
+                    {
+                            gfx_init_OGL(&state);
+                    }
+                    
                 return bOK;
 }

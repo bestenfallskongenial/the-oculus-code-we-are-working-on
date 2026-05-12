@@ -10,6 +10,7 @@ OBJS  = main.o \
         kernel_run.o \
         CLogger.o \
         code_datamanagement.o \
+        code_graphics.o \
         code_hardware.o \
         code_logging.o \
         code_util.o \
@@ -22,7 +23,8 @@ LIBS =  $(CIRCLEHOME)/lib/usb/libusb.a \
         $(CIRCLEHOME)/addon/SDCard/libsdcard.a \
         $(CIRCLEHOME)/lib/fs/fat/libfatfs.a \
         $(CIRCLEHOME)/lib/fs/libfs.a \
-        $(CIRCLEHOME)/lib/libcircle.a
+        $(CIRCLEHOME)/lib/libcircle.a \
+	$(CIRCLEHOME)/addon/vc4/interface/bcm_host/libbcm_host.a        
 
 include ../Rules.mk
 

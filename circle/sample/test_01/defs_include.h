@@ -18,9 +18,20 @@
 #include <circle/new.h>												// new for dma allocated buffers!
 
 #include "/home/bestenfalls/circle/addon/SDCard/emmc.h"
+
 #include <circle/usb/usbhcidevice.h>
 #include <circle/fs/fat/fatfs.h>
 
+#include "bcm_host.h"
+
+#include <EGL/egl.h>
+#include <EGL/eglext.h>
+
+#include <GLES/gl.h>
+#include <GLES/glext.h>
+
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
 
 #include <circle/types.h>
 #include <string.h>

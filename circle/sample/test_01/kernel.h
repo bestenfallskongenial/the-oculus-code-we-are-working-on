@@ -28,7 +28,8 @@ public:
                 TShutdownMode   Run                        (    void );
 
 public:
-// datamanagement.cpp:
+// DATAMANAGEMENT
+
                 bool        Mount                       (   const   char*                           p_deviceName);          // "emmc1-1" cd ( root ), "umsd1-1" usb returns success
 
                 bool        UnMount                     ();                                                                 // returns success
@@ -37,7 +38,7 @@ public:
 
                 unsigned    loadToBuffer                (           char*                           p_bufferArray,          // destination buffer for file
                                                                     unsigned                        p_bufferSize);          // max bytes to read into the buffer returns loaded bytes - 0 is false/failed !!!
-//5
+
                 bool        saveFromBufferO             (   const   char*                           p_fileName,             // filename format "8.3" 
                                                             const   char*                           p_bufferArray,               // my allocated buffer
                                                                     unsigned                        p_bufferSize);          // max buffer size
@@ -59,7 +60,7 @@ public:
 
                 bool        IsValidFile                 (   const   char*                           pFileName, 
                                                             const   char*                           extension);
-//10
+
                 bool        scanRoot                    (           char**                          p_fileNameArray,        // where we store the valid filenames we find
                                                                     const char*                     p_fileExtArray[],       // the array of valid file extensions for this type of file
                                                                     unsigned                        p_extentionCount,       // how many valid file extensions we have in the array above
@@ -79,13 +80,16 @@ public:
                                                                     char**                          blockBaseOut,           // receives 4K-aligned DMA block base
                                                                     char**                          rawBlockOut,            // receives original raw allocation pointer
                                                                     size_t*                         alignedSizeOut);        // receives total aligned allocation size *** msleep ?!
-//15
+
                 void        clearBufferMEM              (           char**                          buffers,                // buffer pointer table returned by allocBufferMEM()
                                                                     size_t                          p_count);               // number of buffers in the table
 
                 void        clearBufferDMA              (           char**                          buffers,                // buffer pointer table returned by allocBufferDMA()
                                                                     char*                           rawBlock);              // original raw allocation pointer to delete
-// hardware.cpp:
+//  GRAPHICS
+                void        initOGL                     (           olg_state*                      o);
+
+// HARDWARE
                 void        usDelay(unsigned us);
                 void        msDelay(unsigned ms);
                 u32         read32                   (           uintptr                         nAddress);                          // MMIO
@@ -93,7 +97,7 @@ public:
                                                                     u32                             nValue);
                 void        GPIO_SetPull             (           unsigned                        nPin,                               // GPIO
                                                                     unsigned                        nPullMode);
-//35
+
                 void        GPIO_SetAlt              (           unsigned                        nPin, 
                                                                     unsigned                        nAltMode, 
                                                                     unsigned                        nPullMode);
@@ -105,7 +109,7 @@ public:
                 void        watchdog_Start           (           unsigned                        nTimeoutSeconds);                   // watchdog
 
                 boolean     SPI_init                 (           void);                                                              // SPI
-//40
+
                 int         WriteRead                (           unsigned                        nChipSelect,
                                                             const   void*                           pWriteBuffer,
                                                                     void*                           pReadBuffer,
@@ -124,7 +128,7 @@ public:
                 void        SMI_SetupDMA             (           size_t byteLength);
      
                 boolean     WS2812_Init              (           unsigned                        ledCount);                          // WS2812
-//45            
+           
                 void        WS2812_SetLED            (           unsigned                        index, 
                                                                     u8                              red, 
                                                                     u8                              green, 
@@ -177,7 +181,14 @@ public:
                                                                         
                 void        nextline                   (            char*                           p_buffer,
                                                                         u32&                            index);
+                bool        shaderLog                   (           GLint                           shader, 
+                                                                    int                             shaderIndex);
 
+                bool        programLog                  (           GLint                           program, 
+                                                                    int                             program_index);
+
+                void        gfx_check                   (   const   char*                           file, 
+                                                                    unsigned                        line);
 //  UTIL
                 void        adc_AcquireConvert                     ();                             // can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
 
@@ -188,7 +199,7 @@ public:
                 bool        checkUpdate                 ();
 
                 bool        Update                      ();
-//85
+
                 void        set_pot_routing             (           bool                            adc_pot_routing);
 
 
