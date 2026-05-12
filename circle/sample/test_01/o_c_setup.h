@@ -108,3 +108,6 @@
     #define         SW_PIN_B	          	    6                                   // button B ( upper )
 
     #define         CS_PIN                 	    12                                  // for menu input selector!!!
+
+    #define         MAX_VIDEOS                  8
+    #define         MAX_SHADER                  33
