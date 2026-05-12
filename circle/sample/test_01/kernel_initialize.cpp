@@ -86,7 +86,7 @@ boolean			CKernel::Initialize						(	void )
 
                     if (bOK)
                     {
-                            gfx_init_OGL(&m_ogl);
+                            initOGL(&m_ogl);
                     }
                     
                 return bOK;
