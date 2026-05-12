@@ -89,6 +89,68 @@ public:
 //  GRAPHICS
                 void        initOGL                     (           olg_state*                      o);
 
+                void        initVbuffer                 (           olg_state*                      o, 
+                                                                    vtx_state*                      v);
+
+                void        initShader                  (           vtx_state*                      v,
+                                                                    glsl_state*                     s,
+                                                                    tex_state*                      t,
+                                                                    char**                          p_bufferArray,
+                                                                    int                             p_fromFile,
+                                                                    int                             p_toFile,
+                                                                    GLenum                          type);
+//20
+                void        initProgram                 (           vtx_state*                      v,
+                                                                    glsl_state*                     vsh,
+                                                                    glsl_state*                     fsh,
+                                                                    tex_state*                      t,
+                                                                    int                             p_fromFile,
+                                                                    int                             p_toFile,
+                                                                    unsigned&                       valid_count);
+                void        initTexture                 (           vtx_state*                      v,
+                                                                    glsl_state*                     s,
+                                                                    tex_state*                      t,
+                                                                    int                             p_fromFile,
+                                                                    int                             p_toFile,
+                                                                    unsigned&                       valid_count,
+                                                                    GLint                           wrap_s,
+                                                                    GLint                           wrap_t);
+
+                void        initUniform                 (           vtx_state*                      v,
+                                                                    glsl_state*                     s,
+                                                                    tex_state*                      t,
+                                                                    int                             p_fromFile,
+                                                                    int                             p_toFile);
+//  RUNTIME RENDER
+                void        frmBufferSet                (           vtx_state*                      v);
+
+                void        frmBufferSwap               (           olg_state*                      o);
+//25
+                void        setUniPrg                   (           olg_state*                      o,
+                                                                    glsl_state*                     s,
+                                                                    tex_state*                      t,
+                                                                /*  int                             gl_current_tex, */
+                                                                    unsigned                        p_validTextureCount);
+
+                void        setTexPrg                   (           olg_state*                      o,
+                                                                    glsl_state*                     s,
+                                                                    tex_state*                      t,
+                                                                    int                             gl_current_tex,
+                                                                    unsigned                        p_validTextureCount);
+                void        drawGLsPrg                  ();
+
+                void        frmRateBreak                (           bool*                           noTargetFPS);
+
+//30
+                void        setUniOvl                   (           olg_state*                      o, 
+                                                                    glsl_state*                     s, 
+                                                                    tex_state*                      t);
+
+                void        setTexOvl                   (           olg_state*                      o, 
+                                                                    glsl_state*                     s, 
+                                                                    tex_state*                      t);
+                void        drawGLsOvl                  ();
+                                
 // HARDWARE
                 void        usDelay(unsigned us);
                 void        msDelay(unsigned ms);
