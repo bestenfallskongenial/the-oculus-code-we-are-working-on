@@ -28,7 +28,8 @@ LIBS =  $(CIRCLEHOME)/lib/usb/libusb.a \
         $(CIRCLEHOME)/addon/vc4/interface/khronos/libkhrn_client.a \
         $(CIRCLEHOME)/addon/vc4/interface/vmcs_host/libvmcs_host.a \
         $(CIRCLEHOME)/addon/vc4/interface/vcos/libvcos.a \
-        $(CIRCLEHOME)/addon/vc4/vchiq/libvchiq.a
+        $(CIRCLEHOME)/addon/vc4/vchiq/libvchiq.a \
+        $(CIRCLEHOME)/addon/linux/liblinuxemu.a
 
 include ../Rules.mk
 
