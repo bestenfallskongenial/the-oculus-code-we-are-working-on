@@ -12,6 +12,8 @@ private:
                 CUSBHCIDevice		m_USBHCI; 
                 CMemorySystem		m_Memory;
                 CFATFileSystem*     m_pFileSystem; 
+                CVCHIQDevice		m_VCHIQ;
+                
 
 // framebuffer
 public:
