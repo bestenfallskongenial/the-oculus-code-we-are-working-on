@@ -269,7 +269,7 @@ void            CKernel::initUniform                (   vtx_state*  v,
                     s->u_tile_rect[i]  = glGetUniformLocation(s->gl_program_id[i], "u_menu_tile_rect");
                     s->u_tile_index[i] = glGetUniformLocation(s->gl_program_id[i], "u_menu_tile_index");
 
-                for (int j = 0; j < MAX_TEXTURES; ++j)
+                for (int j = 0; j < MAX_TEXTURE; ++j)
                     {
                     char name[8];
 
@@ -378,7 +378,7 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
                         for (int i = 0; i < p_validTextureCount; i++)
                             {
                             glActiveTexture(GL_TEXTURE0+i);
-                            glBindTexture(GL_TEXTURE_2D, s->gl_tex_id[i]);
+                            glBindTexture(GL_TEXTURE_2D, t->gl_tex_id[i]);
 
                             if (t->u_tex_id[g_current_gl_program][i] != -1) glUniform1i(t->u_tex_id[g_current_gl_program][i], i);
 #ifdef __GL_DEBUG__
@@ -395,7 +395,7 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
 
                         case 1:
                             glActiveTexture(GL_TEXTURE0);
-                            glBindTexture(GL_TEXTURE_2D, s->gl_tex_id[gl_current_tex]);
+                            glBindTexture(GL_TEXTURE_2D, t->gl_tex_id[gl_current_tex]);
 
                             if (t->u_tex_id[g_current_gl_program][0] != -1) glUniform1i(t->u_tex_id[g_current_gl_program][0], 0);
 #ifdef __GL_DEBUG__
@@ -404,14 +404,14 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
                         break;
                         default:
                             glActiveTexture(GL_TEXTURE0);
-                            glBindTexture(GL_TEXTURE_2D, s->gl_tex_id[gl_current_tex]);
+                            glBindTexture(GL_TEXTURE_2D, t->gl_tex_id[gl_current_tex]);
 
                             if (t->u_tex_id[g_current_gl_program][0] != -1) glUniform1i(t->u_tex_id[g_current_gl_program][0], 0);
 #ifdef __GL_DEBUG__
                             check();
 #endif   
                             glActiveTexture(GL_TEXTURE1);
-                            glBindTexture(GL_TEXTURE_2D, s->gl_tex_id[gl_current_tex + 1]);
+                            glBindTexture(GL_TEXTURE_2D, t->gl_tex_id[gl_current_tex + 1]);
 
                             if (t->u_tex_id[g_current_gl_program][1] != -1) glUniform1i(t->u_tex_id[g_current_gl_program][1], 1);
 #ifdef __GL_DEBUG__
