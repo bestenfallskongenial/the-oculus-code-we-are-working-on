@@ -4,6 +4,9 @@
 #define __GL_DEBUG__
 #define __OLG_DEBUG__
 
+#define MY_BUFFER   m_logBuffer
+#define MY_INDEX    m_logBufferIndex
+
 void            CKernel::initOGL                    (   olg_state*  o )
 {
                 EGLint num_config;

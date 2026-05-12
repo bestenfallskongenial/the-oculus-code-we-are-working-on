@@ -64,7 +64,7 @@ public:
 
 // missing globals / shared state / dummies for now
 
-                bool            m_resetFlag     = false;
+                bool            m_m_resetFlag     = false;
 
     volatile    boolean	            m_bStorageAttached  = false;
 
