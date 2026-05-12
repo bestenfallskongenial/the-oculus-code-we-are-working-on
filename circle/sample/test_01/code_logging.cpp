@@ -274,13 +274,13 @@ void            CKernel::gfx_check                  (   const char* file,
                         case GL_OUT_OF_MEMORY:
                             error_str = "GL_OUT_OF_MEMORY";
                             severity  = "CRITICAL";
-                            resetFlag = true;
+                            m_resetFlag = true;
                             break;
 
                         case GL_INVALID_FRAMEBUFFER_OPERATION:
                             error_str = "GL_INVALID_FRAMEBUFFER_OPERATION";
                             severity  = "CRITICAL";
-                            resetFlag = true;
+                            m_resetFlag = true;
                             break;
 
                         default:
@@ -294,7 +294,7 @@ void            CKernel::gfx_check                  (   const char* file,
 #endif  
                     error_count++;
                     if (error_count >= ERROR_THRESHOLD)
-                        resetFlag = true;
+                        m_resetFlag = true;
                     }
 }
 
