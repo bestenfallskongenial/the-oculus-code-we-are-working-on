@@ -70,7 +70,7 @@ struct tex_state
     unsigned    image_size[MAX_TEXTURE];
 
     u8*         data[MAX_TEXTURE];
-    size_t      size[MAX_TEXTURES];
+    size_t      size[MAX_TEXTURE];
 
     GLuint      gl_tex_id[MAX_TEXTURE];
     GLint       u_tex_id[MAX_SHADER][MAX_TEXTURE];
