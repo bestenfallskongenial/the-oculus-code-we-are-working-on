@@ -110,4 +110,7 @@
     #define         CS_PIN                 	    12                                  // for menu input selector!!!
 
     #define         MAX_VIDEOS                  8
+    #define         MAX_TEXTURE                 8
+    #define         MAX_FRAMES                  2048
     #define         MAX_SHADER                  33
+    #define         MAX_OMF                     1
