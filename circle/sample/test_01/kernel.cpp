@@ -15,7 +15,7 @@
                     m_VCHIQ             (   &m_Memory,    &m_Interrupt ),
                     m_bStorageAttached  (   FALSE ),
                     m_pFileSystem       (   0 ),
-                    m_m_resetFlag         (   false )
+                    m_resetFlag         (   false )
 {                    
                 m_ActLED.Blink(5);
 }

@@ -31,7 +31,7 @@ TShutdownMode CKernel::Run(void)
 
                 m_Timer.MsDelay(1000); 
 */
-                while (m_m_resetFlag == false)
+                while (m_resetFlag == false)
                     {
                     start_time_fps_calculation = m_Timer.GetClockTicks(); 
 
