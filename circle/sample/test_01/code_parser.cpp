@@ -46,7 +46,7 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                         storeLog(   MY_BUFFER, MY_INDEX,
                                         "BMP header VALID for File No.", i,
                                         "Name", EMPTYLOG,
-                                        filename_array[i - p_fromFile],, EMPTYLOG,
+                                        filename_array[i - p_fromFile], EMPTYLOG,
                                         "Size", size_array[i - p_fromFile]);
                         }
                     else
@@ -100,11 +100,11 @@ bool            CKernel::parse264                  (   h264_state* h,
                 /*  size_t size = size_array[i]; */
                     size_t i = 0;
 
-                    storeLog( MY_BUFFER, MY_INDEX,
-                                  "Parse H264 File No.", file_index,
-                                  "Name", EMPTYLOG,
-                                  filename_array[file_index - p_fromFile],
-                                  "FileSize", (u32)size_array[file_index - p_fromFile]);
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "Parse H264 File No.", file_index,
+                                "Name", EMPTYLOG,
+                                filename_array[file_index - p_fromFile], EMPTYLOG,
+                                "FileSize", (u32)size_array[file_index - p_fromFile]);
 
                     for (size_t pos = 0; pos < size - 3; )
                         {
@@ -203,7 +203,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                         storeLog(   MY_BUFFER, MY_INDEX,
                                         "MetaData VALID for Video No.", file_index,
                                         "Name", EMPTYLOG,
-                                        filename_array[file_index - p_fromFile],
+                                        filename_array[file_index - p_fromFile], EMPTYLOG,
                                         "FileSize", (u32)size_array[file_index  - p_fromFile]);
                         }
                     else
