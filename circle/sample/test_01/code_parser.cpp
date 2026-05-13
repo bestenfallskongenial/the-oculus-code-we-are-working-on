@@ -58,7 +58,7 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                 return true;
 }
 
-bool            CKernel::264parser                  (   h264_state* h,
+bool            CKernel::parse264                  (   h264_state* h,
                                                         char*       blockBase,
                                                         char*       p_buffer_array[],
                                                         char*       filename_array[],

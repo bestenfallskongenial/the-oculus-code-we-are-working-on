@@ -259,7 +259,7 @@ public:
                                                                     int                             p_fromFile,
                                                                     int                             p_toFile );
                                 
-                bool        264parser                   (           h264_state*                     h,
+                bool        parse264                   (           h264_state*                     h,
                                                                     char*                           blockBase,
                                                                     char*                           p_buffer_array[],
                                                                     char*                           filename_array[],
