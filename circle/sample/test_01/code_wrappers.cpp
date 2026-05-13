@@ -299,7 +299,7 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     filecounter[FT_OMT][FLD_LOADED]);               // for the continuous loading between devices - upper bound
 */
                 initVbuffer     (   &m_ogl,
-                                    &m_vtx ) 
+                                    &m_vtx );
 
                 initShader      (   &m_vtx,                                         // init vertex shader 
                                     &m_vsh, 
