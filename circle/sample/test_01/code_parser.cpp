@@ -79,17 +79,17 @@ bool            CKernel::parse264                  (   h264_state* h,
                 h->max_profile = max_profile;
                 h->max_level   = max_level;
 
-                size_t sps_off[MAX_FILES][MAX_FRAMES]       = {0};
-                size_t sps_sc_len[MAX_FILES][MAX_FRAMES]    = {0};
-                size_t sps_len[MAX_FILES][MAX_FRAMES]       = {0};
+                size_t sps_off[MAX_VIDEOS][MAX_FRAMES]       = {0};
+                size_t sps_sc_len[MAX_VIDEOS][MAX_FRAMES]    = {0};
+                size_t sps_len[MAX_VIDEOS][MAX_FRAMES]       = {0};
 
-                size_t pps_off[MAX_FILES][MAX_FRAMES]       = {0};
-                size_t pps_sc_len[MAX_FILES][MAX_FRAMES]    = {0};
-                size_t pps_len[MAX_FILES][MAX_FRAMES]       = {0};
+                size_t pps_off[MAX_VIDEOS][MAX_FRAMES]       = {0};
+                size_t pps_sc_len[MAX_VIDEOS][MAX_FRAMES]    = {0};
+                size_t pps_len[MAX_VIDEOS][MAX_FRAMES]       = {0};
 
-                size_t idr_off[MAX_FILES][MAX_FRAMES]       = {0};
-                size_t idr_sc_len[MAX_FILES][MAX_FRAMES]    = {0};
-                size_t idr_len[MAX_FILES][MAX_FRAMES]       = {0};
+                size_t idr_off[MAX_VIDEOS][MAX_FRAMES]       = {0};
+                size_t idr_sc_len[MAX_VIDEOS][MAX_FRAMES]    = {0};
+                size_t idr_len[MAX_VIDEOS][MAX_FRAMES]       = {0};
 
                 for (int file_index = p_fromFile; file_index < p_toFile; file_index++)
                     {
@@ -211,7 +211,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                         storeLog(   MY_BUFFER, MY_INDEX,
                                         "MetaData INVALID for Video No.", file_index,
                                         "Name", EMPTYLOG,
-                                        filename_array[file_index - p_fromFile],
+                                        filename_array[file_index - p_fromFile], EMPTYLOG,
                                         "FileSize", (u32)size_array[file_index  - p_fromFile]);                                  
                         }
                      // m_Watchdog.Start(TIMEOUT);
