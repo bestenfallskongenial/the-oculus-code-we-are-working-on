@@ -1,5 +1,8 @@
 #include "kernel.h"
 
+#define MY_BUFFER   m_logBuffer
+#define MY_INDEX    m_logBufferIndex
+
 bool            CKernel::BMPparser                  (   tex_state*  t,
                                                         char*       p_buffer_array[],
                                                         char*       filename_array[],
