@@ -286,9 +286,10 @@ void            CKernel::wrapper_load_usb           (   )
                 // Flush CPU->RAM so the VPU sees the loaded bitstream
                 CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // !!! every memory allocation/operation like load?! do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
 }
-/*
+
 void            CKernel::wrapper_init_gl_sd         (   )
 {
+/*    
                 BMPparser       (   &m_omt,                                         // the dedicated struct for the overlay texture
                                     m_bufferOmt,                                    // the actual mem-buffer where i have stored it
                                     g_ScnOmt,
@@ -296,7 +297,7 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     filecounter[FT_TEX][FLD_SIZE],                  // upper bound for the size
                                     filecounter[FT_OMT][FLD_PREV],                  // for the continuous loading between devices - lower bound
                                     filecounter[FT_OMT][FLD_LOADED]);               // for the continuous loading between devices - upper bound
-
+*/
                 initVbuffer     (   &m_ogl,
                                     &m_vtx ) 
 
@@ -372,7 +373,7 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     GL_REPEAT,
                                     GL_REPEAT);
 }
-
+/*
 void            CKernel::wrapper_init_gl_usb        (   )
 {
                 BMPparser       (   &m_tex,
