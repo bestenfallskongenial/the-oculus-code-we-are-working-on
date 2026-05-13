@@ -13,6 +13,7 @@ OBJS  = main.o \
         code_graphics.o \
         code_hardware.o \
         code_logging.o \
+        code_parser.o \
         code_util.o \
         code_wrappers.o \
         code_debug.o

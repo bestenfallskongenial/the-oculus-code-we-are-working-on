@@ -12,7 +12,7 @@ TShutdownMode CKernel::Run(void)
                                             make83FileName("TXT"),
                                             m_logBuffer,
                                             m_logBufferIndex );
-                m_Timer.MsDelay(1000);
+                msDelay(1000);
 /*
                 bufferToScreenDrawBuffer(   "save buffer success",
                                             0,
@@ -20,7 +20,7 @@ TShutdownMode CKernel::Run(void)
                                             0,
                                             0,
                                             0xFFFFFFFF );
-                                            m_Timer.MsDelay(1000); 
+                                            msDelay(1000); 
 
                 bufferToScreenDrawBuffer(   m_logBuffer,
                                             0,
@@ -29,7 +29,7 @@ TShutdownMode CKernel::Run(void)
                                             0,
                                             0xFFFFFFFF );
 
-                m_Timer.MsDelay(1000); 
+                msDelay(1000); 
 */
                 while (m_resetFlag == false)
                     {
@@ -44,14 +44,14 @@ TShutdownMode CKernel::Run(void)
 
                         randomVec8              ( start_time_fps_calculation );            
 
-                        wrapper_init_gl_sd();
+        //              wrapper_init_gl_sd();
 
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     make83FileName("TXT"),
                                                     m_logBuffer,
                                                     m_logBufferIndex );
 
-                        m_Timer.MsDelay(1000);
+                        msDelay(1000);
 
                         m_SD_has_load = true;
                         }
@@ -71,7 +71,7 @@ TShutdownMode CKernel::Run(void)
                                                     make83FileName("TXT"),
                                                     m_logBuffer,
                                                     m_logBufferIndex );
-                        m_Timer.MsDelay(1000);    
+                        msDelay(1000);    
 
                         m_USB_has_load = true;                            
                         }

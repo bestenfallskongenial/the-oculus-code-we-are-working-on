@@ -99,7 +99,7 @@ public:
                                                                     int                             p_fromFile,
                                                                     int                             p_toFile,
                                                                     GLenum                          type);
-//20
+
                 void        initProgram                 (           vtx_state*                      v,
                                                                     glsl_state*                     vsh,
                                                                     glsl_state*                     fsh,
@@ -125,7 +125,7 @@ public:
                 void        frmBufferSet                (           vtx_state*                      v);
 
                 void        frmBufferSwap               (           olg_state*                      o);
-//25
+
                 void        setUniPrg                   (           olg_state*                      o,
                                                                     glsl_state*                     s,
                                                                     tex_state*                      t,
@@ -141,7 +141,6 @@ public:
 
                 void        frmRateBreak                (           bool*                           noTargetFPS);
 
-//30
                 void        setUniOvl                   (           olg_state*                      o, 
                                                                     glsl_state*                     s, 
                                                                     tex_state*                      t);
@@ -149,10 +148,9 @@ public:
                 void        setTexOvl                   (           olg_state*                      o, 
                                                                     glsl_state*                     s, 
                                                                     tex_state*                      t);
-                void        drawGLsOvl                  ();
-                                
+                void        drawGLsOvl                  ();                  
 // HARDWARE
-                void        usDelay(unsigned us);
+                void        usDelay                     (           unsigned us);
                 void        msDelay(unsigned ms);
                 u32         read32                   (           uintptr                         nAddress);                          // MMIO
                 void        write32                  (           uintptr                         nAddress, 
