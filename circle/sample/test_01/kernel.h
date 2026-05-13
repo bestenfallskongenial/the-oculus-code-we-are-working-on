@@ -249,6 +249,42 @@ public:
 
                 void        gfx_check                   (   const   char*                           file, 
                                                                     unsigned                        line);
+//  PARSER
+
+                bool        BMPparser                   (           tex_state*                      t,
+                                                                    char*                           p_buffer_array[],
+                                                                    char*                           filename_array[],
+                                                                    size_t                          size_array[],
+                                                                    u32                             max_tex_size,
+                                                                    int                             p_fromFile,
+                                                                    int                             p_toFile );
+                                
+                bool        264parser                   (           h264_state*                     h,
+                                                                    char*                           blockBase,
+                                                                    char*                           p_buffer_array[],
+                                                                    char*                           filename_array[],
+                                                                    size_t                          size_array[],
+                                                                    int                             p_fromFile,
+                                                                    int                             p_toFile,
+                                                                    u16                             max_width,
+                                                                    u16                             max_height,
+                                                                    u8                              max_profile,
+                                                                    u8                              max_level );
+
+                bool        ParseSPS                    (           u8*                             sps_data,
+                                                                    size_t                          sps_size,
+                                                                    size_t                          sps_sc_len,
+                                                                    u16*                            width,
+                                                                    u16*                            height,
+                                                                    u8*                             profile,
+                                                                    u8*                             level) const;
+//80
+                size_t      findNext000001              (           u8*                             data, 
+                                                                    size_t                          pos, 
+                                                                    size_t                          size) const;
+
+                u32         ReadExpGolomb               (           u8*                             data, 
+                                                                    size_t*                         bit_offset) const;                                                                    
 //  UTIL
                 void        adc_AcquireConvert                     ();                             // can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
 
