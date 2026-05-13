@@ -19,6 +19,21 @@
 
     #define 		ADC_BUFFER_COUNT		4	
 
+#define MAX_FRAMES 2048                                 // Maximum frames configuration
+
+#define H264_PROFILE_BASELINE 66                        // H.264 Profile IDs
+#define H264_PROFILE_MAIN     77
+#define H264_PROFILE_HIGH     100
+
+#define NAL_TYPE_SLICE 1                                // NAL unit types
+#define NAL_TYPE_IDR   5
+#define NAL_TYPE_SEI   6
+#define NAL_TYPE_SPS   7
+#define NAL_TYPE_PPS   8
+
+#define MMAL_FORMAT_EXTRADATA_MAX_SIZE 128              // Maximum size of the format extradata. //
+
+
 // SPI
     #define SPI0_BASE                   (ARM_IO_BASE + 0x204000)
 
