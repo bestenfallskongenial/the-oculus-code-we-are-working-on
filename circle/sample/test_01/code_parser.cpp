@@ -46,7 +46,7 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                         storeLog(   MY_BUFFER, MY_INDEX,
                                         "BMP header VALID for File No.", i,
                                         "Name", EMPTYLOG,
-                                        filename_array[i - p_fromFile],
+                                        filename_array[i - p_fromFile],, EMPTYLOG,
                                         "Size", size_array[i - p_fromFile]);
                         }
                     else
@@ -54,7 +54,7 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                         storeLog(   MY_BUFFER, MY_INDEX,
                                         "BMP header FAILED for File No.", i,
                                         "Name", EMPTYLOG,
-                                        filename_array[i - p_fromFile],
+                                        filename_array[i - p_fromFile], EMPTYLOG,
                                         "Size", size_array[i - p_fromFile]);
                         }
                     }
