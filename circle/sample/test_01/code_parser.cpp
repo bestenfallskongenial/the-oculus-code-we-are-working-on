@@ -106,7 +106,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                                   filename_array[file_index - p_fromFile],
                                   "FileSize", (u32)size_array[file_index - p_fromFile]);
 
-                    for (size_t pos = 0; pos < size - 3 )
+                    for (size_t pos = 0; pos < size - 3; )
                         {
                         size_t sc_len = (data[pos + 2] == 1) ? 3 : 4;
                         u8 nal_type = data[pos + sc_len] & 0x1F;
