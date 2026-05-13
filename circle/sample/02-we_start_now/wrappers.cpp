@@ -268,6 +268,7 @@ void            CKernel::wrapper_load_usb           (   )
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void            CKernel::wrapper_init_gl_sd         (   )
 {
+ /*   
                 BMPparser       (   &m_omt,                                         // the dedicated struct for the overlay texture
                                     m_bufferOmt,                                    // the actual mem-buffer where i have stored it
                                     g_ScnOmt,
@@ -275,7 +276,7 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     filecounter[FT_TEX][FLD_SIZE],                  // upper bound for the size
                                     filecounter[FT_OMT][FLD_PREV],                  // for the continuous loading between devices - lower bound
                                     filecounter[FT_OMT][FLD_LOADED]);               // for the continuous loading between devices - upper bound
-
+*/
                 initVbuffer     (   &m_ogl,
                                     &m_vtx ) 
 

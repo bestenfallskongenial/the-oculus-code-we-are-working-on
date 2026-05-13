@@ -44,10 +44,13 @@ TShutdownMode CKernel::Run(void)
 
                         randomVec8              ( start_time_fps_calculation );            
 
+                        wrapper_init_gl_sd();
+
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     make83FileName("TXT"),
                                                     m_logBuffer,
                                                     m_logBufferIndex );
+
                         m_Timer.MsDelay(1000);
 
                         m_SD_has_load = true;
