@@ -35,7 +35,7 @@ TShutdownMode CKernel::Run(void)
                     {
                     g_currentTime = m_Timer.GetClockTicks(); 
 
-                    bufferToScreenClear();
+                    bufferScreenClear();
 
                     if (!m_SD_has_load) 
                         {
@@ -104,6 +104,8 @@ TShutdownMode CKernel::Run(void)
 
                     m_logBufferIndex = 0;
                     m_logBuffer[0] = '\0';
+
+                    bufferScreenClear();
 
                     storeLog(           m_logBuffer, m_logBufferIndex,
                                         "channel 0",g_inOutMatrixInt[0][RAW],
