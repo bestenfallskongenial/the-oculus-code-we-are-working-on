@@ -323,7 +323,7 @@ public:
                 u32         ReadExpGolomb               (               u8*                             data, 
                                                                         size_t*                         bit_offset) const;                                                                    
 // CODE_UTIL.CPP
-                void        adc_AcquireConvert          ();                             // can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
+                void        readAndConvertADC          ();                             // can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
 
                 void        adc_ProcessAudio            (               void );
 

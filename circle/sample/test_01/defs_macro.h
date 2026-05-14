@@ -1,7 +1,7 @@
 #define         EMPTYSTR                0 // ""                                                 // for the logger
 #define         EMPTYLOG                255                                                // for the logger
 
-#define         MENU_LAYERS             6
+#define         LAYER             6
 
 #define         check() 				gfx_check(__FILE__, __LINE__) 	// my own assertiion implimentation
 

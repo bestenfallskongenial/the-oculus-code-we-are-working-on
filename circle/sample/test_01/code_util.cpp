@@ -1,7 +1,7 @@
 
 #include "kernel.h"
 
-void            CKernel::adc_AcquireConvert         (   void    )
+void            CKernel::readAndConvertADC         (   void    )
 {
                 const int f_scale = m_scaleFactors[attenuation];
 
