@@ -93,6 +93,7 @@ void            CKernel::wrapperMEMcleanUp          (   )
 
 void            CKernel::wrapper_from_sd            (   )
 {
+                bufferScreenClear();
                 bufferScreenDraw(   "wrapper start",
                                             0,
                                             sizeof("wrapper start"),
@@ -103,26 +104,13 @@ void            CKernel::wrapper_from_sd            (   )
 
                 if(Mount( PARTITION_NAME_SD ))
                     {
-                bufferScreenDraw(   "mount success",
-                                            0,
-                                            sizeof("mount success"),
-                                            0,
-                                            0,
-                                            0xFFFFFFFF );
-                                            m_Timer.MsDelay(1000); 
 
                     scanRoot                (   g_ScnVsh,                           // where we store the valid filenames we find
                                                 g_SufVsh,                           // the array of valid file extensions for this type of file
                                                 filecounter[FT_VSH][FLD_EXTCNT],                         // how many valid file extensions we have in the array above also part of filecounter?
                                                 filecounter[FT_VSH][FLD_SCANNED],         
                                                 filecounter[FT_VSH][FLD_MAXSD]);           // how many files are allowed to scan and stored in the array
-                bufferScreenDraw(   "scan vsh success",
-                                            0,
-                                            sizeof("scan vsh success"),
-                                            0,
-                                            0,
-                                            0xFFFFFFFF );
-                                            m_Timer.MsDelay(1000); 
+
 
                     scanRoot                (   g_ScnOmf, 
                                                 g_SufOmf, 
@@ -216,7 +204,15 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_KLN][FLD_PREV],
                                                 filecounter[FT_KLN][FLD_SIZE]); 
 
-                    UnMount();   
+                    UnMount();
+                bufferScreenClear();       
+                bufferScreenDraw(   "wrapper finish",
+                                            0,
+                                            sizeof("wrapper finish"),
+                                            0,
+                                            0,
+                                            0xFFFFFFFF );
+                                            m_Timer.MsDelay(1000);                     
                     }
                 // Flush CPU->RAM so the VPU sees the loaded bitstream
                 CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
@@ -226,6 +222,15 @@ void            CKernel::wrapper_load_usb           (   )
 {
                 if(Mount( PARTITION_NAME_USB ))
                     {
+                bufferScreenClear();
+                bufferScreenDraw(   "wrapper start",
+                                            0,
+                                            sizeof("wrapper start"),
+                                            0,
+                                            0,
+                                            0xFFFFFFFF );
+                                            m_Timer.MsDelay(1000); 
+
                     scanRoot                (   g_ScnFsh, 
                                                 g_SufFsh, 
                                                 filecounter[FT_FSH][FLD_EXTCNT], 
@@ -282,6 +287,14 @@ void            CKernel::wrapper_load_usb           (   )
                                                 filecounter[FT_KLN][FLD_PREV],
                                                 filecounter[FT_KLN][FLD_SIZE]);                                                 
                     UnMount();   
+                bufferScreenClear();       
+                bufferScreenDraw(   "wrapper finish",
+                                            0,
+                                            sizeof("wrapper finish"),
+                                            0,
+                                            0,
+                                            0xFFFFFFFF );
+                                            m_Timer.MsDelay(1000);                            
                     }
                 // Flush CPU->RAM so the VPU sees the loaded bitstream
                 CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // !!! every memory allocation/operation like load?! do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
