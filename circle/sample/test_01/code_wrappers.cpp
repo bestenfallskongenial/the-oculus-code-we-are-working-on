@@ -488,8 +488,9 @@ void            CKernel::wrapper_modes              (   )
 
 bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Initialize()
 {
+                bool bOK = true;    
     /*
-                bool bOK = true;
+
 
                 if (bOK)
                     {
@@ -536,8 +537,9 @@ bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Init
 
 bool            CKernel::wrapperInitVCSMstruct      (   )
 {
+                bool bOK = true;    
     /*
-                bool bOK = true;
+
 
                 if (bOK) { m_ServiceCreateVCSM          = new SERVICE_CREATION_T();           
                     bOK = (m_ServiceCreateVCSM         != nullptr); }
@@ -577,8 +579,9 @@ bool            CKernel::wrapperInitVCSMstruct      (   )
 
 bool            CKernel::wrapperInitMMALstruct      (   )
 {
+                bool bOK = true;    
     /*
-                bool bOK = true;
+
 
                 if (bOK) { m_ServiceCreateMMAL          = new SERVICE_CREATION_T();              
                     bOK = (m_ServiceCreateMMAL         != nullptr); }
