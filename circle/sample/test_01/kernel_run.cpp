@@ -46,7 +46,7 @@ TShutdownMode CKernel::Run(void)
                         m_SD_has_load = true;
                         }
 
-                        debug();
+                    //  debug();
               
                     if (updateUSB("umsd1") == true && m_USB_has_load == false)
                         {
@@ -84,7 +84,7 @@ TShutdownMode CKernel::Run(void)
                                             10,
                                             0,
                                             0xFFFFFFFF );
-                                            msDelay(1000); 
+                                        //  msDelay(1000); 
 
                     m_logBufferIndex = 0;
                     m_logBuffer[0] = '\0';
@@ -157,7 +157,7 @@ TShutdownMode CKernel::Run(void)
                                         0,
                                         0,
                                         0xFFFFFFFF );      
-                    msDelay(1000);
+                //  msDelay(1000);
                
                     }
 
