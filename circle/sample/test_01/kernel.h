@@ -283,6 +283,10 @@ public:
                 void        modeAudioBb0                (               int                             p_channel);         // channel passed by caller
 
                 void        modeAudioBb1                (               int                             p_channel);         // channel passed by caller  
+
+                void        updateOvlState              (           olg_state*                      o,                  // because we are concerned with the overlay menu here!
+                                                                    glsl_state*                     s, 
+                                                                    tex_state*                      t);                       
 // CODE_PARSER.CPP
                 bool        BMPparser                   (               tex_state*                      t,
                                                                         char*                           p_buffer_array[],
