@@ -125,7 +125,7 @@ TShutdownMode CKernel::Run(void)
                                         "channel 4",g_inOutMatrixInt[4][RND],
                                         "channel 5",g_inOutMatrixInt[5][RND],
                                         "channel 6",g_inOutMatrixInt[6][RND],
-                                        "channel 7",g_inOutMatrixInt[7][RND])    
+                                        "channel 7",g_inOutMatrixInt[7][RND]);    
 
                     storeLog(           m_logBuffer, m_logBufferIndex,
                                         "channel 0",g_inOutMatrixFlt[0][RND],
