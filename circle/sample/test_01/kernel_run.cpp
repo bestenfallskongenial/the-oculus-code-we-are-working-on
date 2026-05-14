@@ -76,7 +76,7 @@ TShutdownMode CKernel::Run(void)
 
                   readAndConvertADC();
 
-                  adc_AdvanceIndex           (   void    );
+                  adc_AdvanceIndex();
 
                 bufferScreenDraw(   "read adc",
                                             0,
