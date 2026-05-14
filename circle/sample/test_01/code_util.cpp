@@ -200,9 +200,9 @@ bool            CKernel::Update                     (   )
 
 unsigned        CKernel::get_gl_time( unsigned sys_time )
 {
-                    switch (mode_storage_buffers[FRM_MODE][current_buffer])
+                    switch (g_centralModeBuffer[/* current_buffer */ g_current_gl_program][FRM_MODE]) // not sure with g_current_gl_program!!!
                         {
-                        case true:  GLtime = g_inOutMatrixInt[ADC_INPUT_TIME][INT]/36.0f; break;
+                        case true:  GLtime = g_inOutMatrixInt[ADC_INPUT_TIME][RAW]/36.0f; break;
                         case false: GLtime = sys_time / 1000000.0f;                       break;
                         }
                     }
