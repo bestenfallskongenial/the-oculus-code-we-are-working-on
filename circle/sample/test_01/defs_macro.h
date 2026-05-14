@@ -166,3 +166,135 @@
     #define IS_POWEROF_2(num)              ((num) != 0 && (((num) & ((num) - 1)) == 0))
 
     #define BE(value)                      ((((value) & 0xFF00) >> 8) | (((value) & 0x00FF) << 8))
+
+        // vcsm and mmal 
+    #define VC_SM_VER  1    // Version to be reported to the VPU VPU assumes 0 (aka 1) which does not require the released callback
+    #define VC_SM_MIN_VER 0 // nor expect the client to handle VC_MEM_REQUESTS. Version 2 requires the released callback, and must support VC_MEM_REQUESTS.
+
+    #define VC_SM_MAX_MSG_LEN (sizeof(union vc_sm_msg_union_t) + \
+        sizeof(struct vc_sm_msg_hdr_t))
+    #define VC_SM_MAX_RSP_LEN (sizeof(union vc_sm_msg_union_t))
+
+    #define VC_SM_RESOURCE_NAME 32				// Resource name maximum size //
+
+    #define VC_MMAL_VER 15
+    #define VC_MMAL_MIN_VER 10
+
+    #define MMAL_FOURCC(a, b, c, d) ((a) | (b << 8) | (c << 16) | (d << 24)) // two times!
+    #define MMAL_MAGIC 						MMAL_FOURCC('m', 'm', 'a', 'l')
+
+    #define MMAL_EVENT_ERROR				MMAL_FOURCC('E', 'R', 'R', 'O')	// really????
+    #define MMAL_EVENT_EOS					MMAL_FOURCC('E', 'E', 'O', 'S')
+    #define MMAL_EVENT_FORMAT_CHANGED		MMAL_FOURCC('E', 'F', 'C', 'H')
+    #define MMAL_EVENT_PARAMETER_CHANGED	MMAL_FOURCC('E', 'P', 'C', 'H')
+    // max total message size is 512 bytes //
+    #define MMAL_MSG_MAX_SIZE 512
+    // with six 32bit header elements max payload is therefore 488 bytes //
+    #define MMAL_MSG_MAX_PAYLOAD 488
+    // #define MMAL_TIME_UNKNOWN BIT_ULL(63)                               // Special value signalling that time is not known //
+    // #define MMAL_TIME_UNKNOWN (1ULL << 63)
+    #define BIT(n)          (1U << (n))
+    #define BIT_ULL(n)      (1ULL << (n))
+    #define MMAL_TIME_UNKNOWN BIT_ULL(63)
+
+    #define NUMBER_INPUTBUFFER 1
+    #define NUMBER_OUTPUTBUFFER 2
+
+//  #define MIN_BUFFERS 2                                                 // from CKernel ??
+//  #define MAX_BUFFER 8 // ???
+
+    #define VC_SM_PROTOCOL_VERSION	2 // ???
+    //              FROM MMAL-VCHIQ.H
+    #define MAX_PORT_COUNT 4
+    // Maximum size of the format extradata. //
+    #define MMAL_FORMAT_EXTRADATA_MAX_SIZE 128
+    //              FROM MMAL-VCHIQ.H
+    #define MAX_PORT_COUNT 4
+    // Maximum size of the format extradata. //
+    #define MMAL_FORMAT_EXTRADATA_MAX_SIZE 128
+    //              FROM MMAL-PARAMETERS.H
+    #define MMAL_PARAMETER_GROUP_COMMON		(0 << 16)
+    //              FROM MMAL-MSG-PORT.H what do we really need here?
+    // The port is pass-through and doesn't need buffer headers allocated //
+    #define MMAL_PORT_CAPABILITY_PASSTHROUGH                       0x01
+    //The port wants to allocate the buffer payloads.
+    // This signals a preference that payload allocation should be done
+    // on this port for efficiency reasons.
+    #define MMAL_PORT_CAPABILITY_ALLOCATION                        0x02
+    // The port supports format change events.
+    // This applies to input ports and is used to let the client know
+    // whether the port supports being reconfigured via a format
+    // change event (i.e. without having to disable the port).
+    #define MMAL_PORT_CAPABILITY_SUPPORTS_EVENT_FORMAT_CHANGE      0x04
+    // mmal port structure (MMAL_PORT_T)
+    //
+    // most elements are informational only, the pointer values for
+    // interogation messages are generally provided as additional
+    // structures within the message. When used to set values only the
+    // buffer_num, buffer_size and userdata parameters are writable.
+    //              FROM MMAL-MSG.H
+    // MMAL buffer transfer //
+    
+    #define MMAL_VC_SHORT_DATA 128                                      // Size of space reserved in a buffer message for short messages. //
+    #define MMAL_BUFFER_HEADER_FLAG_EOS                    BIT(0)       // Signals that the current payload is the end of the stream of data //
+    #define MMAL_BUFFER_HEADER_FLAG_FRAME_START            BIT(1)       // Signals that the start of the current payload starts a frame //
+    #define MMAL_BUFFER_HEADER_FLAG_FRAME_END              BIT(2)       // Signals that the end of the current payload ends a frame //
+    #define MMAL_BUFFER_HEADER_FLAG_FRAME                  \
+        (MMAL_BUFFER_HEADER_FLAG_FRAME_START | \
+        MMAL_BUFFER_HEADER_FLAG_FRAME_END)                              // Signals that the current payload contains only complete frames (>1) //
+    #define MMAL_BUFFER_HEADER_FLAG_KEYFRAME               BIT(3)       // Signals that the current payload is a keyframe (i.e. self decodable) //
+    #define MMAL_BUFFER_HEADER_FLAG_DISCONTINUITY          BIT(4)       // Signals a discontinuity in the stream of data (e.g. after a seek). Can be used for instance by a decoder to reset its state
+    #define MMAL_BUFFER_HEADER_FLAG_CONFIG                 BIT(5)       // Signals a buffer containing some kind of config data for the component (e.g. codec config data)
+    #define MMAL_BUFFER_HEADER_FLAG_ENCRYPTED              BIT(6)       // Signals an encrypted payload //
+    #define MMAL_BUFFER_HEADER_FLAG_CODECSIDEINFO          BIT(7)       // Signals a buffer containing side information //
+    #define MMAL_BUFFER_HEADER_FLAGS_SNAPSHOT              BIT(8)       // Signals a buffer which is the snapshot/postview image from a stills capture
+    #define MMAL_BUFFER_HEADER_FLAG_CORRUPTED              BIT(9)       // Signals a buffer which contains data known to be corrupted //
+    #define MMAL_BUFFER_HEADER_FLAG_TRANSMISSION_FAILED    BIT(10)      // Signals that a buffer failed to be transmitted //
+    // Video buffer header flags
+    // videobufferheaderflags
+    // The following flags describe properties of a video buffer header.
+    // As there is no collision with the MMAL_BUFFER_HEADER_FLAGS_ defines, these
+    
+    #define MMAL_BUFFER_HEADER_FLAG_FORMAT_SPECIFIC_START_BIT 16
+    #define MMAL_BUFFER_HEADER_FLAG_FORMAT_SPECIFIC_START \
+                (1 << MMAL_BUFFER_HEADER_FLAG_FORMAT_SPECIFIC_START_BIT)// flags will also be present in the MMAL_BUFFER_HEADER_T flags field.
+    
+    #define MMAL_BUFFER_HEADER_VIDEO_FLAG_INTERLACED \
+                (MMAL_BUFFER_HEADER_FLAG_FORMAT_SPECIFIC_START << 0)    // Signals an interlaced video frame //
+    
+    // 
+    #define MMAL_BUFFER_HEADER_VIDEO_FLAG_TOP_FIELD_FIRST \
+                (MMAL_BUFFER_HEADER_FLAG_FORMAT_SPECIFIC_START << 1)    // Signals that the top field of the current interlaced frame should be displayed first
+    // port parameter setting //
+    #define MMAL_WORKER_PORT_PARAMETER_SPACE      96        
+    // event messages //
+    #define MMAL_WORKER_EVENT_SPACE 256
+    
+    #define MMAL_FOURCC(a, b, c, d) ((a) | (b << 8) | (c << 16) | (d << 24))    // Four CC's for events //
+
+    #define MMAL_EVENT_ERROR		            MMAL_FOURCC('E', 'R', 'R', 'O')
+    #define MMAL_EVENT_EOS			            MMAL_FOURCC('E', 'E', 'O', 'S')
+    #define MMAL_EVENT_FORMAT_CHANGED	        MMAL_FOURCC('E', 'F', 'C', 'H')
+    #define MMAL_EVENT_PARAMETER_CHANGED        MMAL_FOURCC('E', 'P', 'C', 'H')
+    //              FROM MMAL-ENCODINGS.H
+    #define MMAL_ENCODING_H264                  MMAL_FOURCC('H', '2', '6', '4')
+    #define MMAL_ENCODING_I420                  MMAL_FOURCC('I', '4', '2', '0')
+        #define MMAL_ENCODING_EGL_IMAGE             MMAL_FOURCC('E', 'G', 'L', 'I')     // An EGL image handle
+    // Pre-defined H264 encoding variants //
+    #define MMAL_ENCODING_VARIANT_H264_DEFAULT  0                                   // ISO 14496-10 Annex B byte stream format //
+    #define MMAL_ENCODING_VARIANT_H264_AVC1      MMAL_FOURCC('A', 'V', 'C', '1')    // ISO 14496-15 AVC stream format //
+    #define MMAL_ENCODING_VARIANT_H264_RAW       MMAL_FOURCC('R', 'A', 'W', ' ')    // Implicitly delineated NAL units without emulation prevention //
+    // \defgroup MmalColorSpace List of pre-defined video color spaces
+    // This defines a list of common color spaces. This list isn't exhaustive and
+    // is only provided as a convenience to avoid clients having to use FourCC
+    // codes directly. However components are allowed to define and use their own
+    // FourCC codes.
+    #define MMAL_COLOR_SPACE_UNKNOWN            0                                        // Unknown color space //
+    #define MMAL_COLOR_SPACE_ITUR_BT601         MMAL_FOURCC('Y', '6', '0', '1')          // ITU-R BT.601-5 [SDTV] //
+    #define MMAL_COLOR_SPACE_ITUR_BT709         MMAL_FOURCC('Y', '7', '0', '9')          // ITU-R BT.709-3 [HDTV] //
+    #define MMAL_COLOR_SPACE_JPEG_JFIF          MMAL_FOURCC('Y', 'J', 'F', 'I')          // JPEG JFIF //
+    #define MMAL_COLOR_SPACE_FCC                MMAL_FOURCC('Y', 'F', 'C', 'C')          // Title 47 Code of Federal Regulations (2003) 73.682 (a) (20) //
+    #define MMAL_COLOR_SPACE_SMPTE240M          MMAL_FOURCC('Y', '2', '4', '0')          // Society of Motion Picture and Television Engineers 240M (1999) //
+    #define MMAL_COLOR_SPACE_BT470_2_M          MMAL_FOURCC('Y', '_', '_', 'M')          // ITU-R BT.470-2 System M //
+    #define MMAL_COLOR_SPACE_BT470_2_BG         MMAL_FOURCC('Y', '_', 'B', 'G')          // ITU-R BT.470-2 System BG //
+    #define MMAL_COLOR_SPACE_JFIF_Y16_255       MMAL_FOURCC('Y', 'Y', '1', '6')          // JPEG JFIF, but with 16..255 luma //
