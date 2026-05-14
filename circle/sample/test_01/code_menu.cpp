@@ -6,7 +6,7 @@ void            CKernel::resetPickUpFlags           (   )
 
                 if (g_menu_mode_new != g_menu_mode_old) /* or simply memset(menu_pickup_flag, 0, 16 * sizeof(bool)); ? **** */
                     {
-                    for(int i = 0; i < modetablecount; i++) 
+                    for(int i = 0; i < MODETABLE_COUNT; i++) 
                         {
                         g_menuPickUpFlag[i] = false;
                         }
@@ -132,7 +132,7 @@ void            CKernel::modeTRG                    (   int p_channel)
 
 void            CKernel::modeBPM                    (   int p_channel) 
 { 
-                if (currentTime >= g_nextBeatTime[g_activeBpmChannel])
+                if (currentTime >= g_nextBeatTime[g_activeBpmChannel]) // <- g_nextBeatTime is now part of the g_lfoBpmMatrix -> enum lfo_bpm_types NBT -> nextBeatTime
                     {
                     g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[p_channel][RND];
                     g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[p_channel][RND];
