@@ -28,19 +28,19 @@ TShutdownMode CKernel::Run(void)
                         wrapper_from_sd();
 
                         randomVec8              ( g_currentTime );            
-
-                        bufferScreenDraw(   "load from sd",
-                                                    0,
-                                                    sizeof("load from sd"),
-                                                    0,
-                                                    0,
-                                                    0xFFFFFFFF );
-                                                     
-
+                                                    
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     make83FileName("TXT"),
                                                     m_logBuffer,
                                                     m_logBufferIndex );
+
+                        bufferScreenDraw(   "load and log from/to sd",
+                                                    0,
+                                                    sizeof("load and log from/to sd"),
+                                                    0,
+                                                    0,
+                                                    0xFFFFFFFF );
+
                         msDelay(1000);        
                         bufferScreenClear();                                                                    
                         m_SD_has_load = true;
