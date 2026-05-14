@@ -109,7 +109,7 @@ public:
                                                                         1023    };  // 5.0V max     
 
                 int                             m_adc_ring[ADC_CHANNELS][ADC_BUFFER_COUNT];
-                int                             m_adc_index;
+                int                             m_adc_index = 0;
 
                 float                           m_band[4][AUDIO_BUFFER_COUNT];
 

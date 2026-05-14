@@ -47,7 +47,7 @@ TShutdownMode CKernel::Run(void)
                         }
 
                         debug();
-/*              
+              
                     if (updateUSB("umsd1") == true && m_USB_has_load == false)
                         {
                         m_logBufferIndex = 0;
@@ -156,7 +156,7 @@ TShutdownMode CKernel::Run(void)
                                         0,
                                         0xFFFFFFFF );      
                     msDelay(1000);
-*/                    
+               
                     }
 
                 return ShutdownHalt;
