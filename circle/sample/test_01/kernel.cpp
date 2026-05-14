@@ -12,7 +12,9 @@
                     m_SMITxDMA          (   DMA_CHANNEL_LITE ),      // DMA_CHANNEL_LITE comes from machineinfo.h
                     m_EMMC              (   &m_Interrupt, &m_Timer,     &m_ActLED ),
                     m_USBHCI            (   &m_Interrupt, &m_Timer,     TRUE ),
+                    /*
                     m_VCHIQ             (   &m_Memory,    &m_Interrupt ),
+                    */
                     m_bStorageAttached  (   FALSE ),
                     m_pFileSystem       (   0 ),
                     m_resetFlag         (   false )

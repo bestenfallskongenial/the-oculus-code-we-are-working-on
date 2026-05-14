@@ -73,7 +73,7 @@ boolean			CKernel::Initialize						(	void )
                     {
                     bOK =   wrapperInitMEM();
                     }
-
+/*
                 if (bOK)
                     {
                     bOK =   m_VCHIQ.Initialize();
@@ -88,6 +88,6 @@ boolean			CKernel::Initialize						(	void )
                     {
                             initOGL(&m_ogl);
                     }
-                    
+*/
                 return bOK;
 }
