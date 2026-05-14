@@ -1,3 +1,5 @@
+#include "kernel.h"
+
 void            CKernel::Log_createComponent        (   const MMAL_Component_Create_Msg& tx, const MMAL_Component_Create_Reply& rx)
 {
 
