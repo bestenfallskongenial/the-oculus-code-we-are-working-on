@@ -421,7 +421,7 @@ void            CKernel::wrapper_init_gl_usb        (   )
                 initTexture     (   &m_vtx,
                                     &m_fsh,
                                     &m_tex,
-                                    m_bufferTex,
+                                /*  m_bufferTex, */
                                     filecounter[FT_TEX][FLD_PREV],
                                     filecounter[FT_TEX][FLD_LOADED],
                                     filecounter[FT_TEX][FLD_VALID],
@@ -431,6 +431,7 @@ void            CKernel::wrapper_init_gl_usb        (   )
 
 void            CKernel::wrapper_io                 (   )
 {
+    /*
                 readADC();                  //  we read and dampen the adc each loop
 
                 chooseIndexD( ADC_SELECT_PRG, m_activePrg, filecounter[FT_FSH][FLD_VALID])      // we derive the 
@@ -442,10 +443,12 @@ void            CKernel::wrapper_io                 (   )
 
                 button_consumer(0);               // and transpose the button input in menulayer information each time
                 button_consumer(1);
+    */            
 }
 
 void            CKernel::wrapper_modes              (   )
 {
+    /*
                 resetPickUpFlags();                              // we need to reset the threshold flags each loop - why again?!
 
                 switch (g_current_menu_layer)                           // use than the menulayer variable the 
@@ -480,10 +483,12 @@ void            CKernel::wrapper_modes              (   )
                 setChannelMode(7);
 
                 apply_state_to_led();                                   // than we update the 4 leds depending on the modes - we have to write this function 
+*/
 }
 
 bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Initialize()
 {
+    /*
                 bool bOK = true;
 
                 if (bOK)
@@ -524,13 +529,15 @@ bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Init
                                                 VCSM_Lock_MEM_Reply&            rx);                    
                     }
 
-                return bOK;                    
+                return bOK;   
+    */                                 
 }
 // instead of having life time long structs for my vcsm / mmal i declare pointer instead and provide wrappers to alloc and free the structs after use!
 // means also i have to call the wrapper here at the CKernel init phase ( presumably after the memory alloc ) and after the init phase of the vc04 
 
 bool            CKernel::wrapperInitVCSMstruct      (   )
 {
+    /*
                 bool bOK = true;
 
                 if (bOK) { m_ServiceCreateVCSM          = new SERVICE_CREATION_T();           
@@ -567,10 +574,12 @@ bool            CKernel::wrapperInitVCSMstruct      (   )
                     bOK = (m_freeRxVCSM                != nullptr); }
 
                 return bOK;
+    */                
 }
 
 bool            CKernel::wrapperInitMMALstruct      (   )
 {
+    /*
                 bool bOK = true;
 
                 if (bOK) { m_ServiceCreateMMAL          = new SERVICE_CREATION_T();              
@@ -685,10 +694,12 @@ bool            CKernel::wrapperInitMMALstruct      (   )
                     bOK = (m_PortInfoGetRx_Output_D    != nullptr); }
 
                 return bOK;
+    */                
 }
 
 void            CKernel::wrapperFreeVCSMstruct      (   ) // here i must check what structs are init/debug and what are runtime code!
 {
+    /*
                 delete  m_ServiceCreateVCSM;     
                         m_ServiceCreateVCSM             = nullptr;
 
@@ -721,10 +732,12 @@ void            CKernel::wrapperFreeVCSMstruct      (   ) // here i must check w
 
                 delete  m_freeRxVCSM;        
                         m_freeRxVCSM                    = nullptr;
+    */
 }
 
 void            CKernel::wrapperFreeMMALstruct      (   ) // here i must check what structs are init/debug and what are runtime code!
 {
+    /*
                 delete  m_ServiceCreateMMAL;       
                         m_ServiceCreateMMAL             = nullptr;
 
@@ -835,4 +848,5 @@ void            CKernel::wrapperFreeMMALstruct      (   ) // here i must check w
 
                 delete  m_PortInfoGetRx_Output_D;  
                         m_PortInfoGetRx_Output_D        = nullptr;
+    */
 }
