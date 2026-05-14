@@ -6,7 +6,7 @@ void            CKernel::resetPickUpFlags           (   )
 
                 if (g_menu_mode_new != g_menu_mode_old) /* or simply memset(menu_pickup_flag, 0, 16 * sizeof(bool)); ? **** */
                     {
-                    for(int i = 0; i < MODETABLE_COUNT; i++) 
+                    for(int i = 0; i < /*MODETABLE_COUNT*/ ( 4*MENU_LAYER_COUNT ) ; i++) 
                         {
                         g_menuPickUpFlag[i] = false;
                         }
