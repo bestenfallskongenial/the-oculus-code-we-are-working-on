@@ -50,7 +50,7 @@ void            CKernel::mapMenuGroup               (   uint8_t menu_id, uint8_t
                     {
                     return;
                     }
-                int v;
+                unsigned v;
 
                 v = (g_inOutMatrixInt[4][RAW] * g_modeMap[base + 0][0]) >> 10;
 
