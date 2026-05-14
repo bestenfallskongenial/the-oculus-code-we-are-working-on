@@ -153,7 +153,7 @@ void            CKernel::modeLF2                    (   int p_channel)
 
 void            CKernel::modeAudioAb0               (   int p_channel)
 {
-                g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU0]
+                g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU0];
 }
 
 void            CKernel::modeAudioAb1               (   int p_channel)
