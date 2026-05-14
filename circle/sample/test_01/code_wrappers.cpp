@@ -528,9 +528,8 @@ bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Init
                                                 VCSM_Lock_MEM_Msg&              tx, 
                                                 VCSM_Lock_MEM_Reply&            rx);                    
                     }
-
-                return bOK;   
-    */                                 
+    */ 
+                return bOK;                             
 }
 // instead of having life time long structs for my vcsm / mmal i declare pointer instead and provide wrappers to alloc and free the structs after use!
 // means also i have to call the wrapper here at the CKernel init phase ( presumably after the memory alloc ) and after the init phase of the vc04 
@@ -572,9 +571,8 @@ bool            CKernel::wrapperInitVCSMstruct      (   )
 
                 if (bOK) { m_freeRxVCSM                 = new VCSM_Free_MEM_Reply();          
                     bOK = (m_freeRxVCSM                != nullptr); }
-
-                return bOK;
-    */                
+    */         
+                return bOK;               
 }
 
 bool            CKernel::wrapperInitMMALstruct      (   )
@@ -692,9 +690,9 @@ bool            CKernel::wrapperInitMMALstruct      (   )
 
                 if (bOK) { m_PortInfoGetRx_Output_D     = new MMAL_Port_Info_Get_Reply();       
                     bOK = (m_PortInfoGetRx_Output_D    != nullptr); }
-
+    */
                 return bOK;
-    */                
+                
 }
 
 void            CKernel::wrapperFreeVCSMstruct      (   ) // here i must check what structs are init/debug and what are runtime code!

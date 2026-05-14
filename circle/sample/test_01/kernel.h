@@ -414,13 +414,15 @@ public:
 
                 void        wrapper_modes               ();             // the hardware->gui->glsl pipeline 
 
+                bool        wrapper_VCSM();
+
                 bool        wrapperInitVCSMstruct       ();             // for the dynamical vcsm structs allocation
 
                 bool        wrapperInitMMALstruct       ();             // for the dynamical mmal structs allocation
 //140
-                bool        wrapperFreeVCSMstruct       ();             // for the cleanup of the vcsm structs
+                void        wrapperFreeVCSMstruct       ();             // for the cleanup of the vcsm structs
 
-                bool        wrapperFreeMMALstruct       ();             // for the cleanup of the mmal structs
+                void        wrapperFreeMMALstruct       ();             // for the cleanup of the mmal structs
 
                 bool        startupScreen               (               void );                                                                
 // EXTRA / DEBUG
