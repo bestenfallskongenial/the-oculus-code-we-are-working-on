@@ -195,6 +195,24 @@ public:
                 unsigned                g_bytVid[VID_SD + VID_USB]      = { 0 };
                 unsigned                g_bytKln[KLN_SD + KLN_USB]      = { 0 };
 // CODE_MENU.CPP
+typedef void (CKernel::*ModeFunc)(int);         // for the new menu selector -> easier to expand, right?
+
+ModeFunc g_modeTable[] =
+                                                        {   
+                                                        &CKernel::modeADC,
+                                                        &CKernel::modeTRG,
+                                                        &CKernel::modeBPM,
+                                                        &CKernel::modeLF1,
+                                                        &CKernel::modeLF2,
+                                                        nullptr,
+                                                        nullptr,
+                                                        nullptr,
+                                                        &CKernel::modeAudioAb0,
+                                                        &CKernel::modeAudioAb1,
+                                                        &CKernel::modeAudioBb0,
+                                                        &CKernel::modeAudioBb1
+                                                        };               
+                                                        
                 uint8_t                 g_modeLengthAdd[MODELEN_FLAG_COUNT] =
                                                                 {
                                                                 MAX_MODES,                  // 5 for now    

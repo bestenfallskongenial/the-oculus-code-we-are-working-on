@@ -1,6 +1,8 @@
 #define         EMPTYSTR                0 // ""                                                 // for the logger
 #define         EMPTYLOG                255                                                // for the logger
 
+#define         MENU_LAYERS             6
+
 #define         check() 				gfx_check(__FILE__, __LINE__) 	// my own assertiion implimentation
 
 #define         MAX_WATCHDOG_SEC 15
