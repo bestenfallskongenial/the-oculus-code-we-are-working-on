@@ -383,7 +383,7 @@ void            CKernel::wrapper_init_gl_usb        (   )
                                     filecounter[FT_TEX][FLD_SIZE],
                                     filecounter[FT_TEX][FLD_PREV],
                                     filecounter[FT_TEX][FLD_LOADED]);                
-
+/*
                 initH264parser  (   &m_vid,
                                     m_videoBlockBase,
                                     m_bufferVid,
@@ -395,7 +395,7 @@ void            CKernel::wrapper_init_gl_usb        (   )
                                     MAX_VIDEO_HEIGHT,
                                     MAX_VIDEO_PROFILE,
                                     MAX_VIDEO_LEVEL);
-
+*/
                 initShader      (   &m_vtx,         // init fragment shader ( default )
                                     &m_fsh, 
                                     &m_tex,
