@@ -5,9 +5,9 @@
 TShutdownMode CKernel::Run(void)
 {
                 uint32_t    start_time_fps_calculation = m_Timer.GetClockTicks();   
-
+//  we generate 8 rnd vaole 
                 randomVec8              ( start_time_fps_calculation );
-
+//  to feed the filename generator and store the bootstrap log to sd
                 saveFromBufferM         (   PARTITION_NAME_SD,
                                             make83FileName("TXT"),
                                             m_logBuffer,
@@ -44,7 +44,7 @@ TShutdownMode CKernel::Run(void)
 
                         randomVec8              ( start_time_fps_calculation );            
 
-        //              wrapper_init_gl_sd();
+                        wrapper_init_gl_sd();
 
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     make83FileName("TXT"),
