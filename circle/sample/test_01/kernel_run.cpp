@@ -46,7 +46,7 @@ TShutdownMode CKernel::Run(void)
 
                         randomVec8              ( g_currentTime );            
 
-                        wrapper_init_gl_sd();
+                //     wrapper_init_gl_sd();
 
                 bufferScreenDraw(   "load from sd",
                                             0,
