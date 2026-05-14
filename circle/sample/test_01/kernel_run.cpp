@@ -13,24 +13,7 @@ TShutdownMode CKernel::Run(void)
                                             m_logBuffer,
                                             m_logBufferIndex );
                 msDelay(1000);
-/*
-                bufferScreenDraw(   "save buffer success",
-                                            0,
-                                            sizeof("save buffer success"),
-                                            0,
-                                            0,
-                                            0xFFFFFFFF );
-                                            msDelay(1000); 
 
-                bufferScreenDraw(   m_logBuffer,
-                                            0,
-                                            m_logBufferIndex,
-                                            0,
-                                            0,
-                                            0xFFFFFFFF );
-
-                msDelay(1000); 
-*/
                 while (/*m_resetFlag == false*/ 1)
                     {
                     g_currentTime = m_Timer.GetClockTicks(); 
@@ -46,23 +29,20 @@ TShutdownMode CKernel::Run(void)
 
                         randomVec8              ( g_currentTime );            
 
-                //     wrapper_init_gl_sd();
-
-                bufferScreenDraw(   "load from sd",
-                                            0,
-                                            sizeof("load from sd"),
-                                            0,
-                                            0,
-                                            0xFFFFFFFF );
-                                            msDelay(1000); 
+                        bufferScreenDraw(   "load from sd",
+                                                    0,
+                                                    sizeof("load from sd"),
+                                                    0,
+                                                    0,
+                                                    0xFFFFFFFF );
+                                                     
 
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     make83FileName("TXT"),
                                                     m_logBuffer,
                                                     m_logBufferIndex );
-
-                        msDelay(1000);
-
+                        msDelay(1000);        
+                        bufferScreenClear();                                                                    
                         m_SD_has_load = true;
                         }
                 
@@ -73,13 +53,13 @@ TShutdownMode CKernel::Run(void)
 
                         wrapper_load_usb();          
                         
-                bufferScreenDraw(   "load from usb",
-                                            0,
-                                            sizeof("load from usb"),
-                                            0,
-                                            0,
-                                            0xFFFFFFFF );
-                                            msDelay(1000);                         
+                        bufferScreenDraw(   "load from usb",
+                                                    0,
+                                                    sizeof("load from usb"),
+                                                    0,
+                                                    0,
+                                                    0xFFFFFFFF );
+                      
 
                         randomVec8              ( g_currentTime );            
 
@@ -88,7 +68,7 @@ TShutdownMode CKernel::Run(void)
                                                     m_logBuffer,
                                                     m_logBufferIndex );
                         msDelay(1000);    
-
+                        bufferScreenClear();
                         m_USB_has_load = true;                            
                         }
 
@@ -97,7 +77,7 @@ TShutdownMode CKernel::Run(void)
                 bufferScreenDraw(   "read adc",
                                             0,
                                             sizeof("read adc"),
-                                            20,
+                                            10,
                                             0,
                                             0xFFFFFFFF );
                                             msDelay(1000); 
