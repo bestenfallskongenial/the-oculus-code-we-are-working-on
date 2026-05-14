@@ -4,6 +4,7 @@ static const char FromKernel[] = "kernel";
 
 void CKernel::debug()
 {
+/*    
 unsigned tick = 0;
                 bool  bExceptionTimerStarted = FALSE;
 
@@ -71,7 +72,7 @@ unsigned tick = 0;
                     int adc5 = ReadMCP3008Raw(5);
                     int adc6 = ReadMCP3008Raw(6);
                     int adc7 = ReadMCP3008Raw(7);
-/*
+
                     unsigned mytestCol = tick % gE_Cols;
                     unsigned mytestRow = 0;
 
@@ -241,8 +242,9 @@ unsigned tick = 0;
 
                         m_Timer.StartKernelTimer(5 * HZ, TimerHandler);
                         }
-*/     
+   
                     }
+*/                    
 }
 /*
 TShutdownMode CKernel::Run                              (   void )
