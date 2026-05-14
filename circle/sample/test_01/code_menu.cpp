@@ -10,7 +10,7 @@ void            CKernel::resetPickUpFlags           (   )
                         {
                         g_menuPickUpFlag[i] = false;
                         }
-                    g_menu_mode_old = g_menu_mode_new;
+                    g_menu_mode_old = g_menu_mode_new;  // bot need to be declared globally as part of the menu / layer state-machine!!!
                     }
 }
 
@@ -44,7 +44,7 @@ void            CKernel::set_mode_length            (   uint8_t base)
                 g_modeMap[base + 3][0] = length3;
 }
 
-void            CKernel::modeMenuAssignGroup        (   uint8_t menu_id, uint8_t base)
+void            CKernel::mapMenuGroup               (   uint8_t menu_id, uint8_t base)
 {
                 if (g_menu_mode_new != menu_id)
                     {
@@ -132,7 +132,8 @@ void            CKernel::modeTRG                    (   int p_channel)
 
 void            CKernel::modeBPM                    (   int p_channel) 
 { 
-                if (currentTime >= g_nextBeatTime[g_activeBpmChannel]) // <- g_nextBeatTime is now part of the g_lfoBpmMatrix -> enum lfo_bpm_types NBT -> nextBeatTime
+                if (currentTime >= g_nextBeatTime[g_activeBpmChannel])      // <- currentTime should be g_currentTime -> global member set during Run() 
+                                                                            // <- g_nextBeatTime is now part of the g_lfoBpmMatrix -> enum lfo_bpm_types NBT -> nextBeatTime
                     {
                     g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[p_channel][RND];
                     g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[p_channel][RND];
