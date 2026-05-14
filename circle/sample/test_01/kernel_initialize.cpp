@@ -2,7 +2,7 @@
 
 boolean			CKernel::Initialize						(	void )
 {
-                boolean bOK = TRUE;
+                bool bOK = TRUE;
 
                 if (bOK)
                     {

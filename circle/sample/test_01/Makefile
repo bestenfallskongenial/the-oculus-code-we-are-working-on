@@ -5,15 +5,17 @@
 CIRCLEHOME = ../..
 
 OBJS  = main.o \
+        CLogger.o \
         kernel.o \
         kernel_initialize.o \
         kernel_run.o \
-        CLogger.o \
-        code_datamanagement.o \
+        code_data.o \
         code_graphics.o \
         code_hardware.o \
         code_logging.o \
+        code_menu.o \
         code_parser.o \
+        code_stubs.o \
         code_util.o \
         code_wrappers.o \
         code_debug.o

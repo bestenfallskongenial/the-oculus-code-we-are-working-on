@@ -298,7 +298,7 @@ void            CKernel::gfx_check                  (   const char* file,
                     }
 }
 
-boolean         CKernel::startupScreen          (   void )
+bool            CKernel::startupScreen          (   void )
 {
             //  m_logBufferIndex = 0;
             //  m_logBuffer[0] = '\0';
@@ -367,9 +367,9 @@ boolean         CKernel::startupScreen          (   void )
                 storeLog(m_logBuffer, m_logBufferIndex, "gE Screen X    ", gE_ScreenWidth,
                                                         "gE Screen Y    ", gE_ScreenHeight);
 
-                bufferToScreenClear();
+                bufferScreenClear();
 
-                bufferToScreenDrawBuffer(
+                bufferScreenDraw(
                                         m_logBuffer,
                                         0,
                                         m_logBufferIndex,

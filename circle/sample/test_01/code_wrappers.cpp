@@ -93,7 +93,7 @@ void            CKernel::wrapperMEMcleanUp          (   )
 
 void            CKernel::wrapper_from_sd            (   )
 {
-                bufferToScreenDrawBuffer(   "wrapper start",
+                bufferScreenDraw(   "wrapper start",
                                             0,
                                             sizeof("wrapper start"),
                                             0,
@@ -103,7 +103,7 @@ void            CKernel::wrapper_from_sd            (   )
 
                 if(Mount( PARTITION_NAME_SD ))
                     {
-                bufferToScreenDrawBuffer(   "mount success",
+                bufferScreenDraw(   "mount success",
                                             0,
                                             sizeof("mount success"),
                                             0,
@@ -116,7 +116,7 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_VSH][FLD_EXTCNT],                         // how many valid file extensions we have in the array above also part of filecounter?
                                                 filecounter[FT_VSH][FLD_SCANNED],         
                                                 filecounter[FT_VSH][FLD_MAXSD]);           // how many files are allowed to scan and stored in the array
-                bufferToScreenDrawBuffer(   "scan vsh success",
+                bufferScreenDraw(   "scan vsh success",
                                             0,
                                             sizeof("scan vsh success"),
                                             0,
@@ -373,7 +373,7 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     GL_REPEAT,
                                     GL_REPEAT);
 }
-/*
+
 void            CKernel::wrapper_init_gl_usb        (   )
 {
                 BMPparser       (   &m_tex,
@@ -836,4 +836,3 @@ void            CKernel::wrapperFreeMMALstruct      (   ) // here i must check w
                 delete  m_PortInfoGetRx_Output_D;  
                         m_PortInfoGetRx_Output_D        = nullptr;
 }
-*/

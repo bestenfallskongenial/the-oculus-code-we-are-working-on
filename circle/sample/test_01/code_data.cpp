@@ -197,7 +197,6 @@ bool            CKernel::IsValidFile                (   const   char*       pFil
                 
                 while (*p)                              {
                                                         if (*p == '.') dot = p;
-
                                                         p++;
                                                         index++;
                                                         }
@@ -211,7 +210,6 @@ bool            CKernel::IsValidFile                (   const   char*       pFil
                 
                 while (*suffix && *extension)           {
                                                         if (*suffix != *extension) return false;
-
                                                         suffix++;
                                                         extension++;
                                                         }

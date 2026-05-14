@@ -330,8 +330,10 @@ public:
                 bool        checkUpdate                 ();
 
                 bool        Update                      ();
+
+                unsigned    get_gl_time                 (           unsigned                        sys_time );
 //85
-                void        set_pot_routing             (           bool                            adc_pot_routing);
+                void        set_pot_routing             (           bool                            adc_pot_routing );
 
 
                 char*       make83FileName              (   const   char*                           ext ;)

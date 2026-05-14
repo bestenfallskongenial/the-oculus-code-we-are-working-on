@@ -1,30 +1,34 @@
 enum modetable		                                
 {
-	CH0_MODE = 0,
-	CH1_MODE,
-	CH2_MODE,
-	CH3_MODE,
+	CH0_MODE = 0,           // store the mode ( from g_modeTable[] ) for cannel 0
+	CH1_MODE,               // store the mode ( from g_modeTable[] ) for cannel 1
+	CH2_MODE,               // store the mode ( from g_modeTable[] ) for cannel 2
+	CH3_MODE,               // store the mode ( from g_modeTable[] ) for cannel 3
 
-	CH4_MODE,
-	CH5_MODE,
-	CH6_MODE,
-	CH7_MODE,
+	CH4_MODE,               // store the mode ( from g_modeTable[] ) for cannel 4
+	CH5_MODE,               // store the mode ( from g_modeTable[] ) for cannel 5
+	CH6_MODE,               // store the mode ( from g_modeTable[] ) for cannel 6
+	CH7_MODE,               // store the mode ( from g_modeTable[] ) for cannel 7
 
-	LF1_WAVE,   // 0 to 3
-	LF2_WAVE,   // 0 to 3
-	LF1_MULT,   // 0 to 6
-	LF2_MULT,   // 0 to 6
+	LF1_WAVE,               // stores waveform for lfo1 ( from g_waveTable[WAVEFORMS_COUNT][WAVESAMPLES] ) 
+	LF2_WAVE,               // stores waveform for lfo2 ( from g_waveTable[WAVEFORMS_COUNT][WAVESAMPLES] )
+	LF1_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
+	LF2_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
 
-	SENS_A,     // 0 to 63
-	SENS_B,     // 0 to 63
-	SENS_C,     // 0 to 63
-	SENS_D,     // 0 to 63
+	SENS_A,                 // stores the sensitivity for the audio mode ( available if enabled ) bandA0
+	SENS_B,                 // stores the sensitivity for the audio mode ( available if enabled ) bandA1
+	SENS_C,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB0
+	SENS_D,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB1
 
 	FRM_MODE,   // 0 or 1   ( wait - i propose a simple 4 to 7 and 0 as of, means anything else than 0 is the actual input p_channel problem, it need to overrule CH*_MODE )
 	TEX_MODE,   // 0 or 1   ( how we can do it? also, dont i want more than only p_channel 4-7 assignable? )
 	CLK_MODE,   // 0 or 1   ( whats about the approach in readADC() where i modify the number of possible modes in the modematrix )
 	VID_MODE,   // 0 or 1   ( like if i have one here CH*_MODE "opens" up for this modes - requires a constant check and update but... )
 
+    TIME_MODE,
+    DUMMY_A,
+    DUMMY_B,
+    DUMMY_C,
     STORE_SET,  // 0 or 1   ( if set to 1 and the MENU_LAYER_COUNT is zero again ( button released ?) the file operation starts )
     LOAD_SET,   // 0 or 1
     STORE_LOG,  // 0 or 1
@@ -36,24 +40,24 @@ enum modetable
 };
 //------------------------------------------------- // for the array unsigned/float g_inOutMatrix*[CHANNEL][IO_TYPE_COUNT]
 //	INT	    ADC_RAW     (SCALED IN)VAL 	(SCALED)OUT 	RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
-//	ch0	    U	        U	        	U           	U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
-//	ch1	    U	        U	       	 	U           	U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
-//	ch2	    U	        U	        	U           	U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
-//	ch3	    U	        U	        	U           	U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
-//	ch4	    U	        U	        	U           	U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
-//	ch5	    U	        U	        	U           	U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
-//	ch6	    U	        U	        	U           	U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
-//	ch7	    U	        U	        	U           	U	        G	        G	        opt   	    opt   	    opt   	    opt         U           U
+//	ch0	    U	        U	        	U           	U	        G	        G                                                           U           U
+//	ch1	    U	        U	       	 	U           	U	                     	                                                        U           U
+//	ch2	    U	        U	        	U           	U	                     	                                                        U           U
+//	ch3	    U	        U	        	U           	U	                     	                                                        U           U
+//	ch4	    U	        U	        	U           	U	                     	                                                        U           U
+//	ch5	    U	        U	        	U           	U	                     	                                                        U           U
+//	ch6	    U	        U	        	U           	U	                     	                                                        U           U
+//	ch7	    U	        U	        	U           	U	                     	                                                        U           U
 
 //	FLT	    ADC_RAW     (SCALED IN)VAL  (SCALED)OUT 	RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
 //	ch0	    opt         U	        	U           	U	        G	        G	        G	        G	        G	        G           opt        opt   
-//	ch1	    opt         U	        	U           	U	        G	        G	        G	        G	        G	        G           opt        opt   
-//	ch2	    opt         U	        	U           	U	        G	        G	        G	        G	        G	        G           opt        opt   
-//	ch3	    opt         U	        	U           	U	        G	        G	        G	        G	        G	        G           opt        opt   
-//	ch4	    opt         U	        	U           	U	        G	        G	        G	        G	        G	        G           opt        opt   
-//	ch5	    opt         U	        	U           	U	        G	        G	        G	        G	        G	        G           opt        opt   
-//	ch6	    opt         U	        	U           	U	        G	        G	        G	        G	        G	        G           opt        opt   
-//	ch7	    opt         U	        	U           	U	        G	        G	        G	        G	        G	        G           opt        opt   
+//	ch1	    opt         U	        	U           	U	                     	                                                        opt        opt   
+//	ch2	    opt         U	        	U           	U	                     	                                                        opt        opt   
+//	ch3	    opt         U	        	U           	U	                     	                                                        opt        opt   
+//	ch4	    opt         U	        	U           	U	                     	                                                        opt        opt   
+//	ch5	    opt         U	        	U           	U	                     	                                                        opt        opt   
+//	ch6	    opt         U	        	U           	U	                     	                                                        opt        opt   
+//	ch7	    opt         U	        	U           	U	                     	                                                        opt        opt   
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 enum io_types                               
 {
@@ -83,29 +87,29 @@ enum io_types
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 enum lfo_bpm_types
 {
-    BPM =0,         									// result BPM
-    INTV,           									// intervalCalculated
-    NBT,            									// nextBeatTime
-    LCB,            									// lastCircleBuffer
-   	NCB,            									// nextCircleBuffer
-    LBC,            									// lastBpmCalculation
-    LBCT,           									// lastBpmCalculationTMP
-    LMT,            									// lfoMultiplierTMP
-    ELP,            									// elapsedMicroseconds
-    CYL,            									// cycleLength
-    SMP,            									// sampleIndex
-    LTIME,          									// lastTime
-    TIDX,           									// timeIndex
-    TB,             									// timeBuffer
-    DB,             									// deltaBuffer
-    IREG,                                               // irregularity ... is not really bpm/lfo but audio therefore... it fits so nicely here
-    LFO_BPM_COUNT										// 15
+    BPM =0,         								// result BPM
+    INTV,           								// intervalCalculated
+    NBT,            								// nextBeatTime
+    LCB,            								// lastCircleBuffer
+   	NCB,            								// nextCircleBuffer
+    LBC,            								// lastBpmCalculation
+    LBCT,           								// lastBpmCalculationTMP
+    LMT,            								// lfoMultiplierTMP
+    ELP,            								// elapsedMicroseconds
+    CYL,            								// cycleLength
+    SMP,            								// sampleIndex
+    LTIME,          							    // lastTime
+    TIDX,           							    // timeIndex
+    TB,             							    // timeBuffer
+    DB,             							    // deltaBuffer
+    IREG,                                           // irregularity ... is not really bpm/lfo but audio therefore... it fits so nicely here
+    LFO_BPM_COUNT								    // 15
 };
 //------------------------------------------------- // g_modeLengthAdd[MODELEN_FLAG_COUNT] 
 enum ModeLengthFlag
 {
                 MODELENDEFAULT  = 0,
-                MODELEN_AUDIO_A,            				// any extra mode that modifies the number of max modes per channel must have an enum
+                MODELEN_AUDIO_A,            	    // any extra mode that modifies the number of max modes per channel must have an enum
                 MODELEN_AUDIO_B,
                 MODELEN_AUDIO_C,
                 MODELEN_LFO_A,
@@ -120,17 +124,17 @@ enum ButtonTSIndex
     BTN_DOUBLE      = 1,
     BTN_RELEASE     = 2,
     BTN_SINGLE      = 3,
-    BTN_HOLD_TICK   = 4,                            		// COUNTER: increases while held ( runtime loop iterations - unstable but sufficient - needs measurement )
+    BTN_HOLD_TICK   = 4,                            // COUNTER: increases while held ( runtime loop iterations - unstable but sufficient - needs measurement )
     BTN_INDEX_COUNT = 5
 };
 //------------------------------------------------- // for unsigned filecounter[FT_COUNT][FLD_COUNT]
 enum FileType
 {
-    FT_VSH = 0,                                     		// vertex shader 
-    FT_OMF,                                         		// overlay fragment shader 
-    FT_FSH,                                         		// user fragment shader
-    FT_OMT,                                         		// overlay texture
-    FT_TEX,                                         		// user texture
+    FT_VSH = 0,                                     // vertex shader 
+    FT_OMF,                                         // overlay fragment shader 
+    FT_FSH,                                         // user fragment shader
+    FT_OMT,                                         // overlay texture
+    FT_TEX,                                         // user texture
     FT_VID,                                         		// user video 
     FT_KLN,                                         		// kernel
     FRM_BF,                                         		// output-frames A & B

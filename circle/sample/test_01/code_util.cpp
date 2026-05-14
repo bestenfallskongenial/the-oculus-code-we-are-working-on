@@ -198,6 +198,15 @@ bool            CKernel::Update                     (   )
                 return false;
 }
 
+unsigned        CKernel::get_gl_time( unsigned sys_time )
+{
+                    switch (mode_storage_buffers[FRM_MODE][current_buffer])
+                        {
+                        case true:  GLtime = g_inOutMatrixInt[ADC_INPUT_TIME][INT]/36.0f; break;
+                        case false: GLtime = sys_time / 1000000.0f;                       break;
+                        }
+                    }
+
 void            CKernel::set_pot_routing            (   bool            adc_pot_routing)
 {
             //  m_ChipSelectPin.Write(adc_pot_routing);

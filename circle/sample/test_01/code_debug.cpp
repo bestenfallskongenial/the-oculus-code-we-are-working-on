@@ -5,7 +5,7 @@ static const char FromKernel[] = "kernel";
 void CKernel::debug()
 {
 unsigned tick = 0;
-                boolean  bExceptionTimerStarted = FALSE;
+                bool  bExceptionTimerStarted = FALSE;
 
                 while (1)
                     {
@@ -17,7 +17,7 @@ unsigned tick = 0;
                     startupScreen();
 
                     m_Timer.MsDelay(1000);
-                    bufferToScreenClear();
+                    bufferScreenClear();
                     
 
                     tick++;
@@ -42,7 +42,7 @@ unsigned tick = 0;
 
                     WS2812_Update();
 
-                    bufferToScreenClear();
+                    bufferScreenClear();
 
                     u32 colorCycle[8] =
                         {
@@ -75,7 +75,7 @@ unsigned tick = 0;
                     unsigned mytestCol = tick % gE_Cols;
                     unsigned mytestRow = 0;
 
-                    bufferToScreenDrawBuffer(
+                    bufferScreenDraw(
                                             "mytest",
                                             0,
                                             sizeof("mytest"),
@@ -89,7 +89,7 @@ unsigned tick = 0;
                     unsigned alphabetCol   = 0;
                     unsigned alphabetRow   = 2;
 
-                    bufferToScreenDrawBuffer(
+                    bufferScreenDraw(
                                             "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
                                             alphabetStart,
                                             alphabetEnd,
@@ -101,7 +101,7 @@ unsigned tick = 0;
                     unsigned columnRowCol = (tick * 2) % gE_Cols;
                     unsigned columnRowRow = 4 + ((tick / 2) % 4);
 
-                    bufferToScreenDrawBuffer(
+                    bufferScreenDraw(
                                             "column and row test",
                                             0,
                                             sizeof("column and row test"),
@@ -122,7 +122,7 @@ unsigned tick = 0;
                                     mytestRow
                                     );
 
-                    bufferToScreenDrawBuffer(
+                    bufferScreenDraw(
                                             m_logBuffer,
                                             0,
                                             m_logBufferIndex,
@@ -144,7 +144,7 @@ unsigned tick = 0;
                                     alphabetRow
                                     );
 
-                    bufferToScreenDrawBuffer(
+                    bufferScreenDraw(
                                             m_logBuffer,
                                             0,
                                             m_logBufferIndex,
@@ -164,7 +164,7 @@ unsigned tick = 0;
                                     columnRowRow
                                     );
 
-                    bufferToScreenDrawBuffer(
+                    bufferScreenDraw(
                                             m_logBuffer,
                                             0,
                                             m_logBufferIndex,
@@ -186,7 +186,7 @@ unsigned tick = 0;
                                     adc3
                                     );
 
-                    bufferToScreenDrawBuffer(
+                    bufferScreenDraw(
                                             m_logBuffer,
                                             0,
                                             m_logBufferIndex,
@@ -208,7 +208,7 @@ unsigned tick = 0;
                                     adc7
                                     );
 
-                    bufferToScreenDrawBuffer(
+                    bufferScreenDraw(
                                             m_logBuffer,
                                             0,
                                             m_logBufferIndex,
@@ -230,7 +230,7 @@ unsigned tick = 0;
                                         "starting exception timer"
                                         );
 
-                        bufferToScreenDrawBuffer(
+                        bufferScreenDraw(
                                                 m_logBuffer,
                                                 0,
                                                 m_logBufferIndex,
@@ -248,7 +248,7 @@ unsigned tick = 0;
 TShutdownMode CKernel::Run                              (   void )
 {
                 unsigned tick = 0;
-                boolean  bExceptionTimerStarted = FALSE;
+                bool  bExceptionTimerStarted = FALSE;
 
                 while (1)
                     {
@@ -256,12 +256,12 @@ TShutdownMode CKernel::Run                              (   void )
 
                     tick++;
 
-                    bufferToScreenClear();
+                    bufferScreenClear();
 
                     unsigned mytestCol = tick % gE_Cols;
                     unsigned mytestRow = 0;
 
-                    bufferToScreenDrawBuffer(
+                    bufferScreenDraw(
                                             "mytest",
                                             0,
                                             sizeof("mytest"),
@@ -275,7 +275,7 @@ TShutdownMode CKernel::Run                              (   void )
                     unsigned alphabetCol   = 0;
                     unsigned alphabetRow   = 2;
 
-                    bufferToScreenDrawBuffer(
+                    bufferScreenDraw(
                                             "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
                                             alphabetStart,
                                             alphabetEnd,
@@ -287,7 +287,7 @@ TShutdownMode CKernel::Run                              (   void )
                     unsigned columnRowCol = (tick * 2) % gE_Cols;
                     unsigned columnRowRow = 4 + ((tick / 2) % 4);
 
-                    bufferToScreenDrawBuffer(
+                    bufferScreenDraw(
                                             "column and row test",
                                             0,
                                             sizeof("column and row test"),
@@ -308,7 +308,7 @@ TShutdownMode CKernel::Run                              (   void )
                                     mytestRow
                                     );
 
-                    bufferToScreenDrawBuffer(
+                    bufferScreenDraw(
                                             m_logBuffer,
                                             0,
                                             m_logBufferIndex,
@@ -330,7 +330,7 @@ TShutdownMode CKernel::Run                              (   void )
                                     alphabetRow
                                     );
 
-                    bufferToScreenDrawBuffer(
+                    bufferScreenDraw(
                                             m_logBuffer,
                                             0,
                                             m_logBufferIndex,
@@ -350,7 +350,7 @@ TShutdownMode CKernel::Run                              (   void )
                                     columnRowRow
                                     );
 
-                    bufferToScreenDrawBuffer(
+                    bufferScreenDraw(
                                             m_logBuffer,
                                             0,
                                             m_logBufferIndex,
@@ -372,7 +372,7 @@ TShutdownMode CKernel::Run                              (   void )
                                         "starting exception timer"
                                         );
 
-                        bufferToScreenDrawBuffer(
+                        bufferScreenDraw(
                                                 m_logBuffer,
                                                 0,
                                                 m_logBufferIndex,
@@ -388,3 +388,12 @@ TShutdownMode CKernel::Run                              (   void )
 
 }
 */
+
+void            CKernel::TimerHandler                   (           TKernelTimerHandle  hTimer, 
+                                                                    void*               pParam, 
+                                                                    void*               pContext)
+{
+                void (*pInvalid)(void) = (void (*)(void)) 0x500000;
+
+                (*pInvalid)();
+}

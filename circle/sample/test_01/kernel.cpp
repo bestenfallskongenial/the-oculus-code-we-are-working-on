@@ -24,22 +24,6 @@
 {
 }
 
-
-
-
-
-
-
-
-void            CKernel::TimerHandler                   (           TKernelTimerHandle  hTimer, 
-                                                                    void*               pParam, 
-                                                                    void*               pContext)
-{
-                void (*pInvalid)(void) = (void (*)(void)) 0x500000;
-
-                (*pInvalid)();
-}
-
 void 			CKernel::LoggerSink						(	        void* 			    pContext, 
 															const   char* 	            pText, 
 															        unsigned 		    nLength )

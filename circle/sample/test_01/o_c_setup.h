@@ -60,10 +60,11 @@
 
     #define         LOG_SIZ                     (1024*128)
 
-    #define         ADC_SELECT_PRG              7
-    #define         ADC_SELECT_TEX              6
+    #define         ADC_SELECT_PRG              7   // we will map this modes to input channels later
+    #define         ADC_SELECT_TEX              6   // this are placeholder mactos
     #define         ADC_SELECT_VID              5
     #define			ADC_INPUT_CLK			    5	// adc p_channel use as clock ! BIGGER THAN 3 !
+    #define         ADC_INPUT_TIME              4
 
     #define         DEVICE_NAME_SD              "emmc1"
     #define         DEVICE_NAME_USB             "umsd1"
@@ -79,14 +80,14 @@
     #define 		FILENAME_VCSM_LOG		    "LOG-VCSM.txt"
     #define 		FILENAME_MMAL_LOG		    "LOG-MMAL.txt"    
 
-    #define         WAVEFORMS             	    4		// number of lfo waves
+    #define         WAVEFORMS_COUNT             	    4		// number of lfo waves
     #define         WAVESAMPLES            	    256  	// number of samples per lfo waves
 
     #define         MAX_MODES                   5
     #define         MENU_LAYER_COUNT            4
 
     #define 		LFO_INSTANCES			    2
-    #define			LFO_MULTIPLIERS			    7
+    #define			LFO_MULTIPLIERS_COUNT			    7
 
     #define         SLOTS                       34                                  // for the g_centralModeBuffer[SLOTS][MODETABLE_COUNT] array -  
                                                                                     // 1 firmware / 32 user / 1 default slot

@@ -14,7 +14,7 @@ TShutdownMode CKernel::Run(void)
                                             m_logBufferIndex );
                 msDelay(1000);
 /*
-                bufferToScreenDrawBuffer(   "save buffer success",
+                bufferScreenDraw(   "save buffer success",
                                             0,
                                             sizeof("save buffer success"),
                                             0,
@@ -22,7 +22,7 @@ TShutdownMode CKernel::Run(void)
                                             0xFFFFFFFF );
                                             msDelay(1000); 
 
-                bufferToScreenDrawBuffer(   m_logBuffer,
+                bufferScreenDraw(   m_logBuffer,
                                             0,
                                             m_logBufferIndex,
                                             0,

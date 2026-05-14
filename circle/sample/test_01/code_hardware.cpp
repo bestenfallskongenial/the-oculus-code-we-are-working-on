@@ -111,7 +111,7 @@ void            CKernel::watchdog_Start          (   unsigned nTimeoutSeconds)
                 write32( ARM_PM_RSTC, ARM_PM_PASSWD | ARM_PM_RSTC_REBOOT | (read32(ARM_PM_RSTC) & ARM_PM_RSTC_CLEAR) );
 }
 
-boolean         CKernel::SPI_init                (   void)
+bool            CKernel::SPI_init                (   void)
 {
                 m_SPIBaseAddress = SPI0_BASE;
 
@@ -211,7 +211,7 @@ int             CKernel::WriteRead               (   unsigned nChipSelect,
                     return (int) nCount;
 }
 
-boolean         CKernel::SMI_Init                (   unsigned gpioPin)
+bool            CKernel::SMI_Init                (   unsigned gpioPin)
 {
                 if (gpioPin < 8 || gpioPin > 25) return FALSE;
 
@@ -294,7 +294,7 @@ void            CKernel::SMI_SetupDMA            (   size_t byteLength)
                 PeripheralExit();
 }
 
-boolean         CKernel::WS2812_Init             (   unsigned ledCount)
+bool            CKernel::WS2812_Init             (   unsigned ledCount)
 {
                 if (!m_SMIValid || ledCount == 0) return FALSE;
 
@@ -364,7 +364,7 @@ int             CKernel::ReadMCP3008Raw             (   unsigned    channel)
                 return ((rx[1] & 0x03) << 8) | rx[2];
 }
 
-boolean         CKernel::frameBufferInit            (   void )
+bool            CKernel::frameBufferInit            (   void )
 {
                 if (!gE_FrameBuffer.Initialize ()) return FALSE;
 
@@ -385,12 +385,12 @@ boolean         CKernel::frameBufferInit            (   void )
                 return TRUE;
 }
 
-void            CKernel::bufferToScreenPlot         (   unsigned x, unsigned y, u32 color )
+void            CKernel::bufferScreenPlot         (   unsigned x, unsigned y, u32 color )
 {
                 gE_PixelBuffer[y * (gE_PitchBytes >> 2) + x] = color;
 }
 
-void            CKernel::bufferToScreenDrawChar     (   char        ch,
+void            CKernel::bufferScreenDrawChar     (   char        ch,
                                                         unsigned    charCol,
                                                         unsigned    charRow,
                                                         u32         fgColor )
@@ -402,17 +402,17 @@ void            CKernel::bufferToScreenDrawChar     (   char        ch,
                     {
                     for (unsigned x = 0; x < gE_CharWidth; x++)
                         {
-                        bufferToScreenPlot (px + x, py + y,  gE_CharGenerator.GetPixel (ch, x, y) ? fgColor : 0 );
+                        bufferScreenPlot (px + x, py + y,  gE_CharGenerator.GetPixel (ch, x, y) ? fgColor : 0 );
                         }
                     }
 }
 
-void            CKernel::bufferToScreenClear        (   void)
+void            CKernel::bufferScreenClear        (   void)
 {
                 memset(gE_PixelBuffer, 0, gE_PitchBytes * gE_ScreenHeight);
 }
 
-void            CKernel::bufferToScreenDrawBuffer   (   const char* pSourceBuffer,
+void            CKernel::bufferScreenDraw   (   const char* pSourceBuffer,
                                                         u32         startIndex,
                                                         u32         endIndex,
                                                         unsigned    startCol,
@@ -438,7 +438,7 @@ void            CKernel::bufferToScreenDrawBuffer   (   const char* pSourceBuffe
 
                         continue;
                         }
-                    if (col < gE_Cols && row < gE_Rows) bufferToScreenDrawChar (ch, col, row, fgColor );
+                    if (col < gE_Cols && row < gE_Rows) bufferScreenDrawChar (ch, col, row, fgColor );
 
                     col++;
                     if (col >= gE_Cols)
@@ -450,7 +450,7 @@ void            CKernel::bufferToScreenDrawBuffer   (   const char* pSourceBuffe
                     }
 }
 
-void            CKernel::bufferToScreenGetGrid      (   unsigned& cols, unsigned& rows)
+void            CKernel::bufferScreenGetGrid      (   unsigned& cols, unsigned& rows)
 {
                 cols = gE_Cols;
                 rows = gE_Rows;

@@ -31,7 +31,7 @@ public:
 // SPI
 private:
                 uintptr             m_SPIBaseAddress    = 0;
-                boolean             m_SPIValid          = 0;
+                bool                m_SPIValid          = 0;
 // SMI / DMA / WS2812
 private:
                 CDMAChannel         m_SMITxDMA;
@@ -41,7 +41,7 @@ private:
                 unsigned            m_LEDCount          = 0;
                 unsigned            m_BufferLength      = 0;
                 TXDATA_T*           m_pBuffer           = 0;
-                boolean             m_SMIValid          = FALSE;
+                bool                m_SMIValid          = FALSE;
 // debug
 public:
                 char                m_logBuffer[LOG_SIZ] = {0};
@@ -66,7 +66,7 @@ public:
 
                 bool            m_resetFlag     = false;
 
-    volatile    boolean	            m_bStorageAttached  = false;
+    volatile    bool	        m_bStorageAttached  = false;
 
                 bool            m_SD_has_load   = false;
                 bool            m_USB_has_load  = false;
@@ -90,7 +90,7 @@ public:
                 bool                    g_menuPickUpFlag[4*MENU_LAYER_COUNT];                     // the flags for the pickup mechanism  
                 unsigned                g_buttons_states[BUTTON_COUNT][BTN_INDEX_COUNT];      // the button state machine
                 unsigned                g_centralModeBuffer[SLOTS][MODETABLE_COUNT];         // the general user settings, storable per program 
-                unsigned                g_lfoMultiplier[LFO_MULTIPLIERS]        = {   64, 32, 16, 8, 4, 2, 1 };
+                unsigned                g_lfoMultiplier[LFO_MULTIPLIERS_COUNT]        = {   64, 32, 16, 8, 4, 2, 1 };
 
                 long long               g_lfoBpmMatrix[4][LFO_BPM_COUNT]; // was unsigned !
 // datamanagement.cpp
