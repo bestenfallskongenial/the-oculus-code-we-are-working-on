@@ -45,7 +45,7 @@ TShutdownMode CKernel::Run(void)
                         bufferScreenClear();                                                                    
                         m_SD_has_load = true;
                         }
-                
+/*              
                     if (updateUSB("umsd1") == true && m_USB_has_load == false)
                         {
                         m_logBufferIndex = 0;
@@ -71,7 +71,7 @@ TShutdownMode CKernel::Run(void)
                         bufferScreenClear();
                         m_USB_has_load = true;                            
                         }
-
+*/
                     readAndConvertADC();
 
                 bufferScreenDraw(   "read adc",
