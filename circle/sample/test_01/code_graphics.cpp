@@ -378,7 +378,7 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
                 switch(g_centralModeBuffer[g_currentProgramBuffer][TEX_MODE])
                     {
                     case false:
-                        for (int i = 0; i < p_validTextureCount; i++)
+                        for (unsigned i = 0; i < p_validTextureCount; i++)
                             {
                             glActiveTexture(GL_TEXTURE0+i);
                             glBindTexture(GL_TEXTURE_2D, t->gl_tex_id[i]);

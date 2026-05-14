@@ -107,6 +107,7 @@ public:
                                                                     int                             p_fromFile,
                                                                     int                             p_toFile,
                                                                     unsigned&                       valid_count);
+                                                                    
                 void        initTexture                 (           vtx_state*                      v,
                                                                     glsl_state*                     s,
                                                                     tex_state*                      t,
