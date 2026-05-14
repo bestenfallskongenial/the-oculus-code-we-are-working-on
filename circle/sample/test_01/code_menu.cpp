@@ -130,10 +130,10 @@ void            CKernel::modeTRG                    (   int p_channel)
                     }
 }
 
-void            CKernel::modeBPM                    (   int p_channel /* , currentTime*/) 
+void            CKernel::modeBPM                    (   int p_channel /* , currentTime*/)   // <- currentTime should be g_currentTime -> global member set during Run()  - or a call parameter!
 { 
-                if ( /* currentTime */ g_currentTime >= g_nextBeatTime[g_activeBpmChannel])      // <- currentTime should be g_currentTime -> global member set during Run()  - 
-                                                                            // <- g_nextBeatTime is now part of the g_lfoBpmMatrix -> enum lfo_bpm_types NBT -> nextBeatTime
+                if ( /* currentTime */ g_currentTime >= g_nextBeatTime[g_activeBpmChannel])      // <- g_nextBeatTime is now part of the g_lfoBpmMatrix -> enum lfo_bpm_types NBT -> nextBeatTime
+                                                                            
                     {
                     g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[p_channel][RND];
                     g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[p_channel][RND];
