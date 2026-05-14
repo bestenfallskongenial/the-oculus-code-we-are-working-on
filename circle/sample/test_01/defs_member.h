@@ -120,12 +120,7 @@ public:
                 bool                    m_audio_flag_A = false;          
                 bool                    m_audio_flag_B = false;
 
-                uint8_t                 g_modeLengthAdd[MODELEN_FLAG_COUNT] =
-                                                                {
-                                                                MAX_MODES,                  // 5 for now    
-                                                                2,                          // MODELEN_AUDIO_A  // this enum than is used here to get the actual numbers for the  [i][0] in g_modeMap
-                                                                2,                          // MODELEN_AUDIO_B
-                                                                };
+
                                                             
                 char** 				    m_bufferVid         = nullptr;      // thats the pointer to my "array-like" buffer allocation
                 char* 				    m_videoBlockBase    = nullptr;      // returns the aligned DMA base pointer
@@ -199,16 +194,14 @@ public:
                 unsigned                g_bytTex[TEX_SD + TEX_USB]      = { 0 };
                 unsigned                g_bytVid[VID_SD + VID_USB]      = { 0 };
                 unsigned                g_bytKln[KLN_SD + KLN_USB]      = { 0 };
-//----------------------------------------------------------------------------------------------------------------------------------------------------                
 // CODE_MENU.CPP
-                  
                 uint8_t                 g_modeLengthAdd[MODELEN_FLAG_COUNT] =
                                                                 {
                                                                 MAX_MODES,                  // 5 for now    
                                                                 2,                          // MODELEN_AUDIO_A  // this enum than is used here to get the actual numbers for the  [i][0] in g_modeMap
                                                                 2,                          // MODELEN_AUDIO_B
                                                                 };
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 uint8_t g_modeMap[MENU_LAYERS*4][MENU_LAYERS*4] =	// the first element is the max of modes for each p_channel, than we have the order ( switch case of setChannelMode(int p_channel) )
                                                     // i just wonder if i need a dedicated function to edit the first element because other code might do it as read adc 
                                                     {  //  A    /  B    /  LFO  / Sens  / etc     
