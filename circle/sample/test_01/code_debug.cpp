@@ -4,7 +4,7 @@ static const char FromKernel[] = "kernel";
 
 void CKernel::debug()
 {
-/*    
+   
 unsigned tick = 0;
                 bool  bExceptionTimerStarted = FALSE;
 
@@ -217,7 +217,7 @@ unsigned tick = 0;
                                             18,
                                             colorCycle[(tick + 7) & 7]
                                             );
-
+/*
                     if (!bExceptionTimerStarted && tick == 10)
                         {
                         bExceptionTimerStarted = TRUE;
@@ -242,9 +242,9 @@ unsigned tick = 0;
 
                         m_Timer.StartKernelTimer(5 * HZ, TimerHandler);
                         }
-   
+   */
                     }
-*/                    
+                 
 }
 /*
 TShutdownMode CKernel::Run                              (   void )
