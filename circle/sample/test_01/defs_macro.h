@@ -13,7 +13,7 @@
 
 #define CHANNEL     8
 
-    #define         MAX_TILES 8
+    #define         MAX_TILES 16
     #define         MENU_GPU_TILE_COUNT     16
     
     #define         ADC_CHANNELS         	8                                   // number of adc input channels ( dependency <sensor/mcp300x.h>	)
