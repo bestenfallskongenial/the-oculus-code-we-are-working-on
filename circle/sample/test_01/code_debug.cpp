@@ -6,10 +6,8 @@ void CKernel::debug()
 {
    
 unsigned tick = 0;
-                bool  bExceptionTimerStarted = FALSE;
 
-                while (1)
-                    {
+
                     m_Timer.MsDelay(1000);
                     
                     m_logBufferIndex = 0;
@@ -243,7 +241,7 @@ unsigned tick = 0;
                         m_Timer.StartKernelTimer(5 * HZ, TimerHandler);
                         }
    */
-                    }
+                   
                  
 }
 /*
