@@ -115,3 +115,11 @@
     #define         MAX_FRAMES                  2048
     #define         MAX_SHADER                  33
     #define         MAX_OMF                     1
+
+    #define         MAX_VIDEO_WIDTH             600
+    #define         MAX_VIDEO_HEIGHT            800
+
+    #define         MAX_VIDEO_PROFILE           66		// Baseline
+
+    #define         MIN_VIDEO_LEVEL             77
+    #define         MAX_VIDEO_LEVEL             100
