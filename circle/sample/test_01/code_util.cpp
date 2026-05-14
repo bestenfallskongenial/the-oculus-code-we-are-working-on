@@ -198,13 +198,13 @@ bool            CKernel::Update                     (   )
                 return false;
 }
 
-unsigned        CKernel::get_gl_time( unsigned sys_time )
+void        CKernel::get_gl_time( unsigned sys_time )
 {
                     switch (g_centralModeBuffer[/* current_buffer */ g_current_gl_program][FRM_MODE]) // not sure with g_current_gl_program!!!
                         {
                         case true:  GLtime = g_inOutMatrixInt[ADC_INPUT_TIME][RAW]/36.0f; break;
                         case false: GLtime = sys_time / 1000000.0f;                       break;
-                        }
+                        }    
                     }
 
 void            CKernel::set_pot_routing            (   bool            adc_pot_routing)

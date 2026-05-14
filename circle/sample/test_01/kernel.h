@@ -333,7 +333,7 @@ public:
 
                 bool        Update                      ();
 
-                unsigned    get_gl_time                 (               unsigned                        sys_time );                
+                void        get_gl_time                 (               unsigned                        sys_time );                
 
                 void        set_pot_routing             (               bool                            adc_pot_routing);
 
