@@ -153,3 +153,141 @@ enum FileField
     FLD_SIZE,                                       		// maximal size of the files / buffer-size
     FLD_COUNT
 };
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+// my vcsm dirver
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+enum vc_sm_msg_type 										// Message types supported for HOST->VC direction //			
+	{				
+	VC_SM_MSG_TYPE_ALLOC,									// Allocate shared memory block //
+	VC_SM_MSG_TYPE_LOCK,									// Lock allocated shared memory block //
+	VC_SM_MSG_TYPE_UNLOCK,									// Unlock allocated shared memory block //
+	VC_SM_MSG_TYPE_UNLOCK_NOANS,							// Unlock allocated shared memory block, do not answer command //
+	VC_SM_MSG_TYPE_FREE,									// Free shared memory block //
+	VC_SM_MSG_TYPE_RESIZE,									// Resize a shared memory block //
+	VC_SM_MSG_TYPE_WALK_ALLOC,								// Walk the allocated shared memory block(s) //
+	VC_SM_MSG_TYPE_ACTION_CLEAN,							// A previously applied action will need to be reverted //
+	VC_SM_MSG_TYPE_IMPORT,									// Import a physical address and wrap into a MEM_HANDLE_T - Release with VC_SM_MSG_TYPE_FREE.
+	VC_SM_MSG_TYPE_CLIENT_VERSION,							// Tells VC the protocol version supported by this client. 2 supports the async/cmd messages from the VPU for final release of memory, and for VC allocations.
+	VC_SM_MSG_TYPE_VC_MEM_REQUEST_REPLY,					// Response to VC request for memory //
+															// Asynchronous/cmd messages supported for VC->HOST direction.
+															// Signalled by setting the top bit in vc_sm_result_t trans_id.
+															// VC has finished with an imported memory allocation.
+															// Release any Linux reference counts on the underlying block.
+	VC_SM_MSG_TYPE_RELEASED,
+	VC_SM_MSG_TYPE_VC_MEM_REQUEST,							// VC request for memory //
+	VC_SM_MSG_TYPE_MAX
+	};
+enum vc_sm_alloc_type_t 									// Type of memory to be allocated //
+	{
+	VC_SM_ALLOC_CACHED,
+	VC_SM_ALLOC_NON_CACHED,
+	};
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+//              FROM MMAL-VCHIQ.H
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+enum vchiq_mmal_es_type 
+{
+	MMAL_ES_TYPE_UNKNOWN,     								// Unknown elementary stream type //
+	MMAL_ES_TYPE_CONTROL,     								// Elementary stream of control commands //
+	MMAL_ES_TYPE_AUDIO,       								// Audio elementary stream //
+	MMAL_ES_TYPE_VIDEO,       								// Video elementary stream //
+	MMAL_ES_TYPE_SUBPICTURE   								// Sub-picture elementary stream //
+};
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+//              FROM MMAL-MSG-COMMON.H
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+enum mmal_msg_status 
+{
+	MMAL_MSG_STATUS_SUCCESS = 0, 							// Success //
+	MMAL_MSG_STATUS_ENOMEM,      							// Out of memory //
+	MMAL_MSG_STATUS_ENOSPC,      							// Out of resources other than memory //
+	MMAL_MSG_STATUS_EINVAL,      							// Argument is invalid //
+	MMAL_MSG_STATUS_ENOSYS,      							// Function not implemented //
+	MMAL_MSG_STATUS_ENOENT,      							// No such file or directory //
+	MMAL_MSG_STATUS_ENXIO,       							// No such device or address //
+	MMAL_MSG_STATUS_EIO,         							// I/O error //
+	MMAL_MSG_STATUS_ESPIPE,      							// Illegal seek //
+	MMAL_MSG_STATUS_ECORRUPT,    							// Data is corrupt \attention //
+	MMAL_MSG_STATUS_ENOTREADY,   							// Component is not ready //
+	MMAL_MSG_STATUS_ECONFIG,     							// Component is not configured //
+	MMAL_MSG_STATUS_EISCONN,     							// Port is already connected //
+	MMAL_MSG_STATUS_ENOTCONN,    							// Port is disconnected //
+	MMAL_MSG_STATUS_EAGAIN,      							// Resource temporarily unavailable. //
+	MMAL_MSG_STATUS_EFAULT,      							// Bad address //
+};
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+//              FROM MMAL-PARAMETERS.H
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+enum mmal_parameter_common_type 	/* Common parameters */
+{
+	
+	MMAL_PARAMETER_UNUSED = MMAL_PARAMETER_GROUP_COMMON,	/**< Never a valid parameter ID */
+	MMAL_PARAMETER_SUPPORTED_ENCODINGS,						/**< MMAL_PARAMETER_ENCODING_T */
+	MMAL_PARAMETER_URI,										/**< MMAL_PARAMETER_URI_T */
+	MMAL_PARAMETER_CHANGE_EVENT_REQUEST,					/** MMAL_PARAMETER_CHANGE_EVENT_REQUEST_T */
+	MMAL_PARAMETER_ZERO_COPY,								/** MMAL_PARAMETER_BOOLEAN_T */
+	MMAL_PARAMETER_BUFFER_REQUIREMENTS,						/**< MMAL_PARAMETER_BUFFER_REQUIREMENTS_T */
+	MMAL_PARAMETER_STATISTICS,								/**< MMAL_PARAMETER_STATISTICS_T */
+	MMAL_PARAMETER_CORE_STATISTICS,							/**< MMAL_PARAMETER_CORE_STATISTICS_T */
+	MMAL_PARAMETER_MEM_USAGE,								/**< MMAL_PARAMETER_MEM_USAGE_T */
+	MMAL_PARAMETER_BUFFER_FLAG_FILTER,						/**< MMAL_PARAMETER_UINT32_T */
+	MMAL_PARAMETER_SEEK,									/**< MMAL_PARAMETER_SEEK_T */
+	MMAL_PARAMETER_POWERMON_ENABLE,							/**< MMAL_PARAMETER_BOOLEAN_T */
+	MMAL_PARAMETER_LOGGING,									/**< MMAL_PARAMETER_LOGGING_T */
+	MMAL_PARAMETER_SYSTEM_TIME,								/**< MMAL_PARAMETER_UINT64_T */
+	MMAL_PARAMETER_NO_IMAGE_PADDING,						/**< MMAL_PARAMETER_BOOLEAN_T */
+};
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+//              FROM MMAL-MSG-PORT.H
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+enum mmal_port_type 										// MMAL_PORT_TYPE_T //
+{
+	MMAL_PORT_TYPE_UNKNOWN = 0,								// Unknown port type //
+	MMAL_PORT_TYPE_CONTROL,									// Control port //
+	MMAL_PORT_TYPE_INPUT,									// Input port //
+	MMAL_PORT_TYPE_OUTPUT,									// Output port //
+	MMAL_PORT_TYPE_CLOCK,									// Clock port //
+};
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+//              FROM MMAL-MSG.H
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+enum mmal_msg_type 
+{
+	MMAL_MSG_TYPE_QUIT = 1,
+	MMAL_MSG_TYPE_SERVICE_CLOSED,
+	MMAL_MSG_TYPE_GET_VERSION,
+	MMAL_MSG_TYPE_COMPONENT_CREATE,
+	MMAL_MSG_TYPE_COMPONENT_DESTROY,						// 5 //
+	MMAL_MSG_TYPE_COMPONENT_ENABLE,
+	MMAL_MSG_TYPE_COMPONENT_DISABLE,
+	MMAL_MSG_TYPE_PORT_INFO_GET,
+	MMAL_MSG_TYPE_PORT_INFO_SET,
+	MMAL_MSG_TYPE_PORT_ACTION,								// 10 //
+	MMAL_MSG_TYPE_BUFFER_FROM_HOST,
+	MMAL_MSG_TYPE_BUFFER_TO_HOST,
+	MMAL_MSG_TYPE_GET_STATS,
+	MMAL_MSG_TYPE_PORT_PARAMETER_SET,
+	MMAL_MSG_TYPE_PORT_PARAMETER_GET,						// 15 //
+	MMAL_MSG_TYPE_EVENT_TO_HOST,
+	MMAL_MSG_TYPE_GET_CORE_STATS_FOR_PORT,
+	MMAL_MSG_TYPE_OPAQUE_ALLOCATOR,
+	MMAL_MSG_TYPE_CONSUME_MEM,
+	MMAL_MSG_TYPE_LMK,										// 20 //
+	MMAL_MSG_TYPE_OPAQUE_ALLOCATOR_DESC,
+	MMAL_MSG_TYPE_DRM_GET_LHS32,
+	MMAL_MSG_TYPE_DRM_GET_TIME,
+	MMAL_MSG_TYPE_BUFFER_FROM_HOST_ZEROLEN,
+	MMAL_MSG_TYPE_PORT_FLUSH,								// 25 //
+	MMAL_MSG_TYPE_HOST_LOG,
+	MMAL_MSG_TYPE_MSG_LAST
+};
+enum mmal_msg_port_action_type 								// port action request messages differ depending on the action type //
+{
+	MMAL_MSG_PORT_ACTION_TYPE_UNKNOWN = 0,					// Unknown action //
+	MMAL_MSG_PORT_ACTION_TYPE_ENABLE,						// Enable a port //
+	MMAL_MSG_PORT_ACTION_TYPE_DISABLE,						// Disable a port //
+	MMAL_MSG_PORT_ACTION_TYPE_FLUSH,						// Flush a port //
+	MMAL_MSG_PORT_ACTION_TYPE_CONNECT,						// Connect ports //
+	MMAL_MSG_PORT_ACTION_TYPE_DISCONNECT,					// Disconnect ports //
+	MMAL_MSG_PORT_ACTION_TYPE_SET_REQUIREMENTS, 			// Set buffer requirements//
+};
