@@ -212,7 +212,7 @@ void            CKernel::updateOvlState             (   olg_state*  o,
                     s->tile_index[6] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH6_MODE];
                     s->tile_index[7] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH7_MODE];
 
-                    const unsigned long bpm0 = g_resultBPM[0] % 10000UL;
+                    const unsigned long bpm0 = g_resultBPM[0] % 10000UL; // is now part of g_lfoBpmMatrix -> enum lfo_bpm_types -> BPM =0 result BPM 
                     const unsigned long bpm1 = g_resultBPM[1] % 10UL;
 
                     s->tile_index[8]  = (GLfloat) ((bpm0 / 1000UL) % 10UL);

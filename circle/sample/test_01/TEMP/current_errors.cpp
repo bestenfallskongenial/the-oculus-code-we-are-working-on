@@ -41,18 +41,6 @@ code_menu.cpp: In member function 'void CKernel::mapMenuGroup(uint8_t, uint8_t)'
 code_menu.cpp:49:21: error: 'g_menu_mode_new' was not declared in this scope
    49 |                 if (g_menu_mode_new != menu_id)
       |                     ^~~~~~~~~~~~~~~
-code_menu.cpp:57:54: warning: comparison of integer expressions of different signedness: 'int' and 'unsigned int' [-Wsign-compare]
-   57 |                 if (!g_menuPickUpFlag[base + 0] && v == g_centralModeBuffer[g_currentProgramBuffer][base + 0])
-      |                                                    ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-code_menu.cpp:67:54: warning: comparison of integer expressions of different signedness: 'int' and 'unsigned int' [-Wsign-compare]
-   67 |                 if (!g_menuPickUpFlag[base + 1] && v == g_centralModeBuffer[g_currentProgramBuffer][base + 1])
-      |                                                    ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-code_menu.cpp:77:54: warning: comparison of integer expressions of different signedness: 'int' and 'unsigned int' [-Wsign-compare]
-   77 |                 if (!g_menuPickUpFlag[base + 2] && v == g_centralModeBuffer[g_currentProgramBuffer][base + 2])
-      |                                                    ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-code_menu.cpp:87:54: warning: comparison of integer expressions of different signedness: 'int' and 'unsigned int' [-Wsign-compare]
-   87 |                 if (!g_menuPickUpFlag[base + 3] && v == g_centralModeBuffer[g_currentProgramBuffer][base + 3])
-      |                                                    ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 code_menu.cpp: In member function 'void CKernel::modeBPM(int)':
 code_menu.cpp:135:21: error: 'currentTime' was not declared in this scope; did you mean 'g_currentTime'?
   135 |                 if (currentTime >= g_nextBeatTime[g_activeBpmChannel])      // <- currentTime should be g_currentTime -> global member set during Run()

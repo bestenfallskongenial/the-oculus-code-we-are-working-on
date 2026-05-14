@@ -76,6 +76,9 @@ public:
                 int             g_last_gl_program;
                 int             g_activeBpmChannel;
 
+                int             g_menu_mode_new;    // dummy - i assume this checks the layer of my menu!!
+                int             g_menu_mode_old;
+
                 unsigned long   g_double_click_time = 50;
                 unsigned long   g_long_click_time   = 250;
                 unsigned        g_currentTime;
