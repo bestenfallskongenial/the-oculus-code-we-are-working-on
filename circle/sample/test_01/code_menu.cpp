@@ -132,7 +132,7 @@ void            CKernel::modeTRG                    (   int p_channel)
 
 void            CKernel::modeBPM                    (   int p_channel /* , currentTime*/)   // <- currentTime should be g_currentTime -> global member set during Run()  - or a call parameter!
 { 
-                if ( /* currentTime */ g_currentTime >= g_lfoBpmMatrix[p_channel][BPM] )// g_nextBeatTime[g_activeBpmChannel])      // <- g_nextBeatTime is now part of the g_lfoBpmMatrix -> enum lfo_bpm_types NBT -> nextBeatTime
+                if ( /* currentTime */ g_currentTime >= g_lfoBpmMatrix[p_channel][NBT] )// g_nextBeatTime[g_activeBpmChannel])      // <- g_nextBeatTime is now part of the g_lfoBpmMatrix -> enum lfo_bpm_types NBT -> nextBeatTime
                                                                             
                     {
                     g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[p_channel][RND];
@@ -212,8 +212,8 @@ void            CKernel::updateOvlState             (   olg_state*  o,
                     s->tile_index[6] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH6_MODE];
                     s->tile_index[7] = (GLfloat) g_centralModeBuffer[g_currentProgramBuffer][CH7_MODE];
 
-                    const unsigned long bpm0 = g_resultBPM[0] % 10000UL; // is now part of g_lfoBpmMatrix -> enum lfo_bpm_types -> BPM =0 result BPM 
-                    const unsigned long bpm1 = g_resultBPM[1] % 10UL;
+                    const unsigned long bpm0 = g_lfoBpmMatrix[0][BPM] /* g_resultBPM[0] */ % 10000UL; // is now part of g_lfoBpmMatrix -> enum lfo_bpm_types -> BPM =0 result BPM 
+                    const unsigned long bpm1 = g_lfoBpmMatrix[1][BPM]/* g_resultBPM[1] */ % 10UL;
 
                     s->tile_index[8]  = (GLfloat) ((bpm0 / 1000UL) % 10UL);
                     s->tile_index[9]  = (GLfloat) ((bpm0 / 100UL) % 10UL);
