@@ -199,7 +199,7 @@ public:
 // That lets you add modes by only extending the table.
 typedef void (CKernel::*ModeFunc)(int);         // for the new menu selector -> easier to expand, right?
 
-ModeFunc g_modeTable[] =
+ModeFunc g_modeTable[12] =
                                                         {   
                                                         &CKernel::modeADC,
                                                         &CKernel::modeTRG,
