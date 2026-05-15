@@ -11,8 +11,8 @@
 //  #include <circle/serial.h>
 #include <circle/exceptionhandler.h>
 
-#include <circle/bcmframebuffer.h>
-#include <circle/chargenerator.h>
+//  #include <circle/bcmframebuffer.h>
+//  #include <circle/chargenerator.h>
 
     #include <circle/interrupt.h> // outcommented in my woking version, probably because included elsewhere above? 
 #include <circle/timer.h>
