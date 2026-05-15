@@ -33,7 +33,7 @@ boolean			CKernel::Initialize						(	void )
                     {
                     bOK = frameBufferInit();
                     storeLog( m_logBuffer, m_logBufferIndex, "step",4);
-                    bufferScreenDraw( "step 1", 0, sizeof("step 1"), 0, 0, 0xFFFFFFFF );
+                    bufferScreenDraw( "step 4", 0, sizeof("step 4"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
 
@@ -41,7 +41,7 @@ boolean			CKernel::Initialize						(	void )
                     {
                     bOK = m_EMMC.Initialize();
                     storeLog( m_logBuffer, m_logBufferIndex, "step",5);
-                    bufferScreenDraw( "step 1", 0, sizeof("step 1"), 0, 0, 0xFFFFFFFF );
+                    bufferScreenDraw( "step 5", 0, sizeof("step 5"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000); 
                     }
 
@@ -49,7 +49,7 @@ boolean			CKernel::Initialize						(	void )
                     {
                     bOK = m_USBHCI.Initialize();
                     storeLog( m_logBuffer, m_logBufferIndex, "step",6);
-                    bufferScreenDraw( "step 1", 0, sizeof("step 1"), 0, 0, 0xFFFFFFFF );
+                    bufferScreenDraw( "step 6", 0, sizeof("step 6"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000); 
                     }
                     
@@ -57,7 +57,7 @@ boolean			CKernel::Initialize						(	void )
                     {
                     m_USBHCI.UpdatePlugAndPlay(); 
                     storeLog( m_logBuffer, m_logBufferIndex, "step",7);
-                    bufferScreenDraw( "step 1", 0, sizeof("step 1"), 0, 0, 0xFFFFFFFF );
+                    bufferScreenDraw( "step 7", 0, sizeof("step 7"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
 
@@ -65,7 +65,7 @@ boolean			CKernel::Initialize						(	void )
                     {
                     bOK =   wrapperInitDMA();
                     storeLog( m_logBuffer, m_logBufferIndex, "step",8);
-                    bufferScreenDraw( "step 1", 0, sizeof("step 1"), 0, 0, 0xFFFFFFFF );
+                    bufferScreenDraw( "step 8", 0, sizeof("step 8"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
 
@@ -73,7 +73,7 @@ boolean			CKernel::Initialize						(	void )
                     {
                     bOK =   wrapperInitMEM();
                     storeLog( m_logBuffer, m_logBufferIndex, "step",9);
-                    bufferScreenDraw( "step 1", 0, sizeof("step 1"), 0, 0, 0xFFFFFFFF );
+                    bufferScreenDraw( "step 9", 0, sizeof("step 9"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
 
@@ -81,7 +81,7 @@ boolean			CKernel::Initialize						(	void )
                     {
                     bOK =   m_VCHIQ.Initialize();
                     storeLog( m_logBuffer, m_logBufferIndex, "step",10);
-                    bufferScreenDraw( "step 1", 0, sizeof("step 1"), 0, 0, 0xFFFFFFFF );
+                    bufferScreenDraw( "step 10", 0, sizeof("step 10"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
 
@@ -89,7 +89,7 @@ boolean			CKernel::Initialize						(	void )
                     {
                             bcm_host_init();
                     storeLog( m_logBuffer, m_logBufferIndex, "step",11);
-                    bufferScreenDraw( "step 1", 0, sizeof("step 1"), 0, 0, 0xFFFFFFFF );
+                    bufferScreenDraw( "step 11", 0, sizeof("step 11"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }    
 
@@ -97,7 +97,7 @@ boolean			CKernel::Initialize						(	void )
                     {
                             initOGL(&m_ogl);
                     storeLog( m_logBuffer, m_logBufferIndex, "step",12);
-                    bufferScreenDraw( "step 1", 0, sizeof("step 1"), 0, 0, 0xFFFFFFFF );
+                    bufferScreenDraw( "step 12", 0, sizeof("step 12"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
 
@@ -105,7 +105,7 @@ boolean			CKernel::Initialize						(	void )
                     {
                     bOK =   SPI_init();
                     storeLog( m_logBuffer, m_logBufferIndex, "step",13);
-                    bufferScreenDraw( "step 1", 0, sizeof("step 1"), 0, 0, 0xFFFFFFFF );
+                    bufferScreenDraw( "step 13", 0, sizeof("step 13"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
 
@@ -113,7 +113,7 @@ boolean			CKernel::Initialize						(	void )
                     {
                     bOK =   SMI_Init(LED_PIN);        // example GPIO18, choose your actual WS2812 SMI GPIO
                     storeLog( m_logBuffer, m_logBufferIndex, "step",14);
-                    bufferScreenDraw( "step 1", 0, sizeof("step 1"), 0, 0, 0xFFFFFFFF );
+                    bufferScreenDraw( "step 14", 0, sizeof("step 14"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
 
@@ -121,7 +121,7 @@ boolean			CKernel::Initialize						(	void )
                     {
                     bOK =   WS2812_Init(LED_COUNT);      // example LED count, choose your actual count
                     storeLog( m_logBuffer, m_logBufferIndex, "step",15);
-                    bufferScreenDraw( "step 1", 0, sizeof("step 1"), 0, 0, 0xFFFFFFFF );
+                    bufferScreenDraw( "step 15", 0, sizeof("step 15"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
 
