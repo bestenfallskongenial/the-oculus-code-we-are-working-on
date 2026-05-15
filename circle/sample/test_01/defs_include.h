@@ -7,10 +7,14 @@
 #include <circle/koptions.h>
 #include <circle/machineinfo.h>
 #include <circle/devicenameservice.h>
+//  #include <circle/screen.h>
+//  #include <circle/serial.h>
+#include <circle/exceptionhandler.h>
+
 #include <circle/bcmframebuffer.h>
 #include <circle/chargenerator.h>
-#include <circle/exceptionhandler.h>
-#include <circle/interrupt.h>
+
+    #include <circle/interrupt.h> // outcommented in my woking version, probably because included elsewhere above? 
 #include <circle/timer.h>
 #include <circle/dmachannel.h>
 
@@ -23,6 +27,8 @@
 #include <circle/fs/fat/fatfs.h>
 
 #include "bcm_host.h"
+
+    #include <circle/sched/scheduler.h>     
 
 #include <vc4/vchiq/vchiqdevice.h>
 #include "vc4/vchiq/vchiq_arm.h"
