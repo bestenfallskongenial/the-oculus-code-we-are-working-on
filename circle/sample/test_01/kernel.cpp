@@ -6,7 +6,7 @@
 	                m_Logger (LOGLEVEL, &m_Timer),
                     m_EMMC (&m_Interrupt, &m_Timer, &m_ActLED),
 	                m_USBHCI (&m_Interrupt, &m_Timer, TRUE),
-	                m_VCHIQ (CMemorySystem::Get (), &m_Interrupt)
+	                m_VCHIQ (CMemorySystem::Get (), &m_Interrupt),
 /*
 				:	m_Interrupt         (),
                     m_Timer             (   &m_Interrupt ),
