@@ -197,13 +197,13 @@ public:
                                                                         u8                              red, 
                                                                         u8                              green, 
                                                                         u8                              blue);
-/*
+
                 void        WS2812_Update               (               void);    
 
      
-*/
+
                 int         ReadMCP3008Raw              (               unsigned                        channel);                           // MPC 3008
-/*
+
                 bool        frameBufferInit             (               void );
 
                 void        bufferScreenPlot            (               unsigned                        x,
@@ -226,7 +226,7 @@ public:
 
                 void        bufferScreenGetGrid         (               unsigned&                       cols,
                                                                         unsigned&                       rows );
-*/
+
                 void        storeLog                    (               char*                           p_bufferArray,
                                                                         u32&                            index,
                                                                 const   char*                           p_string0, 

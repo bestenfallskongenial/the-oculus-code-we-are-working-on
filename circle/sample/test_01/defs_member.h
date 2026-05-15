@@ -3,8 +3,8 @@ private:
                 CKernelOptions                  m_Options;
                 CMachineInfo                    m_MachineInfo;
                 CDeviceNameService	            m_DeviceNameService;
-                    	CScreenDevice		m_Screen;
-	                    CSerialDevice		m_Serial;
+            //  CScreenDevice		            m_Screen; // from the old
+	        //  CSerialDevice		            m_Serial;
                 CExceptionHandler               m_ExceptionHandler;
                 CInterruptSystem                m_Interrupt;
                 CTimer                          m_Timer;
@@ -18,7 +18,7 @@ private:
 
                 
 
-/*
+
 public:
                 CBcmFrameBuffer                 gE_FrameBuffer;             // framebuffer
                 CCharGenerator                  gE_CharGenerator;
@@ -31,13 +31,13 @@ public:
                 unsigned                        gE_CharHeight           = 0;
                 unsigned                        gE_Cols                 = 0;
                 unsigned                        gE_Rows                 = 0;
-*/
+
 private:
                 uintptr                         m_SPIBaseAddress        = 0;        // SPI
                 bool                            m_SPIValid              = 0;
 // SMI / DMA / WS2812
 private:
-            //  CDMAChannel                     m_SMITxDMA;
+                CDMAChannel                     m_SMITxDMA;
 
                 unsigned                        m_SMIGpioPin            = 0;
                 unsigned                        m_SMISDMask             = 0;

@@ -338,7 +338,7 @@ void            CKernel::WS2812_SetLED           (   unsigned index, u8 red, u8 
                     tx += BIT_NPULSES;
                     }
 }
-/*
+
 void            CKernel::WS2812_Update              (   void)
 {
                 if (!m_SMIValid) return;
@@ -353,7 +353,7 @@ void            CKernel::WS2812_Update              (   void)
 
                 PeripheralExit();
 }
-*/
+
 int             CKernel::ReadMCP3008Raw             (   unsigned    channel)
 {
                 u8 tx[3] = { 0x01, (u8)((0x08 | channel) << 4), 0x00 };
@@ -363,7 +363,7 @@ int             CKernel::ReadMCP3008Raw             (   unsigned    channel)
 
                 return ((rx[1] & 0x03) << 8) | rx[2];
 }
-/*
+
 bool            CKernel::frameBufferInit            (   void )
 {
                 if (!gE_FrameBuffer.Initialize ()) return FALSE;
@@ -384,14 +384,12 @@ bool            CKernel::frameBufferInit            (   void )
 
                 return TRUE;
 }
-*/
-/*
+
 void            CKernel::bufferScreenPlot         (   unsigned x, unsigned y, u32 color )
 {
                 gE_PixelBuffer[y * (gE_PitchBytes >> 2) + x] = color;
 }
-*/
-/*
+
 void            CKernel::bufferScreenDrawChar     (   char        ch,
                                                         unsigned    charCol,
                                                         unsigned    charRow,
@@ -408,14 +406,12 @@ void            CKernel::bufferScreenDrawChar     (   char        ch,
                         }
                     }
 }
-*/
-/*
+
 void            CKernel::bufferScreenClear        (   void)
 {
                 memset(gE_PixelBuffer, 0, gE_PitchBytes * gE_ScreenHeight);
 }
-*/
-/*
+
 void            CKernel::bufferScreenDraw   (   const char* pSourceBuffer,
                                                         u32         startIndex,
                                                         u32         endIndex,
@@ -453,14 +449,13 @@ void            CKernel::bufferScreenDraw   (   const char* pSourceBuffer,
                         }
                     }
 }
-*/
-/*
+
 void            CKernel::bufferScreenGetGrid      (   unsigned& cols, unsigned& rows)
 {
                 cols = gE_Cols;
                 rows = gE_Rows;
 }
-*/
+
 //  eof
 
 

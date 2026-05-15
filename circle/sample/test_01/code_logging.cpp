@@ -297,7 +297,7 @@ void            CKernel::gfx_check                  (   const char* file,
                         m_resetFlag = true;
                     }
 }
-/*
+
 bool            CKernel::startupScreen          (   void )
 {
             //  m_logBufferIndex = 0;
@@ -380,4 +380,3 @@ bool            CKernel::startupScreen          (   void )
 
                 return TRUE;
 }
-                */

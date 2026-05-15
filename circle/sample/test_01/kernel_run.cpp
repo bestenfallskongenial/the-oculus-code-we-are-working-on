@@ -4,7 +4,7 @@
 
 TShutdownMode CKernel::Run(void)
 {
-    /*
+
                 g_currentTime = m_Timer.GetClockTicks();    
  
                 randomVec8              ( g_currentTime );
@@ -14,10 +14,10 @@ TShutdownMode CKernel::Run(void)
                                             m_logBuffer,
                                             m_logBufferIndex );
                 msDelay(1000);
-*/
+
                 while (/*m_resetFlag == false*/ 1)
                     {
-                        /*
+
                     g_currentTime = m_Timer.GetClockTicks(); 
 
                     bufferScreenClear();
@@ -76,7 +76,7 @@ TShutdownMode CKernel::Run(void)
                         m_USB_has_load = true;   
                                                
                         }
-                         */ 
+
 /*
                   readAndConvertADC();
 
