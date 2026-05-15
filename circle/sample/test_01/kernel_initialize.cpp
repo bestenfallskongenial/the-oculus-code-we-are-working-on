@@ -4,6 +4,48 @@ boolean			CKernel::Initialize						(	void )
 {
                 bool bOK = TRUE;
                 
+if (bOK)
+{
+    bOK = m_Screen.Initialize();
+}
+if (bOK)
+{
+    bOK = m_Serial.Initialize(115200);
+}
+if (bOK)
+{
+    CDevice *pTarget = m_DeviceNameService.GetDevice(m_Options.GetLogDevice(), FALSE);
+    if (pTarget == 0)
+    {
+        pTarget = &m_Screen;
+    }
+    bOK = m_Logger.Initialize(pTarget);
+}
+if (bOK)
+{
+    bOK = m_Interrupt.Initialize();
+}
+if (bOK)
+{
+    bOK = m_Timer.Initialize();
+}
+if (bOK)
+{
+    bOK = m_EMMC.Initialize();
+}
+if (bOK)
+{
+    bOK = m_USBHCI.Initialize();
+}
+if (bOK)
+{
+    m_USBHCI.UpdatePlugAndPlay();
+}
+if (bOK)
+{
+    bOK = m_VCHIQ.Initialize();
+}
+/*
                 if (bOK)
                     {
                     bOK = m_Interrupt.Initialize();
@@ -60,7 +102,7 @@ boolean			CKernel::Initialize						(	void )
                     bufferScreenDraw( "step 7", 0, sizeof("step 7"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
-/*
+
                 if (bOK)
                     {
                     bOK =   wrapperInitDMA();
@@ -76,7 +118,7 @@ boolean			CKernel::Initialize						(	void )
                     bufferScreenDraw( "step 9", 0, sizeof("step 9"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
-*/
+
                 if (bOK)
                     {
                     bOK =   m_VCHIQ.Initialize();
@@ -124,6 +166,6 @@ boolean			CKernel::Initialize						(	void )
                     bufferScreenDraw( "step 15", 0, sizeof("step 15"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
-
+*/
                 return bOK;
 }

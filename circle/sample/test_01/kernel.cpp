@@ -1,6 +1,13 @@
 	#include "kernel.h"
 
 				CKernel::CKernel						(	void )
+                :	m_Screen (m_Options.GetWidth (), m_Options.GetHeight ()),
+	                m_Timer (&m_Interrupt),
+	                m_Logger (LOGLEVEL, &m_Timer),
+                    m_EMMC (&m_Interrupt, &m_Timer, &m_ActLED),
+	                m_USBHCI (&m_Interrupt, &m_Timer, TRUE),
+	                m_VCHIQ (CMemorySystem::Get (), &m_Interrupt)
+/*
 				:	m_Interrupt         (),
                     m_Timer             (   &m_Interrupt ),
                     m_Logger            (   LOGLEVEL, &m_Timer ),
@@ -14,7 +21,7 @@
                     m_EMMC              (   &m_Interrupt, &m_Timer,     &m_ActLED ),
                     m_USBHCI            (   &m_Interrupt, &m_Timer,     TRUE ),
 
-                /*  m_VCHIQ             (   &m_Memory,    &m_Interrupt ), */
+*/
                     m_bStorageAttached  (   FALSE ),
                     m_pFileSystem       (   0 ),
                     m_resetFlag         (   false )

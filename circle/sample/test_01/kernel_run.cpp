@@ -73,7 +73,7 @@ TShutdownMode CKernel::Run(void)
                         bufferScreenClear();
                         m_USB_has_load = true;                            
                         }
-
+/*
                   readAndConvertADC();
 
                   adc_AdvanceIndex();
@@ -158,7 +158,7 @@ TShutdownMode CKernel::Run(void)
                                         0,
                                         0xFFFFFFFF );      
                 //  msDelay(1000);
-               
+*/      
                     }
 
                 return ShutdownHalt;

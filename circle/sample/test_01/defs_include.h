@@ -1,5 +1,5 @@
-#include "CLogger.h"                        // my CLogger shimm layer <-because i have to redirect all other includes of CLogger !!
-
+ // #include "CLogger.h"                        // my CLogger shimm layer <-because i have to redirect all other includes of CLogger !!
+    #include <circle/logger.h>
 #include <stdlib.h>   // malloc, calloc, free
 #include <stdint.h>   // uintptr_t
 
