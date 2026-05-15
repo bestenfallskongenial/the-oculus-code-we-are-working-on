@@ -7,8 +7,8 @@
 #include <circle/koptions.h>
 #include <circle/machineinfo.h>
 #include <circle/devicenameservice.h>
-//  #include <circle/screen.h>
-//  #include <circle/serial.h>
+   #include <circle/screen.h>
+  #include <circle/serial.h>
 #include <circle/exceptionhandler.h>
 
 //  #include <circle/bcmframebuffer.h>
