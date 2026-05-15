@@ -409,10 +409,12 @@ void            CKernel::bufferScreenDrawChar     (   char        ch,
                     }
 }
 */
+/*
 void            CKernel::bufferScreenClear        (   void)
 {
                 memset(gE_PixelBuffer, 0, gE_PitchBytes * gE_ScreenHeight);
 }
+*/
 /*
 void            CKernel::bufferScreenDraw   (   const char* pSourceBuffer,
                                                         u32         startIndex,
