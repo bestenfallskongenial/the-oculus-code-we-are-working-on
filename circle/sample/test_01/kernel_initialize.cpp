@@ -60,7 +60,7 @@ boolean			CKernel::Initialize						(	void )
                     bufferScreenDraw( "step 7", 0, sizeof("step 7"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
-
+/*
                 if (bOK)
                     {
                     bOK =   wrapperInitDMA();
@@ -76,15 +76,7 @@ boolean			CKernel::Initialize						(	void )
                     bufferScreenDraw( "step 9", 0, sizeof("step 9"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
-CMemorySystem *pMem = CMemorySystem::Get();
-
-if (pMem == 0)
-{
-    bufferScreenDraw("CMemorySystem::Get() == 0", 0, sizeof("CMemorySystem::Get() == 0"), 0, 1, 0xFFFFFFFF);
-    while (1) {}
-}
-
-
+*/
                 if (bOK)
                     {
                     bOK =   m_VCHIQ.Initialize();
