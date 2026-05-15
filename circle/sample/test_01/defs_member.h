@@ -37,7 +37,7 @@ private:
                 bool                            m_SPIValid              = 0;
 // SMI / DMA / WS2812
 private:
-                CDMAChannel                     m_SMITxDMA;
+            //  CDMAChannel                     m_SMITxDMA;
 
                 unsigned                        m_SMIGpioPin            = 0;
                 unsigned                        m_SMISDMask             = 0;
