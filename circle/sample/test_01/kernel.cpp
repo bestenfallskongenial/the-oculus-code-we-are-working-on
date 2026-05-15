@@ -3,7 +3,7 @@
 				CKernel::CKernel						(	void )
                 :	m_Screen (m_Options.GetWidth (), m_Options.GetHeight ()),
 	                m_Timer (&m_Interrupt),
-	                m_Logger (LOGLEVEL, &m_Timer),
+	                m_Logger (4, &m_Timer),
                     m_EMMC (&m_Interrupt, &m_Timer, &m_ActLED),
 	                m_USBHCI (&m_Interrupt, &m_Timer, TRUE),
 	                m_VCHIQ (CMemorySystem::Get (), &m_Interrupt),
