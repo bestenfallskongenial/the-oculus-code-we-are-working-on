@@ -21,13 +21,13 @@ if (bOK)
     }
     bOK = m_Logger.Initialize(pTarget);
     CLogger::Get()->Write("ALLOC-STD", LogDebug, "m_Logger.Initialize");
-    m_Timer.MsDelay(1000);
+
 }
 if (bOK)
 {
     bOK = m_Interrupt.Initialize();
     CLogger::Get()->Write("ALLOC-STD", LogDebug, "m_Interrupt.Initialize");
-    m_Timer.MsDelay(1000);
+
 }
 if (bOK)
 {
