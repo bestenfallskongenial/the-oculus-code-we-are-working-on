@@ -8,10 +8,11 @@ private:
                 CTimer                          m_Timer;
                 CLogger                         m_Logger;  
                 CEMMCDevice		                m_EMMC;
-                CUSBHCIDevice		            m_USBHCI; 
-                CMemorySystem		            m_Memory;
-                CFATFileSystem*                 m_pFileSystem; 
-            //  CVCHIQDevice		            m_VCHIQ;
+                CUSBHCIDevice		            m_USBHCI;
+                CVCHIQDevice		            m_VCHIQ;
+            //  CMemorySystem		            m_Memory;
+                CFATFileSystem                 *m_pFileSystem; 
+
                 
 
 

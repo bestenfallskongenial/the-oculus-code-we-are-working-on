@@ -21,7 +21,8 @@ void            CKernel::initOGL                    (   olg_state*  o )
                                                                 EGL_GREEN_SIZE, 8,
                                                                 EGL_BLUE_SIZE, 8,
                                                                 EGL_ALPHA_SIZE, 8,
-                                                                EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+                                                                EGL_SURFACE_TYPE, 
+                                                                EGL_WINDOW_BIT,
                                                                 EGL_NONE };
    
                 static const EGLint context_attributes[] =  {   EGL_CONTEXT_CLIENT_VERSION, 
