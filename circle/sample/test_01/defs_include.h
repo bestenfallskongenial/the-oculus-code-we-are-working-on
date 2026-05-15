@@ -25,6 +25,7 @@
 #include "bcm_host.h"
 
 #include <vc4/vchiq/vchiqdevice.h>
+#include "vc4/vchiq/vchiq_arm.h"
 
 #include <EGL/egl.h>
 #include <EGL/eglext.h>

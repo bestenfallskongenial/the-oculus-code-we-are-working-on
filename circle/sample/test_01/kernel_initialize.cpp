@@ -1,5 +1,29 @@
 #include "kernel.h"
 
+boolean CKernel::Initialize(void)
+{
+    bool bOK = TRUE;
+
+    bOK = m_Interrupt.Initialize();
+    if (!bOK) while (1) {}
+
+    bOK = m_Timer.Initialize();
+    if (!bOK) while (1) {}
+
+    CMemorySystem *pMem = CMemorySystem::Get();
+    if (pMem == 0) while (1) {}
+
+    bOK = m_VCHIQ.Initialize();
+    if (!bOK) while (1) {}
+
+    bOK = frameBufferInit();
+    if (!bOK) while (1) {}
+
+    bufferScreenDraw("VCHIQ OK", 0, sizeof("VCHIQ OK"), 0, 0, 0xFFFFFFFF);
+
+    return TRUE;
+}
+/*
 boolean			CKernel::Initialize						(	void )
 {
                 bool bOK = TRUE;
@@ -76,6 +100,14 @@ boolean			CKernel::Initialize						(	void )
                     bufferScreenDraw( "step 9", 0, sizeof("step 9"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
+CMemorySystem *pMem = CMemorySystem::Get();
+
+if (pMem == 0)
+{
+    bufferScreenDraw("CMemorySystem::Get() == 0", 0, sizeof("CMemorySystem::Get() == 0"), 0, 1, 0xFFFFFFFF);
+    while (1) {}
+}
+
 
                 if (bOK)
                     {
@@ -127,3 +159,4 @@ boolean			CKernel::Initialize						(	void )
 
                 return bOK;
 }
+*/

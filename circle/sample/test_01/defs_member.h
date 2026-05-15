@@ -7,10 +7,11 @@ private:
                 CInterruptSystem                m_Interrupt;
                 CTimer                          m_Timer;
                 CLogger                         m_Logger;  
+                CMemorySystem		            m_Memory;                
                 CEMMCDevice		                m_EMMC;
                 CUSBHCIDevice		            m_USBHCI;
                 CVCHIQDevice		            m_VCHIQ;
-            //  CMemorySystem		            m_Memory;
+
                 CFATFileSystem                 *m_pFileSystem; 
 
                 
