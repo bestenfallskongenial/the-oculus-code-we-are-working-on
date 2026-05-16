@@ -3,12 +3,6 @@
 boolean			CKernel::Initialize						(	void )
 {
                 bool bOK = TRUE;
-                if (bOK)
-                    {
-                    bOK = startupScreen();
-                    storeLog( m_logBuffer, m_logBufferIndex, "step", 0, "System Info Log                                    DONE");
-                  //msDelay(1000);
-                    }                
 
                 if (bOK)
                     {
@@ -37,6 +31,13 @@ boolean			CKernel::Initialize						(	void )
                   //bufferScreenDraw( "frameBufferInit() done", 0, sizeof("frameBufferInit() done"), 0, 4, 0xFFFFFFFF );
                   //msDelay(1000);
                     }
+
+                if (bOK)
+                    {
+                    bOK = startupScreen();
+                    storeLog( m_logBuffer, m_logBufferIndex, "step", 0, "System Info Log                                    DONE");
+                  //msDelay(1000);
+                    }                
 
                 if (bOK)
                     {

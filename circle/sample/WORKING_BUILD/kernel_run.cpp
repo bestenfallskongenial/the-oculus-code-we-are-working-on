@@ -81,7 +81,7 @@ TShutdownMode CKernel::Run(void)
                       //msDelay(1000);    
                       //bufferScreenClear();
                         m_USB_has_load = true;   
-                                               
+                        bufferScreenDraw( "we are done here", 0, sizeof("we are done here"), 0, 13, 0xFFFFFFFF );
                         }
 
                     }
