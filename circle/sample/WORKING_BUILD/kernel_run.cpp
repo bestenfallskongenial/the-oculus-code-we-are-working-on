@@ -4,7 +4,7 @@
 
 TShutdownMode CKernel::Run(void)
 {
-
+/*
                 g_currentTime = m_Timer.GetClockTicks();    
  
                 randomVec8              ( g_currentTime );
@@ -14,7 +14,7 @@ TShutdownMode CKernel::Run(void)
                                             m_logBuffer,
                                             m_logBufferIndex );
                 msDelay(1000);
-
+*/
                 while (/*m_resetFlag == false*/ 1)
                     {
 
@@ -48,6 +48,7 @@ TShutdownMode CKernel::Run(void)
                         bufferScreenClear();                                                                    
                         m_SD_has_load = true;
                         }
+                        
                         if (m_bStorageAttached == true) bufferScreenDraw( "m_bStorageAttached set", 0, sizeof("m_bStorageAttached set"), 0, 20, 0xFFFFFFFF );    
                         msDelay(100);    
 
