@@ -28,7 +28,7 @@
 
     #include "bcm_host.h"
 
-    //  #include <circle/sched/scheduler.h>     
+    #include <circle/sched/scheduler.h>     // test this here!
 
     #include <vc4/vchiq/vchiqdevice.h>
     #include "vc4/vchiq/vchiq_arm.h"

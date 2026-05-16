@@ -16,6 +16,8 @@ private:
 
                 CFATFileSystem                 *m_pFileSystem; 
 
+                CScheduler		                m_Scheduler;    // test this here!
+
                 
 
 
