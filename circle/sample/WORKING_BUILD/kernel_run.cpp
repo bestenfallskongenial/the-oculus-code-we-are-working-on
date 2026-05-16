@@ -66,25 +66,20 @@ TShutdownMode CKernel::Run(void)
                                                     0,
                                                     0xFFFFFFFF );
                       
-/*
+
                         randomVec8              ( g_currentTime );            
 
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     make83FileName("TXT"),
                                                     m_logBuffer,
                                                     m_logBufferIndex );
-*/
+
                         msDelay(1000);    
                         bufferScreenClear();
                         m_USB_has_load = true;   
                                                
                         }
-                        randomVec8              ( g_currentTime );            
 
-                        saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    make83FileName("TXT"),
-                                                    m_logBuffer,
-                                                    m_logBufferIndex );
 /*
                   readAndConvertADC();
 
