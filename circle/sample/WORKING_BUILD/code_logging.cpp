@@ -366,7 +366,7 @@ bool            CKernel::startupScreen          (   void )
          
                 storeLog(m_logBuffer, m_logBufferIndex, "gE Screen X    ", gE_ScreenWidth,
                                                         "gE Screen Y    ", gE_ScreenHeight);
-
+/*
                 bufferScreenClear();
 
                 bufferScreenDraw(
@@ -377,6 +377,6 @@ bool            CKernel::startupScreen          (   void )
                                         0,
                                         0xFFFFFFFF
                                         );
-
+*/
                 return TRUE;
 }
