@@ -4,6 +4,10 @@
 
 TShutdownMode CKernel::Run(void)
 {
+
+                    int r = 0;
+                    int g = 0;
+                    int b = 0;
 /*
                 g_currentTime = m_Timer.GetClockTicks();    
  
@@ -84,6 +88,17 @@ TShutdownMode CKernel::Run(void)
                         bufferScreenDraw( "we are done here", 0, sizeof("we are done here"), 0, 13, 0xFFFFFFFF );
                         }
 
+                        WS2812_SetLED(0, r, g, b);
+                        WS2812_SetLED(1, b, r, g);
+                        WS2812_SetLED(2, g, b, r);
+                        WS2812_SetLED(3, (r*2)%255, g, b);
+
+                        WS2812_Update();
+
+                        r++;
+                        g++;
+                        b++;
+                        msDelay(25);
                     }
 
                 return ShutdownHalt;
