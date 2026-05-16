@@ -7,81 +7,81 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK = m_Interrupt.Initialize();
-                  storeLog( m_logBuffer, m_logBufferIndex, "step",0);
+                  storeLog( m_logBuffer, m_logBufferIndex, "step",0, "m_Interrupt.Initialize()");
                     }       
                 if (bOK)
                     {
                     bOK = m_Timer.Initialize();
-                  storeLog( m_logBuffer, m_logBufferIndex, "step",1);
+                  storeLog( m_logBuffer, m_logBufferIndex, "step",1, "m_Timer.Initialize()");
                     }
 
                 if (bOK)
                     {
                     CLogger::SetRawSink(CKernel::LoggerSink, this);
-
+                    storeLog( m_logBuffer, m_logBufferIndex, "step",2, "CLogger::SetRawSink(CKernel::LoggerSink, this)");
                     bOK = m_Logger.Initialize(0);
-                  storeLog( m_logBuffer, m_logBufferIndex, "step",2);
+                  storeLog( m_logBuffer, m_logBufferIndex, "step",3, "m_Logger.Initialize(0)");
                     }
                 if (bOK)
                     {
                     bOK = startupScreen();
-                  storeLog( m_logBuffer, m_logBufferIndex, "step",3);
+                  storeLog( m_logBuffer, m_logBufferIndex, "step",4, "System Info Log");
                   msDelay(1000);
                     }
 
                 if (bOK)
                     {
                     bOK = frameBufferInit();
-                  storeLog( m_logBuffer, m_logBufferIndex, "step",4);
-                  bufferScreenDraw( "step 4", 0, sizeof("step 4"), 0, 0, 0xFFFFFFFF );
+                  storeLog( m_logBuffer, m_logBufferIndex, "step",5, "frameBufferInit()");
+                  bufferScreenDraw( "frameBufferInit() done", 0, sizeof("frameBufferInit() done"), 0, 0, 0xFFFFFFFF );
                   msDelay(1000);
                     }
 
                 if (bOK)
                     {
                     bOK = m_EMMC.Initialize();
-                  storeLog( m_logBuffer, m_logBufferIndex, "step",5);
-                  bufferScreenDraw( "step 5", 0, sizeof("step 5"), 0, 0, 0xFFFFFFFF );
+                  storeLog( m_logBuffer, m_logBufferIndex, "step",6, "m_EMMC.Initialize()");
+                  bufferScreenDraw( "m_EMMC.Initialize() done", 0, sizeof("m_EMMC.Initialize() done"), 0, 0, 0xFFFFFFFF );
                   msDelay(1000); 
                     }
 
                 if (bOK)
                     {
                     bOK = m_USBHCI.Initialize();
-                  storeLog( m_logBuffer, m_logBufferIndex, "step",6);
-                  bufferScreenDraw( "step 6", 0, sizeof("step 6"), 0, 0, 0xFFFFFFFF );
+                  storeLog( m_logBuffer, m_logBufferIndex, "step",7,"m_USBHCI.Initialize()");
+                  bufferScreenDraw( "m_USBHCI.Initialize() done", 0, sizeof("m_USBHCI.Initialize() done"), 0, 0, 0xFFFFFFFF );
                   msDelay(1000); 
                     }
                     
                 if (bOK)
                     {
                     m_USBHCI.UpdatePlugAndPlay(); 
-                  storeLog( m_logBuffer, m_logBufferIndex, "step",7);
-                  bufferScreenDraw( "step 7", 0, sizeof("step 7"), 0, 0, 0xFFFFFFFF );
+                  storeLog( m_logBuffer, m_logBufferIndex, "step",8, "m_USBHCI.UpdatePlugAndPlay()");
+                  bufferScreenDraw( "m_USBHCI.UpdatePlugAndPlay() done", 0, sizeof("m_USBHCI.UpdatePlugAndPlay() done"), 0, 0, 0xFFFFFFFF );
                   msDelay(1000);
                     }
 
                 if (bOK)
                     {
                     bOK =   wrapperInitDMA();
-                  storeLog( m_logBuffer, m_logBufferIndex, "step",8);
-                  bufferScreenDraw( "step 8", 0, sizeof("step 8"), 0, 0, 0xFFFFFFFF );
+                  storeLog( m_logBuffer, m_logBufferIndex, "step",9, "InitDMA Buffer");
+                  bufferScreenDraw( "InitDMA Buffer done", 0, sizeof("InitDMA Buffer done"), 0, 0, 0xFFFFFFFF );
                   msDelay(1000);
                     }
 
                 if (bOK)
                     {
                     bOK =   wrapperInitMEM();
-                  storeLog( m_logBuffer, m_logBufferIndex, "step",9);
-                  bufferScreenDraw( "step 9", 0, sizeof("step 9"), 0, 0, 0xFFFFFFFF );
+                  storeLog( m_logBuffer, m_logBufferIndex, "step",10, "InitMEM Buffer");
+                  bufferScreenDraw( "InitMEM Buffer done", 0, sizeof("InitMEM Buffer done"), 0, 0, 0xFFFFFFFF );
                   msDelay(1000);
                     }
 
                 if (bOK)
                     {
                     bOK =   m_VCHIQ.Initialize();       // <--- breaking point !! but why?!
-                    storeLog( m_logBuffer, m_logBufferIndex, "step",10);
-                    bufferScreenDraw( "step 10", 0, sizeof("step 10"), 0, 0, 0xFFFFFFFF );
+                    storeLog( m_logBuffer, m_logBufferIndex, "step",11, "m_VCHIQ.Initialize()");
+                    bufferScreenDraw( "m_VCHIQ.Initialize() done", 0, sizeof("m_VCHIQ.Initialize() done"), 0, 0, 0xFFFFFFFF );
                     msDelay(1000);
                     }
 /*
@@ -104,24 +104,24 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK =   SPI_init();
-                  storeLog( m_logBuffer, m_logBufferIndex, "step",13);
-                  bufferScreenDraw( "step 13", 0, sizeof("step 13"), 0, 0, 0xFFFFFFFF );
+                  storeLog( m_logBuffer, m_logBufferIndex, "step",14, "SPI_init()");
+                  bufferScreenDraw( "SPI_init() done", 0, sizeof("SPI_init() done"), 0, 0, 0xFFFFFFFF );
                    msDelay(1000);
                     }
 
                 if (bOK)
                     {
                     bOK =   SMI_Init(LED_PIN);        // example GPIO18, choose your actual WS2812 SMI GPIO
-                  storeLog( m_logBuffer, m_logBufferIndex, "step",14);
-                  bufferScreenDraw( "step 14", 0, sizeof("step 14"), 0, 0, 0xFFFFFFFF );
+                  storeLog( m_logBuffer, m_logBufferIndex, "step",15, "SMI_Init(LED_PIN)");
+                  bufferScreenDraw( "SMI_Init(LED_PIN) done", 0, sizeof("SMI_Init(LED_PIN) done"), 0, 0, 0xFFFFFFFF );
                   msDelay(1000);
                     }
 
                 if (bOK)
                     {
                     bOK =   WS2812_Init(LED_COUNT);      // example LED count, choose your actual count
-                  storeLog( m_logBuffer, m_logBufferIndex, "step",15);
-                  bufferScreenDraw( "step 15", 0, sizeof("step 15"), 0, 0, 0xFFFFFFFF );
+                  storeLog( m_logBuffer, m_logBufferIndex, "step",15, "WS2812_Init(LED_COUNT)");
+                  bufferScreenDraw( "WS2812_Init(LED_COUNT) done", 0, sizeof("WS2812_Init(LED_COUNT) done"), 0, 0, 0xFFFFFFFF );
                   msDelay(1000);
                     }
 
