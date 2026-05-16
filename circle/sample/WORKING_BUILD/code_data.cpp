@@ -124,8 +124,7 @@ bool            CKernel::saveFromBufferM            (   const   char*       p_de
                 storeLog(   MY_BUFFER, MY_INDEX,
                                 "Successful Stored",    EMPTYLOG,
                                 p_fileName,             EMPTYLOG,
-                                "from Buffer",          EMPTYLOG,
-                                p_bufferArray,          (u32)p_bufferSize );
+                                "from Buffer size",     (u32)p_bufferSize );
 #endif                                 
                 return true;
 }
