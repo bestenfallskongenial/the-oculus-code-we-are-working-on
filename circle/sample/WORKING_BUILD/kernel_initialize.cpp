@@ -76,15 +76,15 @@ boolean			CKernel::Initialize						(	void )
                   bufferScreenDraw( "step 9", 0, sizeof("step 9"), 0, 0, 0xFFFFFFFF );
                   msDelay(1000);
                     }
-/*
+
                 if (bOK)
                     {
                     bOK =   m_VCHIQ.Initialize();       // <--- breaking point !! but why?!
-                //  storeLog( m_logBuffer, m_logBufferIndex, "step",10);
-                //  bufferScreenDraw( "step 10", 0, sizeof("step 10"), 0, 0, 0xFFFFFFFF );
-                //  msDelay(1000);
+                    storeLog( m_logBuffer, m_logBufferIndex, "step",10);
+                    bufferScreenDraw( "step 10", 0, sizeof("step 10"), 0, 0, 0xFFFFFFFF );
+                    msDelay(1000);
                     }
-
+/*
                     if (bOK)
                     {
                             bcm_host_init();
