@@ -93,15 +93,16 @@ void            CKernel::wrapperMEMcleanUp          (   )
 
 void            CKernel::wrapper_from_sd            (   )
 {
+/*
                 bufferScreenClear();
                 bufferScreenDraw(   "wrapper start",
-                                            0,
-                                            sizeof("wrapper start"),
-                                            0,
-                                            0,
-                                            0xFFFFFFFF );
-                                            m_Timer.MsDelay(1000);   
-
+                                    0,
+                                    sizeof("wrapper start"),
+                                    0,
+                                    0,
+                                    0xFFFFFFFF );
+                                    m_Timer.MsDelay(1000);   
+*/
                 if(Mount( PARTITION_NAME_SD ))
                     {
 
@@ -205,32 +206,36 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_KLN][FLD_SIZE]); 
 
                     UnMount();
-                bufferScreenClear();       
-                bufferScreenDraw(   "wrapper finish",
-                                            0,
-                                            sizeof("wrapper finish"),
-                                            0,
-                                            0,
-                                            0xFFFFFFFF );
-                                            m_Timer.MsDelay(1000);                      
+
                     }
                 // Flush CPU->RAM so the VPU sees the loaded bitstream
                 CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
+/*                    
+                bufferScreenClear();       
+                bufferScreenDraw(   "wrapper finish",
+                                    0,
+                                    sizeof("wrapper finish"),
+                                    0,
+                                    0,
+                                    0xFFFFFFFF );
+                                    m_Timer.MsDelay(1000); 
+*/                                                                 
 }
 
 void            CKernel::wrapper_load_usb           (   )
 {
-                if(Mount( PARTITION_NAME_USB ))
-                    {
+/*                        
                 bufferScreenClear();
                 bufferScreenDraw(   "wrapper start",
-                                            0,
-                                            sizeof("wrapper start"),
-                                            0,
-                                            0,
-                                            0xFFFFFFFF );
-                                            m_Timer.MsDelay(1000);   
-
+                                    0,
+                                    sizeof("wrapper start"),
+                                    0,
+                                    0,
+                                    0xFFFFFFFF );
+                                    m_Timer.MsDelay(1000);   
+*/    
+                if(Mount( PARTITION_NAME_USB ))
+                    {
                     scanRoot                (   g_ScnFsh, 
                                                 g_SufFsh, 
                                                 filecounter[FT_FSH][FLD_EXTCNT], 
@@ -287,6 +292,10 @@ void            CKernel::wrapper_load_usb           (   )
                                                 filecounter[FT_KLN][FLD_PREV],
                                                 filecounter[FT_KLN][FLD_SIZE]);                                                 
                     UnMount();   
+                    }
+                // Flush CPU->RAM so the VPU sees the loaded bitstream
+                CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // !!! every memory allocation/operation like load?! do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
+/*                    
                 bufferScreenClear();       
                 bufferScreenDraw(   "wrapper finish",
                                             0,
@@ -295,9 +304,7 @@ void            CKernel::wrapper_load_usb           (   )
                                             0,
                                             0xFFFFFFFF );
                                             m_Timer.MsDelay(1000);                              
-                    }
-                // Flush CPU->RAM so the VPU sees the loaded bitstream
-                CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // !!! every memory allocation/operation like load?! do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
+*/
 }
 
 void            CKernel::wrapper_init_gl_sd         (   )
