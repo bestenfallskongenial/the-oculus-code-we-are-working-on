@@ -51,8 +51,9 @@ TShutdownMode CKernel::Run(void)
 
                     //  debug();
               
-                    if (updateUSB("umsd1") == true && m_USB_has_load == false)
+                    if (1updateUSB("umsd1") == true && m_USB_has_load == false)
                         {
+                                      bufferScreenDraw( "is this loop running forever", 0, sizeof("is this loop running forever"), 0, 14, 0xFFFFFFFF );        
 /*                            
                         m_logBufferIndex = 0;
                         m_logBuffer[0] = '\0'; 
