@@ -3,31 +3,32 @@
 boolean			CKernel::Initialize						(	void )
 {
                 bool bOK = TRUE;
-                
+                if (bOK)
+                    {
+                    bOK = startupScreen();
+                    storeLog( m_logBuffer, m_logBufferIndex, "step", 0, "System Info Log                                    DONE");
+                  //msDelay(1000);
+                    }                
+
                 if (bOK)
                     {
                     bOK = m_Interrupt.Initialize();
-                    storeLog( m_logBuffer, m_logBufferIndex, "step", 0, "m_Interrupt.Initialize()                          DONE");
+                    storeLog( m_logBuffer, m_logBufferIndex, "step", 1, "m_Interrupt.Initialize()                           DONE");
                     }       
                 if (bOK)
                     {
                     bOK = m_Timer.Initialize();
-                    storeLog( m_logBuffer, m_logBufferIndex, "step", 1, "m_Timer.Initialize()                              DONE");
+                    storeLog( m_logBuffer, m_logBufferIndex, "step", 2, "m_Timer.Initialize()                               DONE");
                     }
 
                 if (bOK)
                     {
                     CLogger::SetRawSink(CKernel::LoggerSink, this);
-                    storeLog( m_logBuffer, m_logBufferIndex, "step", 2, "CLogger::SetRawSink(CKernel::LoggerSink, this)     DONE");
+                    storeLog( m_logBuffer, m_logBufferIndex, "step", 3, "CLogger::SetRawSink(CKernel::LoggerSink, this)     DONE");
                     bOK = m_Logger.Initialize(0);
-                    storeLog( m_logBuffer, m_logBufferIndex, "step", 3, "m_Logger.Initialize(0)                             DONE");
+                    storeLog( m_logBuffer, m_logBufferIndex, "step", 4, "m_Logger.Initialize(0)                             DONE");
                     }
-                if (bOK)
-                    {
-                    bOK = startupScreen();
-                    storeLog( m_logBuffer, m_logBufferIndex, "step", 4, "System Info Log                                    DONE");
-                  //msDelay(1000);
-                    }
+
 
                 if (bOK)
                     {
@@ -104,7 +105,7 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK =   SPI_init();
-                  storeLog( m_logBuffer, m_logBufferIndex, "step",14, "SPI_init()                                           DONE");
+                  storeLog( m_logBuffer, m_logBufferIndex, "step",14, "SPI_init()                                         DONE");
                 //bufferScreenDraw( "SPI_init() done", 0, sizeof("SPI_init() done"), 0, 13, 0xFFFFFFFF );
                  //msDelay(1000);
                     }
