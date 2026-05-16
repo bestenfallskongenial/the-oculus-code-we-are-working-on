@@ -122,7 +122,7 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK =   WS2812_Init(LED_COUNT);      // example LED count, choose your actual count
-                    storeLog( m_logBuffer, m_logBufferIndex, "step",15, "WS2812_Init(LED_COUNT)                             DONE");
+                    storeLog( m_logBuffer, m_logBufferIndex, "step",16, "WS2812_Init(LED_COUNT)                             DONE");
                   //bufferScreenDraw( "WS2812_Init(LED_COUNT) done", 0, sizeof("WS2812_Init(LED_COUNT) done"), 0, 15, 0xFFFFFFFF );
                   //msDelay(1000);
                     }
