@@ -92,7 +92,7 @@ boolean			CKernel::Initialize						(	void )
                     bufferScreenDraw( "bcm_host_init() done", 0, sizeof("bcm_host_init() done"), 0, 11, 0xFFFFFFFF );
                     msDelay(1000);
                     }    
-/*
+
                     if (bOK)
                     {
                             initOGL(&m_ogl);
@@ -100,7 +100,7 @@ boolean			CKernel::Initialize						(	void )
                     bufferScreenDraw( "initOGL(&m_ogl) done", 0, sizeof("initOGL(&m_ogl) done"), 0, 12, 0xFFFFFFFF );
                     msDelay(1000);
                     }
-*/
+
                 if (bOK)
                     {
                     bOK =   SPI_init();

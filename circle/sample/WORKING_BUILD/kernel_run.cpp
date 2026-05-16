@@ -24,18 +24,19 @@ TShutdownMode CKernel::Run(void)
 
                     if (!m_SD_has_load) 
                         {
+/*                            
                         m_logBufferIndex = 0;
                         m_logBuffer[0] = '\0';
-
+*/
                         wrapper_from_sd();
-
+/*
                         randomVec8              ( g_currentTime );            
                                                     
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     make83FileName("TXT"),
                                                     m_logBuffer,
                                                     m_logBufferIndex );
-
+*/
                         bufferScreenDraw(   "load and log from/to sd",
                                                     0,
                                                     sizeof("load and log from/to sd"),
@@ -52,9 +53,10 @@ TShutdownMode CKernel::Run(void)
               
                     if (updateUSB("umsd1") == true && m_USB_has_load == false)
                         {
+/*                            
                         m_logBufferIndex = 0;
                         m_logBuffer[0] = '\0'; 
-
+*/
                         wrapper_load_usb();          
                         
                         bufferScreenDraw(   "load from usb",
@@ -64,19 +66,25 @@ TShutdownMode CKernel::Run(void)
                                                     0,
                                                     0xFFFFFFFF );
                       
-
+/*
                         randomVec8              ( g_currentTime );            
 
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     make83FileName("TXT"),
                                                     m_logBuffer,
                                                     m_logBufferIndex );
+*/
                         msDelay(1000);    
                         bufferScreenClear();
                         m_USB_has_load = true;   
                                                
                         }
+                        randomVec8              ( g_currentTime );            
 
+                        saveFromBufferM         (   PARTITION_NAME_SD,
+                                                    make83FileName("TXT"),
+                                                    m_logBuffer,
+                                                    m_logBufferIndex );
 /*
                   readAndConvertADC();
 
