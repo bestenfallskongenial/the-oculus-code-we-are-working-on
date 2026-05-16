@@ -5,9 +5,9 @@
 TShutdownMode CKernel::Run(void)
 {
 
-                    int r = 0;
-                    int g = 0;
-                    int b = 0;
+unsigned r = 0;
+unsigned g = 127;
+unsigned b = 186;
 /*
                 g_currentTime = m_Timer.GetClockTicks();    
  
@@ -94,10 +94,9 @@ TShutdownMode CKernel::Run(void)
                         WS2812_SetLED(3, (r*2)%255, g, b);
 
                         WS2812_Update();
-
-                        r++;
-                        g++;
-                        b++;
+r = (r + 1) % 256;
+g = (g + 2) % 256;
+b = (b + 3) % 256;
                         msDelay(25);
                     }
 
