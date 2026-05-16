@@ -7,27 +7,27 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK = m_Interrupt.Initialize();
-                    storeLog( m_logBuffer, m_logBufferIndex, "step", 1, "m_Interrupt.Initialize()                           DONE");
+                    storeLog( m_logBuffer, m_logBufferIndex, "step", 0, "m_Interrupt.Initialize()                           DONE");
                     }       
                 if (bOK)
                     {
                     bOK = m_Timer.Initialize();
-                    storeLog( m_logBuffer, m_logBufferIndex, "step", 2, "m_Timer.Initialize()                               DONE");
+                    storeLog( m_logBuffer, m_logBufferIndex, "step", 1, "m_Timer.Initialize()                               DONE");
                     }
 
                 if (bOK)
                     {
                     CLogger::SetRawSink(CKernel::LoggerSink, this);
-                    storeLog( m_logBuffer, m_logBufferIndex, "step", 3, "CLogger::SetRawSink(CKernel::LoggerSink, this)     DONE");
+                    storeLog( m_logBuffer, m_logBufferIndex, "step", 2, "CLogger::SetRawSink(CKernel::LoggerSink, this)     DONE");
                     bOK = m_Logger.Initialize(0);
-                    storeLog( m_logBuffer, m_logBufferIndex, "step", 4, "m_Logger.Initialize(0)                             DONE");
+                    storeLog( m_logBuffer, m_logBufferIndex, "step", 3, "m_Logger.Initialize(0)                             DONE");
                     }
 
 
                 if (bOK)
                     {
                     bOK = frameBufferInit();
-                    storeLog( m_logBuffer, m_logBufferIndex, "step", 5, "frameBufferInit()                                  DONE");
+                    storeLog( m_logBuffer, m_logBufferIndex, "step", 4, "frameBufferInit()                                  DONE");
                   //bufferScreenDraw( "frameBufferInit() done", 0, sizeof("frameBufferInit() done"), 0, 4, 0xFFFFFFFF );
                   //msDelay(1000);
                     }
@@ -35,7 +35,7 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK = startupScreen();
-                    storeLog( m_logBuffer, m_logBufferIndex, "step", 0, "System Info Log                                    DONE");
+                    storeLog( m_logBuffer, m_logBufferIndex, "step", 5, "System Info Log                                    DONE");
                   //msDelay(1000);
                     }                
 
