@@ -140,7 +140,7 @@ bool            CKernel::SPI_init                (   void)
                 return TRUE;
 }
 
-int             CKernel::WriteRead               (   unsigned nChipSelect,
+int             CKernel::WriteRead                  (   unsigned nChipSelect,
                                                         const void *pWriteBuffer,
                                                         void *pReadBuffer,
                                                         unsigned nCount)
@@ -227,7 +227,7 @@ bool            CKernel::SMI_Init                (   unsigned gpioPin)
                 return TRUE;
 }
 
-void            CKernel::SMI_SetupTiming         (   unsigned width,
+void            CKernel::SMI_SetupTiming            (   unsigned width,
                                                         unsigned cycle_ns,
                                                         unsigned setup,
                                                         unsigned strobe,

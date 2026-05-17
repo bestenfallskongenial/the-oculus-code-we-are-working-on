@@ -398,3 +398,59 @@ void            CKernel::TimerHandler                   (           TKernelTimer
 
                 (*pInvalid)();
 }
+
+void CKernel::logButtonStatesRuntime(void)
+{
+    char f_buttonLogBuffer[1024];
+    u32  f_buttonLogIndex = 0;
+
+    f_buttonLogBuffer[0] = '\0';
+
+    storeLog(   f_buttonLogBuffer, f_buttonLogIndex,
+                "BTN PRESS_START   DOUBLE        RELEASE       SINGLE",
+                EMPTYLOG,
+                EMPTYSTR, EMPTYLOG,
+                EMPTYSTR, EMPTYLOG,
+                EMPTYSTR, EMPTYLOG );
+
+    storeLog(   f_buttonLogBuffer, f_buttonLogIndex,
+                "A  ",
+                (u32)g_buttons_states[0][BTN_PRESS_START],
+                "  ",
+                (u32)g_buttons_states[0][BTN_DOUBLE],
+                "  ",
+                (u32)g_buttons_states[0][BTN_RELEASE],
+                "  ",
+                (u32)g_buttons_states[0][BTN_SINGLE] );
+
+    storeLog(   f_buttonLogBuffer, f_buttonLogIndex,
+                "A HOLD_TICK",
+                (u32)g_buttons_states[0][BTN_HOLD_TICK],
+                EMPTYSTR, EMPTYLOG,
+                EMPTYSTR, EMPTYLOG,
+                EMPTYSTR, EMPTYLOG );
+
+    storeLog(   f_buttonLogBuffer, f_buttonLogIndex,
+                "B  ",
+                (u32)g_buttons_states[1][BTN_PRESS_START],
+                "  ",
+                (u32)g_buttons_states[1][BTN_DOUBLE],
+                "  ",
+                (u32)g_buttons_states[1][BTN_RELEASE],
+                "  ",
+                (u32)g_buttons_states[1][BTN_SINGLE] );
+
+    storeLog(   f_buttonLogBuffer, f_buttonLogIndex,
+                "B HOLD_TICK",
+                (u32)g_buttons_states[1][BTN_HOLD_TICK],
+                EMPTYSTR, EMPTYLOG,
+                EMPTYSTR, EMPTYLOG,
+                EMPTYSTR, EMPTYLOG );
+
+    bufferScreenDraw(  f_buttonLogBuffer,
+                       0,
+                       f_buttonLogIndex,
+                       0,
+                       15,
+                       0xFFFFFFFF );
+}

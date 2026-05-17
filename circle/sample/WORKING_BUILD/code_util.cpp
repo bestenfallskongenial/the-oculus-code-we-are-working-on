@@ -325,19 +325,19 @@ void            CKernel::buttonPing                 (   int             p_btn_id
                     }
 }
 /*
-                #define CONTROL_PIN     14 ! EXAMPLES !
-                #define BUTTON_A_PIN    23
-                #define BUTTON_B_PIN    15
+                #define CTRL_PIN    12 ! EXAMPLES !
+                #define SW_PIN_A    13
+                #define SW_PIN_B    6
             Initialize
-                GPIO_SetAlt(CONTROL_PIN,  1, GPIO_PULL_OFF);
-                GPIO_SetAlt(BUTTON_A_PIN, 0, GPIO_PULL_UP);
-                GPIO_SetAlt(BUTTON_B_PIN, 0, GPIO_PULL_UP);
+                GPIO_SetAlt(CTRL_PIN,  1, GPIO_PULL_OFF);
+                GPIO_SetAlt(SW_PIN_A, 0, GPIO_PULL_UP);
+                GPIO_SetAlt(SW_PIN_B, 0, GPIO_PULL_UP);
             Run
                 set_pot_routing(false);
                 set_pot_routing(true);
 
-                buttonPing(0, BUTTON_A_PIN);
-                buttonPing(1, BUTTON_B_PIN);
+                buttonPing(0, SW_PIN_A);
+                buttonPing(1, SW_PIN_B);
 */
 /*
 void            CKernel::button_consumer            (   int                 p_btn_id ) // this is where the magic happens: we need to set the states of menu layer, menu, we need to use one button for bpm input and so on 

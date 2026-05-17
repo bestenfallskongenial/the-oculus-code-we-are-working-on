@@ -129,10 +129,12 @@ boolean			CKernel::Initialize						(	void )
 
                 if (bOK)
                     {
-                    GPIO_SetAlt(CTRL_PIN,  1, GPIO_PULL_OFF);
-
+                    GPIO_SetAlt(CTRL_PIN, 1, GPIO_PULL_OFF);
+                    storeLog( m_logBuffer, m_logBufferIndex, "step",16, "GPIO_SetAlt(CTRL_PIN, 1, GPIO_PULL_OFF)            DONE");
                     GPIO_SetAlt(SW_PIN_A, 0, GPIO_PULL_UP);
+                    storeLog( m_logBuffer, m_logBufferIndex, "step",16, "GPIO_SetAlt(SW_PIN_A, 0, GPIO_PULL_UP)             DONE");
                     GPIO_SetAlt(SW_PIN_B, 0, GPIO_PULL_UP);
+                    storeLog( m_logBuffer, m_logBufferIndex, "step",16, "GPIO_SetAlt(SW_PIN_B, 0, GPIO_PULL_UP)             DONE");
                     }
 
                 return bOK;

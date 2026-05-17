@@ -438,6 +438,8 @@ private:
 
                 void        debug();
 
+                void        logButtonStatesRuntime      (void);
+                
 #include "defs_member.h" // <- should go to the bottom, right?    
 
 #include "table_lfo.cpp"
