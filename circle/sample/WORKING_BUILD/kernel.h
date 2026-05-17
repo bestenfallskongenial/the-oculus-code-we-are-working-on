@@ -439,6 +439,7 @@ private:
                 void        debug();
 
                 void        logButtonStatesRuntime      (void);
+                void        logInOutRuntime(void);
                 
 #include "defs_member.h" // <- should go to the bottom, right?    
 
