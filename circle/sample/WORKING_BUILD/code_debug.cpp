@@ -424,7 +424,7 @@ void CKernel::logButtonStatesRuntime(void)
                 (u32)g_buttons_states[0][BTN_SINGLE] );
 
     storeLog(   f_buttonLogBuffer, f_buttonLogIndex,
-                "A HOLD_TICK",
+                "A   HOLD_TICK",
                 (u32)g_buttons_states[0][BTN_HOLD_TICK],
                 EMPTYSTR, EMPTYLOG,
                 EMPTYSTR, EMPTYLOG,
@@ -441,7 +441,7 @@ void CKernel::logButtonStatesRuntime(void)
                 (u32)g_buttons_states[1][BTN_SINGLE] );
 
     storeLog(   f_buttonLogBuffer, f_buttonLogIndex,
-                "B HOLD_TICK",
+                "B   HOLD_TICK",
                 (u32)g_buttons_states[1][BTN_HOLD_TICK],
                 EMPTYSTR, EMPTYLOG,
                 EMPTYSTR, EMPTYLOG,
