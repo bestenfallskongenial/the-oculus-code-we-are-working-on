@@ -25,7 +25,7 @@
 				CKernel::~CKernel						(	void )
 {
 }
-
+/*
 void 			CKernel::LoggerSink						(	        void* 			    pContext, 
 															const   char* 	            pText, 
 															        unsigned 		    nLength )
@@ -51,4 +51,41 @@ void 			CKernel::LoggerSink						(	        void* 			    pContext,
 
                 pThis->m_logBuffer[pThis->m_logBufferIndex] = '\0';
 }
+*/
+void 			CKernel::LoggerSink						(	        void* 			    pContext, 
+															const   char* 	            pText, 
+															        unsigned 		    nLength )
+{
+                CKernel* pThis = (CKernel*) pContext;
 
+                const char* prefix = "CLogger->";
+
+                for (const char* p = prefix; *p; ++p)
+                    {
+                    if (pThis->m_logBufferIndex >= LOG_SIZ - 1)
+                        {
+                        break;
+                        }
+
+                    pThis->m_logBuffer[pThis->m_logBufferIndex++] = *p;
+                    }
+
+                for (unsigned i = 0; i < nLength; i++)
+                    {
+                    if (pThis->m_logBufferIndex >= LOG_SIZ - 1)
+                        {
+                        break;
+                        }
+
+                    const char ch = pText[i];
+
+                    if (ch == '\r')
+                        {
+                        continue;
+                        }
+
+                    pThis->m_logBuffer[pThis->m_logBufferIndex++] = ch;
+                    }
+
+                pThis->m_logBuffer[pThis->m_logBufferIndex] = '\0';
+}
