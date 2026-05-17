@@ -149,10 +149,10 @@ void            CKernel::bulkLoad                   (           char*       p_fi
 #ifdef __DEBUG_LOG__
                 nextline(   MY_BUFFER, MY_INDEX);
                 storeLog(   MY_BUFFER, MY_INDEX,
+                            " ", m_Timer.GetTicks(),
                             "BULKLOAD Start scanned",   (u32)p_maxFiles,
                             "valid",                (u32)p_validFiles,
-                            "size",                 (u32)p_fileSize,
-                            EMPTYSTR,               EMPTYLOG );
+                            "size",                 (u32)p_fileSize);
 #endif
 
                 for (unsigned i = 0; i < p_maxFiles; ++i) 
@@ -179,10 +179,10 @@ void            CKernel::bulkLoad                   (           char*       p_fi
 #ifdef __DEBUG_LOG__
             //  nextline(   MY_BUFFER, MY_INDEX);
                 storeLog(   MY_BUFFER, MY_INDEX,
+                                " ", m_Timer.GetTicks(),
                                 "BULKLOAD End prev",    (u32)p_prevFiles,
                                 "new",                  (u32)p_validFiles,
-                                "loaded",               (u32)(p_validFiles - p_prevFiles),
-                                EMPTYSTR,               EMPTYLOG );
+                                "loaded",               (u32)(p_validFiles - p_prevFiles));
 #endif
 }
 
@@ -299,10 +299,10 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                     }
 #ifdef ALLOC_DEBUG
                 storeLog(   MY_BUFFER, MY_INDEX,
+                                " ", m_Timer.GetTicks(),
                                 "ALLOC-MEM done",      (u32)buffers,
                                 "count",               (u32)p_count,
-                                "size",                (u32)bufferSize,
-                                EMPTYSTR,              EMPTYLOG );
+                                "size",                (u32)bufferSize);
 #endif         
                 msDelay(100);
                 return buffers;
@@ -338,10 +338,11 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
                     }
 #ifdef ALLOC_DEBUG   
                 storeLog(   MY_BUFFER, MY_INDEX,
-                                "ALLOC-DMA raw  ",        (u32)raw,
+                                " ", m_Timer.GetTicks(),
+                                "ALLOC-DMA raw  ",      (u32)raw,
                                 "block",                (u32)dma_block,
-                                "total",                (u32)total_size,
-                                "aligned",              (u32)aligned_total_size );
+                                "total",                (u32)total_size /*,
+                                "aligned",              (u32)aligned_total_size */ );
 #endif
                 *blockBaseOut   = dma_block;
                 *rawBlockOut    = raw;
