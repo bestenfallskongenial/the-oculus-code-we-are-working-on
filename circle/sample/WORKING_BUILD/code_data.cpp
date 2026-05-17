@@ -280,9 +280,9 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                 char** buffers = (char**)malloc(p_count * sizeof(char*));
 #ifdef ALLOC_DEBUG
                 storeLog(   MY_BUFFER, MY_INDEX,
-                                "ALLOC-MEM base",      (u32)buffers,
+                                "ALLOC-MEM base ",      (u32)buffers,
                                 "count",               (u32)p_count,
-                                "size",                (u32)bufferSize,
+                                "size ",                (u32)bufferSize,
                                 EMPTYSTR,              EMPTYLOG );
 #endif
 
