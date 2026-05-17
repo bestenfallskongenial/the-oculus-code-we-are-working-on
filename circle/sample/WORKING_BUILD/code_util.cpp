@@ -207,10 +207,10 @@ void        CKernel::get_gl_time( unsigned sys_time )
                         }    
                     }
 
-void            CKernel::set_pot_routing            (   bool            adc_pot_routing)
+void            CKernel::set_pot_routing            (   int pin, bool state)
 {
             //  m_ChipSelectPin.Write(adc_pot_routing); // false or true aka high or low?
-                GPIO_Write(CS_PIN, adc_pot_routing);
+                GPIO_Write(pin, state);
 }
 
 char*           CKernel::make83FileName             (   const char*     ext )

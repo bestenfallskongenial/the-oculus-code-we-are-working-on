@@ -80,14 +80,14 @@
     #define 		FILENAME_VCSM_LOG		    "LOG-VCSM.txt"
     #define 		FILENAME_MMAL_LOG		    "LOG-MMAL.txt"    
 
-    #define         WAVEFORMS_COUNT             	    4		// number of lfo waves
+    #define         WAVEFORMS_COUNT             4		// number of lfo waves
     #define         WAVESAMPLES            	    256  	// number of samples per lfo waves
 
     #define         MAX_MODES                   5
     #define         MENU_LAYER_COUNT            4
 
     #define 		LFO_INSTANCES			    2
-    #define			LFO_MULTIPLIERS_COUNT			    7
+    #define			LFO_MULTIPLIERS_COUNT		7
 
     #define         SLOTS                       34                                  // for the g_centralModeBuffer[SLOTS][MODETABLE_COUNT] array -  
                                                                                     // 1 firmware / 32 user / 1 default slot
@@ -108,7 +108,7 @@
     #define         SW_PIN_A	           	    13                                  // button A ( lower )
     #define         SW_PIN_B	          	    6                                   // button B ( upper )
 
-    #define         CS_PIN                 	    12                                  // for menu input selector!!!
+    #define         CTRL_PIN                 	    12                                  // for menu input selector!!!
 
     #define         MAX_VIDEOS                  8
     #define         MAX_TEXTURE                 8
