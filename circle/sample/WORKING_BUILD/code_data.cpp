@@ -165,10 +165,11 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                             p_loadedBytes[p_validFiles] = f_bytesRead;
 #ifdef __DEBUG_LOG__
                             storeLog(   MY_BUFFER, MY_INDEX,
-                                        "file",              (u32)i,
+                                      /*"file",              (u32)i,*/
                                         p_fileNameArray[i],  EMPTYLOG,
                                         "bytes read",        (u32)f_bytesRead,
-                                        "in buffer",         (u32)p_validFiles );
+                                        "in buffer [",         (u32)p_validFiles,
+                                        "]" ); // new
 #endif                            
                             p_validFiles++;   
                             }
