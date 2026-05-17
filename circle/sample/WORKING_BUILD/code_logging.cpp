@@ -240,6 +240,7 @@ bool            CKernel::programLog                 (   GLint       program,
                                                         EMPTYSTR, EMPTYLOG,
                                                         EMPTYSTR, EMPTYLOG );
                     }
+                    storeLog( MY_BUFFER, MY_INDEX, "Program InfoLog length", (u32)logLength );
 #endif 
                 GLint numUniforms;
                 glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &numUniforms);
