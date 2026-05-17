@@ -129,10 +129,11 @@ boolean			CKernel::Initialize						(	void )
 
                 if (bOK)
                     {
-                    GPIO_SetAlt(CONTROL_PIN,  1, GPIO_PULL_OFF);
-                    GPIO_SetAlt(BUTTON_A_PIN, 0, GPIO_PULL_UP);
-                    GPIO_SetAlt(BUTTON_B_PIN, 0, GPIO_PULL_UP);
+                    GPIO_SetAlt(CTRL_PIN,  1, GPIO_PULL_OFF);
+
+                    GPIO_SetAlt(SW_PIN_A, 0, GPIO_PULL_UP);
+                    GPIO_SetAlt(SW_PIN_B, 0, GPIO_PULL_UP);
                     }
-                    
+
                 return bOK;
 }
