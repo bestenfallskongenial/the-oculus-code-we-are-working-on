@@ -25,7 +25,7 @@
 				CKernel::~CKernel						(	void )
 {
 }
-/*
+
 void 			CKernel::LoggerSink						(	        void* 			    pContext, 
 															const   char* 	            pText, 
 															        unsigned 		    nLength )
@@ -51,7 +51,7 @@ void 			CKernel::LoggerSink						(	        void* 			    pContext,
 
                 pThis->m_logBuffer[pThis->m_logBufferIndex] = '\0';
 }
-*/
+/*
 void 			CKernel::LoggerSink						(	        void* 			    pContext, 
 															const   char* 	            pText, 
 															        unsigned 		    nLength )
@@ -94,3 +94,4 @@ void 			CKernel::LoggerSink						(	        void* 			    pContext,
 
                 pThis->m_logBuffer[pThis->m_logBufferIndex] = '\0';
 }
+*/
