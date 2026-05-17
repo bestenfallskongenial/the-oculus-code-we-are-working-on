@@ -129,7 +129,7 @@ void            CKernel::nextline                   (   char*       p_buffer,
                 p_buffer[index++]           = '\n';
                 p_buffer[index]             = '\0';
 }
-
+/*/
 bool            CKernel::shaderLog                  (   GLint       shader,
                                                         int         shaderIndex )
 {
@@ -196,6 +196,94 @@ bool            CKernel::programLog                 (   GLint       program,
 #ifdef __DEBUG_LOG__ 
                     storeLog( MY_BUFFER, MY_INDEX, "Attribute idx", (u32)i,"size", (u32)size,"type", (u32)type,"loc", (u32)location);
                     storeMsg( MY_BUFFER, MY_INDEX, "Attribute name", aname, length);
+#endif                     
+                    }
+#ifdef __DEBUG_LOG__
+                storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
+#endif 
+
+                return success == GL_TRUE;
+}
+*/
+bool            CKernel::shaderLog                  (   GLint       shader,
+                                                        int         shaderIndex )
+{
+                GLint success;
+                glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+#ifdef __DEBUG_LOG__ 
+                storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
+                storeLog( MY_BUFFER, MY_INDEX, "Program compile status idx", (u32)shaderIndex, "success" ,(u32)success);
+#endif 
+                return success == GL_TRUE;
+}
+
+bool            CKernel::programLog                 (   GLint       program,
+                                                        int         program_index )
+{
+                GLint success;
+                glGetProgramiv(program, GL_LINK_STATUS, &success);
+#ifdef __DEBUG_LOG__
+                storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
+                storeLog( MY_BUFFER, MY_INDEX,   g_ScnFsh[program_index], EMPTYLOG,
+                                                    "Program link status idx", (u32)program_index,
+                                                    "Program byte size", (u32)g_bytFsh[program_index], 
+                                                    "success", (u32)success);
+#endif 
+                char log[1024];
+                GLsizei logLength = 0;
+                glGetProgramInfoLog(program, sizeof(log), &logLength, log);
+#ifdef __DEBUG_LOG__                 
+                if (logLength > 0)
+                    {
+                    storeLog( MY_BUFFER, MY_INDEX, "Program InfoLog", EMPTYLOG,
+                                                        log, EMPTYLOG,
+                                                        EMPTYSTR, EMPTYLOG,
+                                                        EMPTYSTR, EMPTYLOG );
+                    }
+#endif 
+                GLint numUniforms;
+                glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &numUniforms);
+#ifdef __DEBUG_LOG__ 
+                storeLog( MY_BUFFER, MY_INDEX, "Active Uniforms", (u32)numUniforms);
+#endif 
+                for (GLint i = 0; i < numUniforms; ++i)
+                    {
+                    char uname[256];
+                    GLsizei length;
+                    GLint size;
+                    GLenum type;
+
+                    glGetActiveUniform(program, i, sizeof(uname), &length, &size, &type, uname);
+                    GLint location = glGetUniformLocation(program, uname);
+#ifdef __DEBUG_LOG__ 
+                    storeLog( MY_BUFFER, MY_INDEX, "Uniform idx", (u32)i, "size", (u32)size, "type", (u32)type, "loc", (u32)location);
+                    storeLog( MY_BUFFER, MY_INDEX, "Uniform name", EMPTYLOG,
+                                                        uname, EMPTYLOG,
+                                                        EMPTYSTR, EMPTYLOG,
+                                                        EMPTYSTR, EMPTYLOG );
+#endif                     
+                    }
+
+                GLint numAttributes;
+                glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &numAttributes);
+#ifdef __DEBUG_LOG__ 
+                storeLog( MY_BUFFER, MY_INDEX, "Active Attributes", (u32)numAttributes);
+#endif 
+                for (GLint i = 0; i < numAttributes; ++i)
+                    {
+                    char aname[256];
+                    GLsizei length;
+                    GLint size;
+                    GLenum type;
+
+                    glGetActiveAttrib(program, i, sizeof(aname), &length, &size, &type, aname);
+                    GLint location = glGetAttribLocation(program, aname);
+#ifdef __DEBUG_LOG__ 
+                    storeLog( MY_BUFFER, MY_INDEX, "Attribute idx", (u32)i,"size", (u32)size,"type", (u32)type,"loc", (u32)location);
+                    storeLog( MY_BUFFER, MY_INDEX, "Attribute name", EMPTYLOG,
+                                                        aname, EMPTYLOG,
+                                                        EMPTYSTR, EMPTYLOG,
+                                                        EMPTYSTR, EMPTYLOG );
 #endif                     
                     }
 #ifdef __DEBUG_LOG__
