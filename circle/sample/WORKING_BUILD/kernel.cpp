@@ -56,6 +56,11 @@ void 			CKernel::LoggerSink						(	        void* 			    pContext,
 															const   char* 	            pText, 
 															        unsigned 		    nLength )
 {
+                if (nLength == 0)
+                    {
+                    return;
+                    }
+
                 CKernel* pThis = (CKernel*) pContext;
 
                 const char* prefix = "CLogger->";
