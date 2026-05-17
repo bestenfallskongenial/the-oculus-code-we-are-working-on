@@ -149,7 +149,7 @@ void            CKernel::bulkLoad                   (           char*       p_fi
 #ifdef __DEBUG_LOG__
                 nextline(   MY_BUFFER, MY_INDEX);
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            " ", m_Timer.GetTicks(),
+                            "1/100 sec", m_Timer.GetTicks(),
                             "BULKLOAD Start scanned",   (u32)p_maxFiles,
                             "valid",                (u32)p_validFiles,
                             "size",                 (u32)p_fileSize);
@@ -179,7 +179,7 @@ void            CKernel::bulkLoad                   (           char*       p_fi
 #ifdef __DEBUG_LOG__
             //  nextline(   MY_BUFFER, MY_INDEX);
                 storeLog(   MY_BUFFER, MY_INDEX,
-                                " ", m_Timer.GetTicks(),
+                                "1/100 sec", m_Timer.GetTicks(),
                                 "BULKLOAD End prev",    (u32)p_prevFiles,
                                 "new",                  (u32)p_validFiles,
                                 "loaded",               (u32)(p_validFiles - p_prevFiles));
@@ -299,7 +299,7 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                     }
 #ifdef ALLOC_DEBUG
                 storeLog(   MY_BUFFER, MY_INDEX,
-                                " ", m_Timer.GetTicks(),
+                                "1/100 sec", m_Timer.GetTicks(),
                                 "ALLOC-MEM done",      (u32)buffers,
                                 "count",               (u32)p_count,
                                 "size",                (u32)bufferSize);
@@ -338,7 +338,7 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
                     }
 #ifdef ALLOC_DEBUG   
                 storeLog(   MY_BUFFER, MY_INDEX,
-                                " ", m_Timer.GetTicks(),
+                                "1/100 sec", m_Timer.GetTicks(),
                                 "ALLOC-DMA raw  ",      (u32)raw,
                                 "block",                (u32)dma_block,
                                 "total",                (u32)total_size /*,
