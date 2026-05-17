@@ -451,7 +451,7 @@ void CKernel::logButtonStatesRuntime(void)
                        0,
                        f_buttonLogIndex,
                        0,
-                       15,
+                       10,
                        0xFFFFFFFF );
 }
 
@@ -538,6 +538,6 @@ void CKernel::logInOutRuntime(void)
                        0,
                        f_logIndex,
                        0,
-                       21,
+                       0,
                        0xFFFFFFFF );
 }
