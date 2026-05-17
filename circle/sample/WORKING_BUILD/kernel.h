@@ -66,7 +66,7 @@ public:
                                                                         unsigned&                       p_scannedFiles,         // our counter of found files per device / call
                                                                         unsigned                        p_maxFiles);            // how many files are allowed to scan and stored in the array returns success not files found!
 
-                char*       gen83FileName              (       const   char*                           ext );
+                char*       gen83FileName              (       const   char*                           ext );   // +++
 
                 bool        updateUSB                   (       const   char*                           p_deviceType);          // +++ "umsd1" is the type, not "umsd1-1"needs volatile boolean	m_bStorageAttached ! 
 
@@ -154,21 +154,21 @@ public:
 // CODE_HARDWARE.CPP
                 void        usDelay                     (               unsigned us);
 
-                void        msDelay                     (               unsigned ms);
+                void        msDelay                     (               unsigned ms);                                           // ++
 
-                u32         read32                      (               uintptr                         nAddress);                          // MMIO
+                u32         read32                      (               uintptr                         nAddress);                          // +++ MMIO
 
-                void        write32                     (               uintptr                         nAddress, 
+                void        write32                     (               uintptr                         nAddress,          // +++             
                                                                         u32                             nValue);
 
-                void        GPIO_SetPull                (               unsigned                        nPin,                               // GPIO
+                void        GPIO_SetPull                (               unsigned                        nPin,                               // +++ GPIO
                                                                         unsigned                        nPullMode);
 
-                void        GPIO_SetAlt                 (               unsigned                        nPin, 
+                void        GPIO_SetAlt                 (               unsigned                        nPin,           // +++
                                                                         unsigned                        nAltMode, 
                                                                         unsigned                        nPullMode);
 
-                void        GPIO_Write                  (               unsigned                        nPin, 
+                void        GPIO_Write                  (               unsigned                        nPin,           // +++
                                                                         unsigned                        nValue);
                 unsigned    GPIO_Read                   (               unsigned                        nPin);
 
@@ -176,7 +176,7 @@ public:
 
                 bool        SPI_init                    (               void);                                                              // +++ SPI
 
-                int         WriteRead                   (               unsigned                        nChipSelect,
+                int         WriteRead                   (               unsigned                        nChipSelect,    // +++
                                                                 const   void*                           pWriteBuffer,
                                                                         void*                           pReadBuffer,
                                                                         unsigned                        nCount);
@@ -226,7 +226,7 @@ public:
                                                                         unsigned                        startRow,
                                                                         u32                             fgColor );
 
-                void        bufferScreenGetGrid         (               unsigned&                       cols,
+                void        bufferScreenGetGrid         (               unsigned&                       cols,           // +++
                                                                         unsigned&                       rows );
 
                 void        storeLog                    (               char*                           p_bufferArray,                    // +++
@@ -325,13 +325,13 @@ public:
                 u32         ReadExpGolomb               (               u8*                             data, 
                                                                         size_t*                         bit_offset) const;                                                                    
 // CODE_UTIL.CPP
-                void        readAndConvertADC          ();                             // can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
+                void        readAndConvertADC          ();                             // +++ can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
 
-                void        adc_AdvanceIndex            ();
-                    
+                void        adc_AdvanceIndex            ();     // +++
+
                 void        adc_ProcessAudio            (               void );
 
-                bool        checkUpdate                 ();
+                bool        checkUpdate                 ();     // +++
 
                 bool        Update                      ();
 
@@ -352,14 +352,12 @@ public:
                                                                         int                             p_maxCount);
                 void        storeModes                  ();
 
-                void        buttonPing                  (               int                             p_btn_id, 
+                void        buttonPing                  (               int                             p_btn_id, // +++
                                                                         int                             p_pin);
 
                 void        button_consumer             (               int                             p_btn_id);
 
-                void        randomVec8                  (               uint32_t                        p_seed);
-
-
+                void        randomVec8                  (               uint32_t                        p_seed); // +++
 
                 void        calculate1BPM               (               int                             p_source, 
                                                                         unsigned long                   p_triggerTimeClock);
@@ -370,7 +368,6 @@ public:
                 void        sample1WaveTable            (               int                             p_source, 
                                                                         int                             p_lfoIn, 
                                                                         int                             p_lfoOut );
-// STUBS
 //  STUBS
                 void        Log_createComponent         (       const   MMAL_Component_Create_Msg&      tx, 
                                                                 const   MMAL_Component_Create_Reply&    rx );
@@ -389,7 +386,6 @@ public:
 
                 void        Log_enablePort              (       const   MMAL_Port_Action_Msg&           tx, 
                                                                 const   MMAL_Port_Action_Reply_Msg&     rx );
-
 
 // CODE_WRAPPERS.CPP - HERE THE JOY BEGINS
                 bool        wrapperInitDMA              ();             // init/alloc the dma buffers +++
