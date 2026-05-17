@@ -113,7 +113,7 @@ unsigned b = 186;
 
                         msDelay(25);
 
-                        if ( checkUpdate() = true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 20, 0xFFFFFFFF );
+                        if ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 20, 0xFFFFFFFF );
                     }
 
                 return ShutdownHalt;
