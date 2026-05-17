@@ -404,7 +404,7 @@ void            CKernel::wrapper_init_gl_usb        (   )
                                     filecounter[FT_TEX][FLD_PREV],
                                     filecounter[FT_TEX][FLD_LOADED]);                
 
-                initH264parser  (   &m_vid,
+                parse264        (   &m_vid,
                                     m_videoBlockBase,
                                     m_bufferVid,
                                     g_ScnVid,
