@@ -546,6 +546,6 @@ void CKernel::logInOutRuntime(void)
                        0,
                        f_logIndex,
                        0,
-                       15,
+                       0,
                        0xFFFFFFFF );
 }
