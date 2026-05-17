@@ -314,8 +314,8 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                     buffers[i] = (char*)calloc(bufferSize, sizeof(char));
 #ifdef ALLOC_DEBUG
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                    "ALLOC-MEM slice", (u32)i,
-                                    "ptr  ",             (u32)buffers[i],
+                                    "ALLOC-MEM slice [", (u32)i,
+                                    "] ptr ",             (u32)buffers[i],
                                     EMPTYSTR,          EMPTYLOG,
                                     EMPTYSTR,          EMPTYLOG );
 #endif
@@ -352,8 +352,8 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
                     buffers[i] = dma_block + i * bufferSize;
 #ifdef ALLOC_DEBUG   
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                    "ALLOC-DMA slice",  (u32)i,
-                                    "ptr  ",              (u32)buffers[i],
+                                    "ALLOC-DMA slice [",  (u32)i,
+                                    "] ptr",              (u32)buffers[i],
                                     "size ",             (u32)bufferSize,
                                     EMPTYSTR,           EMPTYLOG );
 #endif  

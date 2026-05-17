@@ -39,7 +39,7 @@ enum modetable
     MODETABLE_COUNT
 };
 //------------------------------------------------- // for the array unsigned/float g_inOutMatrix*[CHANNEL][IO_TYPE_COUNT]
-//	INT	    ADC_RAW     (SCALED IN)VAL 	(SCALED)OUT 	RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
+//	INT 	ADC_RAW     (SCALED IN)VAL 	(SCALED)OUT 	RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
 //	ch0	    U	        U	        	U           	U	        G	        G                                                           U           U
 //	ch1	    U	        U	       	 	U           	U	                     	                                                        U           U
 //	ch2	    U	        U	        	U           	U	                     	                                                        U           U
@@ -50,14 +50,14 @@ enum modetable
 //	ch7	    U	        U	        	U           	U	                     	                                                        U           U
 
 //	FLT	    ADC_RAW     (SCALED IN)VAL  (SCALED)OUT 	RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
-//	ch0	    opt         U	        	U           	U	        G	        G	        G	        G	        G	        G           opt        opt   
-//	ch1	    opt         U	        	U           	U	                     	                                                        opt        opt   
-//	ch2	    opt         U	        	U           	U	                     	                                                        opt        opt   
-//	ch3	    opt         U	        	U           	U	                     	                                                        opt        opt   
-//	ch4	    opt         U	        	U           	U	                     	                                                        opt        opt   
-//	ch5	    opt         U	        	U           	U	                     	                                                        opt        opt   
-//	ch6	    opt         U	        	U           	U	                     	                                                        opt        opt   
-//	ch7	    opt         U	        	U           	U	                     	                                                        opt        opt   
+//	ch0	                U	        	U           	U	        G	        G	        G	        G	        G	        G           opt        opt   
+//	ch1	                U	        	U           	U	                     	                                                        opt        opt   
+//	ch2	                U	        	U           	U	                     	                                                        opt        opt   
+//	ch3	                U	        	U           	U	                     	                                                        opt        opt   
+//	ch4	                U	        	U           	U	                     	                                                        opt        opt   
+//	ch5	                U	        	U           	U	                     	                                                        opt        opt   
+//	ch6	                U	        	U           	U	                     	                                                        opt        opt   
+//	ch7	                U	        	U           	U	                     	                                                        opt        opt   
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 enum io_types                               
 {

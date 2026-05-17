@@ -50,7 +50,9 @@ unsigned b = 186;
 
                         msDelay(1000);        
                         bufferScreenClear();  
-*/
+*/                      
+                        wrapper_init_gl_sd();
+
                         m_SD_has_load = true;
                         }
 /*
