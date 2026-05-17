@@ -297,6 +297,40 @@ void            CKernel::storeModes                 (   )
 void            CKernel::buttonPing                 (   int             p_btn_id, 
                                                         int             p_pin )
 {
+                if (GPIO_Read(p_pin) == BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)                
+                    {
+                    g_buttons_states[p_btn_id][BTN_SINGLE] = 0;
+                    g_buttons_states[p_btn_id][BTN_DOUBLE] = 0;
+
+                    g_buttons_states[p_btn_id][BTN_PRESS_START] = g_currentTime;
+
+
+                    if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 && (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) < g_double_click_time)
+                        {
+                        g_buttons_states[p_btn_id][BTN_DOUBLE] = 1;
+                        }
+                    else
+                        {
+                        g_buttons_states[p_btn_id][BTN_SINGLE] = 1;
+                        }
+                    g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
+                    }
+
+                if (GPIO_Read(p_pin) != BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] != 0)                
+                    {
+                    g_buttons_states[p_btn_id][BTN_RELEASE]     = g_currentTime;
+                    g_buttons_states[p_btn_id][BTN_PRESS_START] = 0;
+                    g_buttons_states[p_btn_id][BTN_HOLD_TICK]   = 0;
+                    }
+                if (g_buttons_states[p_btn_id][BTN_PRESS_START] != 0 && (g_currentTime - g_buttons_states[p_btn_id][BTN_PRESS_START]) >= g_long_click_time)
+                    {
+                    g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
+                    }
+}
+/*
+void            CKernel::buttonPing                 (   int             p_btn_id, 
+                                                        int             p_pin )
+{
                 g_buttons_states[p_btn_id][BTN_SINGLE] = 0;
                 g_buttons_states[p_btn_id][BTN_DOUBLE] = 0;
 
@@ -324,6 +358,8 @@ void            CKernel::buttonPing                 (   int             p_btn_id
                     g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
                     }
 }
+*/
+
 /*
                 #define CTRL_PIN    12 ! EXAMPLES !
                 #define SW_PIN_A    13
