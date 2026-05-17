@@ -209,7 +209,8 @@ void        CKernel::get_gl_time( unsigned sys_time )
 
 void            CKernel::set_pot_routing            (   bool            adc_pot_routing)
 {
-            //  m_ChipSelectPin.Write(adc_pot_routing);
+            //  m_ChipSelectPin.Write(adc_pot_routing); // false or true aka high or low?
+                GPIO_Write(CONTROL_PIN, adc_pot_routing);
 }
 
 char*           CKernel::make83FileName             (   const char*     ext )
@@ -299,7 +300,8 @@ void            CKernel::buttonPing                 (   int             p_btn_id
                 g_buttons_states[p_btn_id][BTN_SINGLE] = 0;
                 g_buttons_states[p_btn_id][BTN_DOUBLE] = 0;
 
-                if (CGPIOPin(p_pin, GPIOModeInputPullUp).Read() == BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
+            //  if (CGPIOPin(p_pin, GPIOModeInputPullUp).Read() == BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
+                if (GPIO_Read(p_pin) == BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)                
                     {
                     g_buttons_states[p_btn_id][BTN_PRESS_START] = g_currentTime;
                     g_buttons_states[p_btn_id][BTN_SINGLE] = 1;
@@ -310,7 +312,8 @@ void            CKernel::buttonPing                 (   int             p_btn_id
                         }
                     g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
                     }
-                if (CGPIOPin(p_pin, GPIOModeInputPullUp).Read() != BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] != 0)
+            //  if (CGPIOPin(p_pin, GPIOModeInputPullUp).Read() != BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] != 0)
+                if (GPIO_Read(p_pin) != BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] != 0)                
                     {
                     g_buttons_states[p_btn_id][BTN_RELEASE]     = g_currentTime;
                     g_buttons_states[p_btn_id][BTN_PRESS_START] = 0;
@@ -321,6 +324,21 @@ void            CKernel::buttonPing                 (   int             p_btn_id
                     g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
                     }
 }
+/*
+                #define CONTROL_PIN     14 ! EXAMPLES !
+                #define BUTTON_A_PIN    23
+                #define BUTTON_B_PIN    15
+            Initialize
+                GPIO_SetAlt(CONTROL_PIN,  1, GPIO_PULL_OFF);
+                GPIO_SetAlt(BUTTON_A_PIN, 0, GPIO_PULL_UP);
+                GPIO_SetAlt(BUTTON_B_PIN, 0, GPIO_PULL_UP);
+            Run
+                set_pot_routing(false);
+                set_pot_routing(true);
+
+                buttonPing(0, BUTTON_A_PIN);
+                buttonPing(1, BUTTON_B_PIN);
+*/
 /*
 void            CKernel::button_consumer            (   int                 p_btn_id ) // this is where the magic happens: we need to set the states of menu layer, menu, we need to use one button for bpm input and so on 
 {

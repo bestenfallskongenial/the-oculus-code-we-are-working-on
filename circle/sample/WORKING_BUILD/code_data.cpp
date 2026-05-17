@@ -292,7 +292,7 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
 #ifdef ALLOC_DEBUG
                     storeLog(   MY_BUFFER, MY_INDEX,
                                     "ALLOC-MEM slice", (u32)i,
-                                    "ptr",             (u32)buffers[i],
+                                    "ptr  ",             (u32)buffers[i],
                                     EMPTYSTR,          EMPTYLOG,
                                     EMPTYSTR,          EMPTYLOG );
 #endif
@@ -321,13 +321,7 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
                 char* raw = new (HEAP_DMA30) char[aligned_total_size + 4096];
 
                 char* dma_block = (char*)(((uintptr_t)raw + 4095) & ~4095);
-#ifdef ALLOC_DEBUG                  
-                storeLog(   MY_BUFFER, MY_INDEX,
-                                "ALLOC-DMA raw",        (u32)raw,
-                                "block",                (u32)dma_block,
-                                EMPTYSTR,               EMPTYLOG,
-                                EMPTYSTR,               EMPTYLOG );
-#endif
+
                 char** buffers = new char*[p_count];
 
                 for (size_t i = 0; i < p_count; ++i)
@@ -336,15 +330,15 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
 #ifdef ALLOC_DEBUG   
                     storeLog(   MY_BUFFER, MY_INDEX,
                                     "ALLOC-DMA slice",  (u32)i,
-                                    "ptr",              (u32)buffers[i],
-                                    "size",             (u32)bufferSize,
+                                    "ptr  ",              (u32)buffers[i],
+                                    "size ",             (u32)bufferSize,
                                     EMPTYSTR,           EMPTYLOG );
 #endif  
                     memset(buffers[i], 0, bufferSize);
                     }
 #ifdef ALLOC_DEBUG   
                 storeLog(   MY_BUFFER, MY_INDEX,
-                                "ALLOC-DMA raw",        (u32)raw,
+                                "ALLOC-DMA raw  ",        (u32)raw,
                                 "block",                (u32)dma_block,
                                 "total",                (u32)total_size,
                                 "aligned",              (u32)aligned_total_size );
