@@ -14,7 +14,7 @@ unsigned b = 186;
                 randomVec8              ( g_currentTime );
 
                 saveFromBufferM         (   PARTITION_NAME_SD,
-                                            make83FileName("TXT"),
+                                            gen83FileName("TXT"),
                                             m_logBuffer,
                                             m_logBufferIndex );
                 msDelay(1000);
@@ -37,7 +37,7 @@ unsigned b = 186;
                         randomVec8              ( g_currentTime );            
                                                     
                         saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    make83FileName("TXT"),
+                                                    gen83FileName("TXT"),
                                                     m_logBuffer,
                                                     m_logBufferIndex );
 
@@ -78,7 +78,7 @@ unsigned b = 186;
                     //  randomVec8              ( g_currentTime );            
 
                         saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    make83FileName("TXT"),
+                                                    gen83FileName("TXT"),
                                                     m_logBuffer,
                                                     m_logBufferIndex );
 
@@ -105,13 +105,15 @@ unsigned b = 186;
                         logButtonStatesRuntime();
 
                         randomVec8(g_currentTime);
-                        
+
                         readAndConvertADC();
                         adc_AdvanceIndex();
 
                         logInOutRuntime();
 
                         msDelay(25);
+
+                        if ( checkUpdate() = true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 20, 0xFFFFFFFF );
                     }
 
                 return ShutdownHalt;

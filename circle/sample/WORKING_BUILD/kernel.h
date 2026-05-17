@@ -29,27 +29,27 @@ public:
 
 public:
 // CODE_DATAMANAGEMENT.CPP -> CHECKED
-                bool        Mount                       (       const   char*                           p_deviceName);          // "emmc1-1" cd ( root ), "umsd1-1" usb returns success
+                bool        Mount                       (       const   char*                           p_deviceName);          // +++ "emmc1-1" cd ( root ), "umsd1-1" usb returns success
 
-                bool        UnMount                     ();                                                                 // returns success
+                bool        UnMount                     ();                                                                     // +++ returns success
 
-                bool        openFile                    (       const   char*                           p_fileName);            // filename format "8.3"
+                bool        openFile                    (       const   char*                           p_fileName);            // +++ filename format "8.3"
 
-                unsigned    loadToBuffer                (               char*                           p_bufferArray,          // destination buffer for file
+                unsigned    loadToBuffer                (               char*                           p_bufferArray,          // +++ destination buffer for file
                                                                         unsigned                        p_bufferSize);          // max bytes to read into the buffer returns loaded bytes - 0 is false/failed !!!
 
                 bool        saveFromBufferO             (       const   char*                           p_fileName,             // filename format "8.3" 
                                                                 const   char*                           p_bufferArray,               // my allocated buffer
                                                                         unsigned                        p_bufferSize);          // max buffer size
 
-                bool        saveFromBufferM             (       const   char*                           p_deviceName,           // "emmc1-1" cd ( root ), "umsd1-1" usb
+                bool        saveFromBufferM             (       const   char*                           p_deviceName,           // +++ "emmc1-1" cd ( root ), "umsd1-1" usb
                                                                 const   char*                           p_fileName,             // filename format "8.3"
                                                                 const   char*                           p_bufferArray,               // my allocated buffer 
                                                                         unsigned                        p_bufferSize);          // max buffer size
 
-                bool        closeFile                   ();                                                                 // release g_hFile handle 
+                bool        closeFile                   ();                                                                     // +++ release g_hFile handle 
 
-                void        bulkLoad                    (               char*                           p_fileNameArray[],      // where we have stored the filenames from the root directory scan
+                void        bulkLoad                    (               char*                           p_fileNameArray[],      // +++ where we have stored the filenames from the root directory scan
                                                                         unsigned                        p_loadedBytes[],        // where we store the size in bytes for each file
                                                                         char**                          p_bufferArray,          // where we store the loaded file data for each file ( or dma/non-dma buffers )
                                                                         unsigned                        p_maxFiles,             // how many files we are allowed to process ( os limitations )
@@ -57,36 +57,38 @@ public:
                                                                         unsigned&                       p_prevFiles,            // number of loads from the last call - we need it to init the files correctly
                                                                         unsigned                        p_fileSize);            // maximum size for each file
 
-                bool        IsValidFile                 (       const   char*                           pFileName, 
+                bool        IsValidFile                 (       const   char*                           pFileName,              // +++
                                                                 const   char*                           extension);
 
-                bool        scanRoot                    (               char**                          p_fileNameArray,        // where we store the valid filenames we find
+                bool        scanRoot                    (               char**                          p_fileNameArray,        // +++ where we store the valid filenames we find
                                                                         const char*                     p_fileExtArray[],       // the array of valid file extensions for this type of file
                                                                         unsigned                        p_extentionCount,       // how many valid file extensions we have in the array above
                                                                         unsigned&                       p_scannedFiles,         // our counter of found files per device / call
                                                                         unsigned                        p_maxFiles);            // how many files are allowed to scan and stored in the array returns success not files found!
 
-                bool        updateUSB                   (       const   char*                           p_deviceType);          // "umsd1" is the type, not "umsd1-1"needs volatile boolean	m_bStorageAttached ! 
+                char*       gen83FileName              (       const   char*                           ext );
 
-        static  void        removeUSB                   (               CDevice*                        pDevice,                // USB device that was removed
+                bool        updateUSB                   (       const   char*                           p_deviceType);          // +++ "umsd1" is the type, not "umsd1-1"needs volatile boolean	m_bStorageAttached ! 
+
+        static  void        removeUSB                   (               CDevice*                        pDevice,                // +++ USB device that was removed
                                                                         void*                           pContext);              // user context pointer; expected to be CKernel*
 
-                char**      allocBufferMEM              (               size_t                          p_count,                // number of buffer slots
+                char**      allocBufferMEM              (               size_t                          p_count,                // +++ number of buffer slots
                                                                         size_t                          bufferSize);            // size of each buffer in bytes *** msleep ?!
 
-                char**      allocBufferDMA              (               size_t                          p_count,                // number of buffer slots
+                char**      allocBufferDMA              (               size_t                          p_count,                // +++ number of buffer slots
                                                                         size_t                          bufferSize,             // size of each buffer in bytes
                                                                         char**                          blockBaseOut,           // receives 4K-aligned DMA block base
                                                                         char**                          rawBlockOut,            // receives original raw allocation pointer
                                                                         size_t*                         alignedSizeOut);        // receives total aligned allocation size *** msleep ?!
 
-                void        clearBufferMEM              (               char**                          buffers,                // buffer pointer table returned by allocBufferMEM()
+                void        clearBufferMEM              (               char**                          buffers,                // +++ buffer pointer table returned by allocBufferMEM()
                                                                         size_t                          p_count);               // number of buffers in the table
 
-                void        clearBufferDMA              (               char**                          buffers,                // buffer pointer table returned by allocBufferDMA()
+                void        clearBufferDMA              (               char**                          buffers,                // +++ buffer pointer table returned by allocBufferDMA()
                                                                         char*                           rawBlock);              // original raw allocation pointer to delete
 // CODE_GRAPHICS.CPP
-                void        initOGL                     (               olg_state*                      o);
+                void        initOGL                     (               olg_state*                      o);                     // +++
 
                 void        initVbuffer                 (               olg_state*                      o, 
                                                                         vtx_state*                      v);
@@ -172,7 +174,7 @@ public:
 
                 void        watchdog_Start              (               unsigned                        nTimeoutSeconds);                   // watchdog
 
-                bool        SPI_init                    (               void);                                                              // SPI
+                bool        SPI_init                    (               void);                                                              // +++ SPI
 
                 int         WriteRead                   (               unsigned                        nChipSelect,
                                                                 const   void*                           pWriteBuffer,
@@ -180,44 +182,44 @@ public:
                                                                         unsigned                        nCount);
     
 
-                bool        SMI_Init                    (               unsigned                        gpioPin);                           // SMI
+                bool        SMI_Init                    (               unsigned                        gpioPin);                           // +++ SMI
                                                                    
-                void        SMI_SetupTiming             (               unsigned                        width,
+                void        SMI_SetupTiming             (               unsigned                        width,                              // +++
                                                                         unsigned                        cycle_ns,
                                                                         unsigned                        setup,
                                                                         unsigned                        strobe,
                                                                         unsigned                        hold,
                                                                         unsigned                        pace);
 
-                void        SMI_SetupDMA                (               size_t                          byteLength);
+                void        SMI_SetupDMA                (               size_t                          byteLength);                        // +++
      
                 bool        WS2812_Init                 (               unsigned                        ledCount);                          // WS2812
            
-                void        WS2812_SetLED               (               unsigned                        index, 
+                void        WS2812_SetLED               (               unsigned                        index,                              // +++
                                                                         u8                              red, 
                                                                         u8                              green, 
                                                                         u8                              blue);
 
-                void        WS2812_Update               (               void);    
+                void        WS2812_Update               (               void);                                                              // +++
 
      
 
-                int         ReadMCP3008Raw              (               unsigned                        channel);                           // MPC 3008
+                int         ReadMCP3008Raw              (               unsigned                        channel);                           // +++ MPC 3008
 
-                bool        frameBufferInit             (               void );
+                bool        frameBufferInit             (               void );                                                             // +++
 
-                void        bufferScreenPlot            (               unsigned                        x,
+                void        bufferScreenPlot            (               unsigned                        x,                                  // +++
                                                                         unsigned                        y,
                                                                         u32                             color );
 
-                void        bufferScreenDrawChar        (               char                            ch,
+                void        bufferScreenDrawChar        (               char                            ch,                                // +++
                                                                         unsigned                        charCol,
                                                                         unsigned                        charRow,
                                                                         u32                             fgColor );
 
-                void        bufferScreenClear           (               void );
+                void        bufferScreenClear           (               void );                                                           // +++
 
-                void        bufferScreenDraw            (       const   char*                           pSourceBuffer,
+                void        bufferScreenDraw            (       const   char*                           pSourceBuffer,                    // +++
                                                                         u32                             startIndex,
                                                                         u32                             endIndex,
                                                                         unsigned                        startCol,
@@ -227,7 +229,7 @@ public:
                 void        bufferScreenGetGrid         (               unsigned&                       cols,
                                                                         unsigned&                       rows );
 
-                void        storeLog                    (               char*                           p_bufferArray,
+                void        storeLog                    (               char*                           p_bufferArray,                    // +++
                                                                         u32&                            index,
                                                                 const   char*                           p_string0, 
                                                                         u32                             p_value0    = EMPTYLOG,
@@ -244,7 +246,7 @@ public:
                                                                         const void*                     tx_msg,
                                                                         u32                             total_size);
                                                                         
-                void        nextline                    (               char*                           p_buffer,
+                void        nextline                    (               char*                           p_buffer,                       // +++
                                                                         u32&                            index);
                 bool        shaderLog                   (               GLint                           shader, 
                                                                         int                             shaderIndex);
@@ -325,9 +327,9 @@ public:
 // CODE_UTIL.CPP
                 void        readAndConvertADC          ();                             // can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
 
-                void        adc_ProcessAudio            (               void );
-
                 void        adc_AdvanceIndex            ();
+                    
+                void        adc_ProcessAudio            (               void );
 
                 bool        checkUpdate                 ();
 
@@ -337,9 +339,6 @@ public:
 
                 void        set_pot_routing             (               int                             pin,
                                                                         bool                            adc_pot_routing);
-
-
-                char*       make83FileName              (       const   char*                           ext );
 
                 void        prepParameters              ();
 
@@ -393,17 +392,17 @@ public:
 
 
 // CODE_WRAPPERS.CPP - HERE THE JOY BEGINS
-                bool        wrapperInitDMA              ();             // init/alloc the dma buffers 
+                bool        wrapperInitDMA              ();             // init/alloc the dma buffers +++
 
-                bool        wrapperInitMEM              ();             // init/alloc the mem buffers
+                bool        wrapperInitMEM              ();             // init/alloc the mem buffers +++
 
-                void        wrapperDMAcleanUp           ();             // clean/delete the dma buffers
+                void        wrapperDMAcleanUp           ();             // clean/delete the dma buffers +++
               
-                void        wrapperMEMcleanUp           ();             // clean delete the mem buffers          
+                void        wrapperMEMcleanUp           ();             // clean delete the mem buffers +++      
                 
-                void        wrapper_from_sd             ();             // mount/scan/load and validate memory for sd
+                void        wrapper_from_sd             ();             // mount/scan/load and validate memory for sd +++
 
-                void        wrapper_load_usb            ();             // mount/scan/load and validate memory for usb          
+                void        wrapper_load_usb            ();             // mount/scan/load and validate memory for usb +++       
                 
                 void        wrapper_init_gl_sd          ();             // parse/init vertex/default shader and overlay texture                 
 
@@ -425,7 +424,7 @@ public:
 
                 void        wrapperFreeMMALstruct       ();             // for the cleanup of the mmal structs
 
-                bool        startupScreen               (               void );                                                                
+                bool        startupScreen               (               void ); /// +++                     
 // EXTRA / DEBUG
 private:
         static  void        TimerHandler               (                TKernelTimerHandle              hTimer, 
@@ -434,12 +433,12 @@ private:
                                                                 
         static  void        LoggerSink                 (                void*                           pContext,
                                                                 const   char*                           pText,
-                                                                        unsigned                        nLength );
+                                                                        unsigned                        nLength );      // +++
+// debug code section 
+                void        debug(); // +++
 
-                void        debug();
-
-                void        logButtonStatesRuntime      (void);
-                void        logInOutRuntime(void);
+                void        logButtonStatesRuntime      (void); // +++
+                void        logInOutRuntime(void);      // +++
                 
 #include "defs_member.h" // <- should go to the bottom, right?    
 

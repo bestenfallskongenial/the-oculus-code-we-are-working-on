@@ -168,8 +168,7 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                                         "file",              (u32)i,
                                         p_fileNameArray[i],  EMPTYLOG,
                                         "bytes read",        (u32)f_bytesRead,
-                                        "in buffer [",         (u32)p_validFiles,
-                                        "]" );
+                                        "in buffer",         (u32)p_validFiles );
 #endif                            
                             p_validFiles++;   
                             }
@@ -250,6 +249,28 @@ bool            CKernel::scanRoot                   (           char**      p_fi
                     f_nextEntry = m_pFileSystem->RootFindNext(&f_directoryEntry, &f_currentDirectoryEntry);
                     }
                 return true;
+}
+
+char*           CKernel::gen83FileName             (   const char*     ext )
+{
+                static const char map[] = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
+
+                m_83FileName[0] = map[g_inOutMatrixInt[0][RND] & 31];
+                m_83FileName[1] = map[g_inOutMatrixInt[1][RND] & 31];
+                m_83FileName[2] = map[g_inOutMatrixInt[2][RND] & 31];
+                m_83FileName[3] = map[g_inOutMatrixInt[3][RND] & 31];
+                m_83FileName[4] = map[g_inOutMatrixInt[4][RND] & 31];
+                m_83FileName[5] = map[g_inOutMatrixInt[5][RND] & 31];
+                m_83FileName[6] = map[g_inOutMatrixInt[6][RND] & 31];
+                m_83FileName[7] = map[g_inOutMatrixInt[7][RND] & 31];
+
+                m_83FileName[8]  = '.';
+                m_83FileName[9]  = ext[0];
+                m_83FileName[10] = ext[1];
+                m_83FileName[11] = ext[2];
+                m_83FileName[12] = '\0';
+
+                return m_83FileName;
 }
 
 bool            CKernel::updateUSB                  (   const   char*       p_deviceName )

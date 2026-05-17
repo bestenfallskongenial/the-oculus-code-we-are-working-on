@@ -213,28 +213,6 @@ void            CKernel::set_pot_routing            (   int pin, bool state)
                 GPIO_Write(pin, state);
 }
 
-char*           CKernel::make83FileName             (   const char*     ext )
-{
-                static const char map[] = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
-
-                m_83FileName[0] = map[g_inOutMatrixInt[0][RND] & 31];
-                m_83FileName[1] = map[g_inOutMatrixInt[1][RND] & 31];
-                m_83FileName[2] = map[g_inOutMatrixInt[2][RND] & 31];
-                m_83FileName[3] = map[g_inOutMatrixInt[3][RND] & 31];
-                m_83FileName[4] = map[g_inOutMatrixInt[4][RND] & 31];
-                m_83FileName[5] = map[g_inOutMatrixInt[5][RND] & 31];
-                m_83FileName[6] = map[g_inOutMatrixInt[6][RND] & 31];
-                m_83FileName[7] = map[g_inOutMatrixInt[7][RND] & 31];
-
-                m_83FileName[8]  = '.';
-                m_83FileName[9]  = ext[0];
-                m_83FileName[10] = ext[1];
-                m_83FileName[11] = ext[2];
-                m_83FileName[12] = '\0';
-
-                return m_83FileName;
-}
-
 void            CKernel::prepParameters             (   )               // f_buffer guess here we need much more to do!
 {
                 for ( int f_buffer=0; f_buffer <= DEFAULT_SLOT; f_buffer++)
