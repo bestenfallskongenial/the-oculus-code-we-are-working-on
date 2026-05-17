@@ -68,7 +68,9 @@ unsigned b = 186;
                         m_logBufferIndex = 0;
                         m_logBuffer[0] = '\0'; 
 */
-                        wrapper_load_usb();          
+                        wrapper_load_usb();   
+                        
+                        wrapper_init_gl_usb();
 /*                       
                         bufferScreenDraw(   "load from usb",
                                                     0,
