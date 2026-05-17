@@ -40,7 +40,7 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                     t->image_size[i]= imgSize;
                     t->data[i]      = data;
                     t->size[i]      = size_array[i];
-
+/*
                     if (t->tex_valid[i])
                         {
                         storeLog(   MY_BUFFER, MY_INDEX,
@@ -57,6 +57,50 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                                         filename_array[i - p_fromFile], EMPTYLOG,
                                         "Size", size_array[i - p_fromFile]);
                         }
+*/
+#ifdef __DEBUG_LOG__
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                t->tex_valid[i] ? "BMP header VALID" : "BMP header FAILED",
+                                EMPTYLOG,
+                                "File No.", (u32)i,
+                                "Name", EMPTYLOG,
+                                filename_array[i - p_fromFile], EMPTYLOG );
+
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "BMP size/loaded/max",
+                                (u32)fileSize,
+                                "loaded", (u32)size_array[i - p_fromFile],
+                                "max", (u32)t->max_tex_size,
+                                EMPTYSTR, EMPTYLOG );
+
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "BMP offset/header/img",
+                                (u32)dataOffset,
+                                "header", (u32)headerSize,
+                                "img", (u32)imgSize,
+                                EMPTYSTR, EMPTYLOG );
+
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "BMP width/height/bpp",
+                                (u32)width,
+                                "height", (u32)height,
+                                "bpp", (u32)bpp,
+                                EMPTYSTR, EMPTYLOG );
+
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "BMP planes/compression",
+                                (u32)planes,
+                                "compression", (u32)compression,
+                                EMPTYSTR, EMPTYLOG,
+                                EMPTYSTR, EMPTYLOG );
+
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "BMP expected image size",
+                                (u32)(width * height * 3),
+                                "actual", (u32)imgSize,
+                                EMPTYSTR, EMPTYLOG,
+                                EMPTYSTR, EMPTYLOG );
+#endif
                     }
                 return true;
 }
