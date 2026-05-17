@@ -212,7 +212,11 @@ bool            CKernel::shaderLog                  (   GLint       shader,
                 glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 #ifdef __DEBUG_LOG__ 
                 storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
+/*
                 storeLog( MY_BUFFER, MY_INDEX, "Program compile status idx", (u32)shaderIndex, "success" ,(u32)success);
+*/
+                storeLog( MY_BUFFER, MY_INDEX,  "Program compile status idx", (u32)shaderIndex,
+                                                (success == GL_TRUE) ? "SUCCESS" : "FAILED", EMPTYLOG );
 #endif 
                 return success == GL_TRUE;
 }
@@ -224,10 +228,16 @@ bool            CKernel::programLog                 (   GLint       program,
                 glGetProgramiv(program, GL_LINK_STATUS, &success);
 #ifdef __DEBUG_LOG__
                 storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
+/*                
                 storeLog( MY_BUFFER, MY_INDEX,   g_ScnFsh[program_index], EMPTYLOG,
                                                     "Program link status idx", (u32)program_index,
                                                     "Program byte size", (u32)g_bytFsh[program_index], 
                                                     "success", (u32)success);
+*/
+                storeLog( MY_BUFFER, MY_INDEX,  g_ScnFsh[program_index], EMPTYLOG,
+                                                "Program link status idx", (u32)program_index,
+                                                "Program byte size", (u32)g_bytFsh[program_index], 
+                                                (success == GL_TRUE) ? "SUCCESS" : "FAILED", EMPTYLOG);
 #endif 
                 char log[1024];
                 GLsizei logLength = 0;
