@@ -75,7 +75,7 @@ unsigned b = 186;
                                                     0,
                                                     0xFFFFFFFF );
 */
-                        randomVec8              ( g_currentTime );            
+                    //  randomVec8              ( g_currentTime );            
 
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     make83FileName("TXT"),
@@ -95,14 +95,21 @@ unsigned b = 186;
 
                         WS2812_Update();
                         
-r = (r + 1) % 256;
-g = (g + 2) % 256;
-b = (b + 3) % 256;
+                        r = (r + 1) % 256;
+                        g = (g + 2) % 256;
+                        b = (b + 3) % 256;
 
-                buttonPing(0, SW_PIN_A);
-                buttonPing(1, SW_PIN_B);
+                        buttonPing(0, SW_PIN_A);
+                        buttonPing(1, SW_PIN_B);
 
-logButtonStatesRuntime();
+                        logButtonStatesRuntime();
+
+                        randomVec8(g_currentTime);
+                        
+                        readAndConvertADC();
+                        adc_AdvanceIndex();
+
+                        logInOutRuntime();
 
                         msDelay(25);
                     }
