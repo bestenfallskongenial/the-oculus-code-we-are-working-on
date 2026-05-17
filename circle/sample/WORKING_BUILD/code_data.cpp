@@ -168,7 +168,8 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                                         "file",              (u32)i,
                                         p_fileNameArray[i],  EMPTYLOG,
                                         "bytes read",        (u32)f_bytesRead,
-                                        "in buffer",         (u32)p_validFiles );
+                                        "in buffer [",         (u32)p_validFiles,
+                                        "]" );
 #endif                            
                             p_validFiles++;   
                             }
