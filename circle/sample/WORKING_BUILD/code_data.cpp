@@ -1,8 +1,8 @@
 
 #include "kernel.h"                 // seemingly the file is complete and working as intended
 
-    #undef __DEBUG_LOG__
-//  #define __DEBUG_LOG__
+//  #undef __DEBUG_LOG__
+    #define __DEBUG_LOG__
     #undef   __ALLOC_DEBUG__
 //  #define __ALLOC_DEBUG__
 
