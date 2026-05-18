@@ -3,6 +3,9 @@
 //  #undef  __DEBUG_LOG__
     #define __DEBUG_LOG__
 
+#define MY_BUFFER   m_logBuffer
+#define MY_INDEX    m_logBufferIndex    
+
 boolean			CKernel::Initialize						(	void )
 {
                 bool bOK = TRUE;
