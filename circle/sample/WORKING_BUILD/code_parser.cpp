@@ -170,7 +170,17 @@ bool            CKernel::parse264                  (   h264_state* h,
                                 filename_array[file_index - p_fromFile], EMPTYLOG,
                                 "FileSize", (u32)size_array[file_index - p_fromFile]);
 
-                    storeLog( MY_BUFFER, MY_INDEX "blockbase", blockBase, "buffer address", (u32)data, "index", file_index );
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "file_index",     (u32)file_index,
+                                "buffer",         (u32)p_buffer_array[file_index],
+                                "data",           (u32)data,
+                                EMPTYSTR,         EMPTYLOG );
+
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "Name",           EMPTYLOG,
+                                filename_array[file_index], EMPTYLOG,
+                                "Size",           (u32)size_array[file_index],
+                                EMPTYSTR,         EMPTYLOG );
 
                     storeMsg(   MY_BUFFER, MY_INDEX, "vid_file first 1024 byte", p_buffer_array, 1024 );
 
