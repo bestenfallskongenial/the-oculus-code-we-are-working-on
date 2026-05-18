@@ -1,8 +1,10 @@
 
 #include "kernel.h"                 // seemingly the file is complete and working as intended
 
-#define __DEBUG_LOG__
-#define ALLOC_DEBUG
+    #undef __DEBUG_LOG__
+//  #define __DEBUG_LOG__
+    #undef   __ALLOC_DEBUG__
+//  #define __ALLOC_DEBUG__
 
 #define MY_BUFFER   m_logBuffer
 #define MY_INDEX    m_logBufferIndex
@@ -301,7 +303,7 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                                                                 size_t      bufferSize ) 
 {
                 char** buffers = (char**)malloc(p_count * sizeof(char*));
-#ifdef ALLOC_DEBUG
+#ifdef __ALLOC_DEBUG__
                 storeLog(   MY_BUFFER, MY_INDEX,
                                 "ALLOC-MEM base ",      (u32)buffers,
                                 "count",               (u32)p_count,
@@ -312,7 +314,7 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                 for (size_t i = 0; i < p_count; ++i) 
                     {
                     buffers[i] = (char*)calloc(bufferSize, sizeof(char));
-#ifdef ALLOC_DEBUG
+#ifdef __ALLOC_DEBUG__
                     storeLog(   MY_BUFFER, MY_INDEX,
                                     "ALLOC-MEM slice [", (u32)i,
                                     "] ptr ",             (u32)buffers[i],
@@ -320,7 +322,7 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                                     EMPTYSTR,          EMPTYLOG );
 #endif
                     }
-#ifdef ALLOC_DEBUG
+#ifdef __ALLOC_DEBUG__
                 storeLog(   MY_BUFFER, MY_INDEX,
                                 "1/100 sec", m_Timer.GetTicks(),
                                 "ALLOC-MEM done",      (u32)buffers,
@@ -350,7 +352,7 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
                 for (size_t i = 0; i < p_count; ++i)
                     {
                     buffers[i] = dma_block + i * bufferSize;
-#ifdef ALLOC_DEBUG   
+#ifdef __ALLOC_DEBUG__   
                     storeLog(   MY_BUFFER, MY_INDEX,
                                     "ALLOC-DMA slice [",  (u32)i,
                                     "] ptr",              (u32)buffers[i],
@@ -359,7 +361,7 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
 #endif  
                     memset(buffers[i], 0, bufferSize);
                     }
-#ifdef ALLOC_DEBUG   
+#ifdef __ALLOC_DEBUG__   
                 storeLog(   MY_BUFFER, MY_INDEX,
                                 "1/100 sec", m_Timer.GetTicks(),
                                 "ALLOC-DMA raw  ",      (u32)raw,
