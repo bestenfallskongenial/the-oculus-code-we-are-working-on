@@ -11,7 +11,7 @@ OBJS  = main.o \
         kernel_run.o \
         code_data.o \
         code_graphics_init.o \
-        code_graphics_Log.o \
+        code_graphics_log.o \
         code_graphics_run.o \
         code_hardware.o \
         code_logging.o \
