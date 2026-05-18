@@ -45,55 +45,45 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 "BMP dump File No.", (u32)i,
                                 "buffer", (u32)p_buffer_array[i],
-                                "data", (u32)data,
-                                EMPTYSTR, EMPTYLOG );
+                                "data", (u32)data );
 
                     storeMsg(   MY_BUFFER, MY_INDEX,
-                                "BMP first 128 byte",
+                                "BMP Header Dump",
                                 data,
-                                128 );
+                                headerSize );
 
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                t->tex_valid[i] ? "BMP header VALID" : "BMP header FAILED",
-                                EMPTYLOG,
+                                t->tex_valid[i] ? "BMP header VALID" : "BMP header FAILED", EMPTYLOG,
                                 "File No.", (u32)i,
                                 "Name", EMPTYLOG,
                                 filename_array[i - p_fromFile], EMPTYLOG );
 
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "BMP size/loaded/max",
+                                "BMP size",
                                 (u32)fileSize,
                                 "loaded", (u32)size_array[i - p_fromFile],
-                                "max", (u32)t->max_tex_size,
-                                EMPTYSTR, EMPTYLOG );
+                                "max", (u32)t->max_tex_size );
 
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "BMP offset/header/img",
-                                (u32)dataOffset,
+                                "BMP offset", (u32)dataOffset,
                                 "header", (u32)headerSize,
-                                "img", (u32)imgSize,
-                                EMPTYSTR, EMPTYLOG );
+                                "img", (u32)imgSize );
 
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "BMP width/height/bpp",
-                                (u32)width,
-                                "height", (u32)height,
-                                "bpp", (u32)bpp,
-                                EMPTYSTR, EMPTYLOG );
+                                "BMP width", (u32)width,
+                                "height",    (u32)height,
+                                "bpp",       (u32)bpp );
 
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "BMP planes/compression",
-                                (u32)planes,
-                                "compression", (u32)compression,
-                                EMPTYSTR, EMPTYLOG,
-                                EMPTYSTR, EMPTYLOG );
+                                "BMP planes", (u32)planes,
+                                "compression", (u32)compression );
 
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 "BMP expected image size",
                                 (u32)(width * height * 3),
-                                "actual", (u32)imgSize,
-                                EMPTYSTR, EMPTYLOG,
-                                EMPTYSTR, EMPTYLOG );
+                                "actual", (u32)imgSize );
+
+                    nextline(   MY_BUFFER, MY_INDEX);                       
 #endif
                     }
                 return true;
