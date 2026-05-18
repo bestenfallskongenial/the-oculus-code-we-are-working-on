@@ -42,6 +42,11 @@ unsigned b = 186;
                                                     m_logParseBuffer,
                                                     m_logParseBufferIndex );
 
+                        saveFromBufferM         (   PARTITION_NAME_SD,
+                                                    "glsl.txt",
+                                                    m_logGLSLBuffer,
+                                                    m_logGLSLBufferIndex );                                                                
+
                         m_USB_has_load = true;   
                         bufferScreenDraw( "we are done here", 0, sizeof("we are done here"), 0, 13, 0xFFFFFFFF );
                         }

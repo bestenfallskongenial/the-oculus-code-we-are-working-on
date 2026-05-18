@@ -51,13 +51,13 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                                 "BMP Header Dump",
                                 data,
                                 headerSize );
-
+/*
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 t->tex_valid[i] ? "BMP header VALID" : "BMP header FAILED", EMPTYLOG,
                                 "File No.", (u32)i,
                                 "Name", EMPTYLOG,
                                 filename_array[i - p_fromFile], EMPTYLOG );
-
+*/
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 "BMP size",
                                 (u32)fileSize,
@@ -163,11 +163,11 @@ bool            CKernel::parse264                  (   h264_state* h,
                     storeMsg(   MY_BUFFER, MY_INDEX,
                                 "vid_file first 512 byte",
                                 p_buffer_array[file_index],
-                                512 );
+                                128 );
                     storeMsg(   MY_BUFFER, MY_INDEX,
                                 "vid_file first 512 byte",
                                 data,
-                                512 );
+                                128 );
 
                     for (size_t pos = 0; pos < size - 3; )
                         {
