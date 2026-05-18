@@ -51,8 +51,11 @@ private:
 public:
                 char                            m_logBuffer[LOG_SIZ]    = {0};
                 u32                             m_logBufferIndex        = 0;
+                char                            m_logParseBuffer[LOG_SIZ]    = {0};
+                u32                             m_logParseBufferIndex        = 0;
 
-
+                                char            m_logBufferDumps[LOG_SIZ]    = {0};
+                u32                             m_logBufferIndexDumps        = 0;
 
                 olg_state                       m_ogl    = {};              // local copies of my graphics related structs
 

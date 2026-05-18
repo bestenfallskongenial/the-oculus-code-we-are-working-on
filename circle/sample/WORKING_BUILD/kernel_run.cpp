@@ -35,7 +35,10 @@ unsigned b = 186;
                                                     gen83FileName("TXT"),
                                                     m_logBuffer,
                                                     m_logBufferIndex );
-
+                        saveFromBufferM         (   PARTITION_NAME_SD,
+                                                    "parser",
+                                                    m_logParseBuffer,
+                                                    m_logParseBufferIndex );
 
                         m_USB_has_load = true;   
                         bufferScreenDraw( "we are done here", 0, sizeof("we are done here"), 0, 13, 0xFFFFFFFF );
