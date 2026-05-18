@@ -3,8 +3,8 @@
 
 //  #undef __DEBUG_LOG__
     #define __DEBUG_LOG__
-    #undef   __ALLOC_DEBUG__
-//  #define __ALLOC_DEBUG__
+//  #undef   __ALLOC_DEBUG__
+    #define __ALLOC_DEBUG__
 
 #define MY_BUFFER   m_logBuffer
 #define MY_INDEX    m_logBufferIndex
