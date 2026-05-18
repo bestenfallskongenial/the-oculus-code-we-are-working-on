@@ -70,7 +70,7 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                                 "img", (u32)imgSize );
 
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "BMP width", (u32)width,
+                                "width", (u32)width,
                                 "height",    (u32)height,
                                 "bpp",       (u32)bpp );
 
@@ -79,9 +79,9 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                                 "compression", (u32)compression );
 
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "BMP expected image size",
+                                "expected  size",
                                 (u32)(width * height * 3),
-                                "actual", (u32)imgSize );
+                                "actual size", (u32)imgSize );
 
                     nextline(   MY_BUFFER, MY_INDEX);                       
 #endif

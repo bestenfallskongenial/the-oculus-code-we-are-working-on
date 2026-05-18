@@ -1,10 +1,8 @@
-private:
-                CActLED                         m_ActLED;                   // circle system requirements
+private:        // circle system requirements
+                CActLED                         m_ActLED;
                 CKernelOptions                  m_Options;
                 CMachineInfo                    m_MachineInfo;
                 CDeviceNameService	            m_DeviceNameService;
-            //  CScreenDevice		            m_Screen; // from the old
-	        //  CSerialDevice		            m_Serial;
                 CExceptionHandler               m_ExceptionHandler;
                 CInterruptSystem                m_Interrupt;
                 CTimer                          m_Timer;
@@ -16,13 +14,9 @@ private:
 
                 CFATFileSystem                 *m_pFileSystem; 
 
-                CScheduler		                m_Scheduler;    // test this here!
-
-                
-
-
+                CScheduler		                m_Scheduler;
 public:
-                CBcmFrameBuffer                 gE_FrameBuffer;             // framebuffer
+                CBcmFrameBuffer                 gE_FrameBuffer;
                 CCharGenerator                  gE_CharGenerator;
 
                 u32*                            gE_PixelBuffer          = nullptr;
@@ -33,12 +27,10 @@ public:
                 unsigned                        gE_CharHeight           = 0;
                 unsigned                        gE_Cols                 = 0;
                 unsigned                        gE_Rows                 = 0;
-
-private:
-                uintptr                         m_SPIBaseAddress        = 0;        // SPI
+private:        // SMI / DMA / WS2812
+                uintptr                         m_SPIBaseAddress        = 0;
                 bool                            m_SPIValid              = 0;
-// SMI / DMA / WS2812
-private:
+
                 CDMAChannel                     m_SMITxDMA;
 
                 unsigned                        m_SMIGpioPin            = 0;
@@ -47,8 +39,7 @@ private:
                 unsigned                        m_BufferLength          = 0;
                 TXDATA_T*                       m_pBuffer               = 0;
                 bool                            m_SMIValid              = FALSE;
-// debug
-public:
+public:         // Logging
                 char                            m_logBuffer[LOG_SIZ]    = {0};
                 u32                             m_logBufferIndex        = 0;
                 char                            m_logParseBuffer[LOG_SIZ]    = {0};
@@ -73,9 +64,6 @@ public:
 // missing globals / shared state / dummies for now
 
                 bool                            m_resetFlag             = false;
-
-    volatile    bool	                        m_bStorageAttached      = false;
-
                 bool                            m_SD_has_load           = false;
                 bool                            m_USB_has_load          = false;
 
@@ -110,7 +98,7 @@ public:
                 long long                       g_lfoBpmMatrix[4][LFO_BPM_COUNT]; // was unsigned !
 // datamanagement.cpp
                 unsigned                        g_hFile;
-
+                volatile    bool	                        m_bStorageAttached      = false;
                 char                            m_83FileName[MAX_FILE_NAME_LENGTH];
 // util
         const   int                             m_scaleFactors[3] = {   2047,       // 2.5V max (1023 * 2)
@@ -168,9 +156,8 @@ public:
                 char** 				            m_bufferOmf                         = nullptr;                
                 char** 				            m_bufferFsh                         = nullptr; 
                 
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 // the populated filecounter array - source and truth and hub for init and load
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
                                                                                     // MAXSD   MAXUSB    EXTCNT     SCANNED   LOADED  PREV    V_CNT    SIZE  
                 unsigned                        filecounter[FT_COUNT][FLD_COUNT]    =       {   { VSH_SD, VSH_USB,  VSH_EXT,    0,        0,      0,      0,       VSH_SIZ },  // VSH vertex shader
                                                                                                 { OMF_SD, OMF_USB,  OMF_EXT,    0,        0,      0,      0,       OMF_SIZ },  // OMF overlay fragment shader
@@ -182,9 +169,8 @@ public:
                                                                                                 { FRM_SD, FRM_USB,        0,    0,        0,      0,      0,       FRM_SIZ },  // FRM decoded frames A & B
                                                                                                 { LOG_SD, LOG_USB,        0,    0,        0,      0,      0,       LOG_SIZ }}; // LOG logging buffers   
 
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 // lists of extensions possible in my scanroot directory function per filetype 
-//----------------------------------------------------------------------------------------------------------------------------------------------------
+
         const   char*                           g_SufVsh[VSH_EXT]			        =           { "vsh" };    // vertex shaders
         const   char*                           g_SufOmf[OMF_EXT]			        =           { "omf" };	// is a fsh file but used for the overlay atlas
         const   char*                           g_SufFsh[FSH_EXT]			        =           { "fsh" };    // fragment shaders 
@@ -257,7 +243,7 @@ typedef void (CKernel::*ModeFunc)(int);         // for the new menu selector -> 
                                                                                                 { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
                                                                                                 { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
                                                                                                 { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0} };
-//---------------------------------------------------------------------------------------------------------------------------------------------------- 
+                 // VCSM predefined messages as public member
                 SERVICE_CREATION_T*              m_ServiceCreateVCSM                = nullptr;
 
                 VCSM_Import_MEM_Msg*             m_importTxVCSM_A                   = nullptr;
@@ -274,9 +260,7 @@ typedef void (CKernel::*ModeFunc)(int);         // for the new menu selector -> 
 
                 VCSM_Free_MEM_Msg*               m_freeTxVCSM                       = nullptr;
                 VCSM_Free_MEM_Reply*             m_freeRxVCSM                       = nullptr;
-
-                // MMAL predefined messages as public member here group B — kernel.h (full pointer conversion)
-
+                // MMAL predefined messages as public member 
                 SERVICE_CREATION_T*              m_ServiceCreateMMAL                = nullptr;
 
                 MMAL_Component_Create_Msg*       m_ComponentCreateTx                = nullptr;
