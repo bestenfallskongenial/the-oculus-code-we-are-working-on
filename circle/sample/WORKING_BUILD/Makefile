@@ -10,7 +10,9 @@ OBJS  = main.o \
         kernel_initialize.o \
         kernel_run.o \
         code_data.o \
-        code_graphics.o \
+        code_graphics_init.o \
+        code_graphics_log.o \
+        code_graphics_run.o \                
         code_hardware.o \
         code_logging.o \
         code_menu.o \
