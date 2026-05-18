@@ -40,25 +40,19 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                     t->image_size[i]= imgSize;
                     t->data[i]      = data;
                     t->size[i]      = size_array[i];
-/*
-                    if (t->tex_valid[i])
-                        {
-                        storeLog(   MY_BUFFER, MY_INDEX,
-                                        "BMP header VALID for File No.", i,
-                                        "Name", EMPTYLOG,
-                                        filename_array[i - p_fromFile], EMPTYLOG,
-                                        "Size", size_array[i - p_fromFile]);
-                        }
-                    else
-                        {
-                        storeLog(   MY_BUFFER, MY_INDEX,
-                                        "BMP header FAILED for File No.", i,
-                                        "Name", EMPTYLOG,
-                                        filename_array[i - p_fromFile], EMPTYLOG,
-                                        "Size", size_array[i - p_fromFile]);
-                        }
-*/
+
 #ifdef __DEBUG_LOG__
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "BMP dump File No.", (u32)i,
+                                "buffer", (u32)p_buffer_array[i],
+                                "data", (u32)data,
+                                EMPTYSTR, EMPTYLOG );
+
+                    storeMsg(   MY_BUFFER, MY_INDEX,
+                                "BMP first 128 byte",
+                                data,
+                                128 );
+
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 t->tex_valid[i] ? "BMP header VALID" : "BMP header FAILED",
                                 EMPTYLOG,
@@ -177,11 +171,11 @@ bool            CKernel::parse264                  (   h264_state* h,
                                 EMPTYSTR,         EMPTYLOG );
 
                     storeMsg(   MY_BUFFER, MY_INDEX,
-                                "vid_file first 1024 byte",
+                                "vid_file first 512 byte",
                                 p_buffer_array[file_index],
                                 512 );
                     storeMsg(   MY_BUFFER, MY_INDEX,
-                                "vid_file first 1024 byte",
+                                "vid_file first 512 byte",
                                 data,
                                 512 );
 

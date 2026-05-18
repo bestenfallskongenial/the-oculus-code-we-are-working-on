@@ -278,14 +278,7 @@ storeMsg(   MY_BUFFER, MY_INDEX,
 
 CleanAndInvalidateDataCacheRange(   (uintptr_t)m_videoBlockBase,
                                     (size_t)m_videoBlockSize );
-
-storeMsg(   MY_BUFFER, MY_INDEX,
-            "VID AFTER CACHE 512",
-            m_bufferVid[0],
-            512 );
-
-            }
-
+}
 void            CKernel::wrapper_init_gl_sd         (   )
 {
 
@@ -293,7 +286,7 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     m_bufferOmt,                                    // the actual mem-buffer where i have stored it
                                     g_ScnOmt,
                                     g_bytOmt,                                       // the array where i stored the loaded bytes
-                                    filecounter[FT_TEX][FLD_SIZE],                  // upper bound for the size
+                                    filecounter[FT_OMT][FLD_SIZE],                  // upper bound for the size
                                     filecounter[FT_OMT][FLD_PREV],                  // for the continuous loading between devices - lower bound
                                     filecounter[FT_OMT][FLD_LOADED]);               // for the continuous loading between devices - upper bound
 
