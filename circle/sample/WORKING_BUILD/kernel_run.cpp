@@ -17,8 +17,8 @@ unsigned b = 186;
                     if (!m_SD_has_load) 
                         {
                         wrapper_from_sd();
-
-                        wrapper_init_gl_sd();
+                        wrapper_parser();
+                    //  wrapper_init_gl_sd();
 
                         m_SD_has_load = true;
                         }
@@ -27,8 +27,8 @@ unsigned b = 186;
                         {
 
                         wrapper_load_usb();   
-                        
-                        wrapper_init_gl_usb();
+                        wrapper_parser();
+                    //  wrapper_init_gl_usb();
        
 
                         saveFromBufferM         (   PARTITION_NAME_SD,

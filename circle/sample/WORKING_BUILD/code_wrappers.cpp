@@ -273,9 +273,9 @@ void            CKernel::wrapper_load_usb           (   )
                 //  CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // !!! every memory allocation/operation like load?! do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
 
 }
-void            CKernel::wrapper_init_gl_sd         (   )
-{
 
+void            CKernel::wrapper_parser()
+{
                 BMPparser       (   &m_omt,                                         // the dedicated struct for the overlay texture
                                     m_bufferOmt,                                    // the actual mem-buffer where i have stored it
                                     g_ScnOmt,
@@ -302,8 +302,11 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     MAX_VIDEO_WIDTH,
                                     MAX_VIDEO_HEIGHT,
                                     MAX_VIDEO_PROFILE,
-                                    MAX_VIDEO_LEVEL);                                    
+                                    MAX_VIDEO_LEVEL);        
+}
 
+void            CKernel::wrapper_init_gl_sd         (   )
+{
                 initVbuffer     (   &m_ogl,
                                     &m_vtx );
 
@@ -382,34 +385,6 @@ void            CKernel::wrapper_init_gl_sd         (   )
 
 void            CKernel::wrapper_init_gl_usb        (   )
 {
-                BMPparser       (   &m_omt,                                         // the dedicated struct for the overlay texture
-                                    m_bufferOmt,                                    // the actual mem-buffer where i have stored it
-                                    g_ScnOmt,
-                                    g_bytOmt,                                       // the array where i stored the loaded bytes
-                                    filecounter[FT_OMT][FLD_SIZE],                  // upper bound for the size
-                                    filecounter[FT_OMT][FLD_PREV],                  // for the continuous loading between devices - lower bound
-                                    filecounter[FT_OMT][FLD_LOADED]);               // for the continuous loading between devices - upper bound
-    
-                BMPparser       (   &m_tex,
-                                    m_bufferTex,
-                                    g_ScnTex,
-                                    g_bytTex,
-                                    filecounter[FT_TEX][FLD_SIZE],
-                                    filecounter[FT_TEX][FLD_PREV],
-                                    filecounter[FT_TEX][FLD_LOADED]);                
-
-                parse264        (   &m_vid,
-                                    m_videoBlockBase,
-                                    m_bufferVid,
-                                    g_ScnVid,
-                                    g_bytVid,
-                                    filecounter[FT_VID][FLD_PREV],
-                                    filecounter[FT_VID][FLD_LOADED],
-                                    MAX_VIDEO_WIDTH,
-                                    MAX_VIDEO_HEIGHT,
-                                    MAX_VIDEO_PROFILE,
-                                    MAX_VIDEO_LEVEL);
-
                 initShader      (   &m_vtx,         // init fragment shader ( default )
                                     &m_fsh, 
                                     &m_tex,
