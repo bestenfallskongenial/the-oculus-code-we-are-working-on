@@ -35,8 +35,10 @@ unsigned b = 186;
                                                     gen83FileName("TXT"),
                                                     m_logBuffer,
                                                     m_logBufferIndex );
+
+                                                    msDelay(250);        
                         saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    "parser",
+                                                    "parser.txt",
                                                     m_logParseBuffer,
                                                     m_logParseBufferIndex );
 
