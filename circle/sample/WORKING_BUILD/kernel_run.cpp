@@ -36,12 +36,13 @@ unsigned b = 186;
                                                     m_logBuffer,
                                                     m_logBufferIndex );
 
-                                                    msDelay(250);        
+                                                    msDelay(1000);        
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     "parser.txt",
                                                     m_logParseBuffer,
                                                     m_logParseBufferIndex );
 
+                                                    msDelay(1000);                                                       
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     "glsl.txt",
                                                     m_logGLSLBuffer,
