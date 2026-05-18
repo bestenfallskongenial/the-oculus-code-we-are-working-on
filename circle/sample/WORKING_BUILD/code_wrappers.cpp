@@ -265,8 +265,22 @@ void            CKernel::wrapper_load_usb           (   )
                     UnMount();   
                     }
                 // Flush CPU->RAM so the VPU sees the loaded bitstream
-                CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // !!! every memory allocation/operation like load?! do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
-}
+                //CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // !!! every memory allocation/operation like load?! do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
+
+storeMsg(   MY_BUFFER, MY_INDEX,
+            "VID BEFORE CACHE 512",
+            m_bufferVid[0],
+            512 );
+
+CleanAndInvalidateDataCacheRange(   (uintptr_t)m_videoBlockBase,
+                                    (size_t)m_videoBlockSize );
+
+storeMsg(   MY_BUFFER, MY_INDEX,
+            "VID AFTER CACHE 512",
+            m_bufferVid[0],
+            512 );
+
+            }
 
 void            CKernel::wrapper_init_gl_sd         (   )
 {
