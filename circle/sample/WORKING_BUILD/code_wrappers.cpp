@@ -99,50 +99,49 @@ void            CKernel::wrapper_from_sd            (   )
 {
                 if(Mount( PARTITION_NAME_SD ))
                     {
-
+// vertex shader
                     scanRoot                (   g_ScnVsh,                           // where we store the valid filenames we find
                                                 g_SufVsh,                           // the array of valid file extensions for this type of file
                                                 filecounter[FT_VSH][FLD_EXTCNT],                         // how many valid file extensions we have in the array above also part of filecounter?
                                                 filecounter[FT_VSH][FLD_SCANNED],         
                                                 filecounter[FT_VSH][FLD_MAXSD]);           // how many files are allowed to scan and stored in the array
-
-
+// overlay fragment shader
                     scanRoot                (   g_ScnOmf, 
                                                 g_SufOmf, 
                                                 filecounter[FT_OMF][FLD_EXTCNT], 
                                                 filecounter[FT_OMF][FLD_SCANNED], 
                                                 filecounter[FT_OMF][FLD_MAXSD]);                
-                    
+// overlay texture
                     scanRoot                (   g_ScnOmt, 
                                                 g_SufOmt, 
                                                 filecounter[FT_OMT][FLD_EXTCNT], 
                                                 filecounter[FT_OMT][FLD_SCANNED], 
                                                 filecounter[FT_OMT][FLD_MAXSD]);       
-
+// user fragment shaders
                     scanRoot                (   g_ScnFsh, 
                                                 g_SufFsh, 
                                                 filecounter[FT_FSH][FLD_EXTCNT], 
                                                 filecounter[FT_FSH][FLD_SCANNED], 
                                                 filecounter[FT_FSH][FLD_MAXSD]);         
-                   
+// user textures
                     scanRoot                (   g_ScnTex, 
                                                 g_SufTex, 
                                                 filecounter[FT_TEX][FLD_EXTCNT], 
                                                 filecounter[FT_TEX][FLD_SCANNED], 
                                                 filecounter[FT_TEX][FLD_MAXSD]);
-                   
+// user videos
                     scanRoot                (   g_ScnVid, 
                                                 g_SufVid, 
                                                 filecounter[FT_VID][FLD_EXTCNT], 
                                                 filecounter[FT_VID][FLD_SCANNED], 
                                                 filecounter[FT_VID][FLD_MAXSD]);
-
+// kernel.img
                     scanRoot                (   g_ScnKln, 
                                                 g_SufKln, 
                                                 filecounter[FT_KLN][FLD_EXTCNT], 
                                                 filecounter[FT_KLN][FLD_SCANNED], 
                                                 filecounter[FT_KLN][FLD_MAXSD]);    
-
+// vertex shader
                     bulkLoad                (   g_ScnVsh,                           // where we have stored the filenames 
                                                 g_bytVsh,                           // where we store the loaded bytes for each file 
                                                 m_bufferVsh,                        // where we store the loaded file data for each file
@@ -150,7 +149,7 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_VSH][FLD_LOADED],            // <- is directly modified in the function, we dont need to return it
                                                 filecounter[FT_VSH][FLD_PREV],
                                                 filecounter[FT_VSH][FLD_SIZE]);                     // maximum size for each file
-                                                                        
+// overlay fragment shader
                     bulkLoad                (   g_ScnOmf, 
                                                 g_bytOmf, 
                                                 m_bufferOmf, 
@@ -158,7 +157,7 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_OMF][FLD_LOADED], 
                                                 filecounter[FT_OMF][FLD_PREV],
                                                 filecounter[FT_OMF][FLD_SIZE]);
-    
+// overlay texture
                     bulkLoad                (   g_ScnOmt, 
                                                 g_bytOmt, 
                                                 m_bufferOmt, 
@@ -166,7 +165,7 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_OMT][FLD_LOADED], 
                                                 filecounter[FT_OMT][FLD_PREV],
                                                 filecounter[FT_OMT][FLD_SIZE]);           
-
+// user fragment shaders
                     bulkLoad                (   g_ScnFsh, 
                                                 g_bytFsh, 
                                                 m_bufferFsh, 
@@ -174,7 +173,7 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_FSH][FLD_LOADED], 
                                                 filecounter[FT_FSH][FLD_PREV],
                                                 filecounter[FT_FSH][FLD_SIZE]);                                     
-
+// user textures
                     bulkLoad                (   g_ScnTex, 
                                                 g_bytTex, 
                                                 m_bufferTex, 
@@ -182,7 +181,7 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_TEX][FLD_LOADED], 
                                                 filecounter[FT_TEX][FLD_PREV],
                                                 filecounter[FT_TEX][FLD_SIZE]);                                   
- 
+ // user videos
                     bulkLoad                (   g_ScnVid, 
                                                 g_bytVid, 
                                                 m_bufferVid, 
@@ -190,7 +189,7 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_VID][FLD_LOADED], 
                                                 filecounter[FT_VID][FLD_PREV],
                                                 filecounter[FT_VID][FLD_SIZE]);   
-
+// kernel.img
                     bulkLoad                (   g_ScnKln, 
                                                 g_bytKln, 
                                                 m_bufferKnl, 
@@ -202,8 +201,9 @@ void            CKernel::wrapper_from_sd            (   )
                     UnMount();
 
                     }
-                // Flush CPU->RAM so the VPU sees the loaded bitstream
-                CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
+
+            //  Flush CPU->RAM so the VPU sees the loaded bitstream
+            //  CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
                                        
 }
 
@@ -268,16 +268,10 @@ void            CKernel::wrapper_load_usb           (   )
                                                 filecounter[FT_KLN][FLD_SIZE]);                                                 
                     UnMount();   
                     }
+
                 // Flush CPU->RAM so the VPU sees the loaded bitstream
-                //CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // !!! every memory allocation/operation like load?! do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
+                //  CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // !!! every memory allocation/operation like load?! do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
 
-storeMsg(   MY_BUFFER, MY_INDEX,
-            "VID BEFORE CACHE 512",
-            m_bufferVid[0],
-            512 );
-
-CleanAndInvalidateDataCacheRange(   (uintptr_t)m_videoBlockBase,
-                                    (size_t)m_videoBlockSize );
 }
 void            CKernel::wrapper_init_gl_sd         (   )
 {

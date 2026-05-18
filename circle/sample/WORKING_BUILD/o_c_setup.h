@@ -12,7 +12,7 @@
     #define         FSH_SD             		    1	// max number of fragment shader on sd
     #define         OMT_SD             		    1	// max number of fragment shader on sd
     #define         TEX_SD             		    0	// max number of textures on sd
-    #define         VID_SD             		    0	// max number of videos on sd
+    #define         VID_SD             		    4	// max number of videos on sd
     #define         KLN_SD                      1
 
     #define         FRM_SD                      1   // i put them here because if my mem/dma allocation
@@ -34,7 +34,7 @@
     #define         FSH_USB            		    32	// max number of fragment shader on sd
     #define         OMT_USB            		    0	// max number of fragment shader on sd
     #define         TEX_USB            		    8	// max number of textures on sd
-    #define         VID_USB            		    8	// max number of videos on sd
+    #define         VID_USB            		    4	// max number of videos on sd
     #define         KLN_USB                     1
 
     #define         FRM_USB                     0   // i put them here because if my mem/dma allocation

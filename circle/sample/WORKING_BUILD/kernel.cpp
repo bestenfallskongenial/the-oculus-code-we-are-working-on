@@ -19,7 +19,7 @@
                     m_pFileSystem       (   0 ),
                     m_resetFlag         (   false )
 {                    
-                m_ActLED.Blink(5);
+                m_ActLED.Blink(1);
 }
 
 				CKernel::~CKernel						(	void )
