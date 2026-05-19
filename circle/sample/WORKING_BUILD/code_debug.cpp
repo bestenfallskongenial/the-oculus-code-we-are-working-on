@@ -1,5 +1,8 @@
 #include "kernel.h"
 
+#define MY_BUFFER   m_logParseBuffer
+#define MY_INDEX    m_logParseBufferIndex
+
 static const char FromKernel[] = "kernel";
 
 void CKernel::debug()
