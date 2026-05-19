@@ -51,17 +51,17 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                                 "BMP Header Dump",
                                 data,
                                 headerSize );
-/*
+
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 t->tex_valid[i] ? "BMP header VALID" : "BMP header FAILED", EMPTYLOG,
                                 "File No.", (u32)i,
                                 "Name", EMPTYLOG,
-                                filename_array[i - p_fromFile], EMPTYLOG );
-*/
+                                filename_array[i /* - p_fromFile */ ], EMPTYLOG );
+
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 "BMP size",
                                 (u32)fileSize,
-                                "loaded", (u32)size_array[i - p_fromFile],
+                                "loaded", (u32)size_array[i /* - p_fromFile */ ],
                                 "max", (u32)t->max_tex_size );
 
                     storeLog(   MY_BUFFER, MY_INDEX,
