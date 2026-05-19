@@ -36,7 +36,7 @@ bool            CKernel::wrapperInitDMA             (   )
                     bOK = (m_bufferTex = allocBufferDMA  (  filecounter[FT_TEX][FLD_MAXSD]+filecounter[FT_TEX][FLD_MAXUSB], filecounter[FT_TEX][FLD_SIZE], 
                                                             &m_textureBlockBase, &m_textureRawBlock, &m_textureBlockSize));
                     }
-
+/*
                 if (bOK)
                     {
                     bOK = (m_bufferKnl = allocBufferDMA  (  filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], filecounter[FT_KLN][FLD_SIZE], 
@@ -48,14 +48,14 @@ bool            CKernel::wrapperInitDMA             (   )
                     bOK = (m_bufferLog = allocBufferDMA  (  filecounter[FT_LOG][FLD_MAXSD]+filecounter[FT_LOG][FLD_MAXUSB], filecounter[FT_LOG][FLD_SIZE], 
                                                             &m_loggerBlockBase, &m_loggerRawBlock, &m_loggerBlockSize));
                     }
-
+*/
                 return bOK;                    
 }
 
 bool            CKernel::wrapperInitMEM             (   )
 {
                 bool bOK = true;
-/*
+
                 if (bOK)
                     {
                     bOK = (m_bufferKnl = allocBufferMEM(    filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], 
@@ -67,7 +67,7 @@ bool            CKernel::wrapperInitMEM             (   )
                     bOK = (m_bufferLog = allocBufferMEM(    filecounter[FT_LOG][FLD_MAXSD]+filecounter[FT_LOG][FLD_MAXUSB], 
                                                             filecounter[FT_LOG][FLD_SIZE]));
                     }                   
-*/
+
                 if (bOK)
                     {
                     bOK = (m_bufferVsh = allocBufferMEM(    filecounter[FT_VSH][FLD_MAXSD]+filecounter[FT_VSH][FLD_MAXUSB], 
