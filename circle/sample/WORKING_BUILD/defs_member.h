@@ -156,7 +156,15 @@ public:         // Logging
                 size_t 				            m_textureBlockSize                  = 0;
 
                 char**				            m_bufferKnl                         = nullptr;
+                char*                           m_kernelBlockBase                   = nullptr;
+                char*                           m_kernelRawBlock                    = nullptr;
+                size_t                          m_kernelBlockSize                   = 0;
+
                 char**				            m_bufferLog                         = nullptr;
+                char*                           m_loggerBlockBase                   = nullptr;
+                char*                           m_loggerRawBlock                    = nullptr;
+                size_t                          m_loggerBlockSize                   = 0;
+
                 char** 				            m_bufferVsh                         = nullptr;
                 char** 				            m_bufferOmf                         = nullptr;                
                 char** 				            m_bufferFsh                         = nullptr; 
