@@ -437,6 +437,10 @@ private:
 
                 void        logButtonStatesRuntime      (void); // +++
                 void        logInOutRuntime(void);      // +++
+                void        dumpVideoBuffer            (   char*       p_buffer_array[],
+                                                        size_t      size_array[],
+                                                        int         p_index,
+                                                        u32         p_dumpSize );
                 
 #include "defs_member.h" // <- should go to the bottom, right?    
 

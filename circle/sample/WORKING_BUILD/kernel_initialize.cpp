@@ -75,6 +75,9 @@ boolean			CKernel::Initialize						(	void )
                     bOK =   wrapperInitDMA();
 #ifdef __DEBUG_LOG__
                     storeLog( m_logBuffer, m_logBufferIndex, "1/100 sec", m_Timer.GetTicks(), "InitDMA Buffer                                     DONE");
+                    
+                    dumpVideoBuffer( m_bufferVid, g_bytVid, 0, 256 );
+                    dumpVideoBuffer( m_bufferVid, g_bytVid, 1, 256 );
 #endif
                     }
                 if (bOK)

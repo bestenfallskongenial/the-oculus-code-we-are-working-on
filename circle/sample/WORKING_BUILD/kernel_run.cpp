@@ -16,8 +16,19 @@ unsigned b = 186;
 
                     if (!m_SD_has_load) 
                         {
+
+                        dumpVideoBuffer( m_bufferVid, g_bytVid, 0, 256 );
+                        dumpVideoBuffer( m_bufferVid, g_bytVid, 1, 256 );
+
                         wrapper_from_sd();
+
+                        dumpVideoBuffer( m_bufferVid, g_bytVid, 0, 256 );
+                        dumpVideoBuffer( m_bufferVid, g_bytVid, 1, 256 );
+
                         wrapper_parser();
+
+                        dumpVideoBuffer( m_bufferVid, g_bytVid, 0, 256 );
+                        dumpVideoBuffer( m_bufferVid, g_bytVid, 1, 256 );
                     //  wrapper_init_gl_sd();
 
                         m_SD_has_load = true;
@@ -27,7 +38,14 @@ unsigned b = 186;
                         {
 
                         wrapper_load_usb();   
+
+                        dumpVideoBuffer( m_bufferVid, g_bytVid, 0, 256 );
+                        dumpVideoBuffer( m_bufferVid, g_bytVid, 1, 256 );
+
                         wrapper_parser();
+
+                        dumpVideoBuffer( m_bufferVid, g_bytVid, 0, 256 );
+                        dumpVideoBuffer( m_bufferVid, g_bytVid, 1, 256 );
                     //  wrapper_init_gl_usb();
        
 
