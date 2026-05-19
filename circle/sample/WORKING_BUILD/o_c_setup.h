@@ -13,7 +13,7 @@
     #define         OMT_SD             		    1	// max number of fragment shader on sd
     #define         TEX_SD             		    0	// max number of textures on sd
     #define         VID_SD             		    0	// max number of videos on sd
-    #define         KLN_SD                      4
+    #define         KLN_SD                      0
 
     #define         FRM_SD                      1   // i put them here because if my mem/dma allocation
     #define         LOG_SD                      16  // here is the trick:
@@ -65,9 +65,9 @@
 
     #define         FRM_SIZ                     (1024*1024)         // 1mb
 
-    // #define         LOG_SIZ                     (1024*32)          // 256kb
+    #define         LOG_SIZ                     (1024*32)          // 256kb
 
-    #define LOG_SIZ 262144
+    // #define LOG_SIZ 262144
 
     #define         ADC_SELECT_PRG              7   // we will map this modes to input channels later
     #define         ADC_SELECT_TEX              6   // this are placeholder mactos
