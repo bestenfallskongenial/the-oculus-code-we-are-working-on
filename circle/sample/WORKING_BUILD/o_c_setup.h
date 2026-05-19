@@ -16,7 +16,7 @@
     #define         KLN_SD                      1
 
     #define         FRM_SD                      1   // i put them here because if my mem/dma allocation
-    #define         LOG_SD                      8  // here is the trick:
+    #define         LOG_SD                      16  // here is the trick:
                                                 // i will use a mix of hardwired and "open" logs. examples:
                                                 // just changed the model here. got one global log // screen buffer defined as member to access it on boot ( before alloc )
                                                 // than a common log buffer for the file operations, mem-alloc, bmp parser, the annex b parser, the vcsm init, the mmal init, the mmal runtime 

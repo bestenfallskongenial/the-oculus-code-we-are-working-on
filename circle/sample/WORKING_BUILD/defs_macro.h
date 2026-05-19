@@ -13,6 +13,8 @@
 
 #define CHANNEL     8
 
+#define MEMBER_LOG_SIZE (1024*32)
+
     #define         MAX_TILES 16
     #define         MENU_GPU_TILE_COUNT     16
     
