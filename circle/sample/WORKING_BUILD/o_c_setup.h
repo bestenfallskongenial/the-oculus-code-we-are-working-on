@@ -65,7 +65,7 @@
 
     #define         FRM_SIZ                     (1024*1024)         // 1mb
 
-    #define         LOG_SIZ                     (1024*32)          // 256kb
+    #define         LOG_SIZ                     (1024*64)          // 256kb
 
     // #define LOG_SIZ 262144
 
