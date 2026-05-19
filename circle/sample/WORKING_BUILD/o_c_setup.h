@@ -12,29 +12,36 @@
     #define         FSH_SD             		    1	// max number of fragment shader on sd
     #define         OMT_SD             		    1	// max number of fragment shader on sd
     #define         TEX_SD             		    0	// max number of textures on sd
-    #define         VID_SD             		    4	// max number of videos on sd
+    #define         VID_SD             		    0	// max number of videos on sd
     #define         KLN_SD                      1
 
     #define         FRM_SD                      1   // i put them here because if my mem/dma allocation
-    #define         LOG_SD                      8  // here is the trick:
-                                                // i will use a mix of hardwired and "open" logs. examples:
-                                                // just changed the model here. got one global log // screen buffer defined as member to access it on boot ( before alloc )
-                                                // than a common log buffer for the file operations, mem-alloc, bmp parser, the annex b parser, the vcsm init, the mmal init, the mmal runtime 
+    #define         LOG_SD                      16  // here is the trick:
 
-                                                // m_bufferLog[0]       - startup - memory - init log
-                                                // m_bufferLog[1]       - vc_sm
-                                                // m_bufferLog[2]       - mmal
-                                                // m_bufferLog[3]       - check glsl
-                                                // m_bufferLog[4]       - glsl compile
-                                                // m_bufferLog[5  - 15] - texture parser
-                                                // m_bufferLog[16 - 23] - video parser
+                                                    //  #define MY_BUFFER   m_bufferLog
+                                                    //  #define MY_INDEX    m_bufferLogIndex
+
+                                                    //  for (int i = 0; i < loadedVideos; i++)
+                                                    //      {
+                                                    //      storeLog( MY_BUFFER[i], MY_INDEX[i], ... );
+                                                    //      }
+
+                                                    // m_bufferLog[0 - 7]   - video parser
+                                                    // m_bufferLog[8]       - log boot/init
+                                                    // m_bufferLog[9]       - glsl compile
+                                                    // m_bufferLog[10]      - gfx init
+                                                    // m_bufferLog[11]      - gfx runtime
+                                                    // m_bufferLog[12]      - vc_sm init
+                                                    // m_bufferLog[13]      - mmal init
+                                                    // m_bufferLog[14]      - mmal runtime                                                
+                                                    // m_bufferLog[15]      - texture parser
 
     #define         VSH_USB                     0	// max number of u_vertex shader on sd
     #define         OMF_USB            		    0	// max number of fragment shader on sd
     #define         FSH_USB            		    32	// max number of fragment shader on sd
     #define         OMT_USB            		    0	// max number of fragment shader on sd
     #define         TEX_USB            		    8	// max number of textures on sd
-    #define         VID_USB            		    4	// max number of videos on sd
+    #define         VID_USB            		    8	// max number of videos on sd
     #define         KLN_USB                     1
 
     #define         FRM_USB                     0   // i put them here because if my mem/dma allocation
@@ -48,17 +55,17 @@
     #define         VID_EXT                     1
     #define         KLN_EXT                     1
 
-    #define         VSH_SIZ                     (1024*32)
+    #define         VSH_SIZ                     (1024*32)           // 32kb
     #define         OMF_SIZ                     (1024*32)
     #define         FSH_SIZ                     (1024*32)
-    #define         OMT_SIZ                     (1024*1024*4)
+    #define         OMT_SIZ                     (1024*1024*4)       // 4mb
     #define         TEX_SIZ                     (1024*1024*4)
-    #define         VID_SIZ                     (1024*1024*8)
-    #define         KLN_SIZ                     (1024*1024*2)
+    #define         VID_SIZ                     (1024*1024*8)       // 8mb
+    #define         KLN_SIZ                     (1024*1024*2)       // 2mb
 
-    #define         FRM_SIZ                     (1024*1024)
+    #define         FRM_SIZ                     (1024*1024)         // 1mb
 
-    #define         LOG_SIZ                     (1024*128)
+    #define         LOG_SIZ                     (1024*256)          // 256kb
 
     #define         ADC_SELECT_PRG              7   // we will map this modes to input channels later
     #define         ADC_SELECT_TEX              6   // this are placeholder mactos

@@ -40,6 +40,8 @@ private:        // SMI / DMA / WS2812
                 TXDATA_T*                       m_pBuffer               = 0;
                 bool                            m_SMIValid              = FALSE;
 public:         // Logging
+                int                             m_bufferLogIndex[LOG_SD+LOG_USB];       // for the new model where we use the char* m_bufferLog[LOG_SD+LOG_USB] 
+
                 char                            m_logBuffer[LOG_SIZ]    = {0};
                 u32                             m_logBufferIndex        = 0;
                 char                            m_logParseBuffer[LOG_SIZ]    = {0};
