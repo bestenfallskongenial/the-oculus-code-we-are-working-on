@@ -1,12 +1,11 @@
 
 #include "kernel.h"
 
+//  #undef  __DEBUG_LOG__
+    #define __DEBUG_LOG__
 
-// #define MY_BUFFER   m_logBuffer
-// #define MY_INDEX    m_logBufferIndex
-#define MY_BUFFER   m_logParseBuffer
-#define MY_INDEX    m_logParseBufferIndex
-
+    #define MY_BUFFER   m_bufferLog
+    #define MY_INDEX    m_bufferLogIndex
 
 bool            CKernel::wrapperInitDMA             (   )
 {

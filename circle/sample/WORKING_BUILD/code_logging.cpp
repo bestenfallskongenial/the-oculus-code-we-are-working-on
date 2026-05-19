@@ -1,10 +1,10 @@
 #include "kernel.h"
 
-#define __DEBUG_LOG__
+//  #undef  __DEBUG_LOG__
+    #define __DEBUG_LOG__
 
-
-#define MY_BUFFER   m_logBuffer
-#define MY_INDEX    m_logBufferIndex
+    #define MY_BUFFER   m_bufferLog
+    #define MY_INDEX    m_bufferLogIndex
 
 void            CKernel::storeLog               (   char*       p_buffer,
                                                         u32&        index,
@@ -209,8 +209,8 @@ bool            CKernel::programLog                 (   GLint       program,
 
 bool            CKernel::startupScreen          (   void )
 {
-            //  m_logBufferIndex = 0;
-            //  m_logBuffer[0] = '\0';
+            //  MY_INDEX = 0;
+            //  MY_BUFFER[0] = '\0';
 
                 const char* machineName =  m_MachineInfo.GetMachineName();
                 const char* socName     =  m_MachineInfo.GetSoCName();
@@ -241,47 +241,47 @@ bool            CKernel::startupScreen          (   void )
                 unsigned fbWidth        =  gE_FrameBuffer.GetWidth();
                 unsigned fbHeight       =  gE_FrameBuffer.GetHeight();
 
-                storeLog(m_logBuffer, m_logBufferIndex, "Machine Model  ", EMPTYLOG, 
+                storeLog(MY_BUFFER, MY_INDEX, "Machine Model  ", EMPTYLOG, 
                                                         machineName);
 
-                storeLog(m_logBuffer, m_logBufferIndex, "SoC Name       ", EMPTYLOG, 
+                storeLog(MY_BUFFER, MY_INDEX, "SoC Name       ", EMPTYLOG, 
                                                         socName          , EMPTYLOG, 
                                                         "Model Major    ", modelMajor,
                                                         "Model Revision ", modelRevision);
-                nextline(m_logBuffer, m_logBufferIndex);
-                storeLog(m_logBuffer, m_logBufferIndex, "RAM Size     MB", ramSize);
-                nextline(m_logBuffer, m_logBufferIndex);                
-                storeLog(m_logBuffer, m_logBufferIndex, "CPU Speed Mode ", cpuSpeedMode);
-                storeLog(m_logBuffer, m_logBufferIndex, "SoC Max Temp   ", socMaxTemp);
-                nextline(m_logBuffer, m_logBufferIndex);
-                storeLog(m_logBuffer, m_logBufferIndex, "Clock CORE  MHz", coreClock,
+                nextline(MY_BUFFER, MY_INDEX);
+                storeLog(MY_BUFFER, MY_INDEX, "RAM Size     MB", ramSize);
+                nextline(MY_BUFFER, MY_INDEX);                
+                storeLog(MY_BUFFER, MY_INDEX, "CPU Speed Mode ", cpuSpeedMode);
+                storeLog(MY_BUFFER, MY_INDEX, "SoC Max Temp   ", socMaxTemp);
+                nextline(MY_BUFFER, MY_INDEX);
+                storeLog(MY_BUFFER, MY_INDEX, "Clock CORE  MHz", coreClock,
                                                         "Clock ARM   MHz", armClock);
 
-                storeLog(m_logBuffer, m_logBufferIndex, "Clock EMMC  MHz", emmcClock,
+                storeLog(MY_BUFFER, MY_INDEX, "Clock EMMC  MHz", emmcClock,
                                                         "Clock EMMC2 MHz", emmc2Clock);
 
-                storeLog(m_logBuffer, m_logBufferIndex, "Clock UART  MHz", uartClock);
-                nextline(m_logBuffer, m_logBufferIndex);
-                storeLog(m_logBuffer, m_logBufferIndex, "DMA Channel    ", dmaChannel);
-                nextline(m_logBuffer, m_logBufferIndex);
-                storeLog(m_logBuffer, m_logBufferIndex, "USB Delay      ", usbDelay,
+                storeLog(MY_BUFFER, MY_INDEX, "Clock UART  MHz", uartClock);
+                nextline(MY_BUFFER, MY_INDEX);
+                storeLog(MY_BUFFER, MY_INDEX, "DMA Channel    ", dmaChannel);
+                nextline(MY_BUFFER, MY_INDEX);
+                storeLog(MY_BUFFER, MY_INDEX, "USB Delay      ", usbDelay,
                                                         "USB FullSpeed  ", usbSpeed);
-                nextline(m_logBuffer, m_logBufferIndex);
-                storeLog(m_logBuffer, m_logBufferIndex, "CF Screen X    ", conWidth,
+                nextline(MY_BUFFER, MY_INDEX);
+                storeLog(MY_BUFFER, MY_INDEX, "CF Screen X    ", conWidth,
                                                         "CF Screen Y    ", conHeight);  
 
-                storeLog(m_logBuffer, m_logBufferIndex, "FB Screen X    ", fbWidth,
+                storeLog(MY_BUFFER, MY_INDEX, "FB Screen X    ", fbWidth,
                                                         "FB Screen Y    ", fbHeight);
          
-                storeLog(m_logBuffer, m_logBufferIndex, "gE Screen X    ", gE_ScreenWidth,
+                storeLog(MY_BUFFER, MY_INDEX, "gE Screen X    ", gE_ScreenWidth,
                                                         "gE Screen Y    ", gE_ScreenHeight);
 /*
                 bufferScreenClear();
 
                 bufferScreenDraw(
-                                        m_logBuffer,
+                                        MY_BUFFER,
                                         0,
-                                        m_logBufferIndex,
+                                        MY_INDEX,
                                         0,
                                         0,
                                         0xFFFFFFFF

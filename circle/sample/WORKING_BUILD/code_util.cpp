@@ -1,6 +1,12 @@
 
 #include "kernel.h"
 
+//  #undef  __DEBUG_LOG__
+    #define __DEBUG_LOG__
+
+    #define MY_BUFFER   m_bufferLog
+    #define MY_INDEX    m_bufferLogIndex
+
 void            CKernel::readAndConvertADC         (   void    )
 {
                 const int f_scale = m_scaleFactors[attenuation];

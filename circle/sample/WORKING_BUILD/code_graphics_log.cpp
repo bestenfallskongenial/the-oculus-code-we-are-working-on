@@ -1,10 +1,10 @@
 #include "kernel.h"
 
-#define __DEBUG_LOG__
-#undef MY_BUFFER
-#undef MY_INDEX
-#define MY_BUFFER m_logGLSLBuffer
-#define MY_INDEX m_logGLSLBufferIndex
+//  #undef  __DEBUG_LOG__
+    #define __DEBUG_LOG__
+
+    #define MY_BUFFER   m_bufferLog[GLSL_SLOT]
+    #define MY_INDEX    m_bufferLogIndex[GLSL_SLOT]
 
 bool            CKernel::shaderLog                  (   GLint       shader,
                                                         int         shaderIndex )

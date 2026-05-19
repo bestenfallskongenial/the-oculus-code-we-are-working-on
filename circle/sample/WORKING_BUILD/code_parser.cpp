@@ -1,7 +1,10 @@
 #include "kernel.h"
 
-#define MY_BUFFER   m_logParseBuffer
-#define MY_INDEX    m_logParseBufferIndex
+//  #undef  __DEBUG_LOG__
+    #define __DEBUG_LOG__
+
+    #define MY_BUFFER   m_bufferLog
+    #define MY_INDEX    m_bufferLogIndex
 
 bool            CKernel::BMPparser                  (   tex_state*  t,
                                                         char*       p_buffer_array[],

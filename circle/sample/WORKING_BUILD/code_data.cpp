@@ -4,8 +4,8 @@
 //  #undef  __DEBUG_LOG__
     #define __DEBUG_LOG__
 
-#define MY_BUFFER   m_logBuffer
-#define MY_INDEX    m_logBufferIndex
+    #define MY_BUFFER   m_bufferLog
+    #define MY_INDEX    m_bufferLogIndex
 
 bool            CKernel::Mount                      (   const   char*       p_deviceName )
 {

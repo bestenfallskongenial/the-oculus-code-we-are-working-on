@@ -1,7 +1,10 @@
 #include "kernel.h"
 
-#define MY_BUFFER   m_logParseBuffer
-#define MY_INDEX    m_logParseBufferIndex
+//  #undef  __DEBUG_LOG__
+    #define __DEBUG_LOG__
+    
+    #define MY_BUFFER   m_bufferLog[DEBUG_SLOT]
+    #define MY_INDEX    m_bufferLogIndex[DEBUG_SLOT]
 
 static const char FromKernel[] = "kernel";
 
