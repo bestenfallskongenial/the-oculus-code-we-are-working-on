@@ -57,14 +57,14 @@ unsigned b = 186;
                                                     msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     "vi0pars.txt",
-                                                    m_bufferLog,
-                                                    m_bufferLogIndex );
+                                                    m_bufferLog[0],
+                                                    m_bufferLogIndex[0] );
                                                     
                                                     msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     "vi1pars.txt",
-                                                    m_bufferLog,
-                                                    m_bufferLogIndex );                                                    
+                                                    m_bufferLog[1],
+                                                    m_bufferLogIndex[1] );                                                    
 
                         m_USB_has_load = true;   
                         bufferScreenDraw( "we are done here", 0, sizeof("we are done here"), 0, 20, 0xFFFFFFFF );
