@@ -19,19 +19,8 @@ unsigned b = 186;
 
                     if (!m_SD_has_load) 
                         {
-                        storeLog( MY_BUFFER, MY_INDEX, "after init()", EMPTYLOG );        
-                        dumpVideoBuffer( m_bufferVid, g_bytVid, 0, 256 );
-                        dumpVideoBuffer( m_bufferVid, g_bytVid, 1, 256 );
-
                         wrapper_from_sd();
-                        storeLog( MY_BUFFER, MY_INDEX, "after load from sd", EMPTYLOG );    
-                        dumpVideoBuffer( m_bufferVid, g_bytVid, 0, 256 );
-                        dumpVideoBuffer( m_bufferVid, g_bytVid, 1, 256 );
-
                         wrapper_parser();
-                        storeLog( MY_BUFFER, MY_INDEX, "after parsing", EMPTYLOG );
-                        dumpVideoBuffer( m_bufferVid, g_bytVid, 0, 256 );
-                        dumpVideoBuffer( m_bufferVid, g_bytVid, 1, 256 );
                     //  wrapper_init_gl_sd();
 
                         m_SD_has_load = true;
@@ -41,14 +30,8 @@ unsigned b = 186;
                         {
 
                         wrapper_load_usb();   
-                        storeLog( MY_BUFFER, MY_INDEX, "after load from usb", EMPTYLOG );
-                        dumpVideoBuffer( m_bufferVid, g_bytVid, 0, 256 );
-                        dumpVideoBuffer( m_bufferVid, g_bytVid, 1, 256 );
 
                         wrapper_parser();
-                        storeLog( MY_BUFFER, MY_INDEX, "after parsing", EMPTYLOG );
-                        dumpVideoBuffer( m_bufferVid, g_bytVid, 0, 256 );
-                        dumpVideoBuffer( m_bufferVid, g_bytVid, 1, 256 );
                     //  wrapper_init_gl_usb();
        
 

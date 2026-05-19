@@ -76,9 +76,6 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                     storeLog( MY_BUFFER, MY_INDEX, "1/100 sec", m_Timer.GetTicks(), "InitDMA Buffer                                     DONE");
                     storeLog( MY_BUFFER, MY_INDEX, "1/100 sec", m_Timer.GetTicks(), "InitDMA Buffer                                     DONE");
-                    storeLog( MY_BUFFER, MY_INDEX, "after dma alloc", EMPTYLOG );
-                    dumpVideoBuffer( m_bufferVid, g_bytVid, 0, 256 );
-                    dumpVideoBuffer( m_bufferVid, g_bytVid, 1, 256 );
 #endif
                     }
                 if (bOK)

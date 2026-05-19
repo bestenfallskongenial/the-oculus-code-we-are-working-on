@@ -160,15 +160,6 @@ bool            CKernel::parse264                  (   h264_state* h,
                                 "data",           (u32)data,
                                 EMPTYSTR,         EMPTYLOG );
 
-                    storeMsg(   MY_BUFFER, MY_INDEX,
-                                "vid_file first 512 byte",
-                                p_buffer_array[file_index],
-                                128 );
-                    storeMsg(   MY_BUFFER, MY_INDEX,
-                                "vid_file first 512 byte",
-                                data,
-                                128 );
-
                     for (size_t pos = 0; pos < size - 3; )
                         {
                         size_t sc_len = (data[pos + 2] == 1) ? 3 : 4;
