@@ -2,8 +2,11 @@
 #include "kernel.h"
 
 
-#define MY_BUFFER   m_logBuffer
-#define MY_INDEX    m_logBufferIndex
+// #define MY_BUFFER   m_logBuffer
+// #define MY_INDEX    m_logBufferIndex
+#define MY_BUFFER   m_logParseBuffer
+#define MY_INDEX    m_logParseBufferIndex
+
 
 bool            CKernel::wrapperInitDMA             (   )
 {
