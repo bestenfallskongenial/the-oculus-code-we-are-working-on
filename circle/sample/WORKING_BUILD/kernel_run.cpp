@@ -44,25 +44,25 @@ unsigned b = 186;
 
                                                     msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    "gls-pars.txt",
+                                                    "glspars.txt",
                                                     m_bufferLog[3],
                                                     m_bufferLogIndex[3] );
 
                                                     msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    "tex-pars.txt",
+                                                    "texpars.txt",
                                                     m_bufferLog[10],
                                                     m_bufferLogIndex[10] );
 
                                                     msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    "vi0-pars.txt",
+                                                    "vi0pars.txt",
                                                     m_bufferLog,
                                                     m_bufferLogIndex );
                                                     
                                                     msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    "vi1-pars.txt",
+                                                    "vi1pars.txt",
                                                     m_bufferLog,
                                                     m_bufferLogIndex );                                                    
 
