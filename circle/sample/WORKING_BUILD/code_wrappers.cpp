@@ -250,6 +250,12 @@ void            CKernel::wrapper_load_usb           (   )
                                                 filecounter[FT_TEX][FLD_LOADED], 
                                                 filecounter[FT_TEX][FLD_PREV],
                                                 filecounter[FT_TEX][FLD_SIZE]);                                   
+                    MsDelay(250); 
+
+                    storeLog( MY_BUFFER, MY_INDEX, "before usb bulk load", EMPTYLOG );
+                    dumpVideoBuffer( m_bufferVid, g_bytVid, 0, 256 );
+                    dumpVideoBuffer( m_bufferVid, g_bytVid, 1, 256 );   
+                                            
 
                     bulkLoad                (   g_ScnVid, 
                                                 g_bytVid, 
@@ -259,13 +265,22 @@ void            CKernel::wrapper_load_usb           (   )
                                                 filecounter[FT_VID][FLD_PREV],
                                                 filecounter[FT_VID][FLD_SIZE]);
 
+                    MsDelay(250); 
+
+                    storeLog( MY_BUFFER, MY_INDEX, "after usb bulk load", EMPTYLOG );
+                    dumpVideoBuffer( m_bufferVid, g_bytVid, 0, 256 );
+                    dumpVideoBuffer( m_bufferVid, g_bytVid, 1, 256 );
+
                     bulkLoad                (   g_ScnKln, 
                                                 g_bytKln, 
                                                 m_bufferKnl, 
                                                 filecounter[FT_KLN][FLD_SCANNED], 
                                                 filecounter[FT_KLN][FLD_LOADED], 
                                                 filecounter[FT_KLN][FLD_PREV],
-                                                filecounter[FT_KLN][FLD_SIZE]);                                                 
+                                                filecounter[FT_KLN][FLD_SIZE]);     
+
+                    MsDelay(250); 
+                                                                    
                     UnMount();   
                     }
 
