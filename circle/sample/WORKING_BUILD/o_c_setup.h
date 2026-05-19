@@ -16,7 +16,7 @@
     #define         KLN_SD                      1
 
     #define         FRM_SD                      1   // i put them here because if my mem/dma allocation
-    #define         LOG_SD                      8  // here is the trick:
+    #define         LOG_SD                      16  // here is the trick:
 
                                                     //  #define MY_BUFFER   m_bufferLog
                                                     //  #define MY_INDEX    m_bufferLogIndex
