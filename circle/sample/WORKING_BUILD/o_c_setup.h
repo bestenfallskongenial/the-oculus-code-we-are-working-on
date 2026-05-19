@@ -65,7 +65,7 @@
 
     #define         FRM_SIZ                     (1024*1024)         // 1mb
 
-    #define         LOG_SIZ                     (1024*256)          // 256kb
+    #define         LOG_SIZ                     (1024*32)          // 256kb
 
     #define         ADC_SELECT_PRG              7   // we will map this modes to input channels later
     #define         ADC_SELECT_TEX              6   // this are placeholder mactos
