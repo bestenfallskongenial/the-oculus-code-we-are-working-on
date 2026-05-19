@@ -37,16 +37,14 @@ bool            CKernel::wrapperInitDMA             (   )
                     bOK = (m_bufferTex = allocBufferDMA  (  filecounter[FT_TEX][FLD_MAXSD]+filecounter[FT_TEX][FLD_MAXUSB], filecounter[FT_TEX][FLD_SIZE], 
                                                             &m_textureBlockBase, &m_textureRawBlock, &m_textureBlockSize));
                     }
-/*                    
                 if (bOK)
                     {
-                    bOK = (m_bufferKnl = allocBufferDMA  (  filecounter[FT_TEX][FLD_MAXSD]+filecounter[FT_TEX][FLD_MAXUSB], filecounter[FT_TEX][FLD_SIZE], 
+                    bOK = (m_bufferKnl = allocBufferDMA  (  filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], filecounter[FT_KLN][FLD_SIZE], 
                                                             &m_kernelBlockBase, &m_kernelRawBlock, &m_kernelBlockSize));
                     }
-*/
                     if (bOK)
                     {
-                    bOK = (m_bufferLog = allocBufferDMA  (  filecounter[FT_TEX][FLD_MAXSD]+filecounter[FT_TEX][FLD_MAXUSB], filecounter[FT_TEX][FLD_SIZE], 
+                    bOK = (m_bufferLog = allocBufferDMA  (  filecounter[LOGGER][FLD_MAXSD]+filecounter[LOGGER][FLD_MAXUSB], filecounter[LOGGER][FLD_SIZE], 
                                                             &m_loggerBlockBase, &m_loggerRawBlock, &m_loggerBlockSize));
                     }
                 return bOK;                    
@@ -55,13 +53,13 @@ bool            CKernel::wrapperInitDMA             (   )
 bool            CKernel::wrapperInitMEM             (   )
 {
                 bool bOK = true;
-
+/*
                 if (bOK)
                     {
                     bOK = (m_bufferKnl = allocBufferMEM(    filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], 
                                                             filecounter[FT_KLN][FLD_SIZE]));
                     }
-/*                    
+
                 if (bOK)
                     {
                     bOK = (m_bufferLog = allocBufferMEM(    filecounter[LOGGER][FLD_MAXSD]+filecounter[LOGGER][FLD_MAXUSB], 
