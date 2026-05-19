@@ -307,7 +307,7 @@ void            CKernel::wrapper_parser()
                                     filecounter[FT_OMT][FLD_SIZE],                  // upper bound for the size
                                     filecounter[FT_OMT][FLD_PREV],                  // for the continuous loading between devices - lower bound
                                     filecounter[FT_OMT][FLD_LOADED]);               // for the continuous loading between devices - upper bound
-
+                
                 BMPparser       (   &m_tex,
                                     m_bufferTex,
                                     g_ScnTex,

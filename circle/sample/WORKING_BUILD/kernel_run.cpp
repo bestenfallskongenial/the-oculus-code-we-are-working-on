@@ -3,8 +3,8 @@
 //  #undef  __DEBUG_LOG__
     #define __DEBUG_LOG__
 
-    #define MY_BUFFER   m_bufferLog
-    #define MY_INDEX    m_bufferLog
+    #define MY_BUFFER   m_logBuffer
+    #define MY_INDEX    m_logBufferIndex
 
 //  static const char FromKernel[] = "kernel";
 
@@ -37,26 +37,37 @@ unsigned b = 186;
                         wrapper_parser();
                     //  wrapper_init_gl_usb();
        
-
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     gen83FileName("TXT"),
                                                     m_logBuffer,
                                                     m_logBufferIndex );
 
-                                                    msDelay(1000);        
+                                                    msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    "parser.txt",
-                                                    m_logParseBuffer,
-                                                    m_logParseBufferIndex );
+                                                    "gls-pars.txt",
+                                                    m_bufferLog[3],
+                                                    m_bufferLogIndex[3] );
 
-                                                    msDelay(1000);                                                       
+                                                    msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    "glsl.txt",
-                                                    m_logGLSLBuffer,
-                                                    m_logGLSLBufferIndex );                                                                
+                                                    "tex-pars.txt",
+                                                    m_bufferLog[10],
+                                                    m_bufferLogIndex[10] );
+
+                                                    msDelay(100);
+                        saveFromBufferM         (   PARTITION_NAME_SD,
+                                                    "vi0-pars.txt",
+                                                    m_bufferLog,
+                                                    m_bufferLogIndex );
+                                                    
+                                                    msDelay(100);
+                        saveFromBufferM         (   PARTITION_NAME_SD,
+                                                    "vi1-pars.txt",
+                                                    m_bufferLog,
+                                                    m_bufferLogIndex );                                                    
 
                         m_USB_has_load = true;   
-                        bufferScreenDraw( "we are done here", 0, sizeof("we are done here"), 0, 13, 0xFFFFFFFF );
+                        bufferScreenDraw( "we are done here", 0, sizeof("we are done here"), 0, 20, 0xFFFFFFFF );
                         }
 
                         WS2812_SetLED(0, r, g, b);
@@ -84,7 +95,7 @@ unsigned b = 186;
 
                         msDelay(25);
 
-                        if ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 20, 0xFFFFFFFF );
+                        if ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 21, 0xFFFFFFFF );
                     }
 
                 return ShutdownHalt;

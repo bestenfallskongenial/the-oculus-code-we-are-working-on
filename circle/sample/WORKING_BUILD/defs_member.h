@@ -66,9 +66,7 @@ public:         // Logging
                 tex_state                       m_omt    = {};
 
                 h264_state                      m_vid    = {};    
-
 // missing globals / shared state / dummies for now
-
                 bool                            m_resetFlag             = false;
                 bool                            m_SD_has_load           = false;
                 bool                            m_USB_has_load          = false;
@@ -104,7 +102,9 @@ public:         // Logging
                 long long                       g_lfoBpmMatrix[4][LFO_BPM_COUNT]; // was unsigned !
 // datamanagement.cpp
                 unsigned                        g_hFile;
-                volatile    bool	                        m_bStorageAttached      = false;
+
+                volatile    bool	            m_bStorageAttached      = false;
+
                 char                            m_83FileName[MAX_FILE_NAME_LENGTH];
 // util
         const   int                             m_scaleFactors[3] = {   2047,       // 2.5V max (1023 * 2)
@@ -128,9 +128,7 @@ public:         // Logging
 
                 bool                            m_audio_flag_A                      = false;          
                 bool                            m_audio_flag_B                      = false;
-
-
-                                                            
+                                              
                 char** 				            m_bufferVid                         = nullptr;      // thats the pointer to my "array-like" buffer allocation
                 char* 				            m_videoBlockBase                    = nullptr;      // returns the aligned DMA base pointer
                 char* 				            m_videoRawBlock                     = nullptr;      // returns the original pointer from new[]
@@ -171,7 +169,6 @@ public:         // Logging
                 char** 				            m_bufferFsh                         = nullptr; 
                 
 // the populated filecounter array - source and truth and hub for init and load
-
                                                                                                 // MAXSD   MAXUSB    EXTCNT     SCANNED   LOADED  PREV    V_CNT    SIZE  
                 unsigned                        filecounter[FT_COUNT][FLD_COUNT]    =       {   { VSH_SD, VSH_USB,  VSH_EXT,    0,        0,      0,      0,       VSH_SIZ },  // VSH vertex shader
                                                                                                 { OMF_SD, OMF_USB,  OMF_EXT,    0,        0,      0,      0,       OMF_SIZ },  // OMF overlay fragment shader
@@ -181,10 +178,8 @@ public:         // Logging
                                                                                                 { VID_SD, VID_USB,  VID_EXT,    0,        0,      0,      0,       VID_SIZ },  // VID video buffer
                                                                                                 { KLN_SD, KLN_USB,  KLN_EXT,    0,        0,      0,      0,       KLN_SIZ },  // KLN kernel buffer
                                                                                                 { FRM_SD, FRM_USB,        0,    0,        0,      0,      0,       FRM_SIZ },  // FRM decoded frames A & B
-                                                                                                { LOG_SD, LOG_USB,        0,    0,        0,      0,      0,       LOG_SIZ }}; // LOG logging buffers   
-
+                                                                                                { LOG_SD, LOG_USB,        0,    0,        0,      0,      0,       LOG_SIZ }}; // LOG logging buffers
 // lists of extensions possible in my scanroot directory function per filetype 
-
         const   char*                           g_SufVsh[VSH_EXT]			        =           { "vsh" };    // vertex shaders
         const   char*                           g_SufOmf[OMF_EXT]			        =           { "omf" };	// is a fsh file but used for the overlay atlas
         const   char*                           g_SufFsh[FSH_EXT]			        =           { "fsh" };    // fragment shaders 
@@ -209,9 +204,7 @@ public:         // Logging
                 unsigned                        g_bytVid[VID_SD + VID_USB]          =           { 0 };
                 unsigned                        g_bytKln[KLN_SD + KLN_USB]          =           { 0 };
 // CODE_MENU.CPP
-// Use a **member function pointer table** instead of `switch`.
-// That lets you add modes by only extending the table.
-typedef void (CKernel::*ModeFunc)(int);         // for the new menu selector -> easier to expand, right?
+typedef void (CKernel::*ModeFunc)(int);         // for the new menu selector -> easier to expand, right? "add modes by only extending the table"
 
                 ModeFunc                        g_modeTable[12]                     =       {   &CKernel::modeADC,
                                                                                                 &CKernel::modeTRG,
@@ -257,7 +250,7 @@ typedef void (CKernel::*ModeFunc)(int);         // for the new menu selector -> 
                                                                                                 { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
                                                                                                 { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
                                                                                                 { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0} };
-                 // VCSM predefined messages as public member
+// VCSM predefined messages as public member
                 SERVICE_CREATION_T*              m_ServiceCreateVCSM                = nullptr;
 
                 VCSM_Import_MEM_Msg*             m_importTxVCSM_A                   = nullptr;
@@ -274,7 +267,7 @@ typedef void (CKernel::*ModeFunc)(int);         // for the new menu selector -> 
 
                 VCSM_Free_MEM_Msg*               m_freeTxVCSM                       = nullptr;
                 VCSM_Free_MEM_Reply*             m_freeRxVCSM                       = nullptr;
-                // MMAL predefined messages as public member 
+// MMAL predefined messages as public member 
                 SERVICE_CREATION_T*              m_ServiceCreateMMAL                = nullptr;
 
                 MMAL_Component_Create_Msg*       m_ComponentCreateTx                = nullptr;

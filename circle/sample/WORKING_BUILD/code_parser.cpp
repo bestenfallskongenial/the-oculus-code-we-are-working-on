@@ -3,8 +3,8 @@
 //  #undef  __DEBUG_LOG__
     #define __DEBUG_LOG__
 
-    #define MY_BUFFER   m_bufferLog
-    #define MY_INDEX    m_bufferLogIndex
+    #define MY_BUFFER   m_bufferLog[10]
+    #define MY_INDEX    m_bufferLogIndex[10]
 
 bool            CKernel::BMPparser                  (   tex_state*  t,
                                                         char*       p_buffer_array[],
@@ -46,31 +46,31 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
 
 #ifdef __DEBUG_LOG__
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "BMP dump File No.", (u32)i,
+                                "dump header from file", (u32)i,
                                 "buffer", (u32)p_buffer_array[i],
                                 "data", (u32)data );
 
                     storeMsg(   MY_BUFFER, MY_INDEX,
-                                "BMP Header Dump",
+                                "Header Dump",
                                 data,
                                 headerSize );
 
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                t->tex_valid[i] ? "BMP header VALID" : "BMP header FAILED", EMPTYLOG,
-                                "File No.", (u32)i,
+                                t->tex_valid[i] ? "header VALID" : "header FAILED", EMPTYLOG,
+                                "File", (u32)i,
                                 "Name", EMPTYLOG,
                                 filename_array[i /* - p_fromFile */ ], EMPTYLOG );
 
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "BMP size",
+                                "size",
                                 (u32)fileSize,
                                 "loaded", (u32)size_array[i /* - p_fromFile */ ],
                                 "max", (u32)t->max_tex_size );
 
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "BMP offset", (u32)dataOffset,
-                                "header", (u32)headerSize,
-                                "img", (u32)imgSize );
+                                "Header offset", (u32)dataOffset,
+                                "header size", (u32)headerSize,
+                                "img size", (u32)imgSize );
 
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 "width", (u32)width,
@@ -78,13 +78,13 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                                 "bpp",       (u32)bpp );
 
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "BMP planes", (u32)planes,
-                                "compression", (u32)compression );
+                                "planes", (u32)planes,
+                                "compr.", (u32)compression );
 
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "expected  size",
+                                "exp. size",
                                 (u32)(width * height * 3),
-                                "actual size", (u32)imgSize );
+                                "act. size", (u32)imgSize );
 
                     nextline(   MY_BUFFER, MY_INDEX);                       
 #endif
@@ -112,6 +112,9 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
 | B frame  | length of IDR-only block            | `h->idr_length[file][idx]`                               | `idr_len[file][idx]`                                                                                                          | IDR start code + IDR NAL header + IDR payload                                                                                                 |
 | -------- | ----------------------------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 */
+    #define MY_BUFFER   m_bufferLog
+    #define MY_INDEX    m_bufferLogIndex
+
 bool            CKernel::parse264                  (   h264_state* h,
                                                         char*       blockBase,
                                                         char*       p_buffer_array[],
@@ -151,13 +154,13 @@ bool            CKernel::parse264                  (   h264_state* h,
                 /*  size_t size = size_array[i]; */
                     size_t i = 0;
 
-                    storeLog(   MY_BUFFER, MY_INDEX,
+                    storeLog(   MY_BUFFER[file_index], MY_INDEX[file_index],
                                 "Parse H264 File No.", file_index,
                                 "Name", EMPTYLOG,
                                 filename_array[file_index - p_fromFile], EMPTYLOG,
                                 "FileSize", (u32)size_array[file_index - p_fromFile]);
 
-                    storeLog(   MY_BUFFER, MY_INDEX,
+                    storeLog(   MY_BUFFER[file_index], MY_INDEX[file_index],
                                 "file_index",     (u32)file_index,
                                 "buffer",         (u32)p_buffer_array[file_index],
                                 "data",           (u32)data,
@@ -201,11 +204,11 @@ bool            CKernel::parse264                  (   h264_state* h,
                         h->frame_length[file_index][idx]  = end_off - sps_off[file_index][idx];
                         h->idr_offset[file_index]         = idr_off[file_index][idx] - sps_off[file_index][idx];
 
-                        storeLog(   MY_BUFFER, MY_INDEX,
-                                        "67+68+65", EMPTYLOG, 
-                                        "a", (u32)h->frame_address[file_index][idx], 
-                                        "l", (u32)h->frame_length[file_index][idx], 
-                                        "o", (u32)h->frame_offset[file_index][idx]);
+                        storeLog(   MY_BUFFER[file_index], MY_INDEX[file_index],
+                                    "67+68+65", EMPTYLOG, 
+                                    "a", (u32)h->frame_address[file_index][idx], 
+                                    "l", (u32)h->frame_length[file_index][idx], 
+                                    "o", (u32)h->frame_offset[file_index][idx]);
                         }
 
                     u8 tmp[1024];
@@ -252,12 +255,12 @@ bool            CKernel::parse264                  (   h264_state* h,
                         h->vid_profile[file_index]  == h->max_profile &&
                         h->vid_level[file_index]    == h->max_level;
 
-                    storeLog(   MY_BUFFER, MY_INDEX,
+                    storeLog(   MY_BUFFER[file_index], MY_INDEX[file_index],
                                     "Parsed Frames", h->frame_count[file_index], 
-                                    "Parsed IDR-Offset", h->idr_offset[file_index]);
+                                    "IDR-Off", h->idr_offset[file_index]);
                     if (h->vid_valid[file_index])
                         {
-                        storeLog(   MY_BUFFER, MY_INDEX,
+                        storeLog(   MY_BUFFER[file_index], MY_INDEX[file_index],
                                         "MetaData VALID for Video", file_index,
                                         "Name", EMPTYLOG,
                                         filename_array[file_index - p_fromFile], EMPTYLOG,
@@ -265,7 +268,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                         }
                     else
                         {
-                        storeLog(   MY_BUFFER, MY_INDEX,
+                        storeLog(   MY_BUFFER[file_index], MY_INDEX[file_index],
                                         "MetaData INVALID for Video", file_index,
                                         "Name", EMPTYLOG,
                                         filename_array[file_index - p_fromFile], EMPTYLOG,
