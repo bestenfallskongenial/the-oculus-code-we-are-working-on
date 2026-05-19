@@ -6,6 +6,10 @@
     
     #define __DEBUG_LOG__
 
+
+    #define         LOG_GL  0
+    #define         LOG_BMP 8
+
     // to prepare filecounter[FT_COUNT][FLD_COUNT]
     #define         VSH_SD             		    1	// max number of u_vertex shader on sd
     #define         OMF_SD             		    1	// max number of fragment shader on sd

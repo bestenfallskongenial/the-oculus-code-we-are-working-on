@@ -3,7 +3,7 @@
 //  #undef  __DEBUG_LOG__
     #define __DEBUG_LOG__
 
-    #define MY_BUFFER   m_bufferLog
+    #define MY_BUFFER   m_bufferLog                 // not used here !
     #define MY_INDEX    m_bufferLogIndex
 
 void            CKernel::Log_createComponent        (   const MMAL_Component_Create_Msg& tx, const MMAL_Component_Create_Reply& rx)

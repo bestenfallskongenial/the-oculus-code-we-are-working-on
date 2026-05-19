@@ -333,7 +333,7 @@ public:
 
                 bool        checkUpdate                 ();     // +++
 
-                bool        Update                      ();
+                bool        UpdateKernel                ();
 
                 void        get_gl_time                 (               unsigned                        sys_time );                
 
@@ -436,11 +436,9 @@ private:
                 void        debug(); // +++
 
                 void        logButtonStatesRuntime      (void); // +++
+
                 void        logInOutRuntime(void);      // +++
-                void        dumpVideoBuffer            (   char*       p_buffer_array[],
-                                                        size_t      size_array[],
-                                                        int         p_index,
-                                                        u32         p_dumpSize );
+
                 
 #include "defs_member.h" // <- should go to the bottom, right?    
 

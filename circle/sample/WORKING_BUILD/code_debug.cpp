@@ -165,20 +165,3 @@ void CKernel::logInOutRuntime(void)
                        0,
                        0xFFFFFFFF );
 }
-
-void            CKernel::dumpVideoBuffer            (   char*       p_buffer_array[],
-                                                        size_t      size_array[],
-                                                        int         p_index,
-                                                        u32         p_dumpSize )
-{
-                storeLog(   MY_BUFFER, MY_INDEX,
-                            "VID DUMP index",      (u32)p_index,
-                            "buffer",              (u32)p_buffer_array[p_index],
-                            "size",                (u32)size_array[p_index],
-                            "dump",                p_dumpSize );
-
-                storeMsg(   MY_BUFFER, MY_INDEX,
-                            "VID BUFFER DUMP",
-                            p_buffer_array[p_index],
-                            p_dumpSize );
-}

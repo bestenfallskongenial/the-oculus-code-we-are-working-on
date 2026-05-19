@@ -3,7 +3,7 @@
 //  #undef  __DEBUG_LOG__
     #define __DEBUG_LOG__
 
-    #define MY_BUFFER   m_logBuffer
+    #define MY_BUFFER   m_logBuffer             // means the log goes into the pre-init buffer 
     #define MY_INDEX    m_logBufferIndex
 
 //  static const char FromKernel[] = "kernel";
@@ -40,9 +40,9 @@ unsigned b = 186;
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                   /*gen83FileName("TXT"*/
                                                     "bootlog.txt",
-                                                    m_logBuffer,
+                                                    m_logBuffer,            // stores the pre-init buffer
                                                     m_logBufferIndex );
-
+/*
                                                     msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     "glspars.txt",
@@ -66,7 +66,7 @@ unsigned b = 186;
                                                     "vi1pars.txt",
                                                     m_bufferLog[1],
                                                     m_bufferLogIndex[1] );                                                    
-
+*/
                         m_USB_has_load = true;   
                         bufferScreenDraw( "we are done here", 0, sizeof("we are done here"), 0, 20, 0xFFFFFFFF );
                         }

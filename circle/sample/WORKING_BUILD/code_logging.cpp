@@ -6,7 +6,7 @@
     #define MY_BUFFER   m_logBuffer
     #define MY_INDEX    m_logBufferIndex
 
-void            CKernel::storeLog               (   char*       p_buffer,
+void            CKernel::storeLog                   (   char*       p_buffer,
                                                         u32&        index,
                                                         const char* p_string0, u32 p_value0,
                                                         const char* p_string1, u32 p_value1,
@@ -130,88 +130,9 @@ void            CKernel::nextline                   (   char*       p_buffer,
                 p_buffer[index++]           = '\n';
                 p_buffer[index]             = '\0';
 }
-/*/
-bool            CKernel::shaderLog                  (   GLint       shader,
-                                                        int         shaderIndex )
-{
-                GLint success;
-                glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-#ifdef __DEBUG_LOG__ 
-                storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
-                storeLog( MY_BUFFER, MY_INDEX, "Program compile status idx", (u32)shaderIndex, "success" ,(u32)success);
-#endif 
-                return success == GL_TRUE;
-}
-
-bool            CKernel::programLog                 (   GLint       program,
-                                                        int         program_index )
-{
-                GLint success;
-                glGetProgramiv(program, GL_LINK_STATUS, &success);
-#ifdef __DEBUG_LOG__
-                storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
-                storeLog( MY_BUFFER, MY_INDEX,   g_ScnFsh[program_index], EMPTYLOG,
-                                                    "Program link status idx", (u32)program_index,
-                                                    "Program byte size", (u32)g_bytFsh[program_index], 
-                                                    "success", (u32)success);
-#endif 
-                char log[1024];
-                glGetProgramInfoLog(program, sizeof(log), NULL, log);
-#ifdef __DEBUG_LOG__                 
-                storeMsg( MY_BUFFER, MY_INDEX, "Program InfoLog", log, sizeof(log));
-#endif 
-                GLint numUniforms;
-                glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &numUniforms);
-#ifdef __DEBUG_LOG__ 
-                storeLog( MY_BUFFER, MY_INDEX, "Active Uniforms", (u32)numUniforms);
-#endif 
-                for (GLint i = 0; i < numUniforms; ++i)
-                    {
-                    char uname[256];
-                    GLsizei length;
-                    GLint size;
-                    GLenum type;
-
-                    glGetActiveUniform(program, i, sizeof(uname), &length, &size, &type, uname);
-                    GLint location = glGetUniformLocation(program, uname);
-#ifdef __DEBUG_LOG__ 
-                    storeLog( MY_BUFFER, MY_INDEX, "Uniform idx", (u32)i, "size", (u32)size, "type", (u32)type, "loc", (u32)location);
-                    storeMsg( MY_BUFFER, MY_INDEX, "Uniform name", uname, length);
-#endif                     
-                    }
-
-                GLint numAttributes;
-                glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &numAttributes);
-#ifdef __DEBUG_LOG__ 
-                storeLog( MY_BUFFER, MY_INDEX, "Active Attributes", (u32)numAttributes);
-#endif 
-                for (GLint i = 0; i < numAttributes; ++i)
-                    {
-                    char aname[256];
-                    GLsizei length;
-                    GLint size;
-                    GLenum type;
-
-                    glGetActiveAttrib(program, i, sizeof(aname), &length, &size, &type, aname);
-                    GLint location = glGetAttribLocation(program, aname);
-#ifdef __DEBUG_LOG__ 
-                    storeLog( MY_BUFFER, MY_INDEX, "Attribute idx", (u32)i,"size", (u32)size,"type", (u32)type,"loc", (u32)location);
-                    storeMsg( MY_BUFFER, MY_INDEX, "Attribute name", aname, length);
-#endif                     
-                    }
-#ifdef __DEBUG_LOG__
-                storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
-#endif 
-
-                return success == GL_TRUE;
-}
-*/
 
 bool            CKernel::startupScreen          (   void )
 {
-            //  MY_INDEX = 0;
-            //  MY_BUFFER[0] = '\0';
-
                 const char* machineName =  m_MachineInfo.GetMachineName();
                 const char* socName     =  m_MachineInfo.GetSoCName();
 
@@ -240,41 +161,56 @@ bool            CKernel::startupScreen          (   void )
 
                 unsigned fbWidth        =  gE_FrameBuffer.GetWidth();
                 unsigned fbHeight       =  gE_FrameBuffer.GetHeight();
+                
+                nextline(   MY_BUFFER, MY_INDEX);
 
-                storeLog(MY_BUFFER, MY_INDEX, "Machine Model  ", EMPTYLOG, 
-                                                        machineName);
+                storeLog(   MY_BUFFER, MY_INDEX, 
+                            "Machine Model  ", EMPTYLOG, 
+                            machineName, EMPTYLOG );
 
-                storeLog(MY_BUFFER, MY_INDEX, "SoC Name       ", EMPTYLOG, 
-                                                        socName          , EMPTYLOG, 
-                                                        "Model Major    ", modelMajor,
-                                                        "Model Revision ", modelRevision);
-                nextline(MY_BUFFER, MY_INDEX);
-                storeLog(MY_BUFFER, MY_INDEX, "RAM Size     MB", ramSize);
-                nextline(MY_BUFFER, MY_INDEX);                
-                storeLog(MY_BUFFER, MY_INDEX, "CPU Speed Mode ", cpuSpeedMode);
-                storeLog(MY_BUFFER, MY_INDEX, "SoC Max Temp   ", socMaxTemp);
-                nextline(MY_BUFFER, MY_INDEX);
-                storeLog(MY_BUFFER, MY_INDEX, "Clock CORE  MHz", coreClock,
-                                                        "Clock ARM   MHz", armClock);
+                storeLog(   MY_BUFFER, MY_INDEX, 
+                            "SoC Name       ", EMPTYLOG, 
+                            socName          , EMPTYLOG, 
+                            "Model Major    ", modelMajor,
+                            "Model Revision ", modelRevision);
+                nextline(   MY_BUFFER, MY_INDEX);
+                storeLog(   MY_BUFFER, MY_INDEX, 
+                            "RAM Size     MB", ramSize);
+                nextline(   MY_BUFFER, MY_INDEX);                
+                storeLog(   MY_BUFFER, MY_INDEX, 
+                            "CPU Speed Mode ", cpuSpeedMode);
+                storeLog(   MY_BUFFER, MY_INDEX, 
+                            "SoC Max Temp   ", socMaxTemp);
+                nextline(   MY_BUFFER, MY_INDEX);
+                storeLog(   MY_BUFFER, MY_INDEX, 
+                            "Clock CORE  MHz", coreClock,
+                            "Clock ARM   MHz", armClock);
 
-                storeLog(MY_BUFFER, MY_INDEX, "Clock EMMC  MHz", emmcClock,
-                                                        "Clock EMMC2 MHz", emmc2Clock);
+                storeLog(   MY_BUFFER, MY_INDEX, 
+                            "Clock EMMC  MHz", emmcClock,
+                            "Clock EMMC2 MHz", emmc2Clock);
 
-                storeLog(MY_BUFFER, MY_INDEX, "Clock UART  MHz", uartClock);
-                nextline(MY_BUFFER, MY_INDEX);
-                storeLog(MY_BUFFER, MY_INDEX, "DMA Channel    ", dmaChannel);
-                nextline(MY_BUFFER, MY_INDEX);
-                storeLog(MY_BUFFER, MY_INDEX, "USB Delay      ", usbDelay,
-                                                        "USB FullSpeed  ", usbSpeed);
-                nextline(MY_BUFFER, MY_INDEX);
-                storeLog(MY_BUFFER, MY_INDEX, "CF Screen X    ", conWidth,
-                                                        "CF Screen Y    ", conHeight);  
+                storeLog(   MY_BUFFER, MY_INDEX, 
+                            "Clock UART  MHz", uartClock);
+                nextline(   MY_BUFFER, MY_INDEX);
+                storeLog(   MY_BUFFER, MY_INDEX, 
+                            "DMA Channel    ", dmaChannel);
+                nextline(   MY_BUFFER, MY_INDEX);
+                storeLog(   MY_BUFFER, MY_INDEX, 
+                            "USB Delay      ", usbDelay,
+                            "USB FullSpeed  ", usbSpeed);
+                nextline(   MY_BUFFER, MY_INDEX);
+                storeLog(   MY_BUFFER, MY_INDEX, 
+                            "CF Screen X    ", conWidth,
+                            "CF Screen Y    ", conHeight);  
 
-                storeLog(MY_BUFFER, MY_INDEX, "FB Screen X    ", fbWidth,
-                                                        "FB Screen Y    ", fbHeight);
+                storeLog(   MY_BUFFER, MY_INDEX, 
+                            "FB Screen X    ", fbWidth,
+                            "FB Screen Y    ", fbHeight);
          
-                storeLog(MY_BUFFER, MY_INDEX, "gE Screen X    ", gE_ScreenWidth,
-                                                        "gE Screen Y    ", gE_ScreenHeight);
+                storeLog(   MY_BUFFER, MY_INDEX, 
+                            "gE Screen X    ", gE_ScreenWidth,
+                            "gE Screen Y    ", gE_ScreenHeight);
 /*
                 bufferScreenClear();
 

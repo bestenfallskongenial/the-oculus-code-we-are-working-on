@@ -4,7 +4,7 @@
 //  #undef  __DEBUG_LOG__
     #define __DEBUG_LOG__
 
-    #define MY_BUFFER   m_bufferLog
+    #define MY_BUFFER   m_bufferLog             // not used here!
     #define MY_INDEX    m_bufferLogIndex
 
 void            CKernel::readAndConvertADC         (   void    )
@@ -186,13 +186,8 @@ bool            CKernel::checkUpdate                (   )
                     }
 }
 
-bool            CKernel::Update                     (   )
+bool            CKernel::UpdateKernel                     (   )
 {
-                // assumes:
-                // - m_bufferKnl[1] + loaded_bytes_kernel[1] already contain the "new" kernel loaded from usb
-                // - m_bufferKnl[0] + loaded_bytes_kernel[0] already contain the fallback kernel loaded from sd ( the running kernel )
-                // - filesystem is already mounted by caller
-
                 if (saveFromBufferM(PARTITION_NAME_SD, FILENAME_KNL, m_bufferKnl[1], g_bytKln[1]))
                     {
                     return true;
@@ -310,58 +305,11 @@ void            CKernel::buttonPing                 (   int             p_btn_id
                     g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
                     }
 }
-/*
-void            CKernel::buttonPing                 (   int             p_btn_id, 
-                                                        int             p_pin )
-{
-                g_buttons_states[p_btn_id][BTN_SINGLE] = 0;
-                g_buttons_states[p_btn_id][BTN_DOUBLE] = 0;
 
-            //  if (CGPIOPin(p_pin, GPIOModeInputPullUp).Read() == BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)
-                if (GPIO_Read(p_pin) == BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)                
-                    {
-                    g_buttons_states[p_btn_id][BTN_PRESS_START] = g_currentTime;
-                    g_buttons_states[p_btn_id][BTN_SINGLE] = 1;
 
-                    if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 && (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) < g_double_click_time)
-                        {
-                        g_buttons_states[p_btn_id][BTN_DOUBLE] = 1;
-                        }
-                    g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
-                    }
-            //  if (CGPIOPin(p_pin, GPIOModeInputPullUp).Read() != BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] != 0)
-                if (GPIO_Read(p_pin) != BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] != 0)                
-                    {
-                    g_buttons_states[p_btn_id][BTN_RELEASE]     = g_currentTime;
-                    g_buttons_states[p_btn_id][BTN_PRESS_START] = 0;
-                    g_buttons_states[p_btn_id][BTN_HOLD_TICK]   = 0;
-                    }
-                if (g_buttons_states[p_btn_id][BTN_PRESS_START] != 0 && (g_currentTime - g_buttons_states[p_btn_id][BTN_PRESS_START]) >= g_long_click_time)
-                    {
-                    g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
-                    }
-}
-*/
-
-/*
-                #define CTRL_PIN    12 ! EXAMPLES !
-                #define SW_PIN_A    13
-                #define SW_PIN_B    6
-            Initialize
-                GPIO_SetAlt(CTRL_PIN,  1, GPIO_PULL_OFF);
-                GPIO_SetAlt(SW_PIN_A, 0, GPIO_PULL_UP);
-                GPIO_SetAlt(SW_PIN_B, 0, GPIO_PULL_UP);
-            Run
-                set_pot_routing(false);
-                set_pot_routing(true);
-
-                buttonPing(0, SW_PIN_A);
-                buttonPing(1, SW_PIN_B);
-*/
-/*
 void            CKernel::button_consumer            (   int                 p_btn_id ) // this is where the magic happens: we need to set the states of menu layer, menu, we need to use one button for bpm input and so on 
 {
-
+/*
                 if (g_buttons_states[p_btn_id][BTN_SINGLE]) counter += 1;
                 if (g_buttons_states[p_btn_id][BTN_DOUBLE]) counter -= 1;
 
@@ -372,8 +320,9 @@ void            CKernel::button_consumer            (   int                 p_bt
                     longhold += 1;
                 if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] =20)
                     longhold += 2;
-}
 */
+}
+
 void            CKernel::randomVec8                 (   uint32_t            p_seed )
 {
                 const int       f_max_int   = 1023; // 1024;

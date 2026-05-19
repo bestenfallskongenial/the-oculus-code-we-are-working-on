@@ -46,8 +46,8 @@ void 			CKernel::LoggerSink						(	        void* 			    pContext,
                         continue;
                         }
 
-                    pThis->m_logBuffer[pThis->m_logBufferIndex++] = ch;
+                    pThis->m_logBuffer[pThis->m_logBufferIndex++] = ch; // means the log goes into the pre-init buffer 
                     }
 
-                pThis->m_logBuffer[pThis->m_logBufferIndex] = '\0';
+                pThis->m_logBuffer[pThis->m_logBufferIndex] = '\0'; // means the log goes into the pre-init buffer 
 }

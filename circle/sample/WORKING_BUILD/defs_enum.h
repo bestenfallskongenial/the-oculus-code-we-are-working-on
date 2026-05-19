@@ -39,26 +39,6 @@ enum modetable
     MODETABLE_COUNT
 };
 //------------------------------------------------- // for the array unsigned/float g_inOutMatrix*[CHANNEL][IO_TYPE_COUNT]
-//	INT 	ADC_RAW     (SCALED IN)VAL 	(SCALED)OUT 	RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
-//	ch0	    U	        U	        	U           	U	        G	        G                                                           U           U
-//	ch1	    U	        U	       	 	U           	U	                     	                                                        U           U
-//	ch2	    U	        U	        	U           	U	                     	                                                        U           U
-//	ch3	    U	        U	        	U           	U	                     	                                                        U           U
-//	ch4	    U	        U	        	U           	U	                     	                                                        U           U
-//	ch5	    U	        U	        	U           	U	                     	                                                        U           U
-//	ch6	    U	        U	        	U           	U	                     	                                                        U           U
-//	ch7	    U	        U	        	U           	U	                     	                                                        U           U
-
-//	FLT	    ADC_RAW     (SCALED IN)VAL  (SCALED)OUT 	RND 	    LF1 	    LF2 	    AUD0        AUD1        AUD2 	    AUD3        TRL         TRH
-//	ch0	                U	        	U           	U	        G	        G	        G	        G	        G	        G           opt        opt   
-//	ch1	                U	        	U           	U	                     	                                                        opt        opt   
-//	ch2	                U	        	U           	U	                     	                                                        opt        opt   
-//	ch3	                U	        	U           	U	                     	                                                        opt        opt   
-//	ch4	                U	        	U           	U	                     	                                                        opt        opt   
-//	ch5	                U	        	U           	U	                     	                                                        opt        opt   
-//	ch6	                U	        	U           	U	                     	                                                        opt        opt   
-//	ch7	                U	        	U           	U	                     	                                                        opt        opt   
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 enum io_types                               
 {
     RAW = 0,                                    		//  the position the dampened adc values per channels are stored *
@@ -78,13 +58,6 @@ enum io_types
     IO_TYPE_COUNT 										// 13	*means i have a unique value for each p_channel - the other values are singular, and/or only int/flt
 };
 //------------------------------------------------- // for the array unsigned (long?) g_lfoBpmMatrix[4][LFO_BPM_COUNT]; <- no float needed here - its stores in the io matrix
-// Layer / Instance | BPM        | INTV       | NBT        | LCB        | NCB        | LBC        | LBCT       | LMT        | ELP        | CYL        | SMP        | LTIME      | TIDX       | TB            | DB             | IREG
-// ---------------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ------------- | -------------- | --------------
-// `[0]`            | instance 0 | instance 0 | instance 0 | instance 0 | instance 0 | instance 0 | instance 0 | instance 0 | instance 0 | instance 0 | instance 0 | instance 0 | instance 0 | timeBuffer[0] | deltaBuffer[0] | irregularity[0]
-// `[1]`            | instance 1 | instance 1 | instance 1 | instance 1 | instance 1 | instance 1 | instance 1 | instance 1 | instance 1 | instance 1 | instance 1 | instance 1 | instance 1 | timeBuffer[1] | deltaBuffer[1] | irregularity[1]
-// `[2]`            | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | timeBuffer[2] | deltaBuffer[2] | irregularity[2]
-// `[3]`            | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | unused     | timeBuffer[3] | unused         | irregularity[3]
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 enum lfo_bpm_types
 {
     BPM =0,         								// result BPM
