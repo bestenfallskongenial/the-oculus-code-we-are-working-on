@@ -44,6 +44,8 @@ public:         // Logging
 
                 char                            m_logBuffer[LOG_SIZ]    = {0};
                 u32                             m_logBufferIndex        = 0;
+                char                            m_logBootBuffer[LOG_SIZ]    = {0};
+                u32                             m_logBootBufferIndex        = 0;                
                 char                            m_logParseBuffer[LOG_SIZ]    = {0};
                 u32                             m_logParseBufferIndex        = 0;
                 char                            m_logGLSLBuffer[LOG_SIZ]    = {0};

@@ -3,8 +3,8 @@
 //  #undef  __DEBUG_LOG__
     #define __DEBUG_LOG__
 
-// #define MY_BUFFER   m_logBuffer
-// #define MY_INDEX    m_logBufferIndex    
+#define MY_BUFFER   m_logBootBuffer      
+#define MY_INDEX    m_logBootBufferIndex    
 
 boolean			CKernel::Initialize						(	void )
 {
