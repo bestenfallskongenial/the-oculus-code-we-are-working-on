@@ -38,7 +38,8 @@ unsigned b = 186;
                     //  wrapper_init_gl_usb();
        
                         saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    gen83FileName("TXT"),
+                                                  /*gen83FileName("TXT"*/
+                                                    "bootlog.txt",
                                                     m_logBuffer,
                                                     m_logBufferIndex );
 

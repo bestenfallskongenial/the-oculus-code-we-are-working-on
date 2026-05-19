@@ -25,19 +25,19 @@ void            CKernel::TimerHandler                   (           TKernelTimer
 
 void CKernel::logButtonStatesRuntime(void)
 {
-    char f_buttonLogBuffer[1024];
-    u32  f_buttonLogIndex = 0;
+    char f_logBuffer[512];
+    u32  f_logIndex = 0;
 
-    f_buttonLogBuffer[0] = '\0';
+    f_logBuffer[0] = '\0';
 
-    storeLog(   f_buttonLogBuffer, f_buttonLogIndex,
+    storeLog(   f_logBuffer, f_logIndex,
                 "BTN PRESS_START   DOUBLE        RELEASE       SINGLE",
                 EMPTYLOG,
                 EMPTYSTR, EMPTYLOG,
                 EMPTYSTR, EMPTYLOG,
                 EMPTYSTR, EMPTYLOG );
 
-    storeLog(   f_buttonLogBuffer, f_buttonLogIndex,
+    storeLog(   f_logBuffer, f_logIndex,
                 "A  ",
                 (u32)g_buttons_states[0][BTN_PRESS_START],
                 "  ",
@@ -47,14 +47,14 @@ void CKernel::logButtonStatesRuntime(void)
                 "  ",
                 (u32)g_buttons_states[0][BTN_SINGLE] );
 
-    storeLog(   f_buttonLogBuffer, f_buttonLogIndex,
+    storeLog(   f_logBuffer, f_logIndex,
                 "A   HOLD_TICK",
                 (u32)g_buttons_states[0][BTN_HOLD_TICK],
                 EMPTYSTR, EMPTYLOG,
                 EMPTYSTR, EMPTYLOG,
                 EMPTYSTR, EMPTYLOG );
 
-    storeLog(   f_buttonLogBuffer, f_buttonLogIndex,
+    storeLog(   f_logBuffer, f_logIndex,
                 "B  ",
                 (u32)g_buttons_states[1][BTN_PRESS_START],
                 "  ",
@@ -64,16 +64,16 @@ void CKernel::logButtonStatesRuntime(void)
                 "  ",
                 (u32)g_buttons_states[1][BTN_SINGLE] );
 
-    storeLog(   f_buttonLogBuffer, f_buttonLogIndex,
+    storeLog(   f_logBuffer, f_logIndex,
                 "B   HOLD_TICK",
                 (u32)g_buttons_states[1][BTN_HOLD_TICK],
                 EMPTYSTR, EMPTYLOG,
                 EMPTYSTR, EMPTYLOG,
                 EMPTYSTR, EMPTYLOG );
 
-    bufferScreenDraw(  f_buttonLogBuffer,
+    bufferScreenDraw(  f_logBuffer,
                        0,
-                       f_buttonLogIndex,
+                       f_logIndex,
                        0,
                        10,
                        0xFFFFFFFF );
@@ -81,7 +81,7 @@ void CKernel::logButtonStatesRuntime(void)
 
 void CKernel::logInOutRuntime(void)
 {
-    char f_logBuffer[2048];
+    char f_logBuffer[512];
     u32  f_logIndex = 0;
 
     f_logBuffer[0] = '\0';
