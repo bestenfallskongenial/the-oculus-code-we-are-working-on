@@ -13,7 +13,7 @@
     #define         OMT_SD             		    1	// max number of fragment shader on sd
     #define         TEX_SD             		    0	// max number of textures on sd
     #define         VID_SD             		    0	// max number of videos on sd
-    #define         KLN_SD                      0
+    #define         KLN_SD                      1
 
     #define         FRM_SD                      1   // i put them here because if my mem/dma allocation
     #define         LOG_SD                      16  // here is the trick:
