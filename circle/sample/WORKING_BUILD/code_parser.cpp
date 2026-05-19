@@ -199,10 +199,10 @@ bool            CKernel::parse264                  (   h264_state* h,
                         h->idr_offset[file_index]         = idr_off[file_index][idx] - sps_off[file_index][idx];
 
                         storeLog(   MY_BUFFER, MY_INDEX,
-                                        "SPS+PPS+IDR", EMPTYLOG, 
-                                        "addr", (u32)h->frame_address[file_index][idx], 
-                                        "length", (u32)h->frame_length[file_index][idx], 
-                                        "offset", (u32)h->frame_offset[file_index][idx]);
+                                        "67+68+65", EMPTYLOG, 
+                                        "a", (u32)h->frame_address[file_index][idx], 
+                                        "l", (u32)h->frame_length[file_index][idx], 
+                                        "o", (u32)h->frame_offset[file_index][idx]);
                         }
 
                     u8 tmp[1024];
@@ -255,7 +255,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                     if (h->vid_valid[file_index])
                         {
                         storeLog(   MY_BUFFER, MY_INDEX,
-                                        "MetaData VALID for Video No.", file_index,
+                                        "MetaData VALID for Video", file_index,
                                         "Name", EMPTYLOG,
                                         filename_array[file_index - p_fromFile], EMPTYLOG,
                                         "FileSize", (u32)size_array[file_index  - p_fromFile]);
@@ -263,7 +263,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                     else
                         {
                         storeLog(   MY_BUFFER, MY_INDEX,
-                                        "MetaData INVALID for Video No.", file_index,
+                                        "MetaData INVALID for Video", file_index,
                                         "Name", EMPTYLOG,
                                         filename_array[file_index - p_fromFile], EMPTYLOG,
                                         "FileSize", (u32)size_array[file_index  - p_fromFile]);                                  
