@@ -11,7 +11,7 @@
     #define         OMF_SD             		    1	// max number of fragment shader on sd
     #define         FSH_SD             		    1	// max number of fragment shader on sd
     #define         OMT_SD             		    1	// max number of fragment shader on sd
-    #define         TEX_SD             		    4	// max number of textures on sd
+    #define         TEX_SD             		    0	// max number of textures on sd
     #define         VID_SD             		    0	// max number of videos on sd
     #define         KLN_SD                      1
 
