@@ -44,7 +44,7 @@ bool            CKernel::wrapperInitDMA             (   )
                     }
                     if (bOK)
                     {
-                    bOK = (m_bufferLog = allocBufferDMA  (  filecounter[LOGGER][FLD_MAXSD]+filecounter[LOGGER][FLD_MAXUSB], filecounter[LOGGER][FLD_SIZE], 
+                    bOK = (m_bufferLog = allocBufferDMA  (  filecounter[FT_LOG][FLD_MAXSD]+filecounter[FT_LOG][FLD_MAXUSB], filecounter[FT_LOG][FLD_SIZE], 
                                                             &m_loggerBlockBase, &m_loggerRawBlock, &m_loggerBlockSize));
                     }
                 return bOK;                    
@@ -62,8 +62,8 @@ bool            CKernel::wrapperInitMEM             (   )
 
                 if (bOK)
                     {
-                    bOK = (m_bufferLog = allocBufferMEM(    filecounter[LOGGER][FLD_MAXSD]+filecounter[LOGGER][FLD_MAXUSB], 
-                                                            filecounter[LOGGER][FLD_SIZE]));
+                    bOK = (m_bufferLog = allocBufferMEM(    filecounter[FT_LOG][FLD_MAXSD]+filecounter[FT_LOG][FLD_MAXUSB], 
+                                                            filecounter[FT_LOG][FLD_SIZE]));
                     }                   
 */
                 if (bOK)
@@ -95,14 +95,20 @@ void            CKernel::wrapperDMAcleanUp          (   )
                     clearBufferDMA( m_bufferOmt, m_overlayRawBlock); 
 
                     clearBufferDMA( m_bufferTex, m_textureRawBlock); 
+
+                    clearBufferDMA( m_bufferKnl, m_kernelRawBlock); 
+
+                    clearBufferDMA( m_bufferLog, m_loggerRawBlock); 
+
 }
 
 void            CKernel::wrapperMEMcleanUp          (   )
 {
+/*    
                     clearBufferMEM( m_bufferKnl, filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB] ); 
 
-                    clearBufferMEM( m_bufferLog, filecounter[LOGGER][FLD_MAXSD]+filecounter[LOGGER][FLD_MAXUSB] ); 
-
+                    clearBufferMEM( m_bufferLog, filecounter[FT_LOG][FLD_MAXSD]+filecounter[FT_LOG][FLD_MAXUSB] ); 
+*/
                     clearBufferMEM( m_bufferVsh, filecounter[FT_VSH][FLD_MAXSD]+filecounter[FT_VSH][FLD_MAXUSB] ); 
 
                     clearBufferMEM( m_bufferOmf, filecounter[FT_OMF][FLD_MAXSD]+filecounter[FT_OMF][FLD_MAXUSB] ); 

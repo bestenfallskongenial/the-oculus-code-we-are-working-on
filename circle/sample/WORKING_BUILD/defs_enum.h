@@ -138,7 +138,7 @@ enum FileType
     FT_VID,                                         		// user video 
     FT_KLN,                                         		// kernel
     FRM_BF,                                         		// output-frames A & B
-    LOGGER,                                         		// log-buffer
+    FT_LOG,                                         		// log-buffer
     FT_COUNT
 };
 enum FileField
