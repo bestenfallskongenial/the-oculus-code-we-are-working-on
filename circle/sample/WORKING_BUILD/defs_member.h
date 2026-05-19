@@ -42,17 +42,18 @@ private:        // SMI / DMA / WS2812
 public:         // Logging
                 u32                             m_bufferLogIndex[LOG_SD+LOG_USB];       // for the new model where we use the char* m_bufferLog[LOG_SD+LOG_USB] 
 
-                char                            m_logBuffer[LOG_SIZ]    = {0};
+                char                            m_logBuffer[1024*32]    = {0};
                 u32                             m_logBufferIndex        = 0;
-                char                            m_logBootBuffer[LOG_SIZ]    = {0};
+/*                
+                char                            m_logBootBuffer[1024*32]    = {0};
                 u32                             m_logBootBufferIndex        = 0;                
-                char                            m_logParseBuffer[LOG_SIZ]    = {0};
+                char                            m_logParseBuffer[1024*32]    = {0};
                 u32                             m_logParseBufferIndex        = 0;
-                char                            m_logGLSLBuffer[LOG_SIZ]    = {0};
+                char                            m_logGLSLBuffer[1024*32]    = {0};
                 u32                             m_logGLSLBufferIndex        = 0;
-                                char            m_logBufferDumps[LOG_SIZ]    = {0};
+                                char            m_logBufferDumps[1024*32]    = {0};
                 u32                             m_logBufferIndexDumps        = 0;
-
+*/
                 olg_state                       m_ogl    = {};              // local copies of my graphics related structs
 
                 vtx_state                       m_vtx    = {};
