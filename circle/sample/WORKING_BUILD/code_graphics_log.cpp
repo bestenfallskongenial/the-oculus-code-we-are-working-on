@@ -16,8 +16,11 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 /*
                 storeLog( MY_BUFFER, MY_INDEX, "Program compile status idx", (u32)shaderIndex, "success" ,(u32)success);
 */
+                if (success != GL_TRUE ) storeLog( MY_BUFFER, MY_INDEX,  "ERROR Compiing Program idx", (u32)shaderIndex );
+/*             
                 storeLog( MY_BUFFER, MY_INDEX,  "Program compile status idx", (u32)shaderIndex,
                                                 (success == GL_TRUE) ? "SUCCESS" : "FAILED", EMPTYLOG );
+*/                                              
 #endif 
                 return success == GL_TRUE;
 }
@@ -53,14 +56,18 @@ bool            CKernel::programLog                 (   GLint       program,
                                 EMPTYSTR, EMPTYLOG,
                                 EMPTYSTR, EMPTYLOG );
                     }
+/*                    
                     storeLog(   MY_BUFFER, MY_INDEX, 
                                 "Program InfoLog length", (u32)logLength );
+*/
 #endif 
                 GLint numUniforms;
                 glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &numUniforms);
 #ifdef __DEBUG_LOG__ 
+/*
                 storeLog(   MY_BUFFER, MY_INDEX, 
                             "Active Uniforms", (u32)numUniforms);
+*/
 #endif 
                 for (GLint i = 0; i < numUniforms; ++i)
                     {
