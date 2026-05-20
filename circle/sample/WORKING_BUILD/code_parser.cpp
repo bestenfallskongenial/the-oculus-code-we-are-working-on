@@ -92,8 +92,7 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                 return true;
 }
 
-    #define MY_BUFFER   m_bufferLog                // the idea is to address  MY_BUFFER[file_index], MY_INDEX[file_index] but i got errors somehow
-    #define MY_INDEX    m_bufferLogIndex
+
 
 bool            CKernel::parse264                  (   h264_state* h,
                                                         char*       blockBase,
