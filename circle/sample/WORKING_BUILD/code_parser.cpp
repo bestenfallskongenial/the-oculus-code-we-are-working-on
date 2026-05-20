@@ -136,8 +136,8 @@ bool            CKernel::parse264                  (   h264_state* h,
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 "Parse H264 File No.", file_index,
                                 "Name", EMPTYLOG,
-                                filename_array[file_index - p_fromFile], EMPTYLOG,
-                                "FileSize", (u32)size_array[file_index - p_fromFile]);
+                                filename_array[file_index /* - p_fromFile */], EMPTYLOG,
+                                "FileSize", (u32)size_array[file_index /* - p_fromFile */]);
 
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 "file_index",     (u32)file_index,
@@ -235,24 +235,24 @@ bool            CKernel::parse264                  (   h264_state* h,
                         h->vid_profile[file_index]  == h->max_profile &&
                         h->vid_level[file_index]    == h->max_level;
 
-                    storeLog(   MY_BUFFER[file_index], MY_INDEX[file_index],
+                    storeLog(   MY_BUFFER, MY_INDEX,
                                     "Parsed Frames", h->frame_count[file_index], 
                                     "IDR-Off", h->idr_offset[file_index]);
                     if (h->vid_valid[file_index])
                         {
-                        storeLog(   MY_BUFFER[file_index], MY_INDEX[file_index],
+                        storeLog(   MY_BUFFER, MY_INDEX,
                                         "MetaData VALID for Video", file_index,
                                         "Name", EMPTYLOG,
-                                        filename_array[file_index - p_fromFile], EMPTYLOG,
-                                        "FileSize", (u32)size_array[file_index  - p_fromFile]);
+                                        filename_array[file_index /* - p_fromFile */], EMPTYLOG,
+                                        "FileSize", (u32)size_array[file_index /* - p_fromFile */]);
                         }
                     else
                         {
-                        storeLog(   MY_BUFFER[file_index], MY_INDEX[file_index],
+                        storeLog(   MY_BUFFER, MY_INDEX,
                                         "MetaData INVALID for Video", file_index,
                                         "Name", EMPTYLOG,
-                                        filename_array[file_index - p_fromFile], EMPTYLOG,
-                                        "FileSize", (u32)size_array[file_index  - p_fromFile]);                                  
+                                        filename_array[file_index /* - p_fromFile */], EMPTYLOG,
+                                        "FileSize", (u32)size_array[file_index  /* - p_fromFile */]);                                  
                         }
                      // m_Watchdog.Start(TIMEOUT);
                     }
