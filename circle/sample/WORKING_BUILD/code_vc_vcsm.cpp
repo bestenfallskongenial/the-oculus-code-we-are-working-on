@@ -74,7 +74,7 @@ bool            CKernel::importMemoryVCSM           (   void*                   
 #ifdef __DEBUG_LOG__
                     //  nextline( MY_BUFFER, MY_INDEX );  
                         storeLog( MY_BUFFER, MY_INDEX, "Import VCSM Memory to Slot", /* slot */ vcsm_handle); 
-                        storeLog( MY_BUFFER, MY_INDEX, "ARM Address", p_bufferBlockbase, "GPU Address", tx.body.addr, "Size", size, "VCSM Handle", rx.body.res_handle);
+                        storeLog( MY_BUFFER, MY_INDEX, "ARM Address", (u32)(uintptr)p_bufferBlockbase, "GPU Address", tx.body.addr, "Size", size, "VCSM Handle", rx.body.res_handle);
 #endif                     
                     return true;
                 }
@@ -122,7 +122,8 @@ bool            CKernel::freeMemoryVCSM             (/* int                     
                 initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_FREE);
 
                 tx.body = {};
-                tx.body.res_handle = m_vc_handle[slot];
+            /*  tx.body.res_handle = m_vc_handle[slot]; */
+                tx.body.res_handle = vcsm_handle;
                 tx.body.res_mem    = 0;
 
                 size_t rx_len = 0;
