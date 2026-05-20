@@ -1,3 +1,8 @@
+#include "kernel.h"
+
+    #define MY_BUFFER   m_logBuffer     
+    #define MY_INDEX    m_logBufferIndex   
+
 bool            CKernel::initializeVCSM             (   )
 {
 bool bOK = true;
