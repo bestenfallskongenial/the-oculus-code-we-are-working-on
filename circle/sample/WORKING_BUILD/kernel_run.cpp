@@ -3,11 +3,6 @@
 //  #undef  __DEBUG_LOG__
     #define __DEBUG_LOG__
 
-    #define MY_BUFFER   m_logBuffer                 // means the log goes into the pre-init buffer 
-    #define MY_INDEX    m_logBufferIndex
-
-//  static const char FromKernel[] = "kernel";
-
 TShutdownMode CKernel::Run(void)
 {
 

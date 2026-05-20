@@ -47,19 +47,16 @@ public:         // Logging
 
                 char                            m_logBuffer[1024*32]    = {0}; //  pre-init buffer 
                 u32                             m_logBufferIndex        = 0;
-
-
-
-/*                
+   
                 char                            m_logBootBuffer[1024*32]    = {0};
                 u32                             m_logBootBufferIndex        = 0;                
                 char                            m_logParseBuffer[1024*32]    = {0};
                 u32                             m_logParseBufferIndex        = 0;
                 char                            m_logGLSLBuffer[1024*32]    = {0};
                 u32                             m_logGLSLBufferIndex        = 0;
-                                char            m_logBufferDumps[1024*32]    = {0};
+                char                            m_logBufferDumps[1024*32]    = {0};
                 u32                             m_logBufferIndexDumps        = 0;
-*/
+
                 olg_state                       m_ogl    = {};              // local copies of my graphics related structs
 
                 vtx_state                       m_vtx    = {};

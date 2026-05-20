@@ -134,13 +134,13 @@ bool            CKernel::parse264                  (   h264_state* h,
                 /*  size_t size = size_array[i]; */
                     size_t i = 0;
 
-                    storeLog(   MY_BUFFER[file_index], MY_INDEX[file_index],
+                    storeLog(   MY_BUFFER, MY_INDEX,
                                 "Parse H264 File No.", file_index,
                                 "Name", EMPTYLOG,
                                 filename_array[file_index - p_fromFile], EMPTYLOG,
                                 "FileSize", (u32)size_array[file_index - p_fromFile]);
 
-                    storeLog(   MY_BUFFER[file_index], MY_INDEX[file_index],
+                    storeLog(   MY_BUFFER, MY_INDEX,
                                 "file_index",     (u32)file_index,
                                 "buffer",         (u32)p_buffer_array[file_index],
                                 "data",           (u32)data,
@@ -184,7 +184,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                         h->frame_length[file_index][idx]  = end_off - sps_off[file_index][idx];
                         h->idr_offset[file_index]         = idr_off[file_index][idx] - sps_off[file_index][idx];
 
-                        storeLog(   MY_BUFFER[file_index], MY_INDEX[file_index],
+                        storeLog(   MY_BUFFER, MY_INDEX,
                                     "67+68+65", EMPTYLOG, 
                                     "a", (u32)h->frame_address[file_index][idx], 
                                     "l", (u32)h->frame_length[file_index][idx], 
