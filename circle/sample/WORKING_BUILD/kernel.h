@@ -434,19 +434,24 @@ public:
 
                 bool        initializeVCSM              ();
 
-                bool        importMemoryVCSM            (           void*                           p_bufferBlockbase, 
-                                                                    size_t                          size, 
-                                                                    int                             slot, 
-                                                                    VCSM_Import_MEM_Msg&            tx, 
-                                                                    VCSM_Import_MEM_Reply&          rx);
+                bool        importMemoryVCSM            (   void*                               p_bufferBlockbase, 
+                                                                                                size_t                  size, 
+                                                                                            /*  int                     slot, */ 
+                                                                                                u32&                    vcsm_handle,   
+                                                                                                VCSM_Import_MEM_Msg&    tx, 
+                                                                                                VCSM_Import_MEM_Reply&  rx)
 
-                bool        lockMemoryVCSM              (           int                             slot, 
-                                                                    VCSM_Lock_MEM_Msg&              tx, 
-                                                                    VCSM_Lock_MEM_Reply&            rx);
+                bool        lockMemoryVCSM              (/* int                     slot, */
+                                                        u32&                    vcsm_handle,
+                                                        u32&                    vcsm_pointer, 
+                                                        VCSM_Lock_MEM_Msg&      tx, 
+                                                        VCSM_Lock_MEM_Reply&    rx)
 //110
-                bool        freeMemoryVCSM              (           int                             slot, 
-                                                                    VCSM_Free_MEM_Msg&              tx, 
-                                                                    VCSM_Free_MEM_Reply&            rx);
+                bool        freeMemoryVCSM              (/* int                     slot, */ 
+                                                        u32&                    vcsm_handle, 
+                                                        u32&                    vcsm_pointer,                                             
+                                                        VCSM_Free_MEM_Msg&      tx, 
+                                                        VCSM_Free_MEM_Reply&    rx)
 
 
 // CODE_WRAPPERS.CPP - HERE THE JOY BEGINS
