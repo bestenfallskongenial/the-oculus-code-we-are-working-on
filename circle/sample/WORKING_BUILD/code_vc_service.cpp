@@ -88,11 +88,11 @@ u32             CKernel::NextTransId                (   u32&                    
 
 void            CKernel::initHeaderVCSM             (   vc_sm_msg_hdr_t&        hdr, 
                                                         u32                     type)
-{␊
+{
                 hdr                 = {};
                 hdr.type            = type;
                 hdr.trans_id        = NextTransId(m_TransactionId);
-}␊
+}
 
 void            CKernel::initHeaderMMAL             (   mmal_msg_header&        hdr, 
                                                         u32                     type)
