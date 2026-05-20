@@ -501,6 +501,63 @@ bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Init
                     {
                     bOK = initializeVCSM(); 
                     }
+
+                if (bOK)
+                    {
+                    bOK = importMemoryVCSM  (   m_videoBlockBase, 
+                                                m_videoBlockSize, 
+                                                m_input_buffer_handle,
+                                                m_importTxVCSM_A, 
+                                                m_importRxVCSM_A );
+
+                    if (bOK)
+                    bOK = lockMemoryVCSM    (   m_input_buffer_handle,
+                                                m_input_buffer_pointer,
+                                                m_lockTxVCSM, 
+                                                m_lockRxVCSM );                    
+                    }
+
+                if (bOK)
+                    {
+                    bOK = importMemoryVCSM  (   m_frameBlockBaseA, 
+                                                m_frameBlockSizeA, 
+                                                m_output_buffer_handle_a,
+                                                m_importTxVCSM_B, 
+                                                m_importRxVCSM_B );                    
+
+                    if (bOK)
+                    bOK = lockMemoryVCSM    (   m_output_buffer_handle_a,
+                                                m_output_buffer_pointer_a,
+                                                m_lockTxVCSM, 
+                                                m_lockRxVCSM );
+                    }
+
+                if (bOK)
+                    {
+                    bOK = importMemoryVCSM  (   m_frameBlockBaseB, 
+                                                m_frameBlockSizeB, 
+                                                m_output_buffer_handle_b,
+                                                m_importTxVCSM_C, 
+                                                m_importRxVCSM_C );                    
+
+                    if (bOK)
+                    bOK = lockMemoryVCSM    (   m_output_buffer_handle_b,
+                                                m_output_buffer_pointer_b,
+                                                m_lockTxVCSM, 
+                                                m_lockRxVCSM );                    
+                    }
+
+                return bOK;                             
+}
+/*
+bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Initialize()
+{
+                bool bOK = true;    
+
+                if (bOK)
+                    {
+                    bOK = initializeVCSM(); 
+                    }
                 if (bOK)
                     {
                     bOK = importMemoryVCSM  (   m_videoBlockBase, 
@@ -537,6 +594,7 @@ bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Init
 
                 return bOK;                             
 }
+*/
 // instead of having life time long structs for my vcsm / mmal i declare pointer instead and provide wrappers to alloc and free the structs after use!
 // means also i have to call the wrapper here at the CKernel init phase ( presumably after the memory alloc ) and after the init phase of the vc04 
 
