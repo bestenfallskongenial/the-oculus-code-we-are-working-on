@@ -386,6 +386,49 @@ public:
 
                 void        Log_enablePort              (       const   MMAL_Port_Action_Msg&           tx, 
                                                                 const   MMAL_Port_Action_Reply_Msg&     rx );
+// code_vc
+public:
+        static  void        callbackVCSM                (           void*                           callback_param, 
+                                                                    VCHI_CALLBACK_REASON_T          reason, 
+                                                                    void*                           msg_handle);
+
+        static  void        callbackMMAL                (           void*                           callback_param, 
+                                                                    VCHI_CALLBACK_REASON_T          reason, 
+                                                                    void*                           msg_handle);
+
+                void        getStateVCHI                ();                                                             // get the VCHI instance and the connection handle from bcm_host.h
+
+                bool        initEventsVCOS              (           VCOS_EVENT_T&                   event, 
+                                                            const   char*                           name);
+//100
+                u32         convertAddress              (           void*                           p_busAddress, 
+                                                                    size_t                          p_size);
+                bool        checkGLerrorMMAL            ();
+
+                u32         NextTransId                 (           u32&                            tid);
+
+                void        initHeaderVCSM              (           vc_sm_msg_hdr_t&                hdr, 
+                                                                    u32                             type);
+
+                void        initHeaderMMAL              (           mmal_msg_header&                hdr, 
+                                                                    u32                             type);
+//105
+                bool        sendAndWaitVCHI             (           VCHI_SERVICE_HANDLE_T           ServiceHandle,
+                                                                    VCOS_EVENT_T&                   VCOSevent,
+                                                                    const void*                     msg,
+                                                                    size_t                          msg_size,
+                                                                    void*                           rx_msg,
+                                                                    size_t                          max_reply_len,
+                                                                    size_t*                         actual_reply_len);
+
+                bool        openServiceVCHI             (           SERVICE_CREATION_T&             tx,
+                                                                    uint32_t                        serviceVersion,
+                                                                    uint32_t                        serviceVersionMin,
+                                                                    int32_t                         service_id,
+                                                                    VCHI_CALLBACK_T                 cb,
+                                                                    void*                           cb_param,
+                                                                    VCHI_INSTANCE_T                 VCHIInstance,
+                                                                    VCHI_SERVICE_HANDLE_T&          ServiceHandle);
 
 // CODE_WRAPPERS.CPP - HERE THE JOY BEGINS
                 bool        wrapperInitDMA              ();             // init/alloc the dma buffers +++
