@@ -1,6 +1,7 @@
 #ifndef _kernel_h
 #define _kernel_h
 
+        extern "C" void     vc_host_get_vchi_state(VCHI_INSTANCE_T *inst, VCHI_CONNECTION_T **conn);
 
 #include "defs_include.h"
 
@@ -30,7 +31,7 @@ public:
 
 public:
 // CODE_DATAMANAGEMENT.CPP -> CHECKED
-        extern "C" void     vc_host_get_vchi_state(VCHI_INSTANCE_T *inst, VCHI_CONNECTION_T **conn);
+
 
                 bool        Mount                       (       const   char*                           p_deviceName);          // +++ "emmc1-1" cd ( root ), "umsd1-1" usb returns success
 
