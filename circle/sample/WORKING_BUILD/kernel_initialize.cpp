@@ -120,6 +120,14 @@ boolean			CKernel::Initialize						(	void )
                     nextline(   MY_BUFFER, MY_INDEX); 
 #endif
                     }    
+                if (bOK)
+                    {
+                    bOK = wrapper_VCSM();
+#ifdef __DEBUG_LOG__
+                    storeLog( MY_BUFFER, MY_INDEX, "1/100 sec", m_Timer.GetTicks(), "wrapper_VCSM()                                     DONE");
+                    nextline(   MY_BUFFER, MY_INDEX); 
+#endif
+                    }
                     if (bOK)
                     {
                     initOGL(&m_ogl);
