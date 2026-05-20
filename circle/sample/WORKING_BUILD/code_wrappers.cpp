@@ -4,7 +4,7 @@
 //  #undef  __DEBUG_LOG__
     #define __DEBUG_LOG__
 
-    #define MY_BUFFER   m_bufferLog
+    #define MY_BUFFER   m_bufferLog                 // not used here!
     #define MY_INDEX    m_bufferLogIndex
 
 bool            CKernel::wrapperInitDMA             (   )

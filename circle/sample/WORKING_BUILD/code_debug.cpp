@@ -3,7 +3,7 @@
 //  #undef  __DEBUG_LOG__
     #define __DEBUG_LOG__
     
-    #define MY_BUFFER   m_logBuffer
+    #define MY_BUFFER   m_logBuffer                 // not used here!
     #define MY_INDEX    m_logBufferIndex
 
 static const char FromKernel[] = "kernel";
