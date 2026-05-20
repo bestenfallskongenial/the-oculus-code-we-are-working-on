@@ -182,12 +182,13 @@ bool            CKernel::parse264                  (   h264_state* h,
                         h->frame_offset[file_index][idx]  = (size_t)((data + sps_off[file_index][idx]) - (u8*)h->block_base);
                         h->frame_length[file_index][idx]  = end_off - sps_off[file_index][idx];
                         h->idr_offset[file_index]         = idr_off[file_index][idx] - sps_off[file_index][idx];
-
+/*
                         storeLog(   MY_BUFFER, MY_INDEX,
                                     "67+68+65", EMPTYLOG, 
                                     "a", (u32)h->frame_address[file_index][idx], 
                                     "l", (u32)h->frame_length[file_index][idx], 
                                     "o", (u32)h->frame_offset[file_index][idx]);
+*/                                    
                         }
 
                     u8 tmp[1024];
