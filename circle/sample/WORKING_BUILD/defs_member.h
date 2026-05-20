@@ -40,9 +40,6 @@ private:        // SMI / DMA / WS2812
                 TXDATA_T*                       m_pBuffer               = 0;
                 bool                            m_SMIValid              = FALSE;
 public:         // Logging
-
-
-
                 u32                             m_bufferLogIndex[LOG_SD+LOG_USB];       // for the new model where we use the char* m_bufferLog[LOG_SD+LOG_USB] 
 
                 char                            m_logBuffer[1024*32]    = {0}; //  pre-init buffer 
@@ -253,6 +250,25 @@ typedef void (CKernel::*ModeFunc)(int);         // for the new menu selector -> 
                                                                                                 { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
                                                                                                 { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
                                                                                                 { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0} };
+
+private:
+        VCHI_INSTANCE_T                 m_VCHIInstance                  = 0;
+        VCHI_CONNECTION_T*              m_Connection                    = 0;
+        VCOS_EVENT_T                    m_EventSMEM                     = {};
+        VCOS_EVENT_T                    m_EventMMAL                     = {};
+        VCHI_SERVICE_HANDLE_T           m_ServiceHandleVCSM             = 0;
+        VCHI_SERVICE_HANDLE_T           m_ServiceHandleMMAL             = 0;
+        u32                             m_TransactionId                 = 0;
+    //  u32                             m_vc_handle[MAX_BUFFER]         = {0};  // why an array, why not simply by u32& my_current_handle instead of slot?
+    //  u32                             m_vc_pointer[MAX_BUFFER]        = {0};  // why an array, why not simply by u32& my_current_pointer instead of slot?
+        u32                             m_input_buffer_handle           = 0;            // wait, thats all already below
+        u32                             m_output_buffer_handle_a        = 0;
+        u32                             m_output_buffer_handle_b        = 0;
+
+        u32                             m_input_buffer_pointer          = 0;
+        u32                             m_output_buffer_pointer_a       = 0;
+        u32                             m_output_buffer_pointer_b       = 0;
+        
 // VCSM predefined messages as public member
                 SERVICE_CREATION_T*              m_ServiceCreateVCSM                = nullptr;
 

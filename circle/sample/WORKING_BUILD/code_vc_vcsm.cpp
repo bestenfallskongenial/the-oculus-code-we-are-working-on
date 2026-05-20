@@ -1,3 +1,45 @@
+bool            CKernel::initializeVCSM             (   )
+{
+bool bOK = true;
+
+#ifdef __DEBUG_LOG__
+            //  storeLog ( MY_BUFFER, MY_INDEX, SERVICENAMESTRING, SERVICEVERSIONSTRING);    
+#endif 
+
+                getStateVCHI                ();
+                if (bOK)
+                    {
+                    bOK = initEventsVCOS(m_EventSMEM, "SMEM");
+#ifdef __DEBUG_LOG__
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "VCSM initEventsVCOS FAILED");
+#endif 
+                    if (!bOK) return false;
+                    }
+
+                if (bOK)
+                    {
+                    bOK = openServiceVCHI ( m_ServiceCreateVCSM,
+                                            VC_SM_VER,
+                                            VC_SM_MIN_VER,
+                                            VCHIQ_MAKE_FOURCC('S','M','E','M'),
+                                            callbackVCSM,
+                                            &m_EventSMEM,
+                                            m_VCHIInstance,
+                                            m_ServiceHandleVCSM
+                                            );
+#ifdef __DEBUG_LOG__            
+                    if (!bOK) storeLog ( MY_BUFFER, MY_INDEX, "VCHI openService FAILED!");      
+#endif                     
+                    if (!bOK) return false;
+                    }
+#ifdef __DEBUG_LOG__ 
+            //  nextline ( MY_BUFFER, MY_INDEX );
+                storeLog ( MY_BUFFER, MY_INDEX, "VCSM Successful Initialized");
+                storeLog ( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");                
+#endif 
+                return bOK;
+}
+
 bool            CKernel::importMemoryVCSM           (   void*                   p_bufferBlockbase, 
                                                         size_t                  size, 
                                                         int                     slot, 

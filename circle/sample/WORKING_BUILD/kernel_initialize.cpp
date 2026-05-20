@@ -97,6 +97,13 @@ boolean			CKernel::Initialize						(	void )
                     }
                 if (bOK)
                     {
+                    bOK =   wrapperInitVCSMstruct();
+#ifdef __DEBUG_LOG__
+                    storeLog( MY_BUFFER, MY_INDEX, "1/100 sec", m_Timer.GetTicks(), "InitVCSMstruct()                                   DONE");
+#endif
+                    }                    
+                if (bOK)
+                    {
                     bOK =   m_VCHIQ.Initialize();
 #ifdef __DEBUG_LOG__
                     storeLog( MY_BUFFER, MY_INDEX, "1/100 sec", m_Timer.GetTicks(), "m_VCHIQ.Initialize()                               DONE");
@@ -163,3 +170,5 @@ boolean			CKernel::Initialize						(	void )
                     }
                 return bOK;
 }
+
+
