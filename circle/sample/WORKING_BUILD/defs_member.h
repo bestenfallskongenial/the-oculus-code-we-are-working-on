@@ -268,7 +268,26 @@ private:
         u32                             m_input_buffer_pointer          = 0;
         u32                             m_output_buffer_pointer_a       = 0;
         u32                             m_output_buffer_pointer_b       = 0;
-        
+
+// VCSM predefined messages as public member
+                SERVICE_CREATION_T               m_ServiceCreateVCSM;
+
+                VCSM_Import_MEM_Msg              m_importTxVCSM_A;
+                VCSM_Import_MEM_Reply            m_importRxVCSM_A;
+
+                VCSM_Import_MEM_Msg              m_importTxVCSM_B;
+                VCSM_Import_MEM_Reply            m_importRxVCSM_B;
+
+                VCSM_Import_MEM_Msg              m_importTxVCSM_C;
+                VCSM_Import_MEM_Reply            m_importRxVCSM_C;
+
+                VCSM_Lock_MEM_Msg                m_lockTxVCSM;
+                VCSM_Lock_MEM_Reply              m_lockRxVCSM;
+
+                VCSM_Free_MEM_Msg                m_freeTxVCSM;
+                VCSM_Free_MEM_Reply              m_freeRxVCSM;
+
+/*        
 // VCSM predefined messages as public member
                 SERVICE_CREATION_T*              m_ServiceCreateVCSM                = nullptr;
 
@@ -342,3 +361,4 @@ private:
 
                 MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Output_D           = nullptr;
                 MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Output_D           = nullptr;
+*/

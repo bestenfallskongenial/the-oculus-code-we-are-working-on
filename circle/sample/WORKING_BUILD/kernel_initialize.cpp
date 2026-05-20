@@ -95,13 +95,15 @@ boolean			CKernel::Initialize						(	void )
                     storeLog( MY_BUFFER, MY_INDEX, "1/100 sec", m_Timer.GetTicks(), "InitMEM Buffer                                     DONE");
 #endif
                     }
+/*                    
                 if (bOK)
                     {
                     bOK =   wrapperInitVCSMstruct();
 #ifdef __DEBUG_LOG__
                     storeLog( MY_BUFFER, MY_INDEX, "1/100 sec", m_Timer.GetTicks(), "InitVCSMstruct()                                   DONE");
 #endif
-                    }                    
+                    }
+*/                    
                 if (bOK)
                     {
                     bOK =   m_VCHIQ.Initialize();
