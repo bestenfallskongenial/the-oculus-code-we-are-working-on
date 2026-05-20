@@ -439,19 +439,19 @@ public:
                                                                                             /*  int                     slot, */ 
                                                                                                 u32&                    vcsm_handle,   
                                                                                                 VCSM_Import_MEM_Msg&    tx, 
-                                                                                                VCSM_Import_MEM_Reply&  rx)
+                                                                                                VCSM_Import_MEM_Reply&  rx);
 
                 bool        lockMemoryVCSM              (/* int                     slot, */
                                                         u32&                    vcsm_handle,
                                                         u32&                    vcsm_pointer, 
                                                         VCSM_Lock_MEM_Msg&      tx, 
-                                                        VCSM_Lock_MEM_Reply&    rx)
+                                                        VCSM_Lock_MEM_Reply&    rx);
 //110
                 bool        freeMemoryVCSM              (/* int                     slot, */ 
                                                         u32&                    vcsm_handle, 
                                                         u32&                    vcsm_pointer,                                             
                                                         VCSM_Free_MEM_Msg&      tx, 
-                                                        VCSM_Free_MEM_Reply&    rx)
+                                                        VCSM_Free_MEM_Reply&    rx);
 
 
 // CODE_WRAPPERS.CPP - HERE THE JOY BEGINS
