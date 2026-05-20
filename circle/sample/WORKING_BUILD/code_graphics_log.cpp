@@ -121,6 +121,7 @@ bool            CKernel::programLog                 (   GLint       program,
 #endif                     
                     }
 #ifdef __DEBUG_LOG__
+                nextline(   MY_BUFFER, MY_INDEX); 
             //  storeLog( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
 #endif 
 
