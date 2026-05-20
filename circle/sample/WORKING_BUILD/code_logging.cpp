@@ -163,11 +163,9 @@ bool            CKernel::startupScreen          (   void )
                 unsigned fbHeight       =  gE_FrameBuffer.GetHeight();
                 
                 nextline(   MY_BUFFER, MY_INDEX);
-
                 storeLog(   MY_BUFFER, MY_INDEX, 
                             "Machine Model  ", EMPTYLOG, 
                             machineName, EMPTYLOG );
-
                 storeLog(   MY_BUFFER, MY_INDEX, 
                             "SoC Name       ", EMPTYLOG, 
                             socName          , EMPTYLOG, 
@@ -184,12 +182,9 @@ bool            CKernel::startupScreen          (   void )
                 nextline(   MY_BUFFER, MY_INDEX);
                 storeLog(   MY_BUFFER, MY_INDEX, 
                             "Clock CORE  MHz", coreClock,
-                            "Clock ARM   MHz", armClock);
-
-                storeLog(   MY_BUFFER, MY_INDEX, 
+                            "Clock ARM   MHz", armClock,
                             "Clock EMMC  MHz", emmcClock,
                             "Clock EMMC2 MHz", emmc2Clock);
-
                 storeLog(   MY_BUFFER, MY_INDEX, 
                             "Clock UART  MHz", uartClock);
                 nextline(   MY_BUFFER, MY_INDEX);
@@ -211,6 +206,7 @@ bool            CKernel::startupScreen          (   void )
                 storeLog(   MY_BUFFER, MY_INDEX, 
                             "gE Screen X    ", gE_ScreenWidth,
                             "gE Screen Y    ", gE_ScreenHeight);
+                nextline(   MY_BUFFER, MY_INDEX);                            
 /*
                 bufferScreenClear();
 

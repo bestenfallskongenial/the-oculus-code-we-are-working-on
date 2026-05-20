@@ -69,7 +69,8 @@ bool            CKernel::saveFromBufferM            (   const   char*       p_de
 {
                 if(!Mount( p_deviceName ))
                     {
-#ifdef __DEBUG_LOG__                        
+#ifdef __DEBUG_LOG__
+                    nextline(   MY_BUFFER, MY_INDEX);
                     storeLog(   MY_BUFFER, MY_INDEX,
                                     "Failed to Mount Device",   EMPTYLOG,
                                     p_deviceName,               EMPTYLOG,
@@ -146,6 +147,7 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                 p_prevFiles = p_validFiles;
 
 #ifdef __DEBUG_LOG__
+                nextline(   MY_BUFFER, MY_INDEX);
                 storeLog(   MY_BUFFER, MY_INDEX,
                             "1/100 sec", m_Timer.GetTicks(),
                             "BULKLOAD Start scanned",   (u32)p_maxFiles,
@@ -182,7 +184,6 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                             "BULKLOAD End prev",    (u32)p_prevFiles,
                             "new",                  (u32)p_validFiles,
                             "loaded",               (u32)(p_validFiles - p_prevFiles));
-                nextline(   MY_BUFFER, MY_INDEX);            
 #endif
 }
 

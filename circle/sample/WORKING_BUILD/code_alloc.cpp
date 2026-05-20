@@ -12,6 +12,7 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
 {
                 char** buffers = (char**)malloc(p_count * sizeof(char*));
 #ifdef __DEBUG_LOG__
+                nextline(   MY_BUFFER, MY_INDEX);     
                 storeLog(   MY_BUFFER, MY_INDEX,
                             "ALLOC-MEM base   ",    (u32)buffers,
                             " count",                (u32)p_count,
@@ -35,7 +36,7 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                             "ALLOC-MEM done",      (u32)buffers,
                             "count",               (u32)p_count,
                             "size",                (u32)bufferSize);
-                nextline(   MY_BUFFER, MY_INDEX);                              
+                        
 #endif         
                 msDelay(100);
                 return buffers;
@@ -69,15 +70,14 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
 #endif  
                     memset(buffers[i], 0, bufferSize);
                     }
-#ifdef __DEBUG_LOG__   
+#ifdef __DEBUG_LOG__
+                nextline(   MY_BUFFER, MY_INDEX);
                 storeLog(   MY_BUFFER, MY_INDEX,
                                 "1/100 sec",        m_Timer.GetTicks(),
                                 "ALLOC-DMA raw",    (u32)raw,
                                 "block",            (u32)dma_block,
                                 "total",            (u32)total_size /*,
                                 "aligned",              (u32)aligned_total_size */ );
-
-                nextline(   MY_BUFFER, MY_INDEX);             
 #endif
                 *blockBaseOut   = dma_block;
                 *rawBlockOut    = raw;
