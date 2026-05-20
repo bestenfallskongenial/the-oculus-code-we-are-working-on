@@ -37,19 +37,19 @@ unsigned b = 186;
                                                     "bootlog.txt",
                                                     m_logBuffer,            // stores the pre-init buffer
                                                     m_logBufferIndex );
+
+                                                    msDelay(100);
+                        saveFromBufferM         (   PARTITION_NAME_SD,
+                                                    "pars.txt",
+                                                    m_logParseBuffer,
+                                                    m_logParseBufferIndex );
+
+                                                    msDelay(100);
+                        saveFromBufferM         (   PARTITION_NAME_SD,
+                                                    "glsl.txt",
+                                                    m_logGLSLBuffer,
+                                                    m_logGLSLBufferIndex );
 /*
-                                                    msDelay(100);
-                        saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    "glspars.txt",
-                                                    m_bufferLog[3],
-                                                    m_bufferLogIndex[3] );
-
-                                                    msDelay(100);
-                        saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    "texpars.txt",
-                                                    m_bufferLog[10],
-                                                    m_bufferLogIndex[10] );
-
                                                     msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     "vi0pars.txt",
