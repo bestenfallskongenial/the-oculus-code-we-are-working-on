@@ -432,6 +432,23 @@ public:
                                                                     VCHI_INSTANCE_T                 VCHIInstance,
                                                                     VCHI_SERVICE_HANDLE_T&          ServiceHandle);
 
+                bool        initializeVCSM              ();
+
+                bool        importMemoryVCSM            (           void*                           p_bufferBlockbase, 
+                                                                    size_t                          size, 
+                                                                    int                             slot, 
+                                                                    VCSM_Import_MEM_Msg&            tx, 
+                                                                    VCSM_Import_MEM_Reply&          rx);
+
+                bool        lockMemoryVCSM              (           int                             slot, 
+                                                                    VCSM_Lock_MEM_Msg&              tx, 
+                                                                    VCSM_Lock_MEM_Reply&            rx);
+//110
+                bool        freeMemoryVCSM              (           int                             slot, 
+                                                                    VCSM_Free_MEM_Msg&              tx, 
+                                                                    VCSM_Free_MEM_Reply&            rx);
+
+
 // CODE_WRAPPERS.CPP - HERE THE JOY BEGINS
                 bool        wrapperInitDMA              ();             // init/alloc the dma buffers +++
 
