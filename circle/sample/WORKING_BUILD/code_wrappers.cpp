@@ -542,6 +542,7 @@ bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Init
 
 bool            CKernel::wrapperInitVCSMstruct      (   )
 {
+/*   
                 bool bOK = true;
 
                 if (bOK) { m_ServiceCreateVCSM          = new SERVICE_CREATION_T();           
@@ -576,7 +577,7 @@ bool            CKernel::wrapperInitVCSMstruct      (   )
 
                 if (bOK) { m_freeRxVCSM                 = new VCSM_Free_MEM_Reply();          
                     bOK = (m_freeRxVCSM                != nullptr); }
-       
+*/       
                 return bOK;               
 }
 
