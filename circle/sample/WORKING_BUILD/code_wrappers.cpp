@@ -509,7 +509,7 @@ bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Init
                                                 VCSM_Import_MEM_Msg& tx, 
                                                 VCSM_Import_MEM_Reply& rx);
                     bOK = lockMemoryVCSM    (   0, 
-                                                CSM_Lock_MEM_Msg&              tx, 
+                                                VCSM_Lock_MEM_Msg&              tx, 
                                                 VCSM_Lock_MEM_Reply&            rx);                    
                     }
                 if (bOK)
@@ -542,9 +542,9 @@ bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Init
 
 bool            CKernel::wrapperInitVCSMstruct      (   )
 {
-/*   
+   
                 bool bOK = true;
-
+/*
                 if (bOK) { m_ServiceCreateVCSM          = new SERVICE_CREATION_T();           
                     bOK = (m_ServiceCreateVCSM         != nullptr); }
 
