@@ -534,7 +534,7 @@ bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Init
                                                 VCSM_Lock_MEM_Msg&              tx, 
                                                 VCSM_Lock_MEM_Reply&            rx);                    
                     }
-                    
+
                 return bOK;                             
 }
 // instead of having life time long structs for my vcsm / mmal i declare pointer instead and provide wrappers to alloc and free the structs after use!
@@ -542,9 +542,7 @@ bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Init
 
 bool            CKernel::wrapperInitVCSMstruct      (   )
 {
-                bool bOK = true;    
-    /*
-
+                bool bOK = true;
 
                 if (bOK) { m_ServiceCreateVCSM          = new SERVICE_CREATION_T();           
                     bOK = (m_ServiceCreateVCSM         != nullptr); }
@@ -578,7 +576,7 @@ bool            CKernel::wrapperInitVCSMstruct      (   )
 
                 if (bOK) { m_freeRxVCSM                 = new VCSM_Free_MEM_Reply();          
                     bOK = (m_freeRxVCSM                != nullptr); }
-    */         
+       
                 return bOK;               
 }
 
