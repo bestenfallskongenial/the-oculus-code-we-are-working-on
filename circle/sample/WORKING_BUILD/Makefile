@@ -20,6 +20,8 @@ OBJS  = main.o \
         code_parser.o \
         code_stubs.o \
         code_util.o \
+        code_vc_mmal_api.o \
+        code_cv_mmal_init.o \
         code_vc_service.o \
         code_vc_vcsm.o \
         code_wrappers.o \

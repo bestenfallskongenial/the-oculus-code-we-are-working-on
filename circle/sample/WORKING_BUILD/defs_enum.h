@@ -126,9 +126,7 @@ enum FileField
     FLD_SIZE,                                       		// maximal size of the files / buffer-size
     FLD_COUNT
 };
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 // my vcsm dirver
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 enum vc_sm_msg_type 										// Message types supported for HOST->VC direction //			
 	{				
 	VC_SM_MSG_TYPE_ALLOC,									// Allocate shared memory block //
@@ -155,9 +153,7 @@ enum vc_sm_alloc_type_t 									// Type of memory to be allocated //
 	VC_SM_ALLOC_CACHED,
 	VC_SM_ALLOC_NON_CACHED,
 	};
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-VCHIQ.H
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 enum vchiq_mmal_es_type 
 {
 	MMAL_ES_TYPE_UNKNOWN,     								// Unknown elementary stream type //
@@ -166,9 +162,7 @@ enum vchiq_mmal_es_type
 	MMAL_ES_TYPE_VIDEO,       								// Video elementary stream //
 	MMAL_ES_TYPE_SUBPICTURE   								// Sub-picture elementary stream //
 };
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-MSG-COMMON.H
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 enum mmal_msg_status 
 {
 	MMAL_MSG_STATUS_SUCCESS = 0, 							// Success //
@@ -188,9 +182,7 @@ enum mmal_msg_status
 	MMAL_MSG_STATUS_EAGAIN,      							// Resource temporarily unavailable. //
 	MMAL_MSG_STATUS_EFAULT,      							// Bad address //
 };
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-PARAMETERS.H
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 enum mmal_parameter_common_type 	/* Common parameters */
 {
 	
@@ -210,9 +202,7 @@ enum mmal_parameter_common_type 	/* Common parameters */
 	MMAL_PARAMETER_SYSTEM_TIME,								/**< MMAL_PARAMETER_UINT64_T */
 	MMAL_PARAMETER_NO_IMAGE_PADDING,						/**< MMAL_PARAMETER_BOOLEAN_T */
 };
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-MSG-PORT.H
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 enum mmal_port_type 										// MMAL_PORT_TYPE_T //
 {
 	MMAL_PORT_TYPE_UNKNOWN = 0,								// Unknown port type //
@@ -221,9 +211,7 @@ enum mmal_port_type 										// MMAL_PORT_TYPE_T //
 	MMAL_PORT_TYPE_OUTPUT,									// Output port //
 	MMAL_PORT_TYPE_CLOCK,									// Clock port //
 };
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 //              FROM MMAL-MSG.H
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 enum mmal_msg_type 
 {
 	MMAL_MSG_TYPE_QUIT = 1,

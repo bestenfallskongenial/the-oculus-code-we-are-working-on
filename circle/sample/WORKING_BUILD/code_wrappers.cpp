@@ -595,6 +595,28 @@ bool            CKernel::wrapper_VCSM               (   )   // for CKernel::Init
                 return bOK;                             
 }
 */
+
+bool            CKernel::wrapper_MMAL ()
+{
+
+                initializeMMAL  (   m_input_buffer_handle,
+                                    m_input_buffer_pointer,
+                                    m_videoBlockSize,
+
+                                    m_output_buffer_handle_a,
+                                    m_output_buffer_pointer_a,
+                                    m_frameBlockSizeA,
+
+                                    m_output_buffer_handle_b,
+                                    m_output_buffer_pointer_b,
+                                    m_frameBlockSizeB,                          // A & B must be the same
+
+                                    MAX_VIDEO_WIDTH,                            // im still not sure here, shall i expose this parameters or hardwire them
+                                    MAX_VIDEO_HEIGHT,                           // in the end the system is fixed here...
+                                    m_ogl.display,                              // needed for the m_EGLimage in bufferReadyMMAL
+                                    m_ogl.context 
+                                    )
+}
 // instead of having life time long structs for my vcsm / mmal i declare pointer instead and provide wrappers to alloc and free the structs after use!
 // means also i have to call the wrapper here at the CKernel init phase ( presumably after the memory alloc ) and after the init phase of the vc04 
 

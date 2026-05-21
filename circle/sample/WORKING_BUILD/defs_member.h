@@ -38,6 +38,7 @@ private:        // SMI / DMA / WS2812
                 unsigned                        m_LEDCount              = 0;
                 unsigned                        m_BufferLength          = 0;
                 TXDATA_T*                       m_pBuffer               = 0;
+
                 bool                            m_SMIValid              = FALSE;
 public:         // Logging
                 u32                             m_bufferLogIndex[LOG_SD+LOG_USB];       // for the new model where we use the char* m_bufferLog[LOG_SD+LOG_USB] 
@@ -47,7 +48,7 @@ public:         // Logging
    
                 char                            m_logBootBuffer[1024*32]    = {0};
                 u32                             m_logBootBufferIndex        = 0;                
-                char                            m_logParseBuffer[1024*32]    = {0};
+                char                            m_logParseBuffer[1024*32]   = {0};
                 u32                             m_logParseBufferIndex        = 0;
                 char                            m_logGLSLBuffer[1024*32]    = {0};
                 u32                             m_logGLSLBufferIndex        = 0;
@@ -287,7 +288,64 @@ private:
                 VCSM_Free_MEM_Msg                m_freeTxVCSM;
                 VCSM_Free_MEM_Reply              m_freeRxVCSM;
 
-/*        
+// MMAL predefined messages as public member
+                SERVICE_CREATION_T              m_ServiceCreateMMAL;
+
+                MMAL_Component_Create_Msg        m_ComponentCreateTx;
+                MMAL_Component_Create_Reply      m_ComponentCreateRx;
+
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_A;
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_A;
+
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_A; 
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_A;
+
+                MMAL_Port_Info_Set_Msg           m_PortInfoSetTx_Input;
+                MMAL_Port_Info_Set_Msg           m_PortInfoSetTx_Output;
+
+                MMAL_Port_Info_Set_Reply         m_PortInfoSetRx_Input;
+                MMAL_Port_Info_Set_Reply         m_PortInfoSetRx_Output;
+
+                MMAL_Component_Enable_Msg        m_ComponentEnableTx;
+                MMAL_Component_Enable_Reply      m_ComponentEnableRx;
+
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_B;
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_B;
+
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_B;
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_B;
+
+                MMAL_Port_Parameter_Set_Msg      m_PortParamTx_Input;
+                MMAL_Port_Parameter_Set_Reply    m_PortParamRx_Input;
+
+                MMAL_Port_Parameter_Set_Msg      m_PortParamTx_Output;
+                MMAL_Port_Parameter_Set_Reply    m_PortParamRx_Output;
+
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_C;
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_C;
+
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_C;
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_C;
+
+                MMAL_Port_Action_Msg             m_PortActionTx_Input;
+                MMAL_Port_Action_Reply_Msg       m_PortActionRx_Input;
+
+                MMAL_Port_Action_Msg             m_PortActionTx_Output;
+                MMAL_Port_Action_Reply_Msg       m_PortActionRx_Output;
+
+                MMAL_Buffer_From_Host_Msg        m_BufferFromHostTx_Input;
+                MMAL_Buffer_From_Host_Msg        m_BufferFromHostRx_Input;
+
+                MMAL_Buffer_From_Host_Msg        m_BufferFromHostTx_Output;
+                MMAL_Buffer_From_Host_Msg        m_BufferFromHostRx_Output;
+
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_D;
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_D;
+
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_D;
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_D;
+
+                /*        
 // VCSM predefined messages as public member
                 SERVICE_CREATION_T*              m_ServiceCreateVCSM                = nullptr;
 

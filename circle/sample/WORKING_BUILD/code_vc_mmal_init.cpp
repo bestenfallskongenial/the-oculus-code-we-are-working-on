@@ -1,3 +1,39 @@
+#include "kernel.h"
+
+bool            CKernel::initTexturesMMAL         (   )
+{
+                int f_count = 0;
+
+                glGenTextures(1, &m_Texture);
+                if(!checkGLerrorMMAL()) f_count++;
+                glBindTexture(GL_TEXTURE_2D, m_Texture);
+                if(!checkGLerrorMMAL()) f_count++;
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                if(!checkGLerrorMMAL()) f_count++;
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                if(!checkGLerrorMMAL()) f_count++;
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                if(!checkGLerrorMMAL()) f_count++;
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                if(!checkGLerrorMMAL()) f_count++;
+                glBindTexture(GL_TEXTURE_2D, 0);
+                if(!checkGLerrorMMAL()) f_count++;
+
+                if( f_count != 0)
+                    { 
+#ifdef __DEBUG_LOG__ 
+                //  nextline( MY_BUFFER, MY_INDEX );                                 
+                    storeLog( MY_BUFFER, MY_INDEX, "Texture Creation FAILED");
+#endif                   
+                    return false;
+                    }
+#ifdef __DEBUG_LOG__             
+            //  nextline( MY_BUFFER, MY_INDEX );
+                storeLog( MY_BUFFER, MY_INDEX, "Texture Creation SUCCESS");
+#endif               
+                return true;
+}
+
 bool            CKernel::createComponent            (   MMAL_Component_Create_Msg& tx, 
                                                         MMAL_Component_Create_Reply& rx)
 {
