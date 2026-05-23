@@ -22,7 +22,7 @@ OBJS  = main.o \
         code_util.o \
         code_vc_service.o \
         code_vc_mmal_api.o \
-        code_cv_mmal_init.o \
+        code_vc_mmal_init.o \
         code_vc_vcsm.o \
         code_wrappers.o \
         code_debug.o
