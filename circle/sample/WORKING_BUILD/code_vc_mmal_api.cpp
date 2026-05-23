@@ -106,12 +106,12 @@ bool            CKernel::framePollerMMAL            (   u32 frame_offset, u32 fr
 
                                     if (m_CurrentHandle == m_output_buffer_handle_a) // Ping-pong: requeue the other output buffer
                                         {
-                                        if (!queueOutputBufferMMAL(m_BufferFromHostTx_Output, m_output_buffer_handle_b, m_OutputBufferSize))
+                                        if (!queueOutputBufferMMAL(m_BufferFromHostTx_Output, m_output_buffer_handle_b, m_frameBlockSizeB )) // m_OutputBufferSize
                                             return false;
                                         }
                                     if (m_CurrentHandle == m_output_buffer_handle_b) 
                                         {
-                                        if (!queueOutputBufferMMAL(m_BufferFromHostTx_Output, m_output_buffer_handle_a, m_OutputBufferSize))
+                                        if (!queueOutputBufferMMAL(m_BufferFromHostTx_Output, m_output_buffer_handle_a, m_frameBlockSizeA )) // m_OutputBufferSize
                                             return false;
                                         }
                                     if (!bufferReadyMMAL(m_CurrentHandle))
@@ -213,7 +213,7 @@ bool            CKernel::queueOutputBufferMMAL      (   MMAL_Buffer_From_Host_Ms
                                                         u32 vc_handle, 
                                                         u32 alloc_size)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_BUFFER_FROM_HOST );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_BUFFER_FROM_HOST );
 
                 tx.msg.drvbuf.client_context                       = tx.hdr.context;  /* patch dynamic fields into already-primed msg */
 
@@ -234,7 +234,7 @@ bool            CKernel::queueInputBufferMMAL       (   MMAL_Buffer_From_Host_Ms
                                                         u32 frame_offset, 
                                                         u32 frame_length)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_BUFFER_FROM_HOST );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_BUFFER_FROM_HOST );
 
                 tx.msg.drvbuf.client_context                       = tx.hdr.context;                /* patch dynamic fields into already-primed msg */
 
