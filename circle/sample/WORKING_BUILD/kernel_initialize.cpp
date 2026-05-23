@@ -338,6 +338,7 @@ boolean			CKernel::Initialize						(	void )
                         }
                     if (bOK)    // seemingly mandatory to "prime" and send / queue the buffers ones before decoder runtime
                         {
+*/                            
                         /*    
                         queueInputBufferMMAL        (   m_BufferFromHostTx_Input,
                                                         m_BufferFromHostRx_Input );
@@ -349,6 +350,7 @@ boolean			CKernel::Initialize						(	void )
                         if (!bOK) storeLog( MY_BUFFER, MY_INDEX, "MMALenablePort Output FAILED");
 #endif 
                         */
+/*                        
                         }
 #ifdef __DEBUG_LOG__
                     if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "MMAL Init                              FAILED");
