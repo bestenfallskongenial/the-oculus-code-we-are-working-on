@@ -244,7 +244,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK = setPortInfoMMAL(      m_PortInfoSetTx_Input, 
                                                     m_PortInfoSetRx_Input);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Input )               FAILED");
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Input )                DONE");
 #endif 
                     }
                 if (bOK)
@@ -252,7 +252,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK = setPortInfoMMAL(      m_PortInfoSetTx_Output, 
                                                     m_PortInfoSetRx_Output);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Output )              FAILED");
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Output )               DONE");
 #endif 
                     }
 
