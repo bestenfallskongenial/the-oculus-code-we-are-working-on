@@ -204,17 +204,16 @@ boolean			CKernel::Initialize						(	void )
 
                 if (bOK)
                     {
-                    if (bOK)
-                        {
-                        bOK = createComponent( m_ComponentHandle, m_ComponentCreateTx, m_ComponentCreateRx);
+                    bOK = createComponent( m_ComponentHandle, m_ComponentCreateTx, m_ComponentCreateRx);
 #ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "createComponent()                       DONE");
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "createComponent()                       DONE");
 #endif 
-                        }
-
+                    }
 /*
 
 
+                if (bOK)
+                    {
 
                     if (bOK)
                         {
