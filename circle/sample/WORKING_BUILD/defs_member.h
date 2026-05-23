@@ -368,7 +368,7 @@ private:
 
                 bool                            f_firstFrameQueued = false;
 
-    u32                      m_ResolutionX;
+    u32                      m_ResolutionX;     // placeholder until i solved this!
     u32                      m_ResolutionY;
 
     EGLDisplay               m_eglDisplay;
