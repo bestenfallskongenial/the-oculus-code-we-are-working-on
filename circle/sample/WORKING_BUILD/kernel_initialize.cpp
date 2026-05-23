@@ -100,9 +100,9 @@ boolean			CKernel::Initialize						(	void )
                     }    
                 if (bOK)                    // decided to gather all vcsm/mmal init code here and clean up the code a little! 
                     {
-                    bOK = getStateVCHI();
+                    getStateVCHI();
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getStateVCHI()                          FAILED");
+                //  if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getStateVCHI()                          FAILED");
 #endif
                     }
                 if (bOK)
@@ -231,7 +231,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_PortInfoGetRx_Input_A,  
                                                     m_PortInfoSetTx_Input);
 
-                    primePortFormatOutputMMAL(      m_frameBlockSizeA;
+                    primePortFormatOutputMMAL(      m_frameBlockSizeA,
                                                     m_PortInfoGetRx_Output_A, 
                                                     m_PortInfoSetTx_Output); 
                     if (bOK)
