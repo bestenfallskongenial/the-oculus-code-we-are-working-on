@@ -470,7 +470,8 @@ public:
                                                                     u32                             frame_offset, 
                                                                     u32                             frame_length);
 
-                bool        createComponent             (           MMAL_Component_Create_Msg&      tx, 
+                bool        createComponent             (           &ComponentHandle,
+                                                                    MMAL_Component_Create_Msg&      tx, 
                                                                     MMAL_Component_Create_Reply&    rx);
 
                 bool        getPortInfoMMAL             (           u32                             port_type, 
@@ -496,10 +497,12 @@ public:
 
                 void        PrimeInputBufferBodyMMAL    (           MMAL_Buffer_From_Host_Msg&      tx);
 //125
-                void        primePortFormatInputMMAL    (   const   MMAL_Port_Info_Get_Reply&       src, 
+                void        primePortFormatInputMMAL    (           u32 bufferSize,
+                                                            const   MMAL_Port_Info_Get_Reply&       src, 
                                                                     MMAL_Port_Info_Set_Msg&         tx);
 
-                void        primePortFormatOutputMMAL   (   const   MMAL_Port_Info_Get_Reply&       src, 
+                void        primePortFormatOutputMMAL   (           u32 bufferSize,
+                                                            const   MMAL_Port_Info_Get_Reply&       src, 
                                                                     MMAL_Port_Info_Set_Msg&         tx);
 
 // CODE_WRAPPERS.CPP - HERE THE JOY BEGINS
