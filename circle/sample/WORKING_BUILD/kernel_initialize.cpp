@@ -114,15 +114,14 @@ boolean			CKernel::Initialize						(	void )
                     }
                 if (bOK)
                     {
-                    bOK = openServiceVCHI ( m_ServiceCreateVCSM,
-                                            VC_SM_VER,
-                                            VC_SM_MIN_VER,
-                                            VCHIQ_MAKE_FOURCC('S','M','E','M'),
-                                            callbackVCSM,
-                                            &m_EventSMEM,
-                                            m_VCHIInstance,
-                                            m_ServiceHandleVCSM
-                                            );
+                    bOK = openServiceVCHI (     m_ServiceCreateVCSM,
+                                                VC_SM_VER,
+                                                VC_SM_MIN_VER,
+                                                VCHIQ_MAKE_FOURCC('S','M','E','M'),
+                                                callbackVCSM,
+                                                &m_EventSMEM,
+                                                m_VCHIInstance,
+                                                m_ServiceHandleVCSM );
 #ifdef __DEBUG_LOG__
                     if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('S','M','E','M')        FAILED");
 #endif
@@ -187,14 +186,14 @@ boolean			CKernel::Initialize						(	void )
                     }
                 if (bOK)
                     {
-                    bOK = openServiceVCHI(  m_ServiceCreateMMAL,
-                                            VC_MMAL_VER,
-                                            VC_MMAL_MIN_VER,
-                                            VCHIQ_MAKE_FOURCC('m','m','a','l'),
-                                            callbackMMAL,
-                                            &m_EventMMAL,
-                                            m_VCHIInstance,
-                                            m_ServiceHandleMMAL);
+                    bOK = openServiceVCHI(      m_ServiceCreateMMAL,
+                                                VC_MMAL_VER,
+                                                VC_MMAL_MIN_VER,
+                                                VCHIQ_MAKE_FOURCC('m','m','a','l'),
+                                                callbackMMAL,
+                                                &m_EventMMAL,
+                                                m_VCHIInstance,
+                                                m_ServiceHandleMMAL);
 #ifdef __DEBUG_LOG__
                     if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('m','m','a','l')           FAILED");
 #endif
@@ -210,43 +209,43 @@ boolean			CKernel::Initialize						(	void )
                         }
                     if (bOK)
                         {
-                        bOK = getPortInfoMMAL(  MMAL_PORT_TYPE_INPUT, 
-                                                m_InputPortHandle, 
-                                                m_PortInfoGetTx_Input_A, 
-                                                m_PortInfoGetRx_Input_A);
+                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
+                                                    m_InputPortHandle, 
+                                                    m_PortInfoGetTx_Input_A, 
+                                                    m_PortInfoGetRx_Input_A);
 #ifdef __DEBUG_LOG__
                          if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Input )              FAILED");
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = getPortInfoMMAL(  MMAL_PORT_TYPE_OUTPUT, 
-                                                m_OutputPortHandle, 
-                                                m_PortInfoGetTx_Output_A, 
-                                                m_PortInfoGetRx_Output_A);
+                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_OUTPUT, 
+                                                    m_OutputPortHandle, 
+                                                    m_PortInfoGetTx_Output_A, 
+                                                    m_PortInfoGetRx_Output_A);
 #ifdef __DEBUG_LOG__
                         if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )              FAILED");
 #endif 
                         }
-                    primePortFormatInputMMAL (  m_videoBlockSize,
-                                                m_PortInfoGetRx_Input_A,  
-                                                m_PortInfoSetTx_Input);
+                    primePortFormatInputMMAL (      m_videoBlockSize,
+                                                    m_PortInfoGetRx_Input_A,  
+                                                    m_PortInfoSetTx_Input);
 
-                    primePortFormatOutputMMAL(  m_frameBlockSizeA;
-                                                m_PortInfoGetRx_Output_A, 
-                                                m_PortInfoSetTx_Output); 
+                    primePortFormatOutputMMAL(      m_frameBlockSizeA;
+                                                    m_PortInfoGetRx_Output_A, 
+                                                    m_PortInfoSetTx_Output); 
                     if (bOK)
                         {
-                        bOK = setPortInfoMMAL(  m_PortInfoSetTx_Input, 
-                                                m_PortInfoSetRx_Input);
+                        bOK = setPortInfoMMAL(      m_PortInfoSetTx_Input, 
+                                                    m_PortInfoSetRx_Input);
 #ifdef __DEBUG_LOG__
                         if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Input )               FAILED");
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = setPortInfoMMAL(  m_PortInfoSetTx_Output, 
-                                                m_PortInfoSetRx_Output);
+                        bOK = setPortInfoMMAL(      m_PortInfoSetTx_Output, 
+                                                    m_PortInfoSetRx_Output);
 #ifdef __DEBUG_LOG__
                         if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Output )              FAILED");
 #endif 
@@ -261,20 +260,20 @@ boolean			CKernel::Initialize						(	void )
                         }
                     if (bOK)
                         {
-                        bOK = getPortInfoMMAL(  MMAL_PORT_TYPE_INPUT, 
-                                                m_InputPortHandle, 
-                                                m_PortInfoGetTx_Input_B, 
-                                                m_PortInfoGetRx_Input_B);
+                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
+                                                    m_InputPortHandle, 
+                                                    m_PortInfoGetTx_Input_B, 
+                                                    m_PortInfoGetRx_Input_B);
 #ifdef __DEBUG_LOG__
                         if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Input )               FAILED");
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = getPortInfoMMAL(  MMAL_PORT_TYPE_OUTPUT, 
-                                                m_OutputPortHandle, 
-                                                m_PortInfoGetTx_Output_B, 
-                                                m_PortInfoGetRx_Output_B);
+                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_OUTPUT, 
+                                                    m_OutputPortHandle, 
+                                                    m_PortInfoGetTx_Output_B, 
+                                                    m_PortInfoGetRx_Output_B);
 #ifdef __DEBUG_LOG__
                         if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )              FAILED");
 #endif 
@@ -299,38 +298,38 @@ boolean			CKernel::Initialize						(	void )
                         }
                     if (bOK)
                         {
-                        bOK = getPortInfoMMAL(  MMAL_PORT_TYPE_INPUT, 
-                                                m_InputPortHandle, 
-                                                m_PortInfoGetTx_Input_C, 
-                                                m_PortInfoGetRx_Input_C);
+                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
+                                                    m_InputPortHandle, 
+                                                    m_PortInfoGetTx_Input_C, 
+                                                    m_PortInfoGetRx_Input_C);
 #ifdef __DEBUG_LOG__
                         if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input )              FAILED");
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = getPortInfoMMAL(  MMAL_PORT_TYPE_OUTPUT, 
-                                                m_OutputPortHandle, 
-                                                m_PortInfoGetTx_Output_C, 
-                                                m_PortInfoGetRx_Output_C);
+                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_OUTPUT, 
+                                                    m_OutputPortHandle, 
+                                                    m_PortInfoGetTx_Output_C, 
+                                                    m_PortInfoGetRx_Output_C);
 #ifdef __DEBUG_LOG__
                         if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output )             FAILED");
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = enablePortMMAL(   m_PortInfoGetRx_Input_C, 
-                                                m_PortActionTx_Input, 
-                                                m_PortActionRx_Input);
+                        bOK = enablePortMMAL(       m_PortInfoGetRx_Input_C, 
+                                                    m_PortActionTx_Input, 
+                                                    m_PortActionRx_Input);
 #ifdef __DEBUG_LOG__
                         if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enablePortMMAL ( Input )               FAILED");
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = enablePortMMAL(   m_PortInfoGetRx_Output_C, 
-                                                m_PortActionTx_Output, 
-                                                m_PortActionRx_Output);
+                        bOK = enablePortMMAL(       m_PortInfoGetRx_Output_C, 
+                                                    m_PortActionTx_Output, 
+                                                    m_PortActionRx_Output);
 #ifdef __DEBUG_LOG__
                         if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enablePortMMAL ( Output )              FAILED");
 #endif 

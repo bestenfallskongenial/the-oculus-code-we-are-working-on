@@ -41,7 +41,7 @@ bool            CKernel::programLog                 (   GLint       program,
                 storeLog(   MY_BUFFER, MY_INDEX,  
                             g_ScnFsh[program_index], EMPTYLOG,
                             "Program link status idx", (u32)program_index,
-                            "Program byte size", (u32)g_bytFsh[program_index], 
+                        /*  "Program byte size", (u32)g_bytFsh[program_index], */   // <-- i have a mismatch here... either in the caller or the logger or the tables
                             (success == GL_TRUE) ? "SUCCESS" : "FAILED", EMPTYLOG);
 #endif 
                 char log[1024];
