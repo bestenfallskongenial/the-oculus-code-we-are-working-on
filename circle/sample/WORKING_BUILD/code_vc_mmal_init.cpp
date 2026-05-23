@@ -44,7 +44,7 @@ bool            CKernel::createComponent            (   &ComponentHandle,       
                                                         MMAL_Component_Create_Msg& tx, 
                                                         MMAL_Component_Create_Reply& rx)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_COMPONENT_CREATE );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_COMPONENT_CREATE );
 
                 tx.msg                                             = {};   /* prime TX msg */
 
@@ -73,7 +73,7 @@ bool            CKernel::getPortInfoMMAL            (   u32 port_type,
                                                         MMAL_Port_Info_Get_Msg& tx, 
                                                         MMAL_Port_Info_Get_Reply& rx)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_PORT_INFO_GET );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_PORT_INFO_GET );
 
                 tx.msg                                             = {};       /* prime TX msg */
                 tx.msg.component_handle                            = m_ComponentHandle;
@@ -98,7 +98,7 @@ bool            CKernel::getPortInfoMMAL            (   u32 port_type,
 bool            CKernel::setPortInfoMMAL            (   MMAL_Port_Info_Set_Msg& tx, 
                                                         MMAL_Port_Info_Set_Reply& rx)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_PORT_INFO_SET );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_PORT_INFO_SET );
 
                 size_t rx_len = 0;
 
@@ -118,7 +118,7 @@ bool            CKernel::setPortInfoMMAL            (   MMAL_Port_Info_Set_Msg& 
 bool            CKernel::enableComponentMMAL        (   MMAL_Component_Enable_Msg& tx, 
                                                         MMAL_Component_Enable_Reply& rx)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_COMPONENT_ENABLE );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_COMPONENT_ENABLE );
 
                 tx.msg                                             = {};
                 tx.msg.component_handle                            = m_ComponentHandle;
@@ -143,7 +143,7 @@ bool            CKernel::setZeroCopyModeMMAL        ( /*u32 port_handle,*/
                                                         MMAL_Port_Parameter_Set_Msg& tx, 
                                                         MMAL_Port_Parameter_Set_Reply& rx)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_PORT_PARAMETER_SET );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_PORT_PARAMETER_SET );
 
                 tx.msg = {};
                 tx.msg.component_handle                            = m_ComponentHandle;
@@ -174,7 +174,7 @@ bool            CKernel::enablePortMMAL             ( /*u32 port_handle,*/
                                                         MMAL_Port_Action_Msg& tx, 
                                                         MMAL_Port_Action_Reply_Msg& rx)
 {
-                initHeader( tx.hdr, MMAL_MSG_TYPE_PORT_ACTION );
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_PORT_ACTION );
 
                 tx.msg                                             = {};
                 tx.msg.component_handle                            = m_ComponentHandle;

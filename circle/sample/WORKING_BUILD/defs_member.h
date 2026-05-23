@@ -365,3 +365,5 @@ private:
 
                 MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_D;
                 MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_D;
+
+                bool                            f_firstFrameQueued = false;
