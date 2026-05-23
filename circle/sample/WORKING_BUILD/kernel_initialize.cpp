@@ -202,18 +202,20 @@ boolean			CKernel::Initialize						(	void )
 #endif
                     }
 
-/*
-
-
                 if (bOK)
                     {
                     if (bOK)
                         {
                         bOK = createComponent( m_ComponentHandle, m_ComponentCreateTx, m_ComponentCreateRx);
 #ifdef __DEBUG_LOG__
-                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "createComponent()                      FAILED");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "createComponent()                       DONE");
 #endif 
                         }
+
+/*
+
+
+
                     if (bOK)
                         {
                         bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
