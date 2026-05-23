@@ -495,7 +495,7 @@ void            CKernel::wrapper_modes              (   )
 
 bool            CKernel::wrapper_MMAL ()
 {
-
+/*
                 initializeMMAL  (   m_input_buffer_handle,
                                     m_input_buffer_pointer,
                                     m_videoBlockSize,
@@ -513,6 +513,7 @@ bool            CKernel::wrapper_MMAL ()
                                     m_ogl.display,                              // needed for the m_EGLimage in bufferReadyMMAL
                                     m_ogl.context 
                                     )
+*/
 }
 // instead of having life time long structs for my vcsm / mmal i declare pointer instead and provide wrappers to alloc and free the structs after use!
 // means also i have to call the wrapper here at the CKernel init phase ( presumably after the memory alloc ) and after the init phase of the vc04 
