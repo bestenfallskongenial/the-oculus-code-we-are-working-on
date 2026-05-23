@@ -1,5 +1,11 @@
 #include "kernel.h"
 
+//  #undef  __DEBUG_LOG__
+    #define __DEBUG_LOG__
+
+    #define MY_BUFFER   m_logBuffer                 // not used here 
+    #define MY_INDEX    m_logBufferIndex
+
 bool            CKernel::initTexturesMMAL         (   )
 {
                 int f_count = 0;
