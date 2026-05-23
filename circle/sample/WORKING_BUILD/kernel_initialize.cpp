@@ -98,85 +98,87 @@ boolean			CKernel::Initialize						(	void )
                     if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "bcm_host_init()                         FAILED");
 #endif
                     }    
-                if (bOK)                    // decided to gather all vcsm/mmal init code here and clean up the code a little! 
-                    {
-                    getStateVCHI();
-#ifdef __DEBUG_LOG__
-                //  if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getStateVCHI()                          FAILED");
-#endif
-                    }
-                if (bOK)
-                    {
-                    bOK = initEventsVCOS(m_EventSMEM, "SMEM");
-#ifdef __DEBUG_LOG__
-                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS(m_EventSMEM, SMEM)       FAILED");
-#endif
-                    }
-                if (bOK)
-                    {
-                    bOK = openServiceVCHI (     m_ServiceCreateVCSM,
-                                                VC_SM_VER,
-                                                VC_SM_MIN_VER,
-                                                VCHIQ_MAKE_FOURCC('S','M','E','M'),
-                                                callbackVCSM,
-                                                &m_EventSMEM,
-                                                m_VCHIInstance,
-                                                m_ServiceHandleVCSM );
-#ifdef __DEBUG_LOG__
-                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('S','M','E','M')        FAILED");
-#endif
-                    }
-                if (bOK)
-                    {
-                    if (bOK)
-                        {
-                        bOK = importMemoryVCSM  (   m_videoBlockBase, 
-                                                    m_videoBlockSize, 
-                                                    m_input_buffer_handle,
-                                                    m_importTxVCSM_A, 
-                                                    m_importRxVCSM_A );
 
-                        bOK = lockMemoryVCSM    (   m_input_buffer_handle,
-                                                    m_input_buffer_pointer,
-                                                    m_lockTxVCSM, 
-                                                    m_lockRxVCSM ); 
-#ifdef __DEBUG_LOG__
-                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Input allocation               FAILED");
-#endif                                                                       
-                        }
-                    if (bOK)
-                        {
-                        bOK = importMemoryVCSM  (   m_frameBlockBaseA, 
-                                                    m_frameBlockSizeA, 
-                                                    m_output_buffer_handle_a,
-                                                    m_importTxVCSM_B, 
-                                                    m_importRxVCSM_B );                    
+                                    if (bOK)                    // decided to gather all vcsm/mmal init code here and clean up the code a little! 
+                                        {
+                                        getStateVCHI();
+                    #ifdef __DEBUG_LOG__
+                                    //  if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getStateVCHI()                          FAILED");
+                    #endif
+                                        }
+                                    if (bOK)
+                                        {
+                                        bOK = initEventsVCOS(m_EventSMEM, "SMEM");
+                    #ifdef __DEBUG_LOG__
+                                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS(m_EventSMEM, SMEM)       FAILED");
+                    #endif
+                                        }
+                                    if (bOK)
+                                        {
+                                        bOK = openServiceVCHI (     m_ServiceCreateVCSM,
+                                                                    VC_SM_VER,
+                                                                    VC_SM_MIN_VER,
+                                                                    VCHIQ_MAKE_FOURCC('S','M','E','M'),
+                                                                    callbackVCSM,
+                                                                    &m_EventSMEM,
+                                                                    m_VCHIInstance,
+                                                                    m_ServiceHandleVCSM );
+                    #ifdef __DEBUG_LOG__
+                                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('S','M','E','M')        FAILED");
+                    #endif
+                                        }
+                                    if (bOK)
+                                        {
+                                        if (bOK)
+                                            {
+                                            bOK = importMemoryVCSM  (   m_videoBlockBase, 
+                                                                        m_videoBlockSize, 
+                                                                        m_input_buffer_handle,
+                                                                        m_importTxVCSM_A, 
+                                                                        m_importRxVCSM_A );
 
-                        bOK = lockMemoryVCSM    (   m_output_buffer_handle_a,
-                                                    m_output_buffer_pointer_a,
-                                                    m_lockTxVCSM, 
-                                                    m_lockRxVCSM );
-#ifdef __DEBUG_LOG__
-                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output A allocation            FAILED");
-#endif                                              
-                        }
-                    if (bOK)
-                        {
-                        bOK = importMemoryVCSM  (   m_frameBlockBaseB, 
-                                                    m_frameBlockSizeB, 
-                                                    m_output_buffer_handle_b,
-                                                    m_importTxVCSM_C, 
-                                                    m_importRxVCSM_C );                    
+                                            bOK = lockMemoryVCSM    (   m_input_buffer_handle,
+                                                                        m_input_buffer_pointer,
+                                                                        m_lockTxVCSM, 
+                                                                        m_lockRxVCSM ); 
+                    #ifdef __DEBUG_LOG__
+                                            if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Input allocation               FAILED");
+                    #endif                                                                       
+                                            }
+                                        if (bOK)
+                                            {
+                                            bOK = importMemoryVCSM  (   m_frameBlockBaseA, 
+                                                                        m_frameBlockSizeA, 
+                                                                        m_output_buffer_handle_a,
+                                                                        m_importTxVCSM_B, 
+                                                                        m_importRxVCSM_B );                    
 
-                        bOK = lockMemoryVCSM    (   m_output_buffer_handle_b,
-                                                    m_output_buffer_pointer_b,
-                                                    m_lockTxVCSM, 
-                                                    m_lockRxVCSM );   
-#ifdef __DEBUG_LOG__
-                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output B allocation            FAILED");
-#endif                                                                           
-                        }
-                    }
+                                            bOK = lockMemoryVCSM    (   m_output_buffer_handle_a,
+                                                                        m_output_buffer_pointer_a,
+                                                                        m_lockTxVCSM, 
+                                                                        m_lockRxVCSM );
+                    #ifdef __DEBUG_LOG__
+                                            if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output A allocation            FAILED");
+                    #endif                                              
+                                            }
+                                        if (bOK)
+                                            {
+                                            bOK = importMemoryVCSM  (   m_frameBlockBaseB, 
+                                                                        m_frameBlockSizeB, 
+                                                                        m_output_buffer_handle_b,
+                                                                        m_importTxVCSM_C, 
+                                                                        m_importRxVCSM_C );                    
+
+                                            bOK = lockMemoryVCSM    (   m_output_buffer_handle_b,
+                                                                        m_output_buffer_pointer_b,
+                                                                        m_lockTxVCSM, 
+                                                                        m_lockRxVCSM );   
+                    #ifdef __DEBUG_LOG__
+                                            if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output B allocation            FAILED");
+                    #endif                                                                           
+                                            }
+                                        }
+/*
                 if (bOK)
                     {
                     bOK = initEventsVCOS( m_EventMMAL, "MMAL" );
@@ -352,7 +354,7 @@ boolean			CKernel::Initialize						(	void )
                     if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "MMAL Init                              FAILED");
 #endif
                     }
-
+*/
 
                     if (bOK)
                     {
