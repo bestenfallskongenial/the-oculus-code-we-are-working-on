@@ -470,7 +470,7 @@ public:
                                                                     u32                             frame_offset, 
                                                                     u32                             frame_length);
 
-                bool        createComponent             (           &ComponentHandle,
+                bool        createComponent             (           u32 &ComponentHandle,
                                                                     MMAL_Component_Create_Msg&      tx, 
                                                                     MMAL_Component_Create_Reply&    rx);
 
