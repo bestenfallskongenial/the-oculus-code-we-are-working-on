@@ -209,32 +209,34 @@ boolean			CKernel::Initialize						(	void )
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "createComponent()                       DONE");
 #endif 
                     }
+
+                if (bOK)
+                    {
+                    bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
+                                                m_InputPortHandle, 
+                                                m_PortInfoGetTx_Input_A, 
+                                                m_PortInfoGetRx_Input_A);
+#ifdef __DEBUG_LOG__
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Input )               DONE");
+#endif 
+                    }
+                if (bOK)
+                    {
+                    bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_OUTPUT, 
+                                                m_OutputPortHandle, 
+                                                m_PortInfoGetTx_Output_A, 
+                                                m_PortInfoGetRx_Output_A);
+#ifdef __DEBUG_LOG__
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )               DONE");
+#endif 
+                    }                    
 /*
 
 
                 if (bOK)
                     {
 
-                    if (bOK)
-                        {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
-                                                    m_InputPortHandle, 
-                                                    m_PortInfoGetTx_Input_A, 
-                                                    m_PortInfoGetRx_Input_A);
-#ifdef __DEBUG_LOG__
-                         if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Input )              FAILED");
-#endif 
-                        }
-                    if (bOK)
-                        {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_OUTPUT, 
-                                                    m_OutputPortHandle, 
-                                                    m_PortInfoGetTx_Output_A, 
-                                                    m_PortInfoGetRx_Output_A);
-#ifdef __DEBUG_LOG__
-                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )              FAILED");
-#endif 
-                        }
+
                     primePortFormatInputMMAL (      m_videoBlockSize,
                                                     m_PortInfoGetRx_Input_A,  
                                                     m_PortInfoSetTx_Input);
