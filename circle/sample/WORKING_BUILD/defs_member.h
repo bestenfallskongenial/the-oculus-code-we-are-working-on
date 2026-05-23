@@ -367,3 +367,11 @@ private:
                 MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_D;
 
                 bool                            f_firstFrameQueued = false;
+
+    u32                      m_ResolutionX;
+    u32                      m_ResolutionY;
+
+    EGLDisplay               m_eglDisplay;
+    EGLContext               m_eglContext;
+    EGLImageKHR              m_EGLimage;
+    GLuint                   m_Texture;                
