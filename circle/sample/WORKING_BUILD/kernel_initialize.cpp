@@ -110,7 +110,7 @@ boolean			CKernel::Initialize						(	void )
                                         {
                                         bOK = initEventsVCOS(m_EventSMEM, "SMEM");
                     #ifdef __DEBUG_LOG__
-                                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS(m_EventSMEM, SMEM)       FAILED");
+                                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS(m_EventSMEM, SMEM)        DONE");
                     #endif
                                         }
                                     if (bOK)
@@ -124,7 +124,7 @@ boolean			CKernel::Initialize						(	void )
                                                                     m_VCHIInstance,
                                                                     m_ServiceHandleVCSM );
                     #ifdef __DEBUG_LOG__
-                                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('S','M','E','M')        FAILED");
+                                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('S','M','E','M')         DONE");
                     #endif
                                         }
                                     if (bOK)
@@ -142,7 +142,7 @@ boolean			CKernel::Initialize						(	void )
                                                                         m_lockTxVCSM, 
                                                                         m_lockRxVCSM ); 
                     #ifdef __DEBUG_LOG__
-                                            if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Input allocation               FAILED");
+                                            if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Input allocation                DONE");
                     #endif                                                                       
                                             }
                                         if (bOK)
@@ -158,7 +158,7 @@ boolean			CKernel::Initialize						(	void )
                                                                         m_lockTxVCSM, 
                                                                         m_lockRxVCSM );
                     #ifdef __DEBUG_LOG__
-                                            if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output A allocation            FAILED");
+                                            if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output A allocation             DONE");
                     #endif                                              
                                             }
                                         if (bOK)
@@ -174,10 +174,18 @@ boolean			CKernel::Initialize						(	void )
                                                                         m_lockTxVCSM, 
                                                                         m_lockRxVCSM );   
                     #ifdef __DEBUG_LOG__
-                                            if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output B allocation            FAILED");
+                                            if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output B allocation             DONE");
                     #endif                                                                           
                                             }
                                         }
+
+                if (bOK)
+                    {
+                    bOK = initEventsVCOS( m_EventMMAL, "MMAL" );
+#ifdef __DEBUG_LOG__
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS( m_EventMMAL, MMAL )     DONE");
+#endif
+                    }
 
                 if (bOK)
                     {
@@ -190,18 +198,12 @@ boolean			CKernel::Initialize						(	void )
                                                 m_VCHIInstance,
                                                 m_ServiceHandleMMAL);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('m','m','a','l')           FAILED");
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('m','m','a','l')            DONE");
 #endif
                     }
-                                                            
+
 /*
-                if (bOK)
-                    {
-                    bOK = initEventsVCOS( m_EventMMAL, "MMAL" );
-#ifdef __DEBUG_LOG__
-                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS( m_EventMMAL, MMAL )    FAILED");
-#endif
-                    }
+
 
                 if (bOK)
                     {
