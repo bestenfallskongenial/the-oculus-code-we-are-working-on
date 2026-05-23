@@ -34,7 +34,8 @@ bool            CKernel::initTexturesMMAL         (   )
                 return true;
 }
 
-bool            CKernel::createComponent            (   MMAL_Component_Create_Msg& tx, 
+bool            CKernel::createComponent            (   &ComponentHandle,                   // i assume this is the better approach right? 
+                                                        MMAL_Component_Create_Msg& tx, 
                                                         MMAL_Component_Create_Reply& rx)
 {
                 initHeader( tx.hdr, MMAL_MSG_TYPE_COMPONENT_CREATE );
@@ -46,7 +47,7 @@ bool            CKernel::createComponent            (   MMAL_Component_Create_Ms
                         
                 size_t rx_len = 0;
 
-                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
+                if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __DEBUG_LOG__
                     storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
@@ -56,7 +57,7 @@ bool            CKernel::createComponent            (   MMAL_Component_Create_Ms
 #ifdef __DEBUG_LOG__
                 Log_createComponent(tx,rx);
 #endif       
-                m_ComponentHandle = rx.msg.component_handle;
+                ComponentHandle = rx.msg.component_handle;
 
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
@@ -74,7 +75,7 @@ bool            CKernel::getPortInfoMMAL            (   u32 port_type,
 
                 size_t rx_len = 0;
 
-                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
+                if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __DEBUG_LOG__
                     storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
@@ -95,7 +96,7 @@ bool            CKernel::setPortInfoMMAL            (   MMAL_Port_Info_Set_Msg& 
 
                 size_t rx_len = 0;
 
-                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
+                if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __DEBUG_LOG__
                     storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
@@ -118,7 +119,7 @@ bool            CKernel::enableComponentMMAL        (   MMAL_Component_Enable_Ms
 
                 size_t rx_len = 0;
 
-                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
+                if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __DEBUG_LOG__
                     storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
@@ -149,7 +150,7 @@ bool            CKernel::setZeroCopyModeMMAL        ( /*u32 port_handle,*/
 
                 size_t rx_len = 0;
 
-                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
+                if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __DEBUG_LOG__
                     storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
@@ -171,13 +172,13 @@ bool            CKernel::enablePortMMAL             ( /*u32 port_handle,*/
 
                 tx.msg                                             = {};
                 tx.msg.component_handle                            = m_ComponentHandle;
-                tx.msg.port_handle                                 = src.msg.port_handle;                // port_handle - my original code takes it as parameter! i assume this is chosen because chn has the correct handle
+                tx.msg.port_handle                                 = src.msg.port_handle;                // port_handle - my original code takes it as parameter! i assume this is chosen because src has the correct handle
                 tx.msg.action                                      = MMAL_MSG_PORT_ACTION_TYPE_ENABLE;
                 tx.msg.port                                        = src.msg.port;
 
                 size_t rx_len = 0;
 
-                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
+                if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __DEBUG_LOG__
                     storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
@@ -214,7 +215,7 @@ void            CKernel::PrimeInputBufferBodyMMAL   (   MMAL_Buffer_From_Host_Ms
                 tx.msg.drvbuf.component_handle                     = m_ComponentHandle;
                 tx.msg.drvbuf.port_handle                          = m_InputPortHandle;
 
-                tx.msg.buffer_header.data                          = m_InputBufferHandle;
+                tx.msg.buffer_header.data                          = m_input_buffer_handle;
                 tx.msg.buffer_header.alloc_size                    = m_InputBufferSize;
 
                 tx.msg.buffer_header.pts_lo                        = 0;
@@ -227,7 +228,8 @@ void            CKernel::PrimeInputBufferBodyMMAL   (   MMAL_Buffer_From_Host_Ms
                 tx.msg.payload_in_message                          = 0;
 }
 
-void            CKernel::primePortFormatInputMMAL   (   const MMAL_Port_Info_Get_Reply& src, 
+void            CKernel::primePortFormatInputMMAL   (   u32 bufferSize, 
+                                                        const MMAL_Port_Info_Get_Reply& src, 
                                                         MMAL_Port_Info_Set_Msg& tx)
 {
                 tx.msg.component_handle = src.msg.component_handle;
@@ -239,7 +241,7 @@ void            CKernel::primePortFormatInputMMAL   (   const MMAL_Port_Info_Get
                 tx.msg.es     = src.msg.es;
 
                 tx.msg.port.buffer_num  = NUMBER_INPUTBUFFER;
-                tx.msg.port.buffer_size = m_InputBufferSize;
+                tx.msg.port.buffer_size = bufferSize; // m_InputBufferSize;
 
                 tx.msg.format.encoding         = MMAL_ENCODING_H264;
                 tx.msg.format.encoding_variant = MMAL_ENCODING_VARIANT_H264_DEFAULT;
@@ -252,7 +254,8 @@ void            CKernel::primePortFormatInputMMAL   (   const MMAL_Port_Info_Get
                 tx.msg.es.video.crop.height = m_ResolutionY;
 }
 
-void            CKernel::primePortFormatOutputMMAL  (   const MMAL_Port_Info_Get_Reply& src, 
+void            CKernel::primePortFormatOutputMMAL  (   u32 bufferSize, 
+                                                        const MMAL_Port_Info_Get_Reply& src, 
                                                         MMAL_Port_Info_Set_Msg& tx)
 {
                 tx.msg.component_handle = src.msg.component_handle;
@@ -264,7 +267,7 @@ void            CKernel::primePortFormatOutputMMAL  (   const MMAL_Port_Info_Get
                 tx.msg.es     = src.msg.es;
 
                 tx.msg.port.buffer_num  = NUMBER_OUTPUTBUFFER;
-                tx.msg.port.buffer_size = m_OutputBufferSize;
+                tx.msg.port.buffer_size = bufferSize; // m_OutputBufferSize;
 
                 tx.msg.format.encoding = MMAL_ENCODING_I420;
 

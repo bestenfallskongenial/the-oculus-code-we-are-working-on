@@ -255,20 +255,42 @@ typedef void (CKernel::*ModeFunc)(int);         // for the new menu selector -> 
 private:
         VCHI_INSTANCE_T                 m_VCHIInstance                  = 0;
         VCHI_CONNECTION_T*              m_Connection                    = 0;
+
         VCOS_EVENT_T                    m_EventSMEM                     = {};
         VCOS_EVENT_T                    m_EventMMAL                     = {};
+
         VCHI_SERVICE_HANDLE_T           m_ServiceHandleVCSM             = 0;
         VCHI_SERVICE_HANDLE_T           m_ServiceHandleMMAL             = 0;
+
         u32                             m_TransactionId                 = 0;
+
+
+        // returned from vcsm        
     //  u32                             m_vc_handle[MAX_BUFFER]         = {0};  // why an array, why not simply by u32& my_current_handle instead of slot?
     //  u32                             m_vc_pointer[MAX_BUFFER]        = {0};  // why an array, why not simply by u32& my_current_pointer instead of slot?
-        u32                             m_input_buffer_handle           = 0;            // wait, thats all already below
-        u32                             m_output_buffer_handle_a        = 0;
-        u32                             m_output_buffer_handle_b        = 0;
+    
+        u32                             m_input_buffer_handle           = 0;        // comes from VCSM
+        u32                             m_input_buffer_pointer          = 0;        // comes from VCSM
 
-        u32                             m_input_buffer_pointer          = 0;
-        u32                             m_output_buffer_pointer_a       = 0;
-        u32                             m_output_buffer_pointer_b       = 0;
+            u32                             m_InputBufferSize               = 0;    // MMAL from alloc aka m_videoBlockSize
+
+        u32                             m_output_buffer_handle_a        = 0;        // comes from VCSM
+        u32                             m_output_buffer_pointer_a       = 0;        // comes from VCSM
+
+            u32                             m_OutputBufferSizeA             = 0;    // MMAL ask for this but means  m_frameBlockSizeA
+
+        u32                             m_output_buffer_handle_b        = 0;        // comes from VCSM
+        u32                             m_output_buffer_pointer_b       = 0;        // comes from VCSM
+
+            u32                             m_OutputBufferSizeB             = 0;    // MMAL ask for this but means m_frameBlockSizeB          
+            
+            u32                             m_ComponentHandle               = 0;    // used in mmal_init either direct ( inside the functions ) or rather by reference ( & ) 
+            u32                             m_InputPortHandle               = 0;    // mmal needs it!
+            u32                             m_OutputPortHandle              = 0;    // mmal needs it!
+
+//  means i need to rename them right? the mmal code was its own class and needed to get all the variables via  initializeMMAL() 
+//  but this is now reduntand / confusing - renaming means i need also to rename the variables in the mmal code 
+
 
 // VCSM predefined messages as public member
                 SERVICE_CREATION_T               m_ServiceCreateVCSM;
@@ -287,7 +309,6 @@ private:
 
                 VCSM_Free_MEM_Msg                m_freeTxVCSM;
                 VCSM_Free_MEM_Reply              m_freeRxVCSM;
-
 // MMAL predefined messages as public member
                 SERVICE_CREATION_T              m_ServiceCreateMMAL;
 
@@ -344,79 +365,3 @@ private:
 
                 MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_D;
                 MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_D;
-
-                /*        
-// VCSM predefined messages as public member
-                SERVICE_CREATION_T*              m_ServiceCreateVCSM                = nullptr;
-
-                VCSM_Import_MEM_Msg*             m_importTxVCSM_A                   = nullptr;
-                VCSM_Import_MEM_Reply*           m_importRxVCSM_A                   = nullptr;
-
-                VCSM_Import_MEM_Msg*             m_importTxVCSM_B                   = nullptr;
-                VCSM_Import_MEM_Reply*           m_importRxVCSM_B                   = nullptr;
-
-                VCSM_Import_MEM_Msg*             m_importTxVCSM_C                   = nullptr;
-                VCSM_Import_MEM_Reply*           m_importRxVCSM_C                   = nullptr;
-
-                VCSM_Lock_MEM_Msg*               m_lockTxVCSM                       = nullptr;
-                VCSM_Lock_MEM_Reply*             m_lockRxVCSM                       = nullptr;
-
-                VCSM_Free_MEM_Msg*               m_freeTxVCSM                       = nullptr;
-                VCSM_Free_MEM_Reply*             m_freeRxVCSM                       = nullptr;
-// MMAL predefined messages as public member 
-                SERVICE_CREATION_T*              m_ServiceCreateMMAL                = nullptr;
-
-                MMAL_Component_Create_Msg*       m_ComponentCreateTx                = nullptr;
-                MMAL_Component_Create_Reply*     m_ComponentCreateRx                = nullptr;
-
-                MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Input_A            = nullptr;
-                MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Input_A            = nullptr;
-
-                MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Output_A           = nullptr;
-                MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Output_A           = nullptr;
-
-                MMAL_Port_Info_Set_Msg*          m_PortInfoSetTx_Input              = nullptr;
-                MMAL_Port_Info_Set_Msg*          m_PortInfoSetTx_Output             = nullptr;
-
-                MMAL_Port_Info_Set_Reply*        m_PortInfoSetRx_Input              = nullptr;
-                MMAL_Port_Info_Set_Reply*        m_PortInfoSetRx_Output             = nullptr;
-
-                MMAL_Component_Enable_Msg*       m_ComponentEnableTx                = nullptr;
-                MMAL_Component_Enable_Reply*     m_ComponentEnableRx                = nullptr;
-
-                MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Input_B            = nullptr;
-                MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Input_B            = nullptr;
-
-                MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Output_B           = nullptr;
-                MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Output_B           = nullptr;
-
-                MMAL_Port_Parameter_Set_Msg*     m_PortParamTx_Input                = nullptr;
-                MMAL_Port_Parameter_Set_Reply*   m_PortParamRx_Input                = nullptr;
-
-                MMAL_Port_Parameter_Set_Msg*     m_PortParamTx_Output               = nullptr;
-                MMAL_Port_Parameter_Set_Reply*   m_PortParamRx_Output               = nullptr;
-
-                MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Input_C            = nullptr;
-                MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Input_C            = nullptr;
-
-                MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Output_C           = nullptr;
-                MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Output_C           = nullptr;
-
-                MMAL_Port_Action_Msg*            m_PortActionTx_Input               = nullptr;
-                MMAL_Port_Action_Reply_Msg*      m_PortActionRx_Input               = nullptr;
-
-                MMAL_Port_Action_Msg*            m_PortActionTx_Output              = nullptr;
-                MMAL_Port_Action_Reply_Msg*      m_PortActionRx_Output              = nullptr;
-
-                MMAL_Buffer_From_Host_Msg*       m_BufferFromHostTx_Input           = nullptr;
-                MMAL_Buffer_From_Host_Msg*       m_BufferFromHostRx_Input           = nullptr;
-
-                MMAL_Buffer_From_Host_Msg*       m_BufferFromHostTx_Output          = nullptr;
-                MMAL_Buffer_From_Host_Msg*       m_BufferFromHostRx_Output          = nullptr;
-
-                MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Input_D            = nullptr;
-                MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Input_D            = nullptr;
-
-                MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Output_D           = nullptr;
-                MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Output_D           = nullptr;
-*/
