@@ -178,14 +178,7 @@ boolean			CKernel::Initialize						(	void )
                     #endif                                                                           
                                             }
                                         }
-/*
-                if (bOK)
-                    {
-                    bOK = initEventsVCOS( m_EventMMAL, "MMAL" );
-#ifdef __DEBUG_LOG__
-                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS( m_EventMMAL, MMAL )    FAILED");
-#endif
-                    }
+
                 if (bOK)
                     {
                     bOK = openServiceVCHI(      m_ServiceCreateMMAL,
@@ -200,6 +193,16 @@ boolean			CKernel::Initialize						(	void )
                     if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('m','m','a','l')           FAILED");
 #endif
                     }
+                                                            
+/*
+                if (bOK)
+                    {
+                    bOK = initEventsVCOS( m_EventMMAL, "MMAL" );
+#ifdef __DEBUG_LOG__
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS( m_EventMMAL, MMAL )    FAILED");
+#endif
+                    }
+
                 if (bOK)
                     {
                     if (bOK)
