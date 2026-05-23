@@ -453,7 +453,55 @@ public:
                                                         VCSM_Free_MEM_Msg&      tx, 
                                                         VCSM_Free_MEM_Reply&    rx);
 
+// code mmal:
 
+                bool        createTexturesMMAL          ();
+
+                bool        framePollerMMAL             (           u32                             frame_offset,               // comes from the pooler -> h264 struct 
+                                                                    u32                             frame_length);              // same same
+
+                bool        bufferReadyMMAL             (           u32                             handle);                    // the vcsm handle of the buffer? from a vc message?
+//115
+                bool        queueOutputBufferMMAL       (           MMAL_Buffer_From_Host_Msg&      tx, 
+                                                                    u32                             vc_handle,                  /
+                                                                    u32                             alloc_size);
+
+                bool        queueInputBufferMMAL        (           MMAL_Buffer_From_Host_Msg&      tx, 
+                                                                    u32                             frame_offset, 
+                                                                    u32                             frame_length);
+
+                bool        createComponent             (           MMAL_Component_Create_Msg&      tx, 
+                                                                    MMAL_Component_Create_Reply&    rx);
+
+                bool        getPortInfoMMAL             (           u32                             port_type, 
+                                                                    u32&                            port_handle, 
+                                                                    MMAL_Port_Info_Get_Msg&         tx, 
+                                                                    MMAL_Port_Info_Get_Reply&       rx);
+
+                bool        setPortInfoMMAL             (           MMAL_Port_Info_Set_Msg&         tx, 
+                                                                    MMAL_Port_Info_Set_Reply&       rx);
+//120
+                bool        enableComponentMMAL         (           MMAL_Component_Enable_Msg&      tx, 
+                                                                    MMAL_Component_Enable_Reply&    rx);
+
+                bool        setZeroCopyModeMMAL         (   const   MMAL_Port_Info_Get_Reply&       src, 
+                                                                    MMAL_Port_Parameter_Set_Msg&    tx, 
+                                                                    MMAL_Port_Parameter_Set_Reply&  rx);
+                                                                    
+                bool        enablePortMMAL              (   const   MMAL_Port_Info_Get_Reply&       src, 
+                                                                    MMAL_Port_Action_Msg&           tx, 
+                                                                    MMAL_Port_Action_Reply_Msg&     rx);
+
+                void        PrimeOutputBufferBodyMMAL   (           MMAL_Buffer_From_Host_Msg&      tx);                          // here we "prime" the messages for usage!
+
+                void        PrimeInputBufferBodyMMAL    (           MMAL_Buffer_From_Host_Msg&      tx);
+//125
+                void        primePortFormatInputMMAL    (   const   MMAL_Port_Info_Get_Reply&       src, 
+                                                                    MMAL_Port_Info_Set_Msg&         tx);
+
+                void        primePortFormatOutputMMAL   (   const   MMAL_Port_Info_Get_Reply&       src, 
+                                                                    MMAL_Port_Info_Set_Msg&         tx);
+                                                                    
 // CODE_WRAPPERS.CPP - HERE THE JOY BEGINS
                 bool        wrapperInitDMA              ();             // init/alloc the dma buffers +++
 
