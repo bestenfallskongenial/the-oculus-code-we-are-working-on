@@ -472,7 +472,7 @@ public:
 
                 bool        initTexturesMMAL ();
 
-                bool        createComponent             (           u32 &ComponentHandle,
+                bool        createComponent             (           u32& ComponentHandle,
                                                                     MMAL_Component_Create_Msg&      tx, 
                                                                     MMAL_Component_Create_Reply&    rx);
 

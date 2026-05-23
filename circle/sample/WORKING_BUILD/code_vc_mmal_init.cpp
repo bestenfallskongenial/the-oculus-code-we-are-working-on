@@ -40,7 +40,7 @@ bool            CKernel::initTexturesMMAL         (   )
                 return true;
 }
 
-bool            CKernel::createComponent            (   &ComponentHandle,                   // i assume this is the better approach right? 
+bool            CKernel::createComponent            (   u32& ComponentHandle,                   // i assume this is the better approach right? 
                                                         MMAL_Component_Create_Msg& tx, 
                                                         MMAL_Component_Create_Reply& rx)
 {
