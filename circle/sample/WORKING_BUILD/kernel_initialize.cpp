@@ -229,7 +229,34 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )               DONE");
 #endif 
-                    }                    
+                    }          
+                
+                primePortFormatInputMMAL (      m_videoBlockSize,
+                                                m_PortInfoGetRx_Input_A,  
+                                                m_PortInfoSetTx_Input);
+
+                primePortFormatOutputMMAL(      m_frameBlockSizeA,
+                                                m_PortInfoGetRx_Output_A, 
+                                                m_PortInfoSetTx_Output);                     
+
+                if (bOK)
+                    {
+                    bOK = setPortInfoMMAL(      m_PortInfoSetTx_Input, 
+                                                    m_PortInfoSetRx_Input);
+#ifdef __DEBUG_LOG__
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Input )               FAILED");
+#endif 
+                    }
+                if (bOK)
+                    {
+                    bOK = setPortInfoMMAL(      m_PortInfoSetTx_Output, 
+                                                    m_PortInfoSetRx_Output);
+#ifdef __DEBUG_LOG__
+                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Output )              FAILED");
+#endif 
+                    }
+
+
 /*
 
 
@@ -237,29 +264,7 @@ boolean			CKernel::Initialize						(	void )
                     {
 
 
-                    primePortFormatInputMMAL (      m_videoBlockSize,
-                                                    m_PortInfoGetRx_Input_A,  
-                                                    m_PortInfoSetTx_Input);
 
-                    primePortFormatOutputMMAL(      m_frameBlockSizeA,
-                                                    m_PortInfoGetRx_Output_A, 
-                                                    m_PortInfoSetTx_Output); 
-                    if (bOK)
-                        {
-                        bOK = setPortInfoMMAL(      m_PortInfoSetTx_Input, 
-                                                    m_PortInfoSetRx_Input);
-#ifdef __DEBUG_LOG__
-                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Input )               FAILED");
-#endif 
-                        }
-                    if (bOK)
-                        {
-                        bOK = setPortInfoMMAL(      m_PortInfoSetTx_Output, 
-                                                    m_PortInfoSetRx_Output);
-#ifdef __DEBUG_LOG__
-                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Output )              FAILED");
-#endif 
-                        }
                     if (bOK)
                         {
                         bOK = enableComponentMMAL(  m_ComponentEnableTx, 
