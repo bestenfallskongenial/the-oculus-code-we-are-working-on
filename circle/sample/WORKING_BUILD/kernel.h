@@ -463,7 +463,7 @@ public:
                 bool        bufferReadyMMAL             (           u32                             handle);                    // the vcsm handle of the buffer? from a vc message?
 //115
                 bool        queueOutputBufferMMAL       (           MMAL_Buffer_From_Host_Msg&      tx, 
-                                                                    u32                             vc_handle,                  /
+                                                                    u32                             vc_handle,                  
                                                                     u32                             alloc_size);
 
                 bool        queueInputBufferMMAL        (           MMAL_Buffer_From_Host_Msg&      tx, 
@@ -501,7 +501,7 @@ public:
 
                 void        primePortFormatOutputMMAL   (   const   MMAL_Port_Info_Get_Reply&       src, 
                                                                     MMAL_Port_Info_Set_Msg&         tx);
-                                                                    
+
 // CODE_WRAPPERS.CPP - HERE THE JOY BEGINS
                 bool        wrapperInitDMA              ();             // init/alloc the dma buffers +++
 
