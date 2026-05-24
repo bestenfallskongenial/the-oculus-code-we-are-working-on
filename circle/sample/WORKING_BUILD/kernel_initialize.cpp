@@ -285,7 +285,7 @@ boolean			CKernel::Initialize						(	void )
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )               DONE");
 #endif 
                     }              
-                  
+                    /*                   
                 if (bOK)
                     {
                     bOK = setZeroCopyModeMMALOK(  m_InputPortHandle);
@@ -302,7 +302,7 @@ boolean			CKernel::Initialize						(	void )
                     }
 
 
-                    /*  
+ 
                 if (bOK)
                     {
                     bOK = setZeroCopyModeMMAL(  m_InputPortHandle, 
