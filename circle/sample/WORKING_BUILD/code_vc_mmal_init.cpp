@@ -138,8 +138,8 @@ bool            CKernel::enableComponentMMAL        (   MMAL_Component_Enable_Ms
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 
-bool            CKernel::setZeroCopyModeMMAL        ( /*u32 port_handle,*/ 
-                                                        const MMAL_Port_Info_Get_Reply& src,  
+bool            CKernel::setZeroCopyModeMMAL        ( u32 port_handle, 
+                                                      /*const MMAL_Port_Info_Get_Reply& src,*/  
                                                         MMAL_Port_Parameter_Set_Msg& tx, 
                                                         MMAL_Port_Parameter_Set_Reply& rx)
 {
@@ -147,7 +147,7 @@ bool            CKernel::setZeroCopyModeMMAL        ( /*u32 port_handle,*/
 
                 tx.msg = {};
                 tx.msg.component_handle                            = m_ComponentHandle;
-                tx.msg.port_handle                                 = src.msg.port_handle; // port_handle - my original code takes it as parameter! i assume this is chosen because chn has the correct handle
+                tx.msg.port_handle                                 = port_handle; //src.msg.port_handle; // port_handle - my original code takes it as parameter! i assume this is chosen because chn has the correct handle
                 tx.msg.id                                          = MMAL_PARAMETER_ZERO_COPY;
                 tx.msg.size                                        = sizeof(u32);
 

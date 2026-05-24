@@ -288,7 +288,7 @@ boolean			CKernel::Initialize						(	void )
                     
                 if (bOK)
                     {
-                    bOK = setZeroCopyModeMMAL(  m_PortInfoGetRx_Input_B, 
+                    bOK = setZeroCopyModeMMAL(  m_InputPortHandle, 
                                                 m_PortParamTx_Input, 
                                                 m_PortParamRx_Input);
 #ifdef __DEBUG_LOG__
@@ -297,7 +297,7 @@ boolean			CKernel::Initialize						(	void )
                     }
                 if (bOK)
                     {
-                    bOK = setZeroCopyModeMMAL(  m_PortInfoGetRx_Output_B, 
+                    bOK = setZeroCopyModeMMAL(  m_OutputPortHandle, 
                                                 m_PortParamTx_Output, 
                                                 m_PortParamRx_Output);
 #ifdef __DEBUG_LOG__
