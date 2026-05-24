@@ -198,12 +198,12 @@ bool            CKernel::setZeroCopyModeMMALOK       (   u32 port_handle )      
                 size_t rx_len = 0;
                 if (!sendAndWaitVCHI(tx_msg, sizeof(tx_msg), rx_msg, sizeof(rx_msg), &rx_len))
                     {
-                    storeLog ( "\nEnable Zero Copy Input Port FAILED");                        
+                    storeLog ( "\nEnable Zero Copy Input Port FAILED",tx_body.port_handle);                        
                     return false;
                     }
                 if (rx_len < sizeof(mmal_msg_header) + sizeof(mmal_msg_port_parameter_set_reply))
                     {
-                    storeLog ( "\nEnable Zero Copy Input Port FAILED");                            
+                    storeLog ( "\nEnable Zero Copy Input Port FAILED", tx_body.port_handle);                            
                     return false;
                     }
 
