@@ -238,6 +238,124 @@ void            CKernel::primePortFormatInputMMAL   (   u32 bufferSize,
                                                         const MMAL_Port_Info_Get_Reply& src, 
                                                         MMAL_Port_Info_Set_Msg& tx)
 {
+            //  tx.msg = {};
+
+                tx.msg.component_handle         = m_ComponentHandle;
+                tx.msg.port_type                = MMAL_PORT_TYPE_INPUT;
+                tx.msg.port_index               = 0;
+
+                tx.msg.port                     = src.msg.port;
+                tx.msg.format                   = src.msg.format;
+                tx.msg.es                       = src.msg.es;
+
+                tx.msg.port.buffer_num          = NUMBER_INPUTBUFFER;
+                tx.msg.port.buffer_size         = bufferSize;
+
+                tx.msg.format.encoding          = MMAL_ENCODING_H264;
+                tx.msg.format.encoding_variant  = MMAL_ENCODING_VARIANT_H264_DEFAULT;
+
+                tx.msg.es.video.width           = m_ResolutionX;
+                tx.msg.es.video.height          = m_ResolutionY;
+                tx.msg.es.video.crop.x          = 0;
+                tx.msg.es.video.crop.y          = 0;
+                tx.msg.es.video.crop.width      = m_ResolutionX;
+                tx.msg.es.video.crop.height     = m_ResolutionY;
+}
+void            CKernel::primePortFormatOutputMMAL  (   u32 bufferSize, 
+                                                        const MMAL_Port_Info_Get_Reply& src, 
+                                                        MMAL_Port_Info_Set_Msg& tx)
+{
+            //  tx.msg = {};
+
+                tx.msg.component_handle         = m_ComponentHandle;
+                tx.msg.port_type                = MMAL_PORT_TYPE_OUTPUT;
+                tx.msg.port_index               = 0;
+
+                tx.msg.port                     = src.msg.port;
+                tx.msg.format                   = src.msg.format;
+                tx.msg.es                       = src.msg.es;
+
+                tx.msg.port.buffer_num          = NUMBER_OUTPUTBUFFER;
+                tx.msg.port.buffer_size         = bufferSize;
+
+                tx.msg.format.encoding          = MMAL_ENCODING_I420;
+
+                tx.msg.es.video.width           = m_ResolutionX;
+                tx.msg.es.video.height          = m_ResolutionY;
+                tx.msg.es.video.crop.x          = 0;
+                tx.msg.es.video.crop.y          = 0;
+                tx.msg.es.video.crop.width      = m_ResolutionX;
+                tx.msg.es.video.crop.height     = m_ResolutionY;
+}
+/*
+void            CKernel::primePortFormatInputMMAL   (   u32 bufferSize, 
+                                                        const MMAL_Port_Info_Get_Reply& src, 
+                                                        MMAL_Port_Info_Set_Msg& tx)
+{
+                tx.msg = {};
+
+                tx.msg.component_handle         = src.msg.component_handle;
+                tx.msg.port_type                = src.msg.port_type;
+                tx.msg.port_index               = src.msg.port_index;
+
+                tx.msg.port                     = src.msg.port;
+                tx.msg.format                   = src.msg.format;
+                tx.msg.es                       = src.msg.es;
+
+                memcpy( tx.msg.extradata,
+                        src.msg.extradata,
+                        MMAL_FORMAT_EXTRADATA_MAX_SIZE );
+
+                tx.msg.port.buffer_num          = NUMBER_INPUTBUFFER;
+                tx.msg.port.buffer_size         = bufferSize;
+
+                tx.msg.format.encoding          = MMAL_ENCODING_H264;
+                tx.msg.format.encoding_variant  = MMAL_ENCODING_VARIANT_H264_DEFAULT;
+
+                tx.msg.es.video.width           = m_ResolutionX;
+                tx.msg.es.video.height          = m_ResolutionY;
+                tx.msg.es.video.crop.x          = 0;
+                tx.msg.es.video.crop.y          = 0;
+                tx.msg.es.video.crop.width      = m_ResolutionX;
+                tx.msg.es.video.crop.height     = m_ResolutionY;
+}
+
+void            CKernel::primePortFormatOutputMMAL  (   u32 bufferSize, 
+                                                        const MMAL_Port_Info_Get_Reply& src, 
+                                                        MMAL_Port_Info_Set_Msg& tx)
+{
+                tx.msg = {};
+
+                tx.msg.component_handle         = src.msg.component_handle;
+                tx.msg.port_type                = src.msg.port_type;
+                tx.msg.port_index               = src.msg.port_index;
+
+                tx.msg.port                     = src.msg.port;
+                tx.msg.format                   = src.msg.format;
+                tx.msg.es                       = src.msg.es;
+
+                memcpy( tx.msg.extradata,
+                        src.msg.extradata,
+                        MMAL_FORMAT_EXTRADATA_MAX_SIZE );
+
+                tx.msg.port.buffer_num          = NUMBER_OUTPUTBUFFER;
+                tx.msg.port.buffer_size         = bufferSize;
+
+                tx.msg.format.encoding          = MMAL_ENCODING_I420;
+
+                tx.msg.es.video.width           = m_ResolutionX;
+                tx.msg.es.video.height          = m_ResolutionY;
+                tx.msg.es.video.crop.x          = 0;
+                tx.msg.es.video.crop.y          = 0;
+                tx.msg.es.video.crop.width      = m_ResolutionX;
+                tx.msg.es.video.crop.height     = m_ResolutionY;
+}
+
+
+void            CKernel::primePortFormatInputMMAL   (   u32 bufferSize, 
+                                                        const MMAL_Port_Info_Get_Reply& src, 
+                                                        MMAL_Port_Info_Set_Msg& tx)
+{
                 tx.msg.component_handle = src.msg.component_handle;
                 tx.msg.port_type        = src.msg.port_type;
                 tx.msg.port_index       = src.msg.port_index;
@@ -284,3 +402,4 @@ void            CKernel::primePortFormatOutputMMAL  (   u32 bufferSize,
                 tx.msg.es.video.crop.width  = m_ResolutionX;
                 tx.msg.es.video.crop.height = m_ResolutionY;
 }
+*/

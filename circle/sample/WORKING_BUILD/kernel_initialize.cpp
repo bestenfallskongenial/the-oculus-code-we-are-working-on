@@ -238,7 +238,7 @@ boolean			CKernel::Initialize						(	void )
                 primePortFormatOutputMMAL(      m_frameBlockSizeA,
                                                 m_PortInfoGetRx_Output_A, 
                                                 m_PortInfoSetTx_Output);                     
-/*
+
                 if (bOK)
                     {
                     bOK = setPortInfoMMAL(      m_PortInfoSetTx_Input, 
@@ -255,6 +255,7 @@ boolean			CKernel::Initialize						(	void )
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Output )               DONE");
 #endif 
                     }
+                    /*
 */
 
 /*

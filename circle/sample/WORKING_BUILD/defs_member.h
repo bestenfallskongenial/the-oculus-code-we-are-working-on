@@ -312,64 +312,64 @@ private:
 // MMAL predefined messages as public member
                 SERVICE_CREATION_T              m_ServiceCreateMMAL;
 
-                MMAL_Component_Create_Msg        m_ComponentCreateTx;
-                MMAL_Component_Create_Reply      m_ComponentCreateRx;
+                MMAL_Component_Create_Msg        m_ComponentCreateTx = {};
+                MMAL_Component_Create_Reply      m_ComponentCreateRx = {};
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_A;
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_A;
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_A = {};
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_A = {};
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_A; 
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_A;
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_A = {}; 
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_A = {};
 
-                MMAL_Port_Info_Set_Msg           m_PortInfoSetTx_Input;
-                MMAL_Port_Info_Set_Msg           m_PortInfoSetTx_Output;
+                MMAL_Port_Info_Set_Msg           m_PortInfoSetTx_Input = {};
+                MMAL_Port_Info_Set_Msg           m_PortInfoSetTx_Output = {};
 
-                MMAL_Port_Info_Set_Reply         m_PortInfoSetRx_Input;
-                MMAL_Port_Info_Set_Reply         m_PortInfoSetRx_Output;
+                MMAL_Port_Info_Set_Reply         m_PortInfoSetRx_Input = {};
+                MMAL_Port_Info_Set_Reply         m_PortInfoSetRx_Output = {};
 
-                MMAL_Component_Enable_Msg        m_ComponentEnableTx;
-                MMAL_Component_Enable_Reply      m_ComponentEnableRx;
+                MMAL_Component_Enable_Msg        m_ComponentEnableTx = {};
+                MMAL_Component_Enable_Reply      m_ComponentEnableRx = {};
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_B;
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_B;
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_B = {};
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_B = {};
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_B;
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_B;
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_B = {};
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_B = {};
 
-                MMAL_Port_Parameter_Set_Msg      m_PortParamTx_Input;
-                MMAL_Port_Parameter_Set_Reply    m_PortParamRx_Input;
+                MMAL_Port_Parameter_Set_Msg      m_PortParamTx_Input = {};
+                MMAL_Port_Parameter_Set_Reply    m_PortParamRx_Input = {};
 
-                MMAL_Port_Parameter_Set_Msg      m_PortParamTx_Output;
-                MMAL_Port_Parameter_Set_Reply    m_PortParamRx_Output;
+                MMAL_Port_Parameter_Set_Msg      m_PortParamTx_Output = {};
+                MMAL_Port_Parameter_Set_Reply    m_PortParamRx_Output = {};
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_C;
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_C;
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_C = {};
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_C = {};
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_C;
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_C;
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_C = {};
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_C = {};
 
-                MMAL_Port_Action_Msg             m_PortActionTx_Input;
-                MMAL_Port_Action_Reply_Msg       m_PortActionRx_Input;
+                MMAL_Port_Action_Msg             m_PortActionTx_Input = {};
+                MMAL_Port_Action_Reply_Msg       m_PortActionRx_Input = {};
 
-                MMAL_Port_Action_Msg             m_PortActionTx_Output;
-                MMAL_Port_Action_Reply_Msg       m_PortActionRx_Output;
+                MMAL_Port_Action_Msg             m_PortActionTx_Output = {};
+                MMAL_Port_Action_Reply_Msg       m_PortActionRx_Output = {};
 
-                MMAL_Buffer_From_Host_Msg        m_BufferFromHostTx_Input;
-                MMAL_Buffer_From_Host_Msg        m_BufferFromHostRx_Input;
+                MMAL_Buffer_From_Host_Msg        m_BufferFromHostTx_Input = {};
+                MMAL_Buffer_From_Host_Msg        m_BufferFromHostRx_Input = {};
 
-                MMAL_Buffer_From_Host_Msg        m_BufferFromHostTx_Output;
-                MMAL_Buffer_From_Host_Msg        m_BufferFromHostRx_Output;
+                MMAL_Buffer_From_Host_Msg        m_BufferFromHostTx_Output = {};
+                MMAL_Buffer_From_Host_Msg        m_BufferFromHostRx_Output = {};
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_D;
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_D;
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_D = {};
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_D = {};
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_D;
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_D;
+                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_D = {};
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_D = {};
 
                 bool                            f_firstFrameQueued = false;
 
-    u32                      m_ResolutionX;     // placeholder until i solved this!
-    u32                      m_ResolutionY;
+    u32                      m_ResolutionX      = 480;     // placeholder until i solved this!
+    u32                      m_ResolutionY      = 640;
 
     EGLDisplay               m_eglDisplay;
     EGLContext               m_eglContext;
