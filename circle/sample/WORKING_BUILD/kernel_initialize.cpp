@@ -255,6 +255,15 @@ boolean			CKernel::Initialize						(	void )
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Output )               DONE");
 #endif 
                     }
+
+                if (bOK)
+                    {
+                    bOK = enableComponentMMAL(  m_ComponentEnableTx, 
+                                                m_ComponentEnableRx);
+#ifdef __DEBUG_LOG__
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enableComponentMMAL()                   DONE");
+#endif 
+                    }                    
                     /*
 */
 
@@ -266,14 +275,7 @@ boolean			CKernel::Initialize						(	void )
 
 
 
-                    if (bOK)
-                        {
-                        bOK = enableComponentMMAL(  m_ComponentEnableTx, 
-                                                    m_ComponentEnableRx);
-#ifdef __DEBUG_LOG__
-                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enableComponentMMAL()                  FAILED");
-#endif 
-                        }
+
                     if (bOK)
                         {
                         bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
