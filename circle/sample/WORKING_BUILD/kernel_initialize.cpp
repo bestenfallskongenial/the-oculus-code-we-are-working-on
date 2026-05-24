@@ -311,7 +311,7 @@ boolean			CKernel::Initialize						(	void )
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Output )           DONE");
 #endif 
                     }
-
+*/
 
  
                 if (bOK)
@@ -335,7 +335,7 @@ boolean			CKernel::Initialize						(	void )
                     
                         
 
-*/
+
 
 /*
 
