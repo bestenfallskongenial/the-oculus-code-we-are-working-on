@@ -196,7 +196,7 @@ bool            CKernel::setZeroCopyModeMMALOK       (   u32 port_handle )      
 
                 u8 rx_msg[MMAL_MSG_MAX_SIZE] = {};
                 size_t rx_len = 0;
-                if (!sendAndWaitVCHI(tx_msg, sizeof(tx_msg), rx_msg, sizeof(rx_msg), &rx_len))
+                if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, tx_msg, sizeof(tx_msg), rx_msg, sizeof(rx_msg), &rx_len))
                     {
                     storeLog ( MY_BUFFER, MY_INDEX, "Enable Zero Copy Input Port FAILED",tx_body.port_handle);                        
                     return false;
