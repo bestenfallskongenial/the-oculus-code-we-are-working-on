@@ -145,7 +145,7 @@ bool            CKernel::setZeroCopyModeMMAL        ( u32 port_handle,
 {
                 initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_PORT_PARAMETER_SET );
 
-                tx.msg = {};
+            //  tx.msg = {};
                 tx.msg.component_handle                            = m_ComponentHandle;
                 tx.msg.port_handle                                 = port_handle; //src.msg.port_handle; // port_handle - my original code takes it as parameter! i assume this is chosen because chn has the correct handle
                 tx.msg.id                                          = MMAL_PARAMETER_ZERO_COPY;
@@ -158,7 +158,7 @@ bool            CKernel::setZeroCopyModeMMAL        ( u32 port_handle,
 
 storeLog( MY_BUFFER, MY_INDEX, "ZC sizeof tx", sizeof(tx) );
 storeMsg( MY_BUFFER, MY_INDEX, "ZC TX raw no send", &tx, sizeof(tx) );
-return false;
+return true;
 
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
