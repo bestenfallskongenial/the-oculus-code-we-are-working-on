@@ -272,7 +272,7 @@ boolean			CKernel::Initialize						(	void )
                                                 m_PortInfoGetTx_Input_B, 
                                                 m_PortInfoGetRx_Input_B);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Input )               FAILED");
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Input )                DONE");
 #endif 
                     }
                 if (bOK)
@@ -282,7 +282,7 @@ boolean			CKernel::Initialize						(	void )
                                                 m_PortInfoGetTx_Output_B, 
                                                 m_PortInfoGetRx_Output_B);
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )              FAILED");
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )               DONE");
 #endif 
                     }                    
                     /*
