@@ -169,7 +169,7 @@ bool            CKernel::setZeroCopyModeMMAL        ( u32 port_handle,
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 
-bool            CKernel::MMALsetZeroCopyModeOK       (   u32 port_handle )                                     // mmal_msg_port_parameter_set
+bool            CKernel::setZeroCopyModeMMALOK       (   u32 port_handle )                                     // mmal_msg_port_parameter_set
 {
                 mmal_msg_header tx_hdr                          = {};
                 tx_hdr.magic                                    = MMAL_MAGIC;
