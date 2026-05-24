@@ -103,7 +103,10 @@ boolean			CKernel::Initialize						(	void )
                                         {
                                         getStateVCHI();
                     #ifdef __DEBUG_LOG__
-                                    //  if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getStateVCHI()                          FAILED");
+                                        storeLog( MY_BUFFER, MY_INDEX, "m_VCHIInstance",           (u32)m_VCHIInstance );
+                                        storeLog( MY_BUFFER, MY_INDEX, "m_Connection",             (u32)m_Connection );
+
+                                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getStateVCHI()                          FAILED");
                     #endif
                                         }
                                     if (bOK)
@@ -183,6 +186,8 @@ boolean			CKernel::Initialize						(	void )
                     {
                     bOK = initEventsVCOS( m_EventMMAL, "MMAL" );
 #ifdef __DEBUG_LOG__
+                    storeLog( MY_BUFFER, MY_INDEX, "m_EventMMAL",              (u32)&m_EventMMAL );
+                    storeMsg( MY_BUFFER, MY_INDEX, "m_EventMMAL raw", &m_EventMMAL, sizeof(m_EventMMAL) );
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS( m_EventMMAL, MMAL )     DONE");
 #endif
                     }
@@ -198,6 +203,7 @@ boolean			CKernel::Initialize						(	void )
                                                 m_VCHIInstance,
                                                 m_ServiceHandleMMAL);
 #ifdef __DEBUG_LOG__
+                    storeLog( MY_BUFFER, MY_INDEX, "m_ServiceHandleMMAL",      (u32)m_ServiceHandleMMAL );
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('m','m','a','l')            DONE");
 #endif
                     }
@@ -206,6 +212,7 @@ boolean			CKernel::Initialize						(	void )
                     {
                     bOK = createComponent( m_ComponentHandle, m_ComponentCreateTx, m_ComponentCreateRx);
 #ifdef __DEBUG_LOG__
+                    storeLog( MY_BUFFER, MY_INDEX, "m_ComponentHandle",        m_ComponentHandle );
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "createComponent()                       DONE");
 #endif 
                     }
@@ -217,6 +224,7 @@ boolean			CKernel::Initialize						(	void )
                                                 m_PortInfoGetTx_Input_A, 
                                                 m_PortInfoGetRx_Input_A);
 #ifdef __DEBUG_LOG__
+                    storeLog( MY_BUFFER, MY_INDEX, "m_InputPortHandle",        m_InputPortHandle );
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Input )               DONE");
 #endif 
                     }
@@ -227,6 +235,7 @@ boolean			CKernel::Initialize						(	void )
                                                 m_PortInfoGetTx_Output_A, 
                                                 m_PortInfoGetRx_Output_A);
 #ifdef __DEBUG_LOG__
+                    storeLog( MY_BUFFER, MY_INDEX, "m_OutputPortHandle",       m_OutputPortHandle );
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )               DONE");
 #endif 
                     }          
@@ -272,6 +281,7 @@ boolean			CKernel::Initialize						(	void )
                                                 m_PortInfoGetTx_Input_B, 
                                                 m_PortInfoGetRx_Input_B);
 #ifdef __DEBUG_LOG__
+                    storeLog( MY_BUFFER, MY_INDEX, "m_InputPortHandle",        m_InputPortHandle );
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Input )                DONE");
 #endif 
                     }
@@ -282,6 +292,7 @@ boolean			CKernel::Initialize						(	void )
                                                 m_PortInfoGetTx_Output_B, 
                                                 m_PortInfoGetRx_Output_B);
 #ifdef __DEBUG_LOG__
+                    storeLog( MY_BUFFER, MY_INDEX, "m_OutputPortHandle",       m_OutputPortHandle );
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )               DONE");
 #endif 
                     }              
