@@ -210,7 +210,7 @@ bool            CKernel::setZeroCopyModeMMALOK       (   u32 port_handle )      
 //              const mmal_msg_port_parameter_set_reply* reply =
 //              reinterpret_cast<const mmal_msg_port_parameter_set_reply*>(rx_msg + sizeof(mmal_msg_header));
 
-                storeLog ( "Enable Zero Copy Input Port SUCCESS", (u32)port_handle);
+                storeLog ( MY_BUFFER, MY_INDEX, "Enable Zero Copy Input Port SUCCESS", (u32)port_handle);
 
             //  return true; //(reply->status == MMAL_MSG_STATUS_SUCCESS);
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
