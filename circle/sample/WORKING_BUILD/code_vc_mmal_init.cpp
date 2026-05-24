@@ -212,8 +212,8 @@ bool            CKernel::setZeroCopyModeMMALOK       (   u32 port_handle )      
 
                 storeLog ( MY_BUFFER, MY_INDEX, "Enable Zero Copy Input Port SUCCESS", (u32)port_handle);
 
-            //  return true; //(reply->status == MMAL_MSG_STATUS_SUCCESS);
-                return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
+                return true; //(reply->status == MMAL_MSG_STATUS_SUCCESS);
+            //  return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 
 bool            CKernel::enablePortMMAL             ( /*u32 port_handle,*/ 
