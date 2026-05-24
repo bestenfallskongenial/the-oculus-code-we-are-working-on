@@ -487,7 +487,8 @@ public:
                 bool        enableComponentMMAL         (           MMAL_Component_Enable_Msg&      tx, 
                                                                     MMAL_Component_Enable_Reply&    rx);
 
-                bool        setZeroCopyModeMMAL         (   const   MMAL_Port_Info_Get_Reply&       src, 
+                bool        setZeroCopyModeMMAL         (           u32                             port_handle,
+                                                          /*const   MMAL_Port_Info_Get_Reply&       src,*/
                                                                     MMAL_Port_Parameter_Set_Msg&    tx, 
                                                                     MMAL_Port_Parameter_Set_Reply&  rx);
                                                                     
