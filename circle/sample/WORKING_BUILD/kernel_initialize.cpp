@@ -284,7 +284,28 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )               DONE");
 #endif 
-                    }                    
+                    }              
+                    
+                if (bOK)
+                    {
+                    bOK = setZeroCopyModeMMAL(  m_PortInfoGetRx_Input_B, 
+                                                m_PortParamTx_Input, 
+                                                m_PortParamRx_Input);
+#ifdef __DEBUG_LOG__
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Input )            DENO");
+#endif 
+                    }
+                if (bOK)
+                    {
+                    bOK = setZeroCopyModeMMAL(  m_PortInfoGetRx_Output_B, 
+                                                m_PortParamTx_Output, 
+                                                m_PortParamRx_Output);
+#ifdef __DEBUG_LOG__
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Output )           DONE");
+#endif 
+                    }
+                    
+                        
                     /*
 */
 
@@ -298,24 +319,7 @@ boolean			CKernel::Initialize						(	void )
 
 
 
-                    if (bOK)
-                        {
-                        bOK = setZeroCopyModeMMAL(  m_PortInfoGetRx_Input_B, 
-                                                    m_PortParamTx_Input, 
-                                                    m_PortParamRx_Input);
-#ifdef __DEBUG_LOG__
-                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Input )           FAILED");
-#endif 
-                        }
-                    if (bOK)
-                        {
-                        bOK = setZeroCopyModeMMAL(  m_PortInfoGetRx_Output_B, 
-                                                    m_PortParamTx_Output, 
-                                                    m_PortParamRx_Output);
-#ifdef __DEBUG_LOG__
-                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Output )          FAILED");
-#endif 
-                        }
+
                     if (bOK)
                         {
                         bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
