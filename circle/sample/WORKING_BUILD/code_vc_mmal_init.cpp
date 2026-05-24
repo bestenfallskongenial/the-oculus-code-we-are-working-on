@@ -169,6 +169,53 @@ bool            CKernel::setZeroCopyModeMMAL        ( u32 port_handle,
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 
+bool            CH264Decoder::MMALsetZeroCopyModeOK       (   u32 port_handle)                                     // mmal_msg_port_parameter_set
+{
+                mmal_msg_header tx_hdr                          = {};
+                tx_hdr.magic                                    = MMAL_MAGIC;
+                tx_hdr.type                                     = MMAL_MSG_TYPE_PORT_PARAMETER_SET;
+                tx_hdr.control_service                          = 0;         // *** NEW TO MATCH THE DEFINITION!                    
+                tx_hdr.context                                  = NextTransId(m_TransactionId);
+                tx_hdr.status                                   = 0;
+                tx_hdr.padding                                  = 0;         // *** NEW TO MATCH THE DEFINITION!                
+
+                mmal_msg_port_parameter_set tx_body = {};
+                tx_body.component_handle                        = m_ComponentHandle;
+                tx_body.port_handle                             = port_handle; // 0; // Match by type+index OR the handle!?
+            //  tx_body.port_type                               = port_type;
+            //  tx_body.port_index                              = 0; // port_index;
+                tx_body.id                                      = MMAL_PARAMETER_ZERO_COPY;
+                tx_body.size                                    = sizeof(u32); // Size of boolean value only
+
+                memset(tx_body.value, 0, sizeof(tx_body.value));
+                tx_body.value[0] = 1; // Only ever set ON
+
+                u8 tx_msg[sizeof(tx_hdr) + sizeof(tx_body)] = {};
+                memcpy(tx_msg, &tx_hdr, sizeof(tx_hdr));
+                memcpy(tx_msg + sizeof(tx_hdr), &tx_body, sizeof(tx_body));
+
+                u8 rx_msg[MMAL_MSG_MAX_SIZE] = {};
+                size_t rx_len = 0;
+                if (!sendAndWaitVCHI(tx_msg, sizeof(tx_msg), rx_msg, sizeof(rx_msg), &rx_len))
+                    {
+                    MMALstoreLog ( "\nEnable Zero Copy Input Port FAILED");                        
+                    return false;
+                    }
+                if (rx_len < sizeof(mmal_msg_header) + sizeof(mmal_msg_port_parameter_set_reply))
+                    {
+                    MMALstoreLog ( "\nEnable Zero Copy Input Port FAILED");                            
+                    return false;
+                    }
+
+//              const mmal_msg_port_parameter_set_reply* reply =
+//              reinterpret_cast<const mmal_msg_port_parameter_set_reply*>(rx_msg + sizeof(mmal_msg_header));
+
+                MMALstoreLog ( "\nEnable Zero Copy Input Port SUCCESS", (u32)port_handle);
+
+            //  return true; //(reply->status == MMAL_MSG_STATUS_SUCCESS);
+                return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
+}
+
 bool            CKernel::enablePortMMAL             ( /*u32 port_handle,*/ 
                                                         const MMAL_Port_Info_Get_Reply& src, 
                                                         MMAL_Port_Action_Msg& tx, 
