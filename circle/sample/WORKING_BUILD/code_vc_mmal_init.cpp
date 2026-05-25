@@ -156,10 +156,6 @@ bool            CKernel::setZeroCopyModeMMAL        ( u32 port_handle,
 
                 size_t rx_len = 0;
 
-storeLog( MY_BUFFER, MY_INDEX, "ZC sizeof tx", sizeof(tx) );
-storeMsg( MY_BUFFER, MY_INDEX, "ZC TX raw no send", &tx, sizeof(tx) );
-
-
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __DEBUG_LOG__
@@ -168,11 +164,7 @@ storeMsg( MY_BUFFER, MY_INDEX, "ZC TX raw no send", &tx, sizeof(tx) );
                     return false;
                     }
 #ifdef __DEBUG_LOG__
-
             //  Log_setZeroCopyModeMMAL(tx,rx);
-storeLog( MY_BUFFER, MY_INDEX, "ZC rx_len", (u32)rx_len );
-storeMsg( MY_BUFFER, MY_INDEX, "ZC RX raw", &rx, sizeof(rx) );
-
 #endif       
                 return true;    
             //  return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
