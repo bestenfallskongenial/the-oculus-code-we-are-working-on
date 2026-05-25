@@ -354,7 +354,26 @@ boolean			CKernel::Initialize						(	void )
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enablePortMMAL ( Output )              DONE");
 #endif 
                         }
-                        
+                    if (bOK)
+                        {
+                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
+                                                    m_InputPortHandle, 
+                                                    m_PortInfoGetTx_Input_D, 
+                                                    m_PortInfoGetRx_Input_D);
+#ifdef __DEBUG_LOG__
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input )              DONE");
+#endif 
+                        }
+                    if (bOK)
+                        {
+                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_OUTPUT, 
+                                                    m_OutputPortHandle, 
+                                                    m_PortInfoGetTx_Output_D, 
+                                                    m_PortInfoGetRx_Output_D);
+#ifdef __DEBUG_LOG__
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output )             DONE");
+#endif 
+                        } 
 
 
 

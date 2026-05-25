@@ -278,7 +278,7 @@ bool            CKernel::setZeroCopyModeMMALOK       (   u32 port_handle )      
             //  return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 
-bool            CKernel::enablePortMMAL             ( /*u32 port_handle,*/ 
+bool            CKernel::enablePortMMAL             ( /*u32 port_handle,*/                          // why not also here? it works now but...
                                                         const MMAL_Port_Info_Get_Reply& src, 
                                                         MMAL_Port_Action_Msg& tx, 
                                                         MMAL_Port_Action_Reply_Msg& rx)
