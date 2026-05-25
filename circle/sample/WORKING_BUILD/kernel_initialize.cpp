@@ -296,22 +296,6 @@ boolean			CKernel::Initialize						(	void )
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )               DONE");
 #endif 
                     }              
-                    /*                   
-                if (bOK)
-                    {
-                    bOK = setZeroCopyModeMMALOK(  m_InputPortHandle);
-#ifdef __DEBUG_LOG__
-                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Input )            DENO");
-#endif 
-                    }
-                if (bOK)
-                    {
-                    bOK = setZeroCopyModeMMALOK(  m_OutputPortHandle);
-#ifdef __DEBUG_LOG__
-                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Output )           DONE");
-#endif 
-                    }
-*/
 
  
                 if (bOK)
@@ -320,7 +304,7 @@ boolean			CKernel::Initialize						(	void )
                                                 m_PortParamTx_Input, 
                                                 m_PortParamRx_Input);
 #ifdef __DEBUG_LOG__
-                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Input )            DENO");
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Input )            DONE");
 #endif 
                     }
                 if (bOK)
@@ -332,22 +316,6 @@ boolean			CKernel::Initialize						(	void )
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Output )           DONE");
 #endif 
                     }
-                    
-                        
-
-
-
-/*
-
-
-                if (bOK)
-                    {
-
-
-
-
-
-
                     if (bOK)
                         {
                         bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
@@ -368,6 +336,23 @@ boolean			CKernel::Initialize						(	void )
                         if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output )             FAILED");
 #endif 
                         }
+                                            
+                        
+
+
+
+/*
+
+
+                if (bOK)
+                    {
+
+
+
+
+
+
+
                     if (bOK)
                         {
                         bOK = enablePortMMAL(       m_PortInfoGetRx_Input_C, 
