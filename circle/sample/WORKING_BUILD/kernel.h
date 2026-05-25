@@ -434,6 +434,16 @@ public:
 
                 bool        initializeVCSM              ();
 
+                bool        allocMemoryVCSM                        (   size_t                  size,
+                                                                        u32                     base_unit,
+                                                                        u32                     alignment,
+                                                                        vc_sm_alloc_type_t      type,
+                                                                        u32                     allocator,
+                                                                        const char*             name,
+                                                                        u32&                    vcsm_handle,
+                                                                        VCSM_Alloc_MEM_Msg&     tx,
+                                                                        VCSM_Alloc_MEM_Reply&   rx);
+
                 bool        importMemoryVCSM            (   void*                               p_bufferBlockbase, 
                                                                                                 size_t                  size, 
                                                                                             /*  int                     slot, */ 

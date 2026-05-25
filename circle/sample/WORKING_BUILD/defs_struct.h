@@ -653,6 +653,18 @@ struct mmal_msg_buffer_from_host_wire32
     u8 short_data[128];           // unchanged, stays zero - total: 16 + 16 + 56 + 40 + 4 + 4 + 4 + 128 = 268 bytes
 };
 
+struct VCSM_Alloc_MEM_Msg
+{
+    vc_sm_msg_hdr_t    hdr;
+    vc_sm_alloc_t      body;
+};
+
+struct VCSM_Alloc_MEM_Reply
+{
+    vc_sm_msg_hdr_t          hdr;
+    vc_sm_alloc_result_t     body;
+};
+
 struct VCSM_Import_MEM_Msg          // i need to define them before i can use them !!!
 {
         vc_sm_msg_hdr_t                 hdr;

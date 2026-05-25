@@ -292,6 +292,25 @@ private:
 //  but this is now reduntand / confusing - renaming means i need also to rename the variables in the mmal code 
 
 
+VCSM_Alloc_MEM_Msg              m_allocTxVCSM_TestA;
+VCSM_Alloc_MEM_Reply            m_allocRxVCSM_TestA;
+
+VCSM_Alloc_MEM_Msg              m_allocTxVCSM_TestB;
+VCSM_Alloc_MEM_Reply            m_allocRxVCSM_TestB;
+
+VCSM_Alloc_MEM_Msg              m_allocTxVCSM_TestC;
+VCSM_Alloc_MEM_Reply            m_allocRxVCSM_TestC;
+
+u32                             m_test_buffer_handle_a;
+u32                             m_test_buffer_pointer_a;
+
+u32                             m_test_buffer_handle_b;
+u32                             m_test_buffer_pointer_b;
+
+u32                             m_test_buffer_handle_c;
+u32                             m_test_buffer_pointer_c;
+
+
 // VCSM predefined messages as public member
                 SERVICE_CREATION_T               m_ServiceCreateVCSM;
 
