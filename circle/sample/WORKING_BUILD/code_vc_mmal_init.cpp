@@ -6,7 +6,7 @@
     #define MY_BUFFER   m_logBuffer                 // not used here 
     #define MY_INDEX    m_logBufferIndex
 
-char* g_debug_table[15]   = 
+char* g_debug_table[16]   = 
 {
     "MMAL_MSG_STATUS_SUCCESS", 							// Success //
 	"MMAL_MSG_STATUS_ENOMEM",      							// Out of memory //
@@ -23,7 +23,7 @@ char* g_debug_table[15]   =
 	"MMAL_MSG_STATUS_EISCONN",     							// Port is already connected //
 	"MMAL_MSG_STATUS_ENOTCONN",    							// Port is disconnected //
 	"MMAL_MSG_STATUS_EAGAIN",      							// Resource temporarily unavailable. //
-	"MMAL_MSG_STATUS_EFAULT",      							// Bad address //
+	"MMAL_MSG_STATUS_EFAULT"      							// Bad address //
 };
 
 
