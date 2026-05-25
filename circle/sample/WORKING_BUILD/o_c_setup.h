@@ -64,7 +64,7 @@
     #define         FSH_SIZ                     (1024*32)
     #define         OMT_SIZ                     (1024*1024*4)       // 4mb
     #define         TEX_SIZ                     (1024*1024*4)
-    #define         VID_SIZ                     (1024*8) // (1024*1024*8)       // 8mb
+    #define         VID_SIZ                     (1024*1024*8)       // 8mb
     #define         KLN_SIZ                     (1024*1024*2)       // 2mb
 
     #define         FRM_SIZ                     (1024*1024)         // 1mb
