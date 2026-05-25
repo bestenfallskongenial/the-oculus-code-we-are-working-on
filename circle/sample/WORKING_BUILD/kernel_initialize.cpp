@@ -323,7 +323,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_PortInfoGetTx_Input_C, 
                                                     m_PortInfoGetRx_Input_C);
 #ifdef __DEBUG_LOG__
-                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input )              FAILED");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input )              DONE");
 #endif 
                         }
                     if (bOK)
@@ -333,10 +333,27 @@ boolean			CKernel::Initialize						(	void )
                                                     m_PortInfoGetTx_Output_C, 
                                                     m_PortInfoGetRx_Output_C);
 #ifdef __DEBUG_LOG__
-                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output )             FAILED");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output )             DONE");
 #endif 
                         }
-                                            
+                    if (bOK)
+                        {
+                        bOK = enablePortMMAL(       m_PortInfoGetRx_Input_C, 
+                                                    m_PortActionTx_Input, 
+                                                    m_PortActionRx_Input);
+#ifdef __DEBUG_LOG__
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enablePortMMAL ( Input )               DONE");
+#endif 
+                        }
+                    if (bOK)
+                        {
+                        bOK = enablePortMMAL(       m_PortInfoGetRx_Output_C, 
+                                                    m_PortActionTx_Output, 
+                                                    m_PortActionRx_Output);
+#ifdef __DEBUG_LOG__
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enablePortMMAL ( Output )              DONE");
+#endif 
+                        }
                         
 
 
@@ -353,24 +370,7 @@ boolean			CKernel::Initialize						(	void )
 
 
 
-                    if (bOK)
-                        {
-                        bOK = enablePortMMAL(       m_PortInfoGetRx_Input_C, 
-                                                    m_PortActionTx_Input, 
-                                                    m_PortActionRx_Input);
-#ifdef __DEBUG_LOG__
-                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enablePortMMAL ( Input )               FAILED");
-#endif 
-                        }
-                    if (bOK)
-                        {
-                        bOK = enablePortMMAL(       m_PortInfoGetRx_Output_C, 
-                                                    m_PortActionTx_Output, 
-                                                    m_PortActionRx_Output);
-#ifdef __DEBUG_LOG__
-                        if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enablePortMMAL ( Output )              FAILED");
-#endif 
-                        }
+
                     if (bOK)    // seemingly mandatory to "prime" and send / queue the buffers ones before decoder runtime
                         {
 */                            
