@@ -5,6 +5,46 @@
     #define MY_BUFFER   m_logBuffer     
     #define MY_INDEX    m_logBufferIndex   
 
+bool            CKernel::allocMemoryVCSM            (   size_t                  size,
+                                                        u32                     base_unit,
+                                                        u32                     alignment,
+                                                        vc_sm_alloc_type_t      type,
+                                                        u32                     allocator,
+                                                        const char*             name,
+                                                        u32&                    vcsm_handle,
+                                                        VCSM_Alloc_MEM_Msg&     tx,
+                                                        VCSM_Alloc_MEM_Reply&   rx)
+{
+                initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_ALLOC);
+
+                u32 num_unit = (static_cast<u32>(size) + base_unit - 1) / base_unit;
+
+                tx.body = {};
+                tx.body.type       = type;
+                tx.body.base_unit  = base_unit;
+                tx.body.num_unit   = num_unit;
+                tx.body.alignment  = alignment;
+                tx.body.allocator  = allocator;
+                strncpy(tx.body.name, name, sizeof(tx.body.name));
+
+                size_t rx_len = 0;
+
+                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len ))
+                    return false;
+
+                if (rx.body.res_handle != 0)
+                    {
+                    vcsm_handle = rx.body.res_handle;
+
+#ifdef __DEBUG_LOG__
+                    storeLog( MY_BUFFER, MY_INDEX, "Alloc VCSM Memory Handle", rx.body.res_handle );
+                    storeLog( MY_BUFFER, MY_INDEX, "VCSM Mem", rx.body.res_mem, "Base Size", rx.body.res_base_size, "Num", rx.body.res_num );
+#endif
+                    return true;
+                    }
+
+                return false;
+}
 bool            CKernel::importMemoryVCSM           (   void*                   p_bufferBlockbase, 
                                                         size_t                  size, 
                                                     /*  int                     slot, */ 

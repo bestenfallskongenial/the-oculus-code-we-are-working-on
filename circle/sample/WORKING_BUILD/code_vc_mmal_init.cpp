@@ -6,6 +6,27 @@
     #define MY_BUFFER   m_logBuffer                 // not used here 
     #define MY_INDEX    m_logBufferIndex
 
+char* g_debug_table[15]   = 
+{
+    "MMAL_MSG_STATUS_SUCCESS", 							// Success //
+	"MMAL_MSG_STATUS_ENOMEM",      							// Out of memory //
+	"MMAL_MSG_STATUS_ENOSPC",      							// Out of resources other than memory //
+	"MMAL_MSG_STATUS_EINVAL",      							// Argument is invalid //
+	"MMAL_MSG_STATUS_ENOSYS",      							// Function not implemented //
+	"MMAL_MSG_STATUS_ENOENT",      							// No such file or directory //
+	"MMAL_MSG_STATUS_ENXIO",       							// No such device or address //
+	"MMAL_MSG_STATUS_EIO",         							// I/O error //
+	"MMAL_MSG_STATUS_ESPIPE",      							// Illegal seek //
+	"MMAL_MSG_STATUS_ECORRUPT",    							// Data is corrupt \attention //
+	"MMAL_MSG_STATUS_ENOTREADY",   							// Component is not ready //
+	"MMAL_MSG_STATUS_ECONFIG",     							// Component is not configured //
+	"MMAL_MSG_STATUS_EISCONN",     							// Port is already connected //
+	"MMAL_MSG_STATUS_ENOTCONN",    							// Port is disconnected //
+	"MMAL_MSG_STATUS_EAGAIN",      							// Resource temporarily unavailable. //
+	"MMAL_MSG_STATUS_EFAULT",      							// Bad address //
+};
+
+
 bool            CKernel::initTexturesMMAL         (   )
 {
                 int f_count = 0;
@@ -138,8 +159,47 @@ bool            CKernel::enableComponentMMAL        (   MMAL_Component_Enable_Ms
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 
+
+bool            CKernel::setZeroCopyModeMMAL        (   u32                         port_handle,
+                                                        MMAL_Port_Parameter_Set_Msg& tx,
+                                                        MMAL_Port_Parameter_Set_Reply& rx )
+{
+                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_PORT_PARAMETER_SET );
+
+                tx.msg                                             = {};
+                tx.msg.component_handle                            = m_ComponentHandle;
+                tx.msg.port_handle                                 = port_handle;
+                tx.msg.id                                          = MMAL_PARAMETER_ZERO_COPY;
+                tx.msg.size                                        = (2 * sizeof(u32)) + sizeof(u32);
+
+                tx.msg.value[0]                                    = 1;
+
+                size_t tx_len                                      = sizeof(mmal_msg_header)
+                                                                    + (4 * sizeof(u32))
+                                                                    + sizeof(u32);
+
+                size_t rx_len                                      = 0;
+
+                if (!sendAndWaitVCHI( m_ServiceHandleMMAL,
+                                      m_EventMMAL,
+                                      &tx,
+                                      tx_len,
+                                      &rx,
+                                      sizeof(rx),
+                                      &rx_len ))
+                    {
+#ifdef __DEBUG_LOG__
+                    storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
+#endif
+                    return false;
+                    }
+
+                return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
+}
+
+/*
 bool            CKernel::setZeroCopyModeMMAL        ( u32 port_handle, 
-                                                      /*const MMAL_Port_Info_Get_Reply& src,*/  
+                                                      //const MMAL_Port_Info_Get_Reply& src,  
                                                         MMAL_Port_Parameter_Set_Msg& tx, 
                                                         MMAL_Port_Parameter_Set_Reply& rx)
 {
@@ -169,6 +229,7 @@ bool            CKernel::setZeroCopyModeMMAL        ( u32 port_handle,
                 return true;    
             //  return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
+*/
 
 bool            CKernel::setZeroCopyModeMMALOK       (   u32 port_handle )                                     // mmal_msg_port_parameter_set
 {
