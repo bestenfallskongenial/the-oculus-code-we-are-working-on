@@ -358,6 +358,8 @@ void            CKernel::logScreenUpdate            (   void )
                                     );
 }
 */
+
+/*
 void            CKernel::logScreenUpdate            (   void )
 {
                 if (gE_PixelBuffer == 0) return;
@@ -418,6 +420,8 @@ void            CKernel::logScreenUpdate            (   void )
 
                 m_logScreenStartIndex = startIndex;
 }
+*/
+
 /*
 u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,
                                                         u32         endIndex,
