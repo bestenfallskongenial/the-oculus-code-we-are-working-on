@@ -194,7 +194,7 @@ u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,
 
                 return startIndex;
 }
-
+/*
 void            CKernel::logScreenUpdate            (   void )
 {
                 if (gE_PixelBuffer == 0) return;
@@ -247,6 +247,67 @@ void            CKernel::logScreenUpdate            (   void )
                                     0,
                                     0xFFFFFFFF
                                     );
+}
+*/
+void            CKernel::logScreenUpdate            (   void )
+{
+                if (gE_PixelBuffer == 0) return;
+                if (gE_Cols == 0) return;
+                if (gE_Rows == 0) return;
+                if (MY_INDEX == 0) return;
+
+                u32 startIndex = bufferScreenFindStartIndex(
+                                                            MY_BUFFER,
+                                                            MY_INDEX,
+                                                            gE_Cols,
+                                                            gE_Rows
+                                                            );
+
+                if (m_logScreenStartIndex > startIndex)
+                    {
+                    m_logScreenStartIndex = 0;
+                    }
+
+                u32 drawIndex = m_logScreenStartIndex;
+
+                while (drawIndex < startIndex)
+                    {
+                    bufferScreenClear();
+
+                    bufferScreenDraw(
+                                        MY_BUFFER,
+                                        drawIndex,
+                                        MY_INDEX,
+                                        0,
+                                        0,
+                                        0xFFFFFFFF
+                                        );
+
+                    msDelay(SCROLLSPEED);
+
+                    while (drawIndex < startIndex && MY_BUFFER[drawIndex] != '\n')
+                        {
+                        drawIndex++;
+                        }
+
+                    if (drawIndex < startIndex)
+                        {
+                        drawIndex++;
+                        }
+                    }
+
+                bufferScreenClear();
+
+                bufferScreenDraw(
+                                    MY_BUFFER,
+                                    startIndex,
+                                    MY_INDEX,
+                                    0,
+                                    0,
+                                    0xFFFFFFFF
+                                    );
+
+                m_logScreenStartIndex = startIndex;
 }
 /*
 u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,

@@ -336,6 +336,8 @@ u32             m_bufferLogIndexLast[LOG_SD+LOG_USB] = { 0 };
 char            m_screenLogBuffer[SCREEN_LOG_BUFFER_SIZE] = { 0 };
 u32             m_screenLogBufferIndex = 0;
 */
+u32             m_logScreenStartIndex = 0;
+
 // VCSM predefined messages as public member
                 SERVICE_CREATION_T               m_ServiceCreateVCSM;
 
