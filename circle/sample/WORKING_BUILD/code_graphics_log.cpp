@@ -3,8 +3,11 @@
 //  #undef  __DEBUG_LOG__
     #define __DEBUG_LOG__
 
-    #define MY_BUFFER   m_logGLSLBuffer
-    #define MY_INDEX    m_logGLSLBufferIndex
+//  #define MY_BUFFER   m_logGLSLBuffer
+//  #define MY_INDEX    m_logGLSLBufferIndex
+
+    #define MY_BUFFER m_bufferLog[1]
+    #define MY_INDEX  m_bufferLogIndex[1]
 
 bool            CKernel::shaderLog                  (   GLint       shader,
                                                         int         shaderIndex )
