@@ -12,7 +12,6 @@ unsigned b = 186;
 
                 while (/*m_resetFlag == false*/ 1)
                     {
-                    msDelay(1000);
 
                     bufferScreenClear();
 
