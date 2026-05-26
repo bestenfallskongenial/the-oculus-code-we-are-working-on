@@ -330,11 +330,11 @@ const char* m_debug_table[16]   =
 	"MMAL_MSG_STATUS_EFAULT"      							// Bad address //
 };
 
-u32             m_logBufferIndexLast;
-u32             m_bufferLogIndexLast[LOG_SD+LOG_USB];
+u32             m_logBufferIndexLast = 0;
+u32             m_bufferLogIndexLast[LOG_SD+LOG_USB] = { 0 };
 
-char            m_screenLogBuffer[SCREEN_LOG_BUFFER_SIZE];
-u32             m_screenLogBufferIndex;
+char            m_screenLogBuffer[SCREEN_LOG_BUFFER_SIZE] = { 0 };
+u32             m_screenLogBufferIndex = 0;
 
 // VCSM predefined messages as public member
                 SERVICE_CREATION_T               m_ServiceCreateVCSM;
