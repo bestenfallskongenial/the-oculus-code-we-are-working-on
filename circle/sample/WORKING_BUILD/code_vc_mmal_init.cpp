@@ -6,7 +6,7 @@
     #define MY_BUFFER   m_logBuffer                 // not used here 
     #define MY_INDEX    m_logBufferIndex
 
-char* g_debug_table[16]   = 
+const char* g_debug_table[16]   = 
 {
     "MMAL_MSG_STATUS_SUCCESS", 							// Success //
 	"MMAL_MSG_STATUS_ENOMEM",      							// Out of memory //
