@@ -329,10 +329,10 @@ const char* m_debug_table[16]   =
 	"MMAL_MSG_STATUS_EAGAIN",      							// Resource temporarily unavailable. //
 	"MMAL_MSG_STATUS_EFAULT"      							// Bad address //
 };
-/*
+
 u32             m_logBufferIndexLast = 0;
 u32             m_bufferLogIndexLast[LOG_SD+LOG_USB] = { 0 };
-*/
+
 char            m_screenLogBuffer[SCREEN_LOG_BUFFER_SIZE] = { 0 };
 u32             m_screenLogBufferIndex = 0;
 
