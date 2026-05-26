@@ -569,9 +569,9 @@ u32             bufferScreenFindStartIndex          (   const char* p_buffer,
                                                         u32         endIndex,
                                                         unsigned    cols,
                                                         unsigned    rows);
-/*
+
 void            logScreenUpdate                    (   void );
-*/
+/*
 void            logScreenUpdate                    (   void );
 
 void            logScreenAppendDelta               (   const char* pSource,
@@ -579,7 +579,7 @@ void            logScreenAppendDelta               (   const char* pSource,
                                                         u32         deltaEnd );
 
 void            logScreenCompactVisible            (   void );
-
+*/
 // debug code section 
                 void        debug(); // +++
 

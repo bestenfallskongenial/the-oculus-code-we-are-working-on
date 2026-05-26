@@ -194,7 +194,7 @@ u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,
 
                 return startIndex;
 }
-/*
+
 void            CKernel::logScreenUpdate            (   void )
 {
                 if (gE_PixelBuffer == 0) return;
@@ -220,7 +220,7 @@ void            CKernel::logScreenUpdate            (   void )
                                     0xFFFFFFFF
                                     );
 }
-*/
+/*
 void            CKernel::logScreenAppendDelta       (   const char* pSource,
                                                         u32         deltaStart,
                                                         u32         deltaEnd )
@@ -364,8 +364,7 @@ void            CKernel::logScreenUpdate            (   void )
 
                 logScreenCompactVisible();
 }
-
-
+*/
 
 
 
