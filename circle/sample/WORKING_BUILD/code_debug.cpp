@@ -274,7 +274,6 @@ void            CKernel::logScreenUpdate            (   void )
 void            CKernel::logScreenDeltaUpdate       (   void )
 {
                 boot_buffer_index_temp_new          = m_logBufferIndex;
-                boot_buffer_index_temp_delta        = boot_buffer_index_temp_new - boot_buffer_index_temp_old;
 
                 memcpy( runtime_buffer_index_temp_new,  m_bufferLogIndex, sizeof(runtime_buffer_index_temp_new) );
 
