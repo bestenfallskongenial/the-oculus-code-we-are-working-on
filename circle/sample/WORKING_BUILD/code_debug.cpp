@@ -165,7 +165,7 @@ void CKernel::logInOutRuntime(void)
                        0,
                        0xFFFFFFFF );
 }
-
+/*
 u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,
                                                         u32         endIndex,
                                                         unsigned    cols,
@@ -193,6 +193,115 @@ u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,
                     }
 
                 return startIndex;
+}
+*/
+void            CKernel::logScreenUpdate            (   void )
+{
+                if (gE_PixelBuffer == 0) return;
+                if (gE_Cols == 0) return;
+                if (gE_Rows <= 1) return;
+                if (MY_INDEX == 0) return;
+
+                u32 startIndex = 0;
+                u32 drawIndex  = 0;
+
+                unsigned col   = 0;
+                unsigned row   = 0;
+
+                bufferScreenClear();
+
+                while (drawIndex < MY_INDEX)
+                    {
+                    char ch = MY_BUFFER[drawIndex];
+
+                    if (ch == '\0') break;
+
+                    if (ch == '\n')
+                        {
+                        col = 0;
+                        row++;
+                        drawIndex++;
+
+                        if (row >= (gE_Rows - 1))
+                            {
+                            while (startIndex < MY_INDEX && MY_BUFFER[startIndex] != '\n')
+                                {
+                                startIndex++;
+                                }
+
+                            if (startIndex < MY_INDEX)
+                                {
+                                startIndex++;
+                                }
+
+                            bufferScreenClear();
+
+                            bufferScreenDraw(
+                                                MY_BUFFER,
+                                                startIndex,
+                                                drawIndex,
+                                                0,
+                                                0,
+                                                0xFFFFFFFF
+                                                );
+
+                            msDelay(SCROLLSPEED);
+
+                            row = gE_Rows - 2;
+                            col = 0;
+                            }
+
+                        continue;
+                        }
+
+                    bufferScreenDrawChar(
+                                            ch,
+                                            col,
+                                            row,
+                                            0xFFFFFFFF
+                                            );
+
+                    col++;
+                    drawIndex++;
+
+                    if (col >= gE_Cols)
+                        {
+                        col = 0;
+                        row++;
+
+                        if (row >= (gE_Rows - 1))
+                            {
+                            startIndex += gE_Cols;
+
+                            bufferScreenClear();
+
+                            bufferScreenDraw(
+                                                MY_BUFFER,
+                                                startIndex,
+                                                drawIndex,
+                                                0,
+                                                0,
+                                                0xFFFFFFFF
+                                                );
+
+                            msDelay(SCROLLSPEED);
+
+                            row = gE_Rows - 2;
+                            col = 0;
+                            }
+                        }
+                    }
+
+                bufferScreenClear();
+
+                bufferScreenDraw(
+                                    MY_BUFFER,
+                                    startIndex,
+                                    MY_INDEX,
+                                    0,
+                                    0,
+                                    0xFFFFFFFF
+                                    );
 }
 /*
 void            CKernel::logScreenUpdate            (   void )
