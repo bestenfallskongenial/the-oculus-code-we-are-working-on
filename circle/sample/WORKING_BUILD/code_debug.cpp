@@ -165,7 +165,7 @@ void CKernel::logInOutRuntime(void)
                        0,
                        0xFFFFFFFF );
 }
-/*
+
 u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,
                                                         u32         endIndex,
                                                         unsigned    cols,
@@ -194,7 +194,7 @@ u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,
 
                 return startIndex;
 }
-
+/*
 void            CKernel::logScreenUpdate            (   void )
 {
                 if (gE_PixelBuffer == 0) return;
