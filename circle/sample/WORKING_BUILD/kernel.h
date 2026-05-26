@@ -505,7 +505,7 @@ public:
                 bool        setZeroCopyModeMMALOK       (           u32  port_handle);                                                                    
                                                                     
                 bool        enablePortMMAL              (           u32                             port_handle,  
-                                                            const   MMAL_Port_Info_Get_Reply&       src, 
+                                                         // const   MMAL_Port_Info_Get_Reply&       src, 
                                                                     MMAL_Port_Action_Msg&           tx, 
                                                                     MMAL_Port_Action_Reply_Msg&     rx);
 
