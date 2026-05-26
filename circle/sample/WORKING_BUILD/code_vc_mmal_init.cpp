@@ -6,27 +6,6 @@
     #define MY_BUFFER   m_logBuffer                 // not used here 
     #define MY_INDEX    m_logBufferIndex
 
-const char* g_debug_table[16]   = 
-{
-    "MMAL_MSG_STATUS_SUCCESS", 							// Success //
-	"MMAL_MSG_STATUS_ENOMEM",      							// Out of memory //
-	"MMAL_MSG_STATUS_ENOSPC",      							// Out of resources other than memory //
-	"MMAL_MSG_STATUS_EINVAL",      							// Argument is invalid //
-	"MMAL_MSG_STATUS_ENOSYS",      							// Function not implemented //
-	"MMAL_MSG_STATUS_ENOENT",      							// No such file or directory //
-	"MMAL_MSG_STATUS_ENXIO",       							// No such device or address //
-	"MMAL_MSG_STATUS_EIO",         							// I/O error //
-	"MMAL_MSG_STATUS_ESPIPE",      							// Illegal seek //
-	"MMAL_MSG_STATUS_ECORRUPT",    							// Data is corrupt \attention //
-	"MMAL_MSG_STATUS_ENOTREADY",   							// Component is not ready //
-	"MMAL_MSG_STATUS_ECONFIG",     							// Component is not configured //
-	"MMAL_MSG_STATUS_EISCONN",     							// Port is already connected //
-	"MMAL_MSG_STATUS_ENOTCONN",    							// Port is disconnected //
-	"MMAL_MSG_STATUS_EAGAIN",      							// Resource temporarily unavailable. //
-	"MMAL_MSG_STATUS_EFAULT"      							// Bad address //
-};
-
-
 bool            CKernel::initTexturesMMAL         (   )
 {
                 int f_count = 0;
@@ -170,20 +149,22 @@ bool            CKernel::setZeroCopyModeMMAL        (   u32                     
                 tx.msg.component_handle                            = m_ComponentHandle;
                 tx.msg.port_handle                                 = port_handle;
                 tx.msg.id                                          = MMAL_PARAMETER_ZERO_COPY;
-                tx.msg.size                                        = (2 * sizeof(u32)) + sizeof(u32);
+                tx.msg.size                                        = (2 * sizeof(u32)) + sizeof(u32);   // OLD sizeof(u32);
 
                 tx.msg.value[0]                                    = 1;
 
+            //  memset(tx.msg.value, 0, sizeof(tx.msg.value));                                          // OLD
+
                 size_t tx_len                                      = sizeof(mmal_msg_header)
                                                                     + (4 * sizeof(u32))
-                                                                    + sizeof(u32);
+                                                                    + sizeof(u32);                      // NEW
 
                 size_t rx_len                                      = 0;
 
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL,
                                       m_EventMMAL,
                                       &tx,
-                                      tx_len,
+                                      tx_len,                                                           // OLD sizeof(tx)
                                       &rx,
                                       sizeof(rx),
                                       &rx_len ))
@@ -194,88 +175,7 @@ bool            CKernel::setZeroCopyModeMMAL        (   u32                     
                     return false;
                     }
 
-                return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
-}
-
-/*
-bool            CKernel::setZeroCopyModeMMAL        ( u32 port_handle, 
-                                                      //const MMAL_Port_Info_Get_Reply& src,  
-                                                        MMAL_Port_Parameter_Set_Msg& tx, 
-                                                        MMAL_Port_Parameter_Set_Reply& rx)
-{
-                initHeaderMMAL( tx.hdr, MMAL_MSG_TYPE_PORT_PARAMETER_SET );
-
-            //  tx.msg = {};
-                tx.msg.component_handle                            = m_ComponentHandle;
-                tx.msg.port_handle                                 = port_handle; //src.msg.port_handle; // port_handle - my original code takes it as parameter! i assume this is chosen because chn has the correct handle
-                tx.msg.id                                          = MMAL_PARAMETER_ZERO_COPY;
-                tx.msg.size                                        = sizeof(u32);
-
-                memset(tx.msg.value, 0, sizeof(tx.msg.value));
-                tx.msg.value[0] = 1;
-
-                size_t rx_len = 0;
-
-                if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
-                    {
-#ifdef __DEBUG_LOG__
-                    storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
-#endif 
-                    return false;
-                    }
-#ifdef __DEBUG_LOG__
-            //  Log_setZeroCopyModeMMAL(tx,rx);
-#endif       
-                return true;    
-            //  return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
-}
-*/
-
-bool            CKernel::setZeroCopyModeMMALOK       (   u32 port_handle )                                     // mmal_msg_port_parameter_set
-{
-                mmal_msg_header tx_hdr                          = {};
-                tx_hdr.magic                                    = MMAL_MAGIC;
-                tx_hdr.type                                     = MMAL_MSG_TYPE_PORT_PARAMETER_SET;
-                tx_hdr.control_service                          = 0;         // *** NEW TO MATCH THE DEFINITION!                    
-                tx_hdr.context                                  = NextTransId(m_TransactionId);
-                tx_hdr.status                                   = 0;
-                tx_hdr.padding                                  = 0;         // *** NEW TO MATCH THE DEFINITION!                
-
-                mmal_msg_port_parameter_set tx_body = {};
-                tx_body.component_handle                        = m_ComponentHandle;
-                tx_body.port_handle                             = port_handle; // 0; // Match by type+index OR the handle!?
-            //  tx_body.port_type                               = port_type;
-            //  tx_body.port_index                              = 0; // port_index;
-                tx_body.id                                      = MMAL_PARAMETER_ZERO_COPY;
-                tx_body.size                                    = sizeof(u32); // Size of boolean value only
-
-                memset(tx_body.value, 0, sizeof(tx_body.value));
-                tx_body.value[0] = 1; // Only ever set ON
-
-                u8 tx_msg[sizeof(tx_hdr) + sizeof(tx_body)] = {};
-                memcpy(tx_msg, &tx_hdr, sizeof(tx_hdr));
-                memcpy(tx_msg + sizeof(tx_hdr), &tx_body, sizeof(tx_body));
-
-                u8 rx_msg[MMAL_MSG_MAX_SIZE] = {};
-                size_t rx_len = 0;
-                if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, tx_msg, sizeof(tx_msg), rx_msg, sizeof(rx_msg), &rx_len))
-                    {
-                    storeLog ( MY_BUFFER, MY_INDEX, "Enable Zero Copy Input Port FAILED",tx_body.port_handle);                        
-                    return false;
-                    }
-                if (rx_len < sizeof(mmal_msg_header) + sizeof(mmal_msg_port_parameter_set_reply))
-                    {
-                    storeLog ( MY_BUFFER, MY_INDEX, "Enable Zero Copy Input Port FAILED", tx_body.port_handle);                            
-                    return false;
-                    }
-
-//              const mmal_msg_port_parameter_set_reply* reply =
-//              reinterpret_cast<const mmal_msg_port_parameter_set_reply*>(rx_msg + sizeof(mmal_msg_header));
-
-                storeLog ( MY_BUFFER, MY_INDEX, "Enable Zero Copy Input Port SUCCESS", (u32)port_handle);
-
-                return true; //(reply->status == MMAL_MSG_STATUS_SUCCESS);
-            //  return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
+                return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);                                      // OLD returns 04 !
 }
 
 bool            CKernel::enablePortMMAL             ( /*u32 port_handle,*/                          // why not also here? it works now but...
@@ -396,119 +296,3 @@ void            CKernel::primePortFormatOutputMMAL  (   u32 bufferSize,
                 tx.msg.es.video.crop.width      = m_ResolutionX;
                 tx.msg.es.video.crop.height     = m_ResolutionY;
 }
-/*
-void            CKernel::primePortFormatInputMMAL   (   u32 bufferSize, 
-                                                        const MMAL_Port_Info_Get_Reply& src, 
-                                                        MMAL_Port_Info_Set_Msg& tx)
-{
-                tx.msg = {};
-
-                tx.msg.component_handle         = src.msg.component_handle;
-                tx.msg.port_type                = src.msg.port_type;
-                tx.msg.port_index               = src.msg.port_index;
-
-                tx.msg.port                     = src.msg.port;
-                tx.msg.format                   = src.msg.format;
-                tx.msg.es                       = src.msg.es;
-
-                memcpy( tx.msg.extradata,
-                        src.msg.extradata,
-                        MMAL_FORMAT_EXTRADATA_MAX_SIZE );
-
-                tx.msg.port.buffer_num          = NUMBER_INPUTBUFFER;
-                tx.msg.port.buffer_size         = bufferSize;
-
-                tx.msg.format.encoding          = MMAL_ENCODING_H264;
-                tx.msg.format.encoding_variant  = MMAL_ENCODING_VARIANT_H264_DEFAULT;
-
-                tx.msg.es.video.width           = m_ResolutionX;
-                tx.msg.es.video.height          = m_ResolutionY;
-                tx.msg.es.video.crop.x          = 0;
-                tx.msg.es.video.crop.y          = 0;
-                tx.msg.es.video.crop.width      = m_ResolutionX;
-                tx.msg.es.video.crop.height     = m_ResolutionY;
-}
-
-void            CKernel::primePortFormatOutputMMAL  (   u32 bufferSize, 
-                                                        const MMAL_Port_Info_Get_Reply& src, 
-                                                        MMAL_Port_Info_Set_Msg& tx)
-{
-                tx.msg = {};
-
-                tx.msg.component_handle         = src.msg.component_handle;
-                tx.msg.port_type                = src.msg.port_type;
-                tx.msg.port_index               = src.msg.port_index;
-
-                tx.msg.port                     = src.msg.port;
-                tx.msg.format                   = src.msg.format;
-                tx.msg.es                       = src.msg.es;
-
-                memcpy( tx.msg.extradata,
-                        src.msg.extradata,
-                        MMAL_FORMAT_EXTRADATA_MAX_SIZE );
-
-                tx.msg.port.buffer_num          = NUMBER_OUTPUTBUFFER;
-                tx.msg.port.buffer_size         = bufferSize;
-
-                tx.msg.format.encoding          = MMAL_ENCODING_I420;
-
-                tx.msg.es.video.width           = m_ResolutionX;
-                tx.msg.es.video.height          = m_ResolutionY;
-                tx.msg.es.video.crop.x          = 0;
-                tx.msg.es.video.crop.y          = 0;
-                tx.msg.es.video.crop.width      = m_ResolutionX;
-                tx.msg.es.video.crop.height     = m_ResolutionY;
-}
-
-
-void            CKernel::primePortFormatInputMMAL   (   u32 bufferSize, 
-                                                        const MMAL_Port_Info_Get_Reply& src, 
-                                                        MMAL_Port_Info_Set_Msg& tx)
-{
-                tx.msg.component_handle = src.msg.component_handle;
-                tx.msg.port_type        = src.msg.port_type;
-                tx.msg.port_index       = src.msg.port_index;
-
-                tx.msg.port   = src.msg.port;
-                tx.msg.format = src.msg.format;
-                tx.msg.es     = src.msg.es;
-
-                tx.msg.port.buffer_num  = NUMBER_INPUTBUFFER;
-                tx.msg.port.buffer_size = bufferSize; // m_InputBufferSize;
-
-                tx.msg.format.encoding         = MMAL_ENCODING_H264;
-                tx.msg.format.encoding_variant = MMAL_ENCODING_VARIANT_H264_DEFAULT;
-
-                tx.msg.es.video.width       = m_ResolutionX;
-                tx.msg.es.video.height      = m_ResolutionY;
-                tx.msg.es.video.crop.x      = 0;
-                tx.msg.es.video.crop.y      = 0;
-                tx.msg.es.video.crop.width  = m_ResolutionX;
-                tx.msg.es.video.crop.height = m_ResolutionY;
-}
-
-void            CKernel::primePortFormatOutputMMAL  (   u32 bufferSize, 
-                                                        const MMAL_Port_Info_Get_Reply& src, 
-                                                        MMAL_Port_Info_Set_Msg& tx)
-{
-                tx.msg.component_handle = src.msg.component_handle;
-                tx.msg.port_type        = src.msg.port_type;
-                tx.msg.port_index       = src.msg.port_index;
-
-                tx.msg.port   = src.msg.port;
-                tx.msg.format = src.msg.format;
-                tx.msg.es     = src.msg.es;
-
-                tx.msg.port.buffer_num  = NUMBER_OUTPUTBUFFER;
-                tx.msg.port.buffer_size = bufferSize; // m_OutputBufferSize;
-
-                tx.msg.format.encoding = MMAL_ENCODING_I420;
-
-                tx.msg.es.video.width       = m_ResolutionX;
-                tx.msg.es.video.height      = m_ResolutionY;
-                tx.msg.es.video.crop.x      = 0;
-                tx.msg.es.video.crop.y      = 0;
-                tx.msg.es.video.crop.width  = m_ResolutionX;
-                tx.msg.es.video.crop.height = m_ResolutionY;
-}
-*/

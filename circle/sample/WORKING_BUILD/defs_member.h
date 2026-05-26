@@ -291,7 +291,7 @@ private:
 //  means i need to rename them right? the mmal code was its own class and needed to get all the variables via  initializeMMAL() 
 //  but this is now reduntand / confusing - renaming means i need also to rename the variables in the mmal code 
 
-
+// debug 
 VCSM_Alloc_MEM_Msg              m_allocTxVCSM_TestA;
 VCSM_Alloc_MEM_Reply            m_allocRxVCSM_TestA;
 
@@ -309,6 +309,26 @@ u32                             m_test_buffer_pointer_b;
 
 u32                             m_test_buffer_handle_c;
 u32                             m_test_buffer_pointer_c;
+
+const char* m_debug_table[16]   = 
+{
+    "MMAL_MSG_STATUS_SUCCESS", 							// Success //
+	"MMAL_MSG_STATUS_ENOMEM",      							// Out of memory //
+	"MMAL_MSG_STATUS_ENOSPC",      							// Out of resources other than memory //
+	"MMAL_MSG_STATUS_EINVAL",      							// Argument is invalid //
+	"MMAL_MSG_STATUS_ENOSYS",      							// Function not implemented //
+	"MMAL_MSG_STATUS_ENOENT",      							// No such file or directory //
+	"MMAL_MSG_STATUS_ENXIO",       							// No such device or address //
+	"MMAL_MSG_STATUS_EIO",         							// I/O error //
+	"MMAL_MSG_STATUS_ESPIPE",      							// Illegal seek //
+	"MMAL_MSG_STATUS_ECORRUPT",    							// Data is corrupt \attention //
+	"MMAL_MSG_STATUS_ENOTREADY",   							// Component is not ready //
+	"MMAL_MSG_STATUS_ECONFIG",     							// Component is not configured //
+	"MMAL_MSG_STATUS_EISCONN",     							// Port is already connected //
+	"MMAL_MSG_STATUS_ENOTCONN",    							// Port is disconnected //
+	"MMAL_MSG_STATUS_EAGAIN",      							// Resource temporarily unavailable. //
+	"MMAL_MSG_STATUS_EFAULT"      							// Bad address //
+};
 
 
 // VCSM predefined messages as public member
