@@ -256,7 +256,7 @@ void            CKernel::logScreenAppendDelta       (   const char* pSource,
 {
                 if (pSource == 0) return;
                 if (deltaStart >= deltaEnd) return;
-                if (m_screenLogBuffer == 0) return;
+            //  if (m_screenLogBuffer == 0) return;
 
                 for (u32 i = deltaStart; i < deltaEnd; i++)
                     {
@@ -308,7 +308,7 @@ void            CKernel::logScreenUpdate            (   void )
                 if (gE_PixelBuffer == 0) return;
                 if (gE_Cols == 0) return;
                 if (gE_Rows <= 1) return;
-                if (m_screenLogBuffer == 0) return;
+            //  if (m_screenLogBuffer == 0) return;
 
                 boolean bChanged = FALSE;
 
