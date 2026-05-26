@@ -413,7 +413,7 @@ void            CKernel::logScreenUpdate            (   void )
 
                 m_logScreenStartIndex = drawIndex;
 }
-*/
+
 void            CKernel::logScreenUpdate            (   void )
 {
                 if (gE_PixelBuffer == 0) return;
@@ -523,6 +523,170 @@ void            CKernel::logScreenUpdate            (   void )
                         if (row >= (gE_Rows - 1))
                             {
                             drawIndex += gE_Cols;
+
+                            bufferScreenClear();
+
+                            bufferScreenDraw(
+                                                m_screenLogBuffer,
+                                                drawIndex,
+                                                scanIndex,
+                                                0,
+                                                0,
+                                                0xFFFFFFFF
+                                                );
+
+                            msDelay(SCROLLSPEED);
+
+                            row = gE_Rows - 2;
+                            col = 0;
+                            }
+                        }
+                    }
+
+                bufferScreenClear();
+
+                bufferScreenDraw(
+                                    m_screenLogBuffer,
+                                    drawIndex,
+                                    m_screenLogBufferIndex,
+                                    0,
+                                    0,
+                                    0xFFFFFFFF
+                                    );
+
+                m_logScreenStartIndex = drawIndex;
+}
+*/
+void            CKernel::logScreenUpdate            (   void )
+{
+                if (gE_PixelBuffer == 0) return;
+                if (gE_Cols == 0) return;
+                if (gE_Rows <= 1) return;
+
+                boolean bChanged = FALSE;
+
+                if (m_logBufferIndex < m_logBufferIndexLast)
+                    {
+                    m_logBufferIndexLast = m_logBufferIndex;
+                    }
+
+                if (m_logBufferIndex > m_logBufferIndexLast)
+                    {
+                    for (u32 i = m_logBufferIndexLast; i < m_logBufferIndex; i++)
+                        {
+                        if (m_screenLogBufferIndex >= (SCREEN_LOG_BUFFER_SIZE - 1)) break;
+                        if (m_logBuffer[i] == '\0') break;
+
+                        m_screenLogBuffer[m_screenLogBufferIndex++] = m_logBuffer[i];
+                        }
+
+                    m_screenLogBuffer[m_screenLogBufferIndex] = '\0';
+                    m_logBufferIndexLast = m_logBufferIndex;
+                    bChanged = TRUE;
+                    }
+
+                for (unsigned n = 0; n < (LOG_SD+LOG_USB); n++)
+                    {
+                    if (m_bufferLog[n] == 0) continue;
+
+                    if (m_bufferLogIndex[n] < m_bufferLogIndexLast[n])
+                        {
+                        m_bufferLogIndexLast[n] = m_bufferLogIndex[n];
+                        continue;
+                        }
+
+                    if (m_bufferLogIndex[n] > m_bufferLogIndexLast[n])
+                        {
+                        for (u32 i = m_bufferLogIndexLast[n]; i < m_bufferLogIndex[n]; i++)
+                            {
+                            if (m_screenLogBufferIndex >= (SCREEN_LOG_BUFFER_SIZE - 1)) break;
+                            if (m_bufferLog[n][i] == '\0') break;
+
+                            m_screenLogBuffer[m_screenLogBufferIndex++] = m_bufferLog[n][i];
+                            }
+
+                        m_screenLogBuffer[m_screenLogBufferIndex] = '\0';
+                        m_bufferLogIndexLast[n] = m_bufferLogIndex[n];
+                        bChanged = TRUE;
+                        }
+                    }
+
+                if (!bChanged) return;
+                if (m_screenLogBufferIndex == 0) return;
+
+                if (m_logScreenStartIndex > m_screenLogBufferIndex)
+                    {
+                    m_logScreenStartIndex = 0;
+                    }
+
+                u32 drawIndex = m_logScreenStartIndex;
+                u32 scanIndex = m_logScreenStartIndex;
+
+                unsigned col = 0;
+                unsigned row = 0;
+
+                bufferScreenClear();
+
+                while (scanIndex < m_screenLogBufferIndex)
+                    {
+                    char ch = m_screenLogBuffer[scanIndex];
+
+                    if (ch == '\0') break;
+
+                    if (ch == '\n')
+                        {
+                        col = 0;
+                        row++;
+                        scanIndex++;
+
+                        if (row >= (gE_Rows - 1))
+                            {
+                            while (drawIndex < m_screenLogBufferIndex && m_screenLogBuffer[drawIndex] != '\n')
+                                {
+                                drawIndex++;
+                                }
+
+                            if (drawIndex < m_screenLogBufferIndex)
+                                {
+                                drawIndex++;
+                                }
+
+                            bufferScreenClear();
+
+                            bufferScreenDraw(
+                                                m_screenLogBuffer,
+                                                drawIndex,
+                                                scanIndex,
+                                                0,
+                                                0,
+                                                0xFFFFFFFF
+                                                );
+
+                            msDelay(SCROLLSPEED);
+
+                            row = gE_Rows - 2;
+                            col = 0;
+                            }
+
+                        continue;
+                        }
+
+                    col++;
+                    scanIndex++;
+
+                    if (col >= gE_Cols)
+                        {
+                        col = 0;
+                        row++;
+
+                        if (row >= (gE_Rows - 1))
+                            {
+                            drawIndex += gE_Cols;
+
+                            if (drawIndex > m_screenLogBufferIndex)
+                                {
+                                drawIndex = m_screenLogBufferIndex;
+                                }
 
                             bufferScreenClear();
 
