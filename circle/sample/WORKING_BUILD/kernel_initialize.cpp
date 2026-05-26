@@ -39,7 +39,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK = frameBufferInit();
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "frameBufferInit()                        DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -47,7 +47,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK = startupScreen();
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "Hardware Info Log                        DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     }                
                 if (bOK)
@@ -55,7 +55,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK = m_EMMC.Initialize();
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_EMMC.Initialize()                      DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -63,7 +63,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK = m_USBHCI.Initialize();
 #ifdef __DEBUG_LOG__                    
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_USBHCI.Initialize()                    DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -71,7 +71,7 @@ boolean			CKernel::Initialize						(	void )
                     m_USBHCI.UpdatePlugAndPlay(); 
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_USBHCI.UpdatePlugAndPlay()             DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -79,7 +79,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK =   wrapperInitDMA();
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "InitDMA Buffer                           DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -87,7 +87,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK =   wrapperInitMEM();
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "InitMEM Buffer                           DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     }
 
@@ -96,7 +96,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK =   m_VCHIQ.Initialize();
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_VCHIQ.Initialize()                     DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     }
                     if (bOK)
@@ -104,7 +104,7 @@ boolean			CKernel::Initialize						(	void )
                     bcm_host_init();
 #ifdef __DEBUG_LOG__
                     if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "bcm_host_init()                          DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     }    
 
@@ -116,7 +116,7 @@ boolean			CKernel::Initialize						(	void )
                     storeLog( MY_BUFFER, MY_INDEX, "m_Connection",             (u32)m_Connection );
 
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getStateVCHI()                           DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -126,7 +126,7 @@ boolean			CKernel::Initialize						(	void )
                         bOK = initEventsVCOS(m_EventSMEM, "SMEM");
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS(m_EventSMEM, SMEM)        DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif
                         }
                     if (bOK)
@@ -141,7 +141,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_ServiceHandleVCSM );
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('S','M','E','M')         DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif
                         }
                     if (bOK)
@@ -158,7 +158,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_lockRxVCSM ); 
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Input allocation                DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif                                                                       
                         }
                     if (bOK)
@@ -175,7 +175,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_lockRxVCSM );
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output A allocation             DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif                                              
                         }
                     if (bOK)
@@ -192,7 +192,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_lockRxVCSM );   
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output B allocation             DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif                                                                           
                         }
                     }
@@ -205,7 +205,7 @@ boolean			CKernel::Initialize						(	void )
                         storeLog( MY_BUFFER, MY_INDEX, "m_EventMMAL",              (u32)&m_EventMMAL );
                         storeMsg( MY_BUFFER, MY_INDEX, "m_EventMMAL raw", &m_EventMMAL, sizeof(m_EventMMAL) );
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS( m_EventMMAL, MMAL )     DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif
                         }
                     if (bOK)
@@ -221,7 +221,7 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                         storeLog( MY_BUFFER, MY_INDEX, "m_ServiceHandleMMAL",      (u32)m_ServiceHandleMMAL );
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('m','m','a','l')            DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif
                         }
                     if (bOK)
@@ -230,7 +230,7 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                         storeLog( MY_BUFFER, MY_INDEX, "m_ComponentHandle",        m_ComponentHandle );
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "createComponent()                       DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         }
                     if (bOK)
@@ -242,7 +242,7 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                         storeLog( MY_BUFFER, MY_INDEX, "m_InputPortHandle",        m_InputPortHandle );
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Input )               DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         }
                     if (bOK)
@@ -254,7 +254,7 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                         storeLog( MY_BUFFER, MY_INDEX, "m_OutputPortHandle",       m_OutputPortHandle );
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )               DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         }          
                     primePortFormatInputMMAL (      m_videoBlockSize,
@@ -270,7 +270,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_PortInfoSetRx_Input);
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Input )                DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         }
                     if (bOK)
@@ -279,7 +279,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_PortInfoSetRx_Output);
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Output )               DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         }
                     if (bOK)
@@ -288,7 +288,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_ComponentEnableRx);
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enableComponentMMAL()                   DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         }         
                     if (bOK)
@@ -300,7 +300,7 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                         storeLog( MY_BUFFER, MY_INDEX, "m_InputPortHandle",        m_InputPortHandle );
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Input )                DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         }
                     if (bOK)
@@ -312,7 +312,7 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                         storeLog( MY_BUFFER, MY_INDEX, "m_OutputPortHandle",       m_OutputPortHandle );
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )               DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         }
                     if (bOK)
@@ -322,7 +322,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_PortParamRx_Input);
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Input )            DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         }
                     if (bOK)
@@ -332,7 +332,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_PortParamRx_Output);
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Output )           DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         }
                     if (bOK)
@@ -343,7 +343,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_PortInfoGetRx_Input_C);
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input )              DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         }
                     if (bOK)
@@ -354,7 +354,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_PortInfoGetRx_Output_C);
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output )             DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         }
                     if (bOK)
@@ -364,7 +364,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_PortActionRx_Input);
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enablePortMMAL ( Input )               DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         }
                     if (bOK)
@@ -374,7 +374,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_PortActionRx_Output);
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enablePortMMAL ( Output )              DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         }
                     if (bOK)
@@ -385,7 +385,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_PortInfoGetRx_Input_D);
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input )              DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         }
                     if (bOK)
@@ -396,7 +396,7 @@ boolean			CKernel::Initialize						(	void )
                                                     m_PortInfoGetRx_Output_D);
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output )             DONE");
-                        logScreenUpdate();
+                        // logScreenUpdate();
 #endif 
                         } 
                     }
@@ -405,7 +405,7 @@ boolean			CKernel::Initialize						(	void )
                     initOGL(    &m_ogl);
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initOGL(&m_ogl)                         DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -413,7 +413,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK =   SPI_init();
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SPI_init()                              DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -421,7 +421,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK =   SMI_Init(   LED_PIN);
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMI_Init(LED_PIN)                       DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -429,7 +429,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK =   WS2812_Init(LED_COUNT);
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "WS2812_Init(LED_COUNT)                  DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -439,21 +439,21 @@ boolean			CKernel::Initialize						(	void )
                                     GPIO_PULL_OFF);
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "GPIO_SetAlt(CTRL_PIN, 1, GPIO_PULL_OFF)  DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     GPIO_SetAlt(    SW_PIN_A, 
                                     0, 
                                     GPIO_PULL_UP);
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "GPIO_SetAlt(SW_PIN_A, 0, GPIO_PULL_UP)  DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     GPIO_SetAlt(    SW_PIN_B, 
                                     0, 
                                     GPIO_PULL_UP);
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "GPIO_SetAlt(SW_PIN_B, 0, GPIO_PULL_UP) DONE");
-                    logScreenUpdate();
+                    // logScreenUpdate();
 #endif
                     }
                 return bOK;
