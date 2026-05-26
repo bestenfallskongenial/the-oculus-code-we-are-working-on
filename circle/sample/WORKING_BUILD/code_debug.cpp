@@ -202,17 +202,17 @@ void            CKernel::logScreenUpdate            (   void )
                 if (gE_Rows <= 1) return;
                 if (MY_INDEX == 0) return;
 
-                u32 startIndex = 0;
-                u32 drawIndex  = 0;
+                u32 drawIndex  = m_logScreenStartIndex;
+                u32 scanIndex  = m_logScreenStartIndex;
 
                 unsigned col   = 0;
                 unsigned row   = 0;
 
                 bufferScreenClear();
 
-                while (drawIndex < MY_INDEX)
+                while (scanIndex < MY_INDEX)
                     {
-                    char ch = MY_BUFFER[drawIndex];
+                    char ch = MY_BUFFER[scanIndex];
 
                     if (ch == '\0') break;
 
@@ -220,26 +220,26 @@ void            CKernel::logScreenUpdate            (   void )
                         {
                         col = 0;
                         row++;
-                        drawIndex++;
+                        scanIndex++;
 
                         if (row >= (gE_Rows - 1))
                             {
-                            while (startIndex < MY_INDEX && MY_BUFFER[startIndex] != '\n')
+                            while (drawIndex < MY_INDEX && MY_BUFFER[drawIndex] != '\n')
                                 {
-                                startIndex++;
+                                drawIndex++;
                                 }
 
-                            if (startIndex < MY_INDEX)
+                            if (drawIndex < MY_INDEX)
                                 {
-                                startIndex++;
+                                drawIndex++;
                                 }
 
                             bufferScreenClear();
 
                             bufferScreenDraw(
                                                 MY_BUFFER,
-                                                startIndex,
                                                 drawIndex,
+                                                scanIndex,
                                                 0,
                                                 0,
                                                 0xFFFFFFFF
@@ -254,15 +254,8 @@ void            CKernel::logScreenUpdate            (   void )
                         continue;
                         }
 
-                    bufferScreenDrawChar(
-                                            ch,
-                                            col,
-                                            row,
-                                            0xFFFFFFFF
-                                            );
-
                     col++;
-                    drawIndex++;
+                    scanIndex++;
 
                     if (col >= gE_Cols)
                         {
@@ -271,14 +264,14 @@ void            CKernel::logScreenUpdate            (   void )
 
                         if (row >= (gE_Rows - 1))
                             {
-                            startIndex += gE_Cols;
+                            drawIndex += gE_Cols;
 
                             bufferScreenClear();
 
                             bufferScreenDraw(
                                                 MY_BUFFER,
-                                                startIndex,
                                                 drawIndex,
+                                                scanIndex,
                                                 0,
                                                 0,
                                                 0xFFFFFFFF
@@ -296,12 +289,14 @@ void            CKernel::logScreenUpdate            (   void )
 
                 bufferScreenDraw(
                                     MY_BUFFER,
-                                    startIndex,
+                                    drawIndex,
                                     MY_INDEX,
                                     0,
                                     0,
                                     0xFFFFFFFF
                                     );
+
+                m_logScreenStartIndex = drawIndex;
 }
 /*
 void            CKernel::logScreenUpdate            (   void )
