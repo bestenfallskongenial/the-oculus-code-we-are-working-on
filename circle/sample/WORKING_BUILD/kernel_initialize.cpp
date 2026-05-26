@@ -39,7 +39,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK = frameBufferInit();
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "frameBufferInit()                        DONE");
-                    logScreenUpdate();
+                //  logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -47,7 +47,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK = startupScreen();
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "Hardware Info Log                        DONE");
-                    logScreenUpdate();
+                //  logScreenUpdate();
 #endif
                     }                
                 if (bOK)
@@ -55,7 +55,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK = m_EMMC.Initialize();
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_EMMC.Initialize()                      DONE");
-                    logScreenUpdate();
+                //  logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -63,7 +63,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK = m_USBHCI.Initialize();
 #ifdef __DEBUG_LOG__                    
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_USBHCI.Initialize()                    DONE");
-                    logScreenUpdate();
+                //  logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -71,7 +71,7 @@ boolean			CKernel::Initialize						(	void )
                     m_USBHCI.UpdatePlugAndPlay(); 
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_USBHCI.UpdatePlugAndPlay()             DONE");
-                    logScreenUpdate();
+                //  logScreenUpdate();
                     #endif
                     }
                 if (bOK)
