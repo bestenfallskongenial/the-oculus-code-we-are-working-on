@@ -159,3 +159,59 @@ void CKernel::logInOutRuntime(void)
                        0,
                        0xFFFFFFFF );
 }
+
+u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,
+                                                        u32         endIndex,
+                                                        unsigned    cols,
+                                                        unsigned    rows)
+{
+                if (p_buffer == 0) return 0;
+                if (endIndex == 0) return 0;
+                if (cols == 0) return 0;
+                if (rows <= 1) return 0;
+
+                u32 visible_chars = cols * (rows - 1);
+
+                if (endIndex <= visible_chars) return 0;
+
+                u32 startIndex = endIndex - visible_chars;
+
+                while (startIndex < endIndex && p_buffer[startIndex] != '\n')
+                    {
+                    startIndex++;
+                    }
+
+                if (startIndex < endIndex)
+                    {
+                    startIndex++;
+                    }
+
+                return startIndex;
+}
+
+void            CKernel::logScreenUpdate            (   void )
+{
+                if (gE_PixelBuffer == 0) return;
+                if (gE_Cols == 0) return;
+                if (gE_Rows == 0) return;
+                if (MY_INDEX == 0) return;
+
+                u32 startIndex = bufferScreenFindStartIndex(
+                                                            MY_BUFFER,
+                                                            MY_INDEX,
+                                                            gE_Cols,
+                                                            gE_Rows
+                                                            );
+
+                bufferScreenClear();
+
+                bufferScreenDraw(
+                                    MY_BUFFER,
+                                    startIndex,
+                                    MY_INDEX,
+                                    0,
+                                    0,
+                                    0xFFFFFFFF
+                                    );
+}
+
