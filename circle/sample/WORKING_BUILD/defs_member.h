@@ -55,6 +55,27 @@ public:         // Logging
                 char                            m_logBufferDumps[1024*32]    = {0};
                 u32                             m_logBufferIndexDumps        = 0;
 
+u32             boot_buffer_index_temp_old          = 0;
+u32             boot_buffer_index_temp_new          = 0;
+u32             boot_buffer_index_temp_delta        = 0;
+
+u32             runtime_buffer_index_temp_old[LOG_SD+LOG_USB]   = { 0 };
+u32             runtime_buffer_index_temp_new[LOG_SD+LOG_USB]   = { 0 };
+u32             runtime_buffer_index_temp_delta[LOG_SD+LOG_USB] = { 0 };
+
+u32             m_logScreenStartIndex               = 0;
+
+
+char            m_logBuffer[1024*32]                = { 0 };
+u32             m_logBufferIndex                    = 0;
+
+char**          m_bufferLog                         = nullptr;
+u32             m_bufferLogIndex[LOG_SD+LOG_USB];
+
+
+
+
+
                 olg_state                       m_ogl    = {};              // local copies of my graphics related structs
 
                 vtx_state                       m_vtx    = {};
@@ -329,7 +350,7 @@ const char* m_debug_table[16]   =
 	"MMAL_MSG_STATUS_EAGAIN",      							// Resource temporarily unavailable. //
 	"MMAL_MSG_STATUS_EFAULT"      							// Bad address //
 };
-
+/*
 u32             m_logBufferIndexLast = 0;
 u32             m_bufferLogIndexLast[LOG_SD+LOG_USB] = { 0 };
 
@@ -337,6 +358,9 @@ char            m_screenLogBuffer[SCREEN_LOG_BUFFER_SIZE] = { 0 };
 u32             m_screenLogBufferIndex = 0;
 
 u32             m_logScreenStartIndex = 0;
+*/ 
+
+
 
 // VCSM predefined messages as public member
                 SERVICE_CREATION_T               m_ServiceCreateVCSM;
