@@ -39,7 +39,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK = frameBufferInit();
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "frameBufferInit()                        DONE");
-                //  logScreenUpdate();
+                    logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -47,7 +47,8 @@ boolean			CKernel::Initialize						(	void )
                     bOK = startupScreen();
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "Hardware Info Log                        DONE");
-                //  logScreenUpdate();
+                    logScreenUpdate();
+                    msDelay(500);
 #endif
                     }                
                 if (bOK)
@@ -55,7 +56,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK = m_EMMC.Initialize();
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_EMMC.Initialize()                      DONE");
-                //  logScreenUpdate();
+                    logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -63,7 +64,7 @@ boolean			CKernel::Initialize						(	void )
                     bOK = m_USBHCI.Initialize();
 #ifdef __DEBUG_LOG__                    
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_USBHCI.Initialize()                    DONE");
-                //  logScreenUpdate();
+                    logScreenUpdate();
 #endif
                     }
                 if (bOK)
@@ -71,8 +72,8 @@ boolean			CKernel::Initialize						(	void )
                     m_USBHCI.UpdatePlugAndPlay(); 
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_USBHCI.UpdatePlugAndPlay()             DONE");
-                //  logScreenUpdate();
-                    #endif
+                    logScreenUpdate();
+#endif
                     }
                 if (bOK)
                     {
@@ -80,6 +81,7 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "InitDMA Buffer                           DONE");
                     logScreenUpdate();
+                    msDelay(500);
 #endif
                     }
                 if (bOK)
@@ -88,6 +90,7 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "InitMEM Buffer                           DONE");
                     logScreenUpdate();
+                    msDelay(500);
 #endif
                     }
 
@@ -176,6 +179,7 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output A allocation             DONE");
                         logScreenUpdate();
+                        msDelay(500);
 #endif                                              
                         }
                     if (bOK)
@@ -397,6 +401,7 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output )             DONE");
                         logScreenUpdate();
+                        msDelay(500);
 #endif 
                         } 
                     }
@@ -454,6 +459,7 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "GPIO_SetAlt(SW_PIN_B, 0, GPIO_PULL_UP) DONE");
                     logScreenUpdate();
+                    msDelay(1000);
 #endif
                     }
                 return bOK;

@@ -165,7 +165,7 @@ void CKernel::logInOutRuntime(void)
                        0,
                        0xFFFFFFFF );
 }
-/*
+
 u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,
                                                         u32         endIndex,
                                                         unsigned    cols,
@@ -220,7 +220,7 @@ void            CKernel::logScreenUpdate            (   void )
                                     0xFFFFFFFF
                                     );
 }
-*/
+/*
 u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,
                                                         u32         endIndex,
                                                         unsigned    cols,
@@ -413,3 +413,4 @@ void            CKernel::logScreenUpdate            (   void )
 
                 logScreenCompactVisible();
 }
+*/
