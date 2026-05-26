@@ -13,7 +13,7 @@ unsigned b = 186;
                 while (/*m_resetFlag == false*/ 1)
                     {
 
-                    bufferScreenClear();
+                //  bufferScreenClear();
 
                     g_currentTime = m_Timer.GetClockTicks(); 
 
@@ -49,8 +49,8 @@ unsigned b = 186;
                                                     msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     "glsl.txt",
-                                                    m_logGLSLBuffer,
-                                                    m_logGLSLBufferIndex );
+                                                    m_bufferLog[1],
+                                                    m_bufferLogIndex[1] );
 /*
                                                     msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
