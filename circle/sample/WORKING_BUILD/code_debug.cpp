@@ -166,7 +166,7 @@ void CKernel::logInOutRuntime(void)
                        0xFFFFFFFF );
 }
 // LAST WORKING FUNCTION 
-
+/*
 void            CKernel::logScreenUpdate            (   void )
 {
                 if (gE_PixelBuffer == 0) return;
@@ -270,7 +270,7 @@ void            CKernel::logScreenUpdate            (   void )
 
                 m_logScreenStartIndex = drawIndex;
 }
-
+*/
 void            CKernel::logScreenDeltaUpdate       (   void )
 {
                 boot_buffer_index_temp_new          = m_logBufferIndex;
@@ -300,7 +300,7 @@ void            CKernel::logScreenDeltaUpdate       (   void )
 
                 memcpy( runtime_buffer_index_temp_old, runtime_buffer_index_temp_new, sizeof(runtime_buffer_index_temp_old) );
 }
-/*
+
 void            CKernel::logScreenUpdate            (   void )
 {
                 if (gE_PixelBuffer == 0) return;
@@ -311,7 +311,7 @@ void            CKernel::logScreenUpdate            (   void )
 
                 if (boot_buffer_index_temp_delta > 0) logScreenBufferUpdate( m_logBuffer, m_logBufferIndex );
 
-         //    if (m_bufferLog == nullptr) return;
+                if (m_bufferLog == nullptr) return;
 
                 if (runtime_buffer_index_temp_delta[0]  > 0) logScreenBufferUpdate(m_bufferLog[0],  m_bufferLogIndex[0]);
                 if (runtime_buffer_index_temp_delta[1]  > 0) logScreenBufferUpdate(m_bufferLog[1],  m_bufferLogIndex[1]);
@@ -330,7 +330,7 @@ void            CKernel::logScreenUpdate            (   void )
                 if (runtime_buffer_index_temp_delta[14] > 0) logScreenBufferUpdate(m_bufferLog[14], m_bufferLogIndex[14]);
                 if (runtime_buffer_index_temp_delta[15] > 0) logScreenBufferUpdate(m_bufferLog[15], m_bufferLogIndex[15]);
 }
-*/
+
 void            CKernel::logScreenBufferUpdate      (   const char* pSourceBuffer,
                                                         u32         sourceIndex )
 {

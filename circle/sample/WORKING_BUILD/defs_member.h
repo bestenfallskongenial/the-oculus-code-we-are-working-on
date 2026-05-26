@@ -41,7 +41,7 @@ private:        // SMI / DMA / WS2812
 
                 bool                            m_SMIValid              = FALSE;
 public:         // Logging
-                u32                             m_bufferLogIndex[LOG_SD+LOG_USB];       // for the new model where we use the char* m_bufferLog[LOG_SD+LOG_USB] 
+                u32                             m_bufferLogIndex[LOG_SD+LOG_USB] = {0};       // for the new model where we use the char* m_bufferLog[LOG_SD+LOG_USB] 
 
                 char                            m_logBuffer[1024*32]    = {0}; //  pre-init buffer 
                 u32                             m_logBufferIndex        = 0;
