@@ -66,12 +66,6 @@ u32             runtime_buffer_index_temp_delta[LOG_SD+LOG_USB] = { 0 };
 u32             m_logScreenStartIndex               = 0;
 
 
-char            m_logBuffer[1024*32]                = { 0 };
-u32             m_logBufferIndex                    = 0;
-
-char**          m_bufferLog                         = nullptr;
-u32             m_bufferLogIndex[LOG_SD+LOG_USB];
-
 
 
 
