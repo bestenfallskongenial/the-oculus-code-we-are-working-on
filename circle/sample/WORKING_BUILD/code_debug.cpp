@@ -165,7 +165,7 @@ void CKernel::logInOutRuntime(void)
                        0,
                        0xFFFFFFFF );
 }
-
+/*
 u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,
                                                         u32         endIndex,
                                                         unsigned    cols,
@@ -220,4 +220,155 @@ void            CKernel::logScreenUpdate            (   void )
                                     0xFFFFFFFF
                                     );
 }
+*/
+void            CKernel::logScreenAppendDelta       (   const char* pSource,
+                                                        u32         deltaStart,
+                                                        u32         deltaEnd )
+{
+                if (pSource == 0) return;
+                if (deltaStart >= deltaEnd) return;
+
+                for (u32 i = deltaStart; i < deltaEnd; i++)
+                    {
+                    if (m_screenLogBufferIndex >= (SCREEN_LOG_BUFFER_SIZE - 1))
+                        {
+                        logScreenCompactVisible();
+                        }
+
+                    if (m_screenLogBufferIndex >= (SCREEN_LOG_BUFFER_SIZE - 1))
+                        {
+                        m_screenLogBufferIndex = 0;
+                        m_screenLogBuffer[0] = '\0';
+                        }
+
+                    m_screenLogBuffer[m_screenLogBufferIndex++] = pSource[i];
+                    }
+
+                m_screenLogBuffer[m_screenLogBufferIndex] = '\0';
+}
+
+void            CKernel::logScreenCompactVisible    (   void )
+{
+                if (m_screenLogBufferIndex == 0) return;
+
+                u32 startIndex = bufferScreenFindStartIndex(
+                                                            m_screenLogBuffer,
+                                                            m_screenLogBufferIndex,
+                                                            gE_Cols,
+                                                            gE_Rows
+                                                            );
+
+                if (startIndex == 0) return;
+
+                u32 newIndex = 0;
+
+                for (u32 i = startIndex; i < m_screenLogBufferIndex; i++)
+                    {
+                    m_screenLogBuffer[newIndex++] = m_screenLogBuffer[i];
+                    }
+
+                m_screenLogBufferIndex = newIndex;
+                m_screenLogBuffer[m_screenLogBufferIndex] = '\0';
+}
+
+void            CKernel::logScreenUpdate            (   void )
+{
+                if (gE_PixelBuffer == 0) return;
+                if (gE_Cols == 0) return;
+                if (gE_Rows <= 1) return;
+
+                boolean bChanged = FALSE;
+
+                u32 deltaStart = m_startupLogBufferIndexLast;
+                u32 deltaEnd   = m_startupLogBufferIndex;
+
+                if (deltaEnd > deltaStart)
+                    {
+                    logScreenAppendDelta(
+                                            m_startupLogBuffer,
+                                            deltaStart,
+                                            deltaEnd
+                                            );
+
+                    m_startupLogBufferIndexLast = m_startupLogBufferIndex;
+
+                    bChanged = TRUE;
+                    }
+
+                for (unsigned n = 0; n < 16; n++)
+                    {
+                    deltaStart = m_logBufferIndexLast[n];
+                    deltaEnd   = m_logBufferIndex[n];
+
+                    if (deltaEnd > deltaStart)
+                        {
+                        logScreenAppendDelta(
+                                                m_logBuffer[n],
+                                                deltaStart,
+                                                deltaEnd
+                                                );
+
+                        m_logBufferIndexLast[n] = m_logBufferIndex[n];
+
+                        bChanged = TRUE;
+                        }
+                    }
+
+                if (!bChanged) return;
+
+                u32 finalStartIndex = bufferScreenFindStartIndex(
+                                                                    m_screenLogBuffer,
+                                                                    m_screenLogBufferIndex,
+                                                                    gE_Cols,
+                                                                    gE_Rows
+                                                                    );
+
+                u32 drawStartIndex = 0;
+
+                while (drawStartIndex < finalStartIndex)
+                    {
+                    bufferScreenClear();
+
+                    bufferScreenDraw(
+                                        m_screenLogBuffer,
+                                        drawStartIndex,
+                                        m_screenLogBufferIndex,
+                                        0,
+                                        0,
+                                        0xFFFFFFFF
+                                        );
+
+                    msDelay(SCROLLSPEED);      // comment out if you do not want visible slow scroll
+
+                    while (drawStartIndex < finalStartIndex && m_screenLogBuffer[drawStartIndex] != '\n')
+                        {
+                        drawStartIndex++;
+                        }
+
+                    if (drawStartIndex < finalStartIndex)
+                        {
+                        drawStartIndex++;
+                        }
+                    }
+
+                bufferScreenClear();
+
+                bufferScreenDraw(
+                                    m_screenLogBuffer,
+                                    finalStartIndex,
+                                    m_screenLogBufferIndex,
+                                    0,
+                                    0,
+                                    0xFFFFFFFF
+                                    );
+
+                logScreenCompactVisible();
+}
+
+
+
+
+
+
+
 

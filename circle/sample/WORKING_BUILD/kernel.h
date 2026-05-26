@@ -564,14 +564,22 @@ private:
         static  void        LoggerSink                 (                void*                           pContext,
                                                                 const   char*                           pText,
                                                                         unsigned                        nLength );      // +++
-
+/*
 u32             bufferScreenFindStartIndex          (   const char* p_buffer,
                                                         u32         endIndex,
                                                         unsigned    cols,
                                                         unsigned    rows);
 
 void            logScreenUpdate                    (   void );
-                                                                        
+*/
+void            logScreenUpdate                    (   void );
+
+void            logScreenAppendDelta               (   const char* pSource,
+                                                        u32         deltaStart,
+                                                        u32         deltaEnd );
+
+void            logScreenCompactVisible            (   void );
+
 // debug code section 
                 void        debug(); // +++
 
