@@ -338,7 +338,8 @@ boolean			CKernel::Initialize						(	void )
                         }
                     if (bOK)
                         {
-                        bOK = enablePortMMAL(       m_PortInfoGetRx_Input_C, 
+                        bOK = enablePortMMAL(       m_InputPortHandle,
+                                                //  m_PortInfoGetRx_Input_C, 
                                                     m_PortActionTx_Input, 
                                                     m_PortActionRx_Input);
 #ifdef __DEBUG_LOG__
@@ -347,7 +348,8 @@ boolean			CKernel::Initialize						(	void )
                         }
                     if (bOK)
                         {
-                        bOK = enablePortMMAL(       m_PortInfoGetRx_Output_C, 
+                        bOK = enablePortMMAL(       m_OutputPortHandle,
+                                                //  m_PortInfoGetRx_Output_C, 
                                                     m_PortActionTx_Output, 
                                                     m_PortActionRx_Output);
 #ifdef __DEBUG_LOG__
