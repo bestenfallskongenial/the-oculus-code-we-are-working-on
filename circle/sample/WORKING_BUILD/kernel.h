@@ -573,9 +573,13 @@ u32             bufferScreenFindStartIndex          (   const char* p_buffer,
 
 void            logScreenDeltaUpdate                ( void );
 void            logScreenUpdate                     ( void );
+/*
 void            logScreenBufferUpdate               ( const char* pSourceBuffer,
                                                       u32         sourceIndex );
-
+*/
+void            logScreenBufferUpdate      (   const char* pSourceBuffer,
+                                                u32         sourceIndex,
+                                                u32&        screenStartIndex );
 // debug code section 
                 void        debug(); // +++
 
