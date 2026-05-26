@@ -251,12 +251,12 @@ void            CKernel::logScreenCompactVisible    (   void )
 {
                 if (m_screenLogBufferIndex == 0) return;
 
-                u32 startIndex = bufferScreenFindStartIndex(
-                                                            m_screenLogBuffer,
-                                                            m_screenLogBufferIndex,
-                                                            gE_Cols,
-                                                            gE_Rows
-                                                            );
+                u32 startIndex = CKernel::bufferScreenFindStartIndex(
+                                                                    m_screenLogBuffer,
+                                                                    m_screenLogBufferIndex,
+                                                                    gE_Cols,
+                                                                    gE_Rows
+                                                                    );
 
                 if (startIndex == 0) return;
 
@@ -279,36 +279,36 @@ void            CKernel::logScreenUpdate            (   void )
 
                 boolean bChanged = FALSE;
 
-                u32 deltaStart = m_startupLogBufferIndexLast;
-                u32 deltaEnd   = m_startupLogBufferIndex;
+                u32 deltaStart = m_logBufferIndexLast;
+                u32 deltaEnd   = m_logBufferIndex;
 
                 if (deltaEnd > deltaStart)
                     {
                     logScreenAppendDelta(
-                                            m_startupLogBuffer,
+                                            m_logBuffer,
                                             deltaStart,
                                             deltaEnd
                                             );
 
-                    m_startupLogBufferIndexLast = m_startupLogBufferIndex;
+                    m_logBufferIndexLast = m_logBufferIndex;
 
                     bChanged = TRUE;
                     }
 
-                for (unsigned n = 0; n < 16; n++)
+                for (unsigned n = 0; n < (LOG_SD+LOG_USB); n++)
                     {
-                    deltaStart = m_logBufferIndexLast[n];
-                    deltaEnd   = m_logBufferIndex[n];
+                    deltaStart = m_bufferLogIndexLast[n];
+                    deltaEnd   = m_bufferLogIndex[n];
 
                     if (deltaEnd > deltaStart)
                         {
                         logScreenAppendDelta(
-                                                m_logBuffer[n],
+                                                m_bufferLog[n],
                                                 deltaStart,
                                                 deltaEnd
                                                 );
 
-                        m_logBufferIndexLast[n] = m_logBufferIndex[n];
+                        m_bufferLogIndexLast[n] = m_bufferLogIndex[n];
 
                         bChanged = TRUE;
                         }
@@ -316,7 +316,7 @@ void            CKernel::logScreenUpdate            (   void )
 
                 if (!bChanged) return;
 
-                u32 finalStartIndex = bufferScreenFindStartIndex(
+                u32 finalStartIndex = CKernel::bufferScreenFindStartIndex(
                                                                     m_screenLogBuffer,
                                                                     m_screenLogBufferIndex,
                                                                     gE_Cols,
@@ -338,7 +338,7 @@ void            CKernel::logScreenUpdate            (   void )
                                         0xFFFFFFFF
                                         );
 
-                    msDelay(SCROLLSPEED);      // comment out if you do not want visible slow scroll
+                    msDelay(SCROLLSPEED);
 
                     while (drawStartIndex < finalStartIndex && m_screenLogBuffer[drawStartIndex] != '\n')
                         {
@@ -364,6 +364,8 @@ void            CKernel::logScreenUpdate            (   void )
 
                 logScreenCompactVisible();
 }
+
+
 
 
 
