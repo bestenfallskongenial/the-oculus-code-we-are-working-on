@@ -82,14 +82,14 @@ unsigned b = 186;
                         buttonPing(0, SW_PIN_A);
                         buttonPing(1, SW_PIN_B);
 
-                        logButtonStatesRuntime();
+                    //  logButtonStatesRuntime();
 
                         randomVec8(g_currentTime);
 
                         readAndConvertADC();
                         adc_AdvanceIndex();
 
-                        logInOutRuntime();
+                    //  logInOutRuntime();
 
                         msDelay(25);
 

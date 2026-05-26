@@ -139,4 +139,4 @@
 
     #define SCREEN_LOG_BUFFER_SIZE  (1024 * 8)
 
-    #define SCROLLSPEED 80 // in 1000/1th
+    #define SCROLLSPEED 40 // in 1000/1th
