@@ -287,7 +287,7 @@ bool            CKernel::enablePortMMAL             (   u32 port_handle,        
 
                 tx.msg                                             = {};
                 tx.msg.component_handle                            = m_ComponentHandle;
-                tx.msg.port_handle                                 = port_handle //src.msg.port_handle;                // port_handle - my original code takes it as parameter! i assume this is chosen because src has the correct handle
+                tx.msg.port_handle                                 = port_handle; //src.msg.port_handle;                // port_handle - my original code takes it as parameter! i assume this is chosen because src has the correct handle
                 tx.msg.action                                      = MMAL_MSG_PORT_ACTION_TYPE_ENABLE;
                 tx.msg.port                                        = src.msg.port;
 
