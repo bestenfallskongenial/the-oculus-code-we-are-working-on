@@ -166,7 +166,7 @@ void CKernel::logInOutRuntime(void)
                        0xFFFFFFFF );
 }
 // LAST WORKING FUNCTION 
-
+/*
 void            CKernel::logScreenUpdate            (   void )
 {
                 if (gE_PixelBuffer == 0) return;
@@ -270,6 +270,13 @@ void            CKernel::logScreenUpdate            (   void )
 
                 m_logScreenStartIndex = drawIndex;
 }
+*/
+
+
+
+
+
+
 /*
 void            CKernel::logScreenDeltaUpdate       (   void )
 {
