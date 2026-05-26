@@ -208,7 +208,35 @@ void            CKernel::logScreenUpdate            (   void )
                                                             gE_Cols,
                                                             gE_Rows
                                                             );
+// new
+                u32 drawIndex = 0;
 
+                while (drawIndex < startIndex)
+                    {
+                    bufferScreenClear();
+
+                    bufferScreenDraw(
+                                        MY_BUFFER,
+                                        drawIndex,
+                                        MY_INDEX,
+                                        0,
+                                        0,
+                                        0xFFFFFFFF
+                                        );
+
+                    msDelay(SCROLLSPEED);
+
+                    while (drawIndex < startIndex && MY_BUFFER[drawIndex] != '\n')
+                        {
+                        drawIndex++;
+                        }
+
+                    if (drawIndex < startIndex)
+                        {
+                        drawIndex++;
+                        }
+                    }
+// end
                 bufferScreenClear();
 
                 bufferScreenDraw(
