@@ -166,35 +166,6 @@ void CKernel::logInOutRuntime(void)
                        0xFFFFFFFF );
 }
 /*
-u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,
-                                                        u32         endIndex,
-                                                        unsigned    cols,
-                                                        unsigned    rows)
-{
-                if (p_buffer == 0) return 0;
-                if (endIndex == 0) return 0;
-                if (cols == 0) return 0;
-                if (rows <= 1) return 0;
-
-                u32 visible_chars = cols * (rows - 1);
-
-                if (endIndex <= visible_chars) return 0;
-
-                u32 startIndex = endIndex - visible_chars;
-
-                while (startIndex < endIndex && p_buffer[startIndex] != '\n')
-                    {
-                    startIndex++;
-                    }
-
-                if (startIndex < endIndex)
-                    {
-                    startIndex++;
-                    }
-
-                return startIndex;
-}
-*/
 void            CKernel::logScreenUpdate            (   void )
 {
                 if (gE_PixelBuffer == 0) return;
@@ -298,302 +269,134 @@ void            CKernel::logScreenUpdate            (   void )
 
                 m_logScreenStartIndex = drawIndex;
 }
-/*
-void            CKernel::logScreenUpdate            (   void )
-{
-                if (gE_PixelBuffer == 0) return;
-                if (gE_Cols == 0) return;
-                if (gE_Rows == 0) return;
-                if (MY_INDEX == 0) return;
-
-                u32 startIndex = bufferScreenFindStartIndex(
-                                                            MY_BUFFER,
-                                                            MY_INDEX,
-                                                            gE_Cols,
-                                                            gE_Rows
-                                                            );
-// new
-                u32 drawIndex = 0;
-
-                while (drawIndex < startIndex)
-                    {
-                    bufferScreenClear();
-
-                    bufferScreenDraw(
-                                        MY_BUFFER,
-                                        drawIndex,
-                                        MY_INDEX,
-                                        0,
-                                        0,
-                                        0xFFFFFFFF
-                                        );
-
-                    msDelay(SCROLLSPEED);
-
-                    while (drawIndex < startIndex && MY_BUFFER[drawIndex] != '\n')
-                        {
-                        drawIndex++;
-                        }
-
-                    if (drawIndex < startIndex)
-                        {
-                        drawIndex++;
-                        }
-                    }
-// end
-                bufferScreenClear();
-
-                bufferScreenDraw(
-                                    MY_BUFFER,
-                                    startIndex,
-                                    MY_INDEX,
-                                    0,
-                                    0,
-                                    0xFFFFFFFF
-                                    );
-}
 */
-
-/*
-void            CKernel::logScreenUpdate            (   void )
-{
-                if (gE_PixelBuffer == 0) return;
-                if (gE_Cols == 0) return;
-                if (gE_Rows == 0) return;
-                if (MY_INDEX == 0) return;
-
-                u32 startIndex = bufferScreenFindStartIndex(
-                                                            MY_BUFFER,
-                                                            MY_INDEX,
-                                                            gE_Cols,
-                                                            gE_Rows
-                                                            );
-
-                if (m_logScreenStartIndex > startIndex)
-                    {
-                    m_logScreenStartIndex = 0;
-                    }
-
-                u32 drawIndex = m_logScreenStartIndex;
-
-                while (drawIndex < startIndex)
-                    {
-                    bufferScreenClear();
-
-                    bufferScreenDraw(
-                                        MY_BUFFER,
-                                        drawIndex,
-                                        MY_INDEX,
-                                        0,
-                                        0,
-                                        0xFFFFFFFF
-                                        );
-
-                    msDelay(SCROLLSPEED);
-
-                    while (drawIndex < startIndex && MY_BUFFER[drawIndex] != '\n')
-                        {
-                        drawIndex++;
-                        }
-
-                    if (drawIndex < startIndex)
-                        {
-                        drawIndex++;
-                        }
-                    }
-
-                bufferScreenClear();
-
-                bufferScreenDraw(
-                                    MY_BUFFER,
-                                    startIndex,
-                                    MY_INDEX,
-                                    0,
-                                    0,
-                                    0xFFFFFFFF
-                                    );
-
-                m_logScreenStartIndex = startIndex;
-}
-*/
-
-/*
-u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,
-                                                        u32         endIndex,
-                                                        unsigned    cols,
-                                                        unsigned    rows)
-{
-                if (p_buffer == 0) return 0;
-                if (endIndex == 0) return 0;
-                if (cols == 0) return 0;
-                if (rows <= 1) return 0;
-
-                u32 visible_chars = cols * (rows - 1);
-
-                if (endIndex <= visible_chars) return 0;
-
-                u32 startIndex = endIndex - visible_chars;
-
-                while (startIndex < endIndex && p_buffer[startIndex] != '\n')
-                    {
-                    startIndex++;
-                    }
-
-                if (startIndex < endIndex)
-                    {
-                    startIndex++;
-                    }
-
-                return startIndex;
-}
-
-void            CKernel::logScreenAppendDelta       (   const char* pSource,
-                                                        u32         deltaStart,
-                                                        u32         deltaEnd )
-{
-                if (pSource == 0) return;
-                if (deltaStart >= deltaEnd) return;
-            //  if (m_screenLogBuffer == 0) return;
-
-                for (u32 i = deltaStart; i < deltaEnd; i++)
-                    {
-                    if (pSource[i] == '\0') break;
-
-                    if (m_screenLogBufferIndex >= (SCREEN_LOG_BUFFER_SIZE - 1))
-                        {
-                        logScreenCompactVisible();
-                        }
-
-                    if (m_screenLogBufferIndex >= (SCREEN_LOG_BUFFER_SIZE - 1))
-                        {
-                        m_screenLogBufferIndex = 0;
-                        m_screenLogBuffer[0] = '\0';
-                        }
-
-                    m_screenLogBuffer[m_screenLogBufferIndex++] = pSource[i];
-                    }
-
-                m_screenLogBuffer[m_screenLogBufferIndex] = '\0';
-}
-
-void            CKernel::logScreenCompactVisible    (   void )
-{
-                if (m_screenLogBufferIndex == 0) return;
-
-                u32 startIndex = bufferScreenFindStartIndex(
-                                                            m_screenLogBuffer,
-                                                            m_screenLogBufferIndex,
-                                                            gE_Cols,
-                                                            gE_Rows
-                                                            );
-
-                if (startIndex == 0) return;
-
-                u32 newIndex = 0;
-
-                for (u32 i = startIndex; i < m_screenLogBufferIndex; i++)
-                    {
-                    m_screenLogBuffer[newIndex++] = m_screenLogBuffer[i];
-                    }
-
-                m_screenLogBufferIndex = newIndex;
-                m_screenLogBuffer[m_screenLogBufferIndex] = '\0';
-}
-
 void            CKernel::logScreenUpdate            (   void )
 {
                 if (gE_PixelBuffer == 0) return;
                 if (gE_Cols == 0) return;
                 if (gE_Rows <= 1) return;
-            //  if (m_screenLogBuffer == 0) return;
 
                 boolean bChanged = FALSE;
 
-                u32 deltaStart = m_logBufferIndexLast;
-                u32 deltaEnd   = m_logBufferIndex;
+                u32 delta = m_logBufferIndex - m_logBufferIndexLast;
 
-                if (deltaEnd < deltaStart)
+                if (delta > 0)
                     {
-                    m_logBufferIndexLast = deltaEnd;
-                    }
-                else if (deltaEnd > deltaStart)
-                    {
-                    logScreenAppendDelta(
-                                            m_logBuffer,
-                                            deltaStart,
-                                            deltaEnd
-                                            );
+                    for (u32 i = m_logBufferIndexLast; i < m_logBufferIndex; i++)
+                        {
+                        if (m_screenLogBufferIndex >= (SCREEN_LOG_BUFFER_SIZE - 1)) break;
+                        m_screenLogBuffer[m_screenLogBufferIndex++] = m_logBuffer[i];
+                        }
 
+                    m_screenLogBuffer[m_screenLogBufferIndex] = '\0';
                     m_logBufferIndexLast = m_logBufferIndex;
-
                     bChanged = TRUE;
                     }
 
                 for (unsigned n = 0; n < (LOG_SD+LOG_USB); n++)
                     {
-                    if (m_bufferLog[n] == 0)
+                    if (m_bufferLog[n] == 0) continue;
+                    if (*m_bufferLog[n] == 0) continue;
+
+                    delta = m_bufferLogIndex[n] - m_bufferLogIndexLast[n];
+
+                    if (delta > 0)
                         {
+                        for (u32 i = m_bufferLogIndexLast[n]; i < m_bufferLogIndex[n]; i++)
+                            {
+                            if (m_screenLogBufferIndex >= (SCREEN_LOG_BUFFER_SIZE - 1)) break;
+                            m_screenLogBuffer[m_screenLogBufferIndex++] = (*m_bufferLog[n])[i];
+                            }
+
+                        m_screenLogBuffer[m_screenLogBufferIndex] = '\0';
                         m_bufferLogIndexLast[n] = m_bufferLogIndex[n];
-                        continue;
-                        }
-
-                    deltaStart = m_bufferLogIndexLast[n];
-                    deltaEnd   = m_bufferLogIndex[n];
-
-                    if (deltaEnd < deltaStart)
-                        {
-                        m_bufferLogIndexLast[n] = deltaEnd;
-                        continue;
-                        }
-
-                    if (deltaEnd > deltaStart)
-                        {
-                        logScreenAppendDelta(
-                                                m_bufferLog[n],
-                                                deltaStart,
-                                                deltaEnd
-                                                );
-
-                        m_bufferLogIndexLast[n] = m_bufferLogIndex[n];
-
                         bChanged = TRUE;
                         }
                     }
 
                 if (!bChanged) return;
+                if (m_screenLogBufferIndex == 0) return;
 
-                u32 finalStartIndex = bufferScreenFindStartIndex(
-                                                            m_screenLogBuffer,
-                                                            m_screenLogBufferIndex,
-                                                            gE_Cols,
-                                                            gE_Rows
-                                                            );
+                u32 drawIndex = m_logScreenStartIndex;
+                u32 scanIndex = m_logScreenStartIndex;
 
-                u32 drawStartIndex = 0;
+                unsigned col = 0;
+                unsigned row = 0;
 
-                while (drawStartIndex < finalStartIndex)
+                bufferScreenClear();
+
+                while (scanIndex < m_screenLogBufferIndex)
                     {
-                    bufferScreenClear();
+                    char ch = m_screenLogBuffer[scanIndex];
 
-                    bufferScreenDraw(
-                                        m_screenLogBuffer,
-                                        drawStartIndex,
-                                        m_screenLogBufferIndex,
-                                        0,
-                                        0,
-                                        0xFFFFFFFF
-                                        );
+                    if (ch == '\0') break;
 
-                    msDelay(SCROLLSPEED);
-
-                    while (drawStartIndex < finalStartIndex && m_screenLogBuffer[drawStartIndex] != '\n')
+                    if (ch == '\n')
                         {
-                        drawStartIndex++;
+                        col = 0;
+                        row++;
+                        scanIndex++;
+
+                        if (row >= (gE_Rows - 1))
+                            {
+                            while (drawIndex < m_screenLogBufferIndex && m_screenLogBuffer[drawIndex] != '\n')
+                                {
+                                drawIndex++;
+                                }
+
+                            if (drawIndex < m_screenLogBufferIndex)
+                                {
+                                drawIndex++;
+                                }
+
+                            bufferScreenClear();
+
+                            bufferScreenDraw(
+                                                m_screenLogBuffer,
+                                                drawIndex,
+                                                scanIndex,
+                                                0,
+                                                0,
+                                                0xFFFFFFFF
+                                                );
+
+                            msDelay(SCROLLSPEED);
+
+                            row = gE_Rows - 2;
+                            col = 0;
+                            }
+
+                        continue;
                         }
 
-                    if (drawStartIndex < finalStartIndex)
+                    col++;
+                    scanIndex++;
+
+                    if (col >= gE_Cols)
                         {
-                        drawStartIndex++;
+                        col = 0;
+                        row++;
+
+                        if (row >= (gE_Rows - 1))
+                            {
+                            drawIndex += gE_Cols;
+
+                            bufferScreenClear();
+
+                            bufferScreenDraw(
+                                                m_screenLogBuffer,
+                                                drawIndex,
+                                                scanIndex,
+                                                0,
+                                                0,
+                                                0xFFFFFFFF
+                                                );
+
+                            msDelay(SCROLLSPEED);
+
+                            row = gE_Rows - 2;
+                            col = 0;
+                            }
                         }
                     }
 
@@ -601,13 +404,12 @@ void            CKernel::logScreenUpdate            (   void )
 
                 bufferScreenDraw(
                                     m_screenLogBuffer,
-                                    finalStartIndex,
+                                    drawIndex,
                                     m_screenLogBufferIndex,
                                     0,
                                     0,
                                     0xFFFFFFFF
                                     );
 
-                logScreenCompactVisible();
+                m_logScreenStartIndex = drawIndex;
 }
-*/

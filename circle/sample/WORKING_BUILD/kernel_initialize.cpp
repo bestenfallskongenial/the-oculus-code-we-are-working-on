@@ -48,7 +48,6 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "Hardware Info Log                        DONE");
                     logScreenUpdate();
-                    msDelay(500);
 #endif
                     }                
                 if (bOK)
@@ -81,7 +80,6 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "InitDMA Buffer                           DONE");
                     logScreenUpdate();
-                    msDelay(500);
 #endif
                     }
                 if (bOK)
@@ -90,7 +88,6 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "InitMEM Buffer                           DONE");
                     logScreenUpdate();
-                    msDelay(500);
 #endif
                     }
 
@@ -111,7 +108,7 @@ boolean			CKernel::Initialize						(	void )
 #endif
                     }    
 
-                if (bOK)                    // decided to gather all vcsm/mmal init code here and clean up the code a little! 
+                if (bOK)
                     {
                     getStateVCHI();
 #ifdef __DEBUG_LOG__
@@ -179,7 +176,6 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output A allocation             DONE");
                         logScreenUpdate();
-                        msDelay(500);
 #endif                                              
                         }
                     if (bOK)
@@ -401,7 +397,6 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output )             DONE");
                         logScreenUpdate();
-                        msDelay(500);
 #endif 
                         } 
                     }
@@ -459,7 +454,6 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "GPIO_SetAlt(SW_PIN_B, 0, GPIO_PULL_UP) DONE");
                     logScreenUpdate();
-                    msDelay(1000);
 #endif
                     }
                 return bOK;
