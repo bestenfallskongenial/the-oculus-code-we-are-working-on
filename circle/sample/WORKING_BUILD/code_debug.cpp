@@ -165,7 +165,7 @@ void CKernel::logInOutRuntime(void)
                        0,
                        0xFFFFFFFF );
 }
-
+/*
 u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,
                                                         u32         endIndex,
                                                         unsigned    cols,
@@ -220,16 +220,48 @@ void            CKernel::logScreenUpdate            (   void )
                                     0xFFFFFFFF
                                     );
 }
-/*
+*/
+u32             CKernel::bufferScreenFindStartIndex (   const char* p_buffer,
+                                                        u32         endIndex,
+                                                        unsigned    cols,
+                                                        unsigned    rows)
+{
+                if (p_buffer == 0) return 0;
+                if (endIndex == 0) return 0;
+                if (cols == 0) return 0;
+                if (rows <= 1) return 0;
+
+                u32 visible_chars = cols * (rows - 1);
+
+                if (endIndex <= visible_chars) return 0;
+
+                u32 startIndex = endIndex - visible_chars;
+
+                while (startIndex < endIndex && p_buffer[startIndex] != '\n')
+                    {
+                    startIndex++;
+                    }
+
+                if (startIndex < endIndex)
+                    {
+                    startIndex++;
+                    }
+
+                return startIndex;
+}
+
 void            CKernel::logScreenAppendDelta       (   const char* pSource,
                                                         u32         deltaStart,
                                                         u32         deltaEnd )
 {
                 if (pSource == 0) return;
                 if (deltaStart >= deltaEnd) return;
+                if (m_screenLogBuffer == 0) return;
 
                 for (u32 i = deltaStart; i < deltaEnd; i++)
                     {
+                    if (pSource[i] == '\0') break;
+
                     if (m_screenLogBufferIndex >= (SCREEN_LOG_BUFFER_SIZE - 1))
                         {
                         logScreenCompactVisible();
@@ -251,12 +283,12 @@ void            CKernel::logScreenCompactVisible    (   void )
 {
                 if (m_screenLogBufferIndex == 0) return;
 
-                u32 startIndex = CKernel::bufferScreenFindStartIndex(
-                                                                    m_screenLogBuffer,
-                                                                    m_screenLogBufferIndex,
-                                                                    gE_Cols,
-                                                                    gE_Rows
-                                                                    );
+                u32 startIndex = bufferScreenFindStartIndex(
+                                                            m_screenLogBuffer,
+                                                            m_screenLogBufferIndex,
+                                                            gE_Cols,
+                                                            gE_Rows
+                                                            );
 
                 if (startIndex == 0) return;
 
@@ -276,13 +308,18 @@ void            CKernel::logScreenUpdate            (   void )
                 if (gE_PixelBuffer == 0) return;
                 if (gE_Cols == 0) return;
                 if (gE_Rows <= 1) return;
+                if (m_screenLogBuffer == 0) return;
 
                 boolean bChanged = FALSE;
 
                 u32 deltaStart = m_logBufferIndexLast;
                 u32 deltaEnd   = m_logBufferIndex;
 
-                if (deltaEnd > deltaStart)
+                if (deltaEnd < deltaStart)
+                    {
+                    m_logBufferIndexLast = deltaEnd;
+                    }
+                else if (deltaEnd > deltaStart)
                     {
                     logScreenAppendDelta(
                                             m_logBuffer,
@@ -297,8 +334,20 @@ void            CKernel::logScreenUpdate            (   void )
 
                 for (unsigned n = 0; n < (LOG_SD+LOG_USB); n++)
                     {
+                    if (m_bufferLog[n] == 0)
+                        {
+                        m_bufferLogIndexLast[n] = m_bufferLogIndex[n];
+                        continue;
+                        }
+
                     deltaStart = m_bufferLogIndexLast[n];
                     deltaEnd   = m_bufferLogIndex[n];
+
+                    if (deltaEnd < deltaStart)
+                        {
+                        m_bufferLogIndexLast[n] = deltaEnd;
+                        continue;
+                        }
 
                     if (deltaEnd > deltaStart)
                         {
@@ -316,12 +365,12 @@ void            CKernel::logScreenUpdate            (   void )
 
                 if (!bChanged) return;
 
-                u32 finalStartIndex = CKernel::bufferScreenFindStartIndex(
-                                                                    m_screenLogBuffer,
-                                                                    m_screenLogBufferIndex,
-                                                                    gE_Cols,
-                                                                    gE_Rows
-                                                                    );
+                u32 finalStartIndex = bufferScreenFindStartIndex(
+                                                            m_screenLogBuffer,
+                                                            m_screenLogBufferIndex,
+                                                            gE_Cols,
+                                                            gE_Rows
+                                                            );
 
                 u32 drawStartIndex = 0;
 
@@ -364,12 +413,3 @@ void            CKernel::logScreenUpdate            (   void )
 
                 logScreenCompactVisible();
 }
-*/
-
-
-
-
-
-
-
-

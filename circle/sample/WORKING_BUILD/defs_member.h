@@ -329,13 +329,13 @@ const char* m_debug_table[16]   =
 	"MMAL_MSG_STATUS_EAGAIN",      							// Resource temporarily unavailable. //
 	"MMAL_MSG_STATUS_EFAULT"      							// Bad address //
 };
-/*
+
 u32             m_logBufferIndexLast;
 u32             m_bufferLogIndexLast[LOG_SD+LOG_USB];
 
 char            m_screenLogBuffer[SCREEN_LOG_BUFFER_SIZE];
 u32             m_screenLogBufferIndex;
-*/
+
 // VCSM predefined messages as public member
                 SERVICE_CREATION_T               m_ServiceCreateVCSM;
 
