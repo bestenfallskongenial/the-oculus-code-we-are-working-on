@@ -122,42 +122,49 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_VSH][FLD_EXTCNT],                         // how many valid file extensions we have in the array above also part of filecounter?
                                                 filecounter[FT_VSH][FLD_SCANNED],         
                                                 filecounter[FT_VSH][FLD_MAXSD]);           // how many files are allowed to scan and stored in the array
+                    logScreenUpdate();                                                
 // overlay fragment shader
                     scanRoot                (   g_ScnOmf, 
                                                 g_SufOmf, 
                                                 filecounter[FT_OMF][FLD_EXTCNT], 
                                                 filecounter[FT_OMF][FLD_SCANNED], 
                                                 filecounter[FT_OMF][FLD_MAXSD]);                
+                    logScreenUpdate();
 // overlay texture
                     scanRoot                (   g_ScnOmt, 
                                                 g_SufOmt, 
                                                 filecounter[FT_OMT][FLD_EXTCNT], 
                                                 filecounter[FT_OMT][FLD_SCANNED], 
-                                                filecounter[FT_OMT][FLD_MAXSD]);       
+                                                filecounter[FT_OMT][FLD_MAXSD]);
+                    logScreenUpdate();                                                       
 // user fragment shaders
                     scanRoot                (   g_ScnFsh, 
                                                 g_SufFsh, 
                                                 filecounter[FT_FSH][FLD_EXTCNT], 
                                                 filecounter[FT_FSH][FLD_SCANNED], 
-                                                filecounter[FT_FSH][FLD_MAXSD]);         
+                                                filecounter[FT_FSH][FLD_MAXSD]);
+                    logScreenUpdate();                                                         
 // user textures
                     scanRoot                (   g_ScnTex, 
                                                 g_SufTex, 
                                                 filecounter[FT_TEX][FLD_EXTCNT], 
                                                 filecounter[FT_TEX][FLD_SCANNED], 
                                                 filecounter[FT_TEX][FLD_MAXSD]);
+                    logScreenUpdate();                                                
 // user videos
                     scanRoot                (   g_ScnVid, 
                                                 g_SufVid, 
                                                 filecounter[FT_VID][FLD_EXTCNT], 
                                                 filecounter[FT_VID][FLD_SCANNED], 
                                                 filecounter[FT_VID][FLD_MAXSD]);
+                    logScreenUpdate();                                                
 // kernel.img
                     scanRoot                (   g_ScnKln, 
                                                 g_SufKln, 
                                                 filecounter[FT_KLN][FLD_EXTCNT], 
                                                 filecounter[FT_KLN][FLD_SCANNED], 
                                                 filecounter[FT_KLN][FLD_MAXSD]);    
+                    logScreenUpdate();                                                
 // vertex shader
                     bulkLoad                (   g_ScnVsh,                           // where we have stored the filenames 
                                                 g_bytVsh,                           // where we store the loaded bytes for each file 
@@ -166,6 +173,7 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_VSH][FLD_LOADED],            // <- is directly modified in the function, we dont need to return it
                                                 filecounter[FT_VSH][FLD_PREV],
                                                 filecounter[FT_VSH][FLD_SIZE]);                     // maximum size for each file
+                    logScreenUpdate();                                                
 // overlay fragment shader
                     bulkLoad                (   g_ScnOmf, 
                                                 g_bytOmf, 
@@ -174,6 +182,7 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_OMF][FLD_LOADED], 
                                                 filecounter[FT_OMF][FLD_PREV],
                                                 filecounter[FT_OMF][FLD_SIZE]);
+                    logScreenUpdate();                                                
 // overlay texture
                     bulkLoad                (   g_ScnOmt, 
                                                 g_bytOmt, 
@@ -181,7 +190,8 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_OMT][FLD_SCANNED], 
                                                 filecounter[FT_OMT][FLD_LOADED], 
                                                 filecounter[FT_OMT][FLD_PREV],
-                                                filecounter[FT_OMT][FLD_SIZE]);           
+                                                filecounter[FT_OMT][FLD_SIZE]);
+                    logScreenUpdate();                                                           
 // user fragment shaders
                     bulkLoad                (   g_ScnFsh, 
                                                 g_bytFsh, 
@@ -189,7 +199,8 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_FSH][FLD_SCANNED], 
                                                 filecounter[FT_FSH][FLD_LOADED], 
                                                 filecounter[FT_FSH][FLD_PREV],
-                                                filecounter[FT_FSH][FLD_SIZE]);                                     
+                                                filecounter[FT_FSH][FLD_SIZE]);
+                    logScreenUpdate();                                                                                     
 // user textures
                     bulkLoad                (   g_ScnTex, 
                                                 g_bytTex, 
@@ -197,7 +208,8 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_TEX][FLD_SCANNED], 
                                                 filecounter[FT_TEX][FLD_LOADED], 
                                                 filecounter[FT_TEX][FLD_PREV],
-                                                filecounter[FT_TEX][FLD_SIZE]);                                   
+                                                filecounter[FT_TEX][FLD_SIZE]);
+                    logScreenUpdate();                                                                                   
  // user videos
                     bulkLoad                (   g_ScnVid, 
                                                 g_bytVid, 
@@ -205,7 +217,8 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_VID][FLD_SCANNED], 
                                                 filecounter[FT_VID][FLD_LOADED], 
                                                 filecounter[FT_VID][FLD_PREV],
-                                                filecounter[FT_VID][FLD_SIZE]);   
+                                                filecounter[FT_VID][FLD_SIZE]);
+                    logScreenUpdate();                                                   
 // kernel.img
                     bulkLoad                (   g_ScnKln, 
                                                 g_bytKln, 
@@ -213,7 +226,8 @@ void            CKernel::wrapper_from_sd            (   )
                                                 filecounter[FT_KLN][FLD_SCANNED], 
                                                 filecounter[FT_KLN][FLD_LOADED], 
                                                 filecounter[FT_KLN][FLD_PREV],
-                                                filecounter[FT_KLN][FLD_SIZE]); 
+                                                filecounter[FT_KLN][FLD_SIZE]);
+                    logScreenUpdate();                                                 
 
                     UnMount();
 
@@ -233,24 +247,28 @@ void            CKernel::wrapper_load_usb           (   )
                                                 filecounter[FT_FSH][FLD_EXTCNT], 
                                                 filecounter[FT_FSH][FLD_SCANNED], 
                                                 filecounter[FT_FSH][FLD_MAXUSB]);  
+                    logScreenUpdate();                                                
 
                     scanRoot                (   g_ScnTex, 
                                                 g_SufTex, 
                                                 filecounter[FT_TEX][FLD_EXTCNT], 
                                                 filecounter[FT_TEX][FLD_SCANNED], 
                                                 filecounter[FT_TEX][FLD_MAXUSB]);
+                    logScreenUpdate();                                                
 
                     scanRoot                (   g_ScnVid, 
                                                 g_SufVid, 
                                                 filecounter[FT_VID][FLD_EXTCNT], 
                                                 filecounter[FT_VID][FLD_SCANNED], 
                                                 filecounter[FT_VID][FLD_MAXUSB]);
+                    logScreenUpdate();                                                
 
                     scanRoot                (   g_ScnKln, 
                                                 g_SufKln, 
                                                 filecounter[FT_KLN][FLD_EXTCNT], 
                                                 filecounter[FT_KLN][FLD_SCANNED], 
-                                                filecounter[FT_KLN][FLD_MAXUSB]);                                                  
+                                                filecounter[FT_KLN][FLD_MAXUSB]);
+                    logScreenUpdate();                                                                                                  
         
                     bulkLoad                (   g_ScnFsh, 
                                                 g_bytFsh, 
@@ -258,7 +276,8 @@ void            CKernel::wrapper_load_usb           (   )
                                                 filecounter[FT_FSH][FLD_SCANNED], 
                                                 filecounter[FT_FSH][FLD_LOADED], 
                                                 filecounter[FT_FSH][FLD_PREV],
-                                                filecounter[FT_FSH][FLD_SIZE]);                           
+                                                filecounter[FT_FSH][FLD_SIZE]);
+                    logScreenUpdate();                                                                           
 
                     bulkLoad                (   g_ScnTex, 
                                                 g_bytTex, 
@@ -266,7 +285,8 @@ void            CKernel::wrapper_load_usb           (   )
                                                 filecounter[FT_TEX][FLD_SCANNED], 
                                                 filecounter[FT_TEX][FLD_LOADED], 
                                                 filecounter[FT_TEX][FLD_PREV],
-                                                filecounter[FT_TEX][FLD_SIZE]);                                   
+                                                filecounter[FT_TEX][FLD_SIZE]);
+                    logScreenUpdate();                                                                                   
 
                     bulkLoad                (   g_ScnVid, 
                                                 g_bytVid, 
@@ -275,6 +295,7 @@ void            CKernel::wrapper_load_usb           (   )
                                                 filecounter[FT_VID][FLD_LOADED], 
                                                 filecounter[FT_VID][FLD_PREV],
                                                 filecounter[FT_VID][FLD_SIZE]);
+                    logScreenUpdate();                                                
 
                     bulkLoad                (   g_ScnKln, 
                                                 g_bytKln, 
@@ -283,6 +304,7 @@ void            CKernel::wrapper_load_usb           (   )
                                                 filecounter[FT_KLN][FLD_LOADED], 
                                                 filecounter[FT_KLN][FLD_PREV],
                                                 filecounter[FT_KLN][FLD_SIZE]);     
+                    logScreenUpdate();                                                
 
                     UnMount();   
                     }
@@ -335,7 +357,7 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     filecounter[FT_VSH][FLD_PREV],                  // should be 0
                                     filecounter[FT_VSH][FLD_LOADED],                // should be 1 - BUT the code should also ensure that filecounter contains the correct values
                                     GL_VERTEX_SHADER);
-
+                    logScreenUpdate();
                 initShader      (   &m_vtx,                                         // init fragment shader ( default )
                                     &m_fsh, 
                                     &m_tex,
@@ -343,7 +365,7 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     filecounter[FT_FSH][FLD_PREV],                  // for the continuous loading between devices - lower bound
                                     filecounter[FT_FSH][FLD_LOADED],                // for the continuous loading between devices - upper bound
                                     GL_FRAGMENT_SHADER);          
-
+                    logScreenUpdate();
                 initShader      (   &m_vtx,                                         // init Overlay shader
                                     &m_osh, 
                                     &m_omt,
@@ -351,7 +373,7 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     filecounter[FT_OMF][FLD_PREV],                  // for the continuous loading between devices - lower bound
                                     filecounter[FT_OMF][FLD_LOADED],                // for the continuous loading between devices - upper bound
                                     GL_FRAGMENT_SHADER);
-
+                    logScreenUpdate();
                 initProgram     (   &m_vtx,                                         // user fragment shaders
                                     &m_vsh,
                                     &m_fsh,
@@ -359,7 +381,7 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     filecounter[FT_FSH][FLD_PREV],                  // for the continuous loading between devices - lower bound
                                     filecounter[FT_FSH][FLD_LOADED],                // for the continuous loading between devices - upper bound
                                     filecounter[FT_FSH][FLD_VALID]);                // for the dense indexing after load and verify
-                                
+                    logScreenUpdate();                                
                 initProgram     (   &m_vtx,                                         // overlay fragment shader 
                                     &m_vsh,
                                     &m_osh,
@@ -367,19 +389,19 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     filecounter[FT_OMF][FLD_PREV],                  // for the continuous loading between devices - lower bound
                                     filecounter[FT_OMF][FLD_LOADED],                // for the continuous loading between devices - upper bound
                                     filecounter[FT_OMF][FLD_VALID]);                // for the dense indexing after load and verify
-
+                    logScreenUpdate();
                 initUniform     (   &m_vtx,
                                     &m_fsh,
                                     &m_tex,
                                     0,                                              // why not simply change the call signature? 
                                     filecounter[FT_FSH][FLD_VALID]);                // for the dense indexing after load and verify *
-
+                    logScreenUpdate();
                 initUniform     (   &m_vtx,
                                     &m_osh,
                                     &m_omt,
                                     0,
                                     filecounter[FT_OMF][FLD_VALID]);                // for the dense indexing after load and verify *
-
+                    logScreenUpdate();
                 initTexture     (   &m_vtx,                                         // my overlay texture
                                     &m_osh,
                                     &m_omt,
@@ -389,7 +411,7 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     filecounter[FT_OMT][FLD_VALID],                 // for the dense indexing after load and verify *
                                     GL_CLAMP_TO_EDGE,
                                     GL_CLAMP_TO_EDGE);
-
+                    logScreenUpdate();
                 initTexture     (   &m_vtx,                                         // no textures on sd!?
                                     &m_fsh,
                                     &m_tex,
@@ -399,6 +421,7 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     filecounter[FT_TEX][FLD_VALID],                 // for the dense indexing after load and verify *
                                     GL_REPEAT,
                                     GL_REPEAT);
+                    logScreenUpdate();
 }
 
 void            CKernel::wrapper_init_gl_usb        (   )
@@ -410,7 +433,7 @@ void            CKernel::wrapper_init_gl_usb        (   )
                                     filecounter[FT_FSH][FLD_PREV],
                                     filecounter[FT_FSH][FLD_LOADED],
                                     GL_FRAGMENT_SHADER);    
-
+                    logScreenUpdate();
                 initProgram     (   &m_vtx,         // user fragment shaders
                                     &m_vsh,
                                     &m_fsh,
@@ -418,13 +441,13 @@ void            CKernel::wrapper_init_gl_usb        (   )
                                     filecounter[FT_FSH][FLD_PREV],
                                     filecounter[FT_FSH][FLD_LOADED],
                                     filecounter[FT_FSH][FLD_VALID]);            
-
+                    logScreenUpdate();
                 initUniform     (   &m_vtx,
                                     &m_fsh,
                                     &m_tex,
                                     0,                                  // why not simply change the call signature? 
                                     filecounter[FT_FSH][FLD_VALID]);            
-
+                    logScreenUpdate();
                 initTexture     (   &m_vtx,
                                     &m_fsh,
                                     &m_tex,
@@ -434,6 +457,7 @@ void            CKernel::wrapper_init_gl_usb        (   )
                                     filecounter[FT_TEX][FLD_VALID],
                                     GL_REPEAT,
                                     GL_REPEAT);
+                    logScreenUpdate();
 }
 
 void            CKernel::wrapper_io                 (   )
