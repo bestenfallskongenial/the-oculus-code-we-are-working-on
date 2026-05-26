@@ -545,9 +545,6 @@ public:
 
                 void        wrapper_modes               ();             // the hardware->gui->glsl pipeline 
 
-                bool        wrapper_VCSM();
-                
-                bool        wrapper_MMAL();
 
                 bool        wrapperInitVCSMstruct       ();             // for the dynamical vcsm structs allocation
 
