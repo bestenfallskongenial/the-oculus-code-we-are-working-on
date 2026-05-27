@@ -70,12 +70,7 @@ bool            CKernel::saveFromBufferM            (   const   char*       p_de
                 if(!Mount( p_deviceName ))
                     {
 #ifdef __DEBUG_LOG__
-                    nextline(   MY_BUFFER, MY_INDEX);
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                    "Failed to Mount Device",   EMPTYLOG,
-                                    p_deviceName,               EMPTYLOG,
-                                    EMPTYSTR,                   EMPTYLOG,
-                                    EMPTYSTR,                   EMPTYLOG );
+                    storeLog(   MY_BUFFER, MY_INDEX, "Failed to Mount Device", EMPTYLOG, p_deviceName );
 #endif                    
                     return false;
                     }
@@ -83,11 +78,7 @@ bool            CKernel::saveFromBufferM            (   const   char*       p_de
                 if (m_pFileSystem == 0 || p_fileName == 0 || p_bufferArray == 0 || p_bufferSize == 0)
                     {
 #ifdef __DEBUG_LOG__
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                "Failed Store Input",       EMPTYLOG,
-                                "file",                     EMPTYLOG,
-                                p_fileName,                 EMPTYLOG,
-                                "size",                     (u32)p_bufferSize );
+                    storeLog(   MY_BUFFER, MY_INDEX, "Failed store Input", EMPTYLOG, "file", EMPTYLOG, p_fileName, EMPTYLOG, "size", (u32)p_bufferSize );
 #endif
                     return false;
                     }
@@ -96,11 +87,7 @@ bool            CKernel::saveFromBufferM            (   const   char*       p_de
                 if (g_hFile == 0)
                     {
 #ifdef __DEBUG_LOG__                        
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                "Failed to Create File",    EMPTYLOG,
-                                p_fileName,                 EMPTYLOG,
-                                "on Device",                EMPTYLOG,
-                                p_deviceName,               EMPTYLOG );
+                    storeLog(   MY_BUFFER, MY_INDEX, "Failed to create File", EMPTYLOG, p_fileName, EMPTYLOG, "on Device", EMPTYLOG, p_deviceName );
 #endif                    
                     return false;
                     }
@@ -108,23 +95,18 @@ bool            CKernel::saveFromBufferM            (   const   char*       p_de
                 if (m_pFileSystem->FileWrite(g_hFile, p_bufferArray, p_bufferSize) != p_bufferSize)
                     {
 #ifdef __DEBUG_LOG__                        
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                "Failed to Store File",     EMPTYLOG,
-                                p_fileName,                 EMPTYLOG,
-                                "size",                     (u32)p_bufferSize,
-                                EMPTYSTR,                   EMPTYLOG );
+                    storeLog(   MY_BUFFER, MY_INDEX, "Failed to store File", EMPTYLOG, p_fileName, EMPTYLOG, "size", (u32)p_bufferSize );
 #endif                                      
                     return false;
                     }
-
+#ifdef __DEBUG_LOG__                        
+                storeLog(   MY_BUFFER, MY_INDEX, "File stored successful", EMPTYLOG, p_fileName, EMPTYLOG, "size", (u32)p_bufferSize );        
+#endif
                 closeFile();
                 UnMount();
 
 #ifdef __DEBUG_LOG__
-                storeLog(   MY_BUFFER, MY_INDEX,
-                            "Successful Stored",    EMPTYLOG,
-                            p_fileName,             EMPTYLOG,
-                            "from Buffer size",     (u32)p_bufferSize );
+                storeLog(   MY_BUFFER, MY_INDEX, "Successful Stored", EMPTYLOG, p_fileName, EMPTYLOG, "from Buffer size", (u32)p_bufferSize );
 #endif                                 
                 return true;
 }
@@ -145,14 +127,8 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                                                                 unsigned    p_fileSize)
 {
                 p_prevFiles = p_validFiles;
-
 #ifdef __DEBUG_LOG__
-                nextline(   MY_BUFFER, MY_INDEX);
-                storeLog(   MY_BUFFER, MY_INDEX,
-                            "1/100 sec", m_Timer.GetTicks(),
-                            "BULKLOAD Start scanned",   (u32)p_maxFiles,
-                            "valid",                (u32)p_validFiles,
-                            "size",                 (u32)p_fileSize);
+                storeLog(   MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "BULKLOAD Start scanned", (u32)p_maxFiles, "valid", (u32)p_validFiles, "size", (u32)p_fileSize );
 #endif
 
                 for (unsigned i = 0; i < p_maxFiles; ++i) 
@@ -164,26 +140,15 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                             {
                             p_loadedBytes[p_validFiles] = f_bytesRead;
 #ifdef __DEBUG_LOG__
-                            storeLog(   MY_BUFFER, MY_INDEX,
-                                      /*"file",              (u32)i,*/
-                                        p_fileNameArray[i],  EMPTYLOG,
-                                        "bytes read",        (u32)f_bytesRead,
-                                        "in buffer [",         (u32)p_validFiles,
-                                        "]" ); // new
+                            storeLog(   MY_BUFFER, MY_INDEX, p_fileNameArray[i], EMPTYLOG, "bytes read", (u32)f_bytesRead, "in buffer [", (u32)p_validFiles, "]" ); // new
 #endif                            
                             p_validFiles++;   
                             }
                         closeFile();
                         }
                     }
-
 #ifdef __DEBUG_LOG__
-
-                storeLog(   MY_BUFFER, MY_INDEX,
-                            "1/100 sec", m_Timer.GetTicks(),
-                            "BULKLOAD End prev",    (u32)p_prevFiles,
-                            "new",                  (u32)p_validFiles,
-                            "loaded",               (u32)(p_validFiles - p_prevFiles));
+                storeLog(   MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "BULKLOAD End prev", (u32)p_prevFiles, "new", (u32)p_validFiles, "loaded", (u32)(p_validFiles - p_prevFiles) );
 #endif
 }
 

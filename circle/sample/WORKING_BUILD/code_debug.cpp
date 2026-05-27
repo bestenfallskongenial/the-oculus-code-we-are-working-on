@@ -166,7 +166,7 @@ void CKernel::logInOutRuntime(void)
                        0xFFFFFFFF );
 }
 // LAST WORKING FUNCTION 
-/*
+
 void            CKernel::logScreenUpdate            (   void )
 {
                 if (gE_PixelBuffer == 0) return;
@@ -270,8 +270,8 @@ void            CKernel::logScreenUpdate            (   void )
 
                 m_logScreenStartIndex = drawIndex;
 }
-*/
 
+/*
 void            CKernel::logScreenDeltaUpdate       (   void )
 {
                 boot_buffer_index_temp_new          = m_logBufferIndex;
@@ -431,6 +431,7 @@ void            CKernel::logScreenBufferUpdate      (   const char* pSourceBuffe
 
                 screenStartIndex = drawIndex;
 }
+*/
 /*
 void            CKernel::logScreenDeltaUpdate       (   void )
 {

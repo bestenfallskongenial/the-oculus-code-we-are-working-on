@@ -38,19 +38,6 @@ bool            CKernel::wrapperInitDMA             (   )
                     bOK = (m_bufferTex = allocBufferDMA  (  filecounter[FT_TEX][FLD_MAXSD]+filecounter[FT_TEX][FLD_MAXUSB], filecounter[FT_TEX][FLD_SIZE], 
                                                             &m_textureBlockBase, &m_textureRawBlock, &m_textureBlockSize));
                     }
-/*
-                if (bOK)
-                    {
-                    bOK = (m_bufferKnl = allocBufferDMA  (  filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], filecounter[FT_KLN][FLD_SIZE], 
-                                                            &m_kernelBlockBase, &m_kernelRawBlock, &m_kernelBlockSize));
-                    }
-
-                    if (bOK)
-                    {
-                    bOK = (m_bufferLog = allocBufferDMA  (  filecounter[FT_LOG][FLD_MAXSD]+filecounter[FT_LOG][FLD_MAXUSB], filecounter[FT_LOG][FLD_SIZE], 
-                                                            &m_loggerBlockBase, &m_loggerRawBlock, &m_loggerBlockSize));
-                    }
-*/
                 return bOK;                    
 }
 
@@ -99,20 +86,14 @@ void            CKernel::wrapperDMAcleanUp          (   )
                     clearBufferDMA( m_bufferOmt, m_overlayRawBlock); 
 
                     clearBufferDMA( m_bufferTex, m_textureRawBlock); 
-
-                    clearBufferDMA( m_bufferKnl, m_kernelRawBlock); 
-
-                    clearBufferDMA( m_bufferLog, m_loggerRawBlock); 
-
 }
 
 void            CKernel::wrapperMEMcleanUp          (   )
 {
-/*    
                     clearBufferMEM( m_bufferKnl, filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB] ); 
 
                     clearBufferMEM( m_bufferLog, filecounter[FT_LOG][FLD_MAXSD]+filecounter[FT_LOG][FLD_MAXUSB] ); 
-*/
+
                     clearBufferMEM( m_bufferVsh, filecounter[FT_VSH][FLD_MAXSD]+filecounter[FT_VSH][FLD_MAXUSB] ); 
 
                     clearBufferMEM( m_bufferOmf, filecounter[FT_OMF][FLD_MAXSD]+filecounter[FT_OMF][FLD_MAXUSB] ); 
@@ -292,7 +273,6 @@ bool            CKernel::wrapperMMAL()
                         logScreenUpdate();
 #endif 
                         }      
-#ifdef __DEBUG__                           
                     if (bOK)
                         {
                         bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
@@ -314,9 +294,8 @@ bool            CKernel::wrapperMMAL()
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output B )            DONE");
                         logScreenUpdate();
-#endif // __DEBUG_LOG__
+#endif
                         }
-#endif // __DEBUG__
                     if (bOK)
                         {
                         bOK = setZeroCopyModeMMAL(  m_InputPortHandle, 
@@ -379,7 +358,6 @@ bool            CKernel::wrapperMMAL()
                         logScreenUpdate();
 #endif 
                         }
-#ifdef __DEBUG__                          
                     if (bOK)
                         {
                         bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
@@ -402,7 +380,6 @@ bool            CKernel::wrapperMMAL()
                         logScreenUpdate();
 #endif // __DEBUG_LOG__
                         }
-#endif // __DEBUG__                         
                     return bOK;
 }
 

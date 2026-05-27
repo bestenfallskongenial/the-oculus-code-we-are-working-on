@@ -3,8 +3,8 @@
 //  #undef  __DEBUG_LOG__
     #define __DEBUG_LOG__
 
-    #define MY_BUFFER   m_logParseBuffer
-    #define MY_INDEX    m_logParseBufferIndex
+    #define MY_BUFFER   m_logBuffer
+    #define MY_INDEX    m_logBufferIndex
 
 bool            CKernel::BMPparser                  (   tex_state*  t,
                                                         char*       p_buffer_array[],
@@ -45,47 +45,14 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                     t->size[i]      = size_array[i];
 
 #ifdef __DEBUG_LOG__
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                "dump header from file", (u32)i,
-                                "buffer", (u32)p_buffer_array[i],
-                                "data", (u32)data );
-
-                    storeMsg(   MY_BUFFER, MY_INDEX,
-                                "Header Dump",
-                                data,
-                                headerSize );
-
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                t->tex_valid[i] ? "header VALID" : "header FAILED", EMPTYLOG,
-                                "File", (u32)i,
-                                "Name", EMPTYLOG,
-                                filename_array[i /* - p_fromFile */ ], EMPTYLOG );
-
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                "size",
-                                (u32)fileSize,
-                                "loaded", (u32)size_array[i /* - p_fromFile */ ],
-                                "max", (u32)t->max_tex_size );
-
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                "Header offset", (u32)dataOffset,
-                                "header size", (u32)headerSize,
-                                "img size", (u32)imgSize );
-
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                "width", (u32)width,
-                                "height",    (u32)height,
-                                "bpp",       (u32)bpp );
-
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                "planes", (u32)planes,
-                                "compr.", (u32)compression );
-
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                "exp. size",
-                                (u32)(width * height * 3),
-                                "act. size", (u32)imgSize );
-
+                    storeLog(   MY_BUFFER, MY_INDEX, "dump header from file", (u32)i, "buffer", (u32)p_buffer_array[i], "data", (u32)data );
+                    storeMsg(   MY_BUFFER, MY_INDEX, "Header Dump", data, headerSize );
+                    storeLog(   MY_BUFFER, MY_INDEX, t->tex_valid[i] ? "header VALID" : "header FAILED", EMPTYLOG, "File", (u32)i, "Name", EMPTYLOG, filename_array[i/*- p_fromFile*/], EMPTYLOG );
+                    storeLog(   MY_BUFFER, MY_INDEX, "size", (u32)fileSize, "loaded", (u32)size_array[i/*- p_fromFile*/], "max", (u32)t->max_tex_size );
+                    storeLog(   MY_BUFFER, MY_INDEX, "Header offset", (u32)dataOffset, "header size", (u32)headerSize, "img size", (u32)imgSize );
+                    storeLog(   MY_BUFFER, MY_INDEX, "width", (u32)width, "height", (u32)height, "bpp", (u32)bpp );
+                    storeLog(   MY_BUFFER, MY_INDEX, "planes", (u32)planes, "compr.", (u32)compression );
+                    storeLog(   MY_BUFFER, MY_INDEX, "exp. size", (u32)(width * height * 3), "act. size", (u32)imgSize );
                     nextline(   MY_BUFFER, MY_INDEX);                       
 #endif
                     }
@@ -132,19 +99,10 @@ bool            CKernel::parse264                  (   h264_state* h,
                 /*  u8*    data = reinterpret_cast<u8*>(p_buffer_array[i]); */
                 /*  size_t size = size_array[i]; */
                     size_t i = 0;
-
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                "Parse H264 File No.", file_index,
-                                "Name", EMPTYLOG,
-                                filename_array[file_index /* - p_fromFile */], EMPTYLOG,
-                                "FileSize", (u32)size_array[file_index /* - p_fromFile */]);
-
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                "file_index",     (u32)file_index,
-                                "buffer",         (u32)p_buffer_array[file_index],
-                                "data",           (u32)data,
-                                EMPTYSTR,         EMPTYLOG );
-
+#ifdef __DEBUG_LOG__
+                    storeLog(   MY_BUFFER, MY_INDEX, "Parse H264 File No.", file_index, "Name", EMPTYLOG, filename_array[file_index/*- p_fromFile*/], EMPTYLOG, "FileSize", (u32)size_array[file_index/*- p_fromFile*/]);
+                    storeLog(   MY_BUFFER, MY_INDEX, "file_index", (u32)file_index, "buffer", (u32)p_buffer_array[file_index], "data", (u32)data );
+#endif
                     for (size_t pos = 0; pos < size - 3; )
                         {
                         size_t sc_len = (data[pos + 2] == 1) ? 3 : 4;

@@ -574,17 +574,17 @@ u32             bufferScreenFindStartIndex          (   const char* p_buffer,
                                                         unsigned    cols,
                                                         unsigned    rows);
 
-
-void            logScreenDeltaUpdate                ( void );
 void            logScreenUpdate                     ( void );
 /*
+void            logScreenDeltaUpdate                ( void );
+
 void            logScreenBufferUpdate               ( const char* pSourceBuffer,
                                                       u32         sourceIndex );
-*/
+
 void            logScreenBufferUpdate           (   const       char*           pSourceBuffer,
                                                                 u32             sourceIndex,
                                                                 u32&            screenStartIndex );
-/*
+
 void            logScreenBufferUpdate           (   const       char*           pSourceBuffer,
                                                                 u32             sourceIndex,
                                                                 u32&            screenStartIndex,

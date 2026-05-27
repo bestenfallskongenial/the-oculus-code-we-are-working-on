@@ -37,8 +37,7 @@ bool            CKernel::allocMemoryVCSM            (   size_t                  
                     vcsm_handle = rx.body.res_handle;
 
 #ifdef __DEBUG_LOG__
-                    storeLog( MY_BUFFER, MY_INDEX, "Alloc VCSM Memory Handle", rx.body.res_handle );
-                    storeLog( MY_BUFFER, MY_INDEX, "VCSM Mem", rx.body.res_mem, "Base Size", rx.body.res_base_size, "Num", rx.body.res_num );
+                    storeLog( MY_BUFFER, MY_INDEX, "Alloc VCSM Memory Handle", rx.body.res_handle, "VCSM Mem", rx.body.res_mem, "Base Size", rx.body.res_base_size, "Num", rx.body.res_num );
 #endif
                     return true;
                     }
@@ -47,7 +46,6 @@ bool            CKernel::allocMemoryVCSM            (   size_t                  
 }
 bool            CKernel::importMemoryVCSM           (   void*                   p_bufferBlockbase, 
                                                         size_t                  size, 
-                                                    /*  int                     slot, */ 
                                                         u32&                    vcsm_handle,   
                                                         VCSM_Import_MEM_Msg&    tx, 
                                                         VCSM_Import_MEM_Reply&  rx)
@@ -69,20 +67,16 @@ bool            CKernel::importMemoryVCSM           (   void*                   
 
                 if (rx.body.res_handle != 0)
                 {
-                /*  m_vc_handle[slot]   = rx.body.res_handle; */
                     vcsm_handle         = rx.body.res_handle; //   like this ?                    
 #ifdef __DEBUG_LOG__
-                    //  nextline( MY_BUFFER, MY_INDEX );  
-                        storeLog( MY_BUFFER, MY_INDEX, "Import VCSM Memory to Slot", /* slot */ vcsm_handle); 
-                        storeLog( MY_BUFFER, MY_INDEX, "ARM Address", (u32)(uintptr)p_bufferBlockbase, "GPU Address", tx.body.addr, "Size", size, "VCSM Handle", rx.body.res_handle);
+                    storeLog( MY_BUFFER, MY_INDEX, "Import from ARM Address", (u32)(uintptr)p_bufferBlockbase, "to GPU Address", tx.body.addr, "Size", size, "VCSM Handle", rx.body.res_handle);
 #endif                     
                     return true;
                 }
                 return false;
 }
 
-bool            CKernel::lockMemoryVCSM             (/* int                     slot, */
-                                                        u32&                    vcsm_handle,
+bool            CKernel::lockMemoryVCSM             (   u32&                    vcsm_handle,
                                                         u32&                    vcsm_pointer, 
                                                         VCSM_Lock_MEM_Msg&      tx, 
                                                         VCSM_Lock_MEM_Reply&    rx)
@@ -90,9 +84,9 @@ bool            CKernel::lockMemoryVCSM             (/* int                     
                 initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_LOCK);
 
                 tx.body = {};
-            /*  tx.body.res_handle = m_vc_handle[slot]; */ 
+
                 tx.body.res_handle = vcsm_handle;
-                tx.body.res_mem    = 0;
+                tx.body.res_mem    = 0;             // never set this to zero but have not to either, right?! 
 
                 size_t rx_len = 0;
 
@@ -100,16 +94,13 @@ bool            CKernel::lockMemoryVCSM             (/* int                     
                     return false;
 
                 if (rx.body.res_mem != 0)
-                {
-                /*  m_vc_pointer[slot]  = rx.body.res_mem; */  
+                    {
                     vcsm_pointer        = rx.body.res_mem;
 #ifdef __DEBUG_LOG__
-                    //  nextline( MY_BUFFER, MY_INDEX );  
-                        storeLog( MY_BUFFER, MY_INDEX, "Lock VCSM Memory in Slot   ", /* slot */ vcsm_handle);  
-                        storeLog( MY_BUFFER, MY_INDEX, "Lock  Memory in VCSM Handle", rx.body.res_handle, "VCSM Pointer", rx.body.res_mem);
+                        storeLog( MY_BUFFER, MY_INDEX, "Lock  Memory - VCSM Handle", rx.body.res_handle, "VCSM Pointer", rx.body.res_mem);
 #endif         
                     return true;
-                }
+                    }
                 return false;
 }
 
@@ -122,7 +113,6 @@ bool            CKernel::freeMemoryVCSM             (/* int                     
                 initHeaderVCSM(tx.hdr, VC_SM_MSG_TYPE_FREE);
 
                 tx.body = {};
-            /*  tx.body.res_handle = m_vc_handle[slot]; */
                 tx.body.res_handle = vcsm_handle;
                 tx.body.res_mem    = 0;
 
@@ -138,8 +128,8 @@ bool            CKernel::freeMemoryVCSM             (/* int                     
                     vcsm_handle         = 0; 
                     vcsm_pointer        = 0;
 #ifdef __DEBUG_LOG__
-                    //  nextline( MY_BUFFER, MY_INDEX );  
-                        storeLog( MY_BUFFER, MY_INDEX, "Free  Memory in VCSM Handle", vcsm_handle, "VCSM Pointer", vcsm_pointer);  
+
+                        storeLog( MY_BUFFER, MY_INDEX, "Free  Memory - VCSM Handle", vcsm_handle, "VCSM Pointer", vcsm_pointer);  
 #endif        
                     return true;
                 }
