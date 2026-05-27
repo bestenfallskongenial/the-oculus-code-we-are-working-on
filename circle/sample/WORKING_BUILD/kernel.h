@@ -581,7 +581,7 @@ void            logScreenBufferUpdate           (   const       char*           
                                                                 u32             sourceIndex,
                                                                 u32&            screenStartIndex );
 */
-                logScreenBufferUpdate           (   const       char*           pSourceBuffer,
+void            logScreenBufferUpdate           (   const       char*           pSourceBuffer,
                                                                 u32             sourceIndex,
                                                                 u32&            screenStartIndex,
                                                                 unsigned        startRow ); 
