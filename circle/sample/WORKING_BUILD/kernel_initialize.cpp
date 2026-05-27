@@ -125,7 +125,7 @@ boolean			CKernel::Initialize						(	void )
 
                 if (bOK)
                     {
-                    bOK = wrapper_MMAL();
+                    bOK = wrapperMMAL();
 #ifdef __DEBUG_LOG__
 
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "Init MMAL / ril.video_decode            DONE");
