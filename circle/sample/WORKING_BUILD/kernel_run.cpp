@@ -106,7 +106,7 @@ unsigned b = 186;
 
         drawGLsPrg                  (   );
 
-        frmRateBreak                (   true );        
+        frmRateBreak                (   false );        
 
         frmBufferSwap               (   &m_ogl );
 
