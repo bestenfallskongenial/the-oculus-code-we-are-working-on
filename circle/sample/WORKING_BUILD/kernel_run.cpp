@@ -110,7 +110,7 @@ unsigned b = 186;
 
         frmBufferSwap               (   &m_ogl );
 */
-                    //  msDelay(25);
+                        msDelay(25);
 
                         if ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 21, 0xFFFFFFFF );
                     }
