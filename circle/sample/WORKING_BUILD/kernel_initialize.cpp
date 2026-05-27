@@ -122,16 +122,7 @@ boolean			CKernel::Initialize						(	void )
                     logScreenUpdate();
 #endif
                     }
-
-                if (bOK)
-                    {
-                    bOK = wrapperMMAL();
-#ifdef __DEBUG_LOG__
-
-                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "Init MMAL / ril.video_decode            DONE");
-                    logScreenUpdate();
-#endif
-                    }
+/*                    
                 if (bOK)
                     {
                     bOK = wrapperVCSM();
@@ -142,6 +133,16 @@ boolean			CKernel::Initialize						(	void )
 #endif
                     }
 
+                if (bOK)
+                    {
+                    bOK = wrapperMMAL();
+#ifdef __DEBUG_LOG__
+
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "Init MMAL / ril.video_decode            DONE");
+                    logScreenUpdate();
+#endif
+                    }
+*/
                 if (bOK)
                     {
                     initOGL(    &m_ogl);
