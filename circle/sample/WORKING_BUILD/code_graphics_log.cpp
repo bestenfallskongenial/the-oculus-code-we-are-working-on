@@ -51,7 +51,7 @@ bool            CKernel::programLog                 (   GLint       program,
                     glGetActiveUniform(program, i, sizeof(uname), &length, &size, &type, uname);
                     GLint location = glGetUniformLocation(program, uname);
 #ifdef __DEBUG_LOG__ 
-                    storeLog(   MY_BUFFER, MY_INDEX, "Uniform name:", EMPTYLOG, uname, );
+                    storeLog(   MY_BUFFER, MY_INDEX, "Uniform name:", EMPTYLOG, uname );
                     storeLog(   MY_BUFFER, MY_INDEX, "Uniform idx", (u32)i, "size", (u32)size, "type", (u32)type, "loc", (u32)location);
 #endif                     
                     }
