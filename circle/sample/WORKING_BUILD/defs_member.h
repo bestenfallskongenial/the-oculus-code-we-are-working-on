@@ -68,6 +68,7 @@ u32             m_logScreenStartIndex               = 0;
 u32                             m_logScreenStartIndexBoot              = 0;
 u32                             m_logScreenStartIndexRuntime[16]       = {0};
 
+unsigned                        m_logScreenLastRow                    = 0;
 
 
 
