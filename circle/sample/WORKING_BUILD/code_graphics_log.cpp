@@ -1,7 +1,7 @@
 #include "kernel.h"
 
-//  #undef  __DEBUG_LOG__
-    #define __DEBUG_LOG__
+    #undef  __DEBUG_LOG__
+//  #define __DEBUG_LOG__
 
 //  #define MY_BUFFER   m_logGLSLBuffer
 //  #define MY_INDEX    m_logGLSLBufferIndex
