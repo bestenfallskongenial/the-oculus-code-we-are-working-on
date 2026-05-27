@@ -95,6 +95,10 @@ unsigned                        m_logScreenLastRow                    = 0;
                 int                             g_last_gl_program;
                 int                             g_activeBpmChannel;
 
+                int                             m_current_gl_program = 0;
+                int                             m_current_tex       = 0;
+                int                             m_validTextureCount  = 0;
+
                 
                 GLint                           GLtime = 0;
                 GLfloat                         g_opaque = 0.5; 

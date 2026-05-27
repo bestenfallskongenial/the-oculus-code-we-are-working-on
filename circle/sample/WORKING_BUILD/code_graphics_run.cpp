@@ -143,7 +143,7 @@ void            CKernel::drawGLsPrg                 (   )
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void            CKernel::frmRateBreak               (   bool* noTargetFPS )
+void            CKernel::frmRateBreak               (   bool noTargetFPS )
 {
                 glFlush();
 
