@@ -349,7 +349,7 @@ void            CKernel::wrapper_init_gl_sd         (   )
 {
                 initVbuffer     (   &m_ogl,
                                     &m_vtx );
-
+                    logScreenUpdate();
                 initShader      (   &m_vtx,                                         // init vertex shader 
                                     &m_vsh, 
                                     &m_tex,

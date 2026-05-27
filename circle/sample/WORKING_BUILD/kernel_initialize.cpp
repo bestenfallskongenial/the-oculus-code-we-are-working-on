@@ -290,7 +290,8 @@ boolean			CKernel::Initialize						(	void )
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enableComponentMMAL()                   DONE");
                         logScreenUpdate();
 #endif 
-                        }         
+                        }      
+#ifdef __DEBUG__                           
                     if (bOK)
                         {
                         bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
@@ -303,6 +304,7 @@ boolean			CKernel::Initialize						(	void )
                         logScreenUpdate();
 #endif 
                         }
+                       
                     if (bOK)
                         {
                         bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_OUTPUT, 
@@ -313,8 +315,9 @@ boolean			CKernel::Initialize						(	void )
                         storeLog( MY_BUFFER, MY_INDEX, "m_OutputPortHandle",       m_OutputPortHandle );
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )               DONE");
                         logScreenUpdate();
-#endif 
+#endif // __DEBUG_LOG__
                         }
+#endif // __DEBUG__
                     if (bOK)
                         {
                         bOK = setZeroCopyModeMMAL(  m_InputPortHandle, 
@@ -377,6 +380,7 @@ boolean			CKernel::Initialize						(	void )
                         logScreenUpdate();
 #endif 
                         }
+#ifdef __DEBUG__                          
                     if (bOK)
                         {
                         bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
@@ -397,8 +401,9 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __DEBUG_LOG__
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output )             DONE");
                         logScreenUpdate();
-#endif 
-                        } 
+#endif // __DEBUG_LOG__
+                        }
+#endif // __DEBUG__                         
                     }
                 if (bOK)
                     {
