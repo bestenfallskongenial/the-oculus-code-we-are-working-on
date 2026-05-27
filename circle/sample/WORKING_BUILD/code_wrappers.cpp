@@ -210,7 +210,6 @@ bool            CKernel::wrapperMMAL()
                         bOK = initEventsVCOS( m_EventMMAL, "MMAL" );
 #ifdef __DEBUG_LOG__
                         storeLog( MY_BUFFER, MY_INDEX, "m_EventMMAL",              (u32)&m_EventMMAL );
-                        storeMsg( MY_BUFFER, MY_INDEX, "m_EventMMAL raw", &m_EventMMAL, sizeof(m_EventMMAL) );
                         if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS( m_EventMMAL, MMAL )     DONE");
                         logScreenUpdate();
 #endif
