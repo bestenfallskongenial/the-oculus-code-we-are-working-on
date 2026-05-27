@@ -1,7 +1,7 @@
 #include "kernel.h"
 
-    #undef  __DEBUG__
-//  #define __DEBUG__
+//  #undef  __DEBUG__
+    #define __DEBUG__
 
     #undef  __DEBUG_LOG__
 //  #define __DEBUG_LOG__
