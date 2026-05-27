@@ -128,7 +128,7 @@ bool            CKernel::wrapperVCSM()
                     {
                     bOK = initEventsVCOS(m_EventSMEM, "SMEM");
 #ifdef __DEBUG_LOG__
-                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS(m_EventSMEM, SMEM)       DONE");
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS (m_EventSMEM, SMEM)      DONE");
                     logScreenUpdate();
 #endif
                     }
@@ -143,7 +143,7 @@ bool            CKernel::wrapperVCSM()
                                                 m_VCHIInstance,
                                                 m_ServiceHandleVCSM );
 #ifdef __DEBUG_LOG__
-                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('S','M','E','M')        DONE");
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI ('S','M','E','M')       DONE");
                     logScreenUpdate();
 #endif
                     }
@@ -209,8 +209,7 @@ bool            CKernel::wrapperMMAL()
                         {
                         bOK = initEventsVCOS( m_EventMMAL, "MMAL" );
 #ifdef __DEBUG_LOG__
-                        storeLog( MY_BUFFER, MY_INDEX, "m_EventMMAL",              (u32)&m_EventMMAL );
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS( m_EventMMAL, MMAL )     DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS ( m_EventMMAL, MMAL )    DONE");
                         logScreenUpdate();
 #endif
                         }
@@ -225,8 +224,7 @@ bool            CKernel::wrapperMMAL()
                                                     m_VCHIInstance,
                                                     m_ServiceHandleMMAL);
 #ifdef __DEBUG_LOG__
-                        storeLog( MY_BUFFER, MY_INDEX, "m_ServiceHandleMMAL",      (u32)m_ServiceHandleMMAL );
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('m','m','a','l')        DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI ('m','m','a','l')       DONE");
                         logScreenUpdate();
 #endif
                         }
@@ -234,8 +232,7 @@ bool            CKernel::wrapperMMAL()
                         {
                         bOK = createComponent( m_ComponentHandle, m_ComponentCreateTx, m_ComponentCreateRx);
 #ifdef __DEBUG_LOG__
-                        storeLog( MY_BUFFER, MY_INDEX, "m_ComponentHandle",        m_ComponentHandle );
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "createComponent()                       DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "createComponent ()                      DONE");
                         logScreenUpdate();
 #endif 
                         }
@@ -246,8 +243,7 @@ bool            CKernel::wrapperMMAL()
                                                     m_PortInfoGetTx_Input_A, 
                                                     m_PortInfoGetRx_Input_A);
 #ifdef __DEBUG_LOG__
-                        storeLog( MY_BUFFER, MY_INDEX, "m_InputPortHandle",        m_InputPortHandle );
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Input )                DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input A )             DONE");
                         logScreenUpdate();
 #endif 
                         }
@@ -258,8 +254,7 @@ bool            CKernel::wrapperMMAL()
                                                     m_PortInfoGetTx_Output_A, 
                                                     m_PortInfoGetRx_Output_A);
 #ifdef __DEBUG_LOG__
-                        storeLog( MY_BUFFER, MY_INDEX, "m_OutputPortHandle",       m_OutputPortHandle );
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )               DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output A )            DONE");
                         logScreenUpdate();
 #endif 
                         }          
@@ -275,7 +270,7 @@ bool            CKernel::wrapperMMAL()
                         bOK = setPortInfoMMAL(      m_PortInfoSetTx_Input, 
                                                     m_PortInfoSetRx_Input);
 #ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Input )                DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL ( Input )               DONE");
                         logScreenUpdate();
 #endif 
                         }
@@ -284,7 +279,7 @@ bool            CKernel::wrapperMMAL()
                         bOK = setPortInfoMMAL(      m_PortInfoSetTx_Output, 
                                                     m_PortInfoSetRx_Output);
 #ifdef __DEBUG_LOG__                                                                                                                        
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Output )               DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL ( Output )              DONE");
                         logScreenUpdate();
 #endif 
                         }
@@ -293,7 +288,7 @@ bool            CKernel::wrapperMMAL()
                         bOK = enableComponentMMAL(  m_ComponentEnableTx, 
                                                     m_ComponentEnableRx);
 #ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enableComponentMMAL()                   DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enableComponentMMAL ()                  DONE");
                         logScreenUpdate();
 #endif 
                         }      
@@ -305,8 +300,7 @@ bool            CKernel::wrapperMMAL()
                                                     m_PortInfoGetTx_Input_B, 
                                                     m_PortInfoGetRx_Input_B);
 #ifdef __DEBUG_LOG__
-                        storeLog( MY_BUFFER, MY_INDEX, "m_InputPortHandle",        m_InputPortHandle );
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Input )                DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input B )             DONE");
                         logScreenUpdate();
 #endif 
                         }
@@ -318,8 +312,7 @@ bool            CKernel::wrapperMMAL()
                                                     m_PortInfoGetTx_Output_B, 
                                                     m_PortInfoGetRx_Output_B);
 #ifdef __DEBUG_LOG__
-                        storeLog( MY_BUFFER, MY_INDEX, "m_OutputPortHandle",       m_OutputPortHandle );
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )               DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output B )            DONE");
                         logScreenUpdate();
 #endif // __DEBUG_LOG__
                         }
@@ -330,7 +323,7 @@ bool            CKernel::wrapperMMAL()
                                                     m_PortParamTx_Input, 
                                                     m_PortParamRx_Input);
 #ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Input )            DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL ( Input )           DONE");
                         logScreenUpdate();
 #endif 
                         }
@@ -340,7 +333,7 @@ bool            CKernel::wrapperMMAL()
                                                     m_PortParamTx_Output, 
                                                     m_PortParamRx_Output);
 #ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Output )           DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL ( Output )          DONE");
                         logScreenUpdate();
 #endif 
                         }
@@ -351,7 +344,7 @@ bool            CKernel::wrapperMMAL()
                                                     m_PortInfoGetTx_Input_C, 
                                                     m_PortInfoGetRx_Input_C);
 #ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input )               DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input C )             DONE");
                         logScreenUpdate();
 #endif 
                         }
@@ -362,7 +355,7 @@ bool            CKernel::wrapperMMAL()
                                                     m_PortInfoGetTx_Output_C, 
                                                     m_PortInfoGetRx_Output_C);
 #ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output )              DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output C )            DONE");
                         logScreenUpdate();
 #endif 
                         }
@@ -394,7 +387,7 @@ bool            CKernel::wrapperMMAL()
                                                     m_PortInfoGetTx_Input_D, 
                                                     m_PortInfoGetRx_Input_D);
 #ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input )               DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input D )             DONE");
                         logScreenUpdate();
 #endif 
                         }
@@ -405,7 +398,7 @@ bool            CKernel::wrapperMMAL()
                                                     m_PortInfoGetTx_Output_D, 
                                                     m_PortInfoGetRx_Output_D);
 #ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output )              DONE");
+                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output D )            DONE");
                         logScreenUpdate();
 #endif // __DEBUG_LOG__
                         }

@@ -3,12 +3,15 @@
 //  #undef  __DEBUG_LOG__
     #define __DEBUG_LOG__
 
+    #define MY_BUFFER   m_logBuffer     
+    #define MY_INDEX    m_logBufferIndex   
+
 TShutdownMode CKernel::Run(void)
 {
 
-unsigned r = 0;
-unsigned g = 127;
-unsigned b = 186;
+                unsigned r = 0;
+                unsigned g = 127;
+                unsigned b = 186;
 
                 while (/*m_resetFlag == false*/ 1)
                     {
@@ -68,51 +71,51 @@ unsigned b = 186;
                         bufferScreenDraw( "we are done here", 0, sizeof("we are done here"), 0, 20, 0xFFFFFFFF );
                         }
 
-                        WS2812_SetLED(0, r, g, b);
-                        WS2812_SetLED(1, b, r, g);
-                        WS2812_SetLED(2, g, b, r);
-                        WS2812_SetLED(3, (r*2)%255, g, b);
+                    WS2812_SetLED(0, r, g, b);
+                    WS2812_SetLED(1, b, r, g);
+                    WS2812_SetLED(2, g, b, r);
+                    WS2812_SetLED(3, (r*2)%255, g, b);
 
-                        WS2812_Update();
-                        
-                        r = (r + 1) % 256;
-                        g = (g + 2) % 256;
-                        b = (b + 3) % 256;
+                    WS2812_Update();
+                    
+                    r = (r + 1) % 256;
+                    g = (g + 2) % 256;
+                    b = (b + 3) % 256;
 
-                        buttonPing(0, SW_PIN_A);
-                        buttonPing(1, SW_PIN_B);
+                    buttonPing(0, SW_PIN_A);
+                    buttonPing(1, SW_PIN_B);
 
-                    //  logButtonStatesRuntime();
+                //  logButtonStatesRuntime();
 
-                        randomVec8(g_currentTime);
+                    randomVec8(g_currentTime);
 
-                        readAndConvertADC();
-                        adc_AdvanceIndex();
+                    readAndConvertADC();
+                    adc_AdvanceIndex();
 
-                    //  logInOutRuntime();
+                //  logInOutRuntime();
 
-        frmBufferSet               (   &m_vtx );
-        setUniPrg                  (   &m_ogl, 
-                                       &m_fsh, 
-                                       &m_tex,
-                                    //  int         gl_current_tex,
-                                        0 );
+                    frmBufferSet               (   &m_vtx );
+                    setUniPrg                  (   &m_ogl, 
+                                                    &m_fsh, 
+                                                    &m_tex,
+                                                //  int         gl_current_tex,
+                                                    0 );
 
-        setTexPrg                   (   &m_ogl, 
-                                        &m_fsh, 
-                                        &m_tex,
-                                        0,
-                                        0 );
+                    setTexPrg                   (   &m_ogl, 
+                                                    &m_fsh, 
+                                                    &m_tex,
+                                                    0,
+                                                    0 );
 
-        drawGLsPrg                  (   );
+                    drawGLsPrg                  (   );
 
-        frmRateBreak                (   false );        
+                    frmRateBreak                (   false );        
 
-        frmBufferSwap               (   &m_ogl );
+                    frmBufferSwap               (   &m_ogl );
 
-                        msDelay(25);
+                    msDelay(25);
 
-                        if ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 21, 0xFFFFFFFF );
+                    f ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 21, 0xFFFFFFFF );
                     }
 
                 return ShutdownHalt;
