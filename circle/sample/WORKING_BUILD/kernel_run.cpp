@@ -115,7 +115,7 @@ TShutdownMode CKernel::Run(void)
 
                     msDelay(25);
 
-                    f ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 21, 0xFFFFFFFF );
+                    if ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 21, 0xFFFFFFFF );
                     }
 
                 return ShutdownHalt;
