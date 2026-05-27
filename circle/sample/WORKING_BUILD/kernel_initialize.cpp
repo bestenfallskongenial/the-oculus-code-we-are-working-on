@@ -3,8 +3,8 @@
 //  #undef  __DEBUG__
     #define __DEBUG__
 
-    #undef  __DEBUG_LOG__
-//  #define __DEBUG_LOG__
+//  #undef  __DEBUG_LOG__
+    #define __DEBUG_LOG__
 
     #define MY_BUFFER   m_logBuffer     
     #define MY_INDEX    m_logBufferIndex    
@@ -106,7 +106,7 @@ boolean			CKernel::Initialize						(	void )
                     {
                     bcm_host_init();
 #ifdef __DEBUG_LOG__
-                    if (!bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "bcm_host_init()                         DONE");
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "bcm_host_init()                         DONE");
                     logScreenUpdate();
 #endif
                     }    
@@ -122,292 +122,26 @@ boolean			CKernel::Initialize						(	void )
                     logScreenUpdate();
 #endif
                     }
+
                 if (bOK)
                     {
-                    if (bOK)
-                        {
-                        bOK = initEventsVCOS(m_EventSMEM, "SMEM");
+                    bOK = wrapper_MMAL();
 #ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS(m_EventSMEM, SMEM)       DONE");
-                        logScreenUpdate();
+
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "Init MMAL / ril.video_decode            DONE");
+                    logScreenUpdate();
 #endif
-                        }
-                    if (bOK)
-                        {
-                        bOK = openServiceVCHI (     m_ServiceCreateVCSM,
-                                                    VC_SM_VER,
-                                                    VC_SM_MIN_VER,
-                                                    VCHIQ_MAKE_FOURCC('S','M','E','M'),
-                                                    callbackVCSM,
-                                                    &m_EventSMEM,
-                                                    m_VCHIInstance,
-                                                    m_ServiceHandleVCSM );
-#ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('S','M','E','M')        DONE");
-                        logScreenUpdate();
-#endif
-                        }
-                    if (bOK)
-                        {
-                        bOK = importMemoryVCSM  (   m_videoBlockBase, 
-                                                    m_videoBlockSize, 
-                                                    m_input_buffer_handle,
-                                                    m_importTxVCSM_A, 
-                                                    m_importRxVCSM_A );
-
-                        bOK = lockMemoryVCSM    (   m_input_buffer_handle,
-                                                    m_input_buffer_pointer,
-                                                    m_lockTxVCSM, 
-                                                    m_lockRxVCSM ); 
-#ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Input allocation               DONE");
-                        logScreenUpdate();
-#endif                                                                       
-                        }
-                    if (bOK)
-                        {
-                        bOK = importMemoryVCSM  (   m_frameBlockBaseA, 
-                                                    m_frameBlockSizeA, 
-                                                    m_output_buffer_handle_a,
-                                                    m_importTxVCSM_B, 
-                                                    m_importRxVCSM_B );                    
-
-                        bOK = lockMemoryVCSM    (   m_output_buffer_handle_a,
-                                                    m_output_buffer_pointer_a,
-                                                    m_lockTxVCSM, 
-                                                    m_lockRxVCSM );
-#ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output A allocation            DONE");
-                        logScreenUpdate();
-#endif                                              
-                        }
-                    if (bOK)
-                        {
-                        bOK = importMemoryVCSM  (   m_frameBlockBaseB, 
-                                                    m_frameBlockSizeB, 
-                                                    m_output_buffer_handle_b,
-                                                    m_importTxVCSM_C, 
-                                                    m_importRxVCSM_C );                    
-
-                        bOK = lockMemoryVCSM    (   m_output_buffer_handle_b,
-                                                    m_output_buffer_pointer_b,
-                                                    m_lockTxVCSM, 
-                                                    m_lockRxVCSM );   
-#ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output B allocation            DONE");
-                        logScreenUpdate();
-#endif                                                                           
-                        }
                     }
                 if (bOK)
-                    {    
-                    if (bOK)
-                        {
-                        bOK = initEventsVCOS( m_EventMMAL, "MMAL" );
+                    {
+                    bOK = wrapperVCSM();
 #ifdef __DEBUG_LOG__
-                        storeLog( MY_BUFFER, MY_INDEX, "m_EventMMAL",              (u32)&m_EventMMAL );
-                        storeMsg( MY_BUFFER, MY_INDEX, "m_EventMMAL raw", &m_EventMMAL, sizeof(m_EventMMAL) );
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS( m_EventMMAL, MMAL )     DONE");
-                        logScreenUpdate();
-#endif
-                        }
-                    if (bOK)
-                        {
-                        bOK = openServiceVCHI(      m_ServiceCreateMMAL,
-                                                    VC_MMAL_VER,
-                                                    VC_MMAL_MIN_VER,
-                                                    VCHIQ_MAKE_FOURCC('m','m','a','l'),
-                                                    callbackMMAL,
-                                                    &m_EventMMAL,
-                                                    m_VCHIInstance,
-                                                    m_ServiceHandleMMAL);
-#ifdef __DEBUG_LOG__
-                        storeLog( MY_BUFFER, MY_INDEX, "m_ServiceHandleMMAL",      (u32)m_ServiceHandleMMAL );
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI('m','m','a','l')        DONE");
-                        logScreenUpdate();
-#endif
-                        }
-                    if (bOK)
-                        {
-                        bOK = createComponent( m_ComponentHandle, m_ComponentCreateTx, m_ComponentCreateRx);
-#ifdef __DEBUG_LOG__
-                        storeLog( MY_BUFFER, MY_INDEX, "m_ComponentHandle",        m_ComponentHandle );
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "createComponent()                       DONE");
-                        logScreenUpdate();
-#endif 
-                        }
-                    if (bOK)
-                        {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
-                                                    m_InputPortHandle, 
-                                                    m_PortInfoGetTx_Input_A, 
-                                                    m_PortInfoGetRx_Input_A);
-#ifdef __DEBUG_LOG__
-                        storeLog( MY_BUFFER, MY_INDEX, "m_InputPortHandle",        m_InputPortHandle );
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Input )                DONE");
-                        logScreenUpdate();
-#endif 
-                        }
-                    if (bOK)
-                        {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_OUTPUT, 
-                                                    m_OutputPortHandle, 
-                                                    m_PortInfoGetTx_Output_A, 
-                                                    m_PortInfoGetRx_Output_A);
-#ifdef __DEBUG_LOG__
-                        storeLog( MY_BUFFER, MY_INDEX, "m_OutputPortHandle",       m_OutputPortHandle );
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )               DONE");
-                        logScreenUpdate();
-#endif 
-                        }          
-                    primePortFormatInputMMAL (      m_videoBlockSize,
-                                                    m_PortInfoGetRx_Input_A,  
-                                                    m_PortInfoSetTx_Input);
 
-                    primePortFormatOutputMMAL(      m_frameBlockSizeA,
-                                                    m_PortInfoGetRx_Output_A, 
-                                                    m_PortInfoSetTx_Output);                     
-                    if (bOK)
-                        {
-                        bOK = setPortInfoMMAL(      m_PortInfoSetTx_Input, 
-                                                    m_PortInfoSetRx_Input);
-#ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Input )                DONE");
-                        logScreenUpdate();
-#endif 
-                        }
-                    if (bOK)
-                        {
-                        bOK = setPortInfoMMAL(      m_PortInfoSetTx_Output, 
-                                                    m_PortInfoSetRx_Output);
-#ifdef __DEBUG_LOG__                                                                                                                        
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL( Output )               DONE");
-                        logScreenUpdate();
-#endif 
-                        }
-                    if (bOK)
-                        {
-                        bOK = enableComponentMMAL(  m_ComponentEnableTx, 
-                                                    m_ComponentEnableRx);
-#ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enableComponentMMAL()                   DONE");
-                        logScreenUpdate();
-#endif 
-                        }      
-#ifdef __DEBUG__                           
-                    if (bOK)
-                        {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
-                                                    m_InputPortHandle, 
-                                                    m_PortInfoGetTx_Input_B, 
-                                                    m_PortInfoGetRx_Input_B);
-#ifdef __DEBUG_LOG__
-                        storeLog( MY_BUFFER, MY_INDEX, "m_InputPortHandle",        m_InputPortHandle );
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Input )                DONE");
-                        logScreenUpdate();
-#endif 
-                        }
-                       
-                    if (bOK)
-                        {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_OUTPUT, 
-                                                    m_OutputPortHandle, 
-                                                    m_PortInfoGetTx_Output_B, 
-                                                    m_PortInfoGetRx_Output_B);
-#ifdef __DEBUG_LOG__
-                        storeLog( MY_BUFFER, MY_INDEX, "m_OutputPortHandle",       m_OutputPortHandle );
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL( Output )               DONE");
-                        logScreenUpdate();
-#endif // __DEBUG_LOG__
-                        }
-#endif // __DEBUG__
-                    if (bOK)
-                        {
-                        bOK = setZeroCopyModeMMAL(  m_InputPortHandle, 
-                                                    m_PortParamTx_Input, 
-                                                    m_PortParamRx_Input);
-#ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Input )            DONE");
-                        logScreenUpdate();
-#endif 
-                        }
-                    if (bOK)
-                        {
-                        bOK = setZeroCopyModeMMAL(  m_OutputPortHandle, 
-                                                    m_PortParamTx_Output, 
-                                                    m_PortParamRx_Output);
-#ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL( Output )           DONE");
-                        logScreenUpdate();
-#endif 
-                        }
-                    if (bOK)
-                        {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
-                                                    m_InputPortHandle, 
-                                                    m_PortInfoGetTx_Input_C, 
-                                                    m_PortInfoGetRx_Input_C);
-#ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input )               DONE");
-                        logScreenUpdate();
-#endif 
-                        }
-                    if (bOK)
-                        {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_OUTPUT, 
-                                                    m_OutputPortHandle, 
-                                                    m_PortInfoGetTx_Output_C, 
-                                                    m_PortInfoGetRx_Output_C);
-#ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output )              DONE");
-                        logScreenUpdate();
-#endif 
-                        }
-                    if (bOK)
-                        {
-                        bOK = enablePortMMAL(       m_PortInfoGetRx_Input_C, 
-                                                    m_PortActionTx_Input, 
-                                                    m_PortActionRx_Input);
-#ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enablePortMMAL ( Input )                DONE");
-                        logScreenUpdate();
-#endif 
-                        }
-                    if (bOK)
-                        {
-                        bOK = enablePortMMAL(       m_PortInfoGetRx_Output_C, 
-                                                    m_PortActionTx_Output, 
-                                                    m_PortActionRx_Output);
-#ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enablePortMMAL ( Output )               DONE");
-                        logScreenUpdate();
-#endif 
-                        }
-#ifdef __DEBUG__                          
-                    if (bOK)
-                        {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, 
-                                                    m_InputPortHandle, 
-                                                    m_PortInfoGetTx_Input_D, 
-                                                    m_PortInfoGetRx_Input_D);
-#ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input )               DONE");
-                        logScreenUpdate();
-#endif 
-                        }
-                    if (bOK)
-                        {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_OUTPUT, 
-                                                    m_OutputPortHandle, 
-                                                    m_PortInfoGetTx_Output_D, 
-                                                    m_PortInfoGetRx_Output_D);
-#ifdef __DEBUG_LOG__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output )              DONE");
-                        logScreenUpdate();
-#endif // __DEBUG_LOG__
-                        }
-#endif // __DEBUG__                         
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "Allocate/Lock VCSM Buffer               DONE");
+                    logScreenUpdate();
+#endif
                     }
+
                 if (bOK)
                     {
                     initOGL(    &m_ogl);
