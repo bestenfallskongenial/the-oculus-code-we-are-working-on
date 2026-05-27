@@ -201,7 +201,7 @@ bool            CKernel::wrapperVCSM()
                 return bOK;        
 }
 
-bool            CKernel::wrapper_MMAL()
+bool            CKernel::wrapperMMAL()
 {
                     bool bOK = TRUE;
                     

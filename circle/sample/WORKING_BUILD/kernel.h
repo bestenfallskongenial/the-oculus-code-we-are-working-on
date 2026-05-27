@@ -528,6 +528,10 @@ public:
                 void        wrapperDMAcleanUp           ();             // clean/delete the dma buffers +++
               
                 void        wrapperMEMcleanUp           ();             // clean delete the mem buffers +++      
+
+                bool        wrapperVCSM                 ();
+
+                bool        wrapperMMAL                 ();
                 
                 void        wrapper_from_sd             ();             // mount/scan/load and validate memory for sd +++
 
