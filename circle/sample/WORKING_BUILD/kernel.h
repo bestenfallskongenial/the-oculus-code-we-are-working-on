@@ -143,7 +143,7 @@ public:
                                                                         unsigned                        p_validTextureCount);
                 void        drawGLsPrg                  ();
 
-                void        frmRateBreak                (               bool*                           noTargetFPS);
+                void        frmRateBreak                (               bool                            noTargetFPS);
 
                 void        setUniOvl                   (               olg_state*                      o, 
                                                                         glsl_state*                     s, 
