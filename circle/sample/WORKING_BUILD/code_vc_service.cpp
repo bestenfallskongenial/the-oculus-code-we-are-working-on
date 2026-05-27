@@ -1,9 +1,9 @@
 #include "kernel.h"
 
 
-//  #undef  __DEBUG_MSG__
-    #define __DEBUG_MSG__
-    
+    #undef  __DEBUG_MSG__
+//  #define __DEBUG_MSG__
+
 //  #undef  __DEBUG_LOG__
     #define __DEBUG_LOG__
 

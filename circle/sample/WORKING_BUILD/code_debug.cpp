@@ -271,177 +271,7 @@ void            CKernel::logScreenUpdate            (   void )
                 m_logScreenStartIndex = drawIndex;
 }
 */
-
-
-
-
-
-
 /*
-void            CKernel::logScreenDeltaUpdate       (   void )
-{
-                boot_buffer_index_temp_new          = m_logBufferIndex;
-
-                memcpy( runtime_buffer_index_temp_new,  m_bufferLogIndex, sizeof(runtime_buffer_index_temp_new) );
-
-                boot_buffer_index_temp_delta        = boot_buffer_index_temp_new        - boot_buffer_index_temp_old;
-
-                runtime_buffer_index_temp_delta[0]  = runtime_buffer_index_temp_new[0]  - runtime_buffer_index_temp_old[0];
-                runtime_buffer_index_temp_delta[1]  = runtime_buffer_index_temp_new[1]  - runtime_buffer_index_temp_old[1];
-                runtime_buffer_index_temp_delta[2]  = runtime_buffer_index_temp_new[2]  - runtime_buffer_index_temp_old[2];
-                runtime_buffer_index_temp_delta[3]  = runtime_buffer_index_temp_new[3]  - runtime_buffer_index_temp_old[3];
-                runtime_buffer_index_temp_delta[4]  = runtime_buffer_index_temp_new[4]  - runtime_buffer_index_temp_old[4];
-                runtime_buffer_index_temp_delta[5]  = runtime_buffer_index_temp_new[5]  - runtime_buffer_index_temp_old[5];
-                runtime_buffer_index_temp_delta[6]  = runtime_buffer_index_temp_new[6]  - runtime_buffer_index_temp_old[6];
-                runtime_buffer_index_temp_delta[7]  = runtime_buffer_index_temp_new[7]  - runtime_buffer_index_temp_old[7];
-                runtime_buffer_index_temp_delta[8]  = runtime_buffer_index_temp_new[8]  - runtime_buffer_index_temp_old[8];
-                runtime_buffer_index_temp_delta[9]  = runtime_buffer_index_temp_new[9]  - runtime_buffer_index_temp_old[9];
-                runtime_buffer_index_temp_delta[10] = runtime_buffer_index_temp_new[10] - runtime_buffer_index_temp_old[10];
-                runtime_buffer_index_temp_delta[11] = runtime_buffer_index_temp_new[11] - runtime_buffer_index_temp_old[11];
-                runtime_buffer_index_temp_delta[12] = runtime_buffer_index_temp_new[12] - runtime_buffer_index_temp_old[12];
-                runtime_buffer_index_temp_delta[13] = runtime_buffer_index_temp_new[13] - runtime_buffer_index_temp_old[13];
-                runtime_buffer_index_temp_delta[14] = runtime_buffer_index_temp_new[14] - runtime_buffer_index_temp_old[14];
-                runtime_buffer_index_temp_delta[15] = runtime_buffer_index_temp_new[15] - runtime_buffer_index_temp_old[15];
-
-                boot_buffer_index_temp_old          = boot_buffer_index_temp_new;
-
-                memcpy( runtime_buffer_index_temp_old, runtime_buffer_index_temp_new, sizeof(runtime_buffer_index_temp_old) );
-}
-
-void            CKernel::logScreenUpdate            (   void )
-{
-                if (gE_PixelBuffer == 0) return;
-                if (gE_Cols == 0) return;
-                if (gE_Rows <= 1) return;
-
-                logScreenDeltaUpdate();
-
-                if (boot_buffer_index_temp_delta > 0) logScreenBufferUpdate( m_logBuffer, m_logBufferIndex );
-
-         //    if (m_bufferLog == nullptr) return;
-
-                if (runtime_buffer_index_temp_delta[0]  > 0) logScreenBufferUpdate(m_bufferLog[0],  m_bufferLogIndex[0]);
-                if (runtime_buffer_index_temp_delta[1]  > 0) logScreenBufferUpdate(m_bufferLog[1],  m_bufferLogIndex[1]);
-                if (runtime_buffer_index_temp_delta[2]  > 0) logScreenBufferUpdate(m_bufferLog[2],  m_bufferLogIndex[2]);
-                if (runtime_buffer_index_temp_delta[3]  > 0) logScreenBufferUpdate(m_bufferLog[3],  m_bufferLogIndex[3]);
-                if (runtime_buffer_index_temp_delta[4]  > 0) logScreenBufferUpdate(m_bufferLog[4],  m_bufferLogIndex[4]);
-                if (runtime_buffer_index_temp_delta[5]  > 0) logScreenBufferUpdate(m_bufferLog[5],  m_bufferLogIndex[5]);
-                if (runtime_buffer_index_temp_delta[6]  > 0) logScreenBufferUpdate(m_bufferLog[6],  m_bufferLogIndex[6]);
-                if (runtime_buffer_index_temp_delta[7]  > 0) logScreenBufferUpdate(m_bufferLog[7],  m_bufferLogIndex[7]);
-                if (runtime_buffer_index_temp_delta[8]  > 0) logScreenBufferUpdate(m_bufferLog[8],  m_bufferLogIndex[8]);
-                if (runtime_buffer_index_temp_delta[9]  > 0) logScreenBufferUpdate(m_bufferLog[9],  m_bufferLogIndex[9]);
-                if (runtime_buffer_index_temp_delta[10] > 0) logScreenBufferUpdate(m_bufferLog[10], m_bufferLogIndex[10]);
-                if (runtime_buffer_index_temp_delta[11] > 0) logScreenBufferUpdate(m_bufferLog[11], m_bufferLogIndex[11]);
-                if (runtime_buffer_index_temp_delta[12] > 0) logScreenBufferUpdate(m_bufferLog[12], m_bufferLogIndex[12]);
-                if (runtime_buffer_index_temp_delta[13] > 0) logScreenBufferUpdate(m_bufferLog[13], m_bufferLogIndex[13]);
-                if (runtime_buffer_index_temp_delta[14] > 0) logScreenBufferUpdate(m_bufferLog[14], m_bufferLogIndex[14]);
-                if (runtime_buffer_index_temp_delta[15] > 0) logScreenBufferUpdate(m_bufferLog[15], m_bufferLogIndex[15]);
-}
-
-void            CKernel::logScreenBufferUpdate      (   const char* pSourceBuffer,
-                                                        u32         sourceIndex )
-{
-        //     if (pSourceBuffer == 0) return;
-        //     if (sourceIndex == 0) return;
-
-                u32 drawIndex  = m_logScreenStartIndex;
-                u32 scanIndex  = m_logScreenStartIndex;
-
-                unsigned col   = 0;
-                unsigned row   = 0;
-
-                bufferScreenClear();
-
-                while (scanIndex < sourceIndex)
-                    {
-                    char ch = pSourceBuffer[scanIndex];
-
-                    if (ch == '\0') break;
-
-                    if (ch == '\n')
-                        {
-                        col = 0;
-                        row++;
-                        scanIndex++;
-
-                        if (row >= (gE_Rows - 1))
-                            {
-                            while (drawIndex < sourceIndex && pSourceBuffer[drawIndex] != '\n')
-                                {
-                                drawIndex++;
-                                }
-
-                            if (drawIndex < sourceIndex)
-                                {
-                                drawIndex++;
-                                }
-
-                            bufferScreenClear();
-
-                            bufferScreenDraw(
-                                                pSourceBuffer,
-                                                drawIndex,
-                                                scanIndex,
-                                                0,
-                                                0,
-                                                0xFFFFFFFF
-                                                );
-
-                            msDelay(SCROLLSPEED);
-
-                            row = gE_Rows - 2;
-                            col = 0;
-                            }
-
-                        continue;
-                        }
-
-                    col++;
-                    scanIndex++;
-
-                    if (col >= gE_Cols)
-                        {
-                        col = 0;
-                        row++;
-
-                        if (row >= (gE_Rows - 1))
-                            {
-                            drawIndex += gE_Cols;
-
-                            bufferScreenClear();
-
-                            bufferScreenDraw(
-                                                pSourceBuffer,
-                                                drawIndex,
-                                                scanIndex,
-                                                0,
-                                                0,
-                                                0xFFFFFFFF
-                                                );
-
-                            msDelay(SCROLLSPEED);
-
-                            row = gE_Rows - 2;
-                            col = 0;
-                            }
-                        }
-                    }
-
-                bufferScreenClear();
-
-                bufferScreenDraw(
-                                    pSourceBuffer,
-                                    drawIndex,
-                                    sourceIndex,
-                                    0,
-                                    0,
-                                    0xFFFFFFFF
-                                    );
-
-                m_logScreenStartIndex = drawIndex;
-}
-*/
-
 void            CKernel::logScreenDeltaUpdate       (   void )
 {
                 boot_buffer_index_temp_new          = m_logBufferIndex;
@@ -598,6 +428,174 @@ void            CKernel::logScreenBufferUpdate      (   const char* pSourceBuffe
                                     0,
                                     0xFFFFFFFF
                                     );
+
+                screenStartIndex = drawIndex;
+}
+*/
+void            CKernel::logScreenDeltaUpdate       (   void )
+{
+                boot_buffer_index_temp_new          = m_logBufferIndex;
+
+                memcpy( runtime_buffer_index_temp_new,  m_bufferLogIndex, sizeof(runtime_buffer_index_temp_new) );
+
+                boot_buffer_index_temp_delta        = boot_buffer_index_temp_new        - boot_buffer_index_temp_old;
+
+                runtime_buffer_index_temp_delta[0]  = runtime_buffer_index_temp_new[0]  - runtime_buffer_index_temp_old[0];
+                runtime_buffer_index_temp_delta[1]  = runtime_buffer_index_temp_new[1]  - runtime_buffer_index_temp_old[1];
+                runtime_buffer_index_temp_delta[2]  = runtime_buffer_index_temp_new[2]  - runtime_buffer_index_temp_old[2];
+                runtime_buffer_index_temp_delta[3]  = runtime_buffer_index_temp_new[3]  - runtime_buffer_index_temp_old[3];
+                runtime_buffer_index_temp_delta[4]  = runtime_buffer_index_temp_new[4]  - runtime_buffer_index_temp_old[4];
+                runtime_buffer_index_temp_delta[5]  = runtime_buffer_index_temp_new[5]  - runtime_buffer_index_temp_old[5];
+                runtime_buffer_index_temp_delta[6]  = runtime_buffer_index_temp_new[6]  - runtime_buffer_index_temp_old[6];
+                runtime_buffer_index_temp_delta[7]  = runtime_buffer_index_temp_new[7]  - runtime_buffer_index_temp_old[7];
+                runtime_buffer_index_temp_delta[8]  = runtime_buffer_index_temp_new[8]  - runtime_buffer_index_temp_old[8];
+                runtime_buffer_index_temp_delta[9]  = runtime_buffer_index_temp_new[9]  - runtime_buffer_index_temp_old[9];
+                runtime_buffer_index_temp_delta[10] = runtime_buffer_index_temp_new[10] - runtime_buffer_index_temp_old[10];
+                runtime_buffer_index_temp_delta[11] = runtime_buffer_index_temp_new[11] - runtime_buffer_index_temp_old[11];
+                runtime_buffer_index_temp_delta[12] = runtime_buffer_index_temp_new[12] - runtime_buffer_index_temp_old[12];
+                runtime_buffer_index_temp_delta[13] = runtime_buffer_index_temp_new[13] - runtime_buffer_index_temp_old[13];
+                runtime_buffer_index_temp_delta[14] = runtime_buffer_index_temp_new[14] - runtime_buffer_index_temp_old[14];
+                runtime_buffer_index_temp_delta[15] = runtime_buffer_index_temp_new[15] - runtime_buffer_index_temp_old[15];
+
+                boot_buffer_index_temp_old          = boot_buffer_index_temp_new;
+
+                memcpy( runtime_buffer_index_temp_old, runtime_buffer_index_temp_new, sizeof(runtime_buffer_index_temp_old) );
+}
+
+void            CKernel::logScreenUpdate            (   void )
+{
+                if (gE_PixelBuffer == 0) return;
+                if (gE_Cols == 0) return;
+                if (gE_Rows <= 1) return;
+
+                logScreenDeltaUpdate();
+
+                if (boot_buffer_index_temp_delta > 0) logScreenBufferUpdate( m_logBuffer, m_logBufferIndex, m_logScreenStartIndexBoot, m_logScreenLastRow );                   // *** CHANGE: pass last printed row as draw offset ***
+
+                if (m_bufferLog == nullptr) return;
+
+                if (runtime_buffer_index_temp_delta[0]  > 0) logScreenBufferUpdate(m_bufferLog[0],  m_bufferLogIndex[0],  m_logScreenStartIndexRuntime[0],  m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+                if (runtime_buffer_index_temp_delta[1]  > 0) logScreenBufferUpdate(m_bufferLog[1],  m_bufferLogIndex[1],  m_logScreenStartIndexRuntime[1],  m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+                if (runtime_buffer_index_temp_delta[2]  > 0) logScreenBufferUpdate(m_bufferLog[2],  m_bufferLogIndex[2],  m_logScreenStartIndexRuntime[2],  m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+                if (runtime_buffer_index_temp_delta[3]  > 0) logScreenBufferUpdate(m_bufferLog[3],  m_bufferLogIndex[3],  m_logScreenStartIndexRuntime[3],  m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+                if (runtime_buffer_index_temp_delta[4]  > 0) logScreenBufferUpdate(m_bufferLog[4],  m_bufferLogIndex[4],  m_logScreenStartIndexRuntime[4],  m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+                if (runtime_buffer_index_temp_delta[5]  > 0) logScreenBufferUpdate(m_bufferLog[5],  m_bufferLogIndex[5],  m_logScreenStartIndexRuntime[5],  m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+                if (runtime_buffer_index_temp_delta[6]  > 0) logScreenBufferUpdate(m_bufferLog[6],  m_bufferLogIndex[6],  m_logScreenStartIndexRuntime[6],  m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+                if (runtime_buffer_index_temp_delta[7]  > 0) logScreenBufferUpdate(m_bufferLog[7],  m_bufferLogIndex[7],  m_logScreenStartIndexRuntime[7],  m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+                if (runtime_buffer_index_temp_delta[8]  > 0) logScreenBufferUpdate(m_bufferLog[8],  m_bufferLogIndex[8],  m_logScreenStartIndexRuntime[8],  m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+                if (runtime_buffer_index_temp_delta[9]  > 0) logScreenBufferUpdate(m_bufferLog[9],  m_bufferLogIndex[9],  m_logScreenStartIndexRuntime[9],  m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+                if (runtime_buffer_index_temp_delta[10] > 0) logScreenBufferUpdate(m_bufferLog[10], m_bufferLogIndex[10], m_logScreenStartIndexRuntime[10], m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+                if (runtime_buffer_index_temp_delta[11] > 0) logScreenBufferUpdate(m_bufferLog[11], m_bufferLogIndex[11], m_logScreenStartIndexRuntime[11], m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+                if (runtime_buffer_index_temp_delta[12] > 0) logScreenBufferUpdate(m_bufferLog[12], m_bufferLogIndex[12], m_logScreenStartIndexRuntime[12], m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+                if (runtime_buffer_index_temp_delta[13] > 0) logScreenBufferUpdate(m_bufferLog[13], m_bufferLogIndex[13], m_logScreenStartIndexRuntime[13], m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+                if (runtime_buffer_index_temp_delta[14] > 0) logScreenBufferUpdate(m_bufferLog[14], m_bufferLogIndex[14], m_logScreenStartIndexRuntime[14], m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+                if (runtime_buffer_index_temp_delta[15] > 0) logScreenBufferUpdate(m_bufferLog[15], m_bufferLogIndex[15], m_logScreenStartIndexRuntime[15], m_logScreenLastRow); // *** CHANGE: pass last printed row as draw offset ***
+}
+
+void            CKernel::logScreenBufferUpdate      (   const char* pSourceBuffer,
+                                                        u32         sourceIndex,
+                                                        u32&        screenStartIndex,
+                                                        unsigned    startRow )                 // *** CHANGE: added draw row offset ***
+{
+                if (pSourceBuffer == 0) return;
+                if (sourceIndex == 0) return;
+
+                u32 drawIndex  = screenStartIndex;
+                u32 scanIndex  = screenStartIndex;
+
+                unsigned col   = 0;
+                unsigned row   = 0;
+                unsigned drawStartRow = startRow;                          // *** ADDITION: current draw row offset ***
+
+                while (scanIndex < sourceIndex)
+                    {
+                    char ch = pSourceBuffer[scanIndex];
+
+                    if (ch == '\0') break;
+
+                    if (ch == '\n')
+                        {
+                        col = 0;
+                        row++;
+                        scanIndex++;
+
+                        if ((drawStartRow + row) >= (gE_Rows - 1))          // *** CHANGE: include draw row offset in bottom test ***
+                            {
+                            while (drawIndex < sourceIndex && pSourceBuffer[drawIndex] != '\n')
+                                {
+                                drawIndex++;
+                                }
+
+                            if (drawIndex < sourceIndex)
+                                {
+                                drawIndex++;
+                                }
+
+                            bufferScreenClear();
+
+                            bufferScreenDraw(
+                                                pSourceBuffer,
+                                                drawIndex,
+                                                scanIndex,
+                                                0,
+                                                0,
+                                                0xFFFFFFFF
+                                                );
+
+                            msDelay(SCROLLSPEED);
+
+                            drawStartRow = 0;                               // *** ADDITION: after clear/redraw, window starts at row 0 ***
+
+                            row = gE_Rows - 2;
+                            col = 0;
+                            }
+
+                        continue;
+                        }
+
+                    col++;
+                    scanIndex++;
+
+                    if (col >= gE_Cols)
+                        {
+                        col = 0;
+                        row++;
+
+                        if ((drawStartRow + row) >= (gE_Rows - 1))          // *** CHANGE: include draw row offset in bottom test ***
+                            {
+                            drawIndex += gE_Cols;
+
+                            bufferScreenClear();
+
+                            bufferScreenDraw(
+                                                pSourceBuffer,
+                                                drawIndex,
+                                                scanIndex,
+                                                0,
+                                                0,
+                                                0xFFFFFFFF
+                                                );
+
+                            msDelay(SCROLLSPEED);
+
+                            drawStartRow = 0;                               // *** ADDITION: after clear/redraw, window starts at row 0 ***
+
+                            row = gE_Rows - 2;
+                            col = 0;
+                            }
+                        }
+                    }
+
+                bufferScreenDraw(
+                                    pSourceBuffer,
+                                    drawIndex,
+                                    sourceIndex,
+                                    0,
+                                    drawStartRow,                           // *** CHANGE: append at last printed row instead of row 0 ***
+                                    0xFFFFFFFF
+                                    );
+
+                m_logScreenLastRow = drawStartRow + row;                    // *** ADDITION: remember last printed row for next source ***
 
                 screenStartIndex = drawIndex;
 }

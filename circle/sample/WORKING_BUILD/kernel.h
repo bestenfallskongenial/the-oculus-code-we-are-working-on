@@ -576,11 +576,15 @@ void            logScreenUpdate                     ( void );
 /*
 void            logScreenBufferUpdate               ( const char* pSourceBuffer,
                                                       u32         sourceIndex );
-*/
-void            logScreenBufferUpdate      (   const char* pSourceBuffer,
-                                                u32         sourceIndex,
-                                                u32&        screenStartIndex );
 
+void            logScreenBufferUpdate           (   const       char*           pSourceBuffer,
+                                                                u32             sourceIndex,
+                                                                u32&            screenStartIndex );
+*/
+                logScreenBufferUpdate           (   const       char*           pSourceBuffer,
+                                                                u32             sourceIndex,
+                                                                u32&            screenStartIndex,
+                                                                unsigned        startRow ); 
                                                 
 // debug code section 
                 void        debug(); // +++
