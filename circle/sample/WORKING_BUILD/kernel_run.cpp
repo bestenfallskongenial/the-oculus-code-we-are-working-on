@@ -91,7 +91,26 @@ unsigned b = 186;
 
                     //  logInOutRuntime();
 
-                        msDelay(25);
+        frmBufferSet               (   &m_vtx );
+        setUniPrg                  (   &m_ogl, 
+                                       &m_fsh, 
+                                       &m_tex,
+                                    /*  int         gl_current_tex, */
+                                        0 );
+
+        setTexPrg                   (   &m_ogl, 
+                                        &m_fsh, 
+                                        &m_tex,
+                                        0,
+                                        0 );
+
+        drawGLsPrg                  (   );
+
+        frmRateBreak                (   true );        
+
+        frmBufferSwap               (   &m_ogl );
+
+                    //  msDelay(25);
 
                         if ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 21, 0xFFFFFFFF );
                     }
