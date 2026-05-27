@@ -120,7 +120,7 @@ bool            CKernel::sendAndWaitVCHI            (   VCHI_SERVICE_HANDLE_T   
                                                         size_t                  max_reply_len, 
                                                         size_t*                 actual_reply_len )
 {
-#ifdef __DEBUG_LOG__
+#ifdef __DEBUG_MSG__
             //  nextline( MY_BUFFER, MY_INDEX );
                 storeLog( MY_BUFFER, MY_INDEX, "TX MSG", (u32)msg_size);
                 storeMsg( MY_BUFFER, MY_INDEX, "Raw TX", msg, msg_size);
@@ -134,7 +134,7 @@ bool            CKernel::sendAndWaitVCHI            (   VCHI_SERVICE_HANDLE_T   
                 do {
                     if (vchi_msg_dequeue(ServiceHandle, rx_msg, max_reply_len, &ReplyLength, VCHI_FLAGS_NONE) == 0)
                         {
-#ifdef __DEBUG_LOG__
+#ifdef __DEBUG_MSG__
                         storeLog( MY_BUFFER, MY_INDEX, "RX MSG", ReplyLength);
                         storeMsg( MY_BUFFER, MY_INDEX, "Raw RX", rx_msg, ReplyLength);
 #endif 
