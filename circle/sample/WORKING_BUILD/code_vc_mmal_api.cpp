@@ -62,7 +62,7 @@ bool            CKernel::framePollerMMAL            (   u32 frame_offset, u32 fr
 #ifdef __DEBUG_LOG__
                 if (!f_firstFrameQueued)
                     {
-                    if (!queueInputBufferMMAL(m_BufferFromHostTx_Input, frame_offset, frame_length))
+                    if (!queueInputBufferMMAL(*m_BufferFromHostTx_Input, frame_offset, frame_length))
                         {
                     //  nextline( MY_BUFFER, MY_INDEX );
                         storeLog( MY_BUFFER, MY_INDEX, "very first frame queue ERROR!", EMPTYLOG, "Frame offset", frame_offset, "length", frame_length);
@@ -71,8 +71,8 @@ bool            CKernel::framePollerMMAL            (   u32 frame_offset, u32 fr
                 //  nextline( MY_BUFFER, MY_INDEX );
                     storeLog( MY_BUFFER, MY_INDEX, "very first frame queue SUCCESS", EMPTYLOG, "Frame offset", frame_offset, "length", frame_length);
 
-                    getPortInfoMMAL(MMAL_PORT_TYPE_INPUT,  m_InputPortHandle,  m_PortInfoGetTx_Input_D, m_PortInfoGetRx_Input_D);
-                    getPortInfoMMAL(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, m_PortInfoGetTx_Output_D, m_PortInfoGetRx_Output_D);
+                    getPortInfoMMAL(MMAL_PORT_TYPE_INPUT,  m_InputPortHandle,  *m_PortInfoGetTx_Input_D, *m_PortInfoGetRx_Input_D);
+                    getPortInfoMMAL(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, *m_PortInfoGetTx_Output_D, *m_PortInfoGetRx_Output_D);
 
                     f_firstFrameQueued = true;
                     return true;
@@ -106,17 +106,17 @@ bool            CKernel::framePollerMMAL            (   u32 frame_offset, u32 fr
 
                                     if (m_CurrentHandle == m_output_buffer_handle_a) // Ping-pong: requeue the other output buffer
                                         {
-                                        if (!queueOutputBufferMMAL(m_BufferFromHostTx_Output, m_output_buffer_handle_b, m_frameBlockSizeB )) // m_OutputBufferSize
+                                        if (!queueOutputBufferMMAL(*m_BufferFromHostTx_Output, m_output_buffer_handle_b, m_frameBlockSizeB )) // m_OutputBufferSize
                                             return false;
                                         }
                                     if (m_CurrentHandle == m_output_buffer_handle_b) 
                                         {
-                                        if (!queueOutputBufferMMAL(m_BufferFromHostTx_Output, m_output_buffer_handle_a, m_frameBlockSizeA )) // m_OutputBufferSize
+                                        if (!queueOutputBufferMMAL(*m_BufferFromHostTx_Output, m_output_buffer_handle_a, m_frameBlockSizeA )) // m_OutputBufferSize
                                             return false;
                                         }
                                     if (!bufferReadyMMAL(m_CurrentHandle))
                                         return false;
-                                    if (!queueInputBufferMMAL(m_BufferFromHostTx_Input, frame_offset, frame_length))
+                                    if (!queueInputBufferMMAL(*m_BufferFromHostTx_Input, frame_offset, frame_length))
                                         return false;
 #ifdef __DEBUG_LOG__   
                                     message = "MMAL_MSG_STATUS_SUCCESS      - All is Fine";
