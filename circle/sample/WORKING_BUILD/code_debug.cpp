@@ -618,20 +618,30 @@ bool            CKernel::memoryDebugCheckpoint      (   const char* p_Label,
                 size_t any   = pMem->GetHeapFreeSpace(HEAP_ANY);
 
 #ifdef __DEBUG_LOG__
-                storeLog(   MY_BUFFER,
-                            MY_INDEX,
-                            "MEM",
-                            EMPTYLOG,
-                            p_Label,
-                            EMPTYLOG,
-                            "TOTAL",
-                            (u32)total,
-                            "LOW",
-                            (u32)low,
-                            "HIGH",
-                            (u32)high,
-                            "ANY",
-                            (u32)any );
+```cpp
+storeLog(   MY_BUFFER,
+            MY_INDEX,
+            "MEM",
+            EMPTYLOG,
+            p_Label,
+            EMPTYLOG,
+            "TOTAL",
+            (u32)total,
+            "LOW",
+            (u32)low );
+
+storeLog(   MY_BUFFER,
+            MY_INDEX,
+            "MEM",
+            EMPTYLOG,
+            p_Label,
+            EMPTYLOG,
+            "HIGH",
+            (u32)high,
+            "ANY",
+            (u32)any );
+```
+
 #endif
 
 #ifdef HEAP_DEBUG
