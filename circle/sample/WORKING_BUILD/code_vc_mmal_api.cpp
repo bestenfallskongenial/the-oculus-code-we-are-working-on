@@ -86,15 +86,15 @@ bool            CKernel::framePollerMMAL            (   u32 frame_offset, u32 fr
 
                 while (vchi_msg_dequeue(m_ServiceHandleMMAL, &m_BufferFromHostTx_Output, sizeof(m_BufferFromHostTx_Output), &msg_len, VCHI_FLAGS_NONE) == 0)
                     {
-                    switch (m_BufferFromHostTx_Output.hdr.type) // FIRST AXIS: message type (semantic meaning)
+                    switch (m_BufferFromHostTx_Output->hdr.type) // FIRST AXIS: message type (semantic meaning)
                         {
                         case MMAL_MSG_TYPE_BUFFER_TO_HOST:
                             {
-                            switch (m_BufferFromHostTx_Output.hdr.status)   // SECOND AXIS: status (outcome)
+                            switch (m_BufferFromHostTx_Output->hdr.status)   // SECOND AXIS: status (outcome)
                                 {
                                 case MMAL_MSG_STATUS_SUCCESS:
                                     {
-                                    u32 m_CurrentHandle = m_BufferFromHostTx_Output.msg.buffer_header.data;  // Payload layout reused: buffer_from_host
+                                    u32 m_CurrentHandle = m_BufferFromHostTx_Output->msg.buffer_header.data;  // Payload layout reused: buffer_from_host
 #ifdef __DEBUG_LOG__   
                                 //  nextline( MY_BUFFER, MY_INDEX );
                                     storeLog( MY_BUFFER, MY_INDEX, "frame offset", frame_offset, "length", frame_length, "status", m_BufferFromHostTx_Output.hdr.status, "handle", m_CurrentHandle);
