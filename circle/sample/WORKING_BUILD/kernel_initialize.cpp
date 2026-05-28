@@ -98,7 +98,7 @@ boolean			CKernel::Initialize						(	void )
 #endif
                     }
 
-                memoryDebugCheckpoint("AFTER MEM ALLOC", true);
+                memoryDebugCheckpoint("AFTER MEM ALLOC / BEFORE VCHIQ INIT", true);
 
                 if (bOK)
                     {
@@ -126,7 +126,7 @@ boolean			CKernel::Initialize						(	void )
 #endif
                     }
 
-
+                memoryDebugCheckpoint("BEFORE STRUCT INIT", true);
                 if (bOK)
                     {
                     bOK = wrapperInitVCSMstruct();

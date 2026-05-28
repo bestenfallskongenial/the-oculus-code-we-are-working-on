@@ -225,6 +225,29 @@ int CLogger::FormatV(char* buf, size_t size, const char* fmt, va_list args)
                             FormatChar(buf, size, pos, (char)va_arg(args, int));
                             break;
 
+                        case 'l':
+                            fmt++;
+
+                            if (*fmt == 'u')
+                                {
+                                FormatULongDec(buf, size, pos, va_arg(args, unsigned long));
+                                }
+                            else
+                                {
+                                FormatChar(buf, size, pos, '%');
+                                FormatChar(buf, size, pos, 'l');
+
+                                if (*fmt != '\0')
+                                    {
+                                    FormatChar(buf, size, pos, *fmt);
+                                    }
+                                else
+                                    {
+                                    fmt--;
+                                    }
+                                }
+                            break;
+                                                        
                         case '\0':
                             fmt--;
                             break;
