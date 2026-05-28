@@ -157,7 +157,7 @@ bool            CKernel::framePollerMMAL            (   u32 frame_offset, u32 fr
                             message = "UNEXPECTED MESSAGE";
 #ifdef __DEBUG_LOG__    
                         //  nextline( MY_BUFFER, MY_INDEX );
-                            storeLog( MY_BUFFER, MY_INDEX, message,  EMPTYLOG, "Frame offset", frame_offset, "Type",  m_BufferFromHostTx_Output->hdr.type, "Status", m_BufferFromHostTx_Output.hdr.status);
+                            storeLog( MY_BUFFER, MY_INDEX, message,  EMPTYLOG, "Frame offset", frame_offset, "Type",  m_BufferFromHostTx_Output->hdr.type, "Status", m_BufferFromHostTx_Output->hdr.status);
                             storeMsg( MY_BUFFER, MY_INDEX, "Poller ERROR (UNEXPECTED MESSAGE)", &m_BufferFromHostTx_Output, msg_len);
 #endif 
                             break;
