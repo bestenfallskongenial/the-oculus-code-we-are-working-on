@@ -27,7 +27,7 @@
 #include <circle/types.h>
 #include <assert.h>
 
-//#define HEAP_DEBUG
+#define HEAP_DEBUG
 
 ASSERT_STATIC (DATA_CACHE_LINE_LENGTH_MAX >= 16);
 

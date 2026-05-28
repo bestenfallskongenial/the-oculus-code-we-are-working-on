@@ -26,6 +26,8 @@
 	#include <circle/translationtable64.h>
 #endif
 
+#define HEAP_DEBUG				// MY CHANGE 27.05.2026
+
 #include <circle/heapallocator.h>
 #include <circle/pageallocator.h>
 #include <circle/sysconfig.h>
