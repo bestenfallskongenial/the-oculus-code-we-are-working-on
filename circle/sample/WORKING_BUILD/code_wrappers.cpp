@@ -797,7 +797,7 @@ bool            CKernel::wrapperInitMMALstruct      (   )
 
                 if (bOK) { m_PortInfoGetRx_Output_D     = new MMAL_Port_Info_Get_Reply();       
                     bOK = (m_PortInfoGetRx_Output_D    != nullptr); }
-    */
+
                 return bOK;
                 
 }
