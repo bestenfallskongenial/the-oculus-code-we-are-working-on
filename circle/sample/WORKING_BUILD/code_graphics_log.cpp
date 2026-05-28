@@ -70,7 +70,7 @@ bool            CKernel::programLog                 (   GLint       program,
                     glGetActiveAttrib(program, i, sizeof(aname), &length, &size, &type, aname);
                     GLint location = glGetAttribLocation(program, aname);
 #ifdef __DEBUG_LOG__ 
-                    storeLog(   MY_BUFFER, MY_INDEX, "Attribute name", EMPTYLOG );
+                    storeLog(   MY_BUFFER, MY_INDEX, "Attribute name", EMPTYLOG, aname );
                     storeLog(   MY_BUFFER, MY_INDEX, "Attribute idx", (u32)i, "size", (u32)size, "type", (u32)type, "loc", (u32)location );
 #endif                     
                     }

@@ -13,6 +13,8 @@ boolean			CKernel::Initialize						(	void )
 {
                 bool bOK = TRUE;
 
+                memoryDebugCheckpoint("BOOT START", true);
+
                 if (bOK)
                     {
                     bOK = m_Interrupt.Initialize();
@@ -84,6 +86,9 @@ boolean			CKernel::Initialize						(	void )
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "InitDMA Buffer                          DONE");
 #endif
                     }
+
+                memoryDebugCheckpoint("AFTER DMA ALLOC", true);    
+
                 if (bOK)
                     {
                     bOK =   wrapperInitMEM();
@@ -92,6 +97,9 @@ boolean			CKernel::Initialize						(	void )
 
 #endif
                     }
+
+                memoryDebugCheckpoint("AFTER MEM ALLOC", true);
+
                 if (bOK)
                     {
                     bOK =   m_VCHIQ.Initialize();
@@ -126,6 +134,9 @@ boolean			CKernel::Initialize						(	void )
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "wrapperInitVCSMstruct()                 DONE");
 #endif
                     }
+
+                memoryDebugCheckpoint("AFTER VCSM STRUCT INIT", true);    
+
                 if (bOK)
                     {
                     bOK = wrapperInitMMALstruct();
@@ -134,7 +145,7 @@ boolean			CKernel::Initialize						(	void )
 #endif
                     }
 
-
+                memoryDebugCheckpoint("AFTER MMAL STRUCT INIT", true);
                 
                 if (bOK)
                     {
@@ -202,6 +213,9 @@ boolean			CKernel::Initialize						(	void )
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "GPIO_SetAlt(SW_PIN_B, 0, GPIO_PULL_UP) DONE");
 #endif
                     }
+
+                memoryDebugCheckpoint("AFTER CKERNEL INIT", true);
+
                 return bOK;
 }
 

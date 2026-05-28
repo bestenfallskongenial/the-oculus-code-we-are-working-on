@@ -597,6 +597,9 @@ void            logScreenBufferUpdate           (   const       char*           
 
                 void        logInOutRuntime(void);      // +++
 
+                bool            memoryDebugCheckpoint              (   const char* p_Label,
+                                                        bool        p_DumpStatus = false );                
+
                 
 #include "defs_member.h" // <- should go to the bottom, right?    
 

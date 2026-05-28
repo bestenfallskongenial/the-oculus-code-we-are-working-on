@@ -601,3 +601,45 @@ void            CKernel::logScreenBufferUpdate      (   const char* pSourceBuffe
                 screenStartIndex = drawIndex;
 }
 */
+
+bool            CKernel::memoryDebugCheckpoint      (   const char* p_Label,
+                                                        bool        p_DumpStatus )
+{
+                CMemorySystem* pMem = CMemorySystem::Get();
+
+                if (pMem == nullptr)
+                    {
+                    return FALSE;
+                    }
+
+                size_t total = pMem->GetMemSize();
+                size_t low   = pMem->GetHeapFreeSpace(HEAP_LOW);
+                size_t high  = pMem->GetHeapFreeSpace(HEAP_HIGH);
+                size_t any   = pMem->GetHeapFreeSpace(HEAP_ANY);
+
+#ifdef __DEBUG_LOG__
+                storeLog(   MY_BUFFER,
+                            MY_INDEX,
+                            "MEM",
+                            EMPTYLOG,
+                            p_Label,
+                            EMPTYLOG,
+                            "TOTAL",
+                            (u32)total,
+                            "LOW",
+                            (u32)low,
+                            "HIGH",
+                            (u32)high,
+                            "ANY",
+                            (u32)any );
+#endif
+
+#ifdef HEAP_DEBUG
+                if (p_DumpStatus)
+                    {
+                    CMemorySystem::DumpStatus();
+                    }
+#endif
+
+                return TRUE;
+}
