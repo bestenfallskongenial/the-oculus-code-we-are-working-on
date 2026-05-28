@@ -87,6 +87,8 @@ void            CKernel::storeLog                   (   char*       p_buffer,
                     }
                 p_buffer[index++] = '\n';
                 p_buffer[index] = '\0';
+
+                logScreenUpdate();
 }
 
 void            CKernel::storeMsg                   (   char*       p_buffer,
@@ -122,6 +124,8 @@ void            CKernel::storeMsg                   (   char*       p_buffer,
                 p_buffer[index++]           = '\n';
                 p_buffer[index++]           = '\n';
                 p_buffer[index]             = '\0';
+
+                logScreenUpdate();
 }
 
 void            CKernel::nextline                   (   char*       p_buffer,
@@ -129,6 +133,8 @@ void            CKernel::nextline                   (   char*       p_buffer,
 {
                 p_buffer[index++]           = '\n';
                 p_buffer[index]             = '\0';
+
+                logScreenUpdate();
 }
 
 bool            CKernel::startupScreen          (   void )

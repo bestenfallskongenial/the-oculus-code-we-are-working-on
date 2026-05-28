@@ -93,7 +93,7 @@ TShutdownMode CKernel::Run(void)
                     adc_AdvanceIndex();
 
                 //  logInOutRuntime();
-
+/*
                     frmBufferSet               (   &m_vtx );
                     setUniPrg                  (   &m_ogl, 
                                                     &m_fsh, 
@@ -112,7 +112,7 @@ TShutdownMode CKernel::Run(void)
                     frmRateBreak                (   false );        
 
                     frmBufferSwap               (   &m_ogl );
-
+*/
                     msDelay(25);
 
                     if ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 21, 0xFFFFFFFF );

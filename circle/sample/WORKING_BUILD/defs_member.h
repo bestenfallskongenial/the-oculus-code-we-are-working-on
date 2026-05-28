@@ -361,81 +361,80 @@ u32             m_screenLogBufferIndex = 0;
 u32             m_logScreenStartIndex = 0;
 */ 
 
-
-
 // VCSM predefined messages as public member
-                SERVICE_CREATION_T               m_ServiceCreateVCSM;
+public:
+                SERVICE_CREATION_T*               m_ServiceCreateVCSM = nullptr;
 
-                VCSM_Import_MEM_Msg              m_importTxVCSM_A;
-                VCSM_Import_MEM_Reply            m_importRxVCSM_A;
+                VCSM_Import_MEM_Msg*             m_importTxVCSM_A = nullptr;
+                VCSM_Import_MEM_Reply*           m_importRxVCSM_A = nullptr;
 
-                VCSM_Import_MEM_Msg              m_importTxVCSM_B;
-                VCSM_Import_MEM_Reply            m_importRxVCSM_B;
+                VCSM_Import_MEM_Msg*             m_importTxVCSM_B = nullptr;
+                VCSM_Import_MEM_Reply*           m_importRxVCSM_B = nullptr;
 
-                VCSM_Import_MEM_Msg              m_importTxVCSM_C;
-                VCSM_Import_MEM_Reply            m_importRxVCSM_C;
+                VCSM_Import_MEM_Msg*             m_importTxVCSM_C = nullptr;
+                VCSM_Import_MEM_Reply*           m_importRxVCSM_C = nullptr;
 
-                VCSM_Lock_MEM_Msg                m_lockTxVCSM;
-                VCSM_Lock_MEM_Reply              m_lockRxVCSM;
+                VCSM_Lock_MEM_Msg*               m_lockTxVCSM = nullptr;
+                VCSM_Lock_MEM_Reply*             m_lockRxVCSM = nullptr;
 
-                VCSM_Free_MEM_Msg                m_freeTxVCSM;
-                VCSM_Free_MEM_Reply              m_freeRxVCSM;
+                VCSM_Free_MEM_Msg*               m_freeTxVCSM = nullptr;
+                VCSM_Free_MEM_Reply*             m_freeRxVCSM = nullptr;
 // MMAL predefined messages as public member
-                SERVICE_CREATION_T              m_ServiceCreateMMAL;
+                SERVICE_CREATION_T*             m_ServiceCreateMMAL = nullptr;
 
-                MMAL_Component_Create_Msg        m_ComponentCreateTx = {};
-                MMAL_Component_Create_Reply      m_ComponentCreateRx = {};
+                MMAL_Component_Create_Msg*       m_ComponentCreateTx = nullptr;
+                MMAL_Component_Create_Reply*     m_ComponentCreateRx = nullptr;
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_A = {};
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_A = {};
+                MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Input_A = nullptr;
+                MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Input_A = nullptr;
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_A = {}; 
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_A = {};
+                MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Output_A = nullptr; 
+                MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Output_A = nullptr;
 
-                MMAL_Port_Info_Set_Msg           m_PortInfoSetTx_Input = {};
-                MMAL_Port_Info_Set_Msg           m_PortInfoSetTx_Output = {};
+                MMAL_Port_Info_Set_Msg*          m_PortInfoSetTx_Input = nullptr;
+                MMAL_Port_Info_Set_Msg*          m_PortInfoSetTx_Output = nullptr;
 
-                MMAL_Port_Info_Set_Reply         m_PortInfoSetRx_Input = {};
-                MMAL_Port_Info_Set_Reply         m_PortInfoSetRx_Output = {};
+                MMAL_Port_Info_Set_Reply*        m_PortInfoSetRx_Input = nullptr;
+                MMAL_Port_Info_Set_Reply*        m_PortInfoSetRx_Output = nullptr;
 
-                MMAL_Component_Enable_Msg        m_ComponentEnableTx = {};
-                MMAL_Component_Enable_Reply      m_ComponentEnableRx = {};
+                MMAL_Component_Enable_Msg*       m_ComponentEnableTx = nullptr;
+                MMAL_Component_Enable_Reply*     m_ComponentEnableRx = nullptr;
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_B = {};
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_B = {};
+                MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Input_B = nullptr;
+                MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Input_B = nullptr;
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_B = {};
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_B = {};
+                MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Output_B = nullptr;
+                MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Output_B = nullptr;
 
-                MMAL_Port_Parameter_Set_Msg      m_PortParamTx_Input = {};
-                MMAL_Port_Parameter_Set_Reply    m_PortParamRx_Input = {};
+                MMAL_Port_Parameter_Set_Msg*     m_PortParamTx_Input = nullptr;
+                MMAL_Port_Parameter_Set_Reply*   m_PortParamRx_Input = nullptr;
 
-                MMAL_Port_Parameter_Set_Msg      m_PortParamTx_Output = {};
-                MMAL_Port_Parameter_Set_Reply    m_PortParamRx_Output = {};
+                MMAL_Port_Parameter_Set_Msg*     m_PortParamTx_Output = nullptr;
+                MMAL_Port_Parameter_Set_Reply*   m_PortParamRx_Output = nullptr;
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_C = {};
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_C = {};
+                MMAL_Port_Info_Get_Msg*           m_PortInfoGetTx_Input_C = nullptr;
+                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_C = nullptr;
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_C = {};
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_C = {};
+                MMAL_Port_Info_Get_Msg*           m_PortInfoGetTx_Output_C = nullptr;
+                MMAL_Port_Info_Get_Reply*         m_PortInfoGetRx_Output_C = nullptr;
 
-                MMAL_Port_Action_Msg             m_PortActionTx_Input = {};
-                MMAL_Port_Action_Reply_Msg       m_PortActionRx_Input = {};
+                MMAL_Port_Action_Msg*            m_PortActionTx_Input = nullptr;
+                MMAL_Port_Action_Reply_Msg*      m_PortActionRx_Input = nullptr;
 
-                MMAL_Port_Action_Msg             m_PortActionTx_Output = {};
-                MMAL_Port_Action_Reply_Msg       m_PortActionRx_Output = {};
+                MMAL_Port_Action_Msg*            m_PortActionTx_Output = nullptr;
+                MMAL_Port_Action_Reply_Msg*      m_PortActionRx_Output = nullptr;
 
-                MMAL_Buffer_From_Host_Msg        m_BufferFromHostTx_Input = {};
-                MMAL_Buffer_From_Host_Msg        m_BufferFromHostRx_Input = {};
+                MMAL_Buffer_From_Host_Msg*       m_BufferFromHostTx_Input = nullptr;
+                MMAL_Buffer_From_Host_Msg*       m_BufferFromHostRx_Input = nullptr;
 
-                MMAL_Buffer_From_Host_Msg        m_BufferFromHostTx_Output = {};
-                MMAL_Buffer_From_Host_Msg        m_BufferFromHostRx_Output = {};
+                MMAL_Buffer_From_Host_Msg*       m_BufferFromHostTx_Output = nullptr;
+                MMAL_Buffer_From_Host_Msg*       m_BufferFromHostRx_Output = nullptr;
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Input_D = {};
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_D = {};
+                MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Input_D = nullptr;
+                MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Input_D = nullptr;
 
-                MMAL_Port_Info_Get_Msg           m_PortInfoGetTx_Output_D = {};
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Output_D = {};
+                MMAL_Port_Info_Get_Msg*          m_PortInfoGetTx_Output_D = nullptr;
+                MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Output_D = nullptr;
 
                 bool                            f_firstFrameQueued = false;
 
