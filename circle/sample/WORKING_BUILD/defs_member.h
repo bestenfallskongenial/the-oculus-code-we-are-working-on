@@ -413,7 +413,7 @@ public:
                 MMAL_Port_Parameter_Set_Reply*   m_PortParamRx_Output = nullptr;
 
                 MMAL_Port_Info_Get_Msg*           m_PortInfoGetTx_Input_C = nullptr;
-                MMAL_Port_Info_Get_Reply         m_PortInfoGetRx_Input_C = nullptr;
+                MMAL_Port_Info_Get_Reply*        m_PortInfoGetRx_Input_C = nullptr;
 
                 MMAL_Port_Info_Get_Msg*           m_PortInfoGetTx_Output_C = nullptr;
                 MMAL_Port_Info_Get_Reply*         m_PortInfoGetRx_Output_C = nullptr;
