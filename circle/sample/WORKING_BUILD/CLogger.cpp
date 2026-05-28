@@ -151,6 +151,29 @@ void CLogger::FormatUIntHex(char* buf, size_t size, size_t& pos, unsigned value,
                     }
 }
 
+void CLogger::FormatULongDec(char* buf, size_t size, size_t& pos, unsigned long value)
+{
+                char tmp[20];
+                unsigned n = 0;
+
+                if (value == 0)
+                    {
+                    FormatChar(buf, size, pos, '0');
+                    return;
+                    }
+
+                while (value != 0 && n < sizeof(tmp))
+                    {
+                    tmp[n++] = '0' + (value % 10);
+                    value /= 10;
+                    }
+
+                while (n > 0)
+                    {
+                    FormatChar(buf, size, pos, tmp[--n]);
+                    }
+}
+
 int CLogger::FormatV(char* buf, size_t size, const char* fmt, va_list args)
 {
                 size_t pos = 0;

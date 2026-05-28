@@ -35,9 +35,9 @@ public:
 
                 ~CLogger                (   void );
 
-                boolean Initialize      (   CDevice*    pTarget );
+                boolean Initialize      (   CDevice*        pTarget );
 
-                void    SetNewTarget    (   CDevice*    pTarget );
+                void    SetNewTarget    (   CDevice*        pTarget );
 
                 static  CLogger* Get    (   void );
 
@@ -62,41 +62,45 @@ public:
                                             void*           pContext );
 
 private:
-                void    WriteRaw        (   const char* pText,
-                                            unsigned    nLength );
+                void    WriteRaw        (   const char*     pText,
+                                            unsigned        nLength );
 
-                void    WriteCString    (   const char* pText );
+                void    WriteCString    (   const char*     pText );
 
-                int     FormatV         (   char*       buf,
-                                            size_t      size,
-                                            const char* fmt,
-                                            va_list     args );
+                int     FormatV         (   char*           buf,
+                                            size_t          size,
+                                            const char*     fmt,
+                                            va_list         args );
 
-                void    FormatChar      (   char*       buf,
-                                            size_t      size,
-                                            size_t&     pos,
-                                            char        c );
+                void    FormatChar      (   char*           buf,
+                                            size_t          size,
+                                            size_t&         pos,
+                                            char            c );
 
-                void    FormatString    (   char*       buf,
-                                            size_t      size,
-                                            size_t&     pos,
-                                            const char* s );
+                void    FormatString    (   char*           buf,
+                                            size_t          size,
+                                            size_t&         pos,
+                                            const char*     s );
 
-                void    FormatUIntDec   (   char*       buf,
-                                            size_t      size,
-                                            size_t&     pos,
-                                            unsigned    value );
+                void    FormatUIntDec   (   char*           buf,
+                                            size_t          size,
+                                            size_t&         pos,
+                                            unsigned        value );
 
-                void    FormatIntDec    (   char*       buf,
-                                            size_t      size,
-                                            size_t&     pos,
-                                            int         value );
+                void    FormatIntDec    (   char*           buf,
+                                            size_t          size,
+                                            size_t&         pos,
+                                            int             value );
 
-                void    FormatUIntHex   (   char*       buf,
-                                            size_t      size,
-                                            size_t&     pos,
-                                            unsigned    value,
-                                            boolean     upper );
+                void    FormatUIntHex   (   char*           buf,
+                                            size_t          size,
+                                            size_t&         pos,
+                                            unsigned        value,
+                                            boolean         upper );
+                void    FormatULongDec  (   char*           buf, 
+                                            size_t          size, 
+                                            size_t&         pos, 
+                                            unsigned long   value);
 
 private:
                 static CLogger*         s_pThis;
