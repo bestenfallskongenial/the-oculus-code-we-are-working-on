@@ -97,7 +97,7 @@ bool            CKernel::framePollerMMAL            (   u32 frame_offset, u32 fr
                                     u32 m_CurrentHandle = m_BufferFromHostTx_Output->msg.buffer_header.data;  // Payload layout reused: buffer_from_host
 #ifdef __DEBUG_LOG__   
                                 //  nextline( MY_BUFFER, MY_INDEX );
-                                    storeLog( MY_BUFFER, MY_INDEX, "frame offset", frame_offset, "length", frame_length, "status", m_BufferFromHostTx_Output.hdr.status, "handle", m_CurrentHandle);
+                                    storeLog( MY_BUFFER, MY_INDEX, "frame offset", frame_offset, "length", frame_length, "status", m_BufferFromHostTx_Output->hdr.status, "handle", m_CurrentHandle);
 #endif 
                                     if (m_CurrentHandle != m_output_buffer_handle_a && m_CurrentHandle != m_output_buffer_handle_b)
                                         {
@@ -157,7 +157,7 @@ bool            CKernel::framePollerMMAL            (   u32 frame_offset, u32 fr
                             message = "UNEXPECTED MESSAGE";
 #ifdef __DEBUG_LOG__    
                         //  nextline( MY_BUFFER, MY_INDEX );
-                            storeLog( MY_BUFFER, MY_INDEX, message,  EMPTYLOG, "Frame offset", frame_offset, "Type",  m_BufferFromHostTx_Output.hdr.type, "Status", m_BufferFromHostTx_Output.hdr.status);
+                            storeLog( MY_BUFFER, MY_INDEX, message,  EMPTYLOG, "Frame offset", frame_offset, "Type",  m_BufferFromHostTx_Output->hdr.type, "Status", m_BufferFromHostTx_Output.hdr.status);
                             storeMsg( MY_BUFFER, MY_INDEX, "Poller ERROR (UNEXPECTED MESSAGE)", &m_BufferFromHostTx_Output, msg_len);
 #endif 
                             break;
