@@ -300,47 +300,47 @@ void            CKernel::wrapper_from_sd            (   )
                                                 g_SufVsh,                           // the array of valid file extensions for this type of file
                                                 filecounter[FT_VSH][FLD_EXTCNT],                         // how many valid file extensions we have in the array above also part of filecounter?
                                                 filecounter[FT_VSH][FLD_SCANNED],         
-                                                filecounter[FT_VSH][FLD_MAXSD]           // how many files are allowed to scan and stored in the array
+                                                filecounter[FT_VSH][FLD_MAXSD],           // how many files are allowed to scan and stored in the array
                                                 filecounter[FT_VSH][FLD_LOADED]);
                     scanRoot                (   g_ScnOmf, 
                                                 g_SufOmf, 
                                                 filecounter[FT_OMF][FLD_EXTCNT], 
                                                 filecounter[FT_OMF][FLD_SCANNED], 
-                                                filecounter[FT_OMF][FLD_MAXSD]
+                                                filecounter[FT_OMF][FLD_MAXSD],
                                                 filecounter[FT_OMF][FLD_LOADED]);                
                     scanRoot                (   g_ScnOmt, 
                                                 g_SufOmt, 
                                                 filecounter[FT_OMT][FLD_EXTCNT], 
                                                 filecounter[FT_OMT][FLD_SCANNED], 
-                                                filecounter[FT_OMT][FLD_MAXSD]
+                                                filecounter[FT_OMT][FLD_MAXSD],
                                                 filecounter[FT_OMT][FLD_LOADED]);
 
                     scanRoot                (   g_ScnFsh, 
                                                 g_SufFsh, 
                                                 filecounter[FT_FSH][FLD_EXTCNT], 
                                                 filecounter[FT_FSH][FLD_SCANNED], 
-                                                filecounter[FT_FSH][FLD_MAXSD]
+                                                filecounter[FT_FSH][FLD_MAXSD],
                                                 filecounter[FT_FSH][FLD_LOADED]);
 
                     scanRoot                (   g_ScnTex, 
                                                 g_SufTex, 
                                                 filecounter[FT_TEX][FLD_EXTCNT], 
                                                 filecounter[FT_TEX][FLD_SCANNED], 
-                                                filecounter[FT_TEX][FLD_MAXSD]
+                                                filecounter[FT_TEX][FLD_MAXSD],
                                                 filecounter[FT_TEX][FLD_LOADED]);
 
                     scanRoot                (   g_ScnVid, 
                                                 g_SufVid, 
                                                 filecounter[FT_VID][FLD_EXTCNT], 
                                                 filecounter[FT_VID][FLD_SCANNED], 
-                                                filecounter[FT_VID][FLD_MAXSD]
+                                                filecounter[FT_VID][FLD_MAXSD],
                                                 filecounter[FT_VID][FLD_LOADED]);
 
                     scanRoot                (   g_ScnKln, 
                                                 g_SufKln, 
                                                 filecounter[FT_KLN][FLD_EXTCNT], 
                                                 filecounter[FT_KLN][FLD_SCANNED], 
-                                                filecounter[FT_KLN][FLD_MAXSD]
+                                                filecounter[FT_KLN][FLD_MAXSD],
                                                 filecounter[FT_KLN][FLD_LOADED]);   
                     bulkLoad                (   g_ScnVsh,                           // where we have stored the filenames 
                                                 g_bytVsh,                           // where we store the loaded bytes for each file 
@@ -408,25 +408,25 @@ void            CKernel::wrapper_load_usb           (   )
                                                 g_SufFsh, 
                                                 filecounter[FT_FSH][FLD_EXTCNT], 
                                                 filecounter[FT_FSH][FLD_SCANNED], 
-                                                filecounter[FT_FSH][FLD_MAXUSB]
+                                                filecounter[FT_FSH][FLD_MAXUSB],
                                                 filecounter[FT_FSH][FLD_LOADED]);  
                     scanRoot                (   g_ScnTex, 
                                                 g_SufTex, 
                                                 filecounter[FT_TEX][FLD_EXTCNT], 
                                                 filecounter[FT_TEX][FLD_SCANNED], 
-                                                filecounter[FT_TEX][FLD_MAXUSB]
+                                                filecounter[FT_TEX][FLD_MAXUSB],
                                                 filecounter[FT_TEX][FLD_LOADED]);
                     scanRoot                (   g_ScnVid, 
                                                 g_SufVid, 
                                                 filecounter[FT_VID][FLD_EXTCNT], 
                                                 filecounter[FT_VID][FLD_SCANNED], 
-                                                filecounter[FT_VID][FLD_MAXUSB]
+                                                filecounter[FT_VID][FLD_MAXUSB],
                                                 filecounter[FT_VID][FLD_LOADED]);
                     scanRoot                (   g_ScnKln, 
                                                 g_SufKln, 
                                                 filecounter[FT_KLN][FLD_EXTCNT], 
                                                 filecounter[FT_KLN][FLD_SCANNED], 
-                                                filecounter[FT_KLN][FLD_MAXUSB]
+                                                filecounter[FT_KLN][FLD_MAXUSB],
                                                 filecounter[FT_KLN][FLD_LOADED]);
                     bulkLoad                (   g_ScnFsh, 
                                                 g_bytFsh, 
