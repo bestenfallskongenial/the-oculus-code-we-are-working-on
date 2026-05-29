@@ -210,6 +210,33 @@ bool            CKernel::parse264                  (   h264_state* h,
                     storeLog(   MY_BUFFER, MY_INDEX,
                                     "Parsed Frames", h->frame_count[file_index], 
                                     "IDR-Off", h->idr_offset[file_index]);
+
+storeLog(   MY_BUFFER, MY_INDEX,
+            "H264 cfg max_w",          (u32)h->max_width,
+            "max_h",                   (u32)h->max_height,
+            "max_profile",             (u32)h->max_profile,
+            "max_level",               (u32)h->max_level );
+
+storeLog(   MY_BUFFER, MY_INDEX,
+            "SPS file",                (u32)file_index,
+            "w",                       (u32)h->video_width[file_index],
+            "h",                       (u32)h->video_height[file_index],
+            "profile",                 (u32)h->vid_profile[file_index] );
+
+storeLog(   MY_BUFFER, MY_INDEX,
+            "SPS file",                (u32)file_index,
+            "level",                   (u32)h->vid_level[file_index],
+            "idr_sc_len",              (u32)h->idr_sc_len[file_index] );
+            
+storeLog(   MY_BUFFER, MY_INDEX,
+            "Extra file",              (u32)file_index,
+            "extradata_len",           (u32)h->extradata_len[file_index] );
+            
+storeLog(   MY_BUFFER, MY_INDEX,
+            "Meta cmp file",           (u32)file_index,
+            "valid",                   (u32)h->vid_valid[file_index] );   
+
+
                     if (h->vid_valid[file_index])
                         {
                         storeLog(   MY_BUFFER, MY_INDEX,
