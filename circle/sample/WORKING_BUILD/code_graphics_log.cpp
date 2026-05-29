@@ -33,14 +33,12 @@ bool            CKernel::shaderLog                  (   GLint       shader,
                             "handle",                 (u32)shader );
 
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            "Shader status",
-                            "compile",                (u32)success,
+                            "Shader status compile",  (u32)success,
                             "type",                   (u32)shaderType,
                             "deleted",                (u32)deleteStatus );
 
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            "Shader lengths",
-                            "source",                 (u32)sourceLength,
+                            "Shader lengths source",  (u32)sourceLength,
                             "infolog",                (u32)infoLogLength,
                             (success == GL_TRUE) ? "SUCCESS" : "FAILED" );
 #endif
