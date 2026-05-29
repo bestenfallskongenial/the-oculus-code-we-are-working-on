@@ -13,7 +13,7 @@ boolean			CKernel::Initialize						(	void )
 {
                 bool bOK = TRUE;
 
-                memoryDebugCheckpoint("BOOT START", true);
+            //  memoryDebugCheckpoint("BOOT START", true);
 
                 if (bOK)
                     {
@@ -87,7 +87,7 @@ boolean			CKernel::Initialize						(	void )
 #endif
                     }
 
-                memoryDebugCheckpoint("AFTER DMA ALLOC", true);    
+            //  memoryDebugCheckpoint("AFTER DMA ALLOC", true);    
 
                 if (bOK)
                     {
@@ -98,7 +98,7 @@ boolean			CKernel::Initialize						(	void )
 #endif
                     }
 
-                memoryDebugCheckpoint("AFTER MEM ALLOC / BEFORE VCHIQ INIT", true);
+            //  memoryDebugCheckpoint("AFTER MEM ALLOC / BEFORE VCHIQ INIT", true);
 
                 if (bOK)
                     {
@@ -126,7 +126,7 @@ boolean			CKernel::Initialize						(	void )
 #endif
                     }
 
-                memoryDebugCheckpoint("BEFORE STRUCT INIT", true);
+            //  memoryDebugCheckpoint("BEFORE STRUCT INIT", true);
                 if (bOK)
                     {
                     bOK = wrapperInitVCSMstruct();
@@ -135,7 +135,7 @@ boolean			CKernel::Initialize						(	void )
 #endif
                     }
 
-                memoryDebugCheckpoint("AFTER VCSM STRUCT INIT", true);    
+            //  memoryDebugCheckpoint("AFTER VCSM STRUCT INIT", true);    
 
                 if (bOK)
                     {
@@ -145,7 +145,7 @@ boolean			CKernel::Initialize						(	void )
 #endif
                     }
 
-                memoryDebugCheckpoint("AFTER MMAL STRUCT INIT", true);
+            //  memoryDebugCheckpoint("AFTER MMAL STRUCT INIT", true);
                 
                 if (bOK)
                     {
@@ -214,7 +214,7 @@ boolean			CKernel::Initialize						(	void )
 #endif
                     }
 
-                memoryDebugCheckpoint("AFTER CKERNEL INIT", true);
+            //  memoryDebugCheckpoint("AFTER CKERNEL INIT", true);
 
                 return bOK;
 }
