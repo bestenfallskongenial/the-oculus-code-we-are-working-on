@@ -114,8 +114,11 @@ bool            CKernel::parse264                  (   h264_state* h,
                 /*  size_t size = size_array[i]; */
                     size_t i = 0;
 #ifdef __LOG_PARSER__
-                    storeLog(   MY_BUFFER, MY_INDEX, "Parse H264 File No.", file_index, "Name", EMPTYLOG, filename_array[file_index/*- p_fromFile*/], EMPTYLOG, "FileSize", (u32)size_array[file_index/*- p_fromFile*/]);
-                    storeLog(   MY_BUFFER, MY_INDEX, "file_index", (u32)file_index, "buffer", (u32)p_buffer_array[file_index], "data", (u32)data );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "Videofile    [", file_index, 
+                                "] FileSize    ", (u32)size_array[file_index],
+                                "Bufferaddress ", (u32)p_buffer_array[file_index]
+                                filename_array[file_index], EMPTYLOG );
 #endif
                     for (size_t pos = 0; pos < size - 3; )
                         {
@@ -154,7 +157,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                         h->frame_offset[file_index][idx]  = (size_t)((data + sps_off[file_index][idx]) - (u8*)h->block_base);
                         h->frame_length[file_index][idx]  = end_off - sps_off[file_index][idx];
                         h->idr_offset[file_index]         = idr_off[file_index][idx] - sps_off[file_index][idx];
-/*
+
 #ifdef __LOG_PARSER__
                         storeLog(   MY_BUFFER, MY_INDEX,
                                     "67+68+65", EMPTYLOG, 
@@ -162,7 +165,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                                     "l", (u32)h->frame_length[file_index][idx], 
                                     "o", (u32)h->frame_offset[file_index][idx]);
 #endif
-*/                                    
+                  
                         }
 
                     u8 tmp[1024];
@@ -210,70 +213,45 @@ bool            CKernel::parse264                  (   h264_state* h,
                         h->vid_level[file_index]    >= h->min_level &&
                         h->vid_level[file_index]    <= h->max_level;
 #ifdef __LOG_PARSER__
-storeLog(   MY_BUFFER, MY_INDEX,
-            "H264 Config:  ",          EMPTYLOG);
-
-storeLog(   MY_BUFFER, MY_INDEX,
-            "max. Width    ",          (u32)h->max_width,
-            "max. Height   ",          (u32)h->max_height,
-            "max. Profile  ",          (u32)h->max_profile );
-
-storeLog(   MY_BUFFER, MY_INDEX,
-            "min. Level    ",          (u32)h->min_level, 
-            "max. Level    ",          (u32)h->max_level );            
-nextline(   MY_BUFFER, MY_INDEX );    
-storeLog(   MY_BUFFER, MY_INDEX,
-            "SPS Results   ",          EMPTYLOG);
-storeLog(   MY_BUFFER, MY_INDEX,
-            "Video Width   ",          (u32)h->video_width[file_index],
-            "Video Height  ",          (u32)h->video_height[file_index],
-            "Video Profile ",          (u32)h->vid_profile[file_index] );
-nextline(   MY_BUFFER, MY_INDEX );
-storeLog(   MY_BUFFER, MY_INDEX,
-            "Parsed Frames ", h->frame_count[file_index]);
-nextline(   MY_BUFFER, MY_INDEX );
-storeLog(   MY_BUFFER, MY_INDEX,
-            "SPS file      ",          (u32)file_index,
-            "level         ",          (u32)h->vid_level[file_index],
-            "idr_sc_len  ",             EMPTYLOG,
-            (h->idr_sc_len[file_index] == 3) ? 
-            "    00 00 01" : 
-            " 00 00 00 01" );
-nextline(   MY_BUFFER, MY_INDEX );            
-storeLog(   MY_BUFFER, MY_INDEX,
-            "IDR-Offset    ",          h->idr_offset[file_index],
-            "Extradata-Len.",          (u32)h->extradata_len[file_index] );
-
-storeMsg(   MY_BUFFER, MY_INDEX, 
-            "Extradata Dump",          h->extradata, (h->extradata_len[file_index] + 8) );
-
-storeLog(   MY_BUFFER, MY_INDEX,
-            "FileSize      ",          (u32)size_array[file_index],  // [file_index - p_fromFile]
-            filename_array[file_index], EMPTYLOG,      // [file_index - p_fromFile]  
-            (h->vid_valid[file_index]) ? 
-            "Header VALID  " : 
-            "Header INVALID" );
-nextline(   MY_BUFFER, MY_INDEX );
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "max. Width    ",          (u32)h->max_width,
+                                "max. Height   ",          (u32)h->max_height,
+                                "max. Profile  ",          (u32)h->max_profile );
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "min. Level    ",          (u32)h->min_level, 
+                                "max. Level    ",          (u32)h->max_level );            
+                    nextline(   MY_BUFFER, MY_INDEX );    
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "SPS Results   ",          EMPTYLOG);
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "Video Width   ",          (u32)h->video_width[file_index],
+                                "Video Height  ",          (u32)h->video_height[file_index],
+                                "Video Profile ",          (u32)h->vid_profile[file_index] );
+                    nextline(   MY_BUFFER, MY_INDEX );
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "Parsed Frames ", h->frame_count[file_index]);
+                    nextline(   MY_BUFFER, MY_INDEX );
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "SPS file      ",          (u32)file_index,
+                                "level         ",          (u32)h->vid_level[file_index],
+                                "idr_sc_len  ",             EMPTYLOG,
+                                (h->idr_sc_len[file_index] == 3) ? 
+                                "    00 00 01" : 
+                                " 00 00 00 01" );
+                    nextline(   MY_BUFFER, MY_INDEX );            
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "IDR-Offset    ",          h->idr_offset[file_index],
+                                "Extradata-Len.",          (u32)h->extradata_len[file_index] );
+                    storeMsg(   MY_BUFFER, MY_INDEX, 
+                                "Extradata Dump",          h->extradata, h->extradata_len[file_index] );
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                "FileSize      ",          (u32)size_array[file_index],  // [file_index - p_fromFile]
+                                filename_array[file_index], EMPTYLOG,      // [file_index - p_fromFile]  
+                                (h->vid_valid[file_index]) ? 
+                                "Header VALID  " : 
+                                "Header INVALID" );
+                    nextline(   MY_BUFFER, MY_INDEX );
 #endif // __LOG_PARSER__               
-/*
-                    if (h->vid_valid[file_index])
-                        {
-                        storeLog(   MY_BUFFER, MY_INDEX,
-                                        "MetaData VALID for Video", file_index,
-                                        "Name", EMPTYLOG,
-                                        filename_array[file_index], EMPTYLOG,       // [file_index - p_fromFile]
-                                        "FileSize", (u32)size_array[file_index]);   //[file_index - p_fromFile]
-                        }
-                    else
-                        {
-                        storeLog(   MY_BUFFER, MY_INDEX,
-                                        "MetaData INVALID for Video", file_index,
-                                        "Name", EMPTYLOG,
-                                        filename_array[file_index], EMPTYLOG,       // [file_index - p_fromFile]
-                                        "FileSize", (u32)size_array[file_index]);   // [file_index - p_fromFile]                                
-                        }
-*/
-                        // m_Watchdog.Start(TIMEOUT);
                     }
                 return true;
 }

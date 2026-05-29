@@ -83,7 +83,10 @@ bool            CKernel::programLog                 (   GLint       program,
                 GLint success;
                 glGetProgramiv(program, GL_LINK_STATUS, &success);
 #ifdef __LOG_GL__
-                storeLog(   MY_BUFFER, MY_INDEX, g_ScnFsh[program_index], EMPTYLOG, "Program link status idx", (u32)program_index, "Program byte size", (u32)g_bytFsh[program_index], (success == GL_TRUE) ? "SUCCESS" : "FAILED", EMPTYLOG);
+                storeLog(   MY_BUFFER, MY_INDEX, 
+                            g_ScnFsh[program_index], EMPTYLOG, 
+                            "Program link status idx", (u32)program_index, 
+                            "Program byte size", (u32)g_bytFsh[program_index], (success == GL_TRUE) ? "SUCCESS" : "FAILED", EMPTYLOG);
 #endif 
                 char log[1024];
                 GLsizei logLength = 0;
@@ -111,7 +114,7 @@ bool            CKernel::programLog                 (   GLint       program,
                     GLint location = glGetUniformLocation(program, uname);
 #ifdef __LOG_GL__ 
                     storeLog(   MY_BUFFER, MY_INDEX, 
-                                "Uniform name: ", EMPTYLOG, uname );
+                                "Uniform:      ", EMPTYLOG, uname );
                     storeLog(   MY_BUFFER, MY_INDEX, 
                                 "Uniform idx   ", (u32)i, 
                                 "size          ", (u32)size, 
@@ -135,7 +138,7 @@ bool            CKernel::programLog                 (   GLint       program,
                     storeLog(   MY_BUFFER, MY_INDEX, 
                                 "Attribute name", EMPTYLOG, aname );
                     storeLog(   MY_BUFFER, MY_INDEX, 
-                                "Attribute idx ", (u32)i, 
+                                "Attribute:    ", (u32)i, 
                                 "size          ", (u32)size, 
                                 "type          ", (u32)type, 
                                 "location      ", (u32)location );
