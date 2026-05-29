@@ -16,8 +16,7 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                 storeLog(   MY_BUFFER, MY_INDEX,
                             "ALLOC-MEM base   ",    (u32)buffers,
                             " count",                (u32)p_count,
-                            "size ",                (u32)bufferSize,
-                            EMPTYSTR,               EMPTYLOG );
+                            "size ",                (u32)bufferSize );
 #endif
                 for (size_t i = 0; i < p_count; ++i) 
                     {
@@ -26,13 +25,12 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 "ALLOC-MEM slice [", (u32)i,
                                 "] ptr ",             (u32)buffers[i],
-                                EMPTYSTR,          EMPTYLOG,
-                                EMPTYSTR,          EMPTYLOG );
+                                "size ",             (u32)bufferSize );
 #endif
                     }
 #ifdef __DEBUG_LOG__
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            "1/100 sec", m_Timer.GetTicks(),
+                            ":>", m_Timer.GetClockTicks(),
                             "ALLOC-MEM done",      (u32)buffers,
                             "count",               (u32)p_count,
                             "size",                (u32)bufferSize);
@@ -57,7 +55,9 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
                 char* dma_block = (char*)(((uintptr_t)raw + 4095) & ~4095);
 
                 char** buffers = new char*[p_count];
-
+#ifdef __DEBUG_LOG__ 
+                nextline( MY_BUFFER, MY_INDEX );
+#endif
                 for (size_t i = 0; i < p_count; ++i)
                     {
                     buffers[i] = dma_block + i * bufferSize;
@@ -65,19 +65,17 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
                     storeLog(   MY_BUFFER, MY_INDEX,
                                     "ALLOC-DMA slice [",  (u32)i,
                                     "] ptr",              (u32)buffers[i],
-                                    "size ",             (u32)bufferSize,
-                                    EMPTYSTR,           EMPTYLOG );
+                                    "size ",             (u32)bufferSize );
 #endif  
                     memset(buffers[i], 0, bufferSize);
                     }
 #ifdef __DEBUG_LOG__
                 nextline(   MY_BUFFER, MY_INDEX);
                 storeLog(   MY_BUFFER, MY_INDEX,
-                                "1/100 sec",        m_Timer.GetTicks(),
+                                ":>",        m_Timer.GetClockTicks(),
                                 "ALLOC-DMA raw",    (u32)raw,
                                 "block",            (u32)dma_block,
-                                "total",            (u32)total_size /*,
-                                "aligned",              (u32)aligned_total_size */ );
+                                "total",            (u32)total_size );
 #endif
                 *blockBaseOut   = dma_block;
                 *rawBlockOut    = raw;

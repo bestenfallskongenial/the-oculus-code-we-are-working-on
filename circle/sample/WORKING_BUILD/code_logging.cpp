@@ -172,6 +172,7 @@ bool            CKernel::startupScreen          (   void )
                 storeLog(   MY_BUFFER, MY_INDEX, 
                             "Machine Model  ", EMPTYLOG, 
                             machineName, EMPTYLOG );
+                nextline(   MY_BUFFER, MY_INDEX);                            
                 storeLog(   MY_BUFFER, MY_INDEX, 
                             "SoC Name       ", EMPTYLOG, 
                             socName          , EMPTYLOG, 
@@ -188,9 +189,10 @@ bool            CKernel::startupScreen          (   void )
                 nextline(   MY_BUFFER, MY_INDEX);
                 storeLog(   MY_BUFFER, MY_INDEX, 
                             "Clock CORE  MHz", coreClock,
-                            "Clock ARM   MHz", armClock,
+                            "Clock ARM   MHz", armClock);
+                storeLog(   MY_BUFFER, MY_INDEX, 
                             "Clock EMMC  MHz", emmcClock,
-                            "Clock EMMC2 MHz", emmc2Clock);
+                            "Clock EMMC2 MHz", emmc2Clock);                            
                 storeLog(   MY_BUFFER, MY_INDEX, 
                             "Clock UART  MHz", uartClock);
                 nextline(   MY_BUFFER, MY_INDEX);

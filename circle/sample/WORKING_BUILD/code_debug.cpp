@@ -619,6 +619,8 @@ bool            CKernel::memoryDebugCheckpoint      (   const char* p_Label,
 
 #ifdef __DEBUG_LOG__
 
+                nextline( MY_BUFFER, MY_INDEX );
+                                    
                 storeLog(   MY_BUFFER,
                             MY_INDEX,
                             "MEM",
