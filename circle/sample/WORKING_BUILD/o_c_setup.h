@@ -4,11 +4,28 @@
                                                                                 // 3: also notices 
                                                                                 // 4: also debug output (default))
     
-    #define __DEBUG_LOG__
+    #define __DEBUG_LOG__          // generic debug log blocks
 
+    #define __LOG_ALLOC__          // allocation / buffer allocation logging
+    #define __LOG_FILE__           // filesystem / file load-store logging
+    #define __LOG_PARSER__         // parser / file parser logging
+    #define __LOG_MMAL__           // MMAL init/wrapper/message logging
+    #define __LOG_VC04__           // VC/VCHI service logging
+//  #define __LOG_VC04_MSG__       // detailed VC/VCHI message dump
+    #define __LOG_VCSM__           // VCSM alloc/import/lock logging
+    #define __LOG_INIT__           // kernel initialization step logging
+    #define __LOG_GL__             // shader/program/uniform/gfx_check OpenGL logging
 
-    #define         LOG_GL  0
-    #define         LOG_BMP 8
+    #define __DEBUG_CHECK__           // GL/EGL runtime check() calls
+    #define __DEBUG_OGL__          // older assert/check based OGL init debug
+    #define __SCROLLING__          // animated/intermediate log-screen scrolling frames
+//  #define __SHADER_DUMP__        // dump shader source from GL
+    #define __H264_DEBUG_TEX__     // H264 debug texture path
+
+    #define HEAP_DEBUG             // heap dump / CMemorySystem::DumpStatus()
+
+//  #define         LOG_GL  0
+//  #define         LOG_BMP 8
 
     // to prepare filecounter[FT_COUNT][FLD_COUNT]
     #define         VSH_SD             		    1	// max number of u_vertex shader on sd
@@ -129,8 +146,8 @@
     #define         MAX_SHADER                  33
     #define         MAX_OMF                     1
 
-    #define         MAX_VIDEO_WIDTH             600
-    #define         MAX_VIDEO_HEIGHT            800
+    #define         MAX_VIDEO_WIDTH             480
+    #define         MAX_VIDEO_HEIGHT            640
 
     #define         MAX_VIDEO_PROFILE           66		// Baseline
 
