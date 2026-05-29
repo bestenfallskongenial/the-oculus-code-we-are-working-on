@@ -149,6 +149,7 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                     }
 #ifdef __DEBUG_LOG__
                 storeLog(   MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "BULKLOAD End prev", (u32)p_prevFiles, "new", (u32)p_validFiles, "loaded", (u32)(p_validFiles - p_prevFiles) );
+                nextline( MY_BUFFER, MY_INDEX );
 #endif
 }
 

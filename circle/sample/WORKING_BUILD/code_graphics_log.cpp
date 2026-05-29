@@ -64,8 +64,9 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 #endif
                         }
                     }
+#ifdef __DEBUG_LOG__                    
                 nextline( MY_BUFFER, MY_INDEX );
-
+#endif
                 return success == GL_TRUE;
 }
 /*
@@ -137,7 +138,6 @@ bool            CKernel::programLog                 (   GLint       program,
 #ifdef __DEBUG_LOG__
                 nextline(   MY_BUFFER, MY_INDEX); 
 #endif 
-                nextline( MY_BUFFER, MY_INDEX );
 
                 return success == GL_TRUE;
 }
