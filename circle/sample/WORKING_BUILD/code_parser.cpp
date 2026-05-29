@@ -117,7 +117,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                     storeLog(   MY_BUFFER, MY_INDEX, 
                                 "Videofile    [", file_index, 
                                 "] FileSize    ", (u32)size_array[file_index],
-                                "Bufferaddress ", (u32)p_buffer_array[file_index]
+                                "Bufferaddress ", (u32)p_buffer_array[file_index],
                                 filename_array[file_index], EMPTYLOG );
 #endif
                     for (size_t pos = 0; pos < size - 3; )
