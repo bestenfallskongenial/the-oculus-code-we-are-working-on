@@ -211,7 +211,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                         h->vid_level[file_index]    <= h->max_level;
 
 storeLog(   MY_BUFFER, MY_INDEX,
-            "H264 Cfg Values",          (u32)h->max_width);
+            "H264 Cfg Values",          EMPTYLOG);
 
 storeLog(   MY_BUFFER, MY_INDEX,
             "max. Width     ",          (u32)h->max_width,
@@ -229,12 +229,12 @@ storeLog(   MY_BUFFER, MY_INDEX,
             "Video Profile  ",          (u32)h->vid_profile[file_index] );
 nextline(   MY_BUFFER, MY_INDEX );
 storeLog(   MY_BUFFER, MY_INDEX,
-            "Parsed Frames", h->frame_count[file_index]);
+            "Parsed Frames  ", h->frame_count[file_index]);
 nextline(   MY_BUFFER, MY_INDEX );
 storeLog(   MY_BUFFER, MY_INDEX,
-            "SPS file",                 (u32)file_index,
-            "level",                    (u32)h->vid_level[file_index],
-            "idr_sc_len",               EMPTYLOG,
+            "SPS file       ",          (u32)file_index,
+            "level          ",          (u32)h->vid_level[file_index],
+            "idr_sc_len     ",          EMPTYLOG,
             (h->idr_sc_len[file_index] == 3) ? 
             "       00 00 01" : 
             "    00 00 00 01" );
@@ -244,10 +244,9 @@ storeLog(   MY_BUFFER, MY_INDEX,
             "Extradata-Len. ",          (u32)h->extradata_len[file_index] );
 
 storeMsg(   MY_BUFFER, MY_INDEX, 
-            "Extradata Dump ",          h->extradata, (h->extradata_len[file_index] + 4) );
+            "Extradata Dump ",          h->extradata, (h->extradata_len[file_index] + 8) );
 nextline(   MY_BUFFER, MY_INDEX );
 storeLog(   MY_BUFFER, MY_INDEX,
-            "Video Filename ",          EMPTYLOG,
             "FileSize       ",          (u32)size_array[file_index],  // [file_index - p_fromFile]
             filename_array[file_index], EMPTYLOG,      // [file_index - p_fromFile]  
             (h->vid_valid[file_index]) ? 
