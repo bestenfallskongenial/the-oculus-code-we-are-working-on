@@ -83,12 +83,14 @@ bool            CKernel::parse264                  (   h264_state* h,
                                                         u16         max_width,
                                                         u16         max_height,
                                                         u8          max_profile,
+                                                        u8          Min_level,
                                                         u8          max_level )
 {
                 h->block_base  = blockBase;
                 h->max_width   = max_width;
                 h->max_height  = max_height;
                 h->max_profile = max_profile;
+                h->min_level   = min_level; 
                 h->max_level   = max_level;
 
                 size_t sps_off[MAX_VIDEOS][MAX_FRAMES]       = {0};
@@ -205,55 +207,72 @@ bool            CKernel::parse264                  (   h264_state* h,
                         h->video_width[file_index]  == h->max_width &&      /* why not the global macro settings here, and how we can make the resolution matching the config.txt settings here too? */
                         h->video_height[file_index] == h->max_height &&
                         h->vid_profile[file_index]  == h->max_profile &&
-                        h->vid_level[file_index]    == h->max_level;
-
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                    "Parsed Frames", h->frame_count[file_index], 
-                                    "IDR-Off", h->idr_offset[file_index]);
+                        h->vid_level[file_index]    >= h->min_level &&
+                        h->vid_level[file_index]    <= h->max_level;
 
 storeLog(   MY_BUFFER, MY_INDEX,
-            "H264 cfg max_w",          (u32)h->max_width,
-            "max_h",                   (u32)h->max_height,
-            "max_profile",             (u32)h->max_profile,
-            "max_level",               (u32)h->max_level );
+            "H264 Cfg Values",          (u32)h->max_width);
 
 storeLog(   MY_BUFFER, MY_INDEX,
-            "SPS file",                (u32)file_index,
-            "w",                       (u32)h->video_width[file_index],
-            "h",                       (u32)h->video_height[file_index],
-            "profile",                 (u32)h->vid_profile[file_index] );
+            "max. Width     ",          (u32)h->max_width,
+            "max. Height    ",          (u32)h->max_height,
+            "max. Profile   ",          (u32)h->max_profile );
 
 storeLog(   MY_BUFFER, MY_INDEX,
-            "SPS file",                (u32)file_index,
-            "level",                   (u32)h->vid_level[file_index],
-            "idr_sc_len",              (u32)h->idr_sc_len[file_index] );
-            
+            "min. Level     ",          (u32)h->min_level, 
+            "max. Level     ",          (u32)h->max_level );            
+nextline(   MY_BUFFER, MY_INDEX );    
 storeLog(   MY_BUFFER, MY_INDEX,
-            "Extra file",              (u32)file_index,
-            "extradata_len",           (u32)h->extradata_len[file_index] );
-            
+            "SPS Results    ",          EMPTYLOG,
+            "Video Width    ",          (u32)h->video_width[file_index],
+            "Video Height   ",          (u32)h->video_height[file_index],
+            "Video Profile  ",          (u32)h->vid_profile[file_index] );
+nextline(   MY_BUFFER, MY_INDEX );
 storeLog(   MY_BUFFER, MY_INDEX,
-            "Meta cmp file",           (u32)file_index,
-            "valid",                   (u32)h->vid_valid[file_index] );   
+            "Parsed Frames", h->frame_count[file_index]);
+nextline(   MY_BUFFER, MY_INDEX );
+storeLog(   MY_BUFFER, MY_INDEX,
+            "SPS file",                 (u32)file_index,
+            "level",                    (u32)h->vid_level[file_index],
+            "idr_sc_len",               EMPTYLOG,
+            (sc_len == 3) ? 
+            "       00 00 01" : 
+            "    00 00 00 01" );
+nextline(   MY_BUFFER, MY_INDEX );            
+storeLog(   MY_BUFFER, MY_INDEX,
+            "IDR-Offset     ",          h->idr_offset[file_index]
+            "Extradata-Len. ",          (u32)h->extradata_len[file_index] );
 
-
+storeMsg(   MY_BUFFER, MY_INDEX, 
+            "Extradata Dump ",          h->extradata, (extradata_len+ 4) );
+nextline(   MY_BUFFER, MY_INDEX );
+storeLog(   MY_BUFFER, MY_INDEX,
+            "Video Filename ",          EMPTYLOG,
+            "FileSize       ",          (u32)size_array[file_index],  // [file_index - p_fromFile]
+            filename_array[file_index], EMPTYLOG,      // [file_index - p_fromFile]  
+            (h->vid_valid[file_index]) ? 
+            "Header VALID   " : 
+            "Header INVALID " );
+nextline(   MY_BUFFER, MY_INDEX );               
+/*
                     if (h->vid_valid[file_index])
                         {
                         storeLog(   MY_BUFFER, MY_INDEX,
                                         "MetaData VALID for Video", file_index,
                                         "Name", EMPTYLOG,
-                                        filename_array[file_index /* - p_fromFile */], EMPTYLOG,
-                                        "FileSize", (u32)size_array[file_index /* - p_fromFile */]);
+                                        filename_array[file_index], EMPTYLOG,       // [file_index - p_fromFile]
+                                        "FileSize", (u32)size_array[file_index]);   //[file_index - p_fromFile]
                         }
                     else
                         {
                         storeLog(   MY_BUFFER, MY_INDEX,
                                         "MetaData INVALID for Video", file_index,
                                         "Name", EMPTYLOG,
-                                        filename_array[file_index /* - p_fromFile */], EMPTYLOG,
-                                        "FileSize", (u32)size_array[file_index  /* - p_fromFile */]);                                  
+                                        filename_array[file_index], EMPTYLOG,       // [file_index - p_fromFile]
+                                        "FileSize", (u32)size_array[file_index]);   // [file_index - p_fromFile]                                
                         }
-                     // m_Watchdog.Start(TIMEOUT);
+*/
+                        // m_Watchdog.Start(TIMEOUT);
                     }
                 return true;
 }

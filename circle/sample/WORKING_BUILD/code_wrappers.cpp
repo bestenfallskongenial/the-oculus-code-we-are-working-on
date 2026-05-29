@@ -477,6 +477,7 @@ void            CKernel::wrapper_parser()
                                     MAX_VIDEO_WIDTH,
                                     MAX_VIDEO_HEIGHT,
                                     MAX_VIDEO_PROFILE,
+                                    MIN_VIDEO_LEVEL,
                                     MAX_VIDEO_LEVEL);        
 }
 

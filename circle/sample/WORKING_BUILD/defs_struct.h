@@ -108,6 +108,7 @@ struct h264_state
     u16             max_width;
     u16             max_height;
     u8              max_profile;
+	u8				min_level;
     u8              max_level;
 };
 //  VCSM
