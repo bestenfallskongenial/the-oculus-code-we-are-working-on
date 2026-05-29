@@ -3,8 +3,8 @@
 //  #undef  __DEBUG__
     #define __DEBUG__
 
-//  #undef  __DEBUG_LOG__
-    #define __DEBUG_LOG__
+//  #undef  __LOG_INIT__
+    #define __LOG_INIT__
 
     #define MY_BUFFER   m_logBuffer     
     #define MY_INDEX    m_logBufferIndex    
@@ -18,14 +18,14 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK = m_Interrupt.Initialize();
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_Interrupt.Initialize()                DONE");
 #endif
                     }       
                 if (bOK)
                     {
                     bOK = m_Timer.Initialize();
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_Timer.Initialize()                    DONE");
 #endif
                     }
@@ -34,7 +34,7 @@ boolean			CKernel::Initialize						(	void )
                     CLogger::SetRawSink(CKernel::LoggerSink, this);
 
                     bOK = m_Logger.Initialize(0);
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SetRawSink(CKernel::LoggerSink, this)   DONE");
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_Logger.Initialize(0)                  DONE");
 #endif
@@ -42,7 +42,7 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK = frameBufferInit();
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "frameBufferInit()                       DONE");
 
 #endif
@@ -50,7 +50,7 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK = startupScreen();
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "Hardware Info Log                       DONE");
 
 #endif
@@ -58,7 +58,7 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK = m_EMMC.Initialize();
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_EMMC.Initialize()                     DONE");
 
 #endif
@@ -66,7 +66,7 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK = m_USBHCI.Initialize();
-#ifdef __DEBUG_LOG__                    
+#ifdef __LOG_INIT__                    
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_USBHCI.Initialize()                   DONE");
 
 #endif
@@ -74,7 +74,7 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     m_USBHCI.UpdatePlugAndPlay(); 
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_USBHCI.UpdatePlugAndPlay()            DONE");
 
 #endif
@@ -82,7 +82,7 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK =   wrapperInitDMA();
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "InitDMA Buffer                          DONE");
 #endif
                     }
@@ -92,7 +92,7 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK =   wrapperInitMEM();
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "InitMEM Buffer                          DONE");
 
 #endif
@@ -103,14 +103,14 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK =   m_VCHIQ.Initialize();
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "m_VCHIQ.Initialize()                    DONE");
 #endif
                     }
                     if (bOK)
                     {
                     bcm_host_init();
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "bcm_host_init()                         DONE");
 
 #endif
@@ -118,7 +118,7 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     getStateVCHI();
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     storeLog( MY_BUFFER, MY_INDEX, "m_VCHIInstance",           (u32)m_VCHIInstance );
                     storeLog( MY_BUFFER, MY_INDEX, "m_Connection",             (u32)m_Connection );
 
@@ -130,7 +130,7 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK = wrapperInitVCSMstruct();
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "wrapperInitVCSMstruct()                 DONE");
 #endif
                     }
@@ -140,7 +140,7 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK = wrapperInitMMALstruct();
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "wrapperInitMMALstruct()                 DONE");
 #endif
                     }
@@ -150,7 +150,7 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK = wrapperVCSM();
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
 
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "Allocate/Lock VCSM Buffer               DONE");
 #endif
@@ -158,7 +158,7 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     bOK = wrapperMMAL();
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
 
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "Init MMAL / ril.video_decode            DONE");
 #endif
@@ -167,28 +167,28 @@ boolean			CKernel::Initialize						(	void )
                 if (bOK)
                     {
                     initOGL(    &m_ogl);
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initOGL(&m_ogl)                         DONE");
 #endif
                     }
                 if (bOK)
                     {
                     bOK =   SPI_init();
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SPI_init()                              DONE");
 #endif
                     }
                 if (bOK)
                     {
                     bOK =   SMI_Init(   LED_PIN);
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMI_Init(LED_PIN)                       DONE");
 #endif
                     }
                 if (bOK)
                     {
                     bOK =   WS2812_Init(LED_COUNT);
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "WS2812_Init(LED_COUNT)                  DONE");
 #endif
                     }
@@ -197,19 +197,19 @@ boolean			CKernel::Initialize						(	void )
                     GPIO_SetAlt(    CTRL_PIN, 
                                     1, 
                                     GPIO_PULL_OFF);
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "GPIO_SetAlt(CTRL_PIN, 1, GPIO_PULL_OFF) DONE");
 #endif
                     GPIO_SetAlt(    SW_PIN_A, 
                                     0, 
                                     GPIO_PULL_UP);
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "GPIO_SetAlt(SW_PIN_A, 0, GPIO_PULL_UP)  DONE");
 #endif
                     GPIO_SetAlt(    SW_PIN_B, 
                                     0, 
                                     GPIO_PULL_UP);
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "GPIO_SetAlt(SW_PIN_B, 0, GPIO_PULL_UP)  DONE");
 #endif
                     }

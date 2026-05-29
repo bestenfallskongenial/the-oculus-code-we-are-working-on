@@ -1,7 +1,7 @@
 #include "kernel.h" // **************************************************************************** //
 
-//  #undef  __DEBUG_LOG__
-    #define __DEBUG_LOG__
+//  #undef  __LOG_PARSER__
+    #define __LOG_PARSER__
 
     #define MY_BUFFER   m_logBuffer
     #define MY_INDEX    m_logBufferIndex
@@ -44,7 +44,7 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                     t->data[i]      = data;
                     t->size[i]      = size_array[i];
 
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_PARSER__
                     storeLog(   MY_BUFFER, MY_INDEX,    "File         [", (u32)i, 
                                                         "] buffer      ", (u32)p_buffer_array[i] );
                     storeMsg(   MY_BUFFER, MY_INDEX,    "Header Dump   ", data, headerSize );
@@ -111,7 +111,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                 /*  u8*    data = reinterpret_cast<u8*>(p_buffer_array[i]); */
                 /*  size_t size = size_array[i]; */
                     size_t i = 0;
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_PARSER__
                     storeLog(   MY_BUFFER, MY_INDEX, "Parse H264 File No.", file_index, "Name", EMPTYLOG, filename_array[file_index/*- p_fromFile*/], EMPTYLOG, "FileSize", (u32)size_array[file_index/*- p_fromFile*/]);
                     storeLog(   MY_BUFFER, MY_INDEX, "file_index", (u32)file_index, "buffer", (u32)p_buffer_array[file_index], "data", (u32)data );
 #endif
@@ -153,11 +153,13 @@ bool            CKernel::parse264                  (   h264_state* h,
                         h->frame_length[file_index][idx]  = end_off - sps_off[file_index][idx];
                         h->idr_offset[file_index]         = idr_off[file_index][idx] - sps_off[file_index][idx];
 /*
+#ifdef __LOG_PARSER__
                         storeLog(   MY_BUFFER, MY_INDEX,
                                     "67+68+65", EMPTYLOG, 
                                     "a", (u32)h->frame_address[file_index][idx], 
                                     "l", (u32)h->frame_length[file_index][idx], 
                                     "o", (u32)h->frame_offset[file_index][idx]);
+#endif
 */                                    
                         }
 

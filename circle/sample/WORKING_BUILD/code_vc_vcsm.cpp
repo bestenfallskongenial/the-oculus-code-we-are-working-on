@@ -1,6 +1,6 @@
 #include "kernel.h"
 
-    #define __DEBUG_LOG__
+    #define __LOG_VCSM__
 
     #define MY_BUFFER   m_logBuffer     
     #define MY_INDEX    m_logBufferIndex   
@@ -36,7 +36,7 @@ bool            CKernel::allocMemoryVCSM            (   size_t                  
                     {
                     vcsm_handle = rx.body.res_handle;
 
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_VCSM__
                     storeLog( MY_BUFFER, MY_INDEX, "ALLOC   - VCSM Handle", rx.body.res_handle, "VCSM Pointer", rx.body.res_mem, "Base Size", rx.body.res_base_size, "Num", rx.body.res_num );
 #endif
                     return true;
@@ -68,7 +68,7 @@ bool            CKernel::importMemoryVCSM           (   void*                   
                 if (rx.body.res_handle != 0)
                 {
                     vcsm_handle         = rx.body.res_handle; //   like this ?                    
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_VCSM__
                     storeLog( MY_BUFFER, MY_INDEX, "IMPORT  - ARM Address", (u32)(uintptr)p_bufferBlockbase, "GPU  Address", tx.body.addr, "Size", size, "VCSM Handle", rx.body.res_handle);
                     nextline( MY_BUFFER, MY_INDEX );
 #endif                     
@@ -97,7 +97,7 @@ bool            CKernel::lockMemoryVCSM             (   u32&                    
                 if (rx.body.res_mem != 0)
                     {
                     vcsm_pointer        = rx.body.res_mem;
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_VCSM__
                         storeLog( MY_BUFFER, MY_INDEX, "LOCK    - VCSM Handle", rx.body.res_handle, "VCSM Pointer", rx.body.res_mem);
                         nextline( MY_BUFFER, MY_INDEX );
 #endif         
@@ -129,7 +129,7 @@ bool            CKernel::freeMemoryVCSM             (/* int                     
                 /*  m_vc_pointer[slot]  = 0; */
                     vcsm_handle         = 0; 
                     vcsm_pointer        = 0;
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_VCSM__
 
                         storeLog( MY_BUFFER, MY_INDEX, "FREE    - VCSM Handle", vcsm_handle, "VCSM Pointer", vcsm_pointer);  
 #endif        

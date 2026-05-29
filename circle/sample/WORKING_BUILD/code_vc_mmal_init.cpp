@@ -1,7 +1,7 @@
 #include "kernel.h"
 
-//  #undef  __DEBUG_LOG__
-    #define __DEBUG_LOG__
+//  #undef  __LOG_MMAL__
+    #define __LOG_MMAL__
 
     #define MY_BUFFER   m_logBuffer                 // not used here 
     #define MY_INDEX    m_logBufferIndex
@@ -27,13 +27,13 @@ bool            CKernel::initTexturesMMAL         (   )
 
                 if( f_count != 0)
                     { 
-#ifdef __DEBUG_LOG__ 
+#ifdef __LOG_MMAL__ 
                 //  nextline( MY_BUFFER, MY_INDEX );                                 
                     storeLog( MY_BUFFER, MY_INDEX, "Texture Creation    FAILED");
 #endif                   
                     return false;
                     }
-#ifdef __DEBUG_LOG__             
+#ifdef __LOG_MMAL__             
             //  nextline( MY_BUFFER, MY_INDEX );
                 storeLog( MY_BUFFER, MY_INDEX, "Texture Creation    SUCCESS");
 #endif               
@@ -55,12 +55,12 @@ bool            CKernel::createComponent            (   u32& ComponentHandle,   
 
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_MMAL__
                     storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif 
                     return false;
                     }
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_MMAL__
                 Log_createComponent(tx,rx);
 #endif       
                 ComponentHandle = rx.msg.component_handle;
@@ -83,13 +83,13 @@ bool            CKernel::getPortInfoMMAL            (   u32 port_type,
 
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_MMAL__
                     storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif 
                     return false;
                     }
                 port_handle = rx.msg.port_handle;
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_MMAL__
                 Log_getPortInfo(tx,rx);
 #endif 
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
@@ -104,12 +104,12 @@ bool            CKernel::setPortInfoMMAL            (   MMAL_Port_Info_Set_Msg& 
 
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_MMAL__
                     storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif 
                     return false;
                     }
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_MMAL__
                 Log_setPortInfo(tx,rx); 
 #endif               
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
@@ -127,12 +127,12 @@ bool            CKernel::enableComponentMMAL        (   MMAL_Component_Enable_Ms
 
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_MMAL__
                     storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif 
                     return false;
                     }
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_MMAL__
                 Log_enableComponentMMAL(tx,rx);
 #endif       
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
@@ -169,7 +169,7 @@ bool            CKernel::setZeroCopyModeMMAL        (   u32                     
                                       sizeof(rx),
                                       &rx_len ))
                     {
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_MMAL__
                     storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif
                     return false;
@@ -195,12 +195,12 @@ bool            CKernel::enablePortMMAL             ( /*u32 port_handle,*/      
 
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_MMAL__
                     storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
 #endif 
                     return false;
                     }
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_MMAL__
                 Log_enablePort(tx,rx);
 #endif       
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);

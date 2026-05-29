@@ -1,11 +1,11 @@
 #include "kernel.h"
 
 
-    #undef  __DEBUG_MSG__
-//  #define __DEBUG_MSG__
+    #undef  __LOG_VC04_MSG__
+//  #define __LOG_VC04_MSG__
 
-//  #undef  __DEBUG_LOG__
-    #define __DEBUG_LOG__
+//  #undef  __LOG_VC04__
+    #define __LOG_VC04__
 
     #define MY_BUFFER   m_logBuffer                 // not used here 
     #define MY_INDEX    m_logBufferIndex
@@ -35,7 +35,7 @@ void            CKernel::callbackMMAL               (   void*                   
 void            CKernel::getStateVCHI               (   )
 {
                 vc_host_get_vchi_state(&m_VCHIInstance, &m_Connection);
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_VC04__
                 storeLog ( MY_BUFFER, MY_INDEX, "VCHI State Instance", (u32)m_VCHIInstance, "VCHI State Connection", (u32)m_Connection);   
 #endif             
 }
@@ -45,7 +45,7 @@ bool            CKernel::initEventsVCOS             (   VCOS_EVENT_T&           
 {
                 if (vcos_event_create(&event, name) != VCOS_SUCCESS)
                     {
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_VC04__
                     storeLog ( MY_BUFFER, MY_INDEX, "VCOS Event Init Failed!", (u32)&event);  
 #endif               
                     return false;
@@ -58,7 +58,7 @@ u32             CKernel::convertAddress             (   void*                   
 {
                 u32 bus_addr = BUS_ADDRESS(reinterpret_cast<uintptr_t>(p_busAddress));
                 u32 vcsm_addr = (bus_addr & ~0xC0000000) | 0xC0000000;
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_VC04__
                 nextline( MY_BUFFER, MY_INDEX );
                 storeLog ( MY_BUFFER, MY_INDEX, "Buffer BUS", (u32)p_busAddress, "Buffer ARM", (u32)bus_addr, "Buffer VPU", (u32)vcsm_addr); 
                 nextline( MY_BUFFER, MY_INDEX );                
@@ -84,7 +84,7 @@ bool            CKernel::checkGLerrorMMAL           (   )
                         case        GL_INVALID_FRAMEBUFFER_OPERATION:   error_str = "GL_INVALID_FRAMEBUFFER_OPERATION"; break;
                         default:                                        error_str = "UNKNOWN_ERROR"; break;
                         }
-#ifdef __DEBUG_LOG__  
+#ifdef __LOG_VC04__  
                     storeLog ( MY_BUFFER, MY_INDEX, error_str);
 #endif 
                     return false;
@@ -126,7 +126,7 @@ bool            CKernel::sendAndWaitVCHI            (   VCHI_SERVICE_HANDLE_T   
                                                         size_t                  max_reply_len, 
                                                         size_t*                 actual_reply_len )
 {
-#ifdef __DEBUG_MSG__
+#ifdef __LOG_VC04_MSG__
             //  nextline( MY_BUFFER, MY_INDEX );
                 storeLog( MY_BUFFER, MY_INDEX, "TX MSG", (u32)msg_size);
                 storeMsg( MY_BUFFER, MY_INDEX, "Raw TX", msg, msg_size);
@@ -140,7 +140,7 @@ bool            CKernel::sendAndWaitVCHI            (   VCHI_SERVICE_HANDLE_T   
                 do {
                     if (vchi_msg_dequeue(ServiceHandle, rx_msg, max_reply_len, &ReplyLength, VCHI_FLAGS_NONE) == 0)
                         {
-#ifdef __DEBUG_MSG__
+#ifdef __LOG_VC04_MSG__
                         storeLog( MY_BUFFER, MY_INDEX, "RX MSG", ReplyLength);
                         storeMsg( MY_BUFFER, MY_INDEX, "Raw RX", rx_msg, ReplyLength);
 #endif 
@@ -155,7 +155,7 @@ bool            CKernel::sendAndWaitVCHI            (   VCHI_SERVICE_HANDLE_T   
                     }
                 if (ReplyLength != max_reply_len)
                     {
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_VC04__
                 //  const mmal_msg_header* h = (const mmal_msg_header*)msg; 
                 //  nextline( MY_BUFFER, MY_INDEX );
                     storeLog( MY_BUFFER, MY_INDEX, "ANSWER TO SHORT - MSG #" /*, h->context*/ ); // is only available with mmal, not for vcsm

@@ -1,7 +1,7 @@
 #include "kernel.h"
 
-//  #undef  __DEBUG_LOG__
-    #define __DEBUG_LOG__
+//  #undef  __LOG_GL__
+    #define __LOG_GL__
 
     #define MY_BUFFER   m_logBuffer
     #define MY_INDEX    m_logBufferIndex
@@ -32,7 +32,7 @@ bool            CKernel::shaderLog                  (   GLint       shader,
                 glGetShaderSource(shader, sizeof(source), 0, source);
 #endif
 
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_GL__
                 storeLog(   MY_BUFFER, MY_INDEX,
                             "buffer       [",                (u32)shaderIndex,
                             "]             ",                      EMPTYLOG,
@@ -42,14 +42,14 @@ bool            CKernel::shaderLog                  (   GLint       shader,
                             (shaderType == 0x00008B31) ? 
                             "Type: Vertex  " : 
                             "Type: Fragment", EMPTYLOG,
-                            "                   source length ",   (u32)sourceLength,
-                            (success == GL_TRUE) ? 
-                            "SUCCESS       " : 
-                            "FAILED        ", EMPTYLOG );
+                            "                   source length        ",   (u32)sourceLength );
 
                 storeLog(   MY_BUFFER, MY_INDEX,
                             "Status ->     ",              EMPTYLOG,
-                            log,                      EMPTYLOG );
+                            log,                      EMPTYLOG,
+                            (success == GL_TRUE) ? 
+                            "SUCCESS       " : 
+                            "FAILED        ", EMPTYLOG );
 
 #ifdef __SHADER_DUMP__
                 nextline(   MY_BUFFER, MY_INDEX );
@@ -70,7 +70,7 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 {
                 GLint success;
                 glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-#ifdef __DEBUG_LOG__ 
+#ifdef __LOG_GL__ 
             //  if (success != GL_TRUE ) storeLog( MY_BUFFER, MY_INDEX,  "ERROR Compilng Program idx", (u32)shaderIndex );
                 storeLog( MY_BUFFER, MY_INDEX,  "Program compile status idx", (u32)shaderIndex, (success == GL_TRUE) ? "SUCCESS" : "FAILED" );
 #endif 
@@ -82,13 +82,13 @@ bool            CKernel::programLog                 (   GLint       program,
 {
                 GLint success;
                 glGetProgramiv(program, GL_LINK_STATUS, &success);
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_GL__
                 storeLog(   MY_BUFFER, MY_INDEX, g_ScnFsh[program_index], EMPTYLOG, "Program link status idx", (u32)program_index, "Program byte size", (u32)g_bytFsh[program_index], (success == GL_TRUE) ? "SUCCESS" : "FAILED", EMPTYLOG);
 #endif 
                 char log[1024];
                 GLsizei logLength = 0;
                 glGetProgramInfoLog(program, sizeof(log), &logLength, log);
-#ifdef __DEBUG_LOG__                 
+#ifdef __LOG_GL__                 
                 if (logLength > 0)
                     {
                     storeLog(   MY_BUFFER, MY_INDEX, "Program InfoLog", EMPTYLOG );
@@ -106,14 +106,14 @@ bool            CKernel::programLog                 (   GLint       program,
 
                     glGetActiveUniform(program, i, sizeof(uname), &length, &size, &type, uname);
                     GLint location = glGetUniformLocation(program, uname);
-#ifdef __DEBUG_LOG__ 
+#ifdef __LOG_GL__ 
                     storeLog(   MY_BUFFER, MY_INDEX, "Uniform name:", EMPTYLOG, uname );
                     storeLog(   MY_BUFFER, MY_INDEX, "Uniform idx", (u32)i, "size", (u32)size, "type", (u32)type, "loc", (u32)location);
 #endif                     
                     }
                 GLint numAttributes;
                 glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &numAttributes);
-#ifdef __DEBUG_LOG__ 
+#ifdef __LOG_GL__ 
                 storeLog(   MY_BUFFER, MY_INDEX, "Active Attributes", (u32)numAttributes );
 #endif 
                 for (GLint i = 0; i < numAttributes; ++i)
@@ -125,12 +125,12 @@ bool            CKernel::programLog                 (   GLint       program,
 
                     glGetActiveAttrib(program, i, sizeof(aname), &length, &size, &type, aname);
                     GLint location = glGetAttribLocation(program, aname);
-#ifdef __DEBUG_LOG__ 
+#ifdef __LOG_GL__ 
                     storeLog(   MY_BUFFER, MY_INDEX, "Attribute name", EMPTYLOG, aname );
                     storeLog(   MY_BUFFER, MY_INDEX, "Attribute idx", (u32)i, "size", (u32)size, "type", (u32)type, "loc", (u32)location );
 #endif                     
                     }
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_GL__
                 nextline(   MY_BUFFER, MY_INDEX); 
 #endif 
 
@@ -150,27 +150,27 @@ void            CKernel::gfx_check                  (   const char* file,
 
                     CTimer* pTimer = CTimer::Get();
                     unsigned ticks = pTimer->GetTicks();
-#ifdef __DEBUG_LOG__  
+#ifdef __LOG_GL__  
                     storeLog(   MY_BUFFER, MY_INDEX, "*** Final System Status ticks", (u32)ticks, "/ Errorcount", (u32)error_count );
 #endif  
                     GLint value;
 
                     glGetIntegerv(GL_CURRENT_PROGRAM, &value);
-#ifdef __DEBUG_LOG__                     
+#ifdef __LOG_GL__                     
                     storeLog(   MY_BUFFER, MY_INDEX, "Current Program", (u32)value);
 #endif  
                     glGetIntegerv(GL_ACTIVE_TEXTURE, &value);
-#ifdef __DEBUG_LOG__                     
+#ifdef __LOG_GL__                     
                     storeLog(   MY_BUFFER, MY_INDEX, "Active Texture Unit", (u32)value);
 #endif  
                     GLint viewport[4];
                     glGetIntegerv(GL_VIEWPORT, viewport);
-#ifdef __DEBUG_LOG__                     
+#ifdef __LOG_GL__                     
                     storeLog(   MY_BUFFER, MY_INDEX, "Viewport x/", (u32)viewport[0], "y", (u32)viewport[1], "w", (u32)viewport[2], "h", (u32)viewport[3] );
 #endif  
                     GLint fb;
                     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fb);
-#ifdef __DEBUG_LOG__                     
+#ifdef __LOG_GL__                     
                     storeLog(   MY_BUFFER, MY_INDEX, "Current Framebuffer", (u32)fb, "=== End Status Report ===" );
 #endif                      
                     return;
@@ -219,7 +219,7 @@ void            CKernel::gfx_check                  (   const char* file,
                             severity  = "WARNING";
                             break;
                         }
-#ifdef __DEBUG_LOG__ 
+#ifdef __LOG_GL__ 
                     storeLog(   MY_BUFFER, MY_INDEX, "OpenGL Error", (u32)error, "ticks", (u32)ticks, "line", (u32)line );
                     storeLog(   MY_BUFFER, MY_INDEX, severity, EMPTYLOG, error_str, EMPTYLOG, file, EMPTYLOG );
 #endif  
