@@ -649,6 +649,7 @@ bool            CKernel::memoryDebugCheckpoint      (   const char* p_Label,
                     CMemorySystem::DumpStatus();
                     }
 #endif
-
+                nextline( MY_BUFFER, MY_INDEX );
+                
                 return TRUE;
 }
