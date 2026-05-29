@@ -49,7 +49,7 @@ bool            CKernel::shaderLog                  (   GLint       shader,
                             (success == GL_TRUE) ? 
                             "SUCCESS       " : 
                             "FAILED        ", EMPTYLOG,
-                            log,                      EMPTYLOG, );
+                            log,                      EMPTYLOG );
 
 #ifdef __SHADER_DUMP__
                 nextline(   MY_BUFFER, MY_INDEX );
