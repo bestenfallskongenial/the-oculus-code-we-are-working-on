@@ -33,7 +33,7 @@ bool            CKernel::shaderLog                  (   GLint       shader,
                 storeLog(   MY_BUFFER, MY_INDEX,
 
                             (shaderType == 0x00008B31) ? "Shadertype: Vertex" : "Shadertype: Fragment", EMPTYLOG,
-                            (deleteStatus == 0) ?        "not deleted" : "deleted", (u32)deleteStatus, EMPTYLOG,
+                            (deleteStatus == 0) ?        "not deleted" : "deleted",  EMPTYLOG,
                             (success == GL_TRUE) ?       "SUCCESS" : "FAILED");
 
                 storeLog(   MY_BUFFER, MY_INDEX,
