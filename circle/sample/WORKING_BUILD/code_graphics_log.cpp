@@ -49,7 +49,7 @@ bool            CKernel::shaderLog                  (   GLint       shader,
                             (success == GL_TRUE) ? 
                             "SUCCESS       " : 
                             "FAILED        ", EMPTYLOG,
-                            log,                      EMPTYLOG );
+                            log,                      EMPTYLOG, );
 
 #ifdef __SHADER_DUMP__
                 nextline(   MY_BUFFER, MY_INDEX );
@@ -91,9 +91,10 @@ bool            CKernel::programLog                 (   GLint       program,
 #ifdef __LOG_GL__                 
                 if (logLength > 0)
                     {
-                    storeMsg(   MY_BUFFER, MY_INDEX,
-                                "GL-Info-Log:  ",
-                                log, logLength);
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "Program InfoLog", EMPTYLOG );
+                    storeLog(   MY_BUFFER, MY_INDEX,
+                                log, EMPTYLOG );
                     }
 #endif 
                 GLint numUniforms;
