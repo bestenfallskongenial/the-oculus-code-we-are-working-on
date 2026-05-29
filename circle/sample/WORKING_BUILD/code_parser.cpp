@@ -45,14 +45,26 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                     t->size[i]      = size_array[i];
 
 #ifdef __DEBUG_LOG__
-                    storeLog(   MY_BUFFER, MY_INDEX, "File         [", (u32)i, "] buffer", (u32)p_buffer_array[i] );
-                    storeMsg(   MY_BUFFER, MY_INDEX, "Header Dump   ", data, headerSize );
-                    storeLog(   MY_BUFFER, MY_INDEX, t->tex_valid[i] ? "header   VALID" : "header  FAILED", EMPTYLOG, "File          ", (u32)i, "Name          ", EMPTYLOG, filename_array[i/*- p_fromFile*/], EMPTYLOG );
-                    storeLog(   MY_BUFFER, MY_INDEX, "Filesize      ", (u32)fileSize, "loaded        ", (u32)size_array[i/*- p_fromFile*/], "max. FileSize ", (u32)t->max_tex_size );
-                    storeLog(   MY_BUFFER, MY_INDEX, "Header offset ", (u32)dataOffset, "header size   ", (u32)headerSize);
-                    storeLog(   MY_BUFFER, MY_INDEX, "width         ", (u32)width, "height        ", (u32)height, "bpp           ", (u32)bpp );
-                    storeLog(   MY_BUFFER, MY_INDEX, "planes        ", (u32)planes, "compression   ", (u32)compression );
-                    storeLog(   MY_BUFFER, MY_INDEX, "exp. Bmp size ", (u32)(width * height * 3), "act. Bmp size ", (u32)imgSize );
+                    storeLog(   MY_BUFFER, MY_INDEX,    "File         [", (u32)i, 
+                                                        "] buffer      ", (u32)p_buffer_array[i] );
+                    storeMsg(   MY_BUFFER, MY_INDEX,    "Header Dump   ", data, headerSize );
+                    storeLog(   MY_BUFFER, MY_INDEX, t->tex_valid[i] ? 
+                                                        "header   VALID" : 
+                                                        "header  FAILED", EMPTYLOG, 
+                                                        "           File          ", (u32)i, 
+                                                        "Name          ", EMPTYLOG, filename_array[i/*- p_fromFile*/], EMPTYLOG );
+                    storeLog(   MY_BUFFER, MY_INDEX,    "Filesize      ", (u32)fileSize, 
+                                                        "loaded        ", (u32)size_array[i/*- p_fromFile*/], 
+                                                        "max. FileSize ", (u32)t->max_tex_size );
+                    storeLog(   MY_BUFFER, MY_INDEX,    "Header offset ", (u32)dataOffset, 
+                                                        "header size   ", (u32)headerSize);
+                    storeLog(   MY_BUFFER, MY_INDEX,    "width         ", (u32)width, 
+                                                        "height        ", (u32)height, 
+                                                        "bpp           ", (u32)bpp );
+                    storeLog(   MY_BUFFER, MY_INDEX,    "planes        ", (u32)planes, 
+                                                        "compression   ", (u32)compression );
+                    storeLog(   MY_BUFFER, MY_INDEX,    "exp. Bmp size ", (u32)(width * height * 3), 
+                                                        "act. Bmp size ", (u32)imgSize );
                     nextline(   MY_BUFFER, MY_INDEX);                       
 #endif
                     }
