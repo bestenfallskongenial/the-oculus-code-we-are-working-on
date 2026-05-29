@@ -83,7 +83,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                                                         u16         max_width,
                                                         u16         max_height,
                                                         u8          max_profile,
-                                                        u8          Min_level,
+                                                        u8          min_level,
                                                         u8          max_level )
 {
                 h->block_base  = blockBase;
@@ -235,12 +235,12 @@ storeLog(   MY_BUFFER, MY_INDEX,
             "SPS file",                 (u32)file_index,
             "level",                    (u32)h->vid_level[file_index],
             "idr_sc_len",               EMPTYLOG,
-            (sc_len == 3) ? 
+            (idr_sc_len == 3) ? 
             "       00 00 01" : 
             "    00 00 00 01" );
 nextline(   MY_BUFFER, MY_INDEX );            
 storeLog(   MY_BUFFER, MY_INDEX,
-            "IDR-Offset     ",          h->idr_offset[file_index]
+            "IDR-Offset     ",          h->idr_offset[file_index],
             "Extradata-Len. ",          (u32)h->extradata_len[file_index] );
 
 storeMsg(   MY_BUFFER, MY_INDEX, 
