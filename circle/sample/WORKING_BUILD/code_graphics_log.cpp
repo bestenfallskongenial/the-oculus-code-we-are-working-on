@@ -14,15 +14,23 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 {
                 GLint success         = 0;
                 GLint shaderType      = 0;
-                GLint deleteStatus    = 0;
-                GLint infoLogLength   = 0;
                 GLint sourceLength    = 0;
 
-                glGetShaderiv(shader, GL_COMPILE_STATUS,      &success);
-                glGetShaderiv(shader, GL_SHADER_TYPE,         &shaderType);
-                glGetShaderiv(shader, GL_DELETE_STATUS,       &deleteStatus);
-                glGetShaderiv(shader, GL_INFO_LOG_LENGTH,     &infoLogLength);
-                glGetShaderiv(shader, GL_SHADER_SOURCE_LENGTH,&sourceLength);
+                char log[1024];
+
+#ifdef __SHADER_DUMP__
+                char source[8096];
+#endif
+
+                glGetShaderiv(shader, GL_COMPILE_STATUS,       &success);
+                glGetShaderiv(shader, GL_SHADER_TYPE,          &shaderType);
+                glGetShaderiv(shader, GL_SHADER_SOURCE_LENGTH, &sourceLength);
+
+                glGetShaderInfoLog(shader, sizeof(log), 0, log);
+
+#ifdef __SHADER_DUMP__
+                glGetShaderSource(shader, sizeof(source), 0, source);
+#endif
 
 #ifdef __DEBUG_LOG__
                 storeLog(   MY_BUFFER, MY_INDEX,
@@ -31,42 +39,29 @@ bool            CKernel::shaderLog                  (   GLint       shader,
                             "handle",                 (u32)shader );
 
                 storeLog(   MY_BUFFER, MY_INDEX,
-
-                            (shaderType == 0x00008B31) ? "Shadertype: Vertex" : "Shadertype: Fragment", EMPTYLOG,
-                            (deleteStatus == 0) ?        "not deleted" : "deleted",  EMPTYLOG );
+                            (shaderType == 0x00008B31) ? 
+                            "Shadertype: Vertex  " : 
+                            "Shadertype: Fragment", EMPTYLOG,
+                            "Shader source length",   (u32)sourceLength,
+                            (success == GL_TRUE) ? 
+                            "SUCCESS             " : 
+                            "FAILED              ", EMPTYLOG );
 
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            "Shader lengths source",  (u32)sourceLength,
-                            "infolog",                (u32)infoLogLength );
+                            "Status ->           ",              EMPTYLOG,
+                            log,                      EMPTYLOG );
+
+#ifdef __SHADER_DUMP__
+                nextline(   MY_BUFFER, MY_INDEX );
+
+                storeLog(   MY_BUFFER, MY_INDEX,
+                            "Shader Source ->    ",       EMPTYLOG,
+                            source,                   EMPTYLOG );
 #endif
 
-                if (infoLogLength > 1)
-                    {
-                    char log[1024];
-                    GLsizei written = 0;
-
-                    glGetShaderInfoLog(shader, sizeof(log), &written, log);
-
-                    if (written > 0)
-                        {
-                        log[sizeof(log) - 1] = '\0';
-
-#ifdef __DEBUG_LOG__
-                        storeLog(   MY_BUFFER, MY_INDEX,
-                                    "Shader InfoLog buffer[",       (u32)shaderIndex,
-                                    "]",                            EMPTYLOG,
-                                    "written",                      (u32)written );
-
-                        storeLog(   MY_BUFFER, MY_INDEX,
-                                    "Status ->" ,EMPTYLOG,
-                                    log,EMPTYLOG,
-                                    (success == GL_TRUE) ?       "SUCCESS" : "FAILED" );
-#endif
-                        }
-                    }
-#ifdef __DEBUG_LOG__                    
                 nextline( MY_BUFFER, MY_INDEX );
 #endif
+
                 return success == GL_TRUE;
 }
 /*

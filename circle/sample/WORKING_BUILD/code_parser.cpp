@@ -53,8 +53,8 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                                                         "header  FAILED", EMPTYLOG, 
                                                         "           File          ", (u32)i, 
                                                         "Name          ", EMPTYLOG, filename_array[i/*- p_fromFile*/], EMPTYLOG );
-                    storeLog(   MY_BUFFER, MY_INDEX,    "Filesize      ", (u32)fileSize, 
-                                                        "loaded        ", (u32)size_array[i/*- p_fromFile*/], 
+                    storeLog(   MY_BUFFER, MY_INDEX,    "exp. Filesize ", (u32)fileSize, 
+                                                        "act. Filesize ", (u32)size_array[i/*- p_fromFile*/], 
                                                         "max. FileSize ", (u32)t->max_tex_size );
                     storeLog(   MY_BUFFER, MY_INDEX,    "Header offset ", (u32)dataOffset, 
                                                         "header size   ", (u32)headerSize);
