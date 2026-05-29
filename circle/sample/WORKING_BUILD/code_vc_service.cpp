@@ -59,7 +59,9 @@ u32             CKernel::convertAddress             (   void*                   
                 u32 bus_addr = BUS_ADDRESS(reinterpret_cast<uintptr_t>(p_busAddress));
                 u32 vcsm_addr = (bus_addr & ~0xC0000000) | 0xC0000000;
 #ifdef __DEBUG_LOG__
-                storeLog ( MY_BUFFER, MY_INDEX, "Buffer Address BUS", (u32)p_busAddress, "Buffer Address ARM", (u32)bus_addr, "Buffer Address VPU", (u32)vcsm_addr); 
+                nextline( MY_BUFFER, MY_INDEX );
+                storeLog ( MY_BUFFER, MY_INDEX, "Buffer BUS", (u32)p_busAddress, "Buffer ARM", (u32)bus_addr, "Buffer VPU", (u32)vcsm_addr); 
+                nextline( MY_BUFFER, MY_INDEX );                
 #endif 
                 CleanAndInvalidateDataCacheRange((uintptr_t)(p_busAddress), p_size);
 

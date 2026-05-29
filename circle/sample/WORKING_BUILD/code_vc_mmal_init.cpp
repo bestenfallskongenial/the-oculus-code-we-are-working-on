@@ -29,13 +29,13 @@ bool            CKernel::initTexturesMMAL         (   )
                     { 
 #ifdef __DEBUG_LOG__ 
                 //  nextline( MY_BUFFER, MY_INDEX );                                 
-                    storeLog( MY_BUFFER, MY_INDEX, "Texture Creation FAILED");
+                    storeLog( MY_BUFFER, MY_INDEX, "Texture Creation    FAILED");
 #endif                   
                     return false;
                     }
 #ifdef __DEBUG_LOG__             
             //  nextline( MY_BUFFER, MY_INDEX );
-                storeLog( MY_BUFFER, MY_INDEX, "Texture Creation SUCCESS");
+                storeLog( MY_BUFFER, MY_INDEX, "Texture Creation    SUCCESS");
 #endif               
                 return true;
 }

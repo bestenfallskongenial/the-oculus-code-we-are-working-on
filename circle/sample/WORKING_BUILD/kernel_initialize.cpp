@@ -210,7 +210,7 @@ boolean			CKernel::Initialize						(	void )
                                     0, 
                                     GPIO_PULL_UP);
 #ifdef __DEBUG_LOG__
-                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "GPIO_SetAlt(SW_PIN_B, 0, GPIO_PULL_UP) DONE");
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "GPIO_SetAlt(SW_PIN_B, 0, GPIO_PULL_UP)  DONE");
 #endif
                     }
 
