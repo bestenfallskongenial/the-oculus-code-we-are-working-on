@@ -20,7 +20,7 @@
     #define __DEBUG_OGL__          // older assert/check based OGL init debug
     #define __SCROLLING__          // animated/intermediate log-screen scrolling frames
 //  #define __SHADER_DUMP__        // dump shader source from GL
-    #define __H264_DEBUG_TEX__     // H264 debug texture path
+//  #define __H264_DEBUG_TEX__     // H264 debug texture path
 
     #define HEAP_DEBUG             // heap dump / CMemorySystem::DumpStatus()
 
