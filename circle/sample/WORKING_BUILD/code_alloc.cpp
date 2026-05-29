@@ -34,7 +34,7 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
                             "ALLOC-MEM done",      (u32)buffers,
                             "count",               (u32)p_count,
                             "size",                (u32)bufferSize);
-                        
+                nextline(   MY_BUFFER, MY_INDEX);       
 #endif         
                 msDelay(100);
                 return buffers;

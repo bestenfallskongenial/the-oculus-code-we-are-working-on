@@ -46,10 +46,10 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 
                 storeLog(   MY_BUFFER, MY_INDEX,
                             "Status ->     ",              EMPTYLOG,
-                            log,                      EMPTYLOG,
                             (success == GL_TRUE) ? 
                             "SUCCESS       " : 
-                            "FAILED        ", EMPTYLOG );
+                            "FAILED        ", EMPTYLOG,
+                            log,                      EMPTYLOG, );
 
 #ifdef __SHADER_DUMP__
                 nextline(   MY_BUFFER, MY_INDEX );
@@ -91,7 +91,9 @@ bool            CKernel::programLog                 (   GLint       program,
 #ifdef __LOG_GL__                 
                 if (logLength > 0)
                     {
-                    storeLog(   MY_BUFFER, MY_INDEX, "Program InfoLog", EMPTYLOG );
+                    storeMsg(   MY_BUFFER, MY_INDEX,
+                                "GL-Info-Log:  ",
+                                log, logLength);
                     }
 #endif 
                 GLint numUniforms;
@@ -107,8 +109,13 @@ bool            CKernel::programLog                 (   GLint       program,
                     glGetActiveUniform(program, i, sizeof(uname), &length, &size, &type, uname);
                     GLint location = glGetUniformLocation(program, uname);
 #ifdef __LOG_GL__ 
-                    storeLog(   MY_BUFFER, MY_INDEX, "Uniform name:", EMPTYLOG, uname );
-                    storeLog(   MY_BUFFER, MY_INDEX, "Uniform idx", (u32)i, "size", (u32)size, "type", (u32)type, "loc", (u32)location);
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "Uniform name: ", EMPTYLOG, uname );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "Uniform idx   ", (u32)i, 
+                                "size          ", (u32)size, 
+                                "type          ", (u32)type, 
+                                "location      ", (u32)location);
 #endif                     
                     }
                 GLint numAttributes;
@@ -127,7 +134,7 @@ bool            CKernel::programLog                 (   GLint       program,
                     GLint location = glGetAttribLocation(program, aname);
 #ifdef __LOG_GL__ 
                     storeLog(   MY_BUFFER, MY_INDEX, "Attribute name", EMPTYLOG, aname );
-                    storeLog(   MY_BUFFER, MY_INDEX, "Attribute idx", (u32)i, "size", (u32)size, "type", (u32)type, "loc", (u32)location );
+                    storeLog(   MY_BUFFER, MY_INDEX, "Attribute idx ", (u32)i, "size", (u32)size, "type", (u32)type, "loc", (u32)location );
 #endif                     
                     }
 #ifdef __LOG_GL__
