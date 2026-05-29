@@ -31,14 +31,14 @@ bool            CKernel::shaderLog                  (   GLint       shader,
                             "handle",                 (u32)shader );
 
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            "Shader status compile",  (u32)success,
-                            "type",                   (u32)shaderType,
-                            "deleted",                (u32)deleteStatus );
+
+                            (shaderType == 0x00008B31) ? "Shadertype: Vertex" : "Shadertype: Fragment", EMPTYLOG,
+                            (deleteStatus == 0) ?        "not deleted" : "deleted", (u32)deleteStatus, EMPTYLOG,
+                            (success == GL_TRUE) ?       "SUCCESS" : "FAILED");
 
                 storeLog(   MY_BUFFER, MY_INDEX,
                             "Shader lengths source",  (u32)sourceLength,
-                            "infolog",                (u32)infoLogLength,
-                            (success == GL_TRUE) ? "SUCCESS" : "FAILED" );
+                            "infolog",                (u32)infoLogLength );
 #endif
 
                 if (infoLogLength > 1)
@@ -59,6 +59,7 @@ bool            CKernel::shaderLog                  (   GLint       shader,
                                     "written",                      (u32)written );
 
                         storeLog(   MY_BUFFER, MY_INDEX,
+                                    "Status ->" ,EMPTYLOG,
                                     log,
                                     EMPTYLOG );
 #endif
