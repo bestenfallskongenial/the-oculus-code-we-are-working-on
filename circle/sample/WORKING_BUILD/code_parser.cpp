@@ -244,7 +244,7 @@ storeLog(   MY_BUFFER, MY_INDEX,
             "Extradata-Len. ",          (u32)h->extradata_len[file_index] );
 
 storeMsg(   MY_BUFFER, MY_INDEX, 
-            "Extradata Dump ",          h->extradata, (extradata_len+ 4) );
+            "Extradata Dump ",          h->extradata, (extradata_len[file_index] + 4) );
 nextline(   MY_BUFFER, MY_INDEX );
 storeLog(   MY_BUFFER, MY_INDEX,
             "Video Filename ",          EMPTYLOG,
