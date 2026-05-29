@@ -235,7 +235,7 @@ storeLog(   MY_BUFFER, MY_INDEX,
             "SPS file",                 (u32)file_index,
             "level",                    (u32)h->vid_level[file_index],
             "idr_sc_len",               EMPTYLOG,
-            (idr_sc_len[file_index] == 3) ? 
+            (h->idr_sc_len[file_index] == 3) ? 
             "       00 00 01" : 
             "    00 00 00 01" );
 nextline(   MY_BUFFER, MY_INDEX );            
