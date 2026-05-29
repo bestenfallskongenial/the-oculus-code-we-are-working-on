@@ -18,8 +18,6 @@ bool            CKernel::shaderLog                  (   GLint       shader,
                 GLint infoLogLength   = 0;
                 GLint sourceLength    = 0;
 
-                u32 logIndexBefore    = MY_INDEX;
-
                 glGetShaderiv(shader, GL_COMPILE_STATUS,      &success);
                 glGetShaderiv(shader, GL_SHADER_TYPE,         &shaderType);
                 glGetShaderiv(shader, GL_DELETE_STATUS,       &deleteStatus);
@@ -28,7 +26,6 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 
 #ifdef __DEBUG_LOG__
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            "ShaderLog bufidx",       logIndexBefore,
                             "buffer[",                (u32)shaderIndex,
                             "]",                      EMPTYLOG,
                             "handle",                 (u32)shader );
