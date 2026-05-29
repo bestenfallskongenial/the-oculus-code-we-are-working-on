@@ -29,7 +29,8 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 #ifdef __DEBUG_LOG__
                 storeLog(   MY_BUFFER, MY_INDEX,
                             "ShaderLog bufidx",       logIndexBefore,
-                            "buffer[index]",          (u32)shaderIndex,
+                            "buffer[",                (u32)shaderIndex,
+                            "]",                      EMPTYLOG,
                             "handle",                 (u32)shader );
 
                 storeLog(   MY_BUFFER, MY_INDEX,
@@ -56,8 +57,9 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 
 #ifdef __DEBUG_LOG__
                         storeLog(   MY_BUFFER, MY_INDEX,
-                                    "Shader InfoLog buffer[index]", (u32)shaderIndex,
-                                    "written",                     (u32)written );
+                                    "Shader InfoLog buffer[",       (u32)shaderIndex,
+                                    "]",                            EMPTYLOG,
+                                    "written",                      (u32)written );
 
                         storeLog(   MY_BUFFER, MY_INDEX,
                                     log,
@@ -65,14 +67,6 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 #endif
                         }
                     }
-
-#ifdef __DEBUG_LOG__
-                storeLog(   MY_BUFFER, MY_INDEX,
-                            "ShaderLog end bufidx",   (u32)MY_INDEX,
-                            "buffer[index]",          (u32)shaderIndex,
-                            "handle",                 (u32)shader );
-#endif
-
                 return success == GL_TRUE;
 }
 /*
