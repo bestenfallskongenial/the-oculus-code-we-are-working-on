@@ -66,7 +66,8 @@ public:
                                                                         const char*                     p_fileExtArray[],       // the array of valid file extensions for this type of file
                                                                         unsigned                        p_extentionCount,       // how many valid file extensions we have in the array above
                                                                         unsigned&                       p_scannedFiles,         // our counter of found files per device / call
-                                                                        unsigned                        p_maxFiles);            // how many files are allowed to scan and stored in the array returns success not files found!
+                                                                        unsigned                        p_maxFiles,             // how many files are allowed to scan and stored in the array returns success not files found!
+                                                                        unsigned                        p_prevFiles);           // the amount of files we already loaded into the buffers 
 
                 char*       gen83FileName              (       const   char*                           ext );   // +++
 

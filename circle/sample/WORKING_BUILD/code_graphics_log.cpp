@@ -121,9 +121,7 @@ bool            CKernel::programLog                 (   GLint       program,
                     }
                 GLint numAttributes;
                 glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &numAttributes);
-#ifdef __LOG_GL__ 
-                storeLog(   MY_BUFFER, MY_INDEX, "Active Attributes", (u32)numAttributes );
-#endif 
+
                 for (GLint i = 0; i < numAttributes; ++i)
                     {
                     char aname[256];
@@ -134,8 +132,13 @@ bool            CKernel::programLog                 (   GLint       program,
                     glGetActiveAttrib(program, i, sizeof(aname), &length, &size, &type, aname);
                     GLint location = glGetAttribLocation(program, aname);
 #ifdef __LOG_GL__ 
-                    storeLog(   MY_BUFFER, MY_INDEX, "Attribute name", EMPTYLOG, aname );
-                    storeLog(   MY_BUFFER, MY_INDEX, "Attribute idx ", (u32)i, "size", (u32)size, "type", (u32)type, "loc", (u32)location );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "Attribute name", EMPTYLOG, aname );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "Attribute idx ", (u32)i, 
+                                "size          ", (u32)size, 
+                                "type          ", (u32)type, 
+                                "location      ", (u32)location );
 #endif                     
                     }
 #ifdef __LOG_GL__
