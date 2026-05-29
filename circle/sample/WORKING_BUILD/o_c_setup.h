@@ -146,13 +146,13 @@
     #define         MAX_SHADER                  33
     #define         MAX_OMF                     1
 
-    #define         MAX_VIDEO_WIDTH             480
-    #define         MAX_VIDEO_HEIGHT            640
+    #define         MAX_VIDEO_WIDTH             640
+    #define         MAX_VIDEO_HEIGHT            480
 
     #define         MAX_VIDEO_PROFILE           66		// Baseline
 
-    #define         MIN_VIDEO_LEVEL             77
-    #define         MAX_VIDEO_LEVEL             100
+    #define         MIN_VIDEO_LEVEL             30
+    #define         MAX_VIDEO_LEVEL             51
 
     #define SCREEN_LOG_BUFFER_SIZE  (1024 * 8)
 
