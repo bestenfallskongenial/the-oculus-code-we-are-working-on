@@ -34,21 +34,21 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 
 #ifdef __DEBUG_LOG__
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            "buffer[",                (u32)shaderIndex,
-                            "]",                      EMPTYLOG,
-                            "handle",                 (u32)shader );
+                            "buffer       [",                (u32)shaderIndex,
+                            "]             ",                      EMPTYLOG,
+                            "handle        ",                 (u32)shader );
 
                 storeLog(   MY_BUFFER, MY_INDEX,
                             (shaderType == 0x00008B31) ? 
-                            "Shadertype: Vertex  " : 
-                            "Shadertype: Fragment", EMPTYLOG,
-                            "Shader source length",   (u32)sourceLength,
+                            "Type: Vertex  " : 
+                            "Type: Fragment", EMPTYLOG,
+                            "                   source length ",   (u32)sourceLength,
                             (success == GL_TRUE) ? 
-                            "SUCCESS             " : 
-                            "FAILED              ", EMPTYLOG );
+                            "SUCCESS       " : 
+                            "FAILED        ", EMPTYLOG );
 
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            "Status ->           ",              EMPTYLOG,
+                            "Status ->     ",              EMPTYLOG,
                             log,                      EMPTYLOG );
 
 #ifdef __SHADER_DUMP__
