@@ -12,6 +12,75 @@
 bool            CKernel::shaderLog                  (   GLint       shader,
                                                         int         shaderIndex )
 {
+                GLint success         = 0;
+                GLint shaderType      = 0;
+                GLint deleteStatus    = 0;
+                GLint infoLogLength   = 0;
+                GLint sourceLength    = 0;
+
+                u32 logIndexBefore    = MY_INDEX;
+
+                glGetShaderiv(shader, GL_COMPILE_STATUS,      &success);
+                glGetShaderiv(shader, GL_SHADER_TYPE,         &shaderType);
+                glGetShaderiv(shader, GL_DELETE_STATUS,       &deleteStatus);
+                glGetShaderiv(shader, GL_INFO_LOG_LENGTH,     &infoLogLength);
+                glGetShaderiv(shader, GL_SHADER_SOURCE_LENGTH,&sourceLength);
+
+#ifdef __DEBUG_LOG__
+                storeLog(   MY_BUFFER, MY_INDEX,
+                            "ShaderLog bufidx",       logIndexBefore,
+                            "buffer[index]",          (u32)shaderIndex,
+                            "handle",                 (u32)shader );
+
+                storeLog(   MY_BUFFER, MY_INDEX,
+                            "Shader status",
+                            "compile",                (u32)success,
+                            "type",                   (u32)shaderType,
+                            "deleted",                (u32)deleteStatus );
+
+                storeLog(   MY_BUFFER, MY_INDEX,
+                            "Shader lengths",
+                            "source",                 (u32)sourceLength,
+                            "infolog",                (u32)infoLogLength,
+                            (success == GL_TRUE) ? "SUCCESS" : "FAILED" );
+#endif
+
+                if (infoLogLength > 1)
+                    {
+                    char log[1024];
+                    GLsizei written = 0;
+
+                    glGetShaderInfoLog(shader, sizeof(log), &written, log);
+
+                    if (written > 0)
+                        {
+                        log[sizeof(log) - 1] = '\0';
+
+#ifdef __DEBUG_LOG__
+                        storeLog(   MY_BUFFER, MY_INDEX,
+                                    "Shader InfoLog buffer[index]", (u32)shaderIndex,
+                                    "written",                     (u32)written );
+
+                        storeLog(   MY_BUFFER, MY_INDEX,
+                                    log,
+                                    EMPTYLOG );
+#endif
+                        }
+                    }
+
+#ifdef __DEBUG_LOG__
+                storeLog(   MY_BUFFER, MY_INDEX,
+                            "ShaderLog end bufidx",   (u32)MY_INDEX,
+                            "buffer[index]",          (u32)shaderIndex,
+                            "handle",                 (u32)shader );
+#endif
+
+                return success == GL_TRUE;
+}
+/*
+bool            CKernel::shaderLog                  (   GLint       shader,
+                                                        int         shaderIndex )
+{
                 GLint success;
                 glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 #ifdef __DEBUG_LOG__ 
@@ -20,7 +89,7 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 #endif 
                 return success == GL_TRUE;
 }
-
+*/
 bool            CKernel::programLog                 (   GLint       program,
                                                         int         program_index )
 {

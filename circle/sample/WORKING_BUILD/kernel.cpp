@@ -50,4 +50,6 @@ void 			CKernel::LoggerSink						(	        void* 			    pContext,
                     }
 
                 pThis->m_logBuffer[pThis->m_logBufferIndex] = '\0'; // means the log goes into the pre-init buffer 
+
+                pThis->logScreenUpdate();
 }
