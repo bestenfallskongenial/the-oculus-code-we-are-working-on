@@ -34,30 +34,31 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 
 #ifdef __LOG_GL__
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            "buffer       [",                (u32)shaderIndex,
-                            "]             ",                      EMPTYLOG,
-                            "handle        ",                 (u32)shader );
+                            g_ScnFsh[program_index], EMPTYLOG,
+                            "buffer       [",       (u32)shaderIndex,
+                            "] handle      ",       (u32)shader );
 
                 storeLog(   MY_BUFFER, MY_INDEX,
                             (shaderType == 0x00008B31) ? 
                             "Vertex       " : 
-                            "Fragment     ",    EMPTYLOG,
-                            "Source Length ",   (u32)sourceLength 
-                            "exp.   Length ",   p_loadedBytes[shaderIndex]);
+                            "Fragment     ",        EMPTYLOG,
+                            "Source Length ",       (u32)sourceLength 
+                            "exp.   Length ",       (p_loadedBytes[shaderIndex] +1)
+                            "( Source + 1 )" );
 
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            "Status ->     ",              EMPTYLOG,
+                            "Status ->    ",        EMPTYLOG,
                             (success == GL_TRUE) ? 
-                            "SUCCESS       " : 
-                            "FAILED        ", EMPTYLOG,
-                            log,                      EMPTYLOG );
+                            "SUCCESS      " : 
+                            "FAILED       ",        EMPTYLOG,
+                            log,                    EMPTYLOG );
 
 #ifdef __SHADER_DUMP__
                 nextline(   MY_BUFFER, MY_INDEX );
 
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            "Shader Source ->    ",       EMPTYLOG,
-                            source,                   EMPTYLOG );
+                            "Source ->    ",        EMPTYLOG,
+                            source,                 EMPTYLOG );
 #endif
 
                 nextline( MY_BUFFER, MY_INDEX );
