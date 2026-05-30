@@ -40,9 +40,10 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 
                 storeLog(   MY_BUFFER, MY_INDEX,
                             (shaderType == 0x00008B31) ? 
-                            "Type: Vertex  " : 
-                            "Type: Fragment", EMPTYLOG,
-                            "                   source length        ",   (u32)sourceLength );
+                            "Vertex       " : 
+                            "Fragment     ",    EMPTYLOG,
+                            "Source Length ",   (u32)sourceLength 
+                            "exp.   Length ",   p_loadedBytes[shaderIndex]);
 
                 storeLog(   MY_BUFFER, MY_INDEX,
                             "Status ->     ",              EMPTYLOG,
@@ -85,8 +86,10 @@ bool            CKernel::programLog                 (   GLint       program,
 #ifdef __LOG_GL__
                 storeLog(   MY_BUFFER, MY_INDEX, 
                             g_ScnFsh[program_index], EMPTYLOG, 
-                            "Program link status idx", (u32)program_index, 
-                            "Program byte size", (u32)g_bytFsh[program_index], (success == GL_TRUE) ? "SUCCESS" : "FAILED", EMPTYLOG);
+                            "Status Prg.  [", (u32)program_index, 
+                            "] Size        ", (u32)g_bytFsh[program_index], 
+                            (success == GL_TRUE) ? 
+                            "Link SUCCESS  " : "Link FAILED   ", EMPTYLOG); 
 #endif 
                 char log[1024];
                 GLsizei logLength = 0;
@@ -95,7 +98,7 @@ bool            CKernel::programLog                 (   GLint       program,
                 if (logLength > 0)
                     {
                     storeLog(   MY_BUFFER, MY_INDEX, 
-                                "Program InfoLog", EMPTYLOG );
+                                "Prg. InfoLog  ", EMPTYLOG );
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 log, EMPTYLOG );
                     }
