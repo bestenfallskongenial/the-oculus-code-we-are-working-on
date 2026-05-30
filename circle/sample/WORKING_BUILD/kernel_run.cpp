@@ -42,18 +42,18 @@ TShutdownMode CKernel::Run(void)
                                                     "bootlog.txt",
                                                     m_logBuffer,            // stores the pre-init buffer
                                                     m_logBufferIndex );
-
+/*
                                                     msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     "pars.txt",
                                                     m_logParseBuffer,
                                                     m_logParseBufferIndex );
-
+*/
                                                     msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    "glsl.txt",
-                                                    m_bufferLog[1],
-                                                    m_bufferLogIndex[1] );
+                                                    "parser.txt",
+                                                    m_bufferLog[0],
+                                                    m_bufferLogIndex[0] );
 /*
                                                     msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
