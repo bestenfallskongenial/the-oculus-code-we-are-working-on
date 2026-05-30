@@ -34,7 +34,7 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 
 #ifdef __LOG_GL__
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            g_ScnFsh[program_index], EMPTYLOG,
+                            g_ScnFsh[shaderIndex],  EMPTYLOG,
                             "buffer       [",       (u32)shaderIndex,
                             "] handle      ",       (u32)shader );
 
