@@ -42,9 +42,8 @@ bool            CKernel::shaderLog                  (   GLint       shader,
                             (shaderType == 0x00008B31) ? 
                             "Vertex       " : 
                             "Fragment     ",        EMPTYLOG,
-                            "Source Length ",       (u32)sourceLength 
-                            "exp.   Length ",       (p_loadedBytes[shaderIndex] +1)
-                            "( Source + 1 )" );
+                            "Source Length ",       (u32)sourceLength, 
+                            "[Buffer] + '0'" );
 
                 storeLog(   MY_BUFFER, MY_INDEX,
                             "Status ->    ",        EMPTYLOG,
