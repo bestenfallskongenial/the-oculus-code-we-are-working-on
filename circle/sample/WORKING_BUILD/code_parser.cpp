@@ -3,8 +3,8 @@
 //  #undef  __LOG_PARSER__
     #define __LOG_PARSER__
 
-    #define MY_BUFFER   m_logBuffer
-    #define MY_INDEX    m_logBufferIndex
+    #define MY_BUFFER   m_bufferLog[0]      //m_logBuffer
+    #define MY_INDEX    m_bufferLogIndex[0] //m_logBufferIndex
 
 bool            CKernel::BMPparser                  (   tex_state*  t,
                                                         char*       p_buffer_array[],
