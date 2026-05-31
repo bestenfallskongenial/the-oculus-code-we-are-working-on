@@ -295,8 +295,6 @@ bool            CKernel::parse264                  (   h264_state* h,
                                 "Header VALID  " : 
                                 "Header INVALID");
                     nextline(   MY_BUFFER, MY_INDEX );            
-                    storeLog(   MY_BUFFER, MY_INDEX,
- );
                     storeMsg(   MY_BUFFER, MY_INDEX, 
                                 "Extradata Dump",          h->extradata, h->extradata_len[file_index] );
                     nextline(   MY_BUFFER, MY_INDEX );
