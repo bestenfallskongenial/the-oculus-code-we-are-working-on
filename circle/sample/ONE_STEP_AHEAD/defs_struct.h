@@ -117,9 +117,15 @@ struct h264_state
     // shared base
     char*           block_base; // void*   block_base;
     // constraints from the firmware
-    u16             max_width;
+    u16             min_width;
+	u16             max_width;
+
+    u16             min_height;	
     u16             max_height;
+
+	u8              min_profile;
     u8              max_profile;
+	
 	u8				min_level;
     u8              max_level;
 };

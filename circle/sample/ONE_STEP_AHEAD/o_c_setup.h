@@ -149,9 +149,13 @@
 
     #define         MAX_FRAMES                  2048
 
-    #define         MAX_VIDEO_WIDTH             640
-    #define         MAX_VIDEO_HEIGHT            480
+    #define         MIN_VIDEO_WIDTH             640
+    #define         MAX_VIDEO_WIDTH             800
 
+    #define         MIN_VIDEO_HEIGHT            480    
+    #define         MAX_VIDEO_HEIGHT            600
+
+    #define         MIN_VIDEO_PROFILE           66		// Baseline
     #define         MAX_VIDEO_PROFILE           66		// Baseline
 
     #define         MIN_VIDEO_LEVEL             30

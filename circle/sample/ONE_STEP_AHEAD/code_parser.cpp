@@ -80,16 +80,30 @@ bool            CKernel::parse264                  (   h264_state* h,
                                                         size_t      size_array[],
                                                         int         p_fromFile,
                                                         int         p_toFile,
+
+                                                        u16         min_width,
                                                         u16         max_width,
+
+                                                        u16         min_height,
                                                         u16         max_height,
+
+                                                        u8          min_profile,
                                                         u8          max_profile,
+
                                                         u8          min_level,
                                                         u8          max_level )
 {
                 h->block_base  = blockBase;
+
+                h->min_width   = min_width;
                 h->max_width   = max_width;
+
+                h->min_height  = min_height;  
                 h->max_height  = max_height;
+
+                h->min_profile = min_profile;
                 h->max_profile = max_profile;
+
                 h->min_level   = min_level; 
                 h->max_level   = max_level;
 
@@ -237,33 +251,41 @@ bool            CKernel::parse264                  (   h264_state* h,
 
                         }
                     h->vid_valid[file_index] =
-                        h->video_width[file_index]  == h->max_width &&      /* why not the global macro settings here, and how we can make the resolution matching the config.txt settings here too? */
-                        h->video_height[file_index] == h->max_height &&
-                        h->vid_profile[file_index]  == h->max_profile &&
+
+                        h->video_width[file_index]  >= h->min_width &&      /* why not the global macro settings here, and how we can make the resolution matching the config.txt settings here too? */
+                        h->video_width[file_index]  <= h->max_width &&
+
+                        h->video_height[file_index] >= h->min_height &&
+                        h->video_height[file_index] <= h->max_height &&
+
+                        h->vid_profile[file_index]  >= h->min_profile &&
+                        h->vid_profile[file_index]  <= h->max_profile &&                        
+
                         h->vid_level[file_index]    >= h->min_level &&
                         h->vid_level[file_index]    <= h->max_level;
 #ifdef __LOG_PARSER__
+                    nextline(   MY_BUFFER, MY_INDEX ); 
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "max. Width    ",          (u32)h->max_width,
-                                "max. Height   ",          (u32)h->max_height,
-                                "max. Profile  ",          (u32)h->max_profile );
+                                "min.  Width   ",          (u32)h->min_width,
+                                "min.  Height  ",          (u32)h->min_height,
+                                "min.  Profile ",          (u32)h->min_profile, 
+                                "min.  Level   ",          (u32)h->min_level );                    
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "min. Level    ",          (u32)h->min_level, 
-                                "max. Level    ",          (u32)h->max_level );            
+                                "max.  Width   ",          (u32)h->max_width,
+                                "max.  Height  ",          (u32)h->max_height,
+                                "max.  Profile ",          (u32)h->max_profile,
+                                "max.  Level   ",          (u32)h->max_level );
                     nextline(   MY_BUFFER, MY_INDEX );    
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                "SPS Results   ",          EMPTYLOG);
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 "Video Width   ",          (u32)h->video_width[file_index],
                                 "Video Height  ",          (u32)h->video_height[file_index],
-                                "Video Profile ",          (u32)h->vid_profile[file_index] );
+                                "Video Profile ",          (u32)h->vid_profile[file_index] 
+                                "Video Level   ",          (u32)h->vid_level[file_index],);
                     nextline(   MY_BUFFER, MY_INDEX );
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 "Parsed Frames ", h->frame_count[file_index]);
                     nextline(   MY_BUFFER, MY_INDEX );
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "SPS file      ",          (u32)file_index,
-                                "level         ",          (u32)h->vid_level[file_index],
                                 "idr_sc_len  ",             EMPTYLOG,
                                 (h->idr_sc_len[file_index] == 3) ? 
                                 "    00 00 01" : 
@@ -275,8 +297,6 @@ bool            CKernel::parse264                  (   h264_state* h,
                     storeMsg(   MY_BUFFER, MY_INDEX, 
                                 "Extradata Dump",          h->extradata, h->extradata_len[file_index] );
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "FileSize      ",          (u32)size_array[file_index],  // [file_index - p_fromFile]
-                                filename_array[file_index], EMPTYLOG,      // [file_index - p_fromFile]  
                                 (h->vid_valid[file_index]) ? 
                                 "Header VALID  " : 
                                 "Header INVALID" );
