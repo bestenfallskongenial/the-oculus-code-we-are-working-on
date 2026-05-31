@@ -289,7 +289,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                                 "idr_sc_len  ",             EMPTYLOG,
                                 (h->idr_sc_len[file_index] == 3) ? 
                                 "    00 00 01" : 
-                                " 00 00 00 01",
+                                " 00 00 00 01",             EMPTYLOG,
                                 "Extradata-Len.",          (u32)h->extradata_len[file_index],
                                 (h->vid_valid[file_index]) ? 
                                 "Header VALID  " : 
