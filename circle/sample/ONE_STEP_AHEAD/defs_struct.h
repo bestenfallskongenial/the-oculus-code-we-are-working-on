@@ -100,7 +100,6 @@ struct h264_state
     size_t          frame_offset[MAX_VIDEOS][MAX_FRAMES];
     size_t          frame_length[MAX_VIDEOS][MAX_FRAMES];
 
-    size_t          idr_offset[MAX_VIDEOS];                 // size_t idr_offset[MAX_VIDEOS]; ??
 	size_t			idr_sc_len[MAX_VIDEOS];
     // extradata
     u8              extradata[MAX_VIDEOS][256];
@@ -125,7 +124,7 @@ struct h264_state
 
 	u8              min_profile;
     u8              max_profile;
-	
+
 	u8				min_level;
     u8              max_level;
 };

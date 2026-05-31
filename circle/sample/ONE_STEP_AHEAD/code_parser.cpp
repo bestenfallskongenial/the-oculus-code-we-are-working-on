@@ -289,17 +289,16 @@ bool            CKernel::parse264                  (   h264_state* h,
                                 "idr_sc_len  ",             EMPTYLOG,
                                 (h->idr_sc_len[file_index] == 3) ? 
                                 "    00 00 01" : 
-                                " 00 00 00 01" );
-                    nextline(   MY_BUFFER, MY_INDEX );            
-                    storeLog(   MY_BUFFER, MY_INDEX,
-                                "IDR-Offset    ",          h->idr_offset[file_index],
-                                "Extradata-Len.",          (u32)h->extradata_len[file_index] );
-                    storeMsg(   MY_BUFFER, MY_INDEX, 
-                                "Extradata Dump",          h->extradata, h->extradata_len[file_index] );
-                    storeLog(   MY_BUFFER, MY_INDEX,
+                                " 00 00 00 01",
+                                "Extradata-Len.",          (u32)h->extradata_len[file_index],
                                 (h->vid_valid[file_index]) ? 
                                 "Header VALID  " : 
-                                "Header INVALID" );
+                                "Header INVALID");
+                    nextline(   MY_BUFFER, MY_INDEX );            
+                    storeLog(   MY_BUFFER, MY_INDEX,
+ );
+                    storeMsg(   MY_BUFFER, MY_INDEX, 
+                                "Extradata Dump",          h->extradata, h->extradata_len[file_index] );
                     nextline(   MY_BUFFER, MY_INDEX );
 #endif // __LOG_PARSER__               
                     }
