@@ -91,11 +91,11 @@ struct h264_state
     u8*             data[MAX_VIDEOS];
     size_t          size[MAX_VIDEOS];
     // frame table -  the actual data we need for model a decoding
-    u32          	nal_block_address[MAX_VIDEOS][MAX_FRAMES];
+    void*           nal_block_address[MAX_VIDEOS][MAX_FRAMES];
     size_t          nal_block_offset[MAX_VIDEOS][MAX_FRAMES];
     size_t          nal_block_length[MAX_VIDEOS][MAX_FRAMES];
     // frame table -  the actual data we need for model b decoding 
-    u32           	frame_address[MAX_VIDEOS][MAX_FRAMES];
+    void*           frame_address[MAX_VIDEOS][MAX_FRAMES];
     size_t          frame_offset[MAX_VIDEOS][MAX_FRAMES];
     size_t          frame_length[MAX_VIDEOS][MAX_FRAMES];
 
@@ -114,7 +114,7 @@ struct h264_state
     size_t          frame_count[MAX_VIDEOS];                // unsigned frame_count[MAX_VIDEOS]; ??
     bool            vid_valid[MAX_VIDEOS];
     // shared base
-    u8*           block_base; // void*   block_base;
+    char*           block_base; // void*   block_base;
     // constraints from the firmware
     u16             max_width;
     u16             max_height;
