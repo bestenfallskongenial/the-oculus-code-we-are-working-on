@@ -133,13 +133,13 @@
     // WS2812 pin
     #define         LED_PIN		           	    19		                            // led ( must be between 8 .. 23 )
     #define         LED_COUNT		       	    4		                            // number of LEDs on the stripes   
-
+//  buttons
     #define         BUTTON_COUNT                2                                   // was addon/sensors/buttons.h is now buttonPing()  no class required 
     #define         SW_PIN_A	           	    13                                  // button A ( lower )
     #define         SW_PIN_B	          	    6                                   // button B ( upper )
-
-    #define         CTRL_PIN                 	    12                                  // for menu input selector!!!
-
+// control / adc routing pin
+    #define         CTRL_PIN                 	12                                  // for menu input selector!!!
+// media
     #define         MAX_TEXTURE                 8
 
     #define         MAX_SHADER                  33

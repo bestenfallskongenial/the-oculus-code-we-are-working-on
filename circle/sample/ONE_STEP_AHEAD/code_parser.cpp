@@ -187,14 +187,14 @@ bool            CKernel::parse264                  (   h264_state* h,
 #ifdef __LOG_PARSER__
                         storeLog(   MY_BUFFER, MY_INDEX,
                                     "67+68+65", EMPTYLOG,
-                                    "a", (u32)h->nal_block_address[file_index][idx],
-                                    "l", (u32)h->nal_block_length[file_index][idx],
-                                    "o", (u32)h->nal_block_offset[file_index][idx]);
+                                    "address ", (u32)h->nal_block_address[file_index][idx],
+                                    "length  ", (u32)h->nal_block_length[file_index][idx],
+                                    "offset  ", (u32)h->nal_block_offset[file_index][idx]);
                         storeLog(   MY_BUFFER, MY_INDEX,                                                                          /* ADDED: log startcode+IDR runtime packet */
                                     "65      ", EMPTYLOG,
-                                    "a", (u32)h->frame_address[file_index][idx],
-                                    "l", (u32)h->frame_length[file_index][idx],
-                                    "o", (u32)h->frame_offset[file_index][idx]);
+                                    "address ", (u32)h->frame_address[file_index][idx],
+                                    "length  ", (u32)h->frame_length[file_index][idx],
+                                    "offset  ", (u32)h->frame_offset[file_index][idx]);
 #endif
                         }
 
