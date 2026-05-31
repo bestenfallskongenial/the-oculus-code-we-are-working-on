@@ -79,11 +79,12 @@ struct tex_state
     EGLImageKHR     m_EGLimage = nullptr;       // backing (changes per frame) 
 };
 /*
-| Model | CONFIG once                     | RUNTIME per frame                               |
-| ----- | ------------------------------- | ----------------------------------------------- |
-| A     | `startcode+SPS + startcode+PPS` | `startcode+SPS + startcode+PPS + startcode+IDR` |
-| B     | `startcode+SPS + startcode+PPS` | `startcode+IDR`                                 |
-
+| Model 					| CONFIG once                     | RUNTIME per frame                               |
+| ------------------------- | ------------------------------- | ----------------------------------------------- |
+| H264_DEFAULT / Annex-B  A | `startcode+SPS + startcode+PPS` | `startcode+SPS + startcode+PPS + startcode+IDR` |
+| H264_DEFAULT / Annex-B  B | `startcode+SPS + startcode+PPS` | `startcode+IDR`                                 |
+| H264_RAW - not feasible!! | SPS without startcode/		  |													|
+|							| EPB + PPS without startcode/EPB | IDR without startcode/EPB                       |
 */
 struct h264_state
 {
@@ -287,7 +288,6 @@ union mmal_es_specific_format
 	struct mmal_video_format video;
 	struct mmal_subpicture_format subpicture;
 };
-
 /*
 struct mmal_es_format_local 	// Definition of an elementary stream format (MMAL_ES_FORMAT_T) - we must investigate how this end up here!!
 {

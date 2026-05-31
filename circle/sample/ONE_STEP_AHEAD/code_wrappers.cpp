@@ -44,12 +44,10 @@ bool            CKernel::wrapperInitMEM             (   )
                     {
                     bOK = (m_bufferKnl = allocBufferMEM(    filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], filecounter[FT_KLN][FLD_SIZE]));
                     }
-
                 if (bOK)
                     {
                     bOK = (m_bufferLog = allocBufferMEM(    filecounter[FT_LOG][FLD_MAXSD]+filecounter[FT_LOG][FLD_MAXUSB], filecounter[FT_LOG][FLD_SIZE]));
                     }                   
-
                 if (bOK)
                     {
                     bOK = (m_bufferVsh = allocBufferMEM(    filecounter[FT_VSH][FLD_MAXSD]+filecounter[FT_VSH][FLD_MAXUSB], filecounter[FT_VSH][FLD_SIZE]));

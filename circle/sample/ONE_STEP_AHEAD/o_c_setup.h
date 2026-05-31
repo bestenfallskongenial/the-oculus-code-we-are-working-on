@@ -140,7 +140,6 @@
 
     #define         CTRL_PIN                 	    12                                  // for menu input selector!!!
 
-  
     #define         MAX_TEXTURE                 8
 
     #define         MAX_SHADER                  33
@@ -156,7 +155,7 @@
     #define         MAX_VIDEO_PROFILE           66		// Baseline
 
     #define         MIN_VIDEO_LEVEL             30
-    #define         MAX_VIDEO_LEVEL             52      // missconception, the parser has only one value,  not a range! was 51
+    #define         MAX_VIDEO_LEVEL             52      // misconception, the parser has only one value,  not a range! was 51
 
     #define SCREEN_LOG_BUFFER_SIZE  (1024 * 8)
 

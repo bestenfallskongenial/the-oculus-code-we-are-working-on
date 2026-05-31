@@ -51,20 +51,20 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                     storeLog(   MY_BUFFER, MY_INDEX, t->tex_valid[i] ? 
                                                         "header   VALID" : 
                                                         "header  FAILED", EMPTYLOG, 
-                                                        "           File          ", (u32)i, 
-                                                        "Name          ", EMPTYLOG, filename_array[i/*- p_fromFile*/], EMPTYLOG );
+                                                        " Name         ", EMPTYLOG, 
+                                                        filename_array[i], EMPTYLOG );
                     storeLog(   MY_BUFFER, MY_INDEX,    "exp. Filesize ", (u32)fileSize, 
-                                                        "act. Filesize ", (u32)size_array[i/*- p_fromFile*/], 
+                                                        "act. Filesize ", (u32)size_array[i], 
                                                         "max. FileSize ", (u32)t->max_tex_size );
                     storeLog(   MY_BUFFER, MY_INDEX,    "Header offset ", (u32)dataOffset, 
-                                                        "header size   ", (u32)headerSize);
-                    storeLog(   MY_BUFFER, MY_INDEX,    "width         ", (u32)width, 
-                                                        "height        ", (u32)height, 
-                                                        "bpp           ", (u32)bpp );
-                    storeLog(   MY_BUFFER, MY_INDEX,    "planes        ", (u32)planes, 
-                                                        "compression   ", (u32)compression );
-                    storeLog(   MY_BUFFER, MY_INDEX,    "exp. Bmp size ", (u32)(width * height * 3), 
-                                                        "act. Bmp size ", (u32)imgSize );
+                                                        "Header size   ", (u32)headerSize);
+                    storeLog(   MY_BUFFER, MY_INDEX,    "Bitmap Width  ", (u32)width, 
+                                                        "Bitmap Height ", (u32)height, 
+                                                        "BitsPerPixel  ", (u32)bpp );
+                    storeLog(   MY_BUFFER, MY_INDEX,    "Bitmap-Planes ", (u32)planes, 
+                                                        "Compression   ", (u32)compression );
+                    storeLog(   MY_BUFFER, MY_INDEX,    "exp. Bmpsize  ", (u32)(width * height * 3), 
+                                                        "act. Bmpsize  ", (u32)imgSize );
                     nextline(   MY_BUFFER, MY_INDEX);                       
 #endif
                     }
@@ -191,7 +191,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                                     "l", (u32)h->nal_block_length[file_index][idx],
                                     "o", (u32)h->nal_block_offset[file_index][idx]);
                         storeLog(   MY_BUFFER, MY_INDEX,                                                                          /* ADDED: log startcode+IDR runtime packet */
-                                    "65", EMPTYLOG,
+                                    "65      ", EMPTYLOG,
                                     "a", (u32)h->frame_address[file_index][idx],
                                     "l", (u32)h->frame_length[file_index][idx],
                                     "o", (u32)h->frame_offset[file_index][idx]);
