@@ -279,7 +279,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 "Video Width   ",          (u32)h->video_width[file_index],
                                 "Video Height  ",          (u32)h->video_height[file_index],
-                                "Video Profile ",          (u32)h->vid_profile[file_index] 
+                                "Video Profile ",          (u32)h->vid_profile[file_index], 
                                 "Video Level   ",          (u32)h->vid_level[file_index],);
                     nextline(   MY_BUFFER, MY_INDEX );
                     storeLog(   MY_BUFFER, MY_INDEX,
