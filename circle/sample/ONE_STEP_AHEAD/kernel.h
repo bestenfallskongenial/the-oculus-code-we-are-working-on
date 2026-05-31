@@ -301,18 +301,25 @@ public:
                                                                         int                             p_fromFile,
                                                                         int                             p_toFile );
                                 
-                bool        parse264                    (               h264_state*                     h,
-                                                                        char*                           blockBase,
-                                                                        char*                           p_buffer_array[],
-                                                                        char*                           filename_array[],
-                                                                        size_t                          size_array[],
-                                                                        int                             p_fromFile,
-                                                                        int                             p_toFile,
-                                                                        u16                             max_width,
-                                                                        u16                             max_height,
-                                                                        u8                              max_profile,
-                                                                        u8                              Min_level,
-                                                                        u8                              max_level );
+                bool        parse264                    (               h264_state* h,
+                                                                        char*       blockBase,
+                                                                        char*       p_buffer_array[],
+                                                                        char*       filename_array[],
+                                                                        size_t      size_array[],
+                                                                        int         p_fromFile,
+                                                                        int         p_toFile,
+
+                                                                        u16         min_width,
+                                                                        u16         max_width,
+
+                                                                        u16         min_height,
+                                                                        u16         max_height,
+
+                                                                        u8          min_profile,
+                                                                        u8          max_profile,
+
+                                                                        u8          min_level,
+                                                                        u8          max_level );
 
                 bool        ParseSPS                    (               u8*                             sps_data,
                                                                         size_t                          sps_size,
