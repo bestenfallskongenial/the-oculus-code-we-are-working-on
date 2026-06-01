@@ -23,7 +23,7 @@ TShutdownMode CKernel::Run(void)
                     if (!m_SD_has_load) 
                         {
                         wrapper_from_sd();
-                        wrapper_parser();
+                        wrapper_parser_a();
                         wrapper_init_gl_sd();
 
                         m_SD_has_load = true;
@@ -34,7 +34,7 @@ TShutdownMode CKernel::Run(void)
 
                         wrapper_load_usb();   
 
-                        wrapper_parser();
+                        wrapper_parser_b();
                         wrapper_init_gl_usb();
        
                         saveFromBufferM         (   PARTITION_NAME_SD,
