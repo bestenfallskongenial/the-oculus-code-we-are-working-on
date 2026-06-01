@@ -175,9 +175,9 @@ boolean			CKernel::Initialize						(	void )
                         "DISPMANX Element   ", m_ogl.dispman_element,
                         "DISPMANX Display   ", m_ogl.dispman_display );
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX,
-                        "EGL Display        ", m_ogl.display,
-                        "EGL Surface        ", m_ogl.surface,
-                        "EGL Context        ", m_ogl.context );
+                        "EGL Display        ", (u32)(uintptr_t)m_ogl.display,
+                        "EGL Surface        ", (u32)(uintptr_t)m_ogl.surface,
+                        "EGL Context        ", (u32)(uintptr_t)m_ogl.context );
 #endif
                     }
                 if (bOK)
