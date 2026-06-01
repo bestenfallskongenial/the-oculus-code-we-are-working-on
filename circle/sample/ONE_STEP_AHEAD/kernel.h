@@ -546,7 +546,9 @@ public:
 
                 void        wrapper_load_usb            ();             // mount/scan/load and validate memory for usb +++       
 
-                void        wrapper_parser              ();
+                void        wrapper_parser_a            ();
+
+                void        wrapper_parser_b            ();                
                 
                 void        wrapper_init_gl_sd          ();             // parse/init vertex/default shader and overlay texture                 
 
