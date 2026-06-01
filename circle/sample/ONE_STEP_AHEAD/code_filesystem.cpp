@@ -179,42 +179,7 @@ bool            CKernel::IsValidFile                (   const   char*       pFil
                 
                 return (*suffix == '\0' && *extension == '\0');
 }
-/*
-bool            CKernel::scanRoot                   (           char**      p_fileNameArray,
-                                                        const   char*       p_fileExtArray[],
-                                                                unsigned    p_extentionCount,
-                                                                unsigned&   p_scannedFiles,
-                                                                unsigned    p_maxFiles )
-{
-                p_scannedFiles = 0;
 
-                TDirentry           f_directoryEntry;
-                TFindCurrentEntry   f_currentDirectoryEntry;
-                
-                unsigned            f_nextEntry                 = m_pFileSystem->RootFindFirst(&f_directoryEntry, &f_currentDirectoryEntry);
-
-                if(f_nextEntry == 0) return false;
-
-                while (f_nextEntry != 0 && p_scannedFiles < p_maxFiles) 
-                    {
-                    if (!(f_directoryEntry.nAttributes & FS_ATTRIB_SYSTEM)) 
-                        {
-                        for (unsigned i = 0; i < p_extentionCount; ++i)
-                            {
-                            if (IsValidFile(f_directoryEntry.chTitle, p_fileExtArray[i])) 
-                                {
-                                p_fileNameArray[p_scannedFiles] = new char[strlen(f_directoryEntry.chTitle) + 1];
-                                strcpy(p_fileNameArray[p_scannedFiles], f_directoryEntry.chTitle);
-                                p_scannedFiles++;
-                                break;
-                                }
-                            }
-                        }
-                    f_nextEntry = m_pFileSystem->RootFindNext(&f_directoryEntry, &f_currentDirectoryEntry);
-                    }
-                return true;
-}
-*/
 bool            CKernel::scanRoot                   (           char**      p_fileNameArray,
                                                         const   char*       p_fileExtArray[],
                                                                 unsigned    p_extentionCount,

@@ -65,19 +65,7 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 
                 return success == GL_TRUE;
 }
-/*
-bool            CKernel::shaderLog                  (   GLint       shader,
-                                                        int         shaderIndex )
-{
-                GLint success;
-                glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-#ifdef __LOG_GL__ 
-            //  if (success != GL_TRUE ) storeLog( MY_BUFFER, MY_INDEX,  "ERROR Compilng Program idx", (u32)shaderIndex );
-                storeLog( MY_BUFFER, MY_INDEX,  "Program compile status idx", (u32)shaderIndex, (success == GL_TRUE) ? "SUCCESS" : "FAILED" );
-#endif 
-                return success == GL_TRUE;
-}
-*/
+
 bool            CKernel::programLog                 (   GLint       program,
                                                         int         program_index )
 {
