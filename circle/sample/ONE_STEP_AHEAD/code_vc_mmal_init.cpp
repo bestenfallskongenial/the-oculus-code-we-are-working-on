@@ -1,10 +1,7 @@
 #include "kernel.h"
 
-//  #undef  __LOG_MMAL__
-    #define __LOG_MMAL__
-
-    #define MY_BUFFER   m_logBuffer                 // not used here 
-    #define MY_INDEX    m_logBufferIndex
+    #define MY_BUFFER   m_bufferLog[2]                 // not used here 
+    #define MY_INDEX    m_bufferLogIndex[2]
 
 bool            CKernel::initTexturesMMAL         (   )
 {
