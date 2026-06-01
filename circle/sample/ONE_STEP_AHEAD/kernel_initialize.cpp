@@ -170,8 +170,8 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initOGL(&m_ogl)                         DONE");
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, 
-                        "Screen Width       ", m_ogl.screen_width, 
-                        "Screen Height      ", m_ogl.screen_width,
+                        "EGL Screen Width   ", m_ogl.screen_width, 
+                        "EGL Screen Height  ", m_ogl.screen_height,
                         "DISPMANX Element   ", m_ogl.dispman_element,
                         "DISPMANX Display   ", m_ogl.dispman_display );
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX,
