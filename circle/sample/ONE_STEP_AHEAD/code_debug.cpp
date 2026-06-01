@@ -79,17 +79,17 @@ void ADCDebug()
 {
     char f_logBuffer[512];
     u32  f_logIndex = 0;
-    
+
     storeLog(   f_logBuffer, f_logIndex,
                 "0 RAW", (u32)g_inOutMatrixInt[0][RAW],
-                "1 RAW", (u32)g_inOutMatrixInt[1][VAL],
-                "2 RAW", (u32)g_inOutMatrixInt[2][RND],
-                "3 RAW", (u32)g_inOutMatrixInt[3][RND] );
+                "1 RAW", (u32)g_inOutMatrixInt[1][RAW],
+                "2 RAW", (u32)g_inOutMatrixInt[2][RAW],
+                "3 RAW", (u32)g_inOutMatrixInt[3][RAW] );
     storeLog(   f_logBuffer, f_logIndex,
                 "4 RAW", (u32)g_inOutMatrixInt[4][RAW],
-                "5 RAW", (u32)g_inOutMatrixInt[5][VAL],
-                "6 RAW", (u32)g_inOutMatrixInt[6][RND],
-                "7 RAW", (u32)g_inOutMatrixInt[7][RND] );
+                "5 RAW", (u32)g_inOutMatrixInt[5][RAW],
+                "6 RAW", (u32)g_inOutMatrixInt[6][RAW],
+                "7 RAW", (u32)g_inOutMatrixInt[7][RAW] );
 }
 void CKernel::logInOutRuntime(void)
 {
