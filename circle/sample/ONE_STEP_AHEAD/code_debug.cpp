@@ -75,7 +75,8 @@ void CKernel::logButtonStatesRuntime(void)
                        10,
                        0xFFFFFFFF );
 }
-void ADCDebug()
+
+void CKernel::ADCDebug()
 {
     char f_logBuffer[512];
     u32  f_logIndex = 0;
@@ -90,6 +91,13 @@ void ADCDebug()
                 "5 RAW", (u32)g_inOutMatrixInt[5][RAW],
                 "6 RAW", (u32)g_inOutMatrixInt[6][RAW],
                 "7 RAW", (u32)g_inOutMatrixInt[7][RAW] );
+
+    bufferScreenDraw(  f_logBuffer,
+                       0,
+                       f_logIndex,
+                       0,
+                       0,
+                       0xFFFFFFFF );                
 }
 void CKernel::logInOutRuntime(void)
 {
