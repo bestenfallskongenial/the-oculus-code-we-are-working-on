@@ -1,5 +1,4 @@
 private:        // circle system requirements
-/*
                 CActLED                         m_ActLED;
                 CKernelOptions                  m_Options;
                 CMachineInfo                    m_MachineInfo;
@@ -16,34 +15,6 @@ private:        // circle system requirements
                 CFATFileSystem                 *m_pFileSystem; 
 
                 CScheduler		                m_Scheduler;
-*/
-private:        // circle system requirements
-                CActLED                         m_ActLED;
-                CKernelOptions                  m_Options;
-                CMachineInfo                    m_MachineInfo;
-                CDeviceNameService              m_DeviceNameService;
-                CExceptionHandler               m_ExceptionHandler;
-
-                CInterruptSystem                m_Interrupt;
-                CTimer                          m_Timer;
-                CLogger                         m_Logger;
-
-                CMemorySystem                   m_Memory;
-
-                CBcmFrameBuffer                 gE_FrameBuffer;
-
-                CDMAChannel                     m_SMITxDMA;
-
-                CEMMCDevice                     m_EMMC;
-                CUSBHCIDevice                   m_USBHCI;
-                CVCHIQDevice                    m_VCHIQ;
-
-                volatile bool                   m_bStorageAttached = false;
-                CFATFileSystem                 *m_pFileSystem;
-                bool                            m_resetFlag = false;
-
-                CScheduler                      m_Scheduler;
-
 public:
                 CBcmFrameBuffer                 gE_FrameBuffer;
                 CCharGenerator                  gE_CharGenerator;
@@ -115,7 +86,7 @@ unsigned                        m_logScreenLastRow                    = 0;
 
                 h264_state                      m_vid    = {};    
 // missing globals / shared state / dummies for now
-            //  bool                            m_resetFlag             = false;
+                bool                            m_resetFlag             = false;
                 bool                            m_SD_has_load           = false;
                 bool                            m_USB_has_load          = false;
 
@@ -155,7 +126,7 @@ unsigned                        m_logScreenLastRow                    = 0;
 // datamanagement.cpp
                 unsigned                        g_hFile;
 
-            //  volatile    bool	            m_bStorageAttached      = false;
+                volatile    bool	            m_bStorageAttached      = false;
 
                 char                            m_83FileName[MAX_FILE_NAME_LENGTH];
 // util
