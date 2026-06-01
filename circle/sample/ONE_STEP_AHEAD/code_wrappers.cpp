@@ -1,11 +1,5 @@
 #include "kernel.h"
 
-//  #undef  __DEBUG__
-    #define __DEBUG__
-
-//  #undef  __DEBUG_LOG__
-    #define __DEBUG_LOG__
-
     #define MY_BUFFER   m_logBuffer
     #define MY_INDEX    m_logBufferIndex
 

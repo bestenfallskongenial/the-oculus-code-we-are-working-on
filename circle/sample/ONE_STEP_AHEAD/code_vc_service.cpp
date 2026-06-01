@@ -1,14 +1,7 @@
 #include "kernel.h"
 
-
-    #undef  __LOG_VC04_MSG__
-//  #define __LOG_VC04_MSG__
-
-//  #undef  __LOG_VC04__
-    #define __LOG_VC04__
-
-    #define MY_BUFFER   m_logBuffer                 // not used here 
-    #define MY_INDEX    m_logBufferIndex
+    #define MY_BUFFER   m_logBuffer[2]                 // not used here 
+    #define MY_INDEX    m_logBufferIndex[2]
 
 void            CKernel::callbackVCSM               (   void*                   callback_param,         // static ??
                                                         VCHI_CALLBACK_REASON_T  reason, 

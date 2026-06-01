@@ -1,23 +1,16 @@
 #include "kernel.h"
 
-//  #undef  __DEBUG_LOG__
-    #define __DEBUG_LOG__
-
     #define MY_BUFFER   m_logBuffer     
     #define MY_INDEX    m_logBufferIndex   
 
 TShutdownMode CKernel::Run(void)
 {
-
                 unsigned r = 0;
                 unsigned g = 127;
                 unsigned b = 186;
 
                 while (/*m_resetFlag == false*/ 1)
                     {
-
-                //  bufferScreenClear();
-
                     g_currentTime = m_Timer.GetClockTicks(); 
 
                     if (!m_SD_has_load) 
@@ -31,7 +24,6 @@ TShutdownMode CKernel::Run(void)
 
                     if (updateUSB("umsd1") == true && m_USB_has_load == false)
                         {
-
                         wrapper_load_usb();   
 
                         wrapper_parser_b();
@@ -54,13 +46,13 @@ TShutdownMode CKernel::Run(void)
                                                     "parser.txt",
                                                     m_bufferLog[0],
                                                     m_bufferLogIndex[0] );
-/*
+
                                                     msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    "vi0pars.txt",
-                                                    m_bufferLog[0],
-                                                    m_bufferLogIndex[0] );
-                                                    
+                                                    "vc04.txt",
+                                                    m_bufferLog[2],
+                                                    m_bufferLogIndex[2] );
+/*                                         
                                                     msDelay(100);
                         saveFromBufferM         (   PARTITION_NAME_SD,
                                                     "vi1pars.txt",

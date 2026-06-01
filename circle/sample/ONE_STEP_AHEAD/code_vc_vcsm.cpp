@@ -1,9 +1,7 @@
 #include "kernel.h"
 
-    #define __LOG_VCSM__
-
-    #define MY_BUFFER   m_logBuffer     
-    #define MY_INDEX    m_logBufferIndex   
+    #define MY_BUFFER   m_logBuffer[2]     
+    #define MY_INDEX    m_logBufferIndex[2]   
 
 bool            CKernel::allocMemoryVCSM            (   size_t                  size,
                                                         u32                     base_unit,

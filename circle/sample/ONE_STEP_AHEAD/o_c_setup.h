@@ -11,7 +11,7 @@
     #define __LOG_PARSER__         // parser / file parser logging
     #define __LOG_MMAL__           // MMAL init/wrapper/message logging
     #define __LOG_VC04__           // VC/VCHI service logging
-//  #define __LOG_VC04_MSG__       // detailed VC/VCHI message dump
+    #define __LOG_VC04_MSG__       // detailed VC/VCHI message dump
     #define __LOG_VCSM__           // VCSM alloc/import/lock logging
     #define __LOG_INIT__           // kernel initialization step logging
     #define __LOG_GL__             // shader/program/uniform/gfx_check OpenGL logging

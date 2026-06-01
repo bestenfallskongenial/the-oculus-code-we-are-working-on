@@ -169,6 +169,15 @@ boolean			CKernel::Initialize						(	void )
                     initOGL(    &m_ogl);
 #ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initOGL(&m_ogl)                         DONE");
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, 
+                        "Screen Width       ", m_ogl.screen_width, 
+                        "Screen Height      ", m_ogl.screen_width,
+                        "DISPMANX Element   ", m_ogl.dispman_element,
+                        "DISPMANX Display   ", m_ogl.dispman_display );
+                    if (bOK) storeLog( MY_BUFFER, MY_INDEX,
+                        "EGL Display        ", m_ogl.display,
+                        "EGL Surface        ", m_ogl.surface,
+                        "EGL Context        ", m_ogl.context );
 #endif
                     }
                 if (bOK)

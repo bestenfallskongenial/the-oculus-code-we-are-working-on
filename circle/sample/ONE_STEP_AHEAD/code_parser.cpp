@@ -163,27 +163,8 @@ bool            CKernel::parse264                  (   h264_state* h,
                             }   
                         pos = next_pos;
                         }
-/*                        
-                    for (size_t idx = 0; idx < i; idx++)
-                        {
-                        size_t end_off = (idx + 1 < i) ? sps_off[file_index][idx + 1] : size;
 
-                        h->nal_block_address[file_index][idx] = (void*)(data + sps_off[file_index][idx]);
-                        h->nal_block_offset[file_index][idx]  = (size_t)((data + sps_off[file_index][idx]) - (u8*)h->block_base);
-                        h->nal_block_length[file_index][idx]  = end_off - sps_off[file_index][idx];
-                        h->idr_offset[file_index]         = idr_off[file_index][idx] - sps_off[file_index][idx];
-
-#ifdef __LOG_PARSER__
-                        storeLog(   MY_BUFFER, MY_INDEX,
-                                    "67+68+65", EMPTYLOG, 
-                                    "a", (u32)h->nal_block_address[file_index][idx], 
-                                    "l", (u32)h->nal_block_length[file_index][idx], 
-                                    "o", (u32)h->nal_block_offset[file_index][idx]);
-#endif
-                  
-                        }
-*/
-                    u32 vcsm_base = (BUS_ADDRESS(reinterpret_cast<uintptr_t>(h->block_base)) & ~0xC0000000) | 0xC0000000;                       /* ADDED: VPU bus base derived from h->block_base */
+                        u32 vcsm_base = (BUS_ADDRESS(reinterpret_cast<uintptr_t>(h->block_base)) & ~0xC0000000) | 0xC0000000;                       /* ADDED: VPU bus base derived from h->block_base */
 
                     for (size_t idx = 0; idx < i; idx++)
                         {
@@ -219,12 +200,14 @@ bool            CKernel::parse264                  (   h264_state* h,
 
                     size_t idx = 1;
 
-                    memcpy(tmp + out_pos, sc4, 4); out_pos += 4;
+                    memcpy(tmp + out_pos, sc4, 4); 
+                    out_pos += 4;
                     memcpy(tmp + out_pos, data + sps_off[file_index][idx] + sps_sc_len[file_index][idx], 
                                                  sps_len[file_index][idx] - sps_sc_len[file_index][idx]);
                     out_pos += sps_len[file_index][idx] - sps_sc_len[file_index][idx];
 
-                    memcpy(tmp + out_pos, sc4, 4); out_pos += 4;
+                    memcpy(tmp + out_pos, sc4, 4); 
+                    out_pos += 4;
                     memcpy(tmp + out_pos, data + pps_off[file_index][idx] + pps_sc_len[file_index][idx],
                                                  pps_len[file_index][idx] - pps_sc_len[file_index][idx]);
 
@@ -248,7 +231,6 @@ bool            CKernel::parse264                  (   h264_state* h,
                         {
                         memcpy(h->extradata[file_index], tmp, out_pos);
                         h->extradata_len[file_index] = out_pos;
-
                         }
                     h->vid_valid[file_index] =
 

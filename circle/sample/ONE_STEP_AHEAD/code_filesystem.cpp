@@ -1,8 +1,5 @@
 #include "kernel.h"
 
-//  #undef  __LOG_FILE__
-    #define __LOG_FILE__
-
     #define MY_BUFFER   m_logBuffer                 // means the log goes into the pre-init buffer 
     #define MY_INDEX    m_logBufferIndex
 
