@@ -86,7 +86,21 @@ TShutdownMode CKernel::Run(void)
 
                 //  logInOutRuntime();
 
+g_inOutMatrixFlt[0][OUT] = 0.5f;
+g_inOutMatrixFlt[1][OUT] = 0.5f;
+g_inOutMatrixFlt[2][OUT] = 0.5f;
+g_inOutMatrixFlt[3][OUT] = 0.5f;
+
+g_inOutMatrixFlt[4][OUT] = 0.5f;
+g_inOutMatrixFlt[5][OUT] = 0.5f;
+g_inOutMatrixFlt[6][OUT] = 0.5f;
+g_inOutMatrixFlt[7][OUT] = 0.5f;
+
 g_current_gl_program = 0;
+
+g_centralModeBuffer[g_current_gl_program][FRM_MODE] = 0;
+
+get_gl_time( m_Timer.GetClockTicks() );
 
 frmBufferSet(&m_vtx);
 
