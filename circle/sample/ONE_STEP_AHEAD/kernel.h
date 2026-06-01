@@ -443,17 +443,17 @@ public:
 
                 bool        initializeVCSM              ();
 
-                bool        allocMemoryVCSM                        (   size_t                  size,
-                                                                        u32                     base_unit,
-                                                                        u32                     alignment,
-                                                                        vc_sm_alloc_type_t      type,
-                                                                        u32                     allocator,
-                                                                        const char*             name,
-                                                                        u32&                    vcsm_handle,
-                                                                        VCSM_Alloc_MEM_Msg&     tx,
-                                                                        VCSM_Alloc_MEM_Reply&   rx);
+                bool        allocMemoryVCSM             (           size_t                              size,
+                                                                    u32                                 base_unit,
+                                                                    u32                                 alignment,
+                                                                    vc_sm_alloc_type_t                  type,
+                                                                    u32                     allocator,
+                                                            const   char*             name,
+                                                                    u32&                    vcsm_handle,
+                                                                    VCSM_Alloc_MEM_Msg&     tx,
+                                                                    VCSM_Alloc_MEM_Reply&   rx);
 
-                bool        importMemoryVCSM            (   void*                               p_bufferBlockbase, 
+                bool        importMemoryVCSM            (           void*                               p_bufferBlockbase, 
                                                                                                 size_t                  size, 
                                                                                             /*  int                     slot, */ 
                                                                                                 u32&                    vcsm_handle,   
@@ -575,13 +575,13 @@ private:
                                                                         void*                           pContext);
                                                                 
         static  void        LoggerSink                 (                void*                           pContext,
-                                                                const   char*                           pText,
+                                                            const   char*                           pText,
                                                                         unsigned                        nLength );      // +++
 
-u32             bufferScreenFindStartIndex          (   const char* p_buffer,
-                                                        u32         endIndex,
-                                                        unsigned    cols,
-                                                        unsigned    rows);
+u32             bufferScreenFindStartIndex              (   const   char*                       p_buffer,
+                                                                    u32         endIndex,
+                                                                    unsigned    cols,
+                                                                    unsigned    rows);
 
 void            logScreenUpdate                     ( void );
 /*
