@@ -9,6 +9,16 @@ TShutdownMode CKernel::Run(void)
                 unsigned g = 127;
                 unsigned b = 186;
 
+                g_inOutMatrixFlt[0][OUT] = 0.5f;
+                g_inOutMatrixFlt[1][OUT] = 0.5f;
+                g_inOutMatrixFlt[2][OUT] = 0.5f;
+                g_inOutMatrixFlt[3][OUT] = 0.5f;
+
+                g_inOutMatrixFlt[4][OUT] = 0.5f;
+                g_inOutMatrixFlt[5][OUT] = 0.5f;
+                g_inOutMatrixFlt[6][OUT] = 0.5f;
+                g_inOutMatrixFlt[7][OUT] = 0.5f;
+
                 while (/*m_resetFlag == false*/ 1)
                     {
                     g_currentTime = m_Timer.GetClockTicks(); 
@@ -63,7 +73,15 @@ TShutdownMode CKernel::Run(void)
 
                         bufferScreenDraw( "we are done here", 0, sizeof("we are done here"), 0, 20, 0xFFFFFFFF );
                         }
-if ( m_SD_has_load && m_USB_has_load == true ) bufferScreenClear();
+if ( m_SD_has_load && m_USB_has_load == true ) 
+{
+                    bufferScreenClear();
+                    readAndConvertADC();
+                    adc_AdvanceIndex();
+                    
+                    logInOutRuntime();
+}
+
 
 
                     WS2812_SetLED(0, r, g, b);
@@ -84,40 +102,28 @@ if ( m_SD_has_load && m_USB_has_load == true ) bufferScreenClear();
 
                     randomVec8(g_currentTime);
 
-                    readAndConvertADC();
-                    adc_AdvanceIndex();
-                    
-                   logInOutRuntime();
                    
 /*
-g_inOutMatrixFlt[0][OUT] = 0.5f;
-g_inOutMatrixFlt[1][OUT] = 0.5f;
-g_inOutMatrixFlt[2][OUT] = 0.5f;
-g_inOutMatrixFlt[3][OUT] = 0.5f;
 
-g_inOutMatrixFlt[4][OUT] = 0.5f;
-g_inOutMatrixFlt[5][OUT] = 0.5f;
-g_inOutMatrixFlt[6][OUT] = 0.5f;
-g_inOutMatrixFlt[7][OUT] = 0.5f;
 */
-g_current_gl_program = 0;
+                    g_current_gl_program = 0;
 
-g_centralModeBuffer[g_current_gl_program][FRM_MODE] = 0;
+                    g_centralModeBuffer[g_current_gl_program][FRM_MODE] = 0;
 
-get_gl_time( m_Timer.GetClockTicks() );
+                    get_gl_time( m_Timer.GetClockTicks() );
 
-frmBufferSet(&m_vtx);
+                    frmBufferSet(&m_vtx);
 
-setUniPrg(&m_ogl,
-          &m_fsh,
-          &m_tex,
-          0);
+                    setUniPrg(&m_ogl,
+                            &m_fsh,
+                            &m_tex,
+                            0);
 
-drawGLsPrg();
+                    drawGLsPrg();
 
-frmRateBreak(false);
+                    frmRateBreak(false);
 
-frmBufferSwap(&m_ogl);
+                    frmBufferSwap(&m_ogl);
 
                     msDelay(25);
 
