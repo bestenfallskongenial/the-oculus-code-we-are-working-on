@@ -69,6 +69,8 @@ TShutdownMode CKernel::Run(void)
                         }
         if ( m_SD_has_load && m_USB_has_load == true ) 
         {
+                            m_logBufferIndex = 0;
+                            
                             bufferScreenClear();
                             readAndConvertADC();
                             adc_AdvanceIndex();
