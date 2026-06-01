@@ -77,6 +77,9 @@ void CKernel::logButtonStatesRuntime(void)
 }
 void ADCDebug()
 {
+    char f_logBuffer[512];
+    u32  f_logIndex = 0;
+    
     storeLog(   f_logBuffer, f_logIndex,
                 "0 RAW", (u32)g_inOutMatrixInt[0][RAW],
                 "1 RAW", (u32)g_inOutMatrixInt[1][VAL],
