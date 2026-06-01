@@ -60,8 +60,11 @@ TShutdownMode CKernel::Run(void)
                                                     m_bufferLogIndex[1] );                                                    
 */
                         m_USB_has_load = true;   
+
                         bufferScreenDraw( "we are done here", 0, sizeof("we are done here"), 0, 20, 0xFFFFFFFF );
                         }
+if ( m_SD_has_load && m_USB_has_load == true ) bufferScreenClear();
+
 
                     WS2812_SetLED(0, r, g, b);
                     WS2812_SetLED(1, b, r, g);
@@ -85,6 +88,7 @@ TShutdownMode CKernel::Run(void)
                     adc_AdvanceIndex();
                     
                    logInOutRuntime();
+                   
 /*
 g_inOutMatrixFlt[0][OUT] = 0.5f;
 g_inOutMatrixFlt[1][OUT] = 0.5f;
