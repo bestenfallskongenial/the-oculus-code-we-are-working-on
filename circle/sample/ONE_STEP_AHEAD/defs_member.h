@@ -149,7 +149,7 @@ unsigned                        m_logScreenLastRow                    = 0;
                 bool                            g_menuPickUpFlag[4*MENU_LAYER_COUNT];                     // the flags for the pickup mechanism  
                 unsigned                        g_buttons_states[BUTTON_COUNT][BTN_INDEX_COUNT];      // the button state machine
                 unsigned                        g_centralModeBuffer[SLOTS][MODETABLE_COUNT];         // the general user settings, storable per program 
-                unsigned                        g_lfoMultiplier[LFO_MULTIPLIERS_COUNT]        = {   64, 32, 16, 8, 4, 2, 1 };
+                unsigned                        g_lfoMultiplier[LFO_MULTIPLIERS_COUNT]        = { 64, 32, 16, 8, 4, 2, 1 };
 
                 long long                       g_lfoBpmMatrix[4][LFO_BPM_COUNT]; // was unsigned !
 // datamanagement.cpp
