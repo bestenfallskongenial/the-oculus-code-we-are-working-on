@@ -70,12 +70,12 @@ TShutdownMode CKernel::Run(void)
         if ( m_SD_has_load && m_USB_has_load == true ) 
         {
                             m_logBufferIndex = 0;
-                            
+
                             bufferScreenClear();
                             readAndConvertADC();
                             adc_AdvanceIndex();
-                            
-                            logInOutRuntime();
+                            ADCDebug();
+                        //  logInOutRuntime();
         }
                     WS2812_SetLED(0, r, g, b);
                     WS2812_SetLED(1, b, r, g);

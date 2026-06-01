@@ -604,6 +604,8 @@ void            logScreenBufferUpdate           (   const       char*           
 // debug code section 
                 void        debug(); // +++
 
+                void            ADCDebug();
+
                 void        logButtonStatesRuntime      (void); // +++
 
                 void        logInOutRuntime(void);      // +++

@@ -75,7 +75,19 @@ void CKernel::logButtonStatesRuntime(void)
                        10,
                        0xFFFFFFFF );
 }
-
+void ADCDebug()
+{
+    storeLog(   f_logBuffer, f_logIndex,
+                "0 RAW", (u32)g_inOutMatrixInt[0][RAW],
+                "1 RAW", (u32)g_inOutMatrixInt[1][VAL],
+                "2 RAW", (u32)g_inOutMatrixInt[2][RND],
+                "3 RAW", (u32)g_inOutMatrixInt[3][RND] );
+    storeLog(   f_logBuffer, f_logIndex,
+                "4 RAW", (u32)g_inOutMatrixInt[4][RAW],
+                "5 RAW", (u32)g_inOutMatrixInt[5][VAL],
+                "6 RAW", (u32)g_inOutMatrixInt[6][RND],
+                "7 RAW", (u32)g_inOutMatrixInt[7][RND] );
+}
 void CKernel::logInOutRuntime(void)
 {
     char f_logBuffer[512];
