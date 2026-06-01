@@ -62,28 +62,19 @@ TShutdownMode CKernel::Run(void)
                                                     "vc04.txt",
                                                     m_bufferLog[2],
                                                     m_bufferLogIndex[2] );
-/*                                         
-                                                    msDelay(100);
-                        saveFromBufferM         (   PARTITION_NAME_SD,
-                                                    "vi1pars.txt",
-                                                    m_bufferLog[1],
-                                                    m_bufferLogIndex[1] );                                                    
-*/
+
                         m_USB_has_load = true;   
 
                         bufferScreenDraw( "we are done here", 0, sizeof("we are done here"), 0, 20, 0xFFFFFFFF );
                         }
-if ( m_SD_has_load && m_USB_has_load == true ) 
-{
-                    bufferScreenClear();
-                    readAndConvertADC();
-                    adc_AdvanceIndex();
-                    
-                    logInOutRuntime();
-}
-
-
-
+        if ( m_SD_has_load && m_USB_has_load == true ) 
+        {
+                            bufferScreenClear();
+                            readAndConvertADC();
+                            adc_AdvanceIndex();
+                            
+                            logInOutRuntime();
+        }
                     WS2812_SetLED(0, r, g, b);
                     WS2812_SetLED(1, b, r, g);
                     WS2812_SetLED(2, g, b, r);
@@ -95,17 +86,13 @@ if ( m_SD_has_load && m_USB_has_load == true )
                     g = (g + 2) % 256;
                     b = (b + 3) % 256;
 
-                    buttonPing(0, SW_PIN_A);
-                    buttonPing(1, SW_PIN_B);
+                //  buttonPing(0, SW_PIN_A);
+                //  buttonPing(1, SW_PIN_B);
 
                 //  logButtonStatesRuntime();
 
                     randomVec8(g_currentTime);
 
-                   
-/*
-
-*/
                     g_current_gl_program = 0;
 
                     g_centralModeBuffer[g_current_gl_program][FRM_MODE] = 0;
@@ -127,7 +114,7 @@ if ( m_SD_has_load && m_USB_has_load == true )
 
                     msDelay(25);
 
-                    if ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 21, 0xFFFFFFFF );
+                //  if ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 21, 0xFFFFFFFF );
                     }
 
                 return ShutdownHalt;
