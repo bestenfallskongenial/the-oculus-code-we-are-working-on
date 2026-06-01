@@ -84,8 +84,9 @@ TShutdownMode CKernel::Run(void)
                     readAndConvertADC();
                     adc_AdvanceIndex();
 
-                //  logInOutRuntime();
 
+                    logInOutRuntime();
+/*
 g_inOutMatrixFlt[0][OUT] = 0.5f;
 g_inOutMatrixFlt[1][OUT] = 0.5f;
 g_inOutMatrixFlt[2][OUT] = 0.5f;
@@ -95,7 +96,7 @@ g_inOutMatrixFlt[4][OUT] = 0.5f;
 g_inOutMatrixFlt[5][OUT] = 0.5f;
 g_inOutMatrixFlt[6][OUT] = 0.5f;
 g_inOutMatrixFlt[7][OUT] = 0.5f;
-
+*/
 g_current_gl_program = 0;
 
 g_centralModeBuffer[g_current_gl_program][FRM_MODE] = 0;
@@ -115,7 +116,7 @@ frmRateBreak(false);
 
 frmBufferSwap(&m_ogl);
 
-                    msDelay(25);
+                    msDelay(10);
 
                     if ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 21, 0xFFFFFFFF );
                     }
