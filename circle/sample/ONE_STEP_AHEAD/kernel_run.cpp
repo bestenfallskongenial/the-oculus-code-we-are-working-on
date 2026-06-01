@@ -83,9 +83,8 @@ TShutdownMode CKernel::Run(void)
 
                     readAndConvertADC();
                     adc_AdvanceIndex();
-
-
-                    logInOutRuntime();
+                    
+                   logInOutRuntime();
 /*
 g_inOutMatrixFlt[0][OUT] = 0.5f;
 g_inOutMatrixFlt[1][OUT] = 0.5f;
@@ -116,7 +115,7 @@ frmRateBreak(false);
 
 frmBufferSwap(&m_ogl);
 
-                    msDelay(10);
+                    msDelay(25);
 
                     if ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 21, 0xFFFFFFFF );
                     }
