@@ -1,5 +1,5 @@
 	#include "kernel.h"
-/*
+
 				CKernel::CKernel						(	void )
 				:	m_Interrupt         (),
                     m_Timer             (   &m_Interrupt ),
@@ -21,7 +21,7 @@
 {                    
                 m_ActLED.Blink(1);
 }
-*/
+/*
 CKernel::CKernel(void)
 :   m_Interrupt         (),
     m_Timer             (&m_Interrupt),
@@ -44,7 +44,7 @@ CKernel::CKernel(void)
 {
     m_ActLED.Blink(1);
 }
-
+*/
 				CKernel::~CKernel						(	void )
 {
 }
