@@ -75,6 +75,16 @@ TShutdownMode CKernel::Run(void)
                             readAndConvertADC();
                             adc_AdvanceIndex();
                             ADCDebug();
+
+                            g_inOutMatrixFlt[0][OUT] = g_inOutMatrixFlt[0][VAL];
+                            g_inOutMatrixFlt[1][OUT] = g_inOutMatrixFlt[1][VAL];
+                            g_inOutMatrixFlt[2][OUT] = g_inOutMatrixFlt[2][VAL];
+                            g_inOutMatrixFlt[3][OUT] = g_inOutMatrixFlt[3][VAL];
+
+                            g_inOutMatrixFlt[4][OUT] = g_inOutMatrixFlt[4][VAL];
+                            g_inOutMatrixFlt[5][OUT] = g_inOutMatrixFlt[5][VAL];
+                            g_inOutMatrixFlt[6][OUT] = g_inOutMatrixFlt[6][VAL];
+                            g_inOutMatrixFlt[7][OUT] = g_inOutMatrixFlt[7][VAL];
                         //  logInOutRuntime();
         }
                     WS2812_SetLED(0, r, g, b);
