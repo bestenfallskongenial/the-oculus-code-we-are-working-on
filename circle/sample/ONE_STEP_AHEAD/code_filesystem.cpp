@@ -140,7 +140,7 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                             storeLog(   MY_BUFFER, MY_INDEX, 
                                         "   bytes read", (u32)f_bytesRead, 
                                         "in buffer [", (u32)p_validFiles, 
-                                        "] filename:",
+                                        "] filename:", EMPTYLOG,
                                         p_fileNameArray[i] ); // new
 #endif                            
                             p_validFiles++;   
