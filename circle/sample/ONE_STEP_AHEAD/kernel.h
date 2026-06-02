@@ -38,23 +38,6 @@ public:
                 void        clearBufferDMA              (               char**                          buffers,                // +++ buffer pointer table returned by allocBufferDMA()
                                                                         char*                           rawBlock);              // original raw allocation pointer to delete
 // code_debug.cpp               !! TESTED AND APPROVED !!
-                void        storeLog                    (               char*                           p_bufferArray,                    // +++
-                                                                        u32&                            index,
-                                                                const   char*                           p_string0, 
-                                                                        u32                             p_value0    = EMPTYLOG,
-                                                                const   char*                           p_string1   = EMPTYSTR, 
-                                                                        u32                             p_value1    = EMPTYLOG,
-                                                                const   char*                           p_string2   = EMPTYSTR, 
-                                                                        u32                             p_value2    = EMPTYLOG,
-                                                                const   char*                           p_string3   = EMPTYSTR, 
-                                                                        u32                             p_value3    = EMPTYLOG);                                                              
-                void        storeMsg                   (                char*                           p_buffer,
-                                                                        u32&                            index,
-                                                                const   char*                           label,
-                                                                const   void*                           tx_msg,
-                                                                        u32                             total_size);
-                void        nextline                    (               char*                           p_buffer,                       // +++
-                                                                        u32&                            index);
                 void        logButtonStatesRuntime      (               void    ); // +++
                 void        ADCDebug                    ();
                 void        logInOutRuntime             (               void );      // +++
@@ -207,6 +190,25 @@ public:
                                                                         u32                             fgColor );
                 void        bufferScreenGetGrid         (               unsigned&                       cols,           // +++
                                                                         unsigned&                       rows );
+// code_logging.cpp             !! TESTED AND APPROVED !!
+                void        storeLog                    (               char*                           p_bufferArray,                    // +++
+                                                                        u32&                            index,
+                                                                const   char*                           p_string0, 
+                                                                        u32                             p_value0    = EMPTYLOG,
+                                                                const   char*                           p_string1   = EMPTYSTR, 
+                                                                        u32                             p_value1    = EMPTYLOG,
+                                                                const   char*                           p_string2   = EMPTYSTR, 
+                                                                        u32                             p_value2    = EMPTYLOG,
+                                                                const   char*                           p_string3   = EMPTYSTR, 
+                                                                        u32                             p_value3    = EMPTYLOG);                                                              
+                void        storeMsg                   (                char*                           p_buffer,
+                                                                        u32&                            index,
+                                                                const   char*                           label,
+                                                                const   void*                           tx_msg,
+                                                                        u32                             total_size);
+                                                                       
+                void        nextline                    (               char*                           p_buffer,                       // +++
+                                                                        u32&                            index);
 // code_menu.cpp                !! NEED FINALLY TO CREATE THE BUTTON CONSUMER / MENU-LAYER CODE DONE !! 
                 void        resetPickUpFlags            ();                                                                 // **** okay, i have multiple flags that may or may not be reset ! maybe i will do it centralized here???
                 void        set_mode_length             (               uint8_t                         base);              // the "base" of "channels" to process, groups of 4!
