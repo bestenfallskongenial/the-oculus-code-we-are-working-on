@@ -5,6 +5,137 @@
 
 static const char FromKernel[] = "kernel";
 
+void            CKernel::storeLog                   (   char*       p_buffer,
+                                                        u32&        index,
+                                                        const char* p_string0, u32 p_value0,
+                                                        const char* p_string1, u32 p_value1,
+                                                        const char* p_string2, u32 p_value2,
+                                                        const char* p_string3, u32 p_value3)
+{
+                for (const char* p = p_string0; *p; ++p)
+                    {
+                    p_buffer[index++] = *p;
+                    }
+                if (p_value0 != EMPTYLOG)
+                    {
+                    p_buffer[index++] = ' ';
+                    p_buffer[index++] = '0';
+                    p_buffer[index++] = 'x';
+                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i)
+                        {
+                        char hex = "0123456789ABCDEF"[(p_value0 >> (i * 4)) & 0xF];
+                        p_buffer[index++] = hex;
+                        }
+                    }
+                if (p_string1 != EMPTYSTR)
+                    {
+                    p_buffer[index++] = ' ';
+                    for (const char* p = p_string1; *p; ++p)
+                        {
+                        p_buffer[index++] = *p;
+                        }
+                    }
+                if (p_value1 != EMPTYLOG)
+                    {
+                    p_buffer[index++] = ' ';
+                    p_buffer[index++] = '0';
+                    p_buffer[index++] = 'x';
+                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i)
+                        {
+                        char hex = "0123456789ABCDEF"[(p_value1 >> (i * 4)) & 0xF];
+                        p_buffer[index++] = hex;
+                        }
+                    }
+                if (p_string2 != EMPTYSTR)
+                    {
+                    p_buffer[index++] = ' ';
+                    for (const char* p = p_string2; *p; ++p)
+                        {
+                        p_buffer[index++] = *p;
+                        }
+                    }
+                if (p_value2 != EMPTYLOG)
+                    {
+                    p_buffer[index++] = ' ';
+                    p_buffer[index++] = '0';
+                    p_buffer[index++] = 'x';
+                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i)
+                        {
+                        char hex = "0123456789ABCDEF"[(p_value2 >> (i * 4)) & 0xF];
+                        p_buffer[index++] = hex;
+                        }
+                    }
+                if (p_string3 != EMPTYSTR)
+                    {
+                    p_buffer[index++] = ' ';
+                    for (const char* p = p_string3; *p; ++p)
+                        {
+                        p_buffer[index++] = *p;
+                        }
+                    }
+                if (p_value3 != EMPTYLOG)
+                    {
+                    p_buffer[index++] = ' ';
+                    p_buffer[index++] = '0';
+                    p_buffer[index++] = 'x';
+                    for (int i = (sizeof(u32) * 2) - 1; i >= 0; --i)
+                        {
+                        char hex = "0123456789ABCDEF"[(p_value3 >> (i * 4)) & 0xF];
+                        p_buffer[index++] = hex;
+                        }
+                    }
+                p_buffer[index++] = '\n';
+                p_buffer[index] = '\0';
+
+                logScreenUpdate();
+}
+
+void            CKernel::storeMsg                   (   char*       p_buffer,
+                                                        u32&        index,
+                                                        const char* label,
+                                                        const void* tx_msg,
+                                                        u32         total_size)
+{
+                p_buffer[index++]           = '\n';
+
+                for (const char* p = label; *p; ++p)
+                    {
+                    p_buffer[index++] = *p;
+                    }
+                p_buffer[index++]           = '\n';
+
+                const unsigned char* b = (const unsigned char*)tx_msg;
+
+                for (u32 i = 0; i < total_size; ++i) 
+                    {
+                    if (i && (i % 16) == 0)
+                        {
+                        p_buffer[index++]   = '\n';
+                        }
+                    unsigned char v         = b[i];
+
+                    char hi = "0123456789ABCDEF"[v >> 4];
+                    p_buffer[index++]       = hi;
+                    char lo = "0123456789ABCDEF"[v & 0xF];
+                    p_buffer[index++]       = lo;
+                    p_buffer[index++]       = ' ';
+                    }
+                p_buffer[index++]           = '\n';
+                p_buffer[index++]           = '\n';
+                p_buffer[index]             = '\0';
+
+                logScreenUpdate();
+}
+
+void            CKernel::nextline                   (   char*       p_buffer,
+                                                        u32&        index)
+{
+                p_buffer[index++]           = '\n';
+                p_buffer[index]             = '\0';
+
+                logScreenUpdate();
+}
+
 void CKernel::logButtonStatesRuntime(void)
 {
     char f_logBuffer[512];
@@ -183,11 +314,9 @@ void            CKernel::logScreenUpdate            (   void )
 
                 unsigned col   = 0;
                 unsigned row   = 0;
-
 #ifdef __SCROLLING__
                 bufferScreenClear();
 #endif
-
                 while (scanIndex < MY_INDEX)
                     {
                     char ch = MY_BUFFER[scanIndex];
@@ -211,22 +340,18 @@ void            CKernel::logScreenUpdate            (   void )
                                 {
                                 drawIndex++;
                                 }
-
 #ifdef __SCROLLING__
                             bufferScreenClear();
 
-                            bufferScreenDraw(
-                                                MY_BUFFER,
+                            bufferScreenDraw(   MY_BUFFER,
                                                 drawIndex,
                                                 scanIndex,
                                                 0,
                                                 0,
                                                 0xFFFFFFFF
                                                 );
-
                             msDelay(SCROLLSPEED);
 #endif
-
                             row = gE_Rows - 2;
                             col = 0;
                             }
@@ -245,147 +370,34 @@ void            CKernel::logScreenUpdate            (   void )
                         if (row >= (gE_Rows - 1))
                             {
                             drawIndex += gE_Cols;
-
 #ifdef __SCROLLING__
                             bufferScreenClear();
 
-                            bufferScreenDraw(
-                                                MY_BUFFER,
+                            bufferScreenDraw(   MY_BUFFER,
                                                 drawIndex,
                                                 scanIndex,
                                                 0,
                                                 0,
                                                 0xFFFFFFFF
                                                 );
-
                             msDelay(SCROLLSPEED);
 #endif
-
                             row = gE_Rows - 2;
                             col = 0;
                             }
                         }
                     }
-
                 bufferScreenClear();
 
-                bufferScreenDraw(
-                                    MY_BUFFER,
+                bufferScreenDraw(   MY_BUFFER,
                                     drawIndex,
                                     MY_INDEX,
                                     0,
                                     0,
                                     0xFFFFFFFF
                                     );
-
                 m_logScreenStartIndex = drawIndex;
 }
-/*
-// LAST WORKING FUNCTION 
-void            CKernel::logScreenUpdate            (   void )
-{
-                if (gE_PixelBuffer == 0) return;
-                if (gE_Cols == 0) return;
-                if (gE_Rows <= 1) return;
-                if (MY_INDEX == 0) return;
-
-                u32 drawIndex  = m_logScreenStartIndex;
-                u32 scanIndex  = m_logScreenStartIndex;
-
-                unsigned col   = 0;
-                unsigned row   = 0;
-
-                bufferScreenClear();
-
-                while (scanIndex < MY_INDEX)
-                    {
-                    char ch = MY_BUFFER[scanIndex];
-
-                    if (ch == '\0') break;
-
-                    if (ch == '\n')
-                        {
-                        col = 0;
-                        row++;
-                        scanIndex++;
-
-                        if (row >= (gE_Rows - 1))
-                            {
-                            while (drawIndex < MY_INDEX && MY_BUFFER[drawIndex] != '\n')
-                                {
-                                drawIndex++;
-                                }
-
-                            if (drawIndex < MY_INDEX)
-                                {
-                                drawIndex++;
-                                }
-
-                            bufferScreenClear();
-
-                            bufferScreenDraw(
-                                                MY_BUFFER,
-                                                drawIndex,
-                                                scanIndex,
-                                                0,
-                                                0,
-                                                0xFFFFFFFF
-                                                );
-
-                            msDelay(SCROLLSPEED);
-
-                            row = gE_Rows - 2;
-                            col = 0;
-                            }
-
-                        continue;
-                        }
-
-                    col++;
-                    scanIndex++;
-
-                    if (col >= gE_Cols)
-                        {
-                        col = 0;
-                        row++;
-
-                        if (row >= (gE_Rows - 1))
-                            {
-                            drawIndex += gE_Cols;
-
-                            bufferScreenClear();
-
-                            bufferScreenDraw(
-                                                MY_BUFFER,
-                                                drawIndex,
-                                                scanIndex,
-                                                0,
-                                                0,
-                                                0xFFFFFFFF
-                                                );
-
-                            msDelay(SCROLLSPEED);
-
-                            row = gE_Rows - 2;
-                            col = 0;
-                            }
-                        }
-                    }
-
-                bufferScreenClear();
-
-                bufferScreenDraw(
-                                    MY_BUFFER,
-                                    drawIndex,
-                                    MY_INDEX,
-                                    0,
-                                    0,
-                                    0xFFFFFFFF
-                                    );
-
-                m_logScreenStartIndex = drawIndex;
-}
-*/
 
 bool            CKernel::memoryDebugCheckpoint      (   const char* p_Label,
                                                         bool        p_DumpStatus )
@@ -519,18 +531,7 @@ bool            CKernel::startupScreen          (   void )
                             "gE Screen X    ", gE_ScreenWidth,
                             "gE Screen Y    ", gE_ScreenHeight);
                 nextline(   MY_BUFFER, MY_INDEX);                            
-/*
-                bufferScreenClear();
 
-                bufferScreenDraw(
-                                        MY_BUFFER,
-                                        0,
-                                        MY_INDEX,
-                                        0,
-                                        0,
-                                        0xFFFFFFFF
-                                        );
-*/
                 return TRUE;
 }
 

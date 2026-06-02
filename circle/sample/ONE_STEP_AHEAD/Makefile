@@ -10,12 +10,12 @@ OBJS  = main.o \
         kernel_initialize.o \
         kernel_run.o \
         code_alloc.o \
+        code_debug.o \
         code_filesystem.o \
         code_graphics_init.o \
         code_graphics_log.o \
         code_graphics_run.o \
         code_hardware.o \
-        code_logging.o \
         code_menu.o \
         code_parser.o \
         code_stubs.o \
@@ -24,10 +24,10 @@ OBJS  = main.o \
         code_vc_mmal_api.o \
         code_vc_mmal_init.o \
         code_vc_vcsm.o \
-        code_wrappers.o \
-        code_debug.o
+        code_wrappers.o
 
 # libraries
+
 LIBS =  $(CIRCLEHOME)/lib/usb/libusb.a \
         $(CIRCLEHOME)/lib/input/libinput.a \
         $(CIRCLEHOME)/addon/SDCard/libsdcard.a \
