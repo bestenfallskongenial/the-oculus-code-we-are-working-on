@@ -57,9 +57,7 @@ bool            CKernel::createComponent            (   u32& ComponentHandle,   
 #endif 
                     return false;
                     }
-#ifdef __LOG_MMAL__
-                Log_createComponent(tx,rx);
-#endif       
+
                 ComponentHandle = rx.msg.component_handle;
 
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
@@ -86,9 +84,7 @@ bool            CKernel::getPortInfoMMAL            (   u32 port_type,
                     return false;
                     }
                 port_handle = rx.msg.port_handle;
-#ifdef __LOG_MMAL__
-                Log_getPortInfo(tx,rx);
-#endif 
+
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 
@@ -106,9 +102,7 @@ bool            CKernel::setPortInfoMMAL            (   MMAL_Port_Info_Set_Msg& 
 #endif 
                     return false;
                     }
-#ifdef __LOG_MMAL__
-                Log_setPortInfo(tx,rx); 
-#endif               
+
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 
@@ -129,9 +123,7 @@ bool            CKernel::enableComponentMMAL        (   MMAL_Component_Enable_Ms
 #endif 
                     return false;
                     }
-#ifdef __LOG_MMAL__
-                Log_enableComponentMMAL(tx,rx);
-#endif       
+
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 
@@ -197,9 +189,7 @@ bool            CKernel::enablePortMMAL             ( /*u32 port_handle,*/      
 #endif 
                     return false;
                     }
-#ifdef __LOG_MMAL__
-                Log_enablePort(tx,rx);
-#endif       
+
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);
 }
 
