@@ -96,6 +96,13 @@ void            CKernel::GPIO_Write              (  unsigned nPin,
                 write32(nReg, nMask);
 }
 
+void            CKernel::set_pot_routing            (   int     pin, 
+                                                        bool    state)
+{
+            //  m_ChipSelectPin.Write(adc_pot_routing); // false or true aka high or low?
+                GPIO_Write(pin, state);
+}
+
 unsigned        CKernel::GPIO_Read               (   unsigned nPin)
 {
                 uintptr nReg = ARM_GPIO_GPLEV0 + ((nPin / 32) * 4);
@@ -103,6 +110,40 @@ unsigned        CKernel::GPIO_Read               (   unsigned nPin)
                 u32 nMask = 1 << (nPin % 32);
 
                 return (read32(nReg) & nMask) ? HIGH : LOW;
+}
+
+void            CKernel::buttonPing                 (   int             p_btn_id, 
+                                                        int             p_pin )
+{
+                if (GPIO_Read(p_pin) == BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] == 0)                
+                    {
+                    g_buttons_states[p_btn_id][BTN_SINGLE] = 0;
+                    g_buttons_states[p_btn_id][BTN_DOUBLE] = 0;
+
+                    g_buttons_states[p_btn_id][BTN_PRESS_START] = g_currentTime;
+
+
+                    if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 && (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) < g_double_click_time)
+                        {
+                        g_buttons_states[p_btn_id][BTN_DOUBLE] = 1;
+                        }
+                    else
+                        {
+                        g_buttons_states[p_btn_id][BTN_SINGLE] = 1;
+                        }
+                    g_buttons_states[p_btn_id][BTN_RELEASE] = 0;
+                    }
+
+                if (GPIO_Read(p_pin) != BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] != 0)                
+                    {
+                    g_buttons_states[p_btn_id][BTN_RELEASE]     = g_currentTime;
+                    g_buttons_states[p_btn_id][BTN_PRESS_START] = 0;
+                    g_buttons_states[p_btn_id][BTN_HOLD_TICK]   = 0;
+                    }
+                if (g_buttons_states[p_btn_id][BTN_PRESS_START] != 0 && (g_currentTime - g_buttons_states[p_btn_id][BTN_PRESS_START]) >= g_long_click_time)
+                    {
+                    g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
+                    }
 }
 
 void            CKernel::watchdog_Start          (   unsigned nTimeoutSeconds)
@@ -365,6 +406,173 @@ int             CKernel::ReadMCP3008Raw             (   unsigned    channel)
                 if (WriteRead(SPI_CHIP_SELECT, tx, rx, 3) != 3) return -1;
 
                 return ((rx[1] & 0x03) << 8) | rx[2];
+}
+
+void            CKernel::readAndConvertADC         (   void    )
+{
+                const int f_scale = m_scaleFactors[attenuation];
+
+                m_adc_ring[0][m_adc_index] = ReadMCP3008Raw(0);
+                g_inOutMatrixInt[0][RAW] = (m_adc_ring[0][0] + m_adc_ring[0][1] + m_adc_ring[0][2] + m_adc_ring[0][3]) >> 2;
+                g_inOutMatrixInt[0][VAL] = (g_inOutMatrixInt[0][RAW] * f_scale) >> 10;
+                g_inOutMatrixFlt[0][VAL] = g_inOutMatrixInt[0][VAL] * 0.0009765625f;
+
+                m_adc_ring[1][m_adc_index] = ReadMCP3008Raw(1);
+                g_inOutMatrixInt[1][RAW] = (m_adc_ring[1][0] + m_adc_ring[1][1] + m_adc_ring[1][2] + m_adc_ring[1][3]) >> 2;
+                g_inOutMatrixInt[1][VAL] = (g_inOutMatrixInt[1][RAW] * f_scale) >> 10;
+                g_inOutMatrixFlt[1][VAL] = g_inOutMatrixInt[1][VAL] * 0.0009765625f;
+
+                m_adc_ring[2][m_adc_index] = ReadMCP3008Raw(2);
+                g_inOutMatrixInt[2][RAW] = (m_adc_ring[2][0] + m_adc_ring[2][1] + m_adc_ring[2][2] + m_adc_ring[2][3]) >> 2;
+                g_inOutMatrixInt[2][VAL] = (g_inOutMatrixInt[2][RAW] * f_scale) >> 10;
+                g_inOutMatrixFlt[2][VAL] = g_inOutMatrixInt[2][VAL] * 0.0009765625f;
+
+                m_adc_ring[3][m_adc_index] = ReadMCP3008Raw(3);
+                g_inOutMatrixInt[3][RAW] = (m_adc_ring[3][0] + m_adc_ring[3][1] + m_adc_ring[3][2] + m_adc_ring[3][3]) >> 2;
+                g_inOutMatrixInt[3][VAL] = (g_inOutMatrixInt[3][RAW] * f_scale) >> 10;
+                g_inOutMatrixFlt[3][VAL] = g_inOutMatrixInt[3][VAL] * 0.0009765625f;
+
+                m_adc_ring[4][m_adc_index] = ReadMCP3008Raw(4);
+                g_inOutMatrixInt[4][RAW] = (m_adc_ring[4][0] + m_adc_ring[4][1] + m_adc_ring[4][2] + m_adc_ring[4][3]) >> 2;
+                g_inOutMatrixInt[4][VAL] = (g_inOutMatrixInt[4][RAW] * f_scale) >> 10;
+                g_inOutMatrixFlt[4][VAL] = g_inOutMatrixInt[4][VAL] * 0.0009765625f;
+
+                m_adc_ring[5][m_adc_index] = ReadMCP3008Raw(5);
+                g_inOutMatrixInt[5][RAW] = (m_adc_ring[5][0] + m_adc_ring[5][1] + m_adc_ring[5][2] + m_adc_ring[5][3]) >> 2;
+                g_inOutMatrixInt[5][VAL] = (g_inOutMatrixInt[5][RAW] * f_scale) >> 10;
+                g_inOutMatrixFlt[5][VAL] = g_inOutMatrixInt[5][VAL] * 0.0009765625f;
+
+                m_adc_ring[6][m_adc_index] = ReadMCP3008Raw(6);
+                g_inOutMatrixInt[6][RAW] = (m_adc_ring[6][0] + m_adc_ring[6][1] + m_adc_ring[6][2] + m_adc_ring[6][3]) >> 2;
+                g_inOutMatrixInt[6][VAL] = (g_inOutMatrixInt[6][RAW] * f_scale) >> 10;
+                g_inOutMatrixFlt[6][VAL] = g_inOutMatrixInt[6][VAL] * 0.0009765625f;
+
+                m_adc_ring[7][m_adc_index] = ReadMCP3008Raw(7);
+                g_inOutMatrixInt[7][RAW] = (m_adc_ring[7][0] + m_adc_ring[7][1] + m_adc_ring[7][2] + m_adc_ring[7][3]) >> 2;
+                g_inOutMatrixInt[7][VAL] = (g_inOutMatrixInt[7][RAW] * f_scale) >> 10;
+                g_inOutMatrixFlt[7][VAL] = g_inOutMatrixInt[7][VAL] * 0.0009765625f;
+}
+
+void            CKernel::adc_ProcessAudio           (   void    )
+{
+                if (!m_audio_mode_activated) return; // is a fixed position in g_centralModeBuffer mapped by modeMenuAssignGroup()
+
+                int i0 = m_adc_index;
+                int i1 = (m_adc_index - 1) & 3;
+                int i2 = (m_adc_index - 2) & 3;
+                int i3 = (m_adc_index - 3) & 3;
+
+                int w0 = g_centralModeBuffer[g_currentProgramBuffer][SENS_A] & 63;
+                int w1 = g_centralModeBuffer[g_currentProgramBuffer][SENS_B] & 63;
+                int w2 = g_centralModeBuffer[g_currentProgramBuffer][SENS_C] & 63;
+                int w3 = g_centralModeBuffer[g_currentProgramBuffer][SENS_D] & 63;
+
+                g_lfoBpmMatrix[0][IREG] = m_adc_ring[0][i0] - m_adc_ring[0][i1] + m_adc_ring[0][i2] - m_adc_ring[0][i3];
+
+                if (g_lfoBpmMatrix[0][IREG] > AUDIO_THRESHOLD || g_lfoBpmMatrix[0][IREG] < -AUDIO_THRESHOLD)
+                {
+                    is_audio[0] = 0;
+
+                    m_audio_hold_A = AUDIO_MENU_HOLD;
+                    m_audio_flag_A = true;
+
+                    float s = m_adc_ring[0][m_adc_index] * 0.0009765625f;
+
+                    m_sum[0] -= m_band[0][m_idx0];
+                    m_band[0][m_idx0] = s;
+                    m_sum[0] += s;
+                    g_inOutMatrixFlt[0][AU0] = m_sum[0] / w0;
+                    if (++m_idx0 == w0) m_idx0 = 0;
+
+                    m_sum[1] -= m_band[1][m_idx1];
+                    m_band[1][m_idx1] = s;
+                    m_sum[1] += s;
+                    g_inOutMatrixFlt[0][AU1] = m_sum[1] / w1;
+                    if (++m_idx1 == w1) m_idx1 = 0;
+                }
+
+                g_lfoBpmMatrix[1][IREG] = m_adc_ring[1][i0] - m_adc_ring[1][i1] + m_adc_ring[1][i2] - m_adc_ring[1][i3];
+
+                if (g_lfoBpmMatrix[1][IREG] > AUDIO_THRESHOLD || g_lfoBpmMatrix[1][IREG] < -AUDIO_THRESHOLD)
+                {
+                    is_audio[1] = 1;
+
+                    m_audio_hold_B = AUDIO_MENU_HOLD;
+                    m_audio_flag_B = true;
+
+                    float s = m_adc_ring[1][m_adc_index] * 0.0009765625f;
+
+                    m_sum[2] -= m_band[2][m_idx2];
+                    m_band[2][m_idx2] = s;
+                    m_sum[2] += s;
+                    g_inOutMatrixFlt[0][AU2] = m_sum[2] / w2;
+                    if (++m_idx2 == w2) m_idx2 = 0;
+
+                    m_sum[3] -= m_band[3][m_idx3];
+                    m_band[3][m_idx3] = s;
+                    m_sum[3] += s;
+                    g_inOutMatrixFlt[0][AU3] = m_sum[3] / w3;
+                    if (++m_idx3 == w3) m_idx3 = 0;
+                }
+
+                g_lfoBpmMatrix[2][IREG] = m_adc_ring[2][i0] - m_adc_ring[2][i1] + m_adc_ring[2][i2] - m_adc_ring[2][i3];
+
+                if (g_lfoBpmMatrix[2][IREG] > AUDIO_THRESHOLD || g_lfoBpmMatrix[2][IREG] < -AUDIO_THRESHOLD)
+                {
+                    is_audio[0] = 2;
+
+                    m_audio_hold_A = AUDIO_MENU_HOLD;
+                    m_audio_flag_A = true;
+
+                    float s = m_adc_ring[2][m_adc_index] * 0.0009765625f;
+
+                    m_sum[0] -= m_band[0][m_idx0];
+                    m_band[0][m_idx0] = s;
+                    m_sum[0] += s;
+                    g_inOutMatrixFlt[0][AU0] =  m_sum[0] / w0;
+                    if (++m_idx0 == w0) m_idx0 = 0;
+
+                    m_sum[1] -= m_band[1][m_idx1];
+                    m_band[1][m_idx1] = s;
+                    m_sum[1] += s;
+                    g_inOutMatrixFlt[0][AU1] = m_sum[1] / w1;
+                    if (++m_idx1 == w1) m_idx1 = 0;
+                }
+
+                g_lfoBpmMatrix[3][IREG] = m_adc_ring[3][i0] - m_adc_ring[3][i1] + m_adc_ring[3][i2] - m_adc_ring[3][i3];
+
+                if (g_lfoBpmMatrix[3][IREG] > AUDIO_THRESHOLD || g_lfoBpmMatrix[3][IREG] < -AUDIO_THRESHOLD)
+                {
+                    is_audio[1] = 3;
+
+                    m_audio_hold_B = AUDIO_MENU_HOLD;
+                    m_audio_flag_B = true;
+
+                    float s = m_adc_ring[3][m_adc_index] * 0.0009765625f;
+
+                    m_sum[2] -= m_band[2][m_idx2];
+                    m_band[2][m_idx2] = s;
+                    m_sum[2] += s;
+                    g_inOutMatrixFlt[0][AU2] = m_sum[2] / w2;
+                    if (++m_idx2 == w2) m_idx2 = 0;
+
+                    m_sum[3] -= m_band[3][m_idx3];
+                    m_band[3][m_idx3] = s;
+                    m_sum[3] += s;
+                    g_inOutMatrixFlt[0][AU3] = m_sum[3] / w3;
+                    if (++m_idx3 == w3) m_idx3 = 0;
+                }
+
+                if (m_audio_hold_A > 0) --m_audio_hold_A;
+                m_audio_flag_A = (m_audio_hold_A > 0);
+
+                if (m_audio_hold_B > 0) --m_audio_hold_B;
+                m_audio_flag_B = (m_audio_hold_B > 0);
+}
+
+void            CKernel::adc_AdvanceIndex           (   void    )
+{
+                m_adc_index = (m_adc_index + 1) & 3;
 }
 
 bool            CKernel::frameBufferInit            (   void )

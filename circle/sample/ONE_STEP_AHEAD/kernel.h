@@ -91,7 +91,8 @@ public:
                                                                         unsigned&                       p_scannedFiles,         // our counter of found files per device / call
                                                                         unsigned                        p_maxFiles,             // how many files are allowed to scan and stored in the array returns success not files found!
                                                                         unsigned                        p_prevFiles);           // the amount of files we already loaded into the buffers 
-                char*       gen83FileName              (        const   char*                           ext );   // +++
+                char*       gen83FileName               (       const   char*                           ext );   // +++
+                bool        UpdateKernel                ();
                 bool        updateUSB                   (       const   char*                           p_deviceType);          // +++ "umsd1" is the type, not "umsd1-1"needs volatile boolean	m_bStorageAttached ! 
         static  void        removeUSB                   (               CDevice*                        pDevice,                // +++ USB device that was removed
                                                                         void*                           pContext);              // user context pointer; expected to be CKernel*
@@ -168,7 +169,11 @@ public:
                                                                         unsigned                        nPullMode);
                 void        GPIO_Write                  (               unsigned                        nPin,           // +++
                                                                         unsigned                        nValue);
+                void        set_pot_routing             (               int                             pin,
+                                                                        bool                            adc_pot_routing);                                                                        
                 unsigned    GPIO_Read                   (               unsigned                        nPin);
+                void        buttonPing                  (               int                             p_btn_id,           // +++
+                                                                        int                             p_pin);                
                 void        watchdog_Start              (               unsigned                        nTimeoutSeconds);                   // watchdog
                 bool        SPI_init                    (               void);                                                              // +++ SPI
                 int         WriteRead                   (               unsigned                        nChipSelect,    // +++
@@ -190,6 +195,9 @@ public:
                                                                         u8                              blue);
                 void        WS2812_Update               (               void);                                                              // +++
                 int         ReadMCP3008Raw              (               unsigned                        channel);                           // +++ MPC 3008
+                void        readAndConvertADC           ();                                                                 // +++ can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
+                void        adc_ProcessAudio            (               void );
+                void        adc_AdvanceIndex            ();                              
                 bool        frameBufferInit             (               void );                                                             // +++
                 void        bufferScreenPlot            (               unsigned                        x,                                  // +++
                                                                         unsigned                        y,
@@ -279,14 +287,9 @@ public:
                 void        Log_enablePort              (       const   MMAL_Port_Action_Msg&           tx, 
                                                                 const   MMAL_Port_Action_Reply_Msg&     rx );
 // code_util.cpp
-                void        readAndConvertADC           ();                                                                 // +++ can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
-                void        adc_AdvanceIndex            ();                                                                 // +++
-                void        adc_ProcessAudio            (               void );
-                bool        checkUpdate                 ();                                                                 // +++
-                bool        UpdateKernel                ();
+
+                bool        checkUpdate                 ();
                 void        get_gl_time                 (               unsigned                        sys_time );                
-                void        set_pot_routing             (               int                             pin,
-                                                                        bool                            adc_pot_routing);
                 void        prepParameters              ();
                 void        chooseIndex                 (               int                             p_channel, 
                                                                         int&                            p_activeIndex, 
@@ -296,9 +299,6 @@ public:
                                                                         int&                            p_activeIndex, 
                                                                         int                             p_maxCount);
                 void        storeModes                  ();
-                void        buttonPing                  (               int                             p_btn_id,           // +++
-                                                                        int                             p_pin);
-
                 void        button_consumer             (               int                             p_btn_id);
                 void        randomVec8                  (               uint32_t                        p_seed);            // +++
 
@@ -312,12 +312,10 @@ public:
 // code_vc_mmal_api.cpp 
                 bool        framePollerMMAL             (               u32                             nal_block_offset,               // comes from the pooler -> h264 struct 
                                                                         u32                             nal_block_length);              // same same
-
                 bool        bufferReadyMMAL             (               u32                             handle);                    // the vcsm handle of the buffer? from a vc message?
                 bool        queueOutputBufferMMAL       (               MMAL_Buffer_From_Host_Msg&      tx, 
                                                                         u32                             vc_handle,                  
                                                                         u32                             alloc_size);
-
                 bool        queueInputBufferMMAL        (               MMAL_Buffer_From_Host_Msg&      tx, 
                                                                         u32                             nal_block_offset, 
                                                                         u32                             nal_block_length);

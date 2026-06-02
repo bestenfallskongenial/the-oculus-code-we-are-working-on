@@ -243,6 +243,18 @@ char*           CKernel::gen83FileName             (   const char*     ext )
                 return m_83FileName;
 }
 
+bool            CKernel::UpdateKernel                     (   )
+{
+                if (saveFromBuffer(PARTITION_NAME_SD, FILENAME_KNL, m_bufferKnl[1], g_bytKln[1]))
+                    {
+                    return true;
+                    }
+
+                saveFromBuffer(PARTITION_NAME_SD, FILENAME_KNL, m_bufferKnl[0], g_bytKln[0]); // fail - try to restore the original kernel
+
+                return false;
+}
+
 bool            CKernel::updateUSB                  (   const   char*       p_deviceName )
 {
                 if (!m_USBHCI.UpdatePlugAndPlay()) return false;
