@@ -21,16 +21,11 @@ class CKernel
 public:
                                 CKernel                 (               void );
                                ~CKernel                 (               void );
-
 #include "defs_enum.h"
 #include "defs_struct.h"
-
                 boolean         Initialize              (               void );
-
                 TShutdownMode   Run                     (               void );
-
-public:
-// code_alloc.cpp
+// code_alloc.cpp               !! TESTED AND APPROVED !!
                 char**      allocBufferMEM              (               size_t                          p_count,                // +++ number of buffer slots
                                                                         size_t                          bufferSize);            // size of each buffer in bytes *** msleep ?!
                 char**      allocBufferDMA              (               size_t                          p_count,                // +++ number of buffer slots
@@ -42,7 +37,7 @@ public:
                                                                         size_t                          p_count);               // number of buffers in the table
                 void        clearBufferDMA              (               char**                          buffers,                // +++ buffer pointer table returned by allocBufferDMA()
                                                                         char*                           rawBlock);              // original raw allocation pointer to delete
-// code_debug.cpp
+// code_debug.cpp               !! TESTED AND APPROVED !!
                 void        logButtonStatesRuntime      (               void    ); // +++
                 void        ADCDebug                    ();
                 void        logInOutRuntime             (               void );      // +++
@@ -53,7 +48,7 @@ public:
         static  void        LoggerSink                 (                void*                           pContext,
                                                                 const   char*                           pText,
                                                                         unsigned                        nLength );      // +++                                                        
-// code_filesystem.cpp
+// code_filesystem.cpp          !! TESTED AND APPROVED !!
                 bool        Mount                       (       const   char*                           p_deviceName);          // +++ "emmc1-1" cd ( root ), "umsd1-1" usb returns success
                 bool        UnMount                     ();                                                                     // +++ returns success
                 bool        openFile                    (       const   char*                           p_fileName);            // +++ filename format "8.3"
@@ -83,7 +78,7 @@ public:
                 bool        updateUSB                   (       const   char*                           p_deviceType);          // +++ "umsd1" is the type, not "umsd1-1"needs volatile boolean	m_bStorageAttached ! 
         static  void        removeUSB                   (               CDevice*                        pDevice,                // +++ USB device that was removed
                                                                         void*                           pContext);              // user context pointer; expected to be CKernel*
-// code_graphics_init.c
+// code_graphics_init.c         !! TESTED AND APPROVED  - textures as well ?? 
                 void        initOGL                     (               olg_state*                      o);                     // +++
                 void        initVbuffer                 (               olg_state*                      o, 
                                                                         vtx_state*                      v);
@@ -114,36 +109,36 @@ public:
                                                                         tex_state*                      t,
                                                                         int                             p_fromFile,
                                                                         int                             p_toFile);
-// code_graphics_log.cpp
+// code_graphics_log.cpp        !! TESTED AND APPROVED - EXCEPT gfx_check() - does it actually put out log before the crash or should i use CLooger there instead ??
                 bool        shaderLog                   (               GLint                           shader, 
                                                                         int                             shaderIndex);
                 bool        programLog                  (               GLint                           program, 
                                                                         int                             program_index);
                 void        gfx_check                   (       const   char*                           file, 
                                                                         unsigned                        line);
-// code_graphics_run.cpp
-                void        frmBufferSet                (               vtx_state*                      v);
-                void        frmBufferSwap               (               olg_state*                      o);
+// code_graphics_run.cpp        !! NEED TO TEST THE OVERLAY PART HERE !!
+                void        frmBufferSet                (               vtx_state*                      v);                     // !! WORKS !!
+                void        frmBufferSwap               (               olg_state*                      o);                     // !! WORKS !! 
                 void        setUniPrg                   (               olg_state*                      o,
                                                                         glsl_state*                     s,
                                                                         tex_state*                      t,
-                                                                        /*  int                             gl_current_tex, */
-                                                                        unsigned                        p_validTextureCount);
+                                                                        /*  int                         gl_current_tex, */
+                                                                        unsigned                        p_validTextureCount);   // !! WORKS !! 
                 void        setTexPrg                   (               olg_state*                      o,
                                                                         glsl_state*                     s,
                                                                         tex_state*                      t,
                                                                         int                             gl_current_tex,
-                                                                        unsigned                        p_validTextureCount);
-                void        drawGLsPrg                  ();
+                                                                        unsigned                        p_validTextureCount);   // ?? UNTESTED ??
+                void        drawGLsPrg                  ();                                                                     // !! WORKS !!
                 void        frmRateBreak                (               bool                            noTargetFPS);
                 void        setUniOvl                   (               olg_state*                      o, 
                                                                         glsl_state*                     s, 
-                                                                        tex_state*                      t);
+                                                                        tex_state*                      t);                     
                 void        setTexOvl                   (               olg_state*                      o, 
                                                                         glsl_state*                     s, 
                                                                         tex_state*                      t);
                 void        drawGLsOvl                  ();                  
-// code_hardware.cpp
+// code_hardware.cpp            !! TESTED AND APPROVED - as far as i can tell !! 
                 void        usDelay                     (               unsigned us);
                 void        msDelay                     (               unsigned ms);                                           // ++
                 u32         read32                      (               uintptr                         nAddress);                          // +++ MMIO
@@ -195,7 +190,7 @@ public:
                                                                         u32                             fgColor );
                 void        bufferScreenGetGrid         (               unsigned&                       cols,           // +++
                                                                         unsigned&                       rows );
-// code_logging.cpp
+// code_logging.cpp             !! TESTED AND APPROVED !!
                 void        storeLog                    (               char*                           p_bufferArray,                    // +++
                                                                         u32&                            index,
                                                                 const   char*                           p_string0, 
@@ -214,8 +209,8 @@ public:
                                                                        
                 void        nextline                    (               char*                           p_buffer,                       // +++
                                                                         u32&                            index);
-// code_menu.cpp
-                void        resetPickUpFlags            ();                                                             // **** okay, i have multiple flags that may or may not be reset ! maybe i will do it centralized here???
+// code_menu.cpp                !! NEED FINALLY TO CREATE THE BUTTON CONSUMER / MENU-LAYER CODE DONE !! 
+                void        resetPickUpFlags            ();                                                                 // **** okay, i have multiple flags that may or may not be reset ! maybe i will do it centralized here???
                 void        set_mode_length             (               uint8_t                         base);              // the "base" of "channels" to process, groups of 4!
                 void        mapMenuGroup                (               uint8_t                         menu_id,            // for comparison / exit condition **** here we use a parameter to compair against a global member... nononogo, we can rely only on "m_current_menu" vs "m_last_menu" right? !!! 
                                                                         uint8_t                         base);              // the "base" of "channels" to process, groups of 4!
@@ -233,7 +228,7 @@ public:
                 void        updateOvlState              (               olg_state*                      o,                  // because we are concerned with the overlay menu here!
                                                                         glsl_state*                     s, 
                                                                         tex_state*                      t);                       
-// code_parser.cpp
+// code_parser.cpp              !! TESTED AND APPROVED !!
                 bool        BMPparser                   (               tex_state*                      t,
                                                                         char*                           p_buffer_array[],
                                                                         char*                           filename_array[],
@@ -272,7 +267,7 @@ public:
                                                                         size_t                          size) const;
                 u32         ReadExpGolomb               (               u8*                             data, 
                                                                         size_t*                         bit_offset) const;
-// code_stubs.cpp 
+// code_stubs.cpp               ?? do we ever really need them, i mean we log/store the wire com ??
                 void        Log_createComponent         (       const   MMAL_Component_Create_Msg&      tx, 
                                                                 const   MMAL_Component_Create_Reply&    rx );
                 void        Log_getPortInfo             (       const   MMAL_Port_Info_Get_Msg&         tx, 
@@ -286,10 +281,10 @@ public:
                 void        Log_enablePort              (       const   MMAL_Port_Action_Msg&           tx, 
                                                                 const   MMAL_Port_Action_Reply_Msg&     rx );
 // code_util.cpp
-                void        readAndConvertADC           ();                             // +++ can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
-                void        adc_AdvanceIndex            ();     // +++
+                void        readAndConvertADC           ();                                                                 // +++ can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
+                void        adc_AdvanceIndex            ();                                                                 // +++
                 void        adc_ProcessAudio            (               void );
-                bool        checkUpdate                 ();     // +++
+                bool        checkUpdate                 ();                                                                 // +++
                 bool        UpdateKernel                ();
                 void        get_gl_time                 (               unsigned                        sys_time );                
                 void        set_pot_routing             (               int                             pin,
@@ -303,11 +298,11 @@ public:
                                                                         int&                            p_activeIndex, 
                                                                         int                             p_maxCount);
                 void        storeModes                  ();
-                void        buttonPing                  (               int                             p_btn_id, // +++
+                void        buttonPing                  (               int                             p_btn_id,           // +++
                                                                         int                             p_pin);
 
                 void        button_consumer             (               int                             p_btn_id);
-                void        randomVec8                  (               uint32_t                        p_seed); // +++
+                void        randomVec8                  (               uint32_t                        p_seed);            // +++
 
                 void        calculate1BPM               (               int                             p_source, 
                                                                         unsigned long                   p_triggerTimeClock);
@@ -316,7 +311,7 @@ public:
                 void        sample1WaveTable            (               int                             p_source, 
                                                                         int                             p_lfoIn, 
                                                                         int                             p_lfoOut );
-// code_vc_mmal_api.cpp
+// code_vc_mmal_api.cpp 
                 bool        framePollerMMAL             (               u32                             nal_block_offset,               // comes from the pooler -> h264 struct 
                                                                         u32                             nal_block_length);              // same same
 
@@ -328,7 +323,7 @@ public:
                 bool        queueInputBufferMMAL        (               MMAL_Buffer_From_Host_Msg&      tx, 
                                                                         u32                             nal_block_offset, 
                                                                         u32                             nal_block_length);
-// code_vc_mmal_init.cpp
+// code_vc_mmal_init.cpp        !! TESTED AND APPROVED !!
                 bool        initTexturesMMAL            ();
                 bool        createTexturesMMAL          ();
                 bool        createComponent             (               u32&                            ComponentHandle,
@@ -343,7 +338,7 @@ public:
                 bool        enableComponentMMAL         (               MMAL_Component_Enable_Msg&      tx, 
                                                                         MMAL_Component_Enable_Reply&    rx);
                 bool        setZeroCopyModeMMAL         (               u32                             port_handle,
-                                                                /*const   MMAL_Port_Info_Get_Reply&       src,*/
+                                                             /* const   MMAL_Port_Info_Get_Reply&       src, */
                                                                         MMAL_Port_Parameter_Set_Msg&    tx, 
                                                                         MMAL_Port_Parameter_Set_Reply&  rx);
                 bool        enablePortMMAL              (       const   MMAL_Port_Info_Get_Reply&       src, 
@@ -357,7 +352,7 @@ public:
                 void        primePortFormatOutputMMAL   (               u32 bufferSize,
                                                                 const   MMAL_Port_Info_Get_Reply&       src, 
                                                                         MMAL_Port_Info_Set_Msg&         tx);                
-// code_vc_service.cpp
+// code_vc_service.cpp          !! TESTED AND APPROVED !!
         static  void        callbackVCSM                (               void*                           callback_param, 
                                                                         VCHI_CALLBACK_REASON_T          reason, 
                                                                         void*                           msg_handle);
@@ -390,7 +385,7 @@ public:
                                                                         void*                           cb_param,
                                                                         VCHI_INSTANCE_T                 VCHIInstance,
                                                                         VCHI_SERVICE_HANDLE_T&          ServiceHandle);
-// code_vc_vcsm.cpp
+// code_vc_vcsm.cpp             !! TESTED AND APPROVED !!
                 bool        allocMemoryVCSM             (               size_t                          size,
                                                                         u32                             base_unit,
                                                                         u32                             alignment,
@@ -436,8 +431,8 @@ public:
                 bool        wrapperInitMMALstruct       ();             // for the dynamical mmal structs allocation
                 void        wrapperFreeVCSMstruct       ();             // for the cleanup of the vcsm structs
                 void        wrapperFreeMMALstruct       ();             // for the cleanup of the mmal structs
-                
-#include "defs_member.h" // <- should go to the bottom, right?    
+
+#include "defs_member.h"
 
 #include "table_lfo.cpp"
 

@@ -1,76 +1,23 @@
 #include "kernel.h"
 
-//  #undef  __DEBUG_LOG__
-    #define __DEBUG_LOG__
-
     #define MY_BUFFER   m_logBuffer                 // not used here 
     #define MY_INDEX    m_logBufferIndex
-    
-/*
-bool            CKernel::initializeMMAL             (   u32                     InBufferHandle,
-                                                        u32                     InBufferPointer,
-                                                        u32                     InBufferSize, 
-                                                        
-                                                        u32                     OutBufferHandleA,
-                                                        u32                     OutBufferPointerA,
-                                                        u32                     OutBufferSizeA,
-
-                                                        u32                     OutBufferHandleB,
-                                                        u32                     OutBufferPointerB,
-                                                        u32                     OutBufferSizeB,
-
-                                                        u32                     ResolutionX,
-                                                        u32                     ResolutionY,
-
-                                                        EGLDisplay              eglDisplay,
-                                                        EGLContext              eglContext )
-{
-                m_input_buffer_handle         = InBufferHandle;           // redundant if i rename    m_input_buffer_handle     to  m_input_buffer_handle
-                m_input_buffer_pointer        = InBufferPointer;          // redundant if i rename    m_input_buffer_pointer    to  m_input_buffer_pointer
-                m_InputBufferSize           = InBufferSize;             // redundant if i rename    m_InputBufferSize       to  m_videoBlockSize
-
-                m_output_buffer_handle_a       = OutBufferHandleA;         // redundant if i rename    m_output_buffer_handle_a   to  m_output_buffer_handle_a
-                m_output_buffer_pointer_a      = OutBufferPointerA;        // redundant if i rename    m_output_buffer_pointer_a  to  m_output_buffer_pointer_a
-                m_OutputBufferSizeA         = OutBufferSizeA;           // redundant if i rename    m_OutputBufferSizeA     to  m_frameBlockSizeA
-
-                m_output_buffer_handle_b       = OutBufferHandleB;         // redundant if i rename    m_output_buffer_handle_b   to  m_output_buffer_handle_b
-                m_output_buffer_pointer_b      = OutBufferPointerB;        // redundant if i rename    m_output_buffer_pointer_b  to  m_output_buffer_pointer_b
-                m_OutputBufferSizeB         = OutBufferSizeA;           // redundant if i rename    m_OutputBufferSizeB     to  m_frameBlockSizeB
-
-                m_ResolutionX               = ResolutionX;              // should be MAX_VIDEO_WIDTH  since o_c_setup.h defines the actual project parameters 
-                m_ResolutionY               = ResolutionY;              // should be MAX_VIDEO_HEIGHT since o_c_setup.h defines the actual project parameters 
-
-                m_eglDisplay                = eglDisplay;               // needed in bufferReadyMMAL is part of my olg_state.display
-                m_eglContext                = eglContext;               // needed in bufferReadyMMAL is part of my olg_state.context
-
-
-#ifdef __DEBUG_LOG__
-                storeLog ( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");   
-                storeLog ( MY_BUFFER, MY_INDEX, "Input    Buffer Handle",m_input_buffer_handle,   "Pointer", m_input_buffer_pointer,    "Size", m_InputBufferSize);
-                storeLog ( MY_BUFFER, MY_INDEX, "Output A Buffer Handle",m_output_buffer_handle_a, "Pointer", m_output_buffer_pointer_a,  "Size", m_OutputBufferSize);
-                storeLog ( MY_BUFFER, MY_INDEX, "Output B Buffer Handle",m_output_buffer_handle_b, "Pointer", m_output_buffer_pointer_b,  "Size", m_OutputBufferSize); 
-            //  nextline ( MY_BUFFER, MY_INDEX );       
-                storeLog ( MY_BUFFER, MY_INDEX, "Resolution      Height", m_ResolutionX, "Width", m_ResolutionY, "EGL Display", (u32)m_eglDisplay, "EGL Context", (u32)m_eglContext);
-            //  storeLog ( MY_BUFFER, MY_INDEX, "EGL Display", (u32)m_eglDisplay, "EGL Context", (u32)m_eglContext);
-                storeLog ( MY_BUFFER, MY_INDEX, "----------------------------------------------------------------");
-#endif 
-*/
-
 
 bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u32 nal_block_length)
 {
-#ifdef __DEBUG_LOG__
+#ifdef __FIRST_FRAME__
                 if (!f_firstFrameQueued)
                     {
                     if (!queueInputBufferMMAL(*m_BufferFromHostTx_Input, nal_block_offset, nal_block_length))
                         {
-                    //  nextline( MY_BUFFER, MY_INDEX );
+#ifdef __LOG_MMAL__
                         storeLog( MY_BUFFER, MY_INDEX, "very first frame queue ERROR!", EMPTYLOG, "Frame offset", nal_block_offset, "length", nal_block_length);
+#endif
                         return false;
                         }
-                //  nextline( MY_BUFFER, MY_INDEX );
+#ifdef __LOG_MMAL__
                     storeLog( MY_BUFFER, MY_INDEX, "very first frame queue SUCCESS", EMPTYLOG, "Frame offset", nal_block_offset, "length", nal_block_length);
-
+#endif
                     getPortInfoMMAL(MMAL_PORT_TYPE_INPUT,  m_InputPortHandle,  *m_PortInfoGetTx_Input_D, *m_PortInfoGetRx_Input_D);
                     getPortInfoMMAL(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, *m_PortInfoGetTx_Output_D, *m_PortInfoGetRx_Output_D);
 
@@ -95,8 +42,7 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
                                 case MMAL_MSG_STATUS_SUCCESS:
                                     {
                                     u32 m_CurrentHandle = m_BufferFromHostTx_Output->msg.buffer_header.data;  // Payload layout reused: buffer_from_host
-#ifdef __DEBUG_LOG__   
-                                //  nextline( MY_BUFFER, MY_INDEX );
+#ifdef __LOG_MMAL__   
                                     storeLog( MY_BUFFER, MY_INDEX, "frame offset", nal_block_offset, "length", nal_block_length, "status", m_BufferFromHostTx_Output->hdr.status, "handle", m_CurrentHandle);
 #endif 
                                     if (m_CurrentHandle != m_output_buffer_handle_a && m_CurrentHandle != m_output_buffer_handle_b)
@@ -118,14 +64,13 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
                                         return false;
                                     if (!queueInputBufferMMAL(*m_BufferFromHostTx_Input, nal_block_offset, nal_block_length))
                                         return false;
-#ifdef __DEBUG_LOG__   
+#ifdef __LOG_MMAL__   
                                     message = "MMAL_MSG_STATUS_SUCCESS      - All is Fine";
-                                //  nextline( MY_BUFFER, MY_INDEX );
                                     storeLog( MY_BUFFER, MY_INDEX, message, EMPTYLOG, "frame offset", nal_block_offset, "length", nal_block_length);
 #endif                       
                                     return true;
                                     }
-#ifdef __DEBUG_LOG__   
+#ifdef __LOG_MMAL__   
                                 case MMAL_MSG_STATUS_ENOMEM:     message = "MMAL_MSG_STATUS_ENOMEM       - Out of memory                      "; break;
                                 case MMAL_MSG_STATUS_ENOSPC:     message = "MMAL_MSG_STATUS_ENOSPC       - Out of resources other than memory "; break;
                                 case MMAL_MSG_STATUS_EINVAL:     message = "MMAL_MSG_STATUS_EINVAL       - Argument is invalid                "; break;
@@ -144,7 +89,7 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
 #endif                   
                                 default:                         message = "Unknown MMAL status          - WTF!!!                             "; break;
                                 }
-#ifdef __DEBUG_LOG__   
+#ifdef __LOG_MMAL__   
                         //  nextline( MY_BUFFER, MY_INDEX );
                             storeLog( MY_BUFFER, MY_INDEX, message, EMPTYLOG, "Frame offset", nal_block_offset, "length", nal_block_length);
                             storeMsg( MY_BUFFER, MY_INDEX, "Poller ERROR (BUFFER_TO_HOST)", &m_BufferFromHostTx_Output, msg_len);
@@ -155,7 +100,7 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
                         default: 
                             {
                             message = "UNEXPECTED MESSAGE";
-#ifdef __DEBUG_LOG__    
+#ifdef __LOG_MMAL__    
                         //  nextline( MY_BUFFER, MY_INDEX );
                             storeLog( MY_BUFFER, MY_INDEX, message,  EMPTYLOG, "Frame offset", nal_block_offset, "Type",  m_BufferFromHostTx_Output->hdr.type, "Status", m_BufferFromHostTx_Output->hdr.status);
                             storeMsg( MY_BUFFER, MY_INDEX, "Poller ERROR (UNEXPECTED MESSAGE)", &m_BufferFromHostTx_Output, msg_len);
@@ -163,13 +108,13 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
                             break;
                             }
                         }
-#ifdef __DEBUG_LOG__ 
+#ifdef __LOG_MMAL__ 
                 //  nextline( MY_BUFFER, MY_INDEX );
                     storeLog( MY_BUFFER, MY_INDEX, "Unexpected Reply", EMPTYLOG, "Frame offset", nal_block_offset, "length", nal_block_length);
                     storeMsg( MY_BUFFER, MY_INDEX, "Unexpected Reply", &m_BufferFromHostTx_Output, msg_len);
 #endif       
                     }
-#ifdef __DEBUG_LOG__   
+#ifdef __LOG_MMAL__   
             //  nextline( MY_BUFFER, MY_INDEX );
                 storeLog( MY_BUFFER, MY_INDEX, "Nothing in the Pipeline", EMPTYLOG, "Frame offset", nal_block_offset, "length", nal_block_length);    // Nothing relevant received
 #endif 
@@ -197,7 +142,7 @@ bool            CKernel::bufferReadyMMAL            (   u32 handle)
                 m_EGLimage = eglCreateImageKHR( m_eglDisplay, m_eglContext, EGL_IMAGE_BRCM_VCSM, (EGLClientBuffer)&info, nullptr ); // Create new EGLImage viewing this buffer
                 if (m_EGLimage == EGL_NO_IMAGE_KHR)
                     {
-#ifdef __DEBUG_LOG__        
+#ifdef __LOG_MMAL__        
                     storeLog( MY_BUFFER, MY_INDEX, "EGLImage creation FAILED", handle);
 #endif 
                     return false;
@@ -223,7 +168,7 @@ bool            CKernel::queueOutputBufferMMAL      (   MMAL_Buffer_From_Host_Ms
                 tx.msg.buffer_header.offset                        = 0;
                 tx.msg.buffer_header.flags                         = 0;
 
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_MMAL__
                 storeLog( MY_BUFFER, MY_INDEX, "BUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
                 storeMsg( MY_BUFFER, MY_INDEX, "QueueOutputBuffer", &tx, (u32)sizeof(tx));
 #endif 
@@ -243,7 +188,7 @@ bool            CKernel::queueInputBufferMMAL       (   MMAL_Buffer_From_Host_Ms
 
                 u32 flags                                           = MMAL_BUFFER_HEADER_FLAG_FRAME | MMAL_BUFFER_HEADER_FLAG_KEYFRAME;
                 tx.msg.buffer_header.flags                         = flags;
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_MMAL__
                 storeLog( MY_BUFFER, MY_INDEX, "BUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
                 storeMsg( MY_BUFFER, MY_INDEX, "QueueInputBuffer", &tx, (u32)sizeof(tx));
 #endif 

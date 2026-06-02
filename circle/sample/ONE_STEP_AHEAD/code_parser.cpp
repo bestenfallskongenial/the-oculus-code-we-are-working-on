@@ -179,7 +179,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                         h->frame_length[file_index][idx]      = idr_len[file_index][idx];                                                       /* ADDED: length of startcode+IDR */
 
                         /* CHANGED: h->idr_offset[file_index] = idr_off[file_index][idx] - sps_off[file_index][idx]; - REPLACED BY: h->frame_offset[file_index][idx], because the old value was per-file and overwritten each idx */
-#ifdef __LOG_PARSER__
+#ifdef __DUMP_FRAMES__
                         storeLog(   MY_BUFFER, MY_INDEX,
                                     "67+68+65", EMPTYLOG,
                                     "address ", (u32)h->nal_block_address[file_index][idx],
