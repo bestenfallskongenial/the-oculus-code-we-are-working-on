@@ -284,7 +284,7 @@ bool            CKernel::wrapperMMAL()
                     return bOK;
 }
 
-void            CKernel::wrapper_from_sd            (   )
+void            CKernel::wrapper_load_sd            (   )
 {
                 if(Mount( PARTITION_NAME_SD ))
                     {
@@ -449,7 +449,7 @@ void            CKernel::wrapper_load_usb           (   )
             //  CleanAndInvalidateDataCacheRange((uintptr_t)m_videoBlockBase, (size_t)m_videoBlockSize); // !!! every memory allocation/operation like load?! do we actually flush the complete video dma buffer here? or just one block? and dont we need to do it for the output frame buffers to? 
 }
 
-void            CKernel::wrapper_parser_a()
+void            CKernel::wrapper_parser_sd()
 {
                 BMPparser       (   &m_omt,                                         // the dedicated struct for the overlay texture
                                     m_bufferOmt,                                    // the actual mem-buffer where i have stored it
@@ -467,7 +467,7 @@ void            CKernel::wrapper_parser_a()
                                     filecounter[FT_TEX][FLD_LOADED]);      
 }
 
-void            CKernel::wrapper_parser_b()
+void            CKernel::wrapper_parser_usb()
 {
                 BMPparser       (   &m_tex,
                                     m_bufferTex,
@@ -821,7 +821,6 @@ bool            CKernel::wrapperInitMMALstruct      (   )
 
 void            CKernel::wrapperFreeVCSMstruct      (   ) // here i must check what structs are init/debug and what are runtime code!
 {
-    /*
                 delete  m_ServiceCreateVCSM;     
                         m_ServiceCreateVCSM             = nullptr;
 
@@ -854,12 +853,10 @@ void            CKernel::wrapperFreeVCSMstruct      (   ) // here i must check w
 
                 delete  m_freeRxVCSM;        
                         m_freeRxVCSM                    = nullptr;
-    */
 }
 
 void            CKernel::wrapperFreeMMALstruct      (   ) // here i must check what structs are init/debug and what are runtime code!
 {
-    /*
                 delete  m_ServiceCreateMMAL;       
                         m_ServiceCreateMMAL             = nullptr;
 
@@ -970,5 +967,4 @@ void            CKernel::wrapperFreeMMALstruct      (   ) // here i must check w
 
                 delete  m_PortInfoGetRx_Output_D;  
                         m_PortInfoGetRx_Output_D        = nullptr;
-    */
 }

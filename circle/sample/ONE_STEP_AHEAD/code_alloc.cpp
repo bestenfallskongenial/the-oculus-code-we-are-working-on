@@ -1,4 +1,3 @@
-
 #include "kernel.h"
 
     #define MY_BUFFER   m_logBuffer                 // means the log goes into the pre-init buffer 

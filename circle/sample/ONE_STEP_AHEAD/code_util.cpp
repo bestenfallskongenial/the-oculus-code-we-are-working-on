@@ -188,12 +188,12 @@ bool            CKernel::checkUpdate                (   )
 
 bool            CKernel::UpdateKernel                     (   )
 {
-                if (saveFromBufferM(PARTITION_NAME_SD, FILENAME_KNL, m_bufferKnl[1], g_bytKln[1]))
+                if (saveFromBuffer(PARTITION_NAME_SD, FILENAME_KNL, m_bufferKnl[1], g_bytKln[1]))
                     {
                     return true;
                     }
 
-                saveFromBufferM(PARTITION_NAME_SD, FILENAME_KNL, m_bufferKnl[0], g_bytKln[0]); // fail - try to restore the original kernel
+                saveFromBuffer(PARTITION_NAME_SD, FILENAME_KNL, m_bufferKnl[0], g_bytKln[0]); // fail - try to restore the original kernel
 
                 return false;
 }

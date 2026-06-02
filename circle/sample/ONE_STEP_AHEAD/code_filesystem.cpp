@@ -59,7 +59,7 @@ unsigned        CKernel::loadToBuffer               (           char*       p_bu
                 return 0;
 }
 
-bool            CKernel::saveFromBufferM            (   const   char*       p_deviceName,  
+bool            CKernel::saveFromBuffer             (   const   char*       p_deviceName,  
                                                         const   char*       p_fileName,             
                                                         const   char*       p_bufferArray,
                                                                 unsigned    p_bufferSize )

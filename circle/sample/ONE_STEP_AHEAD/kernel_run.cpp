@@ -25,8 +25,8 @@ TShutdownMode CKernel::Run(void)
 
                     if (!m_SD_has_load) 
                         {
-                        wrapper_from_sd();
-                        wrapper_parser_a();
+                        wrapper_load_sd();
+                        wrapper_parser_sd();
                         wrapper_init_gl_sd();
 
                         m_SD_has_load = true;
@@ -36,29 +36,29 @@ TShutdownMode CKernel::Run(void)
                         {
                         wrapper_load_usb();   
 
-                        wrapper_parser_b();
+                        wrapper_parser_usb();
                         wrapper_init_gl_usb();
        
-                        saveFromBufferM         (   PARTITION_NAME_SD,
+                        saveFromBuffer         (   PARTITION_NAME_SD,
                                                   /*gen83FileName("TXT"*/
                                                     "bootlog.txt",
                                                     m_logBuffer,            // stores the pre-init buffer
                                                     m_logBufferIndex );
 
                                                     msDelay(100);
-                        saveFromBufferM         (   PARTITION_NAME_SD,
+                        saveFromBuffer         (   PARTITION_NAME_SD,
                                                     "GLSL.txt",
                                                     m_bufferLog[1],
                                                     m_bufferLogIndex[1] );
 
                                                     msDelay(100);
-                        saveFromBufferM         (   PARTITION_NAME_SD,
+                        saveFromBuffer         (   PARTITION_NAME_SD,
                                                     "parser.txt",
                                                     m_bufferLog[0],
                                                     m_bufferLogIndex[0] );
 
                                                     msDelay(100);
-                        saveFromBufferM         (   PARTITION_NAME_SD,
+                        saveFromBuffer         (   PARTITION_NAME_SD,
                                                     "vc04.txt",
                                                     m_bufferLog[2],
                                                     m_bufferLogIndex[2] );
