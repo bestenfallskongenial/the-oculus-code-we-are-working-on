@@ -283,19 +283,6 @@ public:
                                                                         size_t                          size) const;
                 u32         ReadExpGolomb               (               u8*                             data, 
                                                                         size_t*                         bit_offset) const;
-// code_stubs.cpp               ?? do we ever really need them, i mean we log/store the wire com ??
-                void        Log_createComponent         (       const   MMAL_Component_Create_Msg&      tx, 
-                                                                const   MMAL_Component_Create_Reply&    rx );
-                void        Log_getPortInfo             (       const   MMAL_Port_Info_Get_Msg&         tx, 
-                                                                const   MMAL_Port_Info_Get_Reply&       rx );
-                void        Log_setPortInfo             (       const   MMAL_Port_Info_Set_Msg&         tx, 
-                                                                const   MMAL_Port_Info_Set_Reply&       rx );
-                void        Log_enableComponentMMAL     (       const   MMAL_Component_Enable_Msg&      tx, 
-                                                                const   MMAL_Component_Enable_Reply&    rx );
-                void        Log_setZeroCopyModeMMAL     (       const   MMAL_Port_Parameter_Set_Msg&    tx, 
-                                                                const   MMAL_Port_Parameter_Set_Reply&  rx );
-                void        Log_enablePort              (       const   MMAL_Port_Action_Msg&           tx, 
-                                                                const   MMAL_Port_Action_Reply_Msg&     rx );
 // code_util.cpp
 
                 bool        checkUpdate                 ();

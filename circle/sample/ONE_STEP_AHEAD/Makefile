@@ -18,7 +18,6 @@ OBJS  = main.o \
         code_hardware.o \
         code_menu.o \
         code_parser.o \
-        code_stubs.o \
         code_util.o \
         code_vc_service.o \
         code_vc_mmal_api.o \
