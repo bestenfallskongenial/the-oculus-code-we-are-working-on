@@ -71,8 +71,6 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                 return true;
 }
 
-
-
 bool            CKernel::parse264                  (   h264_state* h,
                                                         char*       blockBase,
                                                         char*       p_buffer_array[],
@@ -428,4 +426,3 @@ u32             CKernel::ReadExpGolomb              (   u8* data, size_t* bit_of
                 *bit_offset = offset;
                 return result;
 }
-// END OF FILE

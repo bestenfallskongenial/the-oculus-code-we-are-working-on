@@ -4,6 +4,21 @@
     #define MY_BUFFER   m_bufferLog                 // not used here !
     #define MY_INDEX    m_bufferLogIndex
 
+void            CKernel::prepParameters             (   )               // f_buffer guess here we need much more to do!
+{
+                for ( int f_buffer=0; f_buffer <= DEFAULT_SLOT; f_buffer++)
+                    {
+                    g_centralModeBuffer[f_buffer][LF1_WAVE] = 0;
+                    g_centralModeBuffer[f_buffer][LF2_WAVE] = 1;
+                    g_centralModeBuffer[f_buffer][LF1_MULT] = 3;
+                    g_centralModeBuffer[f_buffer][LF2_MULT] = 3;
+                    g_centralModeBuffer[f_buffer][SENS_A] = 15;
+                    g_centralModeBuffer[f_buffer][SENS_B] = 47;
+                    g_centralModeBuffer[f_buffer][SENS_C] = 15;
+                    g_centralModeBuffer[f_buffer][SENS_D] = 47;                    
+                    }
+}
+
 void            CKernel::resetPickUpFlags           (   ) 
 {
 
@@ -15,6 +30,66 @@ void            CKernel::resetPickUpFlags           (   )
                         }
                     g_menu_mode_old = g_menu_mode_new;  // bot need to be declared globally as part of the menu / layer state-machine!!!
                     }
+}
+
+void            CKernel::chooseIndex                (   int             p_channel, 
+                                                        int&            p_activeIndex, 
+                                                        int             p_maxCount, 
+                                                        bool*           flags)    // non-condensed valid arrays, max number of files ( macros for example!)
+{
+//              static int p_activeIndex = 0;
+
+                int f_calculated = g_inOutMatrixInt[p_channel][RAW] * p_maxCount >> 10;
+
+                if (flags[f_calculated])
+                    {
+                    p_activeIndex = f_calculated;
+                    }
+}
+
+void            CKernel::chooseIndexD               (   int             p_channel, 
+                                                        int&            p_activeIndex, 
+                                                        int             p_maxCount) // condensed valid arrays, max number of files ( macros for example!)
+{
+                int f_calculated = (g_inOutMatrixInt[p_channel][RAW] * p_maxCount) >> 10;
+
+                p_activeIndex = f_calculated;
+}
+
+void            CKernel::storeModes                 (   )
+{
+                
+                if (g_current_gl_program != g_last_gl_program)
+                    {    
+                    g_currentProgramBuffer = g_centralModeBuffer[g_current_gl_program][IS_STORED] ? g_current_gl_program : DEFAULT_SLOT;
+                    g_last_gl_program = g_current_gl_program;
+                    }               
+
+                if (g_centralModeBuffer[g_current_gl_program][IS_STORED] == true /* && g_currentProgramBuffer != g_current_gl_program */)
+                    {  
+                    memcpy(&g_centralModeBuffer[g_current_gl_program][0], &g_centralModeBuffer[DEFAULT_SLOT][0], sizeof(g_centralModeBuffer[g_current_gl_program])); // replaces 16 * sizeof(int)
+                    g_currentProgramBuffer = g_current_gl_program;
+                    }
+                else if (g_centralModeBuffer[g_current_gl_program][IS_STORED] == false /* && g_currentProgramBuffer != DEFAULT_SLOT */)
+                    {  
+                    g_currentProgramBuffer = DEFAULT_SLOT;
+                    }
+}
+
+void            CKernel::button_consumer            (   int                 p_btn_id ) // this is where the magic happens: we need to set the states of menu layer, menu, we need to use one button for bpm input and so on 
+{
+/*
+                if (g_buttons_states[p_btn_id][BTN_SINGLE]) counter += 1;
+                if (g_buttons_states[p_btn_id][BTN_DOUBLE]) counter -= 1;
+
+                if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] == 1)
+                    counter += 5;
+
+                if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] =10)
+                    longhold += 1;
+                if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] =20)
+                    longhold += 2;
+*/
 }
 
 void            CKernel::set_mode_length            (   uint8_t base)
