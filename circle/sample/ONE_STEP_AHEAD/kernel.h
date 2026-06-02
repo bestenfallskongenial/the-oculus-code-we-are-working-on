@@ -216,7 +216,17 @@ public:
                 void        bufferScreenGetGrid         (               unsigned&                       cols,           // +++
                                                                         unsigned&                       rows );
 // code_menu.cpp                !! NEED FINALLY TO CREATE THE BUTTON CONSUMER / MENU-LAYER CODE DONE !! 
+                void        prepParameters              ();
                 void        resetPickUpFlags            ();                                                                 // **** okay, i have multiple flags that may or may not be reset ! maybe i will do it centralized here???
+                void        chooseIndex                 (               int                             p_channel, 
+                                                                        int&                            p_activeIndex, 
+                                                                        int                             p_maxCount, 
+                                                                        bool*                           flags);
+                void        chooseIndexD                (               int                             p_channel, 
+                                                                        int&                            p_activeIndex, 
+                                                                        int                             p_maxCount);
+                void        storeModes                  ();
+                void        button_consumer             (               int                             p_btn_id);
                 void        set_mode_length             (               uint8_t                         base);              // the "base" of "channels" to process, groups of 4!
                 void        mapMenuGroup                (               uint8_t                         menu_id,            // for comparison / exit condition **** here we use a parameter to compair against a global member... nononogo, we can rely only on "m_current_menu" vs "m_last_menu" right? !!! 
                                                                         uint8_t                         base);              // the "base" of "channels" to process, groups of 4!
@@ -290,16 +300,8 @@ public:
 
                 bool        checkUpdate                 ();
                 void        get_gl_time                 (               unsigned                        sys_time );                
-                void        prepParameters              ();
-                void        chooseIndex                 (               int                             p_channel, 
-                                                                        int&                            p_activeIndex, 
-                                                                        int                             p_maxCount, 
-                                                                        bool*                           flags);
-                void        chooseIndexD                (               int                             p_channel, 
-                                                                        int&                            p_activeIndex, 
-                                                                        int                             p_maxCount);
-                void        storeModes                  ();
-                void        button_consumer             (               int                             p_btn_id);
+
+
                 void        randomVec8                  (               uint32_t                        p_seed);            // +++
 
                 void        calculate1BPM               (               int                             p_source, 
