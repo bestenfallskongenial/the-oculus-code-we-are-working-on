@@ -87,13 +87,14 @@ TShutdownMode CKernel::Run(void)
                             g_inOutMatrixFlt[7][OUT] = g_inOutMatrixFlt[7][VAL];
                         //  logInOutRuntime();
         }
+/*        
                     WS2812_SetLED(0, r, g, b);
                     WS2812_SetLED(1, b, r, g);
                     WS2812_SetLED(2, g, b, r);
                     WS2812_SetLED(3, (r*2)%255, g, b);
 
                     WS2812_Update();
-                    
+*/                    
                     r = (r + 1) % 256;
                     g = (g + 2) % 256;
                     b = (b + 3) % 256;
@@ -124,7 +125,7 @@ TShutdownMode CKernel::Run(void)
 
                     frmBufferSwap(&m_ogl);
 
-                    msDelay(25);
+                //  msDelay(25);
 
                 //  if ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 21, 0xFFFFFFFF );
                     }
