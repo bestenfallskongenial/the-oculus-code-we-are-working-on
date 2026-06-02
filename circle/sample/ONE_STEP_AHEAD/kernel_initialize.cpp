@@ -119,8 +119,9 @@ boolean			CKernel::Initialize						(	void )
                     {
                     getStateVCHI();
 #ifdef __LOG_INIT__
-                    storeLog( MY_BUFFER, MY_INDEX, "m_VCHIInstance",           (u32)m_VCHIInstance );
-                    storeLog( MY_BUFFER, MY_INDEX, "m_Connection",             (u32)m_Connection );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "   m_VCHIInstance", (u32)m_VCHIInstance, 
+                                "m_Connection", (u32)m_Connection );
 
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getStateVCHI()                          DONE");
 #endif
@@ -170,12 +171,12 @@ boolean			CKernel::Initialize						(	void )
 #ifdef __LOG_INIT__
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initOGL(&m_ogl)                         DONE");
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, 
-                        "EGL Screen Width   ", m_ogl.screen_width, 
+                        "   EGL Screen Width   ", m_ogl.screen_width, 
                         "EGL Screen Height  ", m_ogl.screen_height,
                         "DISPMANX Element   ", m_ogl.dispman_element,
                         "DISPMANX Display   ", m_ogl.dispman_display );
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX,
-                        "EGL Display        ", (u32)(uintptr_t)m_ogl.display,
+                        "   EGL Display        ", (u32)(uintptr_t)m_ogl.display,
                         "EGL Surface        ", (u32)(uintptr_t)m_ogl.surface,
                         "EGL Context        ", (u32)(uintptr_t)m_ogl.context );
 #endif
