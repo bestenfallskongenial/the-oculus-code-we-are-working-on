@@ -124,14 +124,14 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
 
 // a-sync VCHI runtime messages ?
 
-bool            CKernel::bufferReadyMMAL            (   u32 handle)
+bool            CKernel::bufferReadyMMAL            (   u32 handle, EGLDisplay eglDisplay, EGLContext eglContext, EGLImageKHR EGLimage, GLuint frameTexture)
 {
         //      if (handle != m_VCSMHandleA && handle != m_VCSMHandleB)         // Only react to our two output buffers
         //          return true;                                                // why???? we have filtered before ad infiniti 
-                if (m_EGLimage != EGL_NO_IMAGE_KHR)                             // Destroy previous EGLImage (if any)
+                if (EGLimage != EGL_NO_IMAGE_KHR)                             // Destroy previous EGLImage (if any)
                     {
-                    eglDestroyImageKHR(m_eglDisplay, m_EGLimage);
-                    m_EGLimage = EGL_NO_IMAGE_KHR;
+                    eglDestroyImageKHR(eglDisplay, EGLimage);
+                    EGLimage = EGL_NO_IMAGE_KHR;
                     }
                 egl_image_brcm_vcsm_info info =                                 // Describe the finished VCSM buffer
                     {
@@ -139,16 +139,16 @@ bool            CKernel::bufferReadyMMAL            (   u32 handle)
                     .height      = m_ResolutionY,
                     .vcsm_handle = handle
                     };
-                m_EGLimage = eglCreateImageKHR( m_eglDisplay, m_eglContext, EGL_IMAGE_BRCM_VCSM, (EGLClientBuffer)&info, nullptr ); // Create new EGLImage viewing this buffer
-                if (m_EGLimage == EGL_NO_IMAGE_KHR)
+                EGLimage = eglCreateImageKHR( eglDisplay, eglContext, EGL_IMAGE_BRCM_VCSM, (EGLClientBuffer)&info, nullptr ); // Create new EGLImage viewing this buffer
+                if (EGLimage == EGL_NO_IMAGE_KHR)
                     {
 #ifdef __LOG_MMAL__        
                     storeLog( MY_BUFFER, MY_INDEX, "EGLImage creation FAILED", handle);
 #endif 
                     return false;
                     }
-                glBindTexture(GL_TEXTURE_2D, m_Texture);                    // Bind the EGLImage to the single public texture
-                glEGLImageTargetTexture2DOES(GL_TEXTURE_2D, m_EGLimage);
+                glBindTexture(GL_TEXTURE_2D, frameTexture);                    // Bind the EGLImage to the single public texture
+                glEGLImageTargetTexture2DOES(GL_TEXTURE_2D, EGLimage);
                 glBindTexture(GL_TEXTURE_2D, 0);
 
                 return true;
