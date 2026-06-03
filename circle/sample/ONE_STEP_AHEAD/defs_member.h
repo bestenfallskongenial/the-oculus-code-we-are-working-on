@@ -439,9 +439,8 @@ public:
 
     u32                      m_ResolutionX      = 480;     // placeholder until i solved this!
     u32                      m_ResolutionY      = 640;
-/*
+
     EGLDisplay               m_eglDisplay;
     EGLContext               m_eglContext;
     EGLImageKHR              m_EGLimage;
     GLuint                   m_Texture;                
-*/    

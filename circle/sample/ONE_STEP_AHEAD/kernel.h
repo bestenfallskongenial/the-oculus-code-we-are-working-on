@@ -301,11 +301,7 @@ public:
 // code_vc_mmal_api.cpp 
                 bool        framePollerMMAL             (               u32                             nal_block_offset,               // comes from the pooler -> h264 struct 
                                                                         u32                             nal_block_length);              // same same
-                bool        bufferReadyMMAL             (               u32                             handle, 
-                                                                        EGLDisplay                      eglDisplay, 
-                                                                        EGLContext                      eglContext, 
-                                                                        EGLImageKHR                     EGLimage, 
-                                                                        GLuint                          frameTexture );                  // the vcsm handle of the buffer? from a vc message?
+                bool        bufferReadyMMAL             (               u32                             handle);                    // the vcsm handle of the buffer? from a vc message?
                 bool        queueOutputBufferMMAL       (               MMAL_Buffer_From_Host_Msg&      tx, 
                                                                         u32                             vc_handle,                  
                                                                         u32                             alloc_size);
