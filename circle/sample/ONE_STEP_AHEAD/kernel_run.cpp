@@ -119,6 +119,12 @@ TShutdownMode CKernel::Run(void)
                             &m_tex,
                             0);
 
+                    setTexPrg(&m_ogl,
+                            &m_fsh,
+                            &m_tex,
+                            0,
+                            1);                            
+
                     drawGLsPrg();
 
                     frmRateBreak(false);
