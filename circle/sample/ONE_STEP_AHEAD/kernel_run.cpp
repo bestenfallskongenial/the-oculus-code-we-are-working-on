@@ -105,7 +105,7 @@ TShutdownMode CKernel::Run(void)
                 //  logButtonStatesRuntime();
 
                     randomVec8(g_currentTime);
-
+// for debug start
                     g_current_gl_program = 0;
 
                     g_currentProgramBuffer = 0;
@@ -113,7 +113,7 @@ TShutdownMode CKernel::Run(void)
                     g_centralModeBuffer[g_current_gl_program][TEX_MODE] = true;
 
                     g_centralModeBuffer[g_current_gl_program][FRM_MODE] = 0;
-
+// for debug end
                     get_gl_time( m_Timer.GetClockTicks() );
 
                     frmBufferSet(&m_vtx);
@@ -136,8 +136,6 @@ TShutdownMode CKernel::Run(void)
                     frmBufferSwap(&m_ogl);
 
                 //  msDelay(25);
-
-                //  if ( checkUpdate() == true ) bufferScreenDraw( "update present", 0, sizeof("update present"), 0, 21, 0xFFFFFFFF );
                     }
 
                 return ShutdownHalt;
