@@ -108,6 +108,10 @@ TShutdownMode CKernel::Run(void)
 
                     g_current_gl_program = 0;
 
+                    g_currentProgramBuffer = 0;
+                    
+                    g_centralModeBuffer[g_current_gl_program][TEX_MODE] = true;
+
                     g_centralModeBuffer[g_current_gl_program][FRM_MODE] = 0;
 
                     get_gl_time( m_Timer.GetClockTicks() );
