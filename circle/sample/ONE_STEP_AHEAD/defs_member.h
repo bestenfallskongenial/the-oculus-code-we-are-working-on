@@ -54,6 +54,15 @@ public:         // Logging
 
                 char                            m_logBuffer[1024*32]                            = {0}; //  pre-init buffer 
                 u32                             m_logBufferIndex                                = 0;
+   
+
+
+                u32             m_logScreenStartIndex               = 0;
+
+
+
+
+
 
                 olg_state                       m_ogl                                           = {};              // local copies of my graphics related structs
 
