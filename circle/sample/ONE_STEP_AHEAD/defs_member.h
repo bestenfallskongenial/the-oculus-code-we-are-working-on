@@ -437,10 +437,11 @@ public:
 
                 bool                            f_firstFrameQueued                  = false;
 
-    u32                      m_ResolutionX      = 480;     // placeholder until i solved this!
-    u32                      m_ResolutionY      = 640;
+// placeholder until i solved this!
+    u32                      m_ResolutionX      = 480;  // should be VIDEO_WIDTH      and is needed by bufferReadyMMAL, primePortFormatInputMMAL, primePortFormatOutputMMAL
+    u32                      m_ResolutionY      = 640;  // should be VIDEO_HEIGHT     and needed by bufferReadyMMAL, primePortFormatInputMMAL, primePortFormatOutputMMAL
 
-    EGLDisplay               m_eglDisplay;
-    EGLContext               m_eglContext;
-    EGLImageKHR              m_EGLimage;
-    GLuint                   m_Texture;                
+    EGLDisplay               m_eglDisplay;      // is stored in the olg_state struct -> display     and needed by bufferReadyMMAL
+    EGLContext               m_eglContext;      // is stored in the olg_state struct -> context     and needed by bufferReadyMMAL
+    EGLImageKHR              m_EGLimage;        // is stored in the tex_state struct -> m_EGLimage  and needed by bufferReadyMMAL
+    GLuint                   m_Texture;         // is stored in the tex_state struct -> gl_tex_vid  and needed by bufferReadyMMAL               
