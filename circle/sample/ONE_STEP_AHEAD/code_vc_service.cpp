@@ -111,16 +111,15 @@ void            CKernel::initHeaderMMAL             (   mmal_msg_header&        
                 hdr.padding         = 0;
 }
 
-bool            CKernel::sendAndWaitVCHI            (   VCHI_SERVICE_HANDLE_T   ServiceHandle, 
-                                                        VCOS_EVENT_T&           VCOSevent, 
-                                                        const void*             msg, 
-                                                        size_t                  msg_size, 
-                                                        void*                   rx_msg, 
-                                                        size_t                  max_reply_len, 
-                                                        size_t*                 actual_reply_len )
+bool            CKernel::sendAndWaitVCHI            (           VCHI_SERVICE_HANDLE_T   ServiceHandle, 
+                                                                VCOS_EVENT_T&           VCOSevent, 
+                                                        const   void*                   msg, 
+                                                                size_t                  msg_size, 
+                                                                void*                   rx_msg, 
+                                                                size_t                  max_reply_len, 
+                                                                size_t*                 actual_reply_len )
 {
 #ifdef __DUMP_VC04__
-            //  nextline( MY_BUFFER, MY_INDEX );
                 storeLog( MY_BUFFER, MY_INDEX, "TX MSG", (u32)msg_size);
                 storeMsg( MY_BUFFER, MY_INDEX, "Raw TX", msg, msg_size);
 #endif 
@@ -149,9 +148,7 @@ bool            CKernel::sendAndWaitVCHI            (   VCHI_SERVICE_HANDLE_T   
                 if (ReplyLength != max_reply_len)
                     {
 #ifdef __LOG_VC04__
-                //  const mmal_msg_header* h = (const mmal_msg_header*)msg; 
-                //  nextline( MY_BUFFER, MY_INDEX );
-                    storeLog( MY_BUFFER, MY_INDEX, "ANSWER TO SHORT - MSG #" /*, h->context*/ ); // is only available with mmal, not for vcsm
+                    storeLog( MY_BUFFER, MY_INDEX, "FALSE ANSWER LENGTH - MSG #" );
 #endif 
                     return false;
                     }

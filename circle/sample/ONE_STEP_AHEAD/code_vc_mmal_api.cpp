@@ -52,7 +52,7 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
 
                                     if (m_CurrentHandle == m_output_buffer_handle_a) // Ping-pong: requeue the other output buffer
                                         {
-                                        if (!queueOutputBufferMMAL(*m_BufferFromHostTx_Output, m_output_buffer_handle_b, m_frameBlockSizeB )) // m_OutputBufferSize
+                                        if (!queueOutputBufferMMAL(*m_BufferFromHostTx_Output, m_output_buffer_handle_b, m_frameBlockSizeB )) // m_OutputBufferSize correct? or a?
                                             return false;
                                         }
                                     if (m_CurrentHandle == m_output_buffer_handle_b) 
@@ -120,9 +120,6 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
 #endif 
                 return true;
 }
-
-
-// a-sync VCHI runtime messages ?
 
 bool            CKernel::bufferReadyMMAL            (   u32 handle)
 {

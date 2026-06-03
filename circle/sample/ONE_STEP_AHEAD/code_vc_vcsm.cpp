@@ -104,8 +104,7 @@ bool            CKernel::lockMemoryVCSM             (   u32&                    
                 return false;
 }
 
-bool            CKernel::freeMemoryVCSM             (/* int                     slot, */ 
-                                                        u32&                    vcsm_handle, 
+bool            CKernel::freeMemoryVCSM             (   u32&                    vcsm_handle, 
                                                         u32&                    vcsm_pointer,                                             
                                                         VCSM_Free_MEM_Msg&      tx, 
                                                         VCSM_Free_MEM_Reply&    rx)

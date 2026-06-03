@@ -25,7 +25,6 @@ bool            CKernel::initTexturesMMAL         (   )
                 if( f_count != 0)
                     { 
 #ifdef __LOG_MMAL__ 
-                //  nextline( MY_BUFFER, MY_INDEX );                                 
                     storeLog( MY_BUFFER, MY_INDEX, "Texture Creation    FAILED");
 #endif                   
                     return false;
@@ -167,8 +166,7 @@ bool            CKernel::setZeroCopyModeMMAL        (   u32                     
                 return (rx.msg.status == MMAL_MSG_STATUS_SUCCESS);                                      // OLD returns 04 !
 }
 
-bool            CKernel::enablePortMMAL             ( /*u32 port_handle,*/                          // why not also here? it works now but...
-                                                        const MMAL_Port_Info_Get_Reply& src, 
+bool            CKernel::enablePortMMAL             (   const MMAL_Port_Info_Get_Reply& src, 
                                                         MMAL_Port_Action_Msg& tx, 
                                                         MMAL_Port_Action_Reply_Msg& rx)
 {

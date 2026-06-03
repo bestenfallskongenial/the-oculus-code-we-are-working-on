@@ -54,33 +54,6 @@ public:         // Logging
 
                 char                            m_logBuffer[1024*32]                            = {0}; //  pre-init buffer 
                 u32                             m_logBufferIndex                                = 0;
-   
-                char                            m_logBootBuffer[1024*32]                        = {0};
-                u32                             m_logBootBufferIndex                            = 0;                
-                char                            m_logParseBuffer[1024*32]                       = {0};
-                u32                             m_logParseBufferIndex                           = 0;
-                char                            m_logGLSLBuffer[1024*32]                        = {0};
-                u32                             m_logGLSLBufferIndex                            = 0;
-                char                            m_logBufferDumps[1024*32]                       = {0};
-                u32                             m_logBufferIndexDumps                           = 0;
-
-u32             boot_buffer_index_temp_old                                                      = 0;
-u32             boot_buffer_index_temp_new                                                      = 0;
-u32             boot_buffer_index_temp_delta                                                    = 0;
-
-u32             runtime_buffer_index_temp_old[LOG_SD+LOG_USB]                                   = { 0 };
-u32             runtime_buffer_index_temp_new[LOG_SD+LOG_USB]                                   = { 0 };
-u32             runtime_buffer_index_temp_delta[LOG_SD+LOG_USB]                                 = { 0 };
-
-u32             m_logScreenStartIndex               = 0;
-
-u32                             m_logScreenStartIndexBoot                                       = 0;
-u32                             m_logScreenStartIndexRuntime[16]                                = {0};
-
-unsigned                        m_logScreenLastRow                                              = 0;
-
-
-
 
                 olg_state                       m_ogl                                           = {};              // local copies of my graphics related structs
 
@@ -295,11 +268,7 @@ private:
 
         u32                             m_TransactionId                             = 0;
 
-
         // returned from vcsm        
-    //  u32                             m_vc_handle[MAX_BUFFER]                     = {0};  // why an array, why not simply by u32& my_current_handle instead of slot?
-    //  u32                             m_vc_pointer[MAX_BUFFER]                    = {0};  // why an array, why not simply by u32& my_current_pointer instead of slot?
-    
         u32                             m_input_buffer_handle                       = 0;        // comes from VCSM
         u32                             m_input_buffer_pointer                      = 0;        // comes from VCSM
 
@@ -318,28 +287,6 @@ private:
         u32                             m_ComponentHandle                           = 0;    // used in mmal_init either direct ( inside the functions ) or rather by reference ( & ) 
         u32                             m_InputPortHandle                           = 0;    // mmal needs it!
         u32                             m_OutputPortHandle                          = 0;    // mmal needs it!
-
-//  means i need to rename them right? the mmal code was its own class and needed to get all the variables via  initializeMMAL() 
-//  but this is now reduntand / confusing - renaming means i need also to rename the variables in the mmal code 
-
-// debug 
-VCSM_Alloc_MEM_Msg              m_allocTxVCSM_TestA;
-VCSM_Alloc_MEM_Reply            m_allocRxVCSM_TestA;
-
-VCSM_Alloc_MEM_Msg              m_allocTxVCSM_TestB;
-VCSM_Alloc_MEM_Reply            m_allocRxVCSM_TestB;
-
-VCSM_Alloc_MEM_Msg              m_allocTxVCSM_TestC;
-VCSM_Alloc_MEM_Reply            m_allocRxVCSM_TestC;
-
-u32                             m_test_buffer_handle_a;
-u32                             m_test_buffer_pointer_a;
-
-u32                             m_test_buffer_handle_b;
-u32                             m_test_buffer_pointer_b;
-
-u32                             m_test_buffer_handle_c;
-u32                             m_test_buffer_pointer_c;
 
 const char* m_debug_table[16]   = 
 {
