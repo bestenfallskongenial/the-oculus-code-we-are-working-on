@@ -21,7 +21,9 @@ enum modetable
 	SENS_D,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB1
 
 	EXT_IN,					
-	FRM
+	SEL_VID,
+	SEL_FRM,
+	SEL_TEX,
 
 	FLAG_TIM,   // 0 or 1   ( wait - i propose a simple 4 to 7 and 0 as of, means anything else than 0 is the actual input p_channel problem, it need to overrule CH*_MODE )
 	FLAG_TEX,   // 0 or 1   ( how we can do it? also, dont i want more than only p_channel 4-7 assignable? )
