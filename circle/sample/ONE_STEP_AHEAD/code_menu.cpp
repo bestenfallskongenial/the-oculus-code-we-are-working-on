@@ -59,18 +59,17 @@ void            CKernel::chooseIndexD               (   int             p_channe
 void            CKernel::storeModes                 (   )
 {
                 
-                if (g_current_gl_program != g_last_gl_program)
+                if (g_gl_program_current != g_gl_program_last)
                     {    
-                    g_currentProgramBuffer = g_centralModeBuffer[g_current_gl_program][IS_STORED] ? g_current_gl_program : DEFAULT_SLOT;
-                    g_last_gl_program = g_current_gl_program;
+                    g_currentProgramBuffer = g_centralModeBuffer[g_gl_program_current][IS_STORED] ? g_gl_program_current : DEFAULT_SLOT;
+                    g_gl_program_last = g_gl_program_current;
                     }               
-
-                if (g_centralModeBuffer[g_current_gl_program][IS_STORED] == true /* && g_currentProgramBuffer != g_current_gl_program */)
+                if (g_centralModeBuffer[g_gl_program_current][IS_STORED] == true /* && g_currentProgramBuffer != g_gl_program_current */)
                     {  
-                    memcpy(&g_centralModeBuffer[g_current_gl_program][0], &g_centralModeBuffer[DEFAULT_SLOT][0], sizeof(g_centralModeBuffer[g_current_gl_program])); // replaces 16 * sizeof(int)
-                    g_currentProgramBuffer = g_current_gl_program;
+                    memcpy(&g_centralModeBuffer[g_gl_program_current][0], &g_centralModeBuffer[DEFAULT_SLOT][0], sizeof(g_centralModeBuffer[g_gl_program_current])); // replaces 16 * sizeof(int)
+                    g_currentProgramBuffer = g_gl_program_current;
                     }
-                else if (g_centralModeBuffer[g_current_gl_program][IS_STORED] == false /* && g_currentProgramBuffer != DEFAULT_SLOT */)
+                else if (g_centralModeBuffer[g_gl_program_current][IS_STORED] == false /* && g_currentProgramBuffer != DEFAULT_SLOT */)
                     {  
                     g_currentProgramBuffer = DEFAULT_SLOT;
                     }
@@ -82,13 +81,10 @@ void            CKernel::button_consumer            (   int                 p_bt
                 if (g_buttons_states[p_btn_id][BTN_SINGLE]) counter += 1;
                 if (g_buttons_states[p_btn_id][BTN_DOUBLE]) counter -= 1;
 
-                if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] == 1)
-                    counter += 5;
+                if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] == 1) counter += 5;
 
-                if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] =10)
-                    longhold += 1;
-                if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] =20)
-                    longhold += 2;
+                if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] =10) longhold += 1;
+                if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] =20) longhold += 2;
 */
 }
 
@@ -169,6 +165,54 @@ void            CKernel::mapMenuGroup               (   uint8_t menu_id, uint8_t
                 else if (g_menuPickUpFlag[base + 3])
                     {
                     g_centralModeBuffer[g_currentProgramBuffer][base + 3] = v;
+                    }
+}
+void            CKernel::getChannelModeA(int p_channel)
+{
+                switch (g_modeMap[p_channel][g_centralModeBuffer[g_currentProgramBuffer][p_channel] + 1])
+                    {
+                    case 0:
+                        modeADC (p_channel);
+                    break;
+
+                    case 1:
+                        modeTRG (p_channel);
+                    break;
+
+                    case 2:
+                        modeBPM (p_channel);
+                    break;
+
+                    case 3:
+                        modeLF1 (p_channel);
+                    break;
+                    case 4:
+                        modeLF2 (p_channel);
+                    break;
+                    case 5:
+                    /*  modeTex (p_channel); */
+                    break;
+                    case 6:
+                    /*  modeVid (p_channel); */
+                    break;
+                    case 7:
+                    /*  modeFrm (p_channel); */
+                    break;                    
+                    case 8:
+                        modeAudioAb0 (p_channel);
+                    break;
+
+                    case 9:
+                        modeAudioAb1 (p_channel);
+                    break;
+
+                    case 10:
+                        modeAudioBb0 (p_channel);
+                    break;
+
+                    case 11:
+                        modeAudioBb1 (p_channel);
+                    break;                    
                     }
 }
 

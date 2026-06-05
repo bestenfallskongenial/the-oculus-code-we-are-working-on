@@ -20,10 +20,13 @@ enum modetable
 	SENS_C,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB0
 	SENS_D,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB1
 
-	FRM_MODE,   // 0 or 1   ( wait - i propose a simple 4 to 7 and 0 as of, means anything else than 0 is the actual input p_channel problem, it need to overrule CH*_MODE )
-	TEX_MODE,   // 0 or 1   ( how we can do it? also, dont i want more than only p_channel 4-7 assignable? )
-	CLK_MODE,   // 0 or 1   ( whats about the approach in readADC() where i modify the number of possible modes in the modematrix )
-	VID_MODE,   // 0 or 1   ( like if i have one here CH*_MODE "opens" up for this modes - requires a constant check and update but... )
+	EXT_IN,					
+	FRM
+
+	FLAG_TIM,   // 0 or 1   ( wait - i propose a simple 4 to 7 and 0 as of, means anything else than 0 is the actual input p_channel problem, it need to overrule CH*_MODE )
+	FLAG_TEX,   // 0 or 1   ( how we can do it? also, dont i want more than only p_channel 4-7 assignable? )
+	FLAG_EXT,   // 0 or 1   ( whats about the approach in readADC() where i modify the number of possible modes in the modematrix )
+	FLAG_VID,   // 0 or 1   ( like if i have one here CH*_MODE "opens" up for this modes - requires a constant check and update but... )
 
     TIME_MODE,
     DUMMY_A,

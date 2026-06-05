@@ -34,7 +34,7 @@ if (m_H264Decoder.m_CharIndex >= 16384 && m_runtimelog == false )
                     m_Button_B.Update ();
                     m_ChipSelectPin.Write(adc_pot_routing); // change to occationally call, not each u_time 
 
-                    switch (mode_storage_buffers[FRM_MODE][current_buffer])
+                    switch (mode_storage_buffers[FLAG_TIM][current_buffer])
                         {
                         case true:  GLtime = output_int_value[4]/36.0f;                     break;
                         case false: GLtime = start_time_fps_calculation / 1000000.0f;       break;

@@ -600,19 +600,20 @@ void            CKernel::wrapper_init_gl_usb        (   )
 
 void            CKernel::wrapper_io                 (   )
 {
-    /*
-                readADC();                  //  we read and dampen the adc each loop
+                readAndConvertADC();                  //  we read and dampen the adc each loop
+                adc_ProcessAudio();
+                adc_AdvanceIndex();
 
-                chooseIndexD( ADC_SELECT_PRG, m_activePrg, filecounter[FT_FSH][FLD_VALID])      // we derive the 
-                chooseIndexD( ADC_SELECT_TEX, m_activeTex, filecounter[FT_TEX][FLD_VALID])
-                chooseIndexD( ADC_SELECT_VID, m_activeVid, filecounter[FT_VID][FLD_VALID])
+                chooseIndexD( ADC_SELECT_PRG, m_activePrg, filecounter[FT_FSH][FLD_VALID]);     // we derive the 
+
+            //  chooseIndexD( ADC_SELECT_TEX, m_activeTex, filecounter[FT_TEX][FLD_VALID]);
+            //  chooseIndexD( ADC_SELECT_VID, m_activeVid, filecounter[FT_VID][FLD_VALID]);
 
                 buttonPing( 0, SW_PIN_A);                  // check button A
                 buttonPing( 1, SW_PIN_B);                  // and B
 
                 button_consumer(0);               // and transpose the button input in menulayer information each time
-                button_consumer(1);
-    */            
+                button_consumer(1); 
 }
 
 void            CKernel::wrapper_modes              (   )

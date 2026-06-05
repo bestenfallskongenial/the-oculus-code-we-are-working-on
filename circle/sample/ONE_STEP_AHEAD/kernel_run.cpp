@@ -19,6 +19,10 @@ TShutdownMode CKernel::Run(void)
                 g_inOutMatrixFlt[6][OUT] = 0.5f;
                 g_inOutMatrixFlt[7][OUT] = 0.5f;
 
+                g_centralModeBuffer[g_gl_program_current][FLAG_TEX] = true;
+
+                g_centralModeBuffer[g_gl_program_current][FLAG_TIM] = 0;
+
                 while (/*m_resetFlag == false*/ 1)
                     {
                     g_currentTime = m_Timer.GetClockTicks(); 
@@ -106,13 +110,9 @@ TShutdownMode CKernel::Run(void)
 
                     randomVec8(g_currentTime);
 // for debug start
-                    g_current_gl_program = 0;
+                //  g_gl_program_current = 0;
 
-                    g_currentProgramBuffer = 0;
-                    
-                    g_centralModeBuffer[g_current_gl_program][TEX_MODE] = true;
-
-                    g_centralModeBuffer[g_current_gl_program][FRM_MODE] = 0;
+                //  g_currentProgramBuffer = 0;
 // for debug end
                     get_gl_time( m_Timer.GetClockTicks() );
 

@@ -18,7 +18,7 @@ bool            CKernel::checkUpdate                (   )
 
 void        CKernel::get_gl_time( unsigned sys_time )
 {
-                    switch (g_centralModeBuffer[/* current_buffer */ g_current_gl_program][FRM_MODE]) // not sure with g_current_gl_program!!!
+                    switch (g_centralModeBuffer[/* current_buffer */ g_gl_program_current][FLAG_TIM]) // not sure with g_gl_program_current!!!
                         {
                         case true:  GLtime = g_inOutMatrixInt[ADC_INPUT_TIME][RAW]/36.0f; break;
                         case false: GLtime = sys_time / 1000000.0f;                       break;
@@ -69,9 +69,13 @@ void            CKernel::calculate1BPM              (   int             p_source
                     g_lfoBpmMatrix[1][DB]                 =   g_lfoBpmMatrix[2][TB] - g_lfoBpmMatrix[1][TB];
                     g_lfoBpmMatrix[2][DB]                 =   g_lfoBpmMatrix[3][TB] - g_lfoBpmMatrix[2][TB];
 
-                    if(     g_lfoBpmMatrix[1][DB]  <   g_lfoBpmMatrix[0][DB] * 1.25f &&  g_lfoBpmMatrix[2][DB]  <   g_lfoBpmMatrix[0][DB] * 1.25f &&  g_lfoBpmMatrix[0][DB]  <   g_lfoBpmMatrix[2][DB] * 1.25f )
+                    if( g_lfoBpmMatrix[1][DB]  <   g_lfoBpmMatrix[0][DB] * 1.25f &&  
+                        g_lfoBpmMatrix[2][DB]  <   g_lfoBpmMatrix[0][DB] * 1.25f &&  
+                        g_lfoBpmMatrix[0][DB]  <   g_lfoBpmMatrix[2][DB] * 1.25f )
                         {
-                        f_intervalAverage                 = ( g_lfoBpmMatrix[0][DB] + g_lfoBpmMatrix[1][DB] + g_lfoBpmMatrix[2][DB]) / 3;
+                        f_intervalAverage                 = (   g_lfoBpmMatrix[0][DB] + 
+                                                                g_lfoBpmMatrix[1][DB] + 
+                                                                g_lfoBpmMatrix[2][DB]) / 3;
             
                         g_lfoBpmMatrix[p_source][BPM]     =   60000000 / f_intervalAverage;
             
