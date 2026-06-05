@@ -389,3 +389,7 @@ public:
                 EGLContext                      m_eglContext;      // is stored in the olg_state struct -> context     and needed by bufferReadyMMAL
                 EGLImageKHR                     m_EGLimage;        // is stored in the tex_state struct -> m_EGLimage  and needed by bufferReadyMMAL
                 GLuint                          m_Texture;         // is stored in the tex_state struct -> gl_tex_vid  and needed by bufferReadyMMAL               
+
+
+                // dummy!
+            int m_activePrg = 0;
