@@ -13,8 +13,6 @@ boolean			CKernel::Initialize						(	void )
 {
                 bool bOK = TRUE;
 
-            //  memoryDebugCheckpoint("BOOT START", true);
-
                 if (bOK)
                     {
                     bOK = m_Interrupt.Initialize();
@@ -87,8 +85,6 @@ boolean			CKernel::Initialize						(	void )
 #endif
                     }
 
-            //  memoryDebugCheckpoint("AFTER DMA ALLOC", true);    
-
                 if (bOK)
                     {
                     bOK =   wrapperInitMEM();
@@ -97,8 +93,6 @@ boolean			CKernel::Initialize						(	void )
 
 #endif
                     }
-
-            //  memoryDebugCheckpoint("AFTER MEM ALLOC / BEFORE VCHIQ INIT", true);
 
                 if (bOK)
                     {
@@ -120,14 +114,12 @@ boolean			CKernel::Initialize						(	void )
                     getStateVCHI();
 #ifdef __LOG_INIT__
                     storeLog(   MY_BUFFER, MY_INDEX, 
-                                "   m_VCHIInstance", (u32)m_VCHIInstance, 
-                                "m_Connection", (u32)m_Connection );
+                                "   VCHI_INSTANCE_T", (u32)m_VCHIInstance, 
+                                "/ VCHI_CONNECTION_T", (u32)m_Connection );
 
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getStateVCHI()                          DONE");
 #endif
                     }
-
-            //  memoryDebugCheckpoint("BEFORE STRUCT INIT", true);
                 if (bOK)
                     {
                     bOK = wrapperInitVCSMstruct();
@@ -135,8 +127,6 @@ boolean			CKernel::Initialize						(	void )
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "wrapperInitVCSMstruct()                 DONE");
 #endif
                     }
-
-            //  memoryDebugCheckpoint("AFTER VCSM STRUCT INIT", true);    
 
                 if (bOK)
                     {
@@ -146,8 +136,6 @@ boolean			CKernel::Initialize						(	void )
 #endif
                     }
 
-            //  memoryDebugCheckpoint("AFTER MMAL STRUCT INIT", true);
-                
                 if (bOK)
                     {
                     bOK = wrapperVCSM();
@@ -169,18 +157,20 @@ boolean			CKernel::Initialize						(	void )
                     {
                     initOGL(    &m_ogl);
 #ifdef __LOG_INIT__
-                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initOGL(&m_ogl)                         DONE");
-                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, 
-                        "   EGL Screen Width   ", m_ogl.screen_width, 
-                        "EGL Screen Height  ", m_ogl.screen_height,
-                        "DISPMANX Element   ", m_ogl.dispman_element,
-                        "DISPMANX Display   ", m_ogl.dispman_display );
+                    if (bOK) storeLog(  MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initOGL(&m_ogl)                         DONE");
+                    if (bOK) storeLog(  MY_BUFFER, MY_INDEX,
+                                        "   EGL Screen Width   ", m_ogl.screen_width, 
+                                        "EGL Screen Height  ", m_ogl.screen_height);
+                    if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                        "   DISPMANX Element   ", m_ogl.dispman_element,
+                                        "DISPMANX Display   ", m_ogl.dispman_display );
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX,
                         "   EGL Display        ", (u32)(uintptr_t)m_ogl.display,
                         "EGL Surface        ", (u32)(uintptr_t)m_ogl.surface,
                         "EGL Context        ", (u32)(uintptr_t)m_ogl.context );
 #endif
                     }
+
                 if (bOK)
                     {
                     bOK =   SPI_init();
@@ -188,6 +178,7 @@ boolean			CKernel::Initialize						(	void )
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SPI_init()                              DONE");
 #endif
                     }
+
                 if (bOK)
                     {
                     bOK =   SMI_Init(   LED_PIN);
@@ -195,6 +186,7 @@ boolean			CKernel::Initialize						(	void )
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMI_Init(LED_PIN)                       DONE");
 #endif
                     }
+
                 if (bOK)
                     {
                     bOK =   WS2812_Init(LED_COUNT);
@@ -202,6 +194,7 @@ boolean			CKernel::Initialize						(	void )
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "WS2812_Init(LED_COUNT)                  DONE");
 #endif
                     }
+                    
                 if (bOK)
                     {
                     GPIO_SetAlt(    CTRL_PIN, 
