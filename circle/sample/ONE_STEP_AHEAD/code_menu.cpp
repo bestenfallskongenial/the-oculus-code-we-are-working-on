@@ -287,7 +287,7 @@ void            CKernel::modeSelectVideo            (   int p_channel)
 
 void            CKernel::modeSelectFrame            (   int p_channel)
 {
-                g_inOutMatrixInt[p_channel][OUT] = (g_inOutMatrixInt[p_channel][RAW] * m_h264.frame_count[m_activeVideo]) >> 10;
+                g_inOutMatrixInt[p_channel][OUT] = (g_inOutMatrixInt[p_channel][RAW] * m_vid.frame_count[m_activeVideo]) >> 10;
 }
 
 void            CKernel::modeAudioAb0               (   int p_channel)
