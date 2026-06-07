@@ -69,6 +69,8 @@ public:         // Logging
                 tex_state                       m_omt                                           = {};
 
                 h264_state                      m_vid                                           = {};    
+
+                int                             m_activeVideo;
 // missing globals / shared state / dummies for now
             //  bool                            m_resetFlag                                     = false;
                 bool                            m_SD_has_load                                   = false;
