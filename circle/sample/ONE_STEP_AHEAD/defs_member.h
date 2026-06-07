@@ -212,7 +212,7 @@ public:         // Logging
 // CODE_MENU.CPP
         typedef void                            (CKernel::*ModeFunc)(int);         // for the new menu selector -> easier to expand, right? "add modes by only extending the table"
 
-                ModeFunc                        g_modeTable[12]                                 =       {   &CKernel::modeADC,
+                ModeFunc                        g_modeTable[15]                                 =       {   &CKernel::modeADC,
                                                                                                             &CKernel::modeTRG,
                                                                                                             &CKernel::modeBPM,
                                                                                                             &CKernel::modeLF1,
