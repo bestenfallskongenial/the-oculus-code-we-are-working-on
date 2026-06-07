@@ -1,11 +1,5 @@
 #include "kernel.h"
 
-//  #undef  __DEBUG__
-    #define __DEBUG__
-
-//  #undef  __LOG_INIT__
-    #define __LOG_INIT__
-
     #define MY_BUFFER   m_logBuffer     
     #define MY_INDEX    m_logBufferIndex    
 
@@ -194,7 +188,7 @@ boolean			CKernel::Initialize						(	void )
                     if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "WS2812_Init(LED_COUNT)                  DONE");
 #endif
                     }
-                    
+
                 if (bOK)
                     {
                     GPIO_SetAlt(    CTRL_PIN, 

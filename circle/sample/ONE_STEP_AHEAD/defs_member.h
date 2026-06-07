@@ -217,6 +217,10 @@ public:         // Logging
                                                                                                             &CKernel::modeBPM,
                                                                                                             &CKernel::modeLF1,
                                                                                                             &CKernel::modeLF2,
+                                                                                                            
+                                                                                                            &CKernel::modeSelectTex,
+                                                                                                            &CKernel::modeSelectFrame,
+                                                                                                            &CKernel::modeSelectVideo,
                                                                                                             nullptr,
                                                                                                             nullptr,
                                                                                                             nullptr,

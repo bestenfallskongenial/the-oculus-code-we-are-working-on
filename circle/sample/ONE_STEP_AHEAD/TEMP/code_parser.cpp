@@ -78,7 +78,6 @@ bool            CKernel::parse264                  (   h264_state* h,
                                                         size_t      size_array[],
                                                         int         p_fromFile,
                                                         int         p_toFile,
-                                                        unsigned&   valid_count, // * changed !! *
 
                                                         u16         min_width,
                                                         u16         max_width,
@@ -120,7 +119,6 @@ bool            CKernel::parse264                  (   h264_state* h,
 
                 for (int file_index = p_fromFile; file_index < p_toFile; file_index++)
                     {
-                    unsigned dst = valid_count; // * changed !! *
                     u8*    data = reinterpret_cast<u8*>(p_buffer_array[file_index]);
                     size_t size = size_array[file_index];
 
@@ -170,26 +168,26 @@ bool            CKernel::parse264                  (   h264_state* h,
                         {
                         /* REMOVED: size_t end_off = (idx + 1 < i) ? sps_off[file_index][idx + 1] : size; - REPLACED BY: nal_block_length now uses SPS start to IDR end */
 
-                        h->nal_block_offset[dst][idx]  = (size_t)((data + sps_off[file_index][idx]) - (u8*)h->block_base); // * changed !! *
-                        h->nal_block_address[dst][idx] = (void*)(vcsm_base + h->nal_block_offset[dst][idx]);                      /* CHANGED: address stored for runtime submit is VPU bus address */ // * changed !! *
-                        h->nal_block_length[dst][idx]  = idr_off[file_index][idx] + idr_len[file_index][idx] - sps_off[file_index][idx]; /* CHANGED: old length used next SPS/file end; new length ends at current IDR end */ // * changed !! *
+                        h->nal_block_offset[file_index][idx]  = (size_t)((data + sps_off[file_index][idx]) - (u8*)h->block_base);
+                        h->nal_block_address[file_index][idx] = (void*)(vcsm_base + h->nal_block_offset[file_index][idx]);                      /* CHANGED: address stored for runtime submit is VPU bus address */
+                        h->nal_block_length[file_index][idx]  = idr_off[file_index][idx] + idr_len[file_index][idx] - sps_off[file_index][idx]; /* CHANGED: old length used next SPS/file end; new length ends at current IDR end */
 
-                        h->frame_offset[dst][idx]      = (size_t)((data + idr_off[file_index][idx]) - (u8*)h->block_base);               /* ADDED: per-frame offset from block_base to startcode+IDR */ // * changed !! *
-                        h->frame_address[dst][idx]     = (void*)(vcsm_base + h->frame_offset[dst][idx]);                          /* ADDED: VPU bus address for startcode+IDR */ // * changed !! *
-                        h->frame_length[dst][idx]      = idr_len[file_index][idx];                                                       /* ADDED: length of startcode+IDR */ // * changed !! *
+                        h->frame_offset[file_index][idx]      = (size_t)((data + idr_off[file_index][idx]) - (u8*)h->block_base);               /* ADDED: per-frame offset from block_base to startcode+IDR */
+                        h->frame_address[file_index][idx]     = (void*)(vcsm_base + h->frame_offset[file_index][idx]);                          /* ADDED: VPU bus address for startcode+IDR */
+                        h->frame_length[file_index][idx]      = idr_len[file_index][idx];                                                       /* ADDED: length of startcode+IDR */
 
                         /* CHANGED: h->idr_offset[file_index] = idr_off[file_index][idx] - sps_off[file_index][idx]; - REPLACED BY: h->frame_offset[file_index][idx], because the old value was per-file and overwritten each idx */
 #ifdef __DUMP_FRAMES__
                         storeLog(   MY_BUFFER, MY_INDEX,
                                     "67+68+65", EMPTYLOG,
-                                    "address ", (u32)h->nal_block_address[dst][idx], // * changed !! *
-                                    "length  ", (u32)h->nal_block_length[dst][idx], // * changed !! *
-                                    "offset  ", (u32)h->nal_block_offset[dst][idx]); // * changed !! *
+                                    "address ", (u32)h->nal_block_address[file_index][idx],
+                                    "length  ", (u32)h->nal_block_length[file_index][idx],
+                                    "offset  ", (u32)h->nal_block_offset[file_index][idx]);
                         storeLog(   MY_BUFFER, MY_INDEX,                                                                          /* ADDED: log startcode+IDR runtime packet */
                                     "65      ", EMPTYLOG,
-                                    "address ", (u32)h->frame_address[dst][idx], // * changed !! *
-                                    "length  ", (u32)h->frame_length[dst][idx], // * changed !! *
-                                    "offset  ", (u32)h->frame_offset[dst][idx]); // * changed !! *
+                                    "address ", (u32)h->frame_address[file_index][idx],
+                                    "length  ", (u32)h->frame_length[file_index][idx],
+                                    "offset  ", (u32)h->frame_offset[file_index][idx]);
 #endif
                         }
 
@@ -216,37 +214,35 @@ bool            CKernel::parse264                  (   h264_state* h,
                     ParseSPS(   data + sps_off[file_index][1],
                                 sps_len[file_index][1],
                                 sps_sc_len[file_index][1],
-                                &h->video_width[dst], // * changed !! *
-                                &h->video_height[dst], // * changed !! *
-                                &h->vid_profile[dst], // * changed !! *
-                                &h->vid_level[dst]); // * changed !! *
+                                &h->video_width[file_index],
+                                &h->video_height[file_index],
+                                &h->vid_profile[file_index],
+                                &h->vid_level[file_index]);
 
-                                h->data[dst]        = data; // * changed !! *
-                                h->size[dst]        = size; // * changed !! *
+                                h->data[file_index]        = data;
+                                h->size[file_index]        = size;
 
-                                h->frame_count[dst] = i; // * changed !! *
-                                h->idr_sc_len[dst]  = idr_sc_len[file_index][1]; /* because 0 might be "out of line" like the whole first set of nal units */ // * changed !! *
+                                h->frame_count[file_index] = i; 
+                                h->idr_sc_len[file_index]  = idr_sc_len[file_index][1]; /* because 0 might be "out of line" like the whole first set of nal units */
                                 
-                    if (out_pos <= sizeof(h->extradata[dst])) // * changed !! *
+                    if (out_pos <= sizeof(h->extradata[file_index]))
                         {
-                        memcpy(h->extradata[dst], tmp, out_pos); // * changed !! *
-                        h->extradata_len[dst] = out_pos; // * changed !! *
+                        memcpy(h->extradata[file_index], tmp, out_pos);
+                        h->extradata_len[file_index] = out_pos;
                         }
-                    h->vid_valid[dst] = // * changed !! *
+                    h->vid_valid[file_index] =
 
-                        h->video_width[dst]  >= h->min_width &&      /* why not the global macro settings here, and how we can make the resolution matching the config.txt settings here too? */ // * changed !! *
-                        h->video_width[dst]  <= h->max_width && // * changed !! *
+                        h->video_width[file_index]  >= h->min_width &&      /* why not the global macro settings here, and how we can make the resolution matching the config.txt settings here too? */
+                        h->video_width[file_index]  <= h->max_width &&
 
-                        h->video_height[dst] >= h->min_height && // * changed !! *
-                        h->video_height[dst] <= h->max_height && // * changed !! *
+                        h->video_height[file_index] >= h->min_height &&
+                        h->video_height[file_index] <= h->max_height &&
 
-                        h->vid_profile[dst]  >= h->min_profile && // * changed !! *
-                        h->vid_profile[dst]  <= h->max_profile &&                         // * changed !! *
+                        h->vid_profile[file_index]  >= h->min_profile &&
+                        h->vid_profile[file_index]  <= h->max_profile &&                        
 
-                        h->vid_level[dst]    >= h->min_level && // * changed !! *
-                        h->vid_level[dst]    <= h->max_level; // * changed !! *
-                        
-                    if (h->vid_valid[dst]) valid_count++; // * changed !! *
+                        h->vid_level[file_index]    >= h->min_level &&
+                        h->vid_level[file_index]    <= h->max_level;
 #ifdef __LOG_PARSER__
                     nextline(   MY_BUFFER, MY_INDEX ); 
                     storeLog(   MY_BUFFER, MY_INDEX,
@@ -261,26 +257,26 @@ bool            CKernel::parse264                  (   h264_state* h,
                                 "max.  Level   ",          (u32)h->max_level );
                     nextline(   MY_BUFFER, MY_INDEX );    
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "Video Width   ",          (u32)h->video_width[dst], // * changed !! *
-                                "Video Height  ",          (u32)h->video_height[dst], // * changed !! *
-                                "Video Profile ",          (u32)h->vid_profile[dst], // * changed !! *
-                                "Video Level   ",          (u32)h->vid_level[dst] ); // * changed !! *
+                                "Video Width   ",          (u32)h->video_width[file_index],
+                                "Video Height  ",          (u32)h->video_height[file_index],
+                                "Video Profile ",          (u32)h->vid_profile[file_index], 
+                                "Video Level   ",          (u32)h->vid_level[file_index] );
                     nextline(   MY_BUFFER, MY_INDEX );
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "Parsed Frames ", h->frame_count[dst]); // * changed !! *
+                                "Parsed Frames ", h->frame_count[file_index]);
                     nextline(   MY_BUFFER, MY_INDEX );
                     storeLog(   MY_BUFFER, MY_INDEX,
                                 "idr_sc_len  ",             EMPTYLOG,
-                                (h->idr_sc_len[dst] == 3) ?  // * changed !! *
+                                (h->idr_sc_len[file_index] == 3) ? 
                                 "    00 00 01" : 
                                 " 00 00 00 01",             EMPTYLOG,
-                                "Extradata-Len.",          (u32)h->extradata_len[dst], // * changed !! *
-                                (h->vid_valid[dst]) ?  // * changed !! *
+                                "Extradata-Len.",          (u32)h->extradata_len[file_index],
+                                (h->vid_valid[file_index]) ? 
                                 "Header VALID  " : 
                                 "Header INVALID");
                     nextline(   MY_BUFFER, MY_INDEX );            
                     storeMsg(   MY_BUFFER, MY_INDEX, 
-                                "Extradata Dump",          h->extradata[dst], h->extradata_len[dst] ); // * changed !! *
+                                "Extradata Dump",          h->extradata, h->extradata_len[file_index] );
                     nextline(   MY_BUFFER, MY_INDEX );
 #endif // __LOG_PARSER__               
                     }

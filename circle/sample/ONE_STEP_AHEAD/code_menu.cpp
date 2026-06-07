@@ -273,6 +273,20 @@ void            CKernel::modeLF2                    (   int p_channel)
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][LF2];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][LF2]; 
 }
+void            CKernel::modeSelectTex              (   int p_channel)
+{
+                g_inOutMatrixInt[p_channel][OUT] = (g_inOutMatrixInt[p_channel][RAW] * filecounter[FT_TEX][FLD_VALID]) >> 10;
+}
+
+void            CKernel::modeSelectVideo            (   int p_channel)
+{
+                g_inOutMatrixInt[p_channel][OUT] = (g_inOutMatrixInt[p_channel][RAW] * filecounter[FT_VID][FLD_VALID]) >> 10;
+}
+
+void            CKernel::modeSelectFrame            (   int p_channel)
+{
+                g_inOutMatrixInt[p_channel][OUT] = (g_inOutMatrixInt[p_channel][RAW] * m_h264.frame_count[active_video_index]) >> 10;
+}
 
 void            CKernel::modeAudioAb0               (   int p_channel)
 {

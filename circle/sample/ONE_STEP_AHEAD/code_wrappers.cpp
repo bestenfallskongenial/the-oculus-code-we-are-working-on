@@ -483,6 +483,7 @@ void            CKernel::wrapper_parser_usb()
                                     g_bytVid,
                                     filecounter[FT_VID][FLD_PREV],
                                     filecounter[FT_VID][FLD_LOADED],
+                                    filecounter[FT_VID][FLD_VALID],        // * changed !! *
 
                                     MIN_VIDEO_WIDTH,
                                     MAX_VIDEO_WIDTH,

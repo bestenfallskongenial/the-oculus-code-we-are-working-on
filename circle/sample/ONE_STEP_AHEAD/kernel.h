@@ -237,6 +237,9 @@ public:
                 void        modeBPM                     (               int                             p_channel);         // channel passed by caller
                 void        modeLF1                     (               int                             p_channel);         // channel passed by caller
                 void        modeLF2                     (               int                             p_channel);         // channel passed by caller
+                void        modeSelectTex               (               int                             p_channel);
+                void        modeSelectVideo             (               int                             p_channel);
+                void        modeSelectFrame             (               int                             p_channel);
                 void        modeAudioAb0                (               int                             p_channel);         // channel passed by caller
                 void        modeAudioAb1                (               int                             p_channel);         // channel passed by caller
                 void        modeAudioBb0                (               int                             p_channel);         // channel passed by caller
@@ -259,6 +262,7 @@ public:
                                                                         size_t                          size_array[],
                                                                         int                             p_fromFile,
                                                                         int                             p_toFile,
+                                                                        unsigned&                       valid_count, // * changed !! *
 
                                                                         u16                             min_width,
                                                                         u16                             max_width,
