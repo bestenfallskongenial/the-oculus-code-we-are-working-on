@@ -1,14 +1,14 @@
 enum modetable
 {
-	CH0_MODE = 0,           // store the mode ( from g_modeTable[] ) for cannel 0
-	CH1_MODE,               // store the mode ( from g_modeTable[] ) for cannel 1
-	CH2_MODE,               // store the mode ( from g_modeTable[] ) for cannel 2
-	CH3_MODE,               // store the mode ( from g_modeTable[] ) for cannel 3
+	MODE_CH0 = 0,           // store the mode ( from g_modeTable[] ) for cannel 0
+	MODE_CH1,               // store the mode ( from g_modeTable[] ) for cannel 1
+	MODE_CH2,               // store the mode ( from g_modeTable[] ) for cannel 2
+	MODE_CH3,               // store the mode ( from g_modeTable[] ) for cannel 3
 
-	CH4_MODE,               // store the mode ( from g_modeTable[] ) for cannel 4
-	CH5_MODE,               // store the mode ( from g_modeTable[] ) for cannel 5
-	CH6_MODE,               // store the mode ( from g_modeTable[] ) for cannel 6
-	CH7_MODE,               // store the mode ( from g_modeTable[] ) for cannel 7
+	MODE_CH4,               // store the mode ( from g_modeTable[] ) for cannel 4
+	MODE_CH5,               // store the mode ( from g_modeTable[] ) for cannel 5
+	MODE_CH6,               // store the mode ( from g_modeTable[] ) for cannel 6
+	MODE_CH7,               // store the mode ( from g_modeTable[] ) for cannel 7
 
 	SEL_TIME, 				// mode to take external clock signals
 	SEL_TEX,				// select the texture i use	
@@ -30,7 +30,7 @@ enum modetable
 	SENS_C,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB0
 	SENS_D,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB1
 
-	FLAG_TIM,   			// 0 or 1   ( wait - i propose a simple 4 to 7 and 0 as of, means anything else than 0 is the actual input p_channel problem, it need to overrule CH*_MODE )
+	FLAG_TIME,   			// 0 or 1   ( wait - i propose a simple 4 to 7 and 0 as of, means anything else than 0 is the actual input p_channel problem, it need to overrule CH*_MODE )
 	FLAG_TEX,   			// 0 or 1   ( how we can do it? also, dont i want more than only p_channel 4-7 assignable? )
 	FLAG_EXT,   			// 0 or 1   ( whats about the approach in readADC() where i modify the number of possible modes in the modematrix )
 	FLAG_VID,   			// 0 or 1   ( like if i have one here CH*_MODE "opens" up for this modes - requires a constant check and update but... )
@@ -39,12 +39,12 @@ enum modetable
     DUMMY_FLAG_B,
     DUMMY_FLAG_C,
 	DUMMY_FLAG_D,
-
+/*	not to store !!!
     STORE_SET,  			// 0 or 1   ( if set to 1 and the MENU_LAYER_COUNT is zero again ( button released ?) the file operation starts )
     LOAD_SET,   			// 0 or 1
     STORE_LOG,  			// 0 or 1
     LOAD_KLN,   			// 0 or 1
-
+*/
 	IS_STORED,                          // not really a mode but a flag - important: obey the "4 per block" rule
 
     MODETABLE_COUNT

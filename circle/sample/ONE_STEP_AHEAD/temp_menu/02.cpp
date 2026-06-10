@@ -55,7 +55,7 @@ static const uint8_t g_groupModes[GROUP_COUNT][6] =
 ```
 void CKernel::set_mode_roof(uint8_t base)
 {
-    const uint8_t f_first_flag = FLAG_TIM;
+    const uint8_t f_first_flag = FLAG_TIME;
 
     for (uint8_t i = 0; i < 4; ++i)
     {
@@ -88,7 +88,7 @@ static const uint8_t g_groupLength[BLOCK_COUNT][GROUP_COUNT] =
 
 void CKernel::set_mode_roof(uint8_t base)
 {
-    const uint8_t f_first_flag = FLAG_TIM;
+    const uint8_t f_first_flag = FLAG_TIME;
     const uint8_t block = base / 4;
 
     for (uint8_t i = 0; i < 4; ++i)
@@ -114,7 +114,7 @@ or
 
 void CKernel::set_mode_roof(uint8_t base)
 {
-    const uint8_t f_first_flag = FLAG_TIM;
+    const uint8_t f_first_flag = FLAG_TIME;
     const uint8_t block = base / 4;
 
     uint8_t roof = g_groupLength[block][GROUP_BASE];
@@ -147,7 +147,7 @@ static const uint8_t g_groupLength[BLOCK_COUNT][GROUP_COUNT] =
 
 void CKernel::set_mode_roof(uint8_t base)
 {
-    const uint8_t f_first_flag = FLAG_TIM;
+    const uint8_t f_first_flag = FLAG_TIME;
     const uint8_t block = base / 4;
 
     uint8_t roof = g_groupLength[block][GROUP_BASE];
@@ -174,28 +174,28 @@ void CKernel::set_mode_roof(uint8_t base)
 
     row = base + 0;
     roof = g_groupLength[GROUP_BASE];
-    if (m_audio_flag_A) roof += g_groupLength[GROUP_FLAG1];
+    if (FLAG_AUDIO_A) roof += g_groupLength[GROUP_FLAG1];
     if (m_flag_2_A)     roof += g_groupLength[GROUP_FLAG2];
     if (m_flag_3_A)     roof += g_groupLength[GROUP_FLAG3];
     g_modeRoof[row] = roof;
 
     row = base + 1;
     roof = g_groupLength[GROUP_BASE];
-    if (m_audio_flag_B) roof += g_groupLength[GROUP_FLAG1];
+    if (FLAG_AUDIO_B) roof += g_groupLength[GROUP_FLAG1];
     if (m_flag_2_B)     roof += g_groupLength[GROUP_FLAG2];
     if (m_flag_3_B)     roof += g_groupLength[GROUP_FLAG3];
     g_modeRoof[row] = roof;
 
     row = base + 2;
     roof = g_groupLength[GROUP_BASE];
-    if (m_audio_flag_A) roof += g_groupLength[GROUP_FLAG1];
+    if (FLAG_AUDIO_A) roof += g_groupLength[GROUP_FLAG1];
     if (m_flag_2_A)     roof += g_groupLength[GROUP_FLAG2];
     if (m_flag_3_A)     roof += g_groupLength[GROUP_FLAG3];
     g_modeRoof[row] = roof;
 
     row = base + 3;
     roof = g_groupLength[GROUP_BASE];
-    if (m_audio_flag_B) roof += g_groupLength[GROUP_FLAG1];
+    if (FLAG_AUDIO_B) roof += g_groupLength[GROUP_FLAG1];
     if (m_flag_2_B)     roof += g_groupLength[GROUP_FLAG2];
     if (m_flag_3_B)     roof += g_groupLength[GROUP_FLAG3];
     g_modeRoof[row] = roof;

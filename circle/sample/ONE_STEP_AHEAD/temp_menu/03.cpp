@@ -39,7 +39,7 @@ uint8_t g_modeMap[LAYER * 4][MAX_MODES];
 
 void CKernel::set_mode_roof(uint8_t base)
 {
-    const uint8_t f_first_flag = FLAG_TIM;
+    const uint8_t f_first_flag = FLAG_TIME;
     const uint8_t block = base / 4;
 
     uint8_t roof = g_groupLength[block][GROUP_BASE];
@@ -59,7 +59,7 @@ void CKernel::set_mode_roof(uint8_t base)
 
 void CKernel::set_mode_map(uint8_t base)
 {
-    const uint8_t f_first_flag = FLAG_TIM;
+    const uint8_t f_first_flag = FLAG_TIME;
     const uint8_t block = base / 4;
 
     uint8_t dst = 0;
@@ -253,7 +253,7 @@ void CKernel::getChannelModeB(int p_channel, int group)
 
 void CKernel::getChannelModeB(int p_channel)
 {
-    const uint8_t f_first_flag = FLAG_TIM;
+    const uint8_t f_first_flag = FLAG_TIME;
     const uint8_t block        = p_channel / 4;
 
     uint8_t index =

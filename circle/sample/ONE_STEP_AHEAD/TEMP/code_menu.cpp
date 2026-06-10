@@ -87,7 +87,7 @@ void            CKernel::button_consumer            (   int                 p_bt
                 if (g_buttons_states[p_btn_id][BTN_HOLD_TICK] =20) longhold += 2;
 */
 }
-/*
+
 void            CKernel::set_mode_length            (   uint8_t base)
 {
                 uint8_t length0;
@@ -117,7 +117,7 @@ void            CKernel::set_mode_length            (   uint8_t base)
                 g_modeMap[base + 2][0] = length2;
                 g_modeMap[base + 3][0] = length3;
 }
-*/
+
 void            CKernel::mapMenuGroup               (   uint8_t menu_id, uint8_t base)
 {
                 if (g_menu_mode_new != menu_id)
@@ -273,7 +273,6 @@ void            CKernel::modeLF2                    (   int p_channel)
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][LF2];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][LF2]; 
 }
-/*
 void            CKernel::modeSelectTex              (   int p_channel)
 {
                 g_inOutMatrixInt[p_channel][OUT] = (g_inOutMatrixInt[p_channel][RAW] * filecounter[FT_TEX][FLD_VALID]) >> 10;
@@ -294,7 +293,7 @@ void            CKernel::modeSelectFrame            (   int p_channel)
 
                 m_activeFrame = g_inOutMatrixInt[p_channel][OUT];
 }
-*/
+
 void            CKernel::modeAudioAb0               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU0];

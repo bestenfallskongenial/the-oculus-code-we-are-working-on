@@ -70,7 +70,10 @@ public:         // Logging
 
                 h264_state                      m_vid                                           = {};    
 
-                int                             m_activeVideo;
+                int                             m_activeTex                                     = 0;
+                int                             m_activeVideo                                   = 0;
+                int                             m_activeFrame                                   = 0;  
+
 // missing globals / shared state / dummies for now
             //  bool                            m_resetFlag                                     = false;
                 bool                            m_SD_has_load                                   = false;
@@ -79,7 +82,7 @@ public:         // Logging
                 int                             g_currentProgramBuffer                          = 0;
 
                 int                             g_gl_program_current                            = 0;
-                int                             g_gl_program_last;
+                int                             g_gl_program_last                               = 0;
 
                 int                             g_activeBpmChannel;
 
@@ -87,8 +90,8 @@ public:         // Logging
                 int                             m_current_tex                                   = 0;
                 int                             m_validTextureCount                             = 0;
                 
-                GLint                           GLtime = 0;
-                GLfloat                         g_opaque = 0.5; 
+                GLint                           GLtime                                          = 0;
+                GLfloat                         g_opaque                                        = 0.5; 
 
                 int                             g_menu_mode_new;    // dummy - i assume this checks the layer of my menu!!
                 int                             g_menu_mode_old;
@@ -136,8 +139,6 @@ public:         // Logging
                 uint32_t                        m_audio_hold_A;
                 uint32_t                        m_audio_hold_B;
 
-                bool                            m_audio_flag_A                                  = false;          
-                bool                            m_audio_flag_B                                  = false;
                                               
                 char** 				            m_bufferVid                                     = nullptr;      // thats the pointer to my "array-like" buffer allocation
                 char* 				            m_videoBlockBase                                = nullptr;      // returns the aligned DMA base pointer
@@ -214,19 +215,12 @@ public:         // Logging
 // CODE_MENU.CPP
         typedef void                            (CKernel::*ModeFunc)(int);         // for the new menu selector -> easier to expand, right? "add modes by only extending the table"
 
-                ModeFunc                        g_modeTable[15]                                 =       {   &CKernel::modeADC,
-                                                                                                            &CKernel::modeTRG,
-                                                                                                            &CKernel::modeBPM,
-                                                                                                            &CKernel::modeLF1,
-                                                                                                            &CKernel::modeLF2,
-                                                                                                            
-                                                                                                            &CKernel::modeSelectTex,
-                                                                                                            &CKernel::modeSelectFrame,
-                                                                                                            &CKernel::modeSelectVideo,
-                                                                                                            nullptr,
-                                                                                                            nullptr,
-                                                                                                            nullptr,
-                                                                                                            &CKernel::modeAudioAb0,
+                ModeFunc                        g_modeTable[9]                                 =        {   &CKernel::modeADC,                  // my "base modes"
+                                                                                                            &CKernel::modeTRG,                  // my "base modes"
+                                                                                                            &CKernel::modeBPM,                  // my "base modes"
+                                                                                                            &CKernel::modeLF1,                  // my "base modes"
+                                                                                                            &CKernel::modeLF2,                  // my "base modes"
+                                                                                                            &CKernel::modeAudioAb0,             // my additional modes activate by ?? 
                                                                                                             &CKernel::modeAudioAb1,
                                                                                                             &CKernel::modeAudioBb0,
                                                                                                             &CKernel::modeAudioBb1 };

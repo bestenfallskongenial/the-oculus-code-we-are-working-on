@@ -1,34 +1,5 @@
-// Arrays used here but not declared in this snippet:
-
-uint8_t g_modeRoof[BLOCK_COUNT * 4];                            // here we store the calculated "roof" from set_mode_roof_map()
-
-uint8_t g_modeMap[BLOCK_COUNT * 4][MAX_MODEMAP_SIZE];           // here we build a new modemap for a gables selection 
-
-uint8_t g_centralModeBuffer[PROGRAM_COUNT][BUFFER_SIZE];        // this is the global per-program store and setup matrix/array 
-
-bool g_menuPickUpFlag[BLOCK_COUNT * 4];                         // the global pickup / "no-jump" table 
-
-uint16_t g_inOutMatrixInt[INPUT_COUNT][MATRIX_FIELD_COUNT];     // my global in/out matrix / array
-
-ModeFunc g_modeTable[MODE_COUNT];                               // the table of mode-function 
-
-
-// Also used, but not arrays:
-// okay, here is still some confusion:
-// first i use this as table for the entries of the stored per program parameters variables and flags
-// also do i "pack" them in groups by four since mapping is only possible ( and backed by mapMenuGroup )
-// for 4 channels at a time, means MODE_CH0 - MODE_CH7 stores the index for the selected mode.
-// than i also store values i think i can also map via mapMenuGroup for certain settings like to pic the lfo, multiplier or sensitivity
-// that i can use the same mapping mechanism and have kinda menu layers in group by four,
-// layer 0 = default, layer 1 = map mode to group 0 ( physical adc 0-3 ), layer 2 = map mode to group 2 ( physical adc 4-7 )
-// layer 3 = select/ set LFO 0 & LFO 1, layer 4 = set sensitivity... here it becomes "complicated"
-// the audio detection mode is activated by the analysis of adc signals, means a flag ( FLAG_AUDIO_A & FLAG_AUDIO_A ) will decide 
-// if i can map my 4-6 default modes to any channel or the additional 4 audio sensitivities.BUT audio sensitivity is auto assigned,
-// i have two separate inputs ( adc channel detections ) with two bands ( i can assign to any channel )  and ony on detection 
-// i should have access to the layer / group.
-// than i need some flags to activate target modes and i have to store them too in enum central mode buffer!
-
-
+// constants / enums used by set_mode_roof_map()
+#define BLOCK_COUNT       7
 
 enum source_modes
 {
@@ -41,7 +12,7 @@ enum source_modes
     MODE_BAND_L0,       // if audio0 is detected ( and audiomode flag set ? ) this sends the averaged low 0 band output to gl
     MODE_BAND_H0,       // if audio0 is detected ( and audiomode flag set ? ) this sends the averaged high 0 band output to gl
     MODE_BAND_L1,       // if audio1 is detected ( and audiomode flag set ? ) this sends the averaged low 0 band output to gl
-    MODE_BAND_H1        // if audio1 is detected ( and audiomode flag set ? ) this sends the averaged high 0 band output to gl
+    MODE_BAND_H1,       // if audio1 is detected ( and audiomode flag set ? ) this sends the averaged high 0 band output to gl
 
     SOURCE_MODE_MAX
 }
@@ -55,7 +26,6 @@ enum target_modes
 
     TARGET_MODE_MAX
 }
-
 enum centralModeBuffer // organised in blocks/layers for the mapMenuGroup
 {
 	MODE_CH0 = 0,           // store the mode ( from g_modeTable[] ) for cannel 0 -> layer 1
@@ -78,7 +48,7 @@ enum centralModeBuffer // organised in blocks/layers for the mapMenuGroup
 	SENS_C,                 // stores the sensitivity max_index for the audio mode ( available if enabled ) bandB0
 	SENS_D,                 // stores the sensitivity max_index for the audio mode ( available if enabled ) bandB1
 
-    SEL_TIME,               
+    SEL_TIME,               // i alow the user to set up the input channel for the target_modes
     SEL_TEX,
     SEL_VID,
     SEL_FRM,    
@@ -105,107 +75,77 @@ enum centralModeBuffer // organised in blocks/layers for the mapMenuGroup
     MODETABLE_COUNT
 };
 
-enum ModeLengthFlag // dead code?
-{
-                MODELENDEFAULT  = 0,
-                MODELEN_AUDIO_A,            	    // any extra mode that modifies the number of max modes per channel must have an enum
-                MODELEN_AUDIO_B,
-                MODELEN_AUDIO_C,
-                MODELEN_LFO_A,
-                MODELEN_SENS_A,
+        typedef void                            (CKernel::*ModeFunc)(int);         // for the new menu selector -> easier to expand, right? "add modes by only extending the table"
 
-                MODELEN_FLAG_COUNT
+                ModeFunc                        g_modeTable[9]                                 =        {   &CKernel::modeADC,          // "copy value" mode
+                                                                                                            &CKernel::modeTRG,          
+                                                                                                            &CKernel::modeBPM,
+                                                                                                            &CKernel::modeLF1,          // "copy value" mode
+                                                                                                            &CKernel::modeLF2,          // "copy value" mode
+
+                                                                                                            &CKernel::modeAudioAb0,     // "copy value" mode
+                                                                                                            &CKernel::modeAudioAb1,     // "copy value" mode
+                                                                                                            &CKernel::modeAudioBb0,     // "copy value" mode
+                                                                                                            &CKernel::modeAudioBb1 };   // "copy value" mode
+
+enum MapType 
+{ 
+    MAP_MODE = 0, 
+    MAP_VALUE 
 };
 
-
-
-uint8_t g_currentProgramBuffer;
-uint8_t g_menu_mode_new;
-
-// Minimum missing defines/constants:
-
-#define BLOCK_COUNT       7
-#define GROUP_COUNT       4
-#define MAX_MODEMAP_SIZE  12   // for current mode groups: 5 + 2 + 4 + 1
-
-// For your current shown data, `g_modeMap` needs at least:
-
-uint8_t g_modeMap[20][12];
-
-// because:
-
-// 5 blocks * 4 slots = 20 rows
-// max mode entries = 5 + 2 + 4 + 1 = 12
-
-
-#define MAP_MODE 0
-#define MAP_VALUE 1
-
+enum ModeFlags 
+{
+    GROUP_BASE  = 0,
+    GROUP_FLAG1 = 1,
+    GROUP_FLAG2 = 2,
+    GROUP_COUNT = 3
+};
+// per-block/slot: mode vs value
 static const uint8_t g_mapType[BLOCK_COUNT][4] =
 {
-    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },   // block 0 - layer 1 - map mode for ch0 to ch3    ( 0 to g_modeRoof[])
-    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },   // block 1 - layer 2 - map mode for ch4 to ch7    ( 0 to g_modeRoof[])
+    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  }, // block 0 (CH0..CH3 modes)
+    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  }, // block 1 (CH4..CH7 modes)
 
-    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },   // block 2 - layer 3 - LFO/control values         ( 0 to max_wave / 0 to max mult )
-    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }    // block 3 - layer 4 -  audio sensitivity         ( 0 to 64 )
-    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }    // block 4 - layer 5 - target mode flags          ( 0 to 1 / true false )
-    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }    // block 5 - layer 6 - hardware / system toggles  ( 0 to 1 / true false )
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // block 2 (LF1_WAVE..LF2_MULT)
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // block 3 (SENS_A..SENS_D)
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // block 4 (SEL_TIME..SEL_FRM) 0..7
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // block 5 (target flags) 0/1
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }  // block 6 (hw/sys toggles) 0/1
 };
-
+// per-block/slot: roof for MAP_VALUE blocks, and baseLen for MAP_MODE blocks (blocks 0/1)
 static const uint8_t g_valueRoof[BLOCK_COUNT][4] =
 {
-    { 0, 0, 0, 0 },       // block 0: not used, MAP_MODE
-    { 0, 0, 0, 0 },       // block 1: not used, MAP_MODE
-    { 3, 3, 7, 7 },       // block 3: LFO wave/wave/mult/mult
-    { 64, 64, 64, 64 },   // block 4: audio sensitivity
-    { 2,2,2,2 },          
-};
+    { 5,  5,  5,  5  },   // block 0 (MAP_MODE) baseLen
+    { 5,  5,  5,  5  },   // block 1 (MAP_MODE) baseLen
 
-static const uint8_t g_groupLength[BLOCK_COUNT][4][GROUP_COUNT] =
+    { 3,  3,  7,  7  },   // block 2 (MAP_VALUE) roofs
+    { 64, 64, 64, 64 },   // block 3 (MAP_VALUE) roofs
+    { 8,  8,  8,  8  },   // block 4 (MAP_VALUE) roofs (0..7)
+    { 2,  2,  2,  2  },   // block 5 (MAP_VALUE) roofs (0/1)
+    { 2,  2,  2,  2  }    // block 6 (MAP_VALUE) roofs (0/1)
+};
+// per-group lengths (used for optional groups)
+static const uint8_t g_groupLen[GROUP_COUNT] =
 {
-    {
-        { 5, 2, 4, 1 },
-        { 5, 2, 4, 1 },
-        { 5, 2, 4, 1 },
-        { 5, 2, 4, 1 }
-    },
-    {
-        { 5, 2, 4, 1 },
-        { 5, 2, 4, 1 },
-        { 5, 2, 4, 1 },
-        { 5, 2, 4, 1 }
-    },
-    {
-        { 5, 2, 0, 0 },
-        { 5, 2, 0, 0 },
-        { 5, 2, 0, 0 },
-        { 5, 2, 0, 0 }
-    },
-    {
-        { 0, 0, 0, 0 },
-        { 0, 0, 0, 0 },
-        { 0, 0, 0, 0 },
-        { 0, 0, 0, 0 }
-    },
-    {
-        { 0, 0, 0, 0 },
-        { 0, 0, 0, 0 },
-        { 0, 0, 0, 0 },
-        { 0, 0, 0, 0 }
-    }
+    5, // GROUP_BASE
+    2, // GROUP_FLAG1 -> AUDIO_A
+    2  // GROUP_FLAG1+1 -> AUDIO_B
 };
-
+// per-group mode IDs (open table; order + holes preserved here)
 static const uint8_t g_groupModes[GROUP_COUNT][5] =
 {
-    {  0,  1,  2,  3,  4 },
-    {  8,  9,  0,  0,  0 },
-    { 12, 13, 14, 15,  0 },
-    { 10,  0,  0,  0,  0 }
+    { 0, 1, 2, 3, 4 },   // GROUP_BASE
+    { 5, 6, 0, 0, 0 },   // AUDIO_A
+    { 7, 8, 0, 0, 0 }    // AUDIO_B
 };
+// runtime arrays produced/consumed by the 3 functions
+uint8_t g_modeRoof[BLOCK_COUNT * 4];                            // actually we only need 2 * 4 since only block 0 and 0 need active remapping
+uint8_t g_modeMap [BLOCK_COUNT * 4][SOURCE_MODE_MAX];           // actually we only need 2 * 4 since only block 0 and 0 need active remapping
 
 void CKernel::set_mode_roof_map(uint8_t block)
 {
-    const uint8_t f_first_flag = FLAG_TIME;
+    const uint8_t f_first_flag = FLAG_AUDIO_A;
     const uint8_t base         = block << 2;
 
     for (uint8_t slot = 0; slot < 4; ++slot)
@@ -220,33 +160,25 @@ void CKernel::set_mode_roof_map(uint8_t block)
 
         uint8_t dst = 0;
 
-        for (uint8_t i = 0; i < g_groupLength[block][slot][GROUP_BASE]; ++i)
-        {
-            g_modeMap[row][dst++] = g_groupModes[GROUP_BASE][i];
-        }
+        // base group length comes from g_valueRoof for MAP_MODE blocks (e.g. 5,5,5,5)
+        const uint8_t baseLen = g_valueRoof[block][slot];
 
+        for (uint8_t i = 0; i < baseLen; ++i)
+            g_modeMap[row][dst++] = g_groupModes[GROUP_BASE][i];
+
+        // optional groups (A/B)
         for (uint8_t group = GROUP_FLAG1; group < GROUP_COUNT; ++group)
         {
             const uint8_t flag_pos = f_first_flag + (group - GROUP_FLAG1);
+            if (!g_centralModeBuffer[g_currentProgramBuffer][flag_pos]) continue;
 
-            if (!g_centralModeBuffer[g_currentProgramBuffer][flag_pos])
-            {
-                continue;
-            }
-
-            for (uint8_t i = 0; i < g_groupLength[block][slot][group]; ++i)
-            {
+            for (uint8_t i = 0; i < g_groupLen[group]; ++i)
                 g_modeMap[row][dst++] = g_groupModes[group][i];
-            }
         }
+
         g_modeRoof[row] = dst;
     }
 }
-
-// we map groups of four, later called "blocks" here, 
-// a) because we have 4 adc inputs for mapping each time 
-// b) because we than can use a menu-layer model where we change the mode-layer to set up different things
-// c) we attempt to use the function not only for mapping of values to modes but also just for values 
 
 void CKernel::mapMenuGroup(uint8_t menu_id, uint8_t block)
 {
@@ -303,31 +235,9 @@ void CKernel::mapMenuGroup(uint8_t menu_id, uint8_t block)
     }
 }
 
-// Use result:
-
-uint8_t index = g_centralModeBuffer[g_currentProgramBuffer][row];
-
-if (g_mapType[block][slot] == MAP_MODE)
-{
-    uint8_t mode = g_modeMap[row][index];
-    ModeFunc fn = g_modeTable[mode];
-
-    if (fn)
-    {
-        (this->*fn)(row);
-    }
-}
-else
-{
-    uint8_t value = index;
-}
-
 void CKernel::getChannelModeB(int p_channel)
 {
-    uint8_t index = g_centralModeBuffer[g_currentProgramBuffer][p_channel];
-
-    uint8_t mode = g_modeMap[p_channel][index];
-
+    uint8_t mode = g_modeMap[p_channel][g_centralModeBuffer[g_currentProgramBuffer][p_channel]];
     ModeFunc fn = g_modeTable[mode];
 
     if (fn)
@@ -336,26 +246,6 @@ void CKernel::getChannelModeB(int p_channel)
     }
 }
 
-        typedef void                            (CKernel::*ModeFunc)(int);         // for the new menu selector -> easier to expand, right? "add modes by only extending the table"
-
-                ModeFunc                        g_modeTable[9]                                 =       {   &CKernel::modeADC,          // "copy value" mode
-                                                                                                            &CKernel::modeTRG,          
-                                                                                                            &CKernel::modeBPM,
-                                                                                                            &CKernel::modeLF1,          // "copy value" mode
-                                                                                                            &CKernel::modeLF2,          // "copy value" mode
-                                                                                                            /*
-                                                                                                            &CKernel::modeSelectTex,
-                                                                                                            &CKernel::modeSelectFrame,
-                                                                                                            &CKernel::modeSelectVideo,
-
-                                                                                                            nullptr,
-                                                                                                            nullptr,
-                                                                                                            nullptr,
-                                                                                                            */
-                                                                                                            &CKernel::modeAudioAb0,     // "copy value" mode
-                                                                                                            &CKernel::modeAudioAb1,     // "copy value" mode
-                                                                                                            &CKernel::modeAudioBb0,     // "copy value" mode
-                                                                                                            &CKernel::modeAudioBb1 };   // "copy value" mode
 
 void CKernel::applyTargetModes(int p_channel)
 {
@@ -378,8 +268,7 @@ void CKernel::applyTargetModes(int p_channel)
                     {
                     gl_time = g_inOutMatrixInt[p_channel][OUT];
                     }
-// i still wonder: is this rather a source-mode than a target-mode, maybe just and automated thingy running aside mode 2 "TRG"?
-
+                // i still wonder: is this rather a source-mode than a target-mode, maybe just and automated thingy running aside mode 2 "TRG"?
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_EXT] && g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] == p_channel && g_centralModeBuffer[g_currentProgramBuffer][p_channel] != p_channel)
                     {
                     if (g_inOutMatrixInt[p_channel][VAL] >= g_inOutMatrixInt[p_channel][TRH] &&
@@ -411,6 +300,8 @@ void            CKernel::modeTRG                    (   int p_channel)
                     g_inOutMatrixFlt[p_channel][OUT]    = g_inOutMatrixFlt[p_channel][RND];
                     g_inOutMatrixInt[p_channel][OUT]    = g_inOutMatrixInt[p_channel][RND];
 
+                    if (FLAG_EXT) calculate1BPM(1, g_currentTime);
+
                     g_inOutMatrixInt[p_channel][TRF]    = true;
                     }
                 else if ( g_inOutMatrixInt[p_channel][VAL] <= g_inOutMatrixInt[p_channel][TRL])
@@ -418,13 +309,12 @@ void            CKernel::modeTRG                    (   int p_channel)
                     g_inOutMatrixInt[p_channel][TRF] = false;
                     }
 
-                applyTargetModes(p_channel);
+            //  applyTargetModes(p_channel);
 }
 
 void            CKernel::modeBPM                    (   int p_channel /* , currentTime*/)   // <- currentTime should be g_currentTime -> global member set during Run()  - or a call parameter!
 { 
-                if ( /* currentTime */ g_currentTime >= g_lfoBpmMatrix[p_channel][NBT] )// g_nextBeatTime[g_activeBpmChannel])      // <- g_nextBeatTime is now part of the g_lfoBpmMatrix -> enum lfo_bpm_types NBT -> nextBeatTime
-                                                                            
+                if ( /* currentTime */ g_currentTime >= g_lfoBpmMatrix[p_channel][NBT] )// g_nextBeatTime[g_activeBpmChannel])      // <- g_nextBeatTime is now part of the g_lfoBpmMatrix -> enum lfo_bpm_types NBT -> nextBeatTime                                      
                     {
                     g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[p_channel][RND];
                     g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[p_channel][RND];
@@ -437,6 +327,8 @@ void            CKernel::modeLF1                    (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][LF1];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][LF1];
+
+                applyTargetModes(p_channel);
 }
 
 void            CKernel::modeLF2                    (   int p_channel)
@@ -509,3 +401,5 @@ void            CKernel::modeAudioBb1               (   int p_channel)
 
                 applyTargetModes(p_channel);
 }
+
+// last but not least! ch 7 is hardwired as terget mode for "choose program"

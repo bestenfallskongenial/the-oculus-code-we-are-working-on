@@ -25,7 +25,7 @@ static const uint8_t g_groupModes[GROUP_COUNT][6] =
 
 void CKernel::set_mode_roof(uint8_t base)
 {
-    const uint8_t f_first_flag = FLAG_TIM;
+    const uint8_t f_first_flag = FLAG_TIME;
     const uint8_t block = base / 4;
 
     uint8_t roof = g_groupLength[block][GROUP_BASE];
@@ -105,7 +105,7 @@ as table!
 
 void CKernel::set_mode_roof(uint8_t base)
 {
-    const uint8_t f_first_flag = FLAG_TIM;
+    const uint8_t f_first_flag = FLAG_TIME;
 
     uint8_t roof = 0;
     uint8_t dst  = 0;

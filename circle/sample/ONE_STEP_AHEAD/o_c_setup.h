@@ -130,7 +130,7 @@
 
     #define         AUDIO_THRESHOLD             160
     #define         AUDIO_BUFFER_COUNT          63
-    #define         AUDIO_MENU_HOLD             3000
+    #define         AUDIO_HOLD_TIMEOUT             3000
 
     #define 		CHUNK_SIZE				    1024                                // for the file load 
 

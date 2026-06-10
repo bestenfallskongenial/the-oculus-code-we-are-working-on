@@ -461,11 +461,16 @@ void            CKernel::adc_ProcessAudio           (   void    )
                 int i1 = (m_adc_index - 1) & 3;
                 int i2 = (m_adc_index - 2) & 3;
                 int i3 = (m_adc_index - 3) & 3;
-
+/*
                 int w0 = g_centralModeBuffer[g_currentProgramBuffer][SENS_A] & 63;
                 int w1 = g_centralModeBuffer[g_currentProgramBuffer][SENS_B] & 63;
                 int w2 = g_centralModeBuffer[g_currentProgramBuffer][SENS_C] & 63;
                 int w3 = g_centralModeBuffer[g_currentProgramBuffer][SENS_D] & 63;
+*/
+                int w0 = (g_centralModeBuffer[g_currentProgramBuffer][SENS_A] & 63) + 1;
+                int w1 = (g_centralModeBuffer[g_currentProgramBuffer][SENS_B] & 63) + 1;
+                int w2 = (g_centralModeBuffer[g_currentProgramBuffer][SENS_C] & 63) + 1;
+                int w3 = (g_centralModeBuffer[g_currentProgramBuffer][SENS_D] & 63) + 1;
 
                 g_lfoBpmMatrix[0][IREG] = m_adc_ring[0][i0] - m_adc_ring[0][i1] + m_adc_ring[0][i2] - m_adc_ring[0][i3];
 
@@ -473,8 +478,9 @@ void            CKernel::adc_ProcessAudio           (   void    )
                 {
                     is_audio[0] = 0;
 
-                    m_audio_hold_A = AUDIO_MENU_HOLD;
-                    m_audio_flag_A = true;
+                    m_audio_hold_A = AUDIO_HOLD_TIMEOUT;
+                //  FLAG_AUDIO_A = true;
+                    g_centralModeBuffer[g_currentProgramBuffer][FLAG_AUDIO_A] = 1;
 
                     float s = m_adc_ring[0][m_adc_index] * 0.0009765625f;
 
@@ -497,8 +503,9 @@ void            CKernel::adc_ProcessAudio           (   void    )
                 {
                     is_audio[1] = 1;
 
-                    m_audio_hold_B = AUDIO_MENU_HOLD;
-                    m_audio_flag_B = true;
+                    m_audio_hold_B = AUDIO_HOLD_TIMEOUT;
+                //  FLAG_AUDIO_B = true;
+                    g_centralModeBuffer[g_currentProgramBuffer][FLAG_AUDIO_B] = 1;
 
                     float s = m_adc_ring[1][m_adc_index] * 0.0009765625f;
 
@@ -521,8 +528,9 @@ void            CKernel::adc_ProcessAudio           (   void    )
                 {
                     is_audio[0] = 2;
 
-                    m_audio_hold_A = AUDIO_MENU_HOLD;
-                    m_audio_flag_A = true;
+                    m_audio_hold_A = AUDIO_HOLD_TIMEOUT;
+                //  FLAG_AUDIO_A = true;
+                    g_centralModeBuffer[g_currentProgramBuffer][FLAG_AUDIO_A] = 1;
 
                     float s = m_adc_ring[2][m_adc_index] * 0.0009765625f;
 
@@ -545,8 +553,9 @@ void            CKernel::adc_ProcessAudio           (   void    )
                 {
                     is_audio[1] = 3;
 
-                    m_audio_hold_B = AUDIO_MENU_HOLD;
-                    m_audio_flag_B = true;
+                    m_audio_hold_B = AUDIO_HOLD_TIMEOUT;
+                //  FLAG_AUDIO_B = true;
+                    g_centralModeBuffer[g_currentProgramBuffer][FLAG_AUDIO_B] = 1;
 
                     float s = m_adc_ring[3][m_adc_index] * 0.0009765625f;
 
@@ -564,10 +573,12 @@ void            CKernel::adc_ProcessAudio           (   void    )
                 }
 
                 if (m_audio_hold_A > 0) --m_audio_hold_A;
-                m_audio_flag_A = (m_audio_hold_A > 0);
+            //  FLAG_AUDIO_A = (m_audio_hold_A > 0);
+                g_centralModeBuffer[g_currentProgramBuffer][FLAG_AUDIO_A] = (m_audio_hold_A > 0);
 
                 if (m_audio_hold_B > 0) --m_audio_hold_B;
-                m_audio_flag_B = (m_audio_hold_B > 0);
+            //  FLAG_AUDIO_B = (m_audio_hold_B > 0);
+                g_centralModeBuffer[g_currentProgramBuffer][FLAG_AUDIO_B] = (m_audio_hold_B > 0);
 }
 
 void            CKernel::adc_AdvanceIndex           (   void    )

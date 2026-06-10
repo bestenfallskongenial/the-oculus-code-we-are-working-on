@@ -21,7 +21,7 @@ TShutdownMode CKernel::Run(void)
 
                 g_centralModeBuffer[g_gl_program_current][FLAG_TEX] = true;
 
-                g_centralModeBuffer[g_gl_program_current][FLAG_TIM] = 0;
+                g_centralModeBuffer[g_gl_program_current][FLAG_TIME] = 0;
 
                 while (/*m_resetFlag == false*/ 1)
                     {
