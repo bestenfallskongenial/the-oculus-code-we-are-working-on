@@ -241,7 +241,7 @@ void            CKernel::mapMenuGroup(uint8_t block)
                 }
 }
 
-void            CKernel::getChannelMode(int p_channel)
+void            CKernel::getChannelModeA(int p_channel)
 {
                 uint8_t mode = g_modeMap[p_channel][g_centralModeBuffer[g_currentProgramBuffer][p_channel]];
 
@@ -253,7 +253,7 @@ void            CKernel::getChannelMode(int p_channel)
                 }
 }
 
-void            CKernel::getChannelMode             (   uint8_t         block )
+void            CKernel::getChannelModeB(uint8_t block )
 {
                 const uint8_t base = block << 2;
 
@@ -360,41 +360,6 @@ void            CKernel::applyTargetModes(int p_channel)
                 {
                     calculate1BPM(1, g_currentTime);
                 }
-}
-
-void            CKernel::applyTargetModes           (   )
-{
-                // hardwired target:
-                // CH7 always selects the current program
-                g_gl_program_current = g_inOutMatrixInt[ADC_SELECT_PRG][OUT];   // rather RAW?
-
-                // optional target:
-                // selected channel OUT controls active texture
-                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_TEX])
-                    {
-                    m_activeTEX =   g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX]][OUT];
-                    }
-
-                // optional target:
-                // selected channel OUT controls active video
-                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_VID])
-                    {
-                    m_activeVideo = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_VID]][OUT];
-                    }
-
-                // optional target:
-                // selected channel OUT controls active frame
-                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_VID])
-                    {
-                    m_activeFrame = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_FRM]][OUT];
-                    }
-
-                // optional target:
-                // selected channel OUT controls shader/program time
-                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_TIME])
-                    {
-                    gl_time =       g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME]][OUT];
-                    }
 }
 
 void            CKernel::applyTargetModes           (   )       // current!
