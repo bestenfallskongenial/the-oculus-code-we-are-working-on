@@ -172,8 +172,12 @@ public:
                 void        set_pot_routing             (               int                             pin,
                                                                         bool                            adc_pot_routing);                                                                        
                 unsigned    GPIO_Read                   (               unsigned                        nPin);
-                void        buttonPing                  (               int                             p_btn_id,           // +++
-                                                                        int                             p_pin);                
+                void        buttonPingA                 (               int                             p_btn_id,           // +++
+                                                                        int                             p_pin);
+                void        buttonPingB                 (               int                             p_btn_id_A, 
+                                                                        int                             p_pin_A,
+                                                                        int                             p_btn_id_B, 
+                                                                        int                             p_pin_B );                                                                        
                 void        watchdog_Start              (               unsigned                        nTimeoutSeconds);                   // watchdog
                 bool        SPI_init                    (               void);                                                              // +++ SPI
                 int         WriteRead                   (               unsigned                        nChipSelect,    // +++

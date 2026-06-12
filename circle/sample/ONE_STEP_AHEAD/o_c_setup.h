@@ -96,10 +96,6 @@
     // #define LOG_SIZ 262144
 
     #define         ADC_SELECT_PRG              7   // we will map this modes to input channels later
-    #define         ADC_SELECT_TEX              6   // this are placeholder mactos
-    #define         ADC_SELECT_VID              5
-    #define			ADC_INPUT_CLK			    5	// adc p_channel use as clock ! BIGGER THAN 3 !
-    #define         ADC_INPUT_TIME              4
 
     #define         DEVICE_NAME_SD              "emmc1"
     #define         DEVICE_NAME_USB             "umsd1"

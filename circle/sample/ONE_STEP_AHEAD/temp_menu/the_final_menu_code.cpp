@@ -400,7 +400,7 @@ void            CKernel::modeADC                    (   int p_channel)
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[p_channel][VAL];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[p_channel][VAL];       
                 
-                applyTargetModes(p_channel);
+           //  applyTargetModes(p_channel);
 }
 
 void            CKernel::modeTRG                    (   int p_channel)
@@ -418,7 +418,7 @@ void            CKernel::modeTRG                    (   int p_channel)
                     g_inOutMatrixInt[p_channel][TRF] = false;
                     }
 
-                applyTargetModes(p_channel);
+           //  applyTargetModes(p_channel);
 }
 
 void            CKernel::modeBPM                    (   int p_channel /* , currentTime*/)   // <- currentTime should be g_currentTime -> global member set during Run()  - or a call parameter!
@@ -430,7 +430,7 @@ void            CKernel::modeBPM                    (   int p_channel /* , curre
                     g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[p_channel][RND];
                     }
 
-                applyTargetModes(p_channel);
+           //  applyTargetModes(p_channel);
 }
 
 void            CKernel::modeLF1                    (   int p_channel)
@@ -444,7 +444,7 @@ void            CKernel::modeLF2                    (   int p_channel)
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][LF2];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][LF2]; 
 
-                applyTargetModes(p_channel);
+           //  applyTargetModes(p_channel);
 }
 /*
 void            CKernel::modeSelectTex              (   int p_channel)
@@ -486,26 +486,26 @@ void            CKernel::modeAudioAb0               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU0];
 
-                applyTargetModes(p_channel);
+           //  applyTargetModes(p_channel);
 }
 
 void            CKernel::modeAudioAb1               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU1];
 
-                applyTargetModes(p_channel);                
+           //  applyTargetModes(p_channel);                
 }
 
 void            CKernel::modeAudioBb0               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU2];
 
-                applyTargetModes(p_channel);                
+           //  applyTargetModes(p_channel);                
 }
 
 void            CKernel::modeAudioBb1               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU3];
 
-                applyTargetModes(p_channel);
+           //  applyTargetModes(p_channel);
 }
