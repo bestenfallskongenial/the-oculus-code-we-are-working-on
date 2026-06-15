@@ -127,7 +127,7 @@ bool            CKernel::programLog                 (   GLint       program,
                     GLint location = glGetAttribLocation(program, aname);
 #ifdef __LOG_GLSL__ 
                     storeLog(   MY_BUFFER, MY_INDEX, 
-                                "Attribute name", EMPTYLOG, aname );
+                                "Attribute:    ", EMPTYLOG, aname );
                     storeLog(   MY_BUFFER, MY_INDEX, 
                                 "Attribute:    ", (u32)i, 
                                 "size          ", (u32)size, 

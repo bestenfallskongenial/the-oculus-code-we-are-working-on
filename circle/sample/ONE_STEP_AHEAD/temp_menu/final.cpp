@@ -16,7 +16,7 @@ void            CKernel::storeModes                 (   )
                     }
 }
 
-void            CKernel::button_consumer()
+void            CKernel::button_consumer            (   )
 {
                 // read button state once
                 const bool a_single = g_buttons_states[BTN_A][BTN_SINGLE]    != 0;
@@ -108,7 +108,7 @@ void            CKernel::button_consumer()
                     }
 }
 
-void            CKernel::set_mode_roof_map(uint8_t block)
+void            CKernel::set_mode_roof_map          (uint8_t block)
 {
                 const uint8_t f_first_flag = FLAG_AUDIO_A;
                 const uint8_t base         = block << 2;
@@ -125,8 +125,7 @@ void            CKernel::set_mode_roof_map(uint8_t block)
 
                     uint8_t dst = 0;
 
-                    // base group length comes from g_valueRoof for MAP_MODE blocks (e.g. 5,5,5,5)
-                    const uint8_t baseLen = g_valueRoof[block][slot];
+                    const uint8_t baseLen = g_valueRoof[block][slot];       // base group length comes from g_valueRoof for MAP_MODE blocks (e.g. 5,5,5,5)
 
                     for (uint8_t i = 0; i < baseLen; ++i)
                         g_modeMap[row][dst++] = g_groupModes[GROUP_BASE][i];
@@ -145,7 +144,7 @@ void            CKernel::set_mode_roof_map(uint8_t block)
                 }
 }
 
-void            CKernel::mapMenuGroup(uint8_t block)
+void            CKernel::mapMenuGroup               (uint8_t block)
 {
                 const uint8_t base = block << 2;
                 unsigned v;
@@ -195,11 +194,9 @@ void            CKernel::mapMenuGroup(uint8_t block)
                 }
 }
 
-void            CKernel::getChannelModeB(uint8_t block )
+void            CKernel::getChannelModeB            (uint8_t block )
 {
                 const uint8_t base = block << 2;
-
-
 
                 int p_channel = base + 0;
 
@@ -207,12 +204,7 @@ void            CKernel::getChannelModeB(uint8_t block )
 
                 ModeFunc fn = g_modeTable[mode];
 
-                if (fn)
-                {
-                    (this->*fn)(p_channel);
-                }
-
-
+                if (fn) (this->*fn)(p_channel);
 
                 p_channel = base + 1;
 
@@ -220,12 +212,7 @@ void            CKernel::getChannelModeB(uint8_t block )
 
                 fn = g_modeTable[mode];
 
-                if (fn)
-                {
-                    (this->*fn)(p_channel);
-                }
-
-
+                if (fn) (this->*fn)(p_channel);
 
                 p_channel = base + 2;
 
@@ -233,12 +220,7 @@ void            CKernel::getChannelModeB(uint8_t block )
 
                 fn = g_modeTable[mode];
 
-                if (fn)
-                {
-                    (this->*fn)(p_channel);
-                }
-
-
+                if (fn) (this->*fn)(p_channel);
 
                 p_channel = base + 3;
 
@@ -246,18 +228,13 @@ void            CKernel::getChannelModeB(uint8_t block )
 
                 fn = g_modeTable[mode];
 
-                if (fn)
-                {
-                    (this->*fn)(p_channel);
-                }
+                if (fn) (this->*fn)(p_channel);
 }
 
 void            CKernel::modeADC                    (   int p_channel) 
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[p_channel][VAL];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[p_channel][VAL];       
-                
-           //  applyTargetModes(p_channel);
 }
 
 void            CKernel::modeTRG                    (   int p_channel) // current
@@ -267,12 +244,7 @@ void            CKernel::modeTRG                    (   int p_channel) // curren
                     {
                     g_inOutMatrixFlt[p_channel][OUT]    = g_inOutMatrixFlt[p_channel][RND];
                     g_inOutMatrixInt[p_channel][OUT]    = g_inOutMatrixInt[p_channel][RND];
-/*
-                    if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_EXT])
-                        {
-                        calculate1BPM(1, g_currentTime);
-                        }
-*/
+
                     g_extClockTime                      = g_currentTime;
 
                     g_inOutMatrixInt[p_channel][TRF]    = true;
@@ -283,104 +255,219 @@ void            CKernel::modeTRG                    (   int p_channel) // curren
                     }
 }
 
-void            CKernel::modeBPM                    (   int p_channel)   // <- currentTime should be g_currentTime -> global member set during Run()  - or a call parameter!
+void            CKernel::modeBPM                    (   int p_channel)
 { 
                 if ( g_currentTime >= g_lfoBpmMatrix[p_channel][NBT] )
                     {
                     g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[p_channel][RND];
                     g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[p_channel][RND];
                     }
-
-           //  applyTargetModes(p_channel);
 }
 
 void            CKernel::modeLF1                    (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][LF1];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][LF1];
-
-           //  applyTargetModes(p_channel);
 }
 
 void            CKernel::modeLF2                    (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][LF2];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][LF2]; 
-
-           //  applyTargetModes(p_channel);
 }
 
 void            CKernel::modeAudioAb0               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU0];
-
-           //  applyTargetModes(p_channel);
 }
 
 void            CKernel::modeAudioAb1               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU1];
-
-           //  applyTargetModes(p_channel);                
 }
 
 void            CKernel::modeAudioBb0               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU2];
-
-           //  applyTargetModes(p_channel);                
 }
 
 void            CKernel::modeAudioBb1               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU3];
-
-           //  applyTargetModes(p_channel);
 }
 
 void            CKernel::applyTargetModes           (   )       // current!
 {
-                // hardwired target:
-                // CH7 always selects the current program
-                g_gl_program_current = g_inOutMatrixInt[ADC_SELECT_PRG][OUT];   // rather RAW?
+                g_gl_program_current = g_inOutMatrixInt[ADC_SELECT_PRG][OUT];   // CH7 always selects the current program
 
-                // optional target:
-                // selected channel OUT controls active texture
-                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_TEX])
+                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_TEX])      // selected channel OUT controls active texture
                     {
                     m_activeTEX =   g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX]][OUT];
                     }
-
-                // optional target:
-                // selected channel OUT controls active video
-                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_VID])
+                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_VID])      // selected channel OUT controls active video
                     {
                     m_activeVideo = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_VID]][OUT];
                     }
-
-                // optional target:
-                // selected channel OUT controls active frame
-                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_VID])
+                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_VID])      // selected channel OUT controls active frame
                     {
                     m_activeFrame = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_FRM]][OUT];
                     }
-
-                // optional target:
-                // selected channel OUT controls shader/program time
-                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_TIME])
+                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_TIME])     // selected channel OUT controls shader/program time
                     {
                     gl_time =       g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME]][OUT];
                     }
-
-                if (!g_centralModeBuffer[g_currentProgramBuffer][FLAG_TIME])
+                if (!g_centralModeBuffer[g_currentProgramBuffer][FLAG_TIME])    // time is a product of system time
                     {
                     gl_time =       g_currentTime / 1000000.0f;
                     }
-
-                // optional target:
-                // external BPM clock
-                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_EXT])
+                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_EXT])      // external BPM clock
                     {
                     calculate1BPM(1, g_extClockTime);
                     }
+}
+
+#define WAVESAMPLES 256
+
+uint8_t g_blockColor[BLOCK_COUNT][3] =
+{
+    {190,  60,  50},   // block 0 - warm red
+    { 55, 155,  95},   // block 1 - jade green
+    { 60, 105, 180},   // block 2 - medium blue
+    {185, 105,  40},   // block 3 - burnt orange
+    { 45, 140, 160},   // block 4 - blue teal
+    { 95,  90, 170},   // block 5 - indigo violet
+    {  0,   0,   0},   // block 6 - invisible
+    {150, 115,  45}    // block 7 - muted gold
+};
+
+uint8_t g_blockColor[BLOCK_COUNT][3] =
+{
+    {170,  50,  40},   // block 0 - muted crimson
+    { 70, 150,  70},   // block 1 - moss green
+    { 65,  95, 175},   // block 2 - calm blue
+    {180, 120,  50},   // block 3 - ochre
+    { 50, 145, 135},   // block 4 - sea green
+    {115,  85, 165},   // block 5 - muted purple
+    {  0,   0,   0},   // block 6 - invisible
+    {155, 100,  55}    // block 7 - bronze
+};
+
+uint8_t g_blockColor[BLOCK_COUNT][3] =
+{
+    {185,  55,  45},   // block 0 - brick red
+    { 60, 160,  85},   // block 1 - leaf green
+    { 55, 100, 185},   // block 2 - steel blue
+    {190, 115,  45},   // block 3 - amber
+    { 45, 150, 150},   // block 4 - teal
+    {105,  85, 175},   // block 5 - violet
+    {  0,   0,   0},   // block 6 - invisible
+    {170,  90,  45}    // block 7 - copper
+};
+
+void            CKernel::updateLEDsBlock(uint8_t block) // current!!
+{
+                int     offset = 33; // just a value to have a quantitation for the color shown
+
+                uint8_t base;
+                uint8_t idx;
+
+                uint16_t levelA;
+                uint16_t levelB;
+                uint16_t levelC;
+                uint16_t levelD;
+
+                if (g_menuLayer == 0)
+                    {
+                    if (g_lastMappedChannelBlock == 0)
+                        {
+                        block = 0;
+                        }
+                    else
+                        {
+                        block = 1;
+                        }
+
+                    base = block << 2;
+
+                    levelA = g_inOutMatrixInt[base + 0][OUT];
+                    levelB = g_inOutMatrixInt[base + 1][OUT];
+                    levelC = g_inOutMatrixInt[base + 2][OUT];
+                    levelD = g_inOutMatrixInt[base + 3][OUT];
+                    }
+                else
+                    {
+                    base = block << 2;
+
+                    idx = (g_centralModeBuffer[g_currentProgramBuffer][base + 0] * offset) % 255;
+                    levelA = g_waveTable[WAVE_SINE][idx];
+
+                    idx = (g_centralModeBuffer[g_currentProgramBuffer][base + 1] * offset) % 255;
+                    levelB = g_waveTable[WAVE_SINE][idx];
+
+                    idx = (g_centralModeBuffer[g_currentProgramBuffer][base + 2] * offset) % 255;
+                    levelC = g_waveTable[WAVE_SINE][idx];
+
+                    idx = (g_centralModeBuffer[g_currentProgramBuffer][base + 3] * offset) % 255;
+                    levelD = g_waveTable[WAVE_SINE][idx];
+                    }
+
+                WS2812_SetLED(LED_A, (g_blockColor[block][0] * levelA) >> 10, (g_blockColor[block][1] * levelA) >> 10, (g_blockColor[block][2] * levelA) >> 10);
+                WS2812_SetLED(LED_B, (g_blockColor[block][0] * levelB) >> 10, (g_blockColor[block][1] * levelB) >> 10, (g_blockColor[block][2] * levelB) >> 10);
+                WS2812_SetLED(LED_C, (g_blockColor[block][0] * levelC) >> 10, (g_blockColor[block][1] * levelC) >> 10, (g_blockColor[block][2] * levelC) >> 10);
+                WS2812_SetLED(LED_D, (g_blockColor[block][0] * levelD) >> 10, (g_blockColor[block][1] * levelD) >> 10, (g_blockColor[block][2] * levelD) >> 10);
+
+                WS2812_Update();
+}
+
+void            CKernel::checkSystemFlags()
+{
+                if ( STORE_SET )
+                {
+                /* execute */
+                STORE_SET = false;
+                }
+
+                if ( LOAD_SET )
+                {
+                /* execute */
+                LOAD_SET = false;
+                }
+
+                if ( STORE_LOG )
+                {
+                /* execute */
+                saveFromBuffer          (   PARTITION_NAME_SD,
+                                            /*gen83FileName("TXT"*/
+                                            "bootlog.txt",
+                                            m_logBuffer,            // stores the pre-init buffer
+                                            m_logBufferIndex );
+
+                                            msDelay(100);
+                saveFromBuffer          (   PARTITION_NAME_SD,
+                                            "GLSL.txt",
+                                            m_bufferLog[1],
+                                            m_bufferLogIndex[1] );
+
+                                            msDelay(100);
+                saveFromBuffer          (   PARTITION_NAME_SD,
+                                            "parser.txt",
+                                            m_bufferLog[0],
+                                            m_bufferLogIndex[0] );
+
+                                            msDelay(100);
+                saveFromBuffer          (   PARTITION_NAME_SD,
+                                            "vc04.txt",
+                                            m_bufferLog[2],
+                                            m_bufferLogIndex[2] );
+
+                STORE_LOG = false;
+                    }
+                    
+                if ( LOAD_KLN )
+                {
+                /* execute */
+                UpdateKernel();
+
+                LOAD_KLN = false;
+                }
 }
