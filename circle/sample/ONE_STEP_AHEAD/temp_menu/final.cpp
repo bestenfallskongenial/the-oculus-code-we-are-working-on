@@ -1,3 +1,127 @@
+#define BLOCK_COUNT 8
+
+enum centralModeBuffer
+{
+// block 00 
+    MODE_CH0 = 0,
+    MODE_CH1,
+    MODE_CH2,
+    MODE_CH3,
+// block 01
+    MODE_CH4,
+    MODE_CH5,
+    MODE_CH6,
+    MODE_CH7,
+// block 02
+    LF1_WAVE,
+    LF2_WAVE,
+    LF1_MULT,
+    LF2_MULT,
+// block 03
+    SENS_A,
+    SENS_B,
+    SENS_C,
+    SENS_D,
+// block 04
+    SEL_TIME,
+    SEL_TEX,
+    SEL_VID,
+    SEL_FRM,
+// block 05
+    FLAG_TIME,
+    FLAG_TEX,
+    FLAG_EXT,
+    FLAG_VID,
+// block 06
+    FLAG_AUDIO_A,
+    FLAG_AUDIO_B,
+    DUMMY_FLAG,
+
+    IS_STORED,
+// block 07
+    STORE_SET,
+    LOAD_SET,
+    STORE_LOG,
+    LOAD_KLN,
+
+    MODETABLE_COUNT
+};
+
+typedef void (CKernel::*ModeFunc)(int);
+
+ModeFunc g_modeTable[9] =
+{
+    &CKernel::modeADC,
+    &CKernel::modeTRG,
+    &CKernel::modeBPM,
+    &CKernel::modeLF1,
+    &CKernel::modeLF2,
+
+    &CKernel::modeAudioAb0,
+    &CKernel::modeAudioAb1,
+    &CKernel::modeAudioBb0,
+    &CKernel::modeAudioBb1
+};
+
+enum MapType
+{
+    MAP_MODE = 0,
+    MAP_VALUE
+};
+
+enum ModeFlags
+{
+    GROUP_BASE  = 0,
+    GROUP_FLAG1 = 1,
+    GROUP_FLAG2 = 2,
+    GROUP_COUNT = 3
+};
+
+static const uint8_t g_mapType[BLOCK_COUNT][4] =
+{
+    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },
+    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },
+
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }
+};
+
+static const uint8_t g_valueRoof[BLOCK_COUNT][4] =
+{
+    { 5,  5,  5,  5  },
+    { 5,  5,  5,  5  },
+
+    { 4,  4,  7,  7  },
+    { 64, 64, 64, 64 },
+    { 7,  7,  7,  7  },
+    { 2,  2,  2,  2  },
+    { 0,  0,  0,  2  },
+    { 2,  2,  2,  2  }
+};
+
+static const uint8_t g_groupLen[GROUP_COUNT] =
+{
+    5,
+    2,
+    2
+};
+
+static const uint8_t g_groupModes[GROUP_COUNT][5] =
+{
+    { 0, 1, 2, 3, 4 },
+    { 5, 6, 0, 0, 0 },
+    { 7, 8, 0, 0, 0 }
+};
+
+uint8_t g_modeRoof[BLOCK_COUNT * 4];
+uint8_t g_modeMap[BLOCK_COUNT * 4][9];
+
+
+
 void            CKernel::storeModes                 (   )
 {
                 if (g_gl_program_current != g_gl_program_last)
@@ -421,19 +545,19 @@ void            CKernel::updateLEDsBlock(uint8_t block) // current!!
 
 void            CKernel::checkSystemFlags()
 {
-                if ( STORE_SET )
+                if ( g_centralModeBuffer[g_currentProgramBuffer][STORE_SET] )
                 {
                 /* execute */
-                STORE_SET = false;
+                g_centralModeBuffer[g_currentProgramBuffer][STORE_SET] = 0;
                 }
 
-                if ( LOAD_SET )
+                if ( g_centralModeBuffer[g_currentProgramBuffer][LOAD_SET] )
                 {
                 /* execute */
-                LOAD_SET = false;
+                g_centralModeBuffer[g_currentProgramBuffer][LOAD_SET] = 0;
                 }
 
-                if ( STORE_LOG )
+                if ( g_centralModeBuffer[g_currentProgramBuffer][STORE_LOG] )
                 {
                 /* execute */
                 saveFromBuffer          (   PARTITION_NAME_SD,
@@ -460,14 +584,14 @@ void            CKernel::checkSystemFlags()
                                             m_bufferLog[2],
                                             m_bufferLogIndex[2] );
 
-                STORE_LOG = false;
+                g_centralModeBuffer[g_currentProgramBuffer][STORE_LOG] = 0;
                     }
                     
-                if ( LOAD_KLN )
+                if ( g_centralModeBuffer[g_currentProgramBuffer][LOAD_KLN] )
                 {
                 /* execute */
                 UpdateKernel();
 
-                LOAD_KLN = false;
+                g_centralModeBuffer[g_currentProgramBuffer][LOAD_KLN] = 0;
                 }
 }

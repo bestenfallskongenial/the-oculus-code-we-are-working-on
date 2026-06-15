@@ -556,12 +556,14 @@ void            CKernel::adc_ProcessAudio           (   void    )
                     m_band[0][m_idx0] = s;
                     m_sum[0] += s;
                     g_inOutMatrixFlt[0][AU0] = m_sum[0] / w0;
+                    g_inOutMatrixInt[0][AU0] = (int)((m_sum[0] * 1023.0f) / w0); // new - we need int too for the led!
                     if (++m_idx0 == w0) m_idx0 = 0;
 
                     m_sum[1] -= m_band[1][m_idx1];
                     m_band[1][m_idx1] = s;
                     m_sum[1] += s;
                     g_inOutMatrixFlt[0][AU1] = m_sum[1] / w1;
+                    g_inOutMatrixInt[0][AU1] = (int)((m_sum[1] * 1023.0f) / w1); 
                     if (++m_idx1 == w1) m_idx1 = 0;
                 }
 
@@ -581,12 +583,14 @@ void            CKernel::adc_ProcessAudio           (   void    )
                     m_band[2][m_idx2] = s;
                     m_sum[2] += s;
                     g_inOutMatrixFlt[0][AU2] = m_sum[2] / w2;
+                    g_inOutMatrixInt[0][AU2] = (int)((m_sum[2] * 1023.0f) / w2);
                     if (++m_idx2 == w2) m_idx2 = 0;
 
                     m_sum[3] -= m_band[3][m_idx3];
                     m_band[3][m_idx3] = s;
                     m_sum[3] += s;
                     g_inOutMatrixFlt[0][AU3] = m_sum[3] / w3;
+                    g_inOutMatrixInt[0][AU3] = (int)((m_sum[3] * 1023.0f) / w3);
                     if (++m_idx3 == w3) m_idx3 = 0;
                 }
 
@@ -606,12 +610,14 @@ void            CKernel::adc_ProcessAudio           (   void    )
                     m_band[0][m_idx0] = s;
                     m_sum[0] += s;
                     g_inOutMatrixFlt[0][AU0] =  m_sum[0] / w0;
+                    g_inOutMatrixInt[0][AU0] = (int)((m_sum[0] * 1023.0f) / w0);
                     if (++m_idx0 == w0) m_idx0 = 0;
 
                     m_sum[1] -= m_band[1][m_idx1];
                     m_band[1][m_idx1] = s;
                     m_sum[1] += s;
                     g_inOutMatrixFlt[0][AU1] = m_sum[1] / w1;
+                    g_inOutMatrixInt[0][AU1] = (int)((m_sum[1] * 1023.0f) / w1);
                     if (++m_idx1 == w1) m_idx1 = 0;
                 }
 
@@ -631,12 +637,14 @@ void            CKernel::adc_ProcessAudio           (   void    )
                     m_band[2][m_idx2] = s;
                     m_sum[2] += s;
                     g_inOutMatrixFlt[0][AU2] = m_sum[2] / w2;
+                    g_inOutMatrixInt[0][AU2] = (int)((m_sum[2] * 1023.0f) / w2);
                     if (++m_idx2 == w2) m_idx2 = 0;
 
                     m_sum[3] -= m_band[3][m_idx3];
                     m_band[3][m_idx3] = s;
                     m_sum[3] += s;
                     g_inOutMatrixFlt[0][AU3] = m_sum[3] / w3;
+                    g_inOutMatrixInt[0][AU3] = (int)((m_sum[3] * 1023.0f) / w3);
                     if (++m_idx3 == w3) m_idx3 = 0;
                 }
 
