@@ -87,10 +87,10 @@ enum modetable
     AUDIO_MODE,
     DUMMY_B,
     DUMMY_C,
-    STORE_SET,  // 0 or 1   ( if set to 1 and the MENU_LAYER_COUNT is zero again ( button released ?) the file operation starts )
-    LOAD_SET,   // 0 or 1
-    STORE_LOG,  // 0 or 1
-    LOAD_KLN,   // 0 or 1
+    SET_STORE,  // 0 or 1   ( if set to 1 and the MENU_LAYER_COUNT is zero again ( button released ?) the file operation starts )
+    SET_LOAD,   // 0 or 1
+    LOG_STORE,  // 0 or 1
+    KLN_LOAD,   // 0 or 1
 
 	IS_STORED,                          // not really a mode but a flag - important: obey the "4 per block" rule
 

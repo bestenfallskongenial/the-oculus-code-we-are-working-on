@@ -219,7 +219,8 @@ public:
                                                                         u32                             fgColor );
                 void        bufferScreenGetGrid         (               unsigned&                       cols,           // +++
                                                                         unsigned&                       rows );
-// code_menu.cpp                !! NEED FINALLY TO CREATE THE BUTTON CONSUMER / MENU-LAYER CODE DONE !! 
+// code_menu.cpp                !! NEED FINALLY TO CREATE THE BUTTON CONSUMER / MENU-LAYER CODE DONE !!
+/*
                 void        prepParameters              ();
                 void        resetPickUpFlags            ();                                                                 // **** okay, i have multiple flags that may or may not be reset ! maybe i will do it centralized here???
                 void        chooseIndex                 (               int                             p_channel, 
@@ -250,7 +251,25 @@ public:
                 void        modeAudioBb1                (               int                             p_channel);         // channel passed by caller  
                 void        updateOvlState              (               olg_state*                      o,                  // because we are concerned with the overlay menu here!
                                                                         glsl_state*                     s, 
-                                                                        tex_state*                      t);                       
+                                                                        tex_state*                      t);      
+*/         
+                void        storeModes                  ();
+                void        button_consumer             ();
+                void        set_mode_roof_map           (               uint8_t                         block   );
+                void        mapMenuGroup                (               uint8_t                         block   );
+                void        getChannelMode              (               uint8_t                         block   );
+                void        modeADC                     (               int                             p_channel);         // channel passed by caller
+                void        modeTRG                     (               int                             p_channel);         // channel passed by caller
+                void        modeBPM                     (               int                             p_channel);         // channel passed by caller
+                void        modeLF1                     (               int                             p_channel);         // channel passed by caller
+                void        modeLF2                     (               int                             p_channel);         // channel passed by caller
+                void        modeAudioAb0                (               int                             p_channel);         // channel passed by caller
+                void        modeAudioAb1                (               int                             p_channel);         // channel passed by caller
+                void        modeAudioBb0                (               int                             p_channel);         // channel passed by caller
+                void        modeAudioBb1                (               int                             p_channel);         // channel passed by caller  
+                void        applyTargetModes            ();
+                void        updateLEDsBlock             (               uint8_t                         block   ); // current!!
+                void        checkSystemFlags            ();
 // code_parser.cpp              !! TESTED AND APPROVED !!
                 bool        BMPparser                   (               tex_state*                      t,
                                                                         char*                           p_buffer_array[],

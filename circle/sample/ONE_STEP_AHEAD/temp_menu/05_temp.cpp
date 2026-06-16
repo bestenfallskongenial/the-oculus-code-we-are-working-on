@@ -61,16 +61,16 @@ enum centralModeBuffer // organised in blocks/layers for the mapMenuGroup
 
     FLAG_AUDIO_A,           // "invisible flags" set by the system  -> block 6 / layer 7
     FLAG_AUDIO_B,
-    DUMMY_FLAG,             // dummy to keep the 4_per_block_rule 
+    FLAG_DUMMY,             // dummy to keep the 4_per_block_rule 
 
 	IS_STORED,              // "invisible " to indicate a "mode is stored" into the central mode buffer, set by the system 
 
 //  this are "one shot toggle flags" to trigger certain system operations - than reset to zero ny the system
 
-    STORE_SET,  			// 0 or 1   on 1 the central mode buffer will be converted to an human readable and stored on usb -> block 7 / layer 8
-    LOAD_SET,   			// 0 or 1   on 1 the central mode buffer will be loaded and parsed from a file on usb
-    STORE_LOG,  			// 0 or 1   will store the system logs un usb - is also triggered on critical issues
-    LOAD_KLN,   			// 0 or 1   will update the kernel on sd from usb if a .img file is available  
+    SET_STORE,  			// 0 or 1   on 1 the central mode buffer will be converted to an human readable and stored on usb -> block 7 / layer 8
+    SET_LOAD,   			// 0 or 1   on 1 the central mode buffer will be loaded and parsed from a file on usb
+    LOG_STORE,  			// 0 or 1   will store the system logs un usb - is also triggered on critical issues
+    KLN_LOAD,   			// 0 or 1   will update the kernel on sd from usb if a .img file is available  
 
     MODETABLE_COUNT
 };

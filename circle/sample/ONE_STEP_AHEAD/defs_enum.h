@@ -1,53 +1,63 @@
-enum modetable
+//------------------------------------------------- // my global set buffer 
+enum centralModeBuffer
 {
-	MODE_CH0 = 0,           // store the mode ( from g_modeTable[] ) for cannel 0
-	MODE_CH1,               // store the mode ( from g_modeTable[] ) for cannel 1
-	MODE_CH2,               // store the mode ( from g_modeTable[] ) for cannel 2
-	MODE_CH3,               // store the mode ( from g_modeTable[] ) for cannel 3
+// block 00 
+    MODE_CH0 = 0,           // store the mode ( from g_modeTable[] ) for cannel 0
+    MODE_CH1,				// store the mode ( from g_modeTable[] ) for cannel 1
+    MODE_CH2,               // store the mode ( from g_modeTable[] ) for cannel 2
+    MODE_CH3,               // store the mode ( from g_modeTable[] ) for cannel 3
+// block 01
+    MODE_CH4,               // store the mode ( from g_modeTable[] ) for cannel 4
+    MODE_CH5,               // store the mode ( from g_modeTable[] ) for cannel 5
+    MODE_CH6,               // store the mode ( from g_modeTable[] ) for cannel 6
+    MODE_CH7,               // store the mode ( from g_modeTable[] ) for cannel 7
+// block 02
+    LF1_WAVE,               // stores waveform for lfo1 ( from g_waveTable[WAVEFORMS_COUNT][WAVESAMPLES] ) 
+    LF2_WAVE,               // stores waveform for lfo2 ( from g_waveTable[WAVEFORMS_COUNT][WAVESAMPLES] )
+    LF1_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
+    LF2_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
+// block 03
+    SENS_A,                 // stores the sensitivity for the audio mode ( available if enabled ) bandA0
+    SENS_B,                 // stores the sensitivity for the audio mode ( available if enabled ) bandA1
+    SENS_C,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB0
+    SENS_D,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB1
+// block 04
+    SEL_TIME,
+    SEL_TEX,
+    SEL_VID,
+    SEL_FRM,
+// block 05
+    FLAG_TIME,
+    FLAG_TEX,
+    FLAG_EXT,
+    FLAG_VID,
+// block 06
+    FLAG_AUDIO_A,
+    FLAG_AUDIO_B,
+    FLAG_DUMMY,
 
-	MODE_CH4,               // store the mode ( from g_modeTable[] ) for cannel 4
-	MODE_CH5,               // store the mode ( from g_modeTable[] ) for cannel 5
-	MODE_CH6,               // store the mode ( from g_modeTable[] ) for cannel 6
-	MODE_CH7,               // store the mode ( from g_modeTable[] ) for cannel 7
-
-	SEL_TIME, 				// mode to take external clock signals
-	SEL_TEX,				// select the texture i use	
-	SEL_VID_NUM,				// select the video i use 
-	SEL_VID_FRM,				// select the frame i use
-
-	MODE_EXT,				// 0 or 1
-    DUMMY_MODE_B,
-    DUMMY_MODE_C,
-    DUMMY_MODE_D,
-
-	LF1_WAVE,               // stores waveform for lfo1 ( from g_waveTable[WAVEFORMS_COUNT][WAVESAMPLES] ) 
-	LF2_WAVE,               // stores waveform for lfo2 ( from g_waveTable[WAVEFORMS_COUNT][WAVESAMPLES] )
-	LF1_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
-	LF2_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
-
-	SENS_A,                 // stores the sensitivity for the audio mode ( available if enabled ) bandA0
-	SENS_B,                 // stores the sensitivity for the audio mode ( available if enabled ) bandA1
-	SENS_C,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB0
-	SENS_D,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB1
-
-	FLAG_TIME,   			// 0 or 1   ( wait - i propose a simple 4 to 7 and 0 as of, means anything else than 0 is the actual input p_channel problem, it need to overrule CH*_MODE )
-	FLAG_TEX,   			// 0 or 1   ( how we can do it? also, dont i want more than only p_channel 4-7 assignable? )
-	FLAG_EXT,   			// 0 or 1   ( whats about the approach in readADC() where i modify the number of possible modes in the modematrix )
-	FLAG_VID,   			// 0 or 1   ( like if i have one here CH*_MODE "opens" up for this modes - requires a constant check and update but... )
-
-    DUMMY_FLAG_A,
-    DUMMY_FLAG_B,
-    DUMMY_FLAG_C,
-	DUMMY_FLAG_D,
-/*	not to store !!!
-    STORE_SET,  			// 0 or 1   ( if set to 1 and the MENU_LAYER_COUNT is zero again ( button released ?) the file operation starts )
-    LOAD_SET,   			// 0 or 1
-    STORE_LOG,  			// 0 or 1
-    LOAD_KLN,   			// 0 or 1
-*/
-	IS_STORED,                          // not really a mode but a flag - important: obey the "4 per block" rule
+    IS_STORED,
+// block 07
+    SET_STORE,
+    SET_LOAD,
+    LOG_STORE,
+    KLN_LOAD,
 
     MODETABLE_COUNT
+};
+
+enum MapType
+{
+    MAP_MODE = 0,
+    MAP_VALUE
+};
+
+enum ModeFlags
+{
+    GROUP_BASE  = 0,
+    GROUP_FLAG1 = 1,
+    GROUP_FLAG2 = 2,
+    GROUP_COUNT = 3
 };
 //------------------------------------------------- // for the array unsigned/float g_inOutMatrix*[CHANNEL][IO_TYPE_COUNT]
 enum io_types                               

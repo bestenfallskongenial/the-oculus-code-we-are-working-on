@@ -213,50 +213,101 @@ public:         // Logging
                 unsigned                        g_bytVid[VID_SD + VID_USB]                      =           { 0 };
                 unsigned                        g_bytKln[KLN_SD + KLN_USB]                      =           { 0 };
 // CODE_MENU.CPP
-        typedef void                            (CKernel::*ModeFunc)(int);         // for the new menu selector -> easier to expand, right? "add modes by only extending the table"
+        typedef void                            (CKernel::*ModeFunc)(int);
 
-                ModeFunc                        g_modeTable[9]                                 =        {   &CKernel::modeADC,                  // my "base modes"
-                                                                                                            &CKernel::modeTRG,                  // my "base modes"
-                                                                                                            &CKernel::modeBPM,                  // my "base modes"
-                                                                                                            &CKernel::modeLF1,                  // my "base modes"
-                                                                                                            &CKernel::modeLF2,                  // my "base modes"
-                                                                                                            &CKernel::modeAudioAb0,             // my additional modes activate by ?? 
-                                                                                                            &CKernel::modeAudioAb1,
-                                                                                                            &CKernel::modeAudioBb0,
-                                                                                                            &CKernel::modeAudioBb1 };
+                ModeFunc                        g_modeTable[9] =
+{
+    &CKernel::modeADC,
+    &CKernel::modeTRG,
+    &CKernel::modeBPM,
+    &CKernel::modeLF1,
+    &CKernel::modeLF2,
 
-                uint8_t                         g_modeLengthAdd[MODELEN_FLAG_COUNT]             =       {   MAX_MODES,                  // 5 for now    
-                                                                                                            2,                          // MODELEN_AUDIO_A  // this enum than is used here to get the actual numbers for the  [i][0] in g_modeMap
-                                                                                                            2,                          // MODELEN_AUDIO_B
-                                                                                                            };
-// the first element is the max of modes for each p_channel, than we have the order ( switch case of setChannelMode(int p_channel) )
-// i just wonder if i need a dedicated function to edit the first element because other code might do it as read adc 
-                                                                                                               //  A    /  B    /  LFO  / Sens  / etc     
-                uint8_t                         g_modeMap[LAYER*4][LAYER*4]                     =       {   { 5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0}, 	// layer a is adc in 0-3 
-                                                                                                            { 5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
-                                                                                                            { 5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
-                                                                                                            { 5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
+    &CKernel::modeAudioAb0,
+    &CKernel::modeAudioAb1,
+    &CKernel::modeAudioBb0,
+    &CKernel::modeAudioBb1
+};
 
-                                                                                                            { 5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},    // layer b is adc in 4-7
-                                                                                                            { 5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
-                                                                                                            { 5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
-                                                                                                            { 5, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
+        const   uint8_t                         g_mapType[BLOCK_COUNT][4] =
+{
+    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },
+    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },
 
-                                                                                                            { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},    // layer c is adc in 8-11
-                                                                                                            { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
-                                                                                                            { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
-                                                                                                            { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }
+};
 
-                                                                                                            {63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},   // layer d is adc in 12-15
-                                                                                                            {63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
-                                                                                                            {63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
-                                                                                                            {63, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
+        const   uint8_t                         g_valueRoof[BLOCK_COUNT][4] =
+{
+    { 5,  5,  5,  5  },
+    { 5,  5,  5,  5  },
 
-                                                                                                            { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},    // layer c is adc in 8-11
-                                                                                                            { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
-                                                                                                            { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0},
-                                                                                                            { 4, 0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0} };
+    { 4,  4,  7,  7  },
+    { 64, 64, 64, 64 },
+    { 7,  7,  7,  7  },
+    { 2,  2,  2,  2  },
+    { 0,  0,  0,  2  },
+    { 2,  2,  2,  2  }
+};
 
+        const   uint8_t                         g_groupLen[GROUP_COUNT] =
+{
+    5,
+    2,
+    2
+};
+
+        const   uint8_t                         g_groupModes[GROUP_COUNT][5] =
+{
+    { 0, 1, 2, 3, 4 },
+    { 5, 6, 0, 0, 0 },
+    { 7, 8, 0, 0, 0 }
+};
+
+                uint8_t                         g_modeRoof[BLOCK_COUNT * 4];
+                uint8_t                         g_modeMap[BLOCK_COUNT * 4][9];
+
+                uint8_t                         g_blockColor[BLOCK_COUNT][3] =
+{
+    {190,  60,  50},   // block 0 - warm red
+    { 55, 155,  95},   // block 1 - jade green
+    { 60, 105, 180},   // block 2 - medium blue
+    {185, 105,  40},   // block 3 - burnt orange
+    { 45, 140, 160},   // block 4 - blue teal
+    { 95,  90, 170},   // block 5 - indigo violet
+    {  0,   0,   0},   // block 6 - invisible
+    {150, 115,  45}    // block 7 - muted gold
+};
+/*
+uint8_t g_blockColor[BLOCK_COUNT][3] =
+{
+    {170,  50,  40},   // block 0 - muted crimson
+    { 70, 150,  70},   // block 1 - moss green
+    { 65,  95, 175},   // block 2 - calm blue
+    {180, 120,  50},   // block 3 - ochre
+    { 50, 145, 135},   // block 4 - sea green
+    {115,  85, 165},   // block 5 - muted purple
+    {  0,   0,   0},   // block 6 - invisible
+    {155, 100,  55}    // block 7 - bronze
+};
+
+uint8_t g_blockColor[BLOCK_COUNT][3] =
+{
+    {185,  55,  45},   // block 0 - brick red
+    { 60, 160,  85},   // block 1 - leaf green
+    { 55, 100, 185},   // block 2 - steel blue
+    {190, 115,  45},   // block 3 - amber
+    { 45, 150, 150},   // block 4 - teal
+    {105,  85, 175},   // block 5 - violet
+    {  0,   0,   0},   // block 6 - invisible
+    {170,  90,  45}    // block 7 - copper
+};
+*/
 private:
                 VCHI_INSTANCE_T                 m_VCHIInstance                                  = 0;
                 VCHI_CONNECTION_T*              m_Connection                                    = 0;
