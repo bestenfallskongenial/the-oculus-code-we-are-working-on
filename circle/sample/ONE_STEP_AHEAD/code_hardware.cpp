@@ -689,9 +689,9 @@ void            CKernel::bufferScreenPlot         (   unsigned x, unsigned y, u3
 }
 
 void            CKernel::bufferScreenDrawChar     (   char        ch,
-                                                        unsigned    charCol,
-                                                        unsigned    charRow,
-                                                        u32         fgColor )
+                                                      unsigned    charCol,
+                                                      unsigned    charRow,
+                                                      u32         fgColor )
 {
                 const unsigned px = charCol * gE_CharWidth;
                 const unsigned py = charRow * gE_CharHeight;

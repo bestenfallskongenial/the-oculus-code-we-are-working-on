@@ -27,50 +27,48 @@ void            CKernel::storeModes                 (   )
 
 void            CKernel::button_consumer            (   )
 {
-                // read button state once
-                const bool a_single = g_buttons_states[BTN_A][BTN_SINGLE]    != 0;
-                const bool b_single = g_buttons_states[BTN_B][BTN_SINGLE]    != 0;
-                const bool a_hold   = g_buttons_states[BTN_A][BTN_HOLD_TICK] != 0;
-                const bool b_hold   = g_buttons_states[BTN_B][BTN_HOLD_TICK] != 0;
-
                 // layer 0: normal runtime
-                if (!a_hold && !b_hold)
+                if ( !g_buttons_states[BTN_A][BTN_HOLD_TICK] && !g_buttons_states[BTN_B][BTN_HOLD_TICK] )
                     {
                     g_menuLayer = 0;
 
-                    if (a_single)
+                    if (g_buttons_states[BTN_A][BTN_SINGLE])
                         {
                         calculate1BPM(0, g_currentTime);            // button A: BPM tap timestamp
                         g_buttons_states[BTN_A][BTN_SINGLE] = 0;
                         }
 
-                    if (b_single)
+                    if (g_buttons_states[BTN_B][BTN_SINGLE])
                         {
                         g_buttons_states[BTN_B][BTN_SINGLE] = 0;    // button B: store action
                         }
                     return;
                     }
 
-                if (a_hold && !b_hold)                              // hold A -> layer 1 -> block 0
+                if ( g_buttons_states[BTN_A][BTN_HOLD_TICK] && !g_buttons_states[BTN_B][BTN_HOLD_TICK] )       // hold A -> layer 1 -> block 0
                     {
                     g_menuLayer = 1;
+                    g_lastLayer = 1;
                     }
 
-                if (b_hold && g_menuLayer < 2)                      // hold B -> layer 2 by default
+                if ( g_buttons_states[BTN_B][BTN_HOLD_TICK] && g_menuLayer < 2 )                              // hold B -> layer 2 by default
                     {
                     g_menuLayer = 2;
+                    g_lastLayer = 2;
                     }
 
-                if (b_hold && a_single)                             // hold B + press A -> cycle layers 3..7..3
+                if ( g_buttons_states[BTN_B][BTN_HOLD_TICK] && g_buttons_states[BTN_A][BTN_SINGLE] )          // hold B + press A -> cycle layers 3..7..3
                     {
-                    if (g_menuLayer < 3 || g_menuLayer >= 7)
-                        {
-                        g_menuLayer = 3;
+                //  g_menuLayer = 3 + (g_menuLayer % 5); // retardo coding!
+                    g_menuLayer = 3 + ((g_menuLayer - 2) % 5);
+                /*
+                    g_menuLayer++; 
+                    if (g_menuLayer > 7) 
+                        { 
+                        g_menuLayer = 3; 
                         }
-                    else
-                        {
-                        g_menuLayer++;
-                        }
+                */
+
 
                     g_buttons_states[BTN_A][BTN_SINGLE] = 0;
                     }
@@ -208,7 +206,7 @@ void            CKernel::mapMenuGroup               (uint8_t block)
                     }
 }
 
-void            CKernel::getChannelMode             (uint8_t block )
+void            CKernel::getChannelModeA             (uint8_t block )
 {
                 const uint8_t base = block << 2;
 
@@ -243,6 +241,61 @@ void            CKernel::getChannelMode             (uint8_t block )
                 fn = g_modeTable[mode];
 
                 if (fn) (this->*fn)(p_channel);
+}
+
+void            CKernel::getChannelModeB             ()
+{
+                uint8_t mode; 
+                
+                ModeFunc fn;
+
+                mode = g_modeMap[0][g_centralModeBuffer[g_currentProgramBuffer][0]];
+
+                fn = g_modeTable[mode];
+
+                if (fn) (this->*fn)(0);
+
+                mode = g_modeMap[1][g_centralModeBuffer[g_currentProgramBuffer][1]];
+
+                fn = g_modeTable[mode];
+
+                if (fn) (this->*fn)(1);
+
+                mode = g_modeMap[2][g_centralModeBuffer[g_currentProgramBuffer][2]];
+
+                fn = g_modeTable[mode];
+
+                if (fn) (this->*fn)(2);
+
+                mode = g_modeMap[3][g_centralModeBuffer[g_currentProgramBuffer][3]];
+
+                fn = g_modeTable[mode];
+
+                if (fn) (this->*fn)(3);
+
+                mode = g_modeMap[4][g_centralModeBuffer[g_currentProgramBuffer][4]];
+
+                fn = g_modeTable[mode];
+
+                if (fn) (this->*fn)(4);
+
+                mode = g_modeMap[5][g_centralModeBuffer[g_currentProgramBuffer][5]];
+
+                fn = g_modeTable[mode];
+
+                if (fn) (this->*fn)(5);
+
+                mode = g_modeMap[6][g_centralModeBuffer[g_currentProgramBuffer][6]];
+
+                fn = g_modeTable[mode];
+
+                if (fn) (this->*fn)(6);
+
+                mode = g_modeMap[7][g_centralModeBuffer[g_currentProgramBuffer][7]];
+
+                fn = g_modeTable[mode];
+
+                if (fn) (this->*fn)(7);                
 }
 
 void            CKernel::modeADC                    (   int p_channel) 
@@ -357,11 +410,11 @@ void            CKernel::updateLEDsBlock(uint8_t block) // current!!
 
                 if (g_menuLayer == 0)
                     {
-                    if (g_lastMappedChannelBlock == 0)
+                    if (g_lastMappedChannelBlock == 1)
                         {
                         block = 0;
                         }
-                    else
+                    if (g_lastMappedChannelBlock == 2)
                         {
                         block = 1;
                         }
