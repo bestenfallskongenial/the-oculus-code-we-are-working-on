@@ -1,11 +1,7 @@
+#include "kernel.h"
 
-
-
-
-
-
-
-
+    #define MY_BUFFER   m_bufferLog                 // not used here
+    #define MY_INDEX    m_bufferLogIndex
 
 void            CKernel::storeModes                 (   )
 {
