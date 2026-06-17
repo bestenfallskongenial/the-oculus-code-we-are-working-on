@@ -394,6 +394,18 @@ void            CKernel::updateLED() // current!! <-having the block here is a p
 {
                 int     offset = 33; // just a value to have a quantitation for the color shown
 
+                static const uint8_t layerToBlock[8] =
+                    {
+                    0,  // layer 0
+                    0,  // layer 1
+                    1,  // layer 2
+                    2,  // layer 3
+                    3,  // layer 4
+                    4,  // layer 5
+                    5,  // layer 6
+                    7   // layer 7
+                    };
+
                 uint8_t base;
                 uint8_t idx;
 
@@ -424,15 +436,8 @@ void            CKernel::updateLED() // current!! <-having the block here is a p
                     }
                 else
                     {
-                    switch (g_menuLayer)
-                        {
-                        case 2: block = 1; break;
-                        case 3: block = 2; break;
-                        case 4: block = 3; break;
-                        case 5: block = 4; break;
-                        case 6: block = 5; break;
-                        case 7: block = 7; break;
-                        }                        
+                    block = layerToBlock[g_menuLayer];
+
                     base = block << 2;
 
                     idx = (g_centralModeBuffer[g_currentProgramBuffer][base + 0] * offset) % 255;
