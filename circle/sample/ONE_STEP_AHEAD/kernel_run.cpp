@@ -71,7 +71,7 @@ TShutdownMode CKernel::Run(void)
 
                 //  updateLED();
 
-                    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "menu layer", g_menuLayer );
+                //  storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "menu layer", g_menuLayer );
 
                     logButtonStatesRuntime();
 

@@ -57,12 +57,11 @@ void            CKernel::button_consumer            ( int buttonA, int buttonB  
                     {
                 //  g_menuLayer = 3 + (g_menuLayer % 5); // retardo coding!
                 //  g_menuLayer = 3 + ((g_menuLayer - 2) % 5);
-
-                    g_menuLayer++; 
-                    if (g_menuLayer > 7) 
-                        { 
-                        g_menuLayer = 3; 
-                        }
+                
+                    if (g_menuLayer < 3 || g_menuLayer >= 7)
+                        g_menuLayer = 3;
+                    else
+                        g_menuLayer++;
 
                     g_buttons_states[buttonA][BTN_SINGLE] = 0;
                     }
