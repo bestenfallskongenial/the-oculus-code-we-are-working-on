@@ -65,6 +65,10 @@ TShutdownMode CKernel::Run(void)
 
                     updateLED();
 
+                    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "menu layer", g_menuLayer );
+
+                    logButtonStatesRuntime();
+
                     frmBufferSet(&m_vtx);                                           // this is the demo code just to see if rendering works
 
                     setUniPrg(&m_ogl,
@@ -83,6 +87,8 @@ TShutdownMode CKernel::Run(void)
                     frmRateBreak(false);
 
                     frmBufferSwap(&m_ogl); 
+
+                    msDelay(25);
                     }
                 return ShutdownHalt;                    
 }
