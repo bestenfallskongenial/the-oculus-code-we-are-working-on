@@ -184,6 +184,10 @@ void CKernel::logButtonStatesRuntime(void)
                 EMPTYSTR, EMPTYLOG,
                 EMPTYSTR, EMPTYLOG );
 
+    storeLog(   f_logBuffer, f_logIndex,
+                "Menu Layer",
+                g_menuLayer );
+                
     bufferScreenDraw(  f_logBuffer,
                        0,
                        f_logIndex,
