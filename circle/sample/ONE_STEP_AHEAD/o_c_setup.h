@@ -114,6 +114,12 @@
     #define         WAVEFORMS_COUNT             4		// number of lfo waves
     #define         WAVESAMPLES            	    256  	// number of samples per lfo waves
 
+    #define         WAVE_SINE                   0
+    #define         LED_A               
+    #define         LED_B
+    #define         LED_C
+    #define         LED_D
+        
     #define         MAX_MODES                   5
     #define         MENU_LAYER_COUNT            4
 

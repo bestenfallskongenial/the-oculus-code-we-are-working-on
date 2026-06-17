@@ -215,7 +215,7 @@ public:         // Logging
 // CODE_MENU.CPP
                 int g_menuLayer = 0;
                 int g_lastLayer = 0;
-                 
+                unsigned g_extClockTime = 0;
 
         typedef void                            (CKernel::*ModeFunc)(int);
 
