@@ -63,6 +63,8 @@ TShutdownMode CKernel::Run(void)
 
                     applyTargetModes();
 
+                    updateLED();
+                    
                     frmBufferSet(&m_vtx);                                           // this is the demo code just to see if rendering works
 
                     setUniPrg(&m_ogl,
