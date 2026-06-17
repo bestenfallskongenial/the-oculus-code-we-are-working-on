@@ -24,7 +24,7 @@ void            CKernel::storeModes                 (   )
 void CKernel::button_consumer(int buttonA, int buttonB)
 {
     // layer 0: normal runtime
-    if (!g_buttons_states[buttonA][BTN_HOLD_TICK] &&
+    if (!g_buttons_states[buttonA][BTN_HOLD_TICK] ||
         !g_buttons_states[buttonB][BTN_HOLD_TICK])
     {
         g_menuLayer = 0;
