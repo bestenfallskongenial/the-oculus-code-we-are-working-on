@@ -21,39 +21,39 @@ void            CKernel::storeModes                 (   )
                     }
 }
 
-void            CKernel::button_consumer            (   )
+void            CKernel::button_consumer            ( int buttonA, int buttonB  )
 {
                 // layer 0: normal runtime
-                if ( !g_buttons_states[BTN_A][BTN_HOLD_TICK] && !g_buttons_states[BTN_B][BTN_HOLD_TICK] )
+                if ( !g_buttons_states[buttonA][BTN_HOLD_TICK] && !g_buttons_states[buttonB][BTN_HOLD_TICK] )
                     {
                     g_menuLayer = 0;
 
-                    if (g_buttons_states[BTN_A][BTN_SINGLE])
+                    if (g_buttons_states[buttonA][BTN_SINGLE])
                         {
                         calculate1BPM(0, g_currentTime);            // button A: BPM tap timestamp
-                        g_buttons_states[BTN_A][BTN_SINGLE] = 0;
+                        g_buttons_states[buttonA][BTN_SINGLE] = 0;
                         }
 
-                    if (g_buttons_states[BTN_B][BTN_SINGLE])
+                    if (g_buttons_states[buttonB][BTN_SINGLE])
                         {
-                        g_buttons_states[BTN_B][BTN_SINGLE] = 0;    // button B: store action
+                        g_buttons_states[buttonB][BTN_SINGLE] = 0;    // button B: store action
                         }
                     return;
                     }
 
-                if ( g_buttons_states[BTN_A][BTN_HOLD_TICK] && !g_buttons_states[BTN_B][BTN_HOLD_TICK] )       // hold A -> layer 1 -> block 0
+                if ( g_buttons_states[buttonA][BTN_HOLD_TICK] && !g_buttons_states[buttonB][BTN_HOLD_TICK] )       // hold A -> layer 1 -> block 0
                     {
                     g_menuLayer = 1;
                     g_lastLayer = 1;
                     }
 
-                if ( g_buttons_states[BTN_B][BTN_HOLD_TICK] && g_menuLayer < 2 )                              // hold B -> layer 2 by default
+                if ( g_buttons_states[buttonB][BTN_HOLD_TICK] && g_menuLayer < 2 )                              // hold B -> layer 2 by default
                     {
                     g_menuLayer = 2;
                     g_lastLayer = 2;
                     }
 
-                if ( g_buttons_states[BTN_B][BTN_HOLD_TICK] && g_buttons_states[BTN_A][BTN_SINGLE] )          // hold B + press A -> cycle layers 3..7..3
+                if ( g_buttons_states[buttonB][BTN_HOLD_TICK] && g_buttons_states[buttonA][BTN_SINGLE] )          // hold B + press A -> cycle layers 3..7..3
                     {
                 //  g_menuLayer = 3 + (g_menuLayer % 5); // retardo coding!
                     g_menuLayer = 3 + ((g_menuLayer - 2) % 5);
@@ -64,7 +64,7 @@ void            CKernel::button_consumer            (   )
                         g_menuLayer = 3; 
                         }
                 */
-                    g_buttons_states[BTN_A][BTN_SINGLE] = 0;
+                    g_buttons_states[buttonA][BTN_SINGLE] = 0;
                     }
 
                 switch (g_menuLayer)                                // dispatch active layer to block

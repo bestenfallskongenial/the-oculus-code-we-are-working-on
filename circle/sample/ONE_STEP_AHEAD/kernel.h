@@ -254,7 +254,7 @@ public:
                                                                         tex_state*                      t);      
 */         
                 void        storeModes                  ();
-                void        button_consumer             ();
+                void        button_consumer             ( int buttonA, int buttonB  );
                 void        set_mode_roof_map           (               uint8_t                         block   );
                 void        mapMenuGroup                (               uint8_t                         block   );
                 void        getChannelModeA             ();                
