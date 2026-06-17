@@ -47,7 +47,7 @@ void            CKernel::button_consumer            ( int buttonA, int buttonB  
                     g_lastLayer = 1;
                     }
 
-                if ( g_buttons_states[buttonB][BTN_HOLD_TICK] && g_menuLayer < 2 )                              // hold B -> layer 2 by default
+                else if ( g_buttons_states[buttonB][BTN_HOLD_TICK] && g_menuLayer < 2 )                              // hold B -> layer 2 by default
                     {
                     g_menuLayer = 2;
                     g_lastLayer = 2;
