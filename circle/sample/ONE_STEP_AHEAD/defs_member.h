@@ -213,6 +213,9 @@ public:         // Logging
                 unsigned                        g_bytVid[VID_SD + VID_USB]                      =           { 0 };
                 unsigned                        g_bytKln[KLN_SD + KLN_USB]                      =           { 0 };
 // CODE_MENU.CPP
+                int g_menuLayer = 0;
+                
+
         typedef void                            (CKernel::*ModeFunc)(int);
 
                 ModeFunc                        g_modeTable[9] =
