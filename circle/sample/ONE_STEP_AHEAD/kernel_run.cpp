@@ -44,6 +44,12 @@ TShutdownMode CKernel::Run(void)
                         m_USB_has_load = true;
                         }
                         
+                    if( m_SD_has_load && m_USB_has_load )
+                        {
+                        m_logBufferIndex = 0;
+                        bufferScreenClear();
+                        } 
+
                     g_currentTime = m_Timer.GetClockTicks();                        // here starts the actual runtimeloop
                     
                     readAndConvertADC();
