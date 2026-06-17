@@ -68,8 +68,6 @@ void            CKernel::button_consumer            (   )
                         g_menuLayer = 3; 
                         }
                 */
-
-
                     g_buttons_states[BTN_A][BTN_SINGLE] = 0;
                     }
 
@@ -396,7 +394,7 @@ void            CKernel::applyTargetModes           (   )       // current!
                     }
 }
 
-void            CKernel::updateLEDsBlock(uint8_t block) // current!!
+void            CKernel::updateLEDsBlock(uint8_t block) // current!! <-having the block here is a problem we only have the layer avaieble, block is kinda internal knowledge!
 {
                 int     offset = 33; // just a value to have a quantitation for the color shown
 
@@ -410,11 +408,11 @@ void            CKernel::updateLEDsBlock(uint8_t block) // current!!
 
                 if (g_menuLayer == 0)
                     {
-                    if (g_lastMappedChannelBlock == 1)
+                    if (g_lastLayer == 1)
                         {
                         block = 0;
                         }
-                    if (g_lastMappedChannelBlock == 2)
+                    if (g_lastLayer == 2)
                         {
                         block = 1;
                         }
@@ -428,6 +426,15 @@ void            CKernel::updateLEDsBlock(uint8_t block) // current!!
                     }
                 else
                     {
+                    switch (g_menuLayer)
+                        {
+                        case 2: block = 1; break;
+                        case 3: block = 2; break;
+                        case 4: block = 3; break;
+                        case 5: block = 4; break;
+                        case 6: block = 5; break;
+                        case 7: block = 7; break;
+                        }                        
                     base = block << 2;
 
                     idx = (g_centralModeBuffer[g_currentProgramBuffer][base + 0] * offset) % 255;

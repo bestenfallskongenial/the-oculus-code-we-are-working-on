@@ -269,7 +269,7 @@ public:
                 void        modeAudioBb0                (               int                             p_channel);         // channel passed by caller
                 void        modeAudioBb1                (               int                             p_channel);         // channel passed by caller  
                 void        applyTargetModes            ();
-                void        updateLEDsBlock             (               uint8_t                         block   ); // current!!
+                void        updateLED                   (); // current!!
                 void        checkSystemFlags            ();
 // code_parser.cpp              !! TESTED AND APPROVED !!
                 bool        BMPparser                   (               tex_state*                      t,
