@@ -56,14 +56,14 @@ void            CKernel::button_consumer            ( int buttonA, int buttonB  
                 if ( g_buttons_states[buttonB][BTN_HOLD_TICK] && g_buttons_states[buttonA][BTN_SINGLE] )          // hold B + press A -> cycle layers 3..7..3
                     {
                 //  g_menuLayer = 3 + (g_menuLayer % 5); // retardo coding!
-                    g_menuLayer = 3 + ((g_menuLayer - 2) % 5);
-                /*
+                //  g_menuLayer = 3 + ((g_menuLayer - 2) % 5);
+
                     g_menuLayer++; 
                     if (g_menuLayer > 7) 
                         { 
                         g_menuLayer = 3; 
                         }
-                */
+
                     g_buttons_states[buttonA][BTN_SINGLE] = 0;
                     }
 
