@@ -2,7 +2,7 @@
 #define         EMPTYLOG                255                                                // for the logger
 
 #define         LAYER             6
-
+#define         BLOCK_COUNT         8
 #define         check() 				gfx_check(__FILE__, __LINE__) 	// my own assertiion implimentation
 
 #define         MAX_WATCHDOG_SEC 15

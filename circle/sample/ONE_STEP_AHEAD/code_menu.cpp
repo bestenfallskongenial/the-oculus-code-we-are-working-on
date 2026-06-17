@@ -1,4 +1,4 @@
-#define BLOCK_COUNT 8
+
 
 
 
@@ -394,7 +394,7 @@ void            CKernel::applyTargetModes           (   )       // current!
                     }
 }
 
-void            CKernel::updateLEDsBlock(uint8_t block) // current!! <-having the block here is a problem we only have the layer avaieble, block is kinda internal knowledge!
+void            CKernel::updateLED() // current!! <-having the block here is a problem we only have the layer avaieble, block is kinda internal knowledge!
 {
                 int     offset = 33; // just a value to have a quantitation for the color shown
 
