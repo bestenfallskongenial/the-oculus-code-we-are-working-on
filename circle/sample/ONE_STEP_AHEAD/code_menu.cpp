@@ -21,92 +21,82 @@ void            CKernel::storeModes                 (   )
                     }
 }
 
-void            CKernel::button_consumer            ( int buttonA, int buttonB  )
+void CKernel::button_consumer(int buttonA, int buttonB)
 {
-                // layer 0: normal runtime
-                if ( !g_buttons_states[buttonA][BTN_HOLD_TICK] && !g_buttons_states[buttonB][BTN_HOLD_TICK] )
-                    {
-                    g_menuLayer = 0;
+    // --- RESET: release A or B → 0 ---
+    if (!g_buttons_states[buttonA][BTN_HOLD_TICK] &&
+        !g_buttons_states[buttonB][BTN_HOLD_TICK])
+    {
+        g_menuLayer = 0;
+    }
+    else
+    {
+        // --- STATE 0 ---
+        if (g_menuLayer == 0)
+        {
+            if (g_buttons_states[buttonA][BTN_HOLD_TICK] &&
+               !g_buttons_states[buttonB][BTN_HOLD_TICK])
+            {
+                g_menuLayer = 1;
+            }
+            else if (g_buttons_states[buttonB][BTN_HOLD_TICK] &&
+                    !g_buttons_states[buttonA][BTN_HOLD_TICK])
+            {
+                g_menuLayer = 2;
+            }
+        }
+        // --- STATE 1 ---
+        else if (g_menuLayer == 1)
+        {
+            if (g_buttons_states[buttonB][BTN_HOLD_TICK])
+            {
+                g_menuLayer = 2;
+            }
+        }
+        // --- STATE 2 ---
+        else if (g_menuLayer == 2)
+        {
+            if (g_buttons_states[buttonB][BTN_HOLD_TICK] &&
+                g_buttons_states[buttonA][BTN_SINGLE])
+            {
+                g_menuLayer = 3;
+                g_buttons_states[buttonA][BTN_SINGLE] = 0;
+            }
+        }
+        // --- STATE 3..7 ---
+        else if (g_menuLayer >= 3 && g_menuLayer <= 7)
+        {
+            if (g_buttons_states[buttonB][BTN_HOLD_TICK] &&
+                g_buttons_states[buttonA][BTN_SINGLE])
+            {
+                g_menuLayer++;
+                if (g_menuLayer > 7)
+                    g_menuLayer = 3;
 
-                    if (g_buttons_states[buttonA][BTN_SINGLE])
-                        {
-                        calculate1BPM(0, g_currentTime);            // button A: BPM tap timestamp
-                        g_buttons_states[buttonA][BTN_SINGLE] = 0;
-                        }
+                g_buttons_states[buttonA][BTN_SINGLE] = 0;
+            }
+        }
+    }
 
-                    if (g_buttons_states[buttonB][BTN_SINGLE])
-                        {
-                        g_buttons_states[buttonB][BTN_SINGLE] = 0;    // button B: store action
-                        }
-                    return;
-                    }
+    // --- layer 0 behavior ---
+    if (g_menuLayer == 0 && g_buttons_states[buttonA][BTN_SINGLE])
+    {
+        calculate1BPM(0, g_currentTime);
+        g_buttons_states[buttonA][BTN_SINGLE] = 0;
+    }
 
-                if ( g_buttons_states[buttonA][BTN_HOLD_TICK] && !g_buttons_states[buttonB][BTN_HOLD_TICK] )       // hold A -> layer 1 -> block 0
-                    {
-                    g_menuLayer = 1;
-                    g_lastLayer = 1;
-                    }
-
-                else if ( g_buttons_states[buttonB][BTN_HOLD_TICK] && g_menuLayer < 2 )                              // hold B -> layer 2 by default
-                    {
-                    g_menuLayer = 2;
-                    g_lastLayer = 2;
-                    }
-
-                if ( g_buttons_states[buttonB][BTN_HOLD_TICK] && g_buttons_states[buttonA][BTN_SINGLE] )          // hold B + press A -> cycle layers 3..7..3
-                    {
-                //  g_menuLayer = 3 + (g_menuLayer % 5); // retardo coding!
-                //  g_menuLayer = 3 + ((g_menuLayer - 2) % 5);
-
-                    g_menuLayer++; 
-                    if (g_menuLayer > 7) 
-                        { 
-                        g_menuLayer = 3; 
-                        }
-
-                    g_buttons_states[buttonA][BTN_SINGLE] = 0;
-                    }
-
-                switch (g_menuLayer)                                // dispatch active layer to block
-                    {
-                    case 1:                                         // block 0: MODE_CH0..MODE_CH3
-                        set_mode_roof_map(0);
-                        mapMenuGroup(0);
-                        break;
-
-                    case 2:                                         // block 1: MODE_CH4..MODE_CH7
-                        set_mode_roof_map(1);
-                        mapMenuGroup(1);
-                        break;
-
-                    case 3:                                         // block 2: LFO
-                        set_mode_roof_map(2);
-                        mapMenuGroup(2);
-                        break;
-
-                    case 4:                                         // block 3: sensitivity
-                        set_mode_roof_map(3);
-                        mapMenuGroup(3);
-                        break;
-
-                    case 5:                                         // block 4: target channel selectors
-                        set_mode_roof_map(4);
-                        mapMenuGroup(4);
-                        break;
-
-                    case 6:                                         // block 5: target flags
-                        set_mode_roof_map(5);
-                        mapMenuGroup(5);
-                        break;
-
-                    case 7:                                         // block 6: hw/sys toggles
-                        set_mode_roof_map(7);
-                        mapMenuGroup(7);
-                        break;
-
-                    default:
-                        break;
-                    }
+    // --- dispatcher (unchanged) ---
+    switch (g_menuLayer)
+    {
+        case 1: set_mode_roof_map(0); mapMenuGroup(0); break;
+        case 2: set_mode_roof_map(1); mapMenuGroup(1); break;
+        case 3: set_mode_roof_map(2); mapMenuGroup(2); break;
+        case 4: set_mode_roof_map(3); mapMenuGroup(3); break;
+        case 5: set_mode_roof_map(4); mapMenuGroup(4); break;
+        case 6: set_mode_roof_map(5); mapMenuGroup(5); break;
+        case 7: set_mode_roof_map(7); mapMenuGroup(7); break;
+        default: break;
+    }
 }
 
 void            CKernel::set_mode_roof_map          (uint8_t block)
