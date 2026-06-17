@@ -378,11 +378,11 @@ void            CKernel::applyTargetModes           (   )       // current!
                     }
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_TIME])     // selected channel OUT controls shader/program time
                     {
-                    gl_time =       g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME]][OUT];
+                    GLtime =       g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME]][OUT];
                     }
                 if (!g_centralModeBuffer[g_currentProgramBuffer][FLAG_TIME])    // time is a product of system time
                     {
-                    gl_time =       g_currentTime / 1000000.0f;
+                    GLtime =       g_currentTime / 1000000.0f;
                     }
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_EXT])      // external BPM clock
                     {
@@ -401,6 +401,8 @@ void            CKernel::updateLED() // current!! <-having the block here is a p
                 uint16_t levelB;
                 uint16_t levelC;
                 uint16_t levelD;
+
+                uint8_t block;
 
                 if (g_menuLayer == 0)
                     {
