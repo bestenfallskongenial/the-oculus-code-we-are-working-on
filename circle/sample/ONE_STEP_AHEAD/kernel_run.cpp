@@ -54,7 +54,7 @@ TShutdownMode CKernel::Run(void)
 
                     buttonPingB( 0, SW_PIN_A, 1, SW_PIN_B );                        // 
 
-                    button_consumer();                                              //  here goes the button consumer and menu code
+                    button_consumer(0,1);                                              //  here goes the button consumer and menu code
 
                     getChannelModeB();
 
@@ -64,7 +64,7 @@ TShutdownMode CKernel::Run(void)
                     applyTargetModes();
 
                     updateLED();
-                    
+
                     frmBufferSet(&m_vtx);                                           // this is the demo code just to see if rendering works
 
                     setUniPrg(&m_ogl,
