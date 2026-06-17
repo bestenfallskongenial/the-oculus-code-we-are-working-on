@@ -598,7 +598,7 @@ void            CKernel::wrapper_init_gl_usb        (   )
                                     GL_REPEAT,
                                     GL_REPEAT);
 }
-
+/*
 void            CKernel::wrapper_io                 (   )
 {
                 readAndConvertADC();                  //  we read and dampen the adc each loop
@@ -616,7 +616,7 @@ void            CKernel::wrapper_io                 (   )
                 button_consumer(0);               // and transpose the button input in menulayer information each time
                 button_consumer(1); 
 }
-
+*/
 void            CKernel::wrapper_modes              (   )
 {
     /*
