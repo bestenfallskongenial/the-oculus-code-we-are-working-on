@@ -254,8 +254,8 @@ public:
                                                                         tex_state*                      t);      
 */         
                 void        storeModes                  ();
-                void        button_consumer             ( int buttonA, int buttonB  );
-                void        setLayer                    ();
+            //  void        button_consumer             ( int buttonA, int buttonB  );
+                void        setLayer                    (               int buttonA, int buttonB);
                 void        dispatchLayer               ();
                 void        set_mode_roof_map           (               uint8_t                         block   );
                 void        mapMenuGroup                (               uint8_t                         block   );

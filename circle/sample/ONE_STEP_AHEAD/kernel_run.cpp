@@ -60,10 +60,9 @@ TShutdownMode CKernel::Run(void)
 
                     buttonPingB( 0, SW_PIN_A, 1, SW_PIN_B );                        // 
 
-                    button_consumer(0,1);                                              //  here goes the button consumer and menu code
+                    setLayer(0,1);                                              //  here goes the button consumer and menu code
 
                     dispatchLayer();
-
                     
 
                 //  getChannelModeA( 0 );
