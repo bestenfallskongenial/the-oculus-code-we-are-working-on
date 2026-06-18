@@ -312,10 +312,7 @@ void            CKernel::getChannelModeB             ()
 
 void CKernel::getChannelModeA(int p_channel)
 {
-    const uint8_t sel =
-        g_centralModeBuffer[g_currentProgramBuffer][p_channel];
-
-    switch (g_modeSelectMap[p_channel][sel])
+    switch (g_centralModeBuffer[g_currentProgramBuffer][p_channel])
     {
         case 0:
             modeADC(p_channel);
