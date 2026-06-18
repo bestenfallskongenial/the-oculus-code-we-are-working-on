@@ -68,6 +68,15 @@ TShutdownMode CKernel::Run(void)
                 //  getChannelModeA( 1 );                    
 
                 //  getChannelModeB();
+                    
+                    getChannelModeA(0);
+                    getChannelModeA(1);
+                    getChannelModeA(2);
+                    getChannelModeA(3);
+                    getChannelModeA(4);
+                    getChannelModeA(5);
+                    getChannelModeA(6);
+                    getChannelModeA(7);
 
                 //  applyTargetModes();
 

@@ -310,6 +310,52 @@ void            CKernel::getChannelModeB             ()
                 if (fn) (this->*fn)(7);                
 }
 
+void CKernel::getChannelModeA(int p_channel)
+{
+    const uint8_t sel =
+        g_centralModeBuffer[g_currentProgramBuffer][p_channel];
+
+    switch (g_modeSelectMap[p_channel][sel])
+    {
+        case 0:
+            modeADC(p_channel);
+        break;
+
+        case 1:
+            modeTRG(p_channel);
+        break;
+
+        case 2:
+            modeBPM(p_channel);
+        break;
+
+        case 3:
+            modeLF1(p_channel);
+        break;
+
+        case 4:
+            modeLF2(p_channel);
+        break;
+
+        case 5:
+            modeAudioAb0(p_channel);
+        break;
+
+        case 6:
+            modeAudioAb1(p_channel);
+        break;
+
+        case 7:
+            modeAudioBb0(p_channel);
+        break;
+
+        case 8:
+            modeAudioBb1(p_channel);
+        break;
+    }
+}
+
+
 void            CKernel::modeADC                    (   int p_channel) 
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[p_channel][VAL];
