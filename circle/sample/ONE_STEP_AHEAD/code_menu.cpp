@@ -21,81 +21,109 @@ void            CKernel::storeModes                 (   )
                     }
 }
 
-void CKernel::button_consumer(int buttonA, int buttonB)
+void CKernel::setLayer(int buttonA, int buttonB)
 {
-    // --- RESET: release A or B → 0 ---
-    if (!g_buttons_states[buttonA][BTN_HOLD_TICK] &&
-        !g_buttons_states[buttonB][BTN_HOLD_TICK])
+    static int stepLayer = 2;
+
+    // no button hold -> layer 0
+    if ( !g_buttons_states[buttonA][BTN_HOLD_TICK] &&
+         !g_buttons_states[buttonB][BTN_HOLD_TICK] )
     {
+        stepLayer = 2;
         g_menuLayer = 0;
-    }
-    else
-    {
-        // --- STATE 0 ---
-        if (g_menuLayer == 0)
-        {
-            if (g_buttons_states[buttonA][BTN_HOLD_TICK] &&
-               !g_buttons_states[buttonB][BTN_HOLD_TICK])
-            {
-                g_menuLayer = 1;
-            }
-            else if (g_buttons_states[buttonB][BTN_HOLD_TICK] &&
-                    !g_buttons_states[buttonA][BTN_HOLD_TICK])
-            {
-                g_menuLayer = 2;
-            }
-        }
-        // --- STATE 1 ---
-        else if (g_menuLayer == 1)
-        {
-            if (g_buttons_states[buttonB][BTN_HOLD_TICK])
-            {
-                g_menuLayer = 2;
-            }
-        }
-        // --- STATE 2 ---
-        else if (g_menuLayer == 2)
-        {
-            if (g_buttons_states[buttonB][BTN_HOLD_TICK] &&
-                g_buttons_states[buttonA][BTN_SINGLE])
-            {
-                g_menuLayer = 3;
-                g_buttons_states[buttonA][BTN_SINGLE] = 0;
-            }
-        }
-        // --- STATE 3..7 ---
-        else if (g_menuLayer >= 3 && g_menuLayer <= 7)
-        {
-            if (g_buttons_states[buttonB][BTN_HOLD_TICK] &&
-                g_buttons_states[buttonA][BTN_SINGLE])
-            {
-                g_menuLayer++;
-                if (g_menuLayer > 7)
-                    g_menuLayer = 3;
-
-                g_buttons_states[buttonA][BTN_SINGLE] = 0;
-            }
-        }
+        return;
     }
 
-    // --- layer 0 behavior ---
-    if (g_menuLayer == 0 && g_buttons_states[buttonA][BTN_SINGLE])
+    // A hold only -> layer 1
+    if ( g_buttons_states[buttonA][BTN_HOLD_TICK] &&
+        !g_buttons_states[buttonB][BTN_HOLD_TICK] )
     {
-        calculate1BPM(0, g_currentTime);
+        stepLayer = 2;
+        g_menuLayer = 1;
+        g_lastLayer = 1;
+        return;
+    }
+
+    // B hold only -> layer 2
+    if ( g_buttons_states[buttonB][BTN_HOLD_TICK] &&
+        !g_buttons_states[buttonA][BTN_HOLD_TICK] &&
+        !g_buttons_states[buttonA][BTN_SINGLE] )
+    {
+        g_menuLayer = stepLayer;
+
+        if (stepLayer == 2)
+        {
+            g_lastLayer = 2;
+        }
+
+        return;
+    }
+
+    // B hold + A press -> cycle layer 3..7
+    if ( g_buttons_states[buttonB][BTN_HOLD_TICK] &&
+         g_buttons_states[buttonA][BTN_SINGLE] )
+    {
+        if (stepLayer < 3)
+        {
+            stepLayer = 3;
+        }
+        else
+        {
+            stepLayer++;
+
+            if (stepLayer > 7)
+            {
+                stepLayer = 3;
+            }
+        }
+
+        g_menuLayer = stepLayer;
         g_buttons_states[buttonA][BTN_SINGLE] = 0;
+        return;
     }
+}
 
-    // --- dispatcher (unchanged) ---
+void CKernel::dispatchLayer()
+{
     switch (g_menuLayer)
     {
-        case 1: set_mode_roof_map(0); mapMenuGroup(0); break;
-        case 2: set_mode_roof_map(1); mapMenuGroup(1); break;
-        case 3: set_mode_roof_map(2); mapMenuGroup(2); break;
-        case 4: set_mode_roof_map(3); mapMenuGroup(3); break;
-        case 5: set_mode_roof_map(4); mapMenuGroup(4); break;
-        case 6: set_mode_roof_map(5); mapMenuGroup(5); break;
-        case 7: set_mode_roof_map(7); mapMenuGroup(7); break;
-        default: break;
+        case 1:
+            set_mode_roof_map(0);
+            mapMenuGroup(0);
+            break;
+
+        case 2:
+            set_mode_roof_map(1);
+            mapMenuGroup(1);
+            break;
+
+        case 3:
+            set_mode_roof_map(2);
+            mapMenuGroup(2);
+            break;
+
+        case 4:
+            set_mode_roof_map(3);
+            mapMenuGroup(3);
+            break;
+
+        case 5:
+            set_mode_roof_map(4);
+            mapMenuGroup(4);
+            break;
+
+        case 6:
+            set_mode_roof_map(5);
+            mapMenuGroup(5);
+            break;
+
+        case 7:
+            set_mode_roof_map(7);
+            mapMenuGroup(7);
+            break;
+
+        default:
+            break;
     }
 }
 

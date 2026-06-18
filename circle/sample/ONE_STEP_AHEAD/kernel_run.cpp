@@ -62,7 +62,9 @@ TShutdownMode CKernel::Run(void)
 
                     button_consumer(0,1);                                              //  here goes the button consumer and menu code
 
-                //  getChannelModeB();
+                    dispatchLayer();
+
+                    
 
                 //  getChannelModeA( 0 );
                 //  getChannelModeA( 1 );                    
