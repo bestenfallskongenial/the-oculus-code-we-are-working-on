@@ -84,7 +84,7 @@ public:         // Logging
                 int                             g_gl_program_current                            = 0;
                 int                             g_gl_program_last                               = 0;
 
-                int                             g_activeBpmChannel;
+                int                             g_activeBpmChannel                              = 0;
 
                 int                             m_current_gl_program                            = 0;
                 int                             m_current_tex                                   = 0;
