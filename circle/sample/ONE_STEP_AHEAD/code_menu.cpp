@@ -31,6 +31,19 @@ void CKernel::setLayer(int buttonA, int buttonB)
     {
         stepLayer = 2;
         g_menuLayer = 0;
+
+        if (g_buttons_states[buttonA][BTN_SINGLE])
+        {
+            calculate1BPM(0, g_currentTime);
+            g_buttons_states[buttonA][BTN_SINGLE] = 0;
+        }
+
+        if (g_buttons_states[buttonB][BTN_SINGLE])
+        {
+            g_centralModeBuffer[g_gl_program_current][IS_STORED] = !g_centralModeBuffer[g_gl_program_current][IS_STORED];
+            g_buttons_states[buttonB][BTN_SINGLE] = 0;
+        }
+
         return;
     }
 
