@@ -89,37 +89,37 @@ void CKernel::dispatchLayer()
     {
         case 1:
             set_mode_roof_map(0);
-        //  mapMenuGroup(0);
+            mapMenuGroup(0);
             break;
 
         case 2:
             set_mode_roof_map(1);
-        //  mapMenuGroup(1);
+            mapMenuGroup(1);
             break;
 
         case 3:
             set_mode_roof_map(2);
-        //  mapMenuGroup(2);
+            mapMenuGroup(2);
             break;
 
         case 4:
             set_mode_roof_map(3);
-        //  mapMenuGroup(3);
+            mapMenuGroup(3);
             break;
 
         case 5:
             set_mode_roof_map(4);
-        //  mapMenuGroup(4);
+            mapMenuGroup(4);
             break;
 
         case 6:
             set_mode_roof_map(5);
-        //  mapMenuGroup(5);
+            mapMenuGroup(5);
             break;
 
         case 7:
             set_mode_roof_map(7);
-        //  mapMenuGroup(7);
+            mapMenuGroup(7);
             break;
 
         default:
