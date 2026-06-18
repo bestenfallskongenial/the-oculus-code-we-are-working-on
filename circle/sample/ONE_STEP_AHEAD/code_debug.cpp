@@ -188,7 +188,11 @@ void CKernel::logButtonStatesRuntime(void)
                 "Menu Layer",
                 g_menuLayer,
                 "Control Pin",
-                GPIO_Read(CTRL_PIN) );
+                GPIO_Read(CTRL_PIN),
+                "bpm 0", 
+                g_lfoBpmMatrix[0][BPM],
+                "bpm 1",
+                g_lfoBpmMatrix[1][BPM]   );
 
     storeLog(   f_logBuffer, f_logIndex,
                 "ModeBuf 00-03",
