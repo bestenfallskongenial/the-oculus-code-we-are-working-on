@@ -78,6 +78,8 @@ TShutdownMode CKernel::Run(void)
                     getChannelModeA(6);
                     getChannelModeA(7);
 
+                    updateLED();
+
                 //  applyTargetModes();
 
                 //  updateLED();
