@@ -67,7 +67,7 @@ TShutdownMode CKernel::Run(void)
                 //  getChannelModeA( 0 );
                 //  getChannelModeA( 1 );                    
 
-                    getChannelModeB();
+                //  getChannelModeB();
 
                 //  applyTargetModes();
 
