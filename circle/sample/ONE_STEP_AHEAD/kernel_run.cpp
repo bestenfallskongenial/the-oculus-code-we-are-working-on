@@ -80,7 +80,7 @@ TShutdownMode CKernel::Run(void)
 
                     updateLED();
 
-                //  predict1Beat( 0, LF1_MULT );
+                    predict1Beat( 0, LF1_MULT );
                 //  predict1Beat( 1, LF2_MULT ); 
                                        
                     sample1WaveTable( 0, LF1_WAVE, LF1 );
