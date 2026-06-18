@@ -47,10 +47,42 @@ void            CKernel::randomVec8                 (   uint32_t            p_se
                 g_inOutMatrixInt[7][RND] = ( g_inOutMatrixFlt[7][RND] * f_max_int);
 }
 
-void            CKernel::calculate1BPM              (   int             p_source, 
-                                                        int             p_timeBuffer,
-                                                        int             p_deltaBuffer,
+void            CKernel::calculate1BPMold           (   int             p_source, 
                                                         unsigned long   p_triggerTimeClock)  // p_triggerTimeClock ****
+{
+                unsigned long f_intervalAverage = 0;
+
+                if (p_triggerTimeClock != g_lfoBpmMatrix[p_source][LTIME])
+                    {
+                    g_lfoBpmMatrix[g_lfoBpmMatrix[p_source][TIDX]][TB] = p_triggerTimeClock;
+        
+                    g_lfoBpmMatrix[0][DB]                 =   g_lfoBpmMatrix[1][TB] - g_lfoBpmMatrix[0][TB];   
+                    g_lfoBpmMatrix[1][DB]                 =   g_lfoBpmMatrix[2][TB] - g_lfoBpmMatrix[1][TB];
+                    g_lfoBpmMatrix[2][DB]                 =   g_lfoBpmMatrix[3][TB] - g_lfoBpmMatrix[2][TB];
+
+                    if( g_lfoBpmMatrix[1][DB]  <   g_lfoBpmMatrix[0][DB] * 1.25f &&  
+                        g_lfoBpmMatrix[2][DB]  <   g_lfoBpmMatrix[0][DB] * 1.25f &&  
+                        g_lfoBpmMatrix[0][DB]  <   g_lfoBpmMatrix[2][DB] * 1.25f )
+                        {
+                        f_intervalAverage                 = (   g_lfoBpmMatrix[0][DB] + 
+                                                                g_lfoBpmMatrix[1][DB] + 
+                                                                g_lfoBpmMatrix[2][DB]) / 3;
+            
+                        g_lfoBpmMatrix[p_source][BPM]     =   60000000 / f_intervalAverage;
+            
+                        g_lfoBpmMatrix[p_source][INTV]    =   f_intervalAverage;
+                        g_lfoBpmMatrix[p_source][LBC]     =   m_Timer.GetClockTicks();
+                        }
+                    g_lfoBpmMatrix[p_source][LTIME]       =   p_triggerTimeClock;
+
+                    g_lfoBpmMatrix[p_source][TIDX]        = ( g_lfoBpmMatrix[p_source][TIDX] + 1) % 4;    
+                    }
+}
+
+void            CKernel::calculate1BPMnew               (   int             p_source, 
+                                                            int             p_timeBuffer,
+                                                            int             p_deltaBuffer,
+                                                            unsigned long   p_triggerTimeClock)  // p_triggerTimeClock ****
 {
                 unsigned long f_intervalAverage = 0;
 

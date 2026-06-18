@@ -321,10 +321,12 @@ public:
 
                 void        randomVec8                  (               uint32_t                        p_seed);            // +++
 
-                void        calculate1BPM               (               int                             p_source, 
+                void        calculate1BPMold            (               int                             p_source, 
+                                                                        unsigned long                   p_triggerTimeClock);
+                void        calculate1BPMnew            (               int                             p_source, 
                                                                         int                             p_timeBuffer,
                                                                         int                             p_deltaBuffer,
-                                                                        unsigned long                   p_triggerTimeClock);
+                                                                        unsigned long                   p_triggerTimeClock );                                                                         
                 void        predict1Beat                (               int                             p_source, 
                                                                         int                             p_lfoMult);
                 void        sample1WaveTable            (               int                             p_source, 
