@@ -138,7 +138,7 @@ void            CKernel::nextline                   (   char*       p_buffer,
 
 void CKernel::logButtonStatesRuntime(void)
 {
-    char f_logBuffer[512];
+    char f_logBuffer[2048];
     u32  f_logIndex = 0;
 
     f_logBuffer[0] = '\0';
