@@ -187,6 +187,86 @@ void CKernel::logButtonStatesRuntime(void)
     storeLog(   f_logBuffer, f_logIndex,
                 "Menu Layer",
                 g_menuLayer );
+
+    storeLog(   f_logBuffer, f_logIndex,
+                "ModeBuf 00-03",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][0],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][1],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][2],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][3] );
+
+    storeLog(   f_logBuffer, f_logIndex,
+                "ModeBuf 04-07",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][4],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][5],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][6],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][7] );
+
+    storeLog(   f_logBuffer, f_logIndex,
+                "ModeBuf 08-11",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][8],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][9],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][10],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][11] );
+
+    storeLog(   f_logBuffer, f_logIndex,
+                "ModeBuf 12-15",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][12],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][13],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][14],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][15] );
+
+    storeLog(   f_logBuffer, f_logIndex,
+                "ModeBuf 16-19",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][16],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][17],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][18],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][19] );
+
+    storeLog(   f_logBuffer, f_logIndex,
+                "ModeBuf 20-23",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][20],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][21],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][22],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][23] );
+
+    storeLog(   f_logBuffer, f_logIndex,
+                "ModeBuf 24-27",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][24],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][25],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][26],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][27] );
+
+    storeLog(   f_logBuffer, f_logIndex,
+                "ModeBuf 28-31",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][28],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][29],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][30],
+                " ",
+                (u32)g_centralModeBuffer[g_currentProgramBuffer][31] );                
                 
     bufferScreenDraw(  f_logBuffer,
                        0,
