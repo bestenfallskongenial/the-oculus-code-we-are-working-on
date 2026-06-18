@@ -54,19 +54,19 @@ void            CKernel::calculate1BPMold           (   int             p_source
 
                 if (p_triggerTimeClock != g_lfoBpmMatrix[p_source][LTIME])
                     {
-                    g_lfoBpmMatrix[g_lfoBpmMatrix[p_source][TIDX]][TB] = p_triggerTimeClock;
+                    g_lfoBpmMatrix[g_lfoBpmMatrix[p_source][TIDX]][TB0] = p_triggerTimeClock;
         
-                    g_lfoBpmMatrix[0][DB]                 =   g_lfoBpmMatrix[1][TB] - g_lfoBpmMatrix[0][TB];   
-                    g_lfoBpmMatrix[1][DB]                 =   g_lfoBpmMatrix[2][TB] - g_lfoBpmMatrix[1][TB];
-                    g_lfoBpmMatrix[2][DB]                 =   g_lfoBpmMatrix[3][TB] - g_lfoBpmMatrix[2][TB];
+                    g_lfoBpmMatrix[0][DB0]                 =   g_lfoBpmMatrix[1][TB0] - g_lfoBpmMatrix[0][TB0];   
+                    g_lfoBpmMatrix[1][DB0]                 =   g_lfoBpmMatrix[2][TB0] - g_lfoBpmMatrix[1][TB0];
+                    g_lfoBpmMatrix[2][DB0]                 =   g_lfoBpmMatrix[3][TB0] - g_lfoBpmMatrix[2][TB0];
 
-                    if( g_lfoBpmMatrix[1][DB]  <   g_lfoBpmMatrix[0][DB] * 1.25f &&  
-                        g_lfoBpmMatrix[2][DB]  <   g_lfoBpmMatrix[0][DB] * 1.25f &&  
-                        g_lfoBpmMatrix[0][DB]  <   g_lfoBpmMatrix[2][DB] * 1.25f )
+                    if( g_lfoBpmMatrix[1][DB0]  <   g_lfoBpmMatrix[0][DB0] * 1.25f &&  
+                        g_lfoBpmMatrix[2][DB0]  <   g_lfoBpmMatrix[0][DB0] * 1.25f &&  
+                        g_lfoBpmMatrix[0][DB0]  <   g_lfoBpmMatrix[2][DB0] * 1.25f )
                         {
-                        f_intervalAverage                 = (   g_lfoBpmMatrix[0][DB] + 
-                                                                g_lfoBpmMatrix[1][DB] + 
-                                                                g_lfoBpmMatrix[2][DB]) / 3;
+                        f_intervalAverage                 = (   g_lfoBpmMatrix[0][DB0] + 
+                                                                g_lfoBpmMatrix[1][DB0] + 
+                                                                g_lfoBpmMatrix[2][DB0]) / 3;
             
                         g_lfoBpmMatrix[p_source][BPM]     =   60000000 / f_intervalAverage;
             
