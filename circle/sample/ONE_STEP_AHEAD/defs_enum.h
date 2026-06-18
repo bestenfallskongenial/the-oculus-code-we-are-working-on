@@ -1,4 +1,4 @@
-//------------------------------------------------- // my global set buffer 
+//------------------------------------------------- // for the array unsigned g_centralModeBuffer[SLOTS][MODETABLE_COUNT]
 enum centralModeBuffer
 {
 // block 00 
@@ -94,8 +94,10 @@ enum lfo_bpm_types
     SMP,            								// sampleIndex
     LTIME,          							    // lastTime
     TIDX,           							    // timeIndex
-    TB,             							    // timeBuffer
-    DB,             							    // deltaBuffer
+    TB0,             							    // timeBuffer bpm 0
+    TB1,             							    // timeBuffer bpm 1    
+    DB0,             							    // deltaBuffer bpm 0
+    DB1,             							    // deltaBuffer bpm 1    
     IREG,                                           // irregularity ... is not really bpm/lfo but audio therefore... it fits so nicely here
     LFO_BPM_COUNT								    // 15
 };

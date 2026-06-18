@@ -34,7 +34,7 @@ void CKernel::setLayer(int buttonA, int buttonB)
 
         if (g_buttons_states[buttonA][BTN_SINGLE])
         {
-            calculate1BPM(0, g_currentTime);
+            calculate1BPM(0, TB0, DB0, g_currentTime);
             g_buttons_states[buttonA][BTN_SINGLE] = 0;
         }
 
@@ -460,7 +460,7 @@ void            CKernel::applyTargetModes           (   )       // current!
                     }
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_EXT])      // external BPM clock
                     {
-                    calculate1BPM(1, g_extClockTime);
+                    calculate1BPM(1, TB1, DB1, g_extClockTime);
                     }
 }
 
