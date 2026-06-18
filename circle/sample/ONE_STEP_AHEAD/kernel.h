@@ -259,7 +259,7 @@ public:
                 void        dispatchLayer               ();
                 void        set_mode_roof_map           (               uint8_t                         block   );
                 void        mapMenuGroup                (               uint8_t                         block   );
-                void        getChannelModeA             ();                
+                void        getChannelModeA             ( int p_channel );                
                 void        getChannelModeB             ();
                 void        modeADC                     (               int                             p_channel);         // channel passed by caller
                 void        modeTRG                     (               int                             p_channel);         // channel passed by caller
