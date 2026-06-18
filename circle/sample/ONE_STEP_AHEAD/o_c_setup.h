@@ -120,10 +120,7 @@
     #define         LED_B                       1
     #define         LED_C                       2
     #define         LED_D                       4
-
-    #define         MAX_MODES                   5
-    #define         MENU_LAYER_COUNT            4
-
+ 
     #define 		LFO_INSTANCES			    2
     #define			LFO_MULTIPLIERS_COUNT		7
 
