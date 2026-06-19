@@ -128,9 +128,9 @@ public:         // Logging
                 int                             m_adc_ring[ADC_CHANNELS][ADC_BUFFER_COUNT];
                 int                             m_adc_index = 0;
 
-                float                           m_band[4][AUDIO_BUFFER_COUNT]                   = { 0.0f };
+                int                             m_band[4][AUDIO_BUFFER_COUNT]                   = { 0 };
 
-                float                           m_sum[4]                                        = { 0.0f };  
+                int                             m_sum[4]                                        = { 0 };  
 
                 uint8_t                         m_idx0;
                 uint8_t                         m_idx1;
