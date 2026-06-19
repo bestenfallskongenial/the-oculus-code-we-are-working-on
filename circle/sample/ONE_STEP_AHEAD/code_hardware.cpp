@@ -525,7 +525,7 @@ void            CKernel::adc_ProcessAudio           (   void    )
 {
                 if (!m_audio_mode_activated) return; // is a fixed position in g_centralModeBuffer mapped by modeMenuAssignGroup()
 
-                int i0 = m_adc_index;
+                int i0 = m_adc_index & 3;
                 int i1 = (m_adc_index - 1) & 3;
                 int i2 = (m_adc_index - 2) & 3;
                 int i3 = (m_adc_index - 3) & 3;
@@ -550,7 +550,7 @@ void            CKernel::adc_ProcessAudio           (   void    )
                 //  FLAG_AUDIO_A = true;
                     g_centralModeBuffer[g_currentProgramBuffer][FLAG_AUDIO_A] = 1;
 
-                    float s = m_adc_ring[0][m_adc_index] * 0.0009765625f;
+                    float s = m_adc_ring[0][i0] * 0.0009765625f;
 
                     m_sum[0] -= m_band[0][m_idx0];
                     m_band[0][m_idx0] = s;
@@ -577,7 +577,7 @@ void            CKernel::adc_ProcessAudio           (   void    )
                 //  FLAG_AUDIO_B = true;
                     g_centralModeBuffer[g_currentProgramBuffer][FLAG_AUDIO_B] = 1;
 
-                    float s = m_adc_ring[1][m_adc_index] * 0.0009765625f;
+                    float s = m_adc_ring[1][i0] * 0.0009765625f;
 
                     m_sum[2] -= m_band[2][m_idx2];
                     m_band[2][m_idx2] = s;
@@ -604,7 +604,7 @@ void            CKernel::adc_ProcessAudio           (   void    )
                 //  FLAG_AUDIO_A = true;
                     g_centralModeBuffer[g_currentProgramBuffer][FLAG_AUDIO_A] = 1;
 
-                    float s = m_adc_ring[2][m_adc_index] * 0.0009765625f;
+                    float s = m_adc_ring[2][i0] * 0.0009765625f;
 
                     m_sum[0] -= m_band[0][m_idx0];
                     m_band[0][m_idx0] = s;
@@ -631,7 +631,7 @@ void            CKernel::adc_ProcessAudio           (   void    )
                 //  FLAG_AUDIO_B = true;
                     g_centralModeBuffer[g_currentProgramBuffer][FLAG_AUDIO_B] = 1;
 
-                    float s = m_adc_ring[3][m_adc_index] * 0.0009765625f;
+                    float s = m_adc_ring[3][i0] * 0.0009765625f;
 
                     m_sum[2] -= m_band[2][m_idx2];
                     m_band[2][m_idx2] = s;
