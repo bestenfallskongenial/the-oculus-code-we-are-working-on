@@ -78,7 +78,7 @@ void            CKernel::calculate1BPMold           (   int             p_source
                     g_lfoBpmMatrix[p_source][TIDX]        = ( g_lfoBpmMatrix[p_source][TIDX] + 1) % 4;    
                     }
 }
-
+/*
 void            CKernel::calculate1BPMnew               (   int             p_source, 
                                                             int             p_timeBuffer,
                                                             int             p_deltaBuffer,
@@ -110,6 +110,48 @@ void            CKernel::calculate1BPMnew               (   int             p_so
                     g_lfoBpmMatrix[p_source][LTIME]       =   p_triggerTimeClock;
 
                     g_lfoBpmMatrix[p_source][TIDX]        = ( g_lfoBpmMatrix[p_source][TIDX] + 1) % 4;    
+                    }
+}
+*/
+void            CKernel::calculate1BPMnew           (   int             p_source,
+                                                        int             p_timeBuffer,
+                                                        int             p_deltaBuffer,
+                                                        unsigned long   p_triggerTimeClock)
+{
+                unsigned long f_intervalAverage = 0;
+
+                if (p_triggerTimeClock != g_lfoBpmMatrix[p_source][LTIME])
+                    {
+                    int f_writeIndex                       =   g_lfoBpmMatrix[p_source][TIDX];
+
+                    g_lfoBpmMatrix[f_writeIndex][p_timeBuffer] = p_triggerTimeClock;
+
+                    int f_index0                           =   (f_writeIndex + 1) % 4;
+                    int f_index1                           =   (f_writeIndex + 2) % 4;
+                    int f_index2                           =   (f_writeIndex + 3) % 4;
+                    int f_index3                           =   f_writeIndex;
+
+                    g_lfoBpmMatrix[0][p_deltaBuffer]       =   g_lfoBpmMatrix[f_index1][p_timeBuffer] - g_lfoBpmMatrix[f_index0][p_timeBuffer];
+                    g_lfoBpmMatrix[1][p_deltaBuffer]       =   g_lfoBpmMatrix[f_index2][p_timeBuffer] - g_lfoBpmMatrix[f_index1][p_timeBuffer];
+                    g_lfoBpmMatrix[2][p_deltaBuffer]       =   g_lfoBpmMatrix[f_index3][p_timeBuffer] - g_lfoBpmMatrix[f_index2][p_timeBuffer];
+
+                    if( g_lfoBpmMatrix[1][p_deltaBuffer]  <   g_lfoBpmMatrix[0][p_deltaBuffer] * 1.25f &&
+                        g_lfoBpmMatrix[2][p_deltaBuffer]  <   g_lfoBpmMatrix[0][p_deltaBuffer] * 1.25f &&
+                        g_lfoBpmMatrix[0][p_deltaBuffer]  <   g_lfoBpmMatrix[2][p_deltaBuffer] * 1.25f )
+                        {
+                        f_intervalAverage                 = (   g_lfoBpmMatrix[0][p_deltaBuffer] +
+                                                                g_lfoBpmMatrix[1][p_deltaBuffer] +
+                                                                g_lfoBpmMatrix[2][p_deltaBuffer]) / 3;
+
+                        g_lfoBpmMatrix[p_source][BPM]     =   60000000 / f_intervalAverage;
+
+                        g_lfoBpmMatrix[p_source][INTV]    =   f_intervalAverage;
+                        g_lfoBpmMatrix[p_source][LBC]     =   m_Timer.GetClockTicks();
+                        }
+
+                    g_lfoBpmMatrix[p_source][LTIME]       =   p_triggerTimeClock;
+
+                    g_lfoBpmMatrix[p_source][TIDX]        =   (g_lfoBpmMatrix[p_source][TIDX] + 1) % 4;
                     }
 }
 

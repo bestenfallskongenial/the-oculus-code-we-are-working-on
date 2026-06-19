@@ -84,7 +84,7 @@ public:         // Logging
                 int                             g_gl_program_current                            = 0;
                 int                             g_gl_program_last                               = 0;
 
-                int                             g_activeBpmChannel                              = 0;
+                int                             g_activeBpmChannel                              = 0;    <- is telling the lfo what bpm is source!
 
                 int                             m_current_gl_program                            = 0;
                 int                             m_current_tex                                   = 0;
@@ -112,7 +112,7 @@ public:         // Logging
                 unsigned                        g_centralModeBuffer[SLOTS][MODETABLE_COUNT]     = { 0 };         // the general user settings, storable per program 
                 unsigned                        g_lfoMultiplier[LFO_MULTIPLIERS_COUNT]          = { 64, 32, 16, 8, 4, 2, 1 };
 
-                long long                       g_lfoBpmMatrix[4][LFO_BPM_COUNT]                = { 0 }; // was unsigned !
+                unsigned long                   g_lfoBpmMatrix[4][LFO_BPM_COUNT]                = { 0 }; // was unsigned !
 // datamanagement.cpp
                 unsigned                        g_hFile;
 
