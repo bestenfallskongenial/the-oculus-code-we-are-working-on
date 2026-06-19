@@ -113,6 +113,7 @@ public:         // Logging
                 unsigned                        g_lfoMultiplier[LFO_MULTIPLIERS_COUNT]          = { 64, 32, 16, 8, 4, 2, 1 };
 
                 unsigned long                   g_lfoBpmMatrix[4][LFO_BPM_COUNT]                = { 0 }; // was unsigned !
+                int                             g_audioIreg[4] = { 0 };
 // datamanagement.cpp
                 unsigned                        g_hFile;
 
