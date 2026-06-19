@@ -180,7 +180,7 @@ void            CKernel::set_mode_roof_map          (uint8_t block)
                     g_modeRoof[row] = dst;
                     }
 }
-
+/*
 void            CKernel::mapMenuGroup               (uint8_t block)
 {
                 const uint8_t base = block << 2;
@@ -230,6 +230,64 @@ void            CKernel::mapMenuGroup               (uint8_t block)
                     g_centralModeBuffer[g_currentProgramBuffer][base + 3] = v;
                     }
 }
+*/
+void CKernel::mapMenuGroup(uint8_t block)
+{
+    const uint8_t base = block << 2;
+    unsigned v;
+
+    v = (g_inOutMatrixInt[4][RAW] * g_modeRoof[base + 0]) >> 10;
+
+    if (g_menuPickUpFlag[base + 0] != g_centralModeBuffer[g_currentProgramBuffer][base + 0] &&
+        v == g_centralModeBuffer[g_currentProgramBuffer][base + 0])
+    {
+        g_menuPickUpFlag[base + 0] = v;
+    }
+    else if (g_menuPickUpFlag[base + 0] == g_centralModeBuffer[g_currentProgramBuffer][base + 0])
+    {
+        g_centralModeBuffer[g_currentProgramBuffer][base + 0] = v;
+        g_menuPickUpFlag[base + 0] = v;
+    }
+
+    v = (g_inOutMatrixInt[5][RAW] * g_modeRoof[base + 1]) >> 10;
+
+    if (g_menuPickUpFlag[base + 1] != g_centralModeBuffer[g_currentProgramBuffer][base + 1] &&
+        v == g_centralModeBuffer[g_currentProgramBuffer][base + 1])
+    {
+        g_menuPickUpFlag[base + 1] = v;
+    }
+    else if (g_menuPickUpFlag[base + 1] == g_centralModeBuffer[g_currentProgramBuffer][base + 1])
+    {
+        g_centralModeBuffer[g_currentProgramBuffer][base + 1] = v;
+        g_menuPickUpFlag[base + 1] = v;
+    }
+
+    v = (g_inOutMatrixInt[6][RAW] * g_modeRoof[base + 2]) >> 10;
+
+    if (g_menuPickUpFlag[base + 2] != g_centralModeBuffer[g_currentProgramBuffer][base + 2] &&
+        v == g_centralModeBuffer[g_currentProgramBuffer][base + 2])
+    {
+        g_menuPickUpFlag[base + 2] = v;
+    }
+    else if (g_menuPickUpFlag[base + 2] == g_centralModeBuffer[g_currentProgramBuffer][base + 2])
+    {
+        g_centralModeBuffer[g_currentProgramBuffer][base + 2] = v;
+        g_menuPickUpFlag[base + 2] = v;
+    }
+
+    v = (g_inOutMatrixInt[7][RAW] * g_modeRoof[base + 3]) >> 10;
+
+    if (g_menuPickUpFlag[base + 3] != g_centralModeBuffer[g_currentProgramBuffer][base + 3] &&
+        v == g_centralModeBuffer[g_currentProgramBuffer][base + 3])
+    {
+        g_menuPickUpFlag[base + 3] = v;
+    }
+    else if (g_menuPickUpFlag[base + 3] == g_centralModeBuffer[g_currentProgramBuffer][base + 3])
+    {
+        g_centralModeBuffer[g_currentProgramBuffer][base + 3] = v;
+        g_menuPickUpFlag[base + 3] = v;
+    }
+}                    
 /*
 void            CKernel::getChannelModeA             (uint8_t block )
 {
