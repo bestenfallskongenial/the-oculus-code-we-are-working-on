@@ -67,7 +67,7 @@ TShutdownMode CKernel::Run(void)
 
                     dispatchLayer();
 
-                    applyTargetModes();     <- correct place here?
+                    applyTargetModes();  // <- correct place here?
 
                 //  getChannelModeA( 0 );
                 //  getChannelModeA( 1 );                    
