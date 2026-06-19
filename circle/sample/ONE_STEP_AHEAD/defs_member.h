@@ -101,7 +101,7 @@ public:         // Logging
                 unsigned                        g_currentTime;
 
                 int                             attenuation = 0;
-                bool                            m_audio_mode_activated                          = true;
+                bool                            m_audio_mode_activated                          = false;
 
                 bool                            is_audio[2];
 
