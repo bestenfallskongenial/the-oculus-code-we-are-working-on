@@ -136,7 +136,7 @@ bool            CKernel::closeFile                  (   )
 void            CKernel::bulkLoad                   (           char*       p_fileNameArray[],
                                                                 unsigned    p_loadedBytes[],
                                                                 char**      p_bufferArray,
-                                                                unsigned    p_maxFiles,
+                                                                unsigned    p_scannedFiles,
                                                                 unsigned&   p_validFiles,
                                                                 unsigned&   p_prevFiles,
                                                                 unsigned    p_fileSize)
@@ -145,12 +145,12 @@ void            CKernel::bulkLoad                   (           char*       p_fi
 #ifdef __LOG_FILE__
                 storeLog(   MY_BUFFER, MY_INDEX, 
                             ">:", m_Timer.GetClockTicks(), 
-                            "   BULKLOAD Start  scanned", (u32)p_maxFiles, 
+                            "   BULKLOAD Start  scanned", (u32)p_scannedFiles, 
                             "valid", (u32)p_validFiles, 
                             "  size", (u32)p_fileSize );
 #endif
-
-                for (unsigned i = 0; i < p_maxFiles; ++i) 
+                for (unsigned i = p_prevFiles; i < p_prevFiles + p_scannedFiles; ++i)
+            //  for (unsigned i = 0; i < p_scannedFiles; ++i) 
                     {
                     if (openFile(p_fileNameArray[i]))
                         {
@@ -226,7 +226,8 @@ bool            CKernel::scanRoot                   (           char**      p_fi
 
                 if(f_nextEntry == 0) return false;
 
-                while (f_nextEntry != 0 && p_scannedFiles < p_maxFiles) 
+            //  while (f_nextEntry != 0 && p_scannedFiles < p_maxFiles)
+                while (f_nextEntry != 0 && (p_prevFiles + p_scannedFiles) < p_maxFiles) 
                     {
                     if (!(f_directoryEntry.nAttributes & FS_ATTRIB_SYSTEM)) 
                         {

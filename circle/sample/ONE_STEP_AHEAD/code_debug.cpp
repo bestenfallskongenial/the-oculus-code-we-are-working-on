@@ -203,7 +203,7 @@ void CKernel::logButtonStatesRuntime(void)
                 "filecounter[FT_FSH][FLD_LOADED]",
                 filecounter[FT_FSH][FLD_LOADED],
                 "mapping",
-                ((g_inOutMatrixInt[ADC_SELECT_PRG][OUT] * filecounter[FT_FSH][FLD_VALID]) >> 10));
+                (g_inOutMatrixInt[ADC_SELECT_PRG][OUT] * filecounter[FT_FSH][FLD_VALID]) >> 10);
 
 
 
