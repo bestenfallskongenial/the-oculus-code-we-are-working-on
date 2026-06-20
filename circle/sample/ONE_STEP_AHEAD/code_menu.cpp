@@ -494,12 +494,14 @@ void            CKernel::modeAudioBb1               (   int p_channel)
 
 void            CKernel::applyTargetModes           (   )       // current!
 {
-                g_gl_program_current = g_inOutMatrixInt[ADC_SELECT_PRG][OUT];   // CH7 always selects the current program
-
+//              g_gl_program_current = g_inOutMatrixInt[ADC_SELECT_PRG][OUT];   // CH7 always selects the current program
+                g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][OUT] * filecounter[FT_FSH][FLD_VALID]) >> 10;
+/*
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_TEX])      // selected channel OUT controls active texture
                     {
                     m_activeTex =   g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX]][OUT];
                     }
+*/
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_VID])      // selected channel OUT controls active video
                     {
                     m_activeVideo = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_VID]][OUT];
@@ -508,6 +510,7 @@ void            CKernel::applyTargetModes           (   )       // current!
                     {
                     m_activeFrame = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_FRM]][OUT];
                     }
+/*
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_TIME])     // selected channel OUT controls shader/program time
                     {
                     GLtime =       g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME]][OUT];
@@ -516,6 +519,7 @@ void            CKernel::applyTargetModes           (   )       // current!
                     {
                     GLtime =       g_currentTime / 1000000.0f;
                     }
+*/
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_EXT])      // external BPM clock
                     {
                     calculate1BPMnew(1, TB1, DB1, g_extClockTime);

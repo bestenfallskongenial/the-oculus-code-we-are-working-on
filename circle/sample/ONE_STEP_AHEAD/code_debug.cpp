@@ -193,6 +193,16 @@ void CKernel::logButtonStatesRuntime(void)
                 g_lfoBpmMatrix[0][BPM],
                 "bpm 1",
                 g_lfoBpmMatrix[1][BPM]   );
+                
+    storeLog(   f_logBuffer, f_logIndex,
+                "g_gl_program_current",
+                g_gl_program_current,
+                "g_currentProgramBuffer",
+                g_currentProgramBuffer,
+                "filecounter[FT_FSH][FLD_LOADED]",
+                filecounter[FT_FSH][FLD_LOADED]);
+
+
 
     storeLog(   f_logBuffer, f_logIndex,
                 "ModeBuf 00-03",

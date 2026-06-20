@@ -52,6 +52,8 @@ TShutdownMode CKernel::Run(void)
 
                     g_currentTime = m_Timer.GetClockTicks();                        // here starts the actual runtimeloop
 
+                    storeModes();
+
                     m_audio_hold_A = AUDIO_HOLD_TIMEOUT;                            // to debug the audio mode and menu code!!!
                     m_audio_hold_B = AUDIO_HOLD_TIMEOUT;
                     
