@@ -31,6 +31,9 @@ TShutdownMode CKernel::Run(void)
                         wrapper_load_sd();
                         wrapper_parser_sd();
                         wrapper_init_gl_sd();
+                        
+                        m_logBufferIndex = 0;
+                        bufferScreenClear();
 
                         m_SD_has_load = true;
                         }
@@ -41,15 +44,12 @@ TShutdownMode CKernel::Run(void)
                         wrapper_parser_usb();
                         wrapper_init_gl_usb();
 
+                        m_logBufferIndex = 0;
+                        bufferScreenClear();
+
                         m_USB_has_load = true;
                         }
                         
-                    if( m_SD_has_load && m_USB_has_load )
-                        {
-                        m_logBufferIndex = 0;
-                        bufferScreenClear();
-                        } 
-
                     g_currentTime = m_Timer.GetClockTicks();                        // here starts the actual runtimeloop
 
                     storeModes();
