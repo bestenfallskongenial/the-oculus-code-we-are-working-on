@@ -180,7 +180,7 @@ void            CKernel::set_mode_roof_map          (uint8_t block)
                     g_modeRoof[row] = dst;
                     }
 }
-/*
+
 void            CKernel::mapMenuGroup               (uint8_t block)
 {
                 const uint8_t base = block << 2;
@@ -230,7 +230,7 @@ void            CKernel::mapMenuGroup               (uint8_t block)
                     g_centralModeBuffer[g_currentProgramBuffer][base + 3] = v;
                     }
 }
-*/
+/*
 void CKernel::mapMenuGroup(uint8_t block)
 {
     const uint8_t base = block << 2;
@@ -287,7 +287,8 @@ void CKernel::mapMenuGroup(uint8_t block)
         g_centralModeBuffer[g_currentProgramBuffer][base + 3] = v;
         g_menuPickUpFlag[base + 3] = v;
     }
-}                    
+}  
+*/                  
 /*
 void            CKernel::getChannelModeA             (uint8_t block )
 {
