@@ -38,10 +38,10 @@ void CKernel::setLayer(int buttonA, int buttonB)
             g_buttons_states[buttonA][BTN_SINGLE] = 0;
         }
 
-        if (g_buttons_states[buttonB][BTN_SINGLE])
+        if (g_buttons_states[buttonB][BTN_DOUBLE]) // not BTN_SINGLE
         {
             g_centralModeBuffer[g_gl_program_current][IS_STORED] = !g_centralModeBuffer[g_gl_program_current][IS_STORED];
-            g_buttons_states[buttonB][BTN_SINGLE] = 0;
+            g_buttons_states[buttonB][BTN_DOUBLE] = 0;
         }
 
         return;
