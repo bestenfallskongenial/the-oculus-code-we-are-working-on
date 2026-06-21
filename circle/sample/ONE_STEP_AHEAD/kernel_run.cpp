@@ -15,11 +15,6 @@ TShutdownMode CKernel::Run(void)
                         wrapper_parser_sd();
                         wrapper_init_gl_sd();
 
-                    //  m_logBufferIndex = 0;
-                        bufferScreenClear();
-
-                        logButtonStatesRuntime();
-
                         msDelay(2000);
 
                         m_SD_has_load = true;
@@ -52,6 +47,7 @@ TShutdownMode CKernel::Run(void)
                         {
                         m_logBufferIndex = 0;
                         bufferScreenClear();
+                        g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
                         } 
 
                     g_currentTime = m_Timer.GetClockTicks();                        // here starts the actual runtimeloop
