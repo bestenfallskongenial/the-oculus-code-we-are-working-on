@@ -503,7 +503,7 @@ void            CKernel::applyTargetModes           (   )       // current!
                     {
                     m_activeTex =   g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX]][OUT];
                     }
-*/
+
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_VID])      // selected channel OUT controls active video
                     {
                     m_activeVideo = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_VID]][OUT];
@@ -512,7 +512,7 @@ void            CKernel::applyTargetModes           (   )       // current!
                     {
                     m_activeFrame = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_FRM]][OUT];
                     }
-/*
+
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_TIME])     // selected channel OUT controls shader/program time
                     {
                     GLtime =       g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME]][OUT];
