@@ -5,7 +5,7 @@
 
 TShutdownMode CKernel::Run(void)
 {
-                g_centralModeBuffer[g_gl_program_current][FLAG_TEX] = 0;            // start values for the glsl code
+                g_centralModeBuffer[g_gl_program_current][FLAG_TEX] = 1;            // start values for the glsl code
 
                 g_centralModeBuffer[g_gl_program_current][FLAG_TIME] = 0;           // start values for the glsl code
 
