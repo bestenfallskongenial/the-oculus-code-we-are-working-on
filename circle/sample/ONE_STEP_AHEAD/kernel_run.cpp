@@ -132,7 +132,7 @@ TShutdownMode CKernel::Run(void)
 */
                     drawGLsPrg();
 
-                    frmRateBreak(false);
+                //  frmRateBreak(false);
 
                     frmBufferSwap(&m_ogl); 
 
