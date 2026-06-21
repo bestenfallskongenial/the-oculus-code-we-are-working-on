@@ -122,7 +122,7 @@ TShutdownMode CKernel::Run(void)
                     setUniPrg(&m_ogl,
                             &m_fsh,
                             &m_tex,
-                            0);
+                            filecounter[FT_FSH][FLD_VALID]);
 /*
                     setTexPrg(&m_ogl,
                             &m_fsh,
