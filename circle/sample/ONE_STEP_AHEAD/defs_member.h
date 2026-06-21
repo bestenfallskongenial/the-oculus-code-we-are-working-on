@@ -100,7 +100,7 @@ public:         // Logging
                 unsigned long                   g_long_click_time                               = 1000000;
                 unsigned                        g_currentTime;
 
-                int                             attenuation = 0;
+                int                             attenuation = 2;
                 bool                            m_audio_mode_activated                          = true;
 
                 bool                            is_audio[2];
