@@ -123,13 +123,13 @@ TShutdownMode CKernel::Run(void)
                             &m_fsh,
                             &m_tex,
                             0);
-
+/*
                     setTexPrg(&m_ogl,
                             &m_fsh,
                             &m_tex,
                             0,
                             filecounter[FT_TEX][FLD_VALID]);                            
-
+*/
                     drawGLsPrg();
 
                     frmRateBreak(false);
