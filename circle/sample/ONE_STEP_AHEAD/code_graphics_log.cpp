@@ -182,7 +182,8 @@ void            CKernel::gfx_check                  (   const char* file,
                     }
 
                 GLenum error = glGetError();
-                if (error != GL_NO_ERROR)
+            //  if (error != GL_NO_ERROR)
+                while (error != GL_NO_ERROR)
                     {
                     CTimer* pTimer = CTimer::Get();
                     unsigned ticks = pTimer->GetTicks();
@@ -231,5 +232,7 @@ void            CKernel::gfx_check                  (   const char* file,
                     error_count++;
                     
                     if (error_count >= ERROR_THRESHOLD) m_resetFlag = true;
+
+                    error = glGetError();
                     }
 }

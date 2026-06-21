@@ -5,7 +5,7 @@
 
 TShutdownMode CKernel::Run(void)
 {
-                g_centralModeBuffer[g_gl_program_current][FLAG_TEX] = 1;            // start values for the glsl code
+                g_centralModeBuffer[g_gl_program_current][FLAG_TEX] = 0;            // start values for the glsl code
 
                 g_centralModeBuffer[g_gl_program_current][FLAG_TIME] = 0;           // start values for the glsl code
 
@@ -64,7 +64,7 @@ TShutdownMode CKernel::Run(void)
                         {
                         m_logBufferIndex = 0;
                         bufferScreenClear();
-                        g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
+                     // g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
                         } 
 
                     g_currentTime = m_Timer.GetClockTicks();                        // here starts the actual runtimeloop
@@ -88,6 +88,8 @@ TShutdownMode CKernel::Run(void)
 
                 //  applyTargetModes();  // <- correct place here?
 
+                    g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
+
                 //  getChannelModeA( 0 );
                 //  getChannelModeA( 1 );                    
 
@@ -110,9 +112,6 @@ TShutdownMode CKernel::Run(void)
                     sample1WaveTable( 0, LF1_WAVE, LF1 );
                     sample1WaveTable( 1, LF2_WAVE, LF2 );
 
-                //  applyTargetModes();
-
-                //  updateLED();
 
                 //  storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "menu layer", g_menuLayer );
 
@@ -129,7 +128,7 @@ TShutdownMode CKernel::Run(void)
                             &m_fsh,
                             &m_tex,
                             0,
-                            1);                            
+                            filecounter[FT_TEX][FLD_VALID]);                            
 
                     drawGLsPrg();
 

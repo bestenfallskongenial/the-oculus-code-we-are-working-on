@@ -3,8 +3,8 @@
 //  #undef  __DEBUG_CHECK__
     #define __DEBUG_CHECK__
 
-    #define MY_BUFFER   m_bufferLog                 // not used here
-    #define MY_INDEX    m_bufferLogIndex
+    #define MY_BUFFER   m_logBuffer
+    #define MY_INDEX    m_logBufferIndex
 
 void            CKernel::frmBufferSet               (   vtx_state* v)
 {
