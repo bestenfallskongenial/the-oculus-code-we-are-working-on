@@ -496,7 +496,8 @@ void            CKernel::modeAudioBb1               (   int p_channel)
 void            CKernel::applyTargetModes           (   )       // current!
 {
 //              g_gl_program_current = g_inOutMatrixInt[ADC_SELECT_PRG][OUT];   // CH7 always selects the current program
-//              g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][OUT] * filecounter[FT_FSH][FLD_VALID]) >> 10;
+
+                g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10
 /*
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_TEX])      // selected channel OUT controls active texture
                     {
