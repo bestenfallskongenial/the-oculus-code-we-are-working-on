@@ -17,8 +17,11 @@ TShutdownMode CKernel::Run(void)
 
                         m_logBufferIndex = 0;
                         bufferScreenClear();
+
+                        logButtonStatesRuntime();
+                                                
                         msDelay(2000);
-                        
+
                         m_SD_has_load = true;
                         }
 
