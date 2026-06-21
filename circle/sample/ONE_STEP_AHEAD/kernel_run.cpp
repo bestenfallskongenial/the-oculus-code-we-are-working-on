@@ -64,7 +64,7 @@ TShutdownMode CKernel::Run(void)
                         {
                         m_logBufferIndex = 0;
                         bufferScreenClear();
-                        g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
+                    //  g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
                         } 
 
                     g_currentTime = m_Timer.GetClockTicks();                        // here starts the actual runtimeloop
@@ -88,7 +88,7 @@ TShutdownMode CKernel::Run(void)
 
                 //  applyTargetModes();  // <- correct place here?
 
-                //  g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
+                    g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
 
                 //  getChannelModeA( 0 );
                 //  getChannelModeA( 1 );                    
