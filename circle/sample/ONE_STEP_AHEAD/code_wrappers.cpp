@@ -500,6 +500,7 @@ void            CKernel::wrapper_parser_usb()
 
 void            CKernel::wrapper_init_gl_sd         (   )
 {
+    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper gl sd start");
                 initVbuffer     (   &m_ogl,
                                     &m_vtx );
                 initShader      (   &m_vtx,                                         // init vertex shader 
@@ -566,10 +567,12 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     filecounter[FT_TEX][FLD_VALID],                 // for the dense indexing after load and verify *
                                     GL_REPEAT,
                                     GL_REPEAT);
+    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper gl sd end");                                    
 }
 
 void            CKernel::wrapper_init_gl_usb        (   )
 {
+    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper gl usb start");    
                 initShader      (   &m_vtx,         // init fragment shader ( default )
                                     &m_fsh, 
                                     &m_tex,
@@ -597,6 +600,7 @@ void            CKernel::wrapper_init_gl_usb        (   )
                                     filecounter[FT_TEX][FLD_VALID],
                                     GL_REPEAT,
                                     GL_REPEAT);
+    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper gl usb end");                                    
 }
 /*
 void            CKernel::wrapper_io                 (   )
