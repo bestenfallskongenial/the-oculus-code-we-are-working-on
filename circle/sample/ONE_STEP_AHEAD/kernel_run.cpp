@@ -17,6 +17,7 @@ TShutdownMode CKernel::Run(void)
 
                         m_SD_has_load = true;
                         }
+                msDelay(2000);
 
                 while (/*m_resetFlag == false*/ 1)
                     {
