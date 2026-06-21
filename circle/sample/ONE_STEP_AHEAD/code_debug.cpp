@@ -185,21 +185,22 @@ void CKernel::logButtonStatesRuntime(void)
                 EMPTYSTR, EMPTYLOG );
 
     storeLog(   f_logBuffer, f_logIndex,
-                "Menu Layer",
+                "g_menuLayer",
                 g_menuLayer,
-                "Control Pin",
+                "CTRL_PIN",
                 GPIO_Read(CTRL_PIN),
                 "bpm 0", 
                 g_lfoBpmMatrix[0][BPM],
                 "bpm 1",
-                g_lfoBpmMatrix[1][BPM]   );
-                
+                g_lfoBpmMatrix[1][BPM]);
                 
     storeLog(   f_logBuffer, f_logIndex,
                 "g_gl_program_current",
                 g_gl_program_current,
                 "g_currentProgramBuffer",
-                g_currentProgramBuffer,
+                g_currentProgramBuffer);
+
+    storeLog(   f_logBuffer, f_logIndex,                
                 "filecounter[FT_FSH][FLD_LOADED]",
                 filecounter[FT_FSH][FLD_LOADED],
                 "filecounter[FT_FSH][FLD_VALID]",
@@ -207,7 +208,7 @@ void CKernel::logButtonStatesRuntime(void)
 
     storeLog(   f_logBuffer, f_logIndex,
                 "mapping",
-                ((g_inOutMatrixInt[ADC_SELECT_PRG][OUT] * (filecounter[FT_FSH][FLD_VALID]) -1) >> 10)
+                ((g_inOutMatrixInt[ADC_SELECT_PRG][OUT] * (filecounter[FT_FSH][FLD_VALID] -1 ) ) >> 10)
                 );
 
     storeLog(   f_logBuffer, f_logIndex,
@@ -314,7 +315,7 @@ void CKernel::logButtonStatesRuntime(void)
                        0,
                        f_logIndex,
                        0,
-                       10,
+                       3,
                        0xFFFFFFFF );
 }
 
