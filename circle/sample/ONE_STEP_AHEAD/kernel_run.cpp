@@ -15,6 +15,23 @@ TShutdownMode CKernel::Run(void)
                         wrapper_parser_sd();
                         wrapper_init_gl_sd();
 
+    storeLog(   MY_BUFFER, MY_INDEX,
+                "g_gl_program_current",
+                g_gl_program_current,
+                "g_currentProgramBuffer",
+                g_currentProgramBuffer);
+
+    storeLog(   MY_BUFFER, MY_INDEX,                
+                "filecounter[FT_FSH][FLD_LOADED]",
+                filecounter[FT_FSH][FLD_LOADED],
+                "filecounter[FT_FSH][FLD_VALID]",
+                filecounter[FT_FSH][FLD_VALID]);
+
+    storeLog(   MY_BUFFER, MY_INDEX,
+                "mapping",
+                ((g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10)
+                );
+
                         msDelay(2000);
 
                         m_SD_has_load = true;
