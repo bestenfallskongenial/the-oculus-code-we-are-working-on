@@ -15,9 +15,13 @@ TShutdownMode CKernel::Run(void)
                         wrapper_parser_sd();
                         wrapper_init_gl_sd();
 
+                        m_logBufferIndex = 0;
+                        bufferScreenClear();
+                        msDelay(2000);
+                        
                         m_SD_has_load = true;
                         }
-                msDelay(2000);
+
 
                 while (/*m_resetFlag == false*/ 1)
                     {
