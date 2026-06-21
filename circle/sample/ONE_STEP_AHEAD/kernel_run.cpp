@@ -5,21 +5,6 @@
 
 TShutdownMode CKernel::Run(void)
 {
-  
-                unsigned r = 0;                                                     // start values for the led testing  
-                unsigned g = 127;
-                unsigned b = 186;
-
-                g_inOutMatrixFlt[0][OUT] = 0.5f;                                    // start values for the glsl code
-                g_inOutMatrixFlt[1][OUT] = 0.5f;
-                g_inOutMatrixFlt[2][OUT] = 0.5f;
-                g_inOutMatrixFlt[3][OUT] = 0.5f;
-
-                g_inOutMatrixFlt[4][OUT] = 0.5f;
-                g_inOutMatrixFlt[5][OUT] = 0.5f;
-                g_inOutMatrixFlt[6][OUT] = 0.5f;
-                g_inOutMatrixFlt[7][OUT] = 0.5f;
-
                 g_centralModeBuffer[g_gl_program_current][FLAG_TEX] = 1;            // start values for the glsl code
 
                 g_centralModeBuffer[g_gl_program_current][FLAG_TIME] = 0;           // start values for the glsl code
@@ -31,9 +16,6 @@ TShutdownMode CKernel::Run(void)
                         wrapper_load_sd();
                         wrapper_parser_sd();
                         wrapper_init_gl_sd();
-                        
-                        m_logBufferIndex = 0;
-                        bufferScreenClear();
 
                         m_SD_has_load = true;
                         }
@@ -44,12 +26,15 @@ TShutdownMode CKernel::Run(void)
                         wrapper_parser_usb();
                         wrapper_init_gl_usb();
 
-                        m_logBufferIndex = 0;
-                        bufferScreenClear();
-
                         m_USB_has_load = true;
                         }
                         
+                    if( m_SD_has_load && m_USB_has_load )
+                        {
+                        m_logBufferIndex = 0;
+                        bufferScreenClear();
+                        } 
+
                     g_currentTime = m_Timer.GetClockTicks();                        // here starts the actual runtimeloop
 
                     storeModes();
