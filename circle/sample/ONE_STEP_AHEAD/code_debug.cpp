@@ -207,7 +207,7 @@ void CKernel::logButtonStatesRuntime(void)
 
     storeLog(   f_logBuffer, f_logIndex,
                 "mapping",
-                ((g_inOutMatrixInt[ADC_SELECT_PRG][OUT] * (filecounter[FT_FSH][FLD_VALID]) -1) >> 10),
+                ((g_inOutMatrixInt[ADC_SELECT_PRG][OUT] * (filecounter[FT_FSH][FLD_VALID]) -1) >> 10)
                 );
 
     storeLog(   f_logBuffer, f_logIndex,
