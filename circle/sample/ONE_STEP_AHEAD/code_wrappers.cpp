@@ -451,6 +451,7 @@ void            CKernel::wrapper_load_usb           (   )
 
 void            CKernel::wrapper_parser_sd()
 {
+    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper parse sd start");     
                 BMPparser       (   &m_omt,                                         // the dedicated struct for the overlay texture
                                     m_bufferOmt,                                    // the actual mem-buffer where i have stored it
                                     g_ScnOmt,
@@ -464,11 +465,13 @@ void            CKernel::wrapper_parser_sd()
                                     g_bytTex,
                                     filecounter[FT_TEX][FLD_SIZE],
                                     filecounter[FT_TEX][FLD_PREV],
-                                    filecounter[FT_TEX][FLD_LOADED]);      
+                                    filecounter[FT_TEX][FLD_LOADED]); 
+    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper parse sd end");                                          
 }
 
 void            CKernel::wrapper_parser_usb()
 {
+    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper parse usb start");     
                 BMPparser       (   &m_tex,
                                     m_bufferTex,
                                     g_ScnTex,
@@ -496,6 +499,7 @@ void            CKernel::wrapper_parser_usb()
 
                                     MIN_VIDEO_LEVEL,
                                     MAX_VIDEO_LEVEL);        
+    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper parse usb end");                                     
 }
 
 void            CKernel::wrapper_init_gl_sd         (   )
