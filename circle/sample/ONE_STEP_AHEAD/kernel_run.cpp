@@ -9,8 +9,6 @@ TShutdownMode CKernel::Run(void)
 
                 g_centralModeBuffer[g_gl_program_current][FLAG_TIME] = 0;           // start values for the glsl code
 
-                while (/*m_resetFlag == false*/ 1)
-                    {
                     if (!m_SD_has_load)                                             // first load block - get the system files from sd
                         {
                         wrapper_load_sd();
@@ -19,6 +17,19 @@ TShutdownMode CKernel::Run(void)
 
                         m_SD_has_load = true;
                         }
+
+                while (/*m_resetFlag == false*/ 1)
+                    {
+/*                        
+                    if (!m_SD_has_load)                                             // first load block - get the system files from sd
+                        {
+                        wrapper_load_sd();
+                        wrapper_parser_sd();
+                        wrapper_init_gl_sd();
+
+                        m_SD_has_load = true;
+                        }
+*/                        
                     if (updateUSB("umsd1") == true && m_USB_has_load == false)      // second load block - get user files from usb AND there is a devide attached
                         {
                         wrapper_load_usb();   
