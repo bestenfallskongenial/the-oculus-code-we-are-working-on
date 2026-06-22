@@ -594,7 +594,7 @@ void            CKernel::wrapper_init_gl_usb        (   )
                 initUniform     (   &m_vtx,
                                     &m_fsh,
                                     &m_tex,
-                                    filecounter[FT_FSH][FLD_PREV] // 0,                                  // why not simply change the call signature? 
+                                    filecounter[FT_FSH][FLD_PREV], // 0,                                  // why not simply change the call signature? 
                                     filecounter[FT_FSH][FLD_VALID]);            
                 initTexture     (   &m_vtx,
                                     &m_fsh,
