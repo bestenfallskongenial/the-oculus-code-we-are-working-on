@@ -34,29 +34,53 @@ void            CKernel::setUniPrg                  (   olg_state*  o,
                                                     /*  int         gl_current_tex, */
                                                         unsigned    p_validTextureCount )
 {
+#ifdef __DEBUG_CHECK__
+                check();
+#endif    
                 glUseProgram(s->gl_program_id[g_gl_program_current]);
 #ifdef __DEBUG_CHECK__
                 check();
 #endif
-                if(s->u_time[g_gl_program_current] != -1)  glUniform1f(s->u_time[g_gl_program_current], GLtime);
+                if(s->u_time[g_gl_program_current] != -1)  glUniform1f(s->u_time[g_gl_program_current], GLtime);#
+#ifdef __DEBUG_CHECK__
+                check();
+#endif                
                 if(s->u_tres[g_gl_program_current]!= -1 )  glUniform2f(s->u_tres[g_gl_program_current], o->screen_width, o->screen_width);
+#ifdef __DEBUG_CHECK__
+                check();
+#endif                
                 if(s->u_seed[g_gl_program_current] != -1)  glUniform4f(s->u_seed[g_gl_program_current], g_inOutMatrixFlt[0][RND], 
                                                                                                         g_inOutMatrixFlt[1][RND], 
                                                                                                         g_inOutMatrixFlt[2][RND], 
                                                                                                         g_inOutMatrixFlt[3][RND]);
+#ifdef __DEBUG_CHECK__
+                check();
+#endif                                                                                                        
                 if(s->u_aud[g_gl_program_current]!= -1 )   glUniform4f(s->u_aud[g_gl_program_current],  g_inOutMatrixFlt[0][AU0], 
                                                                                                         g_inOutMatrixFlt[0][AU1], 
                                                                                                         g_inOutMatrixFlt[0][AU2], 
                                                                                                         g_inOutMatrixFlt[0][AU3]);
+#ifdef __DEBUG_CHECK__
+                check();
+#endif                                                                                                        
                 if(s->u_col[g_gl_program_current] != -1)   glUniform4f(s->u_col[g_gl_program_current],  0.0f, 0.0f, 0.0f, g_opaque);
+#ifdef __DEBUG_CHECK__
+                check();
+#endif                
                 if(s->u_par_a[g_gl_program_current] != -1) glUniform4f(s->u_par_a[g_gl_program_current],g_inOutMatrixFlt[0][OUT], 
                                                                                                         g_inOutMatrixFlt[1][OUT], 
                                                                                                         g_inOutMatrixFlt[2][OUT], 
                                                                                                         g_inOutMatrixFlt[3][OUT]);
+#ifdef __DEBUG_CHECK__
+                check();
+#endif                                                                                                        
                 if(s->u_par_b[g_gl_program_current] != -1) glUniform4f(s->u_par_b[g_gl_program_current],g_inOutMatrixFlt[4][OUT], 
                                                                                                         g_inOutMatrixFlt[5][OUT], 
                                                                                                         g_inOutMatrixFlt[6][OUT], 
                                                                                                         g_inOutMatrixFlt[7][OUT]);
+#ifdef __DEBUG_CHECK__
+                check();
+#endif                                                                                                        
                 if(s->u_tex_l[g_gl_program_current] != -1) glUniform1i(s->u_tex_l[g_gl_program_current],p_validTextureCount); 
 
 #ifdef __DEBUG_CHECK__
@@ -138,6 +162,9 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
 
 void            CKernel::drawGLsPrg                 (   )
 {
+#ifdef __DEBUG_CHECK__
+                check();
+#endif    
                 glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 #ifdef __DEBUG_CHECK__
                 check();

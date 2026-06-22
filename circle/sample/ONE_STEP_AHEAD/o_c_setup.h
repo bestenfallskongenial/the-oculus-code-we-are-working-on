@@ -19,7 +19,7 @@
     #define         __DEBUG_CHECK__           // GL/EGL runtime check() calls
     #define         __DEBUG_OGL__          // older assert/check based OGL init debug
 
-    #define         __DUMP_GLSL__           // dump shader source from GL
+//  #define         __DUMP_GLSL__           // dump shader source from GL
 //  #define         __DUMP_FRAMES__         
 //  #define         __DUMP_VC04__           // detailed VC/VCHI message dump
 
