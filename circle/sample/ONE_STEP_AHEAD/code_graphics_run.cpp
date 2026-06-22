@@ -41,7 +41,7 @@ void            CKernel::setUniPrg                  (   olg_state*  o,
 #ifdef __DEBUG_CHECK__
                 check();
 #endif
-                if(s->u_time[g_gl_program_current] != -1)  glUniform1f(s->u_time[g_gl_program_current], GLtime);#
+                if(s->u_time[g_gl_program_current] != -1)  glUniform1f(s->u_time[g_gl_program_current], GLtime);
 #ifdef __DEBUG_CHECK__
                 check();
 #endif                
