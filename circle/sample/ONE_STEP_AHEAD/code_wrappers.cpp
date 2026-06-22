@@ -546,12 +546,12 @@ void            CKernel::wrapper_init_gl_sd         (   )
                 initUniform     (   &m_vtx,
                                     &m_fsh,
                                     &m_tex,
-                                    0,                                              // why not simply change the call signature? 
+                                    filecounter[FT_FSH][FLD_PREV], // 0,                                              // why not simply change the call signature? 
                                     filecounter[FT_FSH][FLD_VALID]);                // for the dense indexing after load and verify *
                 initUniform     (   &m_vtx,
                                     &m_osh,
                                     &m_omt,
-                                    0,
+                                    filecounter[FT_FSH][FLD_PREV], // 0,
                                     filecounter[FT_OMF][FLD_VALID]);                // for the dense indexing after load and verify *
                 initTexture     (   &m_vtx,                                         // my overlay texture
                                     &m_osh,
@@ -594,7 +594,7 @@ void            CKernel::wrapper_init_gl_usb        (   )
                 initUniform     (   &m_vtx,
                                     &m_fsh,
                                     &m_tex,
-                                    0,                                  // why not simply change the call signature? 
+                                    filecounter[FT_FSH][FLD_PREV] // 0,                                  // why not simply change the call signature? 
                                     filecounter[FT_FSH][FLD_VALID]);            
                 initTexture     (   &m_vtx,
                                     &m_fsh,
