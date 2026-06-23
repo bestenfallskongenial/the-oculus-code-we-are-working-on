@@ -125,7 +125,7 @@ public:         // Logging
                                                                                                     1551,       // 3.3V max (1023 * 1.515555...)
                                                                                                     1023    };  // 5.0V max     
 
-                int                             m_adc_ring[ADC_CHANNELS][ADC_BUFFER_COUNT];
+                int                             m_adc_ring[ADC_CHANNELS][ADC_BUFFER_COUNT] = { 0 };
                 int                             m_adc_index = 0;
 
                 int                             m_band[4][AUDIO_BUFFER_COUNT]                   = { 0 };
