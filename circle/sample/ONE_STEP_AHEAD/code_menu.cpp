@@ -3,24 +3,6 @@
     #define MY_BUFFER   m_bufferLog                 // not used here
     #define MY_INDEX    m_bufferLogIndex
 
-void            CKernel::storeModes                 (   )
-{
-                if (g_gl_program_current != g_gl_program_last)
-                    {    
-                    g_currentProgramBuffer = g_centralModeBuffer[g_gl_program_current][IS_STORED] ? g_gl_program_current : DEFAULT_SLOT;
-                    g_gl_program_last = g_gl_program_current;
-                    }               
-                if (g_centralModeBuffer[g_gl_program_current][IS_STORED] == true && g_currentProgramBuffer != g_gl_program_current )
-                    {  
-                    memcpy(&g_centralModeBuffer[g_gl_program_current][0], &g_centralModeBuffer[DEFAULT_SLOT][0], sizeof(g_centralModeBuffer[g_gl_program_current])); // replaces 16 * sizeof(int)
-                    g_currentProgramBuffer = g_gl_program_current;
-                    }
-                else if (g_centralModeBuffer[g_gl_program_current][IS_STORED] == false  && g_currentProgramBuffer != DEFAULT_SLOT )
-                    {  
-                    g_currentProgramBuffer = DEFAULT_SLOT;
-                    }
-}
-
 void CKernel::setLayer(int buttonA, int buttonB)
 {
     static int stepLayer = 2;
@@ -30,7 +12,9 @@ void CKernel::setLayer(int buttonA, int buttonB)
          !g_buttons_states[buttonB][BTN_HOLD_TICK] )
     {
         stepLayer = 2;
+
         g_menuLayer = 0;
+        g_lastLayer = 0;
 
         if (g_buttons_states[buttonA][BTN_SINGLE])
         {
@@ -38,9 +22,11 @@ void CKernel::setLayer(int buttonA, int buttonB)
             g_buttons_states[buttonA][BTN_SINGLE] = 0;
         }
 
-        if (g_buttons_states[buttonB][BTN_DOUBLE]) // not BTN_SINGLE
+        if (g_buttons_states[buttonB][BTN_DOUBLE])
         {
-            g_centralModeBuffer[g_gl_program_current][IS_STORED] = !g_centralModeBuffer[g_gl_program_current][IS_STORED];
+            g_centralModeBuffer[g_gl_program_current][IS_STORED] =
+                !g_centralModeBuffer[g_gl_program_current][IS_STORED];
+
             g_buttons_states[buttonB][BTN_DOUBLE] = 0;
         }
 
@@ -52,22 +38,20 @@ void CKernel::setLayer(int buttonA, int buttonB)
         !g_buttons_states[buttonB][BTN_HOLD_TICK] )
     {
         stepLayer = 2;
+
         g_menuLayer = 1;
         g_lastLayer = 1;
+
         return;
     }
 
-    // B hold only -> layer 2
+    // B hold only -> current stepLayer
     if ( g_buttons_states[buttonB][BTN_HOLD_TICK] &&
         !g_buttons_states[buttonA][BTN_HOLD_TICK] &&
         !g_buttons_states[buttonA][BTN_SINGLE] )
     {
         g_menuLayer = stepLayer;
-
-        if (stepLayer == 2)
-        {
-            g_lastLayer = 2;
-        }
+        g_lastLayer = stepLayer;
 
         return;
     }
@@ -91,7 +75,10 @@ void CKernel::setLayer(int buttonA, int buttonB)
         }
 
         g_menuLayer = stepLayer;
+        g_lastLayer = stepLayer;
+
         g_buttons_states[buttonA][BTN_SINGLE] = 0;
+
         return;
     }
 }

@@ -1,8 +1,5 @@
 #include "kernel.h"
 
-//  #undef  __LOG_GLSL__
-    #define __LOG_GLSL__
-
 //  #define MY_BUFFER   m_bufferLog[1] //m_logBuffer
 //  #define MY_INDEX    m_bufferLogIndex[1] //m_logBufferIndex
 
