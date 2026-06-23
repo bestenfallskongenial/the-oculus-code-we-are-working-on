@@ -7,40 +7,9 @@ TShutdownMode CKernel::Run(void)
 {
                 g_centralModeBuffer[g_gl_program_current][FLAG_TEX] = 0;            // start values for the glsl code
 
-                g_centralModeBuffer[g_gl_program_current][FLAG_TIME] = 0;           // start values for the glsl code
-
-                    if (!m_SD_has_load)                                             // first load block - get the system files from sd
-                        {
-                        wrapper_load_sd();
-                        wrapper_parser_sd();
-                        wrapper_init_gl_sd();
-
-    storeLog(   MY_BUFFER, MY_INDEX,
-                "g_gl_program_current",
-                g_gl_program_current,
-                "g_currentProgramBuffer",
-                g_currentProgramBuffer);
-
-    storeLog(   MY_BUFFER, MY_INDEX,                
-                "filecounter[FT_FSH][FLD_LOADED]",
-                filecounter[FT_FSH][FLD_LOADED],
-                "filecounter[FT_FSH][FLD_VALID]",
-                filecounter[FT_FSH][FLD_VALID]);
-
-    storeLog(   MY_BUFFER, MY_INDEX,
-                "mapping",
-                ((g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10)
-                );
-
-                        msDelay(2000);
-
-                        m_SD_has_load = true;
-                        }
-
-
                 while (/*m_resetFlag == false*/ 1)
                     {
-/*                        
+                       
                     if (!m_SD_has_load)                                             // first load block - get the system files from sd
                         {
                         wrapper_load_sd();
@@ -49,11 +18,10 @@ TShutdownMode CKernel::Run(void)
 
                         m_SD_has_load = true;
                         }
-*/                        
+                      
                     if (updateUSB("umsd1") == true && m_USB_has_load == false)      // second load block - get user files from usb AND there is a devide attached
                         {
                         wrapper_load_usb();   
-
                         wrapper_parser_usb();
                         wrapper_init_gl_usb();
 
@@ -64,7 +32,6 @@ TShutdownMode CKernel::Run(void)
                         {
                         m_logBufferIndex = 0;
                         bufferScreenClear();
-                    //  g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
                         } 
 
                     g_currentTime = m_Timer.GetClockTicks();                        // here starts the actual runtimeloop
@@ -86,29 +53,8 @@ TShutdownMode CKernel::Run(void)
 
                     dispatchLayer();
 
-                //  applyTargetModes();  // <- correct place here?
-    storeLog(   MY_BUFFER, MY_INDEX,
-                "g_gl_program_current BEFORE MAPPING",
-                g_gl_program_current);
-storeLog(   MY_BUFFER, MY_INDEX,
-            "adc_val",   g_inOutMatrixInt[ADC_SELECT_PRG][RAW],
-            "valid_val", filecounter[FT_FSH][FLD_VALID],
-            "mul_val",   g_inOutMatrixInt[ADC_SELECT_PRG][RAW] *
-                         filecounter[FT_FSH][FLD_VALID],
-            "map_val",   (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] *
-                          filecounter[FT_FSH][FLD_VALID]) >> 10 );
-                                          
-                    g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
-    storeLog(   MY_BUFFER, MY_INDEX,
-                "g_gl_program_current AFTER MAPPING",
-                g_gl_program_current);
-storeLog(   MY_BUFFER, MY_INDEX,
-            "adc_val",   g_inOutMatrixInt[ADC_SELECT_PRG][RAW],
-            "valid_val", filecounter[FT_FSH][FLD_VALID],
-            "mul_val",   g_inOutMatrixInt[ADC_SELECT_PRG][RAW] *
-                         filecounter[FT_FSH][FLD_VALID],
-            "map_val",   (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] *
-                          filecounter[FT_FSH][FLD_VALID]) >> 10 );                
+                    applyTargetModes();  // <- correct place here?
+              
                 //  getChannelModeA( 0 );
                 //  getChannelModeA( 1 );                    
 
@@ -131,41 +77,22 @@ storeLog(   MY_BUFFER, MY_INDEX,
                     sample1WaveTable( 0, LF1_WAVE, LF1 );
                     sample1WaveTable( 1, LF2_WAVE, LF2 );
 
-
-                //  storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "menu layer", g_menuLayer );
-
                     logButtonStatesRuntime();
-
-storeLog(MY_BUFFER, MY_INDEX,
-         "RUN prg0", (u32)m_fsh.gl_program_id[0],
-         "cur",      (u32)g_gl_program_current);
-storeLog(MY_BUFFER, MY_INDEX,
-         "texu00", (u32)m_tex.u_tex_id[0][0],
-         "tex0",   (u32)m_tex.gl_tex_id[0]);
-         
-                    frmBufferSet(&m_vtx);                                           // this is the demo code just to see if rendering works
-
-storeLog(MY_BUFFER, MY_INDEX,
-         "RUN prg0", (u32)m_fsh.gl_program_id[0],
-         "cur",      (u32)g_gl_program_current);
-storeLog(MY_BUFFER, MY_INDEX,
-         "texu00", (u32)m_tex.u_tex_id[0][0],
-         "tex0",   (u32)m_tex.gl_tex_id[0]);
 
                     setUniPrg(&m_ogl,
                             &m_fsh,
                             &m_tex,
                             filecounter[FT_FSH][FLD_VALID]);
-/*
+
                     setTexPrg(&m_ogl,
                             &m_fsh,
                             &m_tex,
                             0,
                             filecounter[FT_TEX][FLD_VALID]);                            
-*/
+
                     drawGLsPrg();
 
-                //  frmRateBreak(false);
+                    frmRateBreak(false);
 
                     frmBufferSwap(&m_ogl); 
 
