@@ -34,6 +34,9 @@ TShutdownMode CKernel::Run(void)
 
                         msDelay(2000);
 
+                        glFinish();
+                    check();
+
                         m_SD_has_load = true;
                         }
 
