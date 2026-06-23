@@ -34,9 +34,6 @@ TShutdownMode CKernel::Run(void)
 
                         msDelay(2000);
 
-                        glFinish();
-                    check();
-
                         m_SD_has_load = true;
                         }
 
@@ -120,8 +117,22 @@ TShutdownMode CKernel::Run(void)
 
                     logButtonStatesRuntime();
 
+storeLog(MY_BUFFER, MY_INDEX,
+         "RUN prg0", (u32)m_fsh.gl_program_id[0],
+         "cur",      (u32)g_gl_program_current);
+storeLog(MY_BUFFER, MY_INDEX,
+         "texu00", (u32)m_tex.u_tex_id[0][0],
+         "tex0",   (u32)m_tex.gl_tex_id[0]);
+         
                     frmBufferSet(&m_vtx);                                           // this is the demo code just to see if rendering works
 
+storeLog(MY_BUFFER, MY_INDEX,
+         "RUN prg0", (u32)m_fsh.gl_program_id[0],
+         "cur",      (u32)g_gl_program_current);
+storeLog(MY_BUFFER, MY_INDEX,
+         "texu00", (u32)m_tex.u_tex_id[0][0],
+         "tex0",   (u32)m_tex.gl_tex_id[0]);
+         
                     setUniPrg(&m_ogl,
                             &m_fsh,
                             &m_tex,
