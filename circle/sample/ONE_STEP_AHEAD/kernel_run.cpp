@@ -90,10 +90,25 @@ TShutdownMode CKernel::Run(void)
     storeLog(   MY_BUFFER, MY_INDEX,
                 "g_gl_program_current BEFORE MAPPING",
                 g_gl_program_current);
+storeLog(   MY_BUFFER, MY_INDEX,
+            "adc_val",   g_inOutMatrixInt[ADC_SELECT_PRG][RAW],
+            "valid_val", filecounter[FT_FSH][FLD_VALID],
+            "mul_val",   g_inOutMatrixInt[ADC_SELECT_PRG][RAW] *
+                         filecounter[FT_FSH][FLD_VALID],
+            "map_val",   (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] *
+                          filecounter[FT_FSH][FLD_VALID]) >> 10 );
+                                          
                     g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
     storeLog(   MY_BUFFER, MY_INDEX,
                 "g_gl_program_current AFTER MAPPING",
                 g_gl_program_current);
+storeLog(   MY_BUFFER, MY_INDEX,
+            "adc_val",   g_inOutMatrixInt[ADC_SELECT_PRG][RAW],
+            "valid_val", filecounter[FT_FSH][FLD_VALID],
+            "mul_val",   g_inOutMatrixInt[ADC_SELECT_PRG][RAW] *
+                         filecounter[FT_FSH][FLD_VALID],
+            "map_val",   (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] *
+                          filecounter[FT_FSH][FLD_VALID]) >> 10 );                
                 //  getChannelModeA( 0 );
                 //  getChannelModeA( 1 );                    
 
