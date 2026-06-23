@@ -87,10 +87,12 @@ TShutdownMode CKernel::Run(void)
                     dispatchLayer();
 
                 //  applyTargetModes();  // <- correct place here?
-
+    storeLog(   MY_BUFFER, MY_INDEX,
+                "g_gl_program_current BEFORE MAPPING",
+                g_gl_program_current);
                     g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
     storeLog(   MY_BUFFER, MY_INDEX,
-                "g_gl_program_current",
+                "g_gl_program_current AFTER MAPPING",
                 g_gl_program_current);
                 //  getChannelModeA( 0 );
                 //  getChannelModeA( 1 );                    
