@@ -10,12 +10,12 @@ void            CKernel::storeModes                 (   )
                     g_currentProgramBuffer = g_centralModeBuffer[g_gl_program_current][IS_STORED] ? g_gl_program_current : DEFAULT_SLOT;
                     g_gl_program_last = g_gl_program_current;
                     }               
-                if (g_centralModeBuffer[g_gl_program_current][IS_STORED] == true /* && g_currentProgramBuffer != g_gl_program_current */)
+                if (g_centralModeBuffer[g_gl_program_current][IS_STORED] == true && g_currentProgramBuffer != g_gl_program_current )
                     {  
                     memcpy(&g_centralModeBuffer[g_gl_program_current][0], &g_centralModeBuffer[DEFAULT_SLOT][0], sizeof(g_centralModeBuffer[g_gl_program_current])); // replaces 16 * sizeof(int)
                     g_currentProgramBuffer = g_gl_program_current;
                     }
-                else if (g_centralModeBuffer[g_gl_program_current][IS_STORED] == false /* && g_currentProgramBuffer != DEFAULT_SLOT */)
+                else if (g_centralModeBuffer[g_gl_program_current][IS_STORED] == false  && g_currentProgramBuffer != DEFAULT_SLOT )
                     {  
                     g_currentProgramBuffer = DEFAULT_SLOT;
                     }
@@ -496,12 +496,12 @@ void            CKernel::modeAudioBb1               (   int p_channel)
 void            CKernel::applyTargetModes           (   )       // current!
 {
                 g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
-/*
+
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_TEX])      // selected channel OUT controls active texture
                     {
                     m_activeTex =   g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX]][OUT];
                     }
-
+/*
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_VID])      // selected channel OUT controls active video
                     {
                     m_activeVideo = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_VID]][OUT];
