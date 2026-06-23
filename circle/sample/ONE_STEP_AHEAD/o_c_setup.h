@@ -6,15 +6,15 @@
     
     #define         __DEBUG_LOG__           // generic debug log blocks
 
-    #define         __LOG_ALLOC__           // allocation / buffer allocation logging
-    #define         __LOG_FILE__            // filesystem / file load-store logging
+//  #define         __LOG_ALLOC__           // allocation / buffer allocation logging
+//  #define         __LOG_FILE__            // filesystem / file load-store logging
     #define         __LOG_PARSER__         // parser / file parser logging
     #define         __LOG_MMAL__           // MMAL init/wrapper/message logging
     #define         __LOG_VC04__           // VC/VCHI service logging
 
     #define         __LOG_VCSM__           // VCSM alloc/import/lock logging
     #define         __LOG_INIT__           // kernel initialization step logging
-    #define         __LOG_GLSL__             // shader/program/uniform/gfx_check OpenGL logging
+//  #define         __LOG_GLSL__             // shader/program/uniform/gfx_check OpenGL logging
 
     #define         __DEBUG_CHECK__           // GL/EGL runtime check() calls
     #define         __DEBUG_OGL__          // older assert/check based OGL init debug
