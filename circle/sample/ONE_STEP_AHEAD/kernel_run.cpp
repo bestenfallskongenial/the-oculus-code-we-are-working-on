@@ -89,7 +89,9 @@ TShutdownMode CKernel::Run(void)
                 //  applyTargetModes();  // <- correct place here?
 
                     g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
-
+    storeLog(   MY_BUFFER, MY_INDEX,
+                "g_gl_program_current",
+                g_gl_program_current);
                 //  getChannelModeA( 0 );
                 //  getChannelModeA( 1 );                    
 
@@ -132,7 +134,7 @@ storeLog(MY_BUFFER, MY_INDEX,
 storeLog(MY_BUFFER, MY_INDEX,
          "texu00", (u32)m_tex.u_tex_id[0][0],
          "tex0",   (u32)m_tex.gl_tex_id[0]);
-         
+
                     setUniPrg(&m_ogl,
                             &m_fsh,
                             &m_tex,
