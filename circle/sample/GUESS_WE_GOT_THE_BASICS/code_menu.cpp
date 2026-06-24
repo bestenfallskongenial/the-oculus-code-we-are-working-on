@@ -8,6 +8,9 @@ void CKernel::resetMenuPickUpFlags()
     if (g_menuLayer != g_lastLayer)
     {
         memset(g_menuPickUpFlag, 0, sizeof(g_menuPickUpFlag));
+
+        g_selectedProgramFlag = false;
+
         g_lastLayer = g_menuLayer;
     }
 }
@@ -418,9 +421,27 @@ void            CKernel::modeAudioBb1               (   int p_channel)
 
 void            CKernel::applyTargetModes           (   )       // current!
 {
+/*    
+                if (g_menuLayer != 0)
+                    {
+                    g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] ) ) >> 10;
+                    }
+*/
                 if (g_menuLayer == 0)
                     {
-                    g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
+                    g_selectedProgram = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/)) >> 10;
+
+                    if (!g_selectedProgramFlag)
+                        {
+                        if (g_selectedProgram == g_gl_program_current)
+                            {
+                            g_selectedProgramFlag = true;
+                            }
+                        }
+                    else
+                    {
+                        g_gl_program_current = g_selectedProgram;
+                    }
                     }
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_TEX])      // selected channel OUT controls active texture
                     {

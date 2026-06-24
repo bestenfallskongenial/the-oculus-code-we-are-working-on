@@ -81,6 +81,9 @@ public:         // Logging
 
                 int                             g_currentProgramBuffer                          = 0;
 
+                bool                            g_selectedProgramFlag                           = false;
+
+                int                             g_selectedProgram                               = 0;
                 int                             g_gl_program_current                            = 0;
                 int                             g_gl_program_last                               = 0;
 
