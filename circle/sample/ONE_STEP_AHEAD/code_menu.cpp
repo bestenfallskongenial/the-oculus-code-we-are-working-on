@@ -3,128 +3,146 @@
     #define MY_BUFFER   m_bufferLog                 // not used here
     #define MY_INDEX    m_bufferLogIndex
 
-void CKernel::setLayer(int buttonA, int buttonB)
+void            CKernel::storeModes                 (   )
 {
-    static int stepLayer = 2;
-
-    // no button hold -> layer 0
-    if ( !g_buttons_states[buttonA][BTN_HOLD_TICK] &&
-         !g_buttons_states[buttonB][BTN_HOLD_TICK] )
-    {
-        stepLayer = 2;
-
-        g_menuLayer = 0;
-        g_lastLayer = 0;
-
-        if (g_buttons_states[buttonA][BTN_SINGLE])
-        {
-            calculate1BPMnew(0, TB0, DB0, g_currentTime);
-            g_buttons_states[buttonA][BTN_SINGLE] = 0;
-        }
-
-        if (g_buttons_states[buttonB][BTN_DOUBLE])
-        {
-            g_centralModeBuffer[g_gl_program_current][IS_STORED] =
-                !g_centralModeBuffer[g_gl_program_current][IS_STORED];
-
-            g_buttons_states[buttonB][BTN_DOUBLE] = 0;
-        }
-
-        return;
-    }
-
-    // A hold only -> layer 1
-    if ( g_buttons_states[buttonA][BTN_HOLD_TICK] &&
-        !g_buttons_states[buttonB][BTN_HOLD_TICK] )
-    {
-        stepLayer = 2;
-
-        g_menuLayer = 1;
-        g_lastLayer = 1;
-
-        return;
-    }
-
-    // B hold only -> current stepLayer
-    if ( g_buttons_states[buttonB][BTN_HOLD_TICK] &&
-        !g_buttons_states[buttonA][BTN_HOLD_TICK] &&
-        !g_buttons_states[buttonA][BTN_SINGLE] )
-    {
-        g_menuLayer = stepLayer;
-        g_lastLayer = stepLayer;
-
-        return;
-    }
-
-    // B hold + A press -> cycle layer 3..7
-    if ( g_buttons_states[buttonB][BTN_HOLD_TICK] &&
-         g_buttons_states[buttonA][BTN_SINGLE] )
-    {
-        if (stepLayer < 3)
-        {
-            stepLayer = 3;
-        }
-        else
-        {
-            stepLayer++;
-
-            if (stepLayer > 7)
-            {
-                stepLayer = 3;
-            }
-        }
-
-        g_menuLayer = stepLayer;
-        g_lastLayer = stepLayer;
-
-        g_buttons_states[buttonA][BTN_SINGLE] = 0;
-
-        return;
-    }
+                if (g_gl_program_current != g_gl_program_last)
+                    {    
+                    g_currentProgramBuffer = g_centralModeBuffer[g_gl_program_current][IS_STORED] ? g_gl_program_current : DEFAULT_SLOT;
+                    g_gl_program_last = g_gl_program_current;
+                    }               
+                if (g_centralModeBuffer[g_gl_program_current][IS_STORED] == true && g_currentProgramBuffer != g_gl_program_current )
+                    {  
+                    memcpy(&g_centralModeBuffer[g_gl_program_current][0], &g_centralModeBuffer[DEFAULT_SLOT][0], sizeof(g_centralModeBuffer[g_gl_program_current])); // replaces 16 * sizeof(int)
+                    g_currentProgramBuffer = g_gl_program_current;
+                    }
+                else if (g_centralModeBuffer[g_gl_program_current][IS_STORED] == false  && g_currentProgramBuffer != DEFAULT_SLOT )
+                    {  
+                    g_currentProgramBuffer = DEFAULT_SLOT;
+                    }
 }
 
-void CKernel::dispatchLayer()
+void            CKernel::setLayer(int buttonA, int buttonB)
 {
-    switch (g_menuLayer)
-    {
-        case 1:
-            set_mode_roof_map(0);
-            mapMenuGroup(0);
-            break;
+                static int stepLayer = 2;
 
-        case 2:
-            set_mode_roof_map(1);
-            mapMenuGroup(1);
-            break;
+                // no button hold -> layer 0
+                if ( !g_buttons_states[buttonA][BTN_HOLD_TICK] &&
+                    !g_buttons_states[buttonB][BTN_HOLD_TICK] )
+                {
+                    stepLayer = 2;
 
-        case 3:
-            set_mode_roof_map(2);
-            mapMenuGroup(2);
-            break;
+                    g_menuLayer = 0;
+                    g_lastLayer = 0;
 
-        case 4:
-            set_mode_roof_map(3);
-            mapMenuGroup(3);
-            break;
+                    if (g_buttons_states[buttonA][BTN_SINGLE])
+                    {
+                        calculate1BPMnew(0, TB0, DB0, g_currentTime);
+                        g_buttons_states[buttonA][BTN_SINGLE] = 0;
+                    }
 
-        case 5:
-            set_mode_roof_map(4);
-            mapMenuGroup(4);
-            break;
+                    if (g_buttons_states[buttonB][BTN_DOUBLE])
+                    {
+                        g_centralModeBuffer[g_gl_program_current][IS_STORED] =
+                            !g_centralModeBuffer[g_gl_program_current][IS_STORED];
 
-        case 6:
-            set_mode_roof_map(5);
-            mapMenuGroup(5);
-            break;
+                        g_buttons_states[buttonB][BTN_DOUBLE] = 0;
+                    }
 
-        case 7:
-            set_mode_roof_map(7);
-            mapMenuGroup(7);
-            break;
+                    return;
+                }
 
-        default:
-            break;
-    }
+                // A hold only -> layer 1
+                if ( g_buttons_states[buttonA][BTN_HOLD_TICK] &&
+                    !g_buttons_states[buttonB][BTN_HOLD_TICK] )
+                {
+                    stepLayer = 2;
+
+                    g_menuLayer = 1;
+                    g_lastLayer = 1;
+
+                    return;
+                }
+
+                // B hold only -> current stepLayer
+                if ( g_buttons_states[buttonB][BTN_HOLD_TICK] &&
+                    !g_buttons_states[buttonA][BTN_HOLD_TICK] &&
+                    !g_buttons_states[buttonA][BTN_SINGLE] )
+                {
+                    g_menuLayer = stepLayer;
+                    g_lastLayer = stepLayer;
+
+                    return;
+                }
+
+                // B hold + A press -> cycle layer 3..7
+                if ( g_buttons_states[buttonB][BTN_HOLD_TICK] &&
+                    g_buttons_states[buttonA][BTN_SINGLE] )
+                {
+                    if (stepLayer < 3)
+                    {
+                        stepLayer = 3;
+                    }
+                    else
+                    {
+                        stepLayer++;
+
+                        if (stepLayer > 7)
+                        {
+                            stepLayer = 3;
+                        }
+                    }
+
+                    g_menuLayer = stepLayer;
+                    g_lastLayer = stepLayer;
+
+                    g_buttons_states[buttonA][BTN_SINGLE] = 0;
+
+                    return;
+                }
+}
+
+void            CKernel::dispatchLayer()
+{
+                switch (g_menuLayer)
+                {
+                    case 1:
+                        set_mode_roof_map(0);
+                        mapMenuGroup(0);
+                        break;
+
+                    case 2:
+                        set_mode_roof_map(1);
+                        mapMenuGroup(1);
+                        break;
+
+                    case 3:
+                        set_mode_roof_map(2);
+                        mapMenuGroup(2);
+                        break;
+
+                    case 4:
+                        set_mode_roof_map(3);
+                        mapMenuGroup(3);
+                        break;
+
+                    case 5:
+                        set_mode_roof_map(4);
+                        mapMenuGroup(4);
+                        break;
+
+                    case 6:
+                        set_mode_roof_map(5);
+                        mapMenuGroup(5);
+                        break;
+
+                    case 7:
+                        set_mode_roof_map(7);
+                        mapMenuGroup(7);
+                        break;
+
+                    default:
+                        break;
+                }
 }
 
 void            CKernel::set_mode_roof_map          (uint8_t block)
@@ -369,46 +387,46 @@ void            CKernel::getChannelModeB             ()
                 if (fn) (this->*fn)(7);                
 }
 
-void CKernel::getChannelModeA(int p_channel)
+void            CKernel::getChannelModeA(int p_channel)
 {
-    switch (g_centralModeBuffer[g_currentProgramBuffer][p_channel])
-    {
-        case 0:
-            modeADC(p_channel);
-        break;
+                switch (g_centralModeBuffer[g_currentProgramBuffer][p_channel])
+                    {
+                    case 0:
+                        modeADC(p_channel);
+                    break;
 
-        case 1:
-            modeTRG(p_channel);
-        break;
+                    case 1:
+                        modeTRG(p_channel);
+                    break;
 
-        case 2:
-            modeBPM(p_channel);
-        break;
+                    case 2:
+                        modeBPM(p_channel);
+                    break;
 
-        case 3:
-            modeLF1(p_channel);
-        break;
+                    case 3:
+                        modeLF1(p_channel);
+                    break;
 
-        case 4:
-            modeLF2(p_channel);
-        break;
+                    case 4:
+                        modeLF2(p_channel);
+                    break;
 
-        case 5:
-            modeAudioAb0(p_channel);
-        break;
+                    case 5:
+                        modeAudioAb0(p_channel);
+                    break;
 
-        case 6:
-            modeAudioAb1(p_channel);
-        break;
+                    case 6:
+                        modeAudioAb1(p_channel);
+                    break;
 
-        case 7:
-            modeAudioBb0(p_channel);
-        break;
+                    case 7:
+                        modeAudioBb0(p_channel);
+                    break;
 
-        case 8:
-            modeAudioBb1(p_channel);
-        break;
-    }
+                    case 8:
+                        modeAudioBb1(p_channel);
+                    break;
+                    }
 }
 
 
