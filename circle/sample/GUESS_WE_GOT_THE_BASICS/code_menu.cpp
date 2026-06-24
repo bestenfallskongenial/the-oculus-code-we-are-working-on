@@ -3,119 +3,101 @@
     #define MY_BUFFER   m_bufferLog                 // not used here
     #define MY_INDEX    m_bufferLogIndex
 
-void CKernel::resetMenuPickUpFlags()
+void            CKernel::resetMenuPickUpFlags()
 {
-    if (g_menuLayer != g_lastLayer)
-    {
-        memset(g_menuPickUpFlag, 0, sizeof(g_menuPickUpFlag));
+                if (g_menuLayer != g_lastLayer)
+                    {
+                    memset(g_menuPickUpFlag, 0, sizeof(g_menuPickUpFlag));
 
-        g_selectedProgramFlag = false;
+                    g_selectedProgramFlag = false;
 
-        g_lastLayer = g_menuLayer;
-    }
+                    g_lastLayer = g_menuLayer;
+                    }
 }
-void CKernel::storeModes()
+void            CKernel::storeModes()
 {
-    if (g_gl_program_current != g_gl_program_last)
-        {
-        g_currentProgramBuffer = g_centralModeBuffer[g_gl_program_current][IS_STORED] ? g_gl_program_current : DEFAULT_SLOT;
-        g_gl_program_last = g_gl_program_current;
-        }
+                if (g_gl_program_current != g_gl_program_last)
+                    {
+                    g_currentProgramBuffer = g_centralModeBuffer[g_gl_program_current][IS_STORED] ? g_gl_program_current : DEFAULT_SLOT;
+                    g_gl_program_last = g_gl_program_current;
+                    }
 
-    if (g_centralModeBuffer[g_gl_program_current][IS_STORED] && g_currentProgramBuffer != g_gl_program_current)
-        {
-        int stored = g_centralModeBuffer[g_gl_program_current][IS_STORED];
+                if (g_centralModeBuffer[g_gl_program_current][IS_STORED] && g_currentProgramBuffer != g_gl_program_current)
+                    {
+                    int stored = g_centralModeBuffer[g_gl_program_current][IS_STORED];
 
-        memcpy(&g_centralModeBuffer[g_gl_program_current][0], &g_centralModeBuffer[DEFAULT_SLOT][0], sizeof(g_centralModeBuffer[g_gl_program_current]));
+                    memcpy(&g_centralModeBuffer[g_gl_program_current][0], &g_centralModeBuffer[DEFAULT_SLOT][0], sizeof(g_centralModeBuffer[g_gl_program_current]));
 
-        g_centralModeBuffer[g_gl_program_current][IS_STORED] = stored;
-        g_currentProgramBuffer = g_gl_program_current;
-        }
-    else if (!g_centralModeBuffer[g_gl_program_current][IS_STORED] && g_currentProgramBuffer != DEFAULT_SLOT)
-        {
-        g_currentProgramBuffer = DEFAULT_SLOT;
-        }
+                    g_centralModeBuffer[g_gl_program_current][IS_STORED] = stored;
+                    g_currentProgramBuffer = g_gl_program_current;
+                    }
+                else if (!g_centralModeBuffer[g_gl_program_current][IS_STORED] && g_currentProgramBuffer != DEFAULT_SLOT)
+                    {
+                    g_currentProgramBuffer = DEFAULT_SLOT;
+                    }
 }
 
 
-void CKernel::setLayer(int buttonA, int buttonB)
+void            CKernel::setLayer(int buttonA, int buttonB)
 {
-    static int stepLayer = 2;
+                static int stepLayer = 2;
+                
+                if (!g_buttons_states[buttonA][BTN_HOLD_TICK] && !g_buttons_states[buttonB][BTN_HOLD_TICK])                                                 // no button hold -> layer 0
+                    {
+                    stepLayer       = 2;
+                    g_menuLayer     = 0;
+                    g_lastLayerLED  = 0;
 
-    // no button hold -> layer 0
-    if (!g_buttons_states[buttonA][BTN_HOLD_TICK] &&
-        !g_buttons_states[buttonB][BTN_HOLD_TICK])
-    {
-        stepLayer = 2;
+                    if (g_buttons_states[buttonA][BTN_SINGLE])
+                        {
+                        calculate1BPMnew(0, TB0, DB0, g_currentTime);
+                        g_buttons_states[buttonA][BTN_SINGLE] = 0;
+                        }
+                    if (g_buttons_states[buttonB][BTN_DOUBLE])
+                        {
+                        g_centralModeBuffer[g_gl_program_current][IS_STORED] = !g_centralModeBuffer[g_gl_program_current][IS_STORED];
 
-        g_menuLayer = 0;
-        g_lastLayerLED = 0;
+                        g_buttons_states[buttonB][BTN_DOUBLE] = 0;
+                        }
+                    return;
+                    }
+                if (g_buttons_states[buttonA][BTN_HOLD_TICK] && !g_buttons_states[buttonB][BTN_HOLD_TICK])                                                  // B hold only -> current stepLayer
+                    {
+                    stepLayer       = 2;
+                    g_menuLayer     = 1;
+                    g_lastLayerLED  = 1;
 
-        if (g_buttons_states[buttonA][BTN_SINGLE])
-        {
-            calculate1BPMnew(0, TB0, DB0, g_currentTime);
-            g_buttons_states[buttonA][BTN_SINGLE] = 0;
-        }
+                    return;
+                    }
+                if (g_buttons_states[buttonB][BTN_HOLD_TICK] && !g_buttons_states[buttonA][BTN_HOLD_TICK] && !g_buttons_states[buttonA][BTN_SINGLE])        // B hold only -> current stepLayer
+                    {
+                    g_menuLayer     = stepLayer;
+                    g_lastLayerLED  = stepLayer;
 
-        if (g_buttons_states[buttonB][BTN_DOUBLE])
-        {
-            g_centralModeBuffer[g_gl_program_current][IS_STORED] =
-                !g_centralModeBuffer[g_gl_program_current][IS_STORED];
+                    return;
+                    }
+                if (g_buttons_states[buttonB][BTN_HOLD_TICK] && g_buttons_states[buttonA][BTN_SINGLE])                                                      // B hold + A press -> cycle layer 3..7
+                    {
+                    if (stepLayer < 3)
+                        {
+                        stepLayer   = 3;
+                        }
+                    else
+                        {
+                        stepLayer++;
 
-            g_buttons_states[buttonB][BTN_DOUBLE] = 0;
-        }
+                        if (stepLayer > 7)
+                            {
+                            stepLayer = 3;
+                            }
+                        }
+                    g_menuLayer     = stepLayer;
+                    g_lastLayerLED  = stepLayer;
 
-        return;
-    }
+                    g_buttons_states[buttonA][BTN_SINGLE] = 0;
 
-    // A hold only -> layer 1
-    if (g_buttons_states[buttonA][BTN_HOLD_TICK] &&
-        !g_buttons_states[buttonB][BTN_HOLD_TICK])
-    {
-        stepLayer = 2;
-
-        g_menuLayer = 1;
-        g_lastLayerLED = 1;
-
-        return;
-    }
-
-    // B hold only -> current stepLayer
-    if (g_buttons_states[buttonB][BTN_HOLD_TICK] &&
-        !g_buttons_states[buttonA][BTN_HOLD_TICK] &&
-        !g_buttons_states[buttonA][BTN_SINGLE])
-    {
-        g_menuLayer = stepLayer;
-        g_lastLayerLED = stepLayer;
-
-        return;
-    }
-
-    // B hold + A press -> cycle layer 3..7
-    if (g_buttons_states[buttonB][BTN_HOLD_TICK] &&
-        g_buttons_states[buttonA][BTN_SINGLE])
-    {
-        if (stepLayer < 3)
-        {
-            stepLayer = 3;
-        }
-        else
-        {
-            stepLayer++;
-
-            if (stepLayer > 7)
-            {
-                stepLayer = 3;
-            }
-        }
-
-        g_menuLayer = stepLayer;
-        g_lastLayerLED = stepLayer;
-
-        g_buttons_states[buttonA][BTN_SINGLE] = 0;
-
-        return;
-    }
+                    return;
+                    }
 }
 
 void            CKernel::dispatchLayer()
@@ -439,9 +421,9 @@ void            CKernel::applyTargetModes           (   )       // current!
                             }
                         }
                     else
-                    {
+                        {
                         g_gl_program_current = g_selectedProgram;
-                    }
+                        }
                     }
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_TEX])      // selected channel OUT controls active texture
                     {

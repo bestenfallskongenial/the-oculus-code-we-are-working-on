@@ -78,7 +78,7 @@ TShutdownMode CKernel::Run(void)
                     sample1WaveTable( 0, LF1_WAVE, LF1 );
                     sample1WaveTable( 1, LF2_WAVE, LF2 );
 
-                    logButtonStatesRuntime();
+                //  logButtonStatesRuntime();
 
                     setUniPrg(&m_ogl,
                             &m_fsh,
