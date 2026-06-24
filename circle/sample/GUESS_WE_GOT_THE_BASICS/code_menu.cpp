@@ -418,7 +418,7 @@ void            CKernel::modeAudioBb1               (   int p_channel)
 
 void            CKernel::applyTargetModes           (   )       // current!
 {
-                if (g_menuLayer != 0)
+                if (g_menuLayer == 0)
                     {
                     g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
                     }
