@@ -21,6 +21,14 @@ void            CKernel::storeModes                 (   )
                     }
 }
 */
+void CKernel::resetMenuPickUpFlags()
+{
+    if (g_menuLayer != g_lastLayer)
+    {
+        memset(g_menuPickUpFlag, 0, sizeof(g_menuPickUpFlag));
+        g_lastLayer = g_menuLayer;
+    }
+}
 void CKernel::storeModes()
 {
     if (g_gl_program_current != g_gl_program_last)

@@ -253,6 +253,7 @@ public:
                                                                         glsl_state*                     s, 
                                                                         tex_state*                      t);      
 */         
+                void        resetMenuPickUpFlags        ();
                 void        storeModes                  ();
             //  void        button_consumer             ( int buttonA, int buttonB  );
                 void        setLayer                    (               int buttonA, int buttonB);
