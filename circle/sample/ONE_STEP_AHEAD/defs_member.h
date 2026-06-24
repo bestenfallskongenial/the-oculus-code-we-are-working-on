@@ -214,8 +214,9 @@ public:         // Logging
                 unsigned                        g_bytVid[VID_SD + VID_USB]                      =           { 0 };
                 unsigned                        g_bytKln[KLN_SD + KLN_USB]                      =           { 0 };
 // CODE_MENU.CPP
-                int g_menuLayer = 0;
-                int g_lastLayer = 0;
+                int g_menuLayer         = 0;
+                int g_lastLayer         = 0;
+                int g_lastLayerLED      = 0;
                 unsigned g_extClockTime = 0;
 
         typedef void                            (CKernel::*ModeFunc)(int);

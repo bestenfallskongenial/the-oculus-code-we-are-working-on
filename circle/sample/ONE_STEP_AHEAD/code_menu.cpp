@@ -53,84 +53,84 @@ void CKernel::storeModes()
 }
 
 
-void            CKernel::setLayer(int buttonA, int buttonB)
+void CKernel::setLayer(int buttonA, int buttonB)
 {
-                static int stepLayer = 2;
+    static int stepLayer = 2;
 
-                // no button hold -> layer 0
-                if ( !g_buttons_states[buttonA][BTN_HOLD_TICK] &&
-                    !g_buttons_states[buttonB][BTN_HOLD_TICK] )
-                {
-                    stepLayer = 2;
+    // no button hold -> layer 0
+    if (!g_buttons_states[buttonA][BTN_HOLD_TICK] &&
+        !g_buttons_states[buttonB][BTN_HOLD_TICK])
+    {
+        stepLayer = 2;
 
-                    g_menuLayer = 0;
-                    g_lastLayer = 0;
+        g_menuLayer = 0;
+        g_lastLayerLED = 0;
 
-                    if (g_buttons_states[buttonA][BTN_SINGLE])
-                    {
-                        calculate1BPMnew(0, TB0, DB0, g_currentTime);
-                        g_buttons_states[buttonA][BTN_SINGLE] = 0;
-                    }
+        if (g_buttons_states[buttonA][BTN_SINGLE])
+        {
+            calculate1BPMnew(0, TB0, DB0, g_currentTime);
+            g_buttons_states[buttonA][BTN_SINGLE] = 0;
+        }
 
-                    if (g_buttons_states[buttonB][BTN_DOUBLE])
-                    {
-                        g_centralModeBuffer[g_gl_program_current][IS_STORED] =
-                            !g_centralModeBuffer[g_gl_program_current][IS_STORED];
+        if (g_buttons_states[buttonB][BTN_DOUBLE])
+        {
+            g_centralModeBuffer[g_gl_program_current][IS_STORED] =
+                !g_centralModeBuffer[g_gl_program_current][IS_STORED];
 
-                        g_buttons_states[buttonB][BTN_DOUBLE] = 0;
-                    }
+            g_buttons_states[buttonB][BTN_DOUBLE] = 0;
+        }
 
-                    return;
-                }
+        return;
+    }
 
-                // A hold only -> layer 1
-                if ( g_buttons_states[buttonA][BTN_HOLD_TICK] &&
-                    !g_buttons_states[buttonB][BTN_HOLD_TICK] )
-                {
-                    stepLayer = 2;
+    // A hold only -> layer 1
+    if (g_buttons_states[buttonA][BTN_HOLD_TICK] &&
+        !g_buttons_states[buttonB][BTN_HOLD_TICK])
+    {
+        stepLayer = 2;
 
-                    g_menuLayer = 1;
-                    g_lastLayer = 1;
+        g_menuLayer = 1;
+        g_lastLayerLED = 1;
 
-                    return;
-                }
+        return;
+    }
 
-                // B hold only -> current stepLayer
-                if ( g_buttons_states[buttonB][BTN_HOLD_TICK] &&
-                    !g_buttons_states[buttonA][BTN_HOLD_TICK] &&
-                    !g_buttons_states[buttonA][BTN_SINGLE] )
-                {
-                    g_menuLayer = stepLayer;
-                    g_lastLayer = stepLayer;
+    // B hold only -> current stepLayer
+    if (g_buttons_states[buttonB][BTN_HOLD_TICK] &&
+        !g_buttons_states[buttonA][BTN_HOLD_TICK] &&
+        !g_buttons_states[buttonA][BTN_SINGLE])
+    {
+        g_menuLayer = stepLayer;
+        g_lastLayerLED = stepLayer;
 
-                    return;
-                }
+        return;
+    }
 
-                // B hold + A press -> cycle layer 3..7
-                if ( g_buttons_states[buttonB][BTN_HOLD_TICK] &&
-                    g_buttons_states[buttonA][BTN_SINGLE] )
-                {
-                    if (stepLayer < 3)
-                    {
-                        stepLayer = 3;
-                    }
-                    else
-                    {
-                        stepLayer++;
+    // B hold + A press -> cycle layer 3..7
+    if (g_buttons_states[buttonB][BTN_HOLD_TICK] &&
+        g_buttons_states[buttonA][BTN_SINGLE])
+    {
+        if (stepLayer < 3)
+        {
+            stepLayer = 3;
+        }
+        else
+        {
+            stepLayer++;
 
-                        if (stepLayer > 7)
-                        {
-                            stepLayer = 3;
-                        }
-                    }
+            if (stepLayer > 7)
+            {
+                stepLayer = 3;
+            }
+        }
 
-                    g_menuLayer = stepLayer;
-                    g_lastLayer = stepLayer;
+        g_menuLayer = stepLayer;
+        g_lastLayerLED = stepLayer;
 
-                    g_buttons_states[buttonA][BTN_SINGLE] = 0;
+        g_buttons_states[buttonA][BTN_SINGLE] = 0;
 
-                    return;
-                }
+        return;
+    }
 }
 
 void            CKernel::dispatchLayer()
