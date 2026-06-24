@@ -99,8 +99,9 @@ bool            CKernel::programLog                 (   GLint       program,
                     GLenum type;
 
                     glGetActiveUniform(program, i, sizeof(uname), &length, &size, &type, uname);
-                    GLint location = glGetUniformLocation(program, uname);
 #ifdef __LOG_GLSL__ 
+                    GLint location = glGetUniformLocation(program, uname);
+
                     storeLog(   MY_BUFFER, MY_INDEX, 
                                 "Uniform:      ", EMPTYLOG, uname );
                     storeLog(   MY_BUFFER, MY_INDEX, 
@@ -121,8 +122,9 @@ bool            CKernel::programLog                 (   GLint       program,
                     GLenum type;
 
                     glGetActiveAttrib(program, i, sizeof(aname), &length, &size, &type, aname);
-                    GLint location = glGetAttribLocation(program, aname);
 #ifdef __LOG_GLSL__ 
+                    GLint location = glGetAttribLocation(program, aname);
+
                     storeLog(   MY_BUFFER, MY_INDEX, 
                                 "Attribute:    ", EMPTYLOG, aname );
                     storeLog(   MY_BUFFER, MY_INDEX, 
@@ -151,8 +153,9 @@ void            CKernel::gfx_check                  (   const char* file,
                     summary_written = true;
 
                     CTimer* pTimer = CTimer::Get();
-                    unsigned ticks = pTimer->GetTicks();
 #ifdef __LOG_GLSL__  
+                    unsigned ticks = pTimer->GetTicks();
+
                     storeLog(   MY_BUFFER, MY_INDEX, "*** Final System Status ticks", (u32)ticks, "/ Errorcount", (u32)error_count );
 #endif  
                     GLint value;
@@ -184,10 +187,10 @@ void            CKernel::gfx_check                  (   const char* file,
                     {
                     CTimer* pTimer = CTimer::Get();
                     unsigned ticks = pTimer->GetTicks();
-
+#ifdef __LOG_GLSL__     
                     const char* error_str;
                     const char* severity;
-
+#endif
                     switch (error)
                         {
                         case GL_INVALID_ENUM:
