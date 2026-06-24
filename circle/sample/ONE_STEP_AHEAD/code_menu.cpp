@@ -2,7 +2,7 @@
 
     #define MY_BUFFER   m_bufferLog                 // not used here
     #define MY_INDEX    m_bufferLogIndex
-
+/*
 void            CKernel::storeModes                 (   )
 {
                 if (g_gl_program_current != g_gl_program_last)
@@ -20,6 +20,30 @@ void            CKernel::storeModes                 (   )
                     g_currentProgramBuffer = DEFAULT_SLOT;
                     }
 }
+*/
+void CKernel::storeModes()
+{
+    if (g_gl_program_current != g_gl_program_last)
+        {
+        g_currentProgramBuffer = g_centralModeBuffer[g_gl_program_current][IS_STORED] ? g_gl_program_current : DEFAULT_SLOT;
+        g_gl_program_last = g_gl_program_current;
+        }
+
+    if (g_centralModeBuffer[g_gl_program_current][IS_STORED] && g_currentProgramBuffer != g_gl_program_current)
+        {
+        int stored = g_centralModeBuffer[g_gl_program_current][IS_STORED];
+
+        memcpy(&g_centralModeBuffer[g_gl_program_current][0], &g_centralModeBuffer[DEFAULT_SLOT][0], sizeof(g_centralModeBuffer[g_gl_program_current]));
+
+        g_centralModeBuffer[g_gl_program_current][IS_STORED] = stored;
+        g_currentProgramBuffer = g_gl_program_current;
+        }
+    else if (!g_centralModeBuffer[g_gl_program_current][IS_STORED] && g_currentProgramBuffer != DEFAULT_SLOT)
+        {
+        g_currentProgramBuffer = DEFAULT_SLOT;
+        }
+}
+
 
 void            CKernel::setLayer(int buttonA, int buttonB)
 {
