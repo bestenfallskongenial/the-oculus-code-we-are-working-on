@@ -418,8 +418,10 @@ void            CKernel::modeAudioBb1               (   int p_channel)
 
 void            CKernel::applyTargetModes           (   )       // current!
 {
-                g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
-
+                if (g_menuLayer != 0)
+                    {
+                    g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10;
+                    }
                 if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_TEX])      // selected channel OUT controls active texture
                     {
                     m_activeTex =   g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX]][OUT];
