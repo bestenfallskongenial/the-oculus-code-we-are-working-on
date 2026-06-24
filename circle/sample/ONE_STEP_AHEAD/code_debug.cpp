@@ -183,7 +183,7 @@ void CKernel::logButtonStatesRuntime(void)
                 EMPTYSTR, EMPTYLOG,
                 EMPTYSTR, EMPTYLOG,
                 EMPTYSTR, EMPTYLOG );
-
+/*
     storeLog(   f_logBuffer, f_logIndex,
                 "g_menuLayer",
                 g_menuLayer,
@@ -208,9 +208,9 @@ void CKernel::logButtonStatesRuntime(void)
 
     storeLog(   f_logBuffer, f_logIndex,
                 "mapping",
-                ((g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/ ) ) >> 10)
+                ((g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID]  ) ) >> 10) // (filecounter[FT_FSH][FLD_VALID] -1 )
                 );
-
+*/
     storeLog(   f_logBuffer, f_logIndex,
                 "out0",
                 g_inOutMatrixInt[0][OUT],
@@ -232,7 +232,7 @@ void CKernel::logButtonStatesRuntime(void)
                 g_inOutMatrixInt[7][OUT]);
 
     storeLog(   f_logBuffer, f_logIndex,
-                "ModeBuf 00-03",
+                "MODES      00-03",
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][0],
                 EMPTYSTR,
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][1],
@@ -242,7 +242,7 @@ void CKernel::logButtonStatesRuntime(void)
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][3] );
 
     storeLog(   f_logBuffer, f_logIndex,
-                "ModeBuf 04-07",
+                "MODES      04-07",
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][4],
                 EMPTYSTR,
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][5],
@@ -252,7 +252,7 @@ void CKernel::logButtonStatesRuntime(void)
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][7] );
 
     storeLog(   f_logBuffer, f_logIndex,
-                "ModeBuf 08-11",
+                "LFOs       08-11",
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][8],
                 EMPTYSTR,
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][9],
@@ -262,7 +262,7 @@ void CKernel::logButtonStatesRuntime(void)
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][11] );
 
     storeLog(   f_logBuffer, f_logIndex,
-                "ModeBuf 12-15",
+                "AUDIO      12-15",
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][12],
                 EMPTYSTR,
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][13],
@@ -272,7 +272,7 @@ void CKernel::logButtonStatesRuntime(void)
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][15] );
 
     storeLog(   f_logBuffer, f_logIndex,
-                "ModeBuf 16-19",
+                "SELECTOR   16-19",
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][16],
                 EMPTYSTR,
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][17],
@@ -282,7 +282,7 @@ void CKernel::logButtonStatesRuntime(void)
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][19] );
 
     storeLog(   f_logBuffer, f_logIndex,
-                "ModeBuf 20-23",
+                "FLAGS      20-23",
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][20],
                 EMPTYSTR,
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][21],
@@ -292,17 +292,7 @@ void CKernel::logButtonStatesRuntime(void)
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][23] );
 
     storeLog(   f_logBuffer, f_logIndex,
-                "ModeBuf 24-27",
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][24],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][25],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][26],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][27] );
-
-    storeLog(   f_logBuffer, f_logIndex,
-                "ModeBuf 28-31",
+                "SYSTEM     28-31",
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][28],
                 EMPTYSTR,
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][29],
@@ -310,7 +300,77 @@ void CKernel::logButtonStatesRuntime(void)
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][30],
                 EMPTYSTR,
                 (u32)g_centralModeBuffer[g_currentProgramBuffer][31] );                
+
+    storeLog(   f_logBuffer, f_logIndex,
+                "Flags 00-03",
+                g_menuPickUpFlag[0],
+                EMPTYSTR,
+                g_menuPickUpFlag[1],
+                EMPTYSTR,
+                g_menuPickUpFlag[2],
+                EMPTYSTR,
+                g_menuPickUpFlag[3]);    
                 
+    storeLog(   f_logBuffer, f_logIndex,
+                "Flags 04-07",
+                g_menuPickUpFlag[4],
+                EMPTYSTR,
+                g_menuPickUpFlag[5],
+                EMPTYSTR,
+                g_menuPickUpFlag[6],
+                EMPTYSTR,
+                g_menuPickUpFlag[7]); 
+                
+    storeLog(   f_logBuffer, f_logIndex,
+                "Flags 08-11",
+                g_menuPickUpFlag[8],
+                EMPTYSTR,
+                g_menuPickUpFlag[9],
+                EMPTYSTR,
+                g_menuPickUpFlag[10],
+                EMPTYSTR,
+                g_menuPickUpFlag[11]); 
+                
+    storeLog(   f_logBuffer, f_logIndex,
+                "Flags 12-15",
+                g_menuPickUpFlag[12],
+                EMPTYSTR,
+                g_menuPickUpFlag[13],
+                EMPTYSTR,
+                g_menuPickUpFlag[14],
+                EMPTYSTR,
+                g_menuPickUpFlag[15]);   
+
+    storeLog(   f_logBuffer, f_logIndex,
+                "Flags 16-19",
+                g_menuPickUpFlag[16],
+                EMPTYSTR,
+                g_menuPickUpFlag[17],
+                EMPTYSTR,
+                g_menuPickUpFlag[18],
+                EMPTYSTR,
+                g_menuPickUpFlag[19]); 
+
+    storeLog(   f_logBuffer, f_logIndex,
+                "Flags 20-23",
+                g_menuPickUpFlag[20],
+                EMPTYSTR,
+                g_menuPickUpFlag[21],
+                EMPTYSTR,
+                g_menuPickUpFlag[22],
+                EMPTYSTR,
+                g_menuPickUpFlag[23]);                                           
+
+    storeLog(   f_logBuffer, f_logIndex,
+                "Flags 28-31",
+                g_menuPickUpFlag[28],
+                EMPTYSTR,
+                g_menuPickUpFlag[29],
+                EMPTYSTR,
+                g_menuPickUpFlag[30],
+                EMPTYSTR,
+                g_menuPickUpFlag[31]); 
+
     bufferScreenDraw(  f_logBuffer,
                        0,
                        f_logIndex,
