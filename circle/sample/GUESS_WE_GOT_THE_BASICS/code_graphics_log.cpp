@@ -140,7 +140,7 @@ bool            CKernel::programLog                 (   GLint       program,
 
                 return success == GL_TRUE;
 }
-
+/*
 void            CKernel::gfx_check                  (   const char* file, 
                                                         unsigned    line )
 {
@@ -223,6 +223,116 @@ void            CKernel::gfx_check                  (   const char* file,
                         default:
                             error_str = "UNKNOWN_ERROR";
                             severity  = "WARNING";
+                            break;
+                        }
+#ifdef __LOG_GLSL__ 
+                    storeLog(   MY_BUFFER, MY_INDEX, "OpenGL Error", (u32)error, "ticks", (u32)ticks, "line", (u32)line );
+                    storeLog(   MY_BUFFER, MY_INDEX, severity, EMPTYLOG, error_str, EMPTYLOG, file, EMPTYLOG );
+#endif  
+                    error_count++;
+                    
+                    if (error_count >= ERROR_THRESHOLD) m_resetFlag = true;
+
+                    error = glGetError();
+                    }
+}
+*/
+void            CKernel::gfx_check                  (   const char* file, 
+                                                        unsigned    line )
+{
+                static unsigned error_count = 0;
+                static bool summary_written = false;
+                const unsigned ERROR_THRESHOLD = 1024;
+
+                if (m_resetFlag && !summary_written)
+                    {
+                    summary_written = true;
+
+#ifdef __LOG_GLSL__  
+                    CTimer* pTimer = CTimer::Get();
+                    unsigned ticks = pTimer->GetTicks();
+
+                    storeLog(   MY_BUFFER, MY_INDEX, "*** Final System Status ticks", (u32)ticks, "/ Errorcount", (u32)error_count );
+#endif  
+                    GLint value;
+
+                    glGetIntegerv(GL_CURRENT_PROGRAM, &value);
+#ifdef __LOG_GLSL__                     
+                    storeLog(   MY_BUFFER, MY_INDEX, "Current Program", (u32)value);
+#endif  
+                    glGetIntegerv(GL_ACTIVE_TEXTURE, &value);
+#ifdef __LOG_GLSL__                     
+                    storeLog(   MY_BUFFER, MY_INDEX, "Active Texture Unit", (u32)value);
+#endif  
+                    GLint viewport[4];
+                    glGetIntegerv(GL_VIEWPORT, viewport);
+#ifdef __LOG_GLSL__                     
+                    storeLog(   MY_BUFFER, MY_INDEX, "Viewport x/", (u32)viewport[0], "y", (u32)viewport[1], "w", (u32)viewport[2], "h", (u32)viewport[3] );
+#endif  
+                    GLint fb;
+                    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fb);
+#ifdef __LOG_GLSL__                     
+                    storeLog(   MY_BUFFER, MY_INDEX, "Current Framebuffer", (u32)fb, "=== End Status Report ===" );
+#endif                      
+                    return;
+                    }
+
+                GLenum error = glGetError();
+
+                while (error != GL_NO_ERROR)
+                    {
+#ifdef __LOG_GLSL__
+                    CTimer* pTimer = CTimer::Get();
+                    unsigned ticks = pTimer->GetTicks();
+   
+                    const char* error_str;
+                    const char* severity;
+#endif
+
+                    switch (error)
+                        {
+                        case GL_INVALID_ENUM:
+#ifdef __LOG_GLSL__
+                            error_str = "GL_INVALID_ENUM";
+                            severity  = "WARNING";
+#endif
+                            break;
+
+                        case GL_INVALID_VALUE:
+#ifdef __LOG_GLSL__
+                            error_str = "GL_INVALID_VALUE";
+                            severity  = "WARNING";
+#endif
+                            break;
+
+                        case GL_INVALID_OPERATION:
+#ifdef __LOG_GLSL__
+                            error_str = "GL_INVALID_OPERATION";
+                            severity  = "WARNING";
+#endif
+                            break;
+
+                        case GL_OUT_OF_MEMORY:
+#ifdef __LOG_GLSL__
+                            error_str = "GL_OUT_OF_MEMORY";
+                            severity  = "CRITICAL";
+#endif
+                            m_resetFlag = true;
+                            break;
+
+                        case GL_INVALID_FRAMEBUFFER_OPERATION:
+#ifdef __LOG_GLSL__
+                            error_str = "GL_INVALID_FRAMEBUFFER_OPERATION";
+                            severity  = "CRITICAL";
+#endif
+                            m_resetFlag = true;
+                            break;
+
+                        default:
+#ifdef __LOG_GLSL__
+                            error_str = "UNKNOWN_ERROR";
+                            severity  = "WARNING";
+#endif
                             break;
                         }
 #ifdef __LOG_GLSL__ 
