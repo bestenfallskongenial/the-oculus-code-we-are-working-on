@@ -1,7 +1,4 @@
-#include "kernel.h" // **************************************************************************** //
-
-//  #undef  __LOG_PARSER__
-    #define __LOG_PARSER__
+#include "kernel.h"
 
     #define MY_BUFFER   m_bufferLog[0]      //m_logBuffer
     #define MY_INDEX    m_bufferLogIndex[0] //m_logBufferIndex

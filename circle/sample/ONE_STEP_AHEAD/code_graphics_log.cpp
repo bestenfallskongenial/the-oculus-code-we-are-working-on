@@ -70,9 +70,9 @@ bool            CKernel::programLog                 (   GLint       program,
                 glGetProgramiv(program, GL_LINK_STATUS, &success);
 #ifdef __LOG_GLSL__
                 storeLog(   MY_BUFFER, MY_INDEX, 
-                            g_ScnFsh[program_index], EMPTYLOG, 
-                            "Status Prg.  [", (u32)program_index, 
-                            "] Size        ", (u32)g_bytFsh[program_index], 
+                            g_ScnFsh[program_index],    EMPTYLOG, 
+                            "Status Prg.  [",           (u32)program_index, 
+                            "] Size        ",           (u32)g_bytFsh[program_index], 
                             (success == GL_TRUE) ? 
                             "Link SUCCESS  " : "Link FAILED   ", EMPTYLOG); 
 #endif 
@@ -83,9 +83,9 @@ bool            CKernel::programLog                 (   GLint       program,
                 if (logLength > 0)
                     {
                     storeLog(   MY_BUFFER, MY_INDEX, 
-                                "Prg. InfoLog  ", EMPTYLOG );
+                                "Prg. InfoLog  ",       EMPTYLOG );
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                log, EMPTYLOG );
+                                log,                    EMPTYLOG );
                     }
 #endif 
                 GLint numUniforms;
@@ -105,10 +105,10 @@ bool            CKernel::programLog                 (   GLint       program,
                     storeLog(   MY_BUFFER, MY_INDEX, 
                                 "Uniform:      ", EMPTYLOG, uname );
                     storeLog(   MY_BUFFER, MY_INDEX, 
-                                "Uniform idx   ", (u32)i, 
-                                "size          ", (u32)size, 
-                                "type          ", (u32)type, 
-                                "location      ", (u32)location);
+                                "Uniform idx   ",       (u32)i, 
+                                "size          ",       (u32)size, 
+                                "type          ",       (u32)type, 
+                                "location      ",       (u32)location);
 #endif                     
                     }
                 GLint numAttributes;
@@ -128,10 +128,10 @@ bool            CKernel::programLog                 (   GLint       program,
                     storeLog(   MY_BUFFER, MY_INDEX, 
                                 "Attribute:    ", EMPTYLOG, aname );
                     storeLog(   MY_BUFFER, MY_INDEX, 
-                                "Attribute:    ", (u32)i, 
-                                "size          ", (u32)size, 
-                                "type          ", (u32)type, 
-                                "location      ", (u32)location );
+                                "Attribute:    ",       (u32)i, 
+                                "size          ",       (u32)size, 
+                                "type          ",       (u32)type, 
+                                "location      ",       (u32)location );
 #endif                     
                     }
 #ifdef __LOG_GLSL__
@@ -156,27 +156,37 @@ void            CKernel::gfx_check                  (   const char* file,
 #ifdef __LOG_GLSL__  
                     unsigned ticks = pTimer->GetTicks();
 
-                    storeLog(   MY_BUFFER, MY_INDEX, "*** Final System Status ticks", (u32)ticks, "/ Errorcount", (u32)error_count );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "System Status ticks",  (u32)ticks, 
+                                "/ Errorcount",         (u32)error_count );
 #endif  
                     GLint value;
 
                     glGetIntegerv(GL_CURRENT_PROGRAM, &value);
 #ifdef __LOG_GLSL__                     
-                    storeLog(   MY_BUFFER, MY_INDEX, "Current Program", (u32)value);
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "Current Program",      (u32)value);
 #endif  
                     glGetIntegerv(GL_ACTIVE_TEXTURE, &value);
 #ifdef __LOG_GLSL__                     
-                    storeLog(   MY_BUFFER, MY_INDEX, "Active Texture Unit", (u32)value);
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "Active Texture Unit",  (u32)value);
 #endif  
                     GLint viewport[4];
                     glGetIntegerv(GL_VIEWPORT, viewport);
 #ifdef __LOG_GLSL__                     
-                    storeLog(   MY_BUFFER, MY_INDEX, "Viewport x/", (u32)viewport[0], "y", (u32)viewport[1], "w", (u32)viewport[2], "h", (u32)viewport[3] );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "Viewport x/",          (u32)viewport[0], 
+                                "y",                    (u32)viewport[1], 
+                                "w",                    (u32)viewport[2], 
+                                "h",                    (u32)viewport[3] );
 #endif  
                     GLint fb;
                     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fb);
 #ifdef __LOG_GLSL__                     
-                    storeLog(   MY_BUFFER, MY_INDEX, "Current Framebuffer", (u32)fb, "=== End Status Report ===" );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "Current Framebuffer",  (u32)fb, 
+                                "=== End Status Report ===" );
 #endif                      
                     return;
                     }
@@ -226,8 +236,14 @@ void            CKernel::gfx_check                  (   const char* file,
                             break;
                         }
 #ifdef __LOG_GLSL__ 
-                    storeLog(   MY_BUFFER, MY_INDEX, "OpenGL Error", (u32)error, "ticks", (u32)ticks, "line", (u32)line );
-                    storeLog(   MY_BUFFER, MY_INDEX, severity, EMPTYLOG, error_str, EMPTYLOG, file, EMPTYLOG );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "OpenGL Error",         (u32)error, 
+                                "ticks",                (u32)ticks, 
+                                "line",                 (u32)line );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                severity,               EMPTYLOG, 
+                                error_str,              EMPTYLOG, 
+                                file,                   EMPTYLOG );
 #endif  
                     error_count++;
                     

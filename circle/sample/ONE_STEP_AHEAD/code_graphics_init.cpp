@@ -115,10 +115,6 @@ void            CKernel::initOGL                    (   olg_state*  o )
 #endif              
 }
 
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-// init OGL
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
 void            CKernel::initVbuffer                (   olg_state*  o,
                                                         vtx_state*  v )
 {
@@ -196,7 +192,6 @@ void            CKernel::initProgram                (   vtx_state*  v,
                         glDeleteProgram(fsh->gl_program_id[valid_count]);
                         }
                 }
-                 // m_Watchdog.Start(TIMEOUT * 3);
 }
 
 void            CKernel::initTexture                (   vtx_state*  v,
@@ -240,7 +235,6 @@ void            CKernel::initTexture                (   vtx_state*  v,
                             glDeleteTextures(1, &t->gl_tex_id[valid_count]);
                             }
                         }
-                     // m_Watchdog.Start(TIMEOUT);
                     }
 }
 

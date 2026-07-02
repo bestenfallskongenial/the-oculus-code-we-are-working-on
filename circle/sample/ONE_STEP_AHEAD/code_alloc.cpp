@@ -10,26 +10,26 @@ char**          CKernel::allocBufferMEM             (           size_t      p_co
 #ifdef __LOG_ALLOC__
                 nextline(   MY_BUFFER, MY_INDEX);     
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            "ALLOC-MEM base   ",    (u32)buffers,
-                            " count",                (u32)p_count,
-                            "size ",                (u32)bufferSize );
+                            "ALLOC-MEM base   ",        (u32)buffers,
+                            " count",                   (u32)p_count,
+                            "size ",                    (u32)bufferSize );
 #endif
                 for (size_t i = 0; i < p_count; ++i) 
                     {
                     buffers[i] = (char*)calloc(bufferSize, sizeof(char));
 #ifdef __LOG_ALLOC__
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                "ALLOC-MEM slice [", (u32)i,
-                                "] ptr ",             (u32)buffers[i],
-                                "size ",             (u32)bufferSize );
+                                "ALLOC-MEM slice [",    (u32)i,
+                                "] ptr ",               (u32)buffers[i],
+                                "size ",                (u32)bufferSize );
 #endif
                     }
 #ifdef __LOG_ALLOC__
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            ":>", m_Timer.GetClockTicks(),
-                            "ALLOC-MEM done",      (u32)buffers,
-                            "count",               (u32)p_count,
-                            "size",                (u32)bufferSize);
+                            ":>",                       m_Timer.GetClockTicks(),
+                            "ALLOC-MEM done",           (u32)buffers,
+                            "count",                    (u32)p_count,
+                            "size",                     (u32)bufferSize);
                 nextline(   MY_BUFFER, MY_INDEX);       
 #endif         
                 msDelay(100);
@@ -59,9 +59,9 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
                     buffers[i] = dma_block + i * bufferSize;
 #ifdef __LOG_ALLOC__   
                     storeLog(   MY_BUFFER, MY_INDEX,
-                                    "ALLOC-DMA slice [",  (u32)i,
-                                    "] ptr",              (u32)buffers[i],
-                                    "size ",             (u32)bufferSize );
+                                    "ALLOC-DMA slice [",    (u32)i,
+                                    "] ptr",                (u32)buffers[i],
+                                    "size ",                (u32)bufferSize );
 #endif  
                     memset(buffers[i], 0, bufferSize);
                     }
@@ -69,9 +69,9 @@ char**          CKernel::allocBufferDMA             (           size_t      p_co
                 nextline(   MY_BUFFER, MY_INDEX);
                 storeLog(   MY_BUFFER, MY_INDEX,
                                 ":>",        m_Timer.GetClockTicks(),
-                                "ALLOC-DMA raw",    (u32)raw,
-                                "block",            (u32)dma_block,
-                                "total",            (u32)total_size );
+                                "ALLOC-DMA raw",            (u32)raw,
+                                "block",                    (u32)dma_block,
+                                "total",                    (u32)total_size );
 #endif
                 *blockBaseOut   = dma_block;
                 *rawBlockOut    = raw;

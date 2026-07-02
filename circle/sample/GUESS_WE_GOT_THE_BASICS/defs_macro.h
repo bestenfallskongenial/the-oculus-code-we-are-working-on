@@ -1,33 +1,27 @@
-#define         EMPTYSTR                0 // ""                                                 // for the logger
-#define         EMPTYLOG                255                                                // for the logger
+#define         EMPTYSTR                    0 // ""                                                 // for the logger
+#define         EMPTYLOG                    255                                                // for the logger
 
-#define         LAYER             6
-#define         BLOCK_COUNT         8
+#define         LAYER                       6
+#define         BLOCK_COUNT                 8
 
 
-#define         check() 				gfx_check(__FILE__, __LINE__) 	// my own assertiion implimentation
+#define         check() 				    gfx_check(__FILE__, __LINE__) 	// my own assertiion implimentation
 
-#define         MAX_WATCHDOG_SEC 15
+#define         MAX_WATCHDOG_SEC            15
 
-#define MAX_FILE_NAME_LENGTH    13
+#define         MAX_FILE_NAME_LENGTH        13
 
-#define BTN_PRESSED 0
+#define         BTN_PRESSED                 0
 
-#define CHANNEL     8
+#define         CHANNEL                     8
 
-    #define         MAX_TILES 16
-    #define         MENU_GPU_TILE_COUNT     16
-    
-    #define         ADC_CHANNELS         	8                                   // number of adc input channels ( dependency <sensor/mcp300x.h>	)
-    #define         VREF			 		5.0f
+#define         MAX_TILES                   16
+#define         MENU_GPU_TILE_COUNT         16
 
-    #define 		ADC_BUFFER_COUNT		4	
+#define         ADC_CHANNELS         	    8                                   // number of adc input channels ( dependency <sensor/mcp300x.h>	)
+#define         VREF			 		    5.0f
 
-#define MAX_FRAMES 2048                                 // Maximum frames configuration
-
-#define H264_PROFILE_BASELINE 66                        // H.264 Profile IDs
-#define H264_PROFILE_MAIN     77
-#define H264_PROFILE_HIGH     100
+#define 		ADC_BUFFER_COUNT		    4	
 
 #define NAL_TYPE_SLICE 1                                // NAL unit types
 #define NAL_TYPE_IDR   5

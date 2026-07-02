@@ -53,8 +53,6 @@ unsigned        CKernel::loadToBuffer               (           char*       p_bu
                     if (f_bytesRead == 0)return f_totalBytesRead;
 
                     f_totalBytesRead += f_bytesRead;
-
-                     // m_Watchdog.Start(TIMEOUT);
                     }
                 return 0;
 }
@@ -78,10 +76,10 @@ bool            CKernel::saveFromBuffer             (   const   char*       p_de
                     {
 #ifdef __LOG_FILE__
                     storeLog(   MY_BUFFER, MY_INDEX, 
-                                "  Failed store Input", EMPTYLOG, 
-                                "file", EMPTYLOG, 
-                                p_fileName, EMPTYLOG, 
-                                "size", (u32)p_bufferSize );
+                                "  Failed store Input",     EMPTYLOG, 
+                                "file",                     EMPTYLOG, 
+                                p_fileName,                 EMPTYLOG, 
+                                "size",                     (u32)p_bufferSize );
 #endif
                     return false;
                     }
@@ -91,9 +89,10 @@ bool            CKernel::saveFromBuffer             (   const   char*       p_de
                     {
 #ifdef __LOG_FILE__                        
                     storeLog(   MY_BUFFER, MY_INDEX, 
-                                "  Failed to create File", EMPTYLOG, 
-                                p_fileName, EMPTYLOG, 
-                                "on Device", EMPTYLOG, p_deviceName );
+                                "  Failed to create File",  EMPTYLOG, 
+                                p_fileName,                 EMPTYLOG, 
+                                "on Device",                EMPTYLOG, 
+                                p_deviceName );
 #endif                    
                     return false;
                     }
@@ -102,26 +101,26 @@ bool            CKernel::saveFromBuffer             (   const   char*       p_de
                     {
 #ifdef __LOG_FILE__                        
                     storeLog(   MY_BUFFER, MY_INDEX, 
-                                "  Failed to store File", EMPTYLOG, 
-                                p_fileName, EMPTYLOG, 
-                                "size", (u32)p_bufferSize );
+                                "  Failed to store File",   EMPTYLOG, 
+                                p_fileName,                 EMPTYLOG, 
+                                "size",                     (u32)p_bufferSize );
 #endif                                      
                     return false;
                     }
 #ifdef __LOG_FILE__                        
                 storeLog(   MY_BUFFER, MY_INDEX,
-                            "  File stored successful", EMPTYLOG, 
-                            p_fileName, EMPTYLOG, 
-                            "size", (u32)p_bufferSize );        
+                            "  File stored successful",     EMPTYLOG, 
+                            p_fileName,                     EMPTYLOG, 
+                            "size",                         (u32)p_bufferSize );        
 #endif
                 closeFile();
                 UnMount();
 
 #ifdef __LOG_FILE__
                 storeLog(   MY_BUFFER, MY_INDEX, 
-                            "  Successful Stored", EMPTYLOG, 
-                            p_fileName, EMPTYLOG, 
-                            "from Buffer size", (u32)p_bufferSize );
+                            "  Successful Stored",          EMPTYLOG, 
+                            p_fileName,                     EMPTYLOG, 
+                            "from Buffer size",             (u32)p_bufferSize );
 #endif                                 
                 return true;
 }
@@ -144,10 +143,10 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                 p_prevFiles = p_validFiles;
 #ifdef __LOG_FILE__
                 storeLog(   MY_BUFFER, MY_INDEX, 
-                            ">:", m_Timer.GetClockTicks(), 
-                            "   BULKLOAD Start  scanned", (u32)p_scannedFiles, 
-                            "valid", (u32)p_validFiles, 
-                            "  size", (u32)p_fileSize );
+                            ">:",                           m_Timer.GetClockTicks(), 
+                            "   BULKLOAD Start  scanned",   (u32)p_scannedFiles, 
+                            "valid",                        (u32)p_validFiles, 
+                            "  size",                       (u32)p_fileSize );
 #endif
                 for (unsigned i = p_prevFiles; i < p_prevFiles + p_scannedFiles; ++i)
             //  for (unsigned i = 0; i < p_scannedFiles; ++i) 
@@ -160,9 +159,9 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                             p_loadedBytes[p_validFiles] = f_bytesRead;
 #ifdef __LOG_FILE__
                             storeLog(   MY_BUFFER, MY_INDEX, 
-                                        "   bytes read", (u32)f_bytesRead, 
-                                        "in buffer [", (u32)p_validFiles, 
-                                        "] filename:", EMPTYLOG,
+                                        "   bytes read",    (u32)f_bytesRead, 
+                                        "in buffer [",      (u32)p_validFiles, 
+                                        "] filename:",      EMPTYLOG,
                                         p_fileNameArray[i] ); // new
 #endif                            
                             p_validFiles++;   
@@ -172,10 +171,10 @@ void            CKernel::bulkLoad                   (           char*       p_fi
                     }
 #ifdef __LOG_FILE__
                 storeLog(   MY_BUFFER, MY_INDEX, 
-                            ">:", m_Timer.GetClockTicks(), 
-                            "BULKLOAD End       prev", (u32)p_prevFiles, 
-                            "  new", (u32)p_validFiles, 
-                            "loaded", (u32)(p_validFiles - p_prevFiles) );
+                            ">:",                           m_Timer.GetClockTicks(), 
+                            "BULKLOAD End       prev",      (u32)p_prevFiles, 
+                            "  new",                        (u32)p_validFiles, 
+                            "loaded",                       (u32)(p_validFiles - p_prevFiles) );
                 nextline(   MY_BUFFER, MY_INDEX );
 #endif
 }
@@ -226,8 +225,8 @@ bool            CKernel::scanRoot                   (           char**      p_fi
 
                 if(f_nextEntry == 0) return false;
 
-            //  while (f_nextEntry != 0 && p_scannedFiles < p_maxFiles)
                 while (f_nextEntry != 0 && (p_prevFiles + p_scannedFiles) < p_maxFiles) 
+            //  while (f_nextEntry != 0 && p_scannedFiles < p_maxFiles)
                     {
                     if (!(f_directoryEntry.nAttributes & FS_ATTRIB_SYSTEM)) 
                         {

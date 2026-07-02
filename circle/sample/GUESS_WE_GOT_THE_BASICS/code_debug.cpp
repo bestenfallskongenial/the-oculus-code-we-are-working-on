@@ -86,8 +86,9 @@ void            CKernel::storeLog                   (   char*       p_buffer,
                     }
                 p_buffer[index++] = '\n';
                 p_buffer[index] = '\0';
-
+#ifdef __LOG_TO_SCREEN__
                 logScreenUpdate();
+#endif                
 }
 
 void            CKernel::storeMsg                   (   char*       p_buffer,
@@ -123,8 +124,9 @@ void            CKernel::storeMsg                   (   char*       p_buffer,
                 p_buffer[index++]           = '\n';
                 p_buffer[index++]           = '\n';
                 p_buffer[index]             = '\0';
-
+#ifdef __LOG_TO_SCREEN__
                 logScreenUpdate();
+#endif                
 }
 
 void            CKernel::nextline                   (   char*       p_buffer,
@@ -132,252 +134,253 @@ void            CKernel::nextline                   (   char*       p_buffer,
 {
                 p_buffer[index++]           = '\n';
                 p_buffer[index]             = '\0';
-
+#ifdef __LOG_TO_SCREEN__
                 logScreenUpdate();
+#endif                
 }
 
-void CKernel::logButtonStatesRuntime(void)
+void            CKernel::logButtonStatesRuntime(void)
 {
-    char f_logBuffer[2048];
-    u32  f_logIndex = 0;
+                char f_logBuffer[2048];
+                u32  f_logIndex = 0;
 
-    f_logBuffer[0] = '\0';
+                f_logBuffer[0] = '\0';
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "BTN PRESS_START   DOUBLE        RELEASE       SINGLE",
-                EMPTYLOG,
-                EMPTYSTR, EMPTYLOG,
-                EMPTYSTR, EMPTYLOG,
-                EMPTYSTR, EMPTYLOG );
+                storeLog(   f_logBuffer, f_logIndex,
+                            "BTN PRESS_START   DOUBLE        RELEASE       SINGLE",
+                            EMPTYLOG,
+                            EMPTYSTR, EMPTYLOG,
+                            EMPTYSTR, EMPTYLOG,
+                            EMPTYSTR, EMPTYLOG );
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "A  ",
-                (u32)g_buttons_states[0][BTN_PRESS_START],
-                EMPTYSTR,
-                (u32)g_buttons_states[0][BTN_DOUBLE],
-                EMPTYSTR,
-                (u32)g_buttons_states[0][BTN_RELEASE],
-                EMPTYSTR,
-                (u32)g_buttons_states[0][BTN_SINGLE] );
+                storeLog(   f_logBuffer, f_logIndex,
+                            "A  ",
+                            (u32)g_buttons_states[0][BTN_PRESS_START],
+                            EMPTYSTR,
+                            (u32)g_buttons_states[0][BTN_DOUBLE],
+                            EMPTYSTR,
+                            (u32)g_buttons_states[0][BTN_RELEASE],
+                            EMPTYSTR,
+                            (u32)g_buttons_states[0][BTN_SINGLE] );
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "A   HOLD_TICK",
-                (u32)g_buttons_states[0][BTN_HOLD_TICK],
-                EMPTYSTR, EMPTYLOG,
-                EMPTYSTR, EMPTYLOG,
-                EMPTYSTR, EMPTYLOG );
+                storeLog(   f_logBuffer, f_logIndex,
+                            "A   HOLD_TICK",
+                            (u32)g_buttons_states[0][BTN_HOLD_TICK],
+                            EMPTYSTR, EMPTYLOG,
+                            EMPTYSTR, EMPTYLOG,
+                            EMPTYSTR, EMPTYLOG );
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "B  ",
-                (u32)g_buttons_states[1][BTN_PRESS_START],
-                EMPTYSTR,
-                (u32)g_buttons_states[1][BTN_DOUBLE],
-                EMPTYSTR,
-                (u32)g_buttons_states[1][BTN_RELEASE],
-                EMPTYSTR,
-                (u32)g_buttons_states[1][BTN_SINGLE] );
+                storeLog(   f_logBuffer, f_logIndex,
+                            "B  ",
+                            (u32)g_buttons_states[1][BTN_PRESS_START],
+                            EMPTYSTR,
+                            (u32)g_buttons_states[1][BTN_DOUBLE],
+                            EMPTYSTR,
+                            (u32)g_buttons_states[1][BTN_RELEASE],
+                            EMPTYSTR,
+                            (u32)g_buttons_states[1][BTN_SINGLE] );
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "B   HOLD_TICK",
-                (u32)g_buttons_states[1][BTN_HOLD_TICK],
-                EMPTYSTR, EMPTYLOG,
-                EMPTYSTR, EMPTYLOG,
-                EMPTYSTR, EMPTYLOG );
-/*
-    storeLog(   f_logBuffer, f_logIndex,
-                "g_menuLayer",
-                g_menuLayer,
-                "CTRL_PIN",
-                GPIO_Read(CTRL_PIN),
-                "bpm 0", 
-                g_lfoBpmMatrix[0][BPM],
-                "bpm 1",
-                g_lfoBpmMatrix[1][BPM]);
-                
-    storeLog(   f_logBuffer, f_logIndex,
-                "g_gl_program_current",
-                g_gl_program_current,
-                "g_currentProgramBuffer",
-                g_currentProgramBuffer);
+                storeLog(   f_logBuffer, f_logIndex,
+                            "B   HOLD_TICK",
+                            (u32)g_buttons_states[1][BTN_HOLD_TICK],
+                            EMPTYSTR, EMPTYLOG,
+                            EMPTYSTR, EMPTYLOG,
+                            EMPTYSTR, EMPTYLOG );
+            /*
+                storeLog(   f_logBuffer, f_logIndex,
+                            "g_menuLayer",
+                            g_menuLayer,
+                            "CTRL_PIN",
+                            GPIO_Read(CTRL_PIN),
+                            "bpm 0", 
+                            g_lfoBpmMatrix[0][BPM],
+                            "bpm 1",
+                            g_lfoBpmMatrix[1][BPM]);
+                            
+                storeLog(   f_logBuffer, f_logIndex,
+                            "g_gl_program_current",
+                            g_gl_program_current,
+                            "g_currentProgramBuffer",
+                            g_currentProgramBuffer);
 
-    storeLog(   f_logBuffer, f_logIndex,                
-                "filecounter[FT_FSH][FLD_LOADED]",
-                filecounter[FT_FSH][FLD_LOADED],
-                "filecounter[FT_FSH][FLD_VALID]",
-                filecounter[FT_FSH][FLD_VALID]);
+                storeLog(   f_logBuffer, f_logIndex,                
+                            "filecounter[FT_FSH][FLD_LOADED]",
+                            filecounter[FT_FSH][FLD_LOADED],
+                            "filecounter[FT_FSH][FLD_VALID]",
+                            filecounter[FT_FSH][FLD_VALID]);
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "mapping",
-                ((g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID]  ) ) >> 10) // (filecounter[FT_FSH][FLD_VALID] -1 )
-                );
-*/
-/*
-    storeLog(   f_logBuffer, f_logIndex,
-                "out0",
-                g_inOutMatrixInt[0][OUT],
-                "out1",
-                g_inOutMatrixInt[1][OUT],
-                "out2",
-                g_inOutMatrixInt[2][OUT],
-                "out3",
-                g_inOutMatrixInt[3][OUT]);                                                            
+                storeLog(   f_logBuffer, f_logIndex,
+                            "mapping",
+                            ((g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID]  ) ) >> 10) // (filecounter[FT_FSH][FLD_VALID] -1 )
+                            );
+            */
+            /*
+                storeLog(   f_logBuffer, f_logIndex,
+                            "out0",
+                            g_inOutMatrixInt[0][OUT],
+                            "out1",
+                            g_inOutMatrixInt[1][OUT],
+                            "out2",
+                            g_inOutMatrixInt[2][OUT],
+                            "out3",
+                            g_inOutMatrixInt[3][OUT]);                                                            
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "out4",
-                g_inOutMatrixInt[4][OUT],
-                "out5",
-                g_inOutMatrixInt[5][OUT],
-                "out6",
-                g_inOutMatrixInt[6][OUT],
-                "out7",
-                g_inOutMatrixInt[7][OUT]);
-*/
-    storeLog(   f_logBuffer, f_logIndex,
-                "MODES      00-03",
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][0],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][1],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][2],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][3] );
+                storeLog(   f_logBuffer, f_logIndex,
+                            "out4",
+                            g_inOutMatrixInt[4][OUT],
+                            "out5",
+                            g_inOutMatrixInt[5][OUT],
+                            "out6",
+                            g_inOutMatrixInt[6][OUT],
+                            "out7",
+                            g_inOutMatrixInt[7][OUT]);
+            */
+                storeLog(   f_logBuffer, f_logIndex,
+                            "MODES      00-03",
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][0],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][1],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][2],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][3] );
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "MODES      04-07",
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][4],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][5],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][6],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][7] );
+                storeLog(   f_logBuffer, f_logIndex,
+                            "MODES      04-07",
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][4],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][5],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][6],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][7] );
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "LFOs       08-11",
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][8],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][9],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][10],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][11] );
+                storeLog(   f_logBuffer, f_logIndex,
+                            "LFOs       08-11",
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][8],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][9],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][10],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][11] );
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "AUDIO      12-15",
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][12],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][13],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][14],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][15] );
+                storeLog(   f_logBuffer, f_logIndex,
+                            "AUDIO      12-15",
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][12],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][13],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][14],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][15] );
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "SELECTOR   16-19",
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][16],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][17],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][18],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][19] );
+                storeLog(   f_logBuffer, f_logIndex,
+                            "SELECTOR   16-19",
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][16],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][17],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][18],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][19] );
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "FLAGS      20-23",
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][20],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][21],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][22],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][23] );
+                storeLog(   f_logBuffer, f_logIndex,
+                            "FLAGS      20-23",
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][20],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][21],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][22],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][23] );
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "SYSTEM     28-31",
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][28],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][29],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][30],
-                EMPTYSTR,
-                (u32)g_centralModeBuffer[g_currentProgramBuffer][31] );                
-/*
-    storeLog(   f_logBuffer, f_logIndex,
-                "Flags 00-03",
-                g_menuPickUpFlag[0],
-                EMPTYSTR,
-                g_menuPickUpFlag[1],
-                EMPTYSTR,
-                g_menuPickUpFlag[2],
-                EMPTYSTR,
-                g_menuPickUpFlag[3]);    
-                
-    storeLog(   f_logBuffer, f_logIndex,
-                "Flags 04-07",
-                g_menuPickUpFlag[4],
-                EMPTYSTR,
-                g_menuPickUpFlag[5],
-                EMPTYSTR,
-                g_menuPickUpFlag[6],
-                EMPTYSTR,
-                g_menuPickUpFlag[7]); 
-                
-    storeLog(   f_logBuffer, f_logIndex,
-                "Flags 08-11",
-                g_menuPickUpFlag[8],
-                EMPTYSTR,
-                g_menuPickUpFlag[9],
-                EMPTYSTR,
-                g_menuPickUpFlag[10],
-                EMPTYSTR,
-                g_menuPickUpFlag[11]); 
-                
-    storeLog(   f_logBuffer, f_logIndex,
-                "Flags 12-15",
-                g_menuPickUpFlag[12],
-                EMPTYSTR,
-                g_menuPickUpFlag[13],
-                EMPTYSTR,
-                g_menuPickUpFlag[14],
-                EMPTYSTR,
-                g_menuPickUpFlag[15]);   
+                storeLog(   f_logBuffer, f_logIndex,
+                            "SYSTEM     28-31",
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][28],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][29],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][30],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][31] );                
+            /*
+                storeLog(   f_logBuffer, f_logIndex,
+                            "Flags 00-03",
+                            g_menuPickUpFlag[0],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[1],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[2],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[3]);    
+                            
+                storeLog(   f_logBuffer, f_logIndex,
+                            "Flags 04-07",
+                            g_menuPickUpFlag[4],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[5],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[6],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[7]); 
+                            
+                storeLog(   f_logBuffer, f_logIndex,
+                            "Flags 08-11",
+                            g_menuPickUpFlag[8],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[9],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[10],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[11]); 
+                            
+                storeLog(   f_logBuffer, f_logIndex,
+                            "Flags 12-15",
+                            g_menuPickUpFlag[12],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[13],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[14],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[15]);   
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "Flags 16-19",
-                g_menuPickUpFlag[16],
-                EMPTYSTR,
-                g_menuPickUpFlag[17],
-                EMPTYSTR,
-                g_menuPickUpFlag[18],
-                EMPTYSTR,
-                g_menuPickUpFlag[19]); 
+                storeLog(   f_logBuffer, f_logIndex,
+                            "Flags 16-19",
+                            g_menuPickUpFlag[16],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[17],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[18],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[19]); 
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "Flags 20-23",
-                g_menuPickUpFlag[20],
-                EMPTYSTR,
-                g_menuPickUpFlag[21],
-                EMPTYSTR,
-                g_menuPickUpFlag[22],
-                EMPTYSTR,
-                g_menuPickUpFlag[23]);                                           
+                storeLog(   f_logBuffer, f_logIndex,
+                            "Flags 20-23",
+                            g_menuPickUpFlag[20],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[21],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[22],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[23]);                                           
 
-    storeLog(   f_logBuffer, f_logIndex,
-                "Flags 28-31",
-                g_menuPickUpFlag[28],
-                EMPTYSTR,
-                g_menuPickUpFlag[29],
-                EMPTYSTR,
-                g_menuPickUpFlag[30],
-                EMPTYSTR,
-                g_menuPickUpFlag[31]); 
-*/
-    bufferScreenDraw(  f_logBuffer,
-                       0,
-                       f_logIndex,
-                       0,
-                       3,
-                       0xFFFFFFFF );
+                storeLog(   f_logBuffer, f_logIndex,
+                            "Flags 28-31",
+                            g_menuPickUpFlag[28],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[29],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[30],
+                            EMPTYSTR,
+                            g_menuPickUpFlag[31]); 
+            */
+                bufferScreenDraw(  f_logBuffer,
+                                0,
+                                f_logIndex,
+                                0,
+                                3,
+                                0xFFFFFFFF );
 }
 
 void CKernel::ADCDebug()
@@ -489,7 +492,7 @@ void CKernel::logInOutRuntime(void)
                        0,
                        0xFFFFFFFF );
 }
-
+#ifdef __LOG_TO_SCREEN__
 void            CKernel::logScreenUpdate            (   void )
 {
                 if (gE_PixelBuffer == 0) return;
@@ -586,6 +589,7 @@ void            CKernel::logScreenUpdate            (   void )
                                     );
                 m_logScreenStartIndex = drawIndex;
 }
+#endif 
 
 bool            CKernel::memoryDebugCheckpoint      (   const char* p_Label,
                                                         bool        p_DumpStatus )
@@ -747,6 +751,7 @@ void 			CKernel::LoggerSink						(	        void* 			    pContext,
                     }
             //  pThis->m_logBuffer[pThis->m_logBufferIndex++] = '\n';
                 pThis->m_logBuffer[pThis->m_logBufferIndex] = '\0'; // means the log goes into the pre-init buffer 
-
+#ifdef __LOG_TO_SCREEN__
                 pThis->logScreenUpdate();
+#endif                
 }

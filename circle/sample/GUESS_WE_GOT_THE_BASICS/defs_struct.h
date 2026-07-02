@@ -58,25 +58,25 @@ struct glsl_state
 
 struct tex_state
 {
-    u32         max_tex_size;
+    u32         				max_tex_size;
 
-    bool        tex_valid[MAX_TEXTURE];
+    bool        				tex_valid[MAX_TEXTURE];
 
-    unsigned    width[MAX_TEXTURE];
-    unsigned    height[MAX_TEXTURE];
-    unsigned    offset[MAX_TEXTURE];
+    unsigned    				width[MAX_TEXTURE];
+    unsigned    				height[MAX_TEXTURE];
+    unsigned    				offset[MAX_TEXTURE];
 
-    unsigned    file_size[MAX_TEXTURE];
-    unsigned    image_size[MAX_TEXTURE];
+    unsigned    				file_size[MAX_TEXTURE];
+    unsigned    				image_size[MAX_TEXTURE];
 
-    u8*         data[MAX_TEXTURE];
-    size_t      size[MAX_TEXTURE];
+    u8*         				data[MAX_TEXTURE];
+    size_t      				size[MAX_TEXTURE];
 
-    GLuint      gl_tex_id[MAX_TEXTURE];
-    GLint       u_tex_id[MAX_SHADER][MAX_TEXTURE];
+    GLuint      				gl_tex_id[MAX_TEXTURE];
+    GLint       				u_tex_id[MAX_SHADER][MAX_TEXTURE];
        // for my video frame texture 
-    GLuint          gl_tex_vid;                 // video texture handle
-    EGLImageKHR     m_EGLimage = nullptr;       // backing (changes per frame) 
+    GLuint          			gl_tex_vid;                 // video texture handle
+    EGLImageKHR     			m_EGLimage = nullptr;       // backing (changes per frame) 
 };
 /*
 | Model 					| CONFIG once                     | RUNTIME per frame                               |
@@ -89,44 +89,44 @@ struct tex_state
 struct h264_state
 {
     // raw input will be populated by parser_init
-    u8*             data[MAX_VIDEOS];
-    size_t          size[MAX_VIDEOS];
+    u8*             			data[MAX_VIDEOS];
+    size_t          			size[MAX_VIDEOS];
     // frame table -  the actual data we need for model a decoding
-    void*           nal_block_address[MAX_VIDEOS][MAX_FRAMES];
-    size_t          nal_block_offset[MAX_VIDEOS][MAX_FRAMES];
-    size_t          nal_block_length[MAX_VIDEOS][MAX_FRAMES];
+    void*           			nal_block_address[MAX_VIDEOS][MAX_FRAMES];
+    size_t          			nal_block_offset[MAX_VIDEOS][MAX_FRAMES];
+    size_t          			nal_block_length[MAX_VIDEOS][MAX_FRAMES];
     // frame table -  the actual data we need for model b decoding 
-    void*           frame_address[MAX_VIDEOS][MAX_FRAMES];
-    size_t          frame_offset[MAX_VIDEOS][MAX_FRAMES];
-    size_t          frame_length[MAX_VIDEOS][MAX_FRAMES];
+    void*           			frame_address[MAX_VIDEOS][MAX_FRAMES];
+    size_t          			frame_offset[MAX_VIDEOS][MAX_FRAMES];
+    size_t          			frame_length[MAX_VIDEOS][MAX_FRAMES];
 
-	size_t			idr_sc_len[MAX_VIDEOS];
+	size_t						idr_sc_len[MAX_VIDEOS];
     // extradata
-    u8              extradata[MAX_VIDEOS][256];
-    size_t          extradata_len[MAX_VIDEOS];
-    bool            extradata_valid[MAX_VIDEOS];
+    u8              			extradata[MAX_VIDEOS][256];
+    size_t          			extradata_len[MAX_VIDEOS];
+    bool            			extradata_valid[MAX_VIDEOS];
     // parsed metadata
-    u16             video_width[MAX_VIDEOS];
-    u16             video_height[MAX_VIDEOS];
-    u8              vid_profile[MAX_VIDEOS];
-    u8              vid_level[MAX_VIDEOS];
+    u16             			video_width[MAX_VIDEOS];
+    u16             			video_height[MAX_VIDEOS];
+    u8              			vid_profile[MAX_VIDEOS];
+    u8              			vid_level[MAX_VIDEOS];
     // state
-    size_t          frame_count[MAX_VIDEOS];                // unsigned frame_count[MAX_VIDEOS]; ??
-    bool            vid_valid[MAX_VIDEOS];
+    size_t          			frame_count[MAX_VIDEOS];                // unsigned frame_count[MAX_VIDEOS]; ??
+    bool            			vid_valid[MAX_VIDEOS];
     // shared base
-    char*           block_base; // void*   block_base;
+    char*           			block_base; // void*   block_base;
     // constraints from the firmware
-    u16             min_width;
-	u16             max_width;
+    u16             			min_width;
+	u16             			max_width;
 
-    u16             min_height;	
-    u16             max_height;
+    u16             			min_height;	
+    u16             			max_height;
 
-	u8              min_profile;
-    u8              max_profile;
+	u8              			min_profile;
+    u8              			max_profile;
 
-	u8				min_level;
-    u8              max_level;
+	u8							min_level;
+    u8              			max_level;
 };
 //  VCSM
 struct vc_sm_msg_hdr_t 						// Message header for all messages in HOST->VC direction //

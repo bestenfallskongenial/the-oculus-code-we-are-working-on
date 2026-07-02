@@ -1,4 +1,3 @@
-
 #include "kernel.h"
 
     #define MY_BUFFER   m_bufferLog                 // not used here!
