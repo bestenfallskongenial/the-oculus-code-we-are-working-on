@@ -216,7 +216,7 @@ public:         // Logging
                 int g_lastLayer         = 0;
                 int g_lastLayerLED      = 0;
                 unsigned g_extClockTime = 0;
-/*
+
         typedef void                            (CKernel::*ModeFunc)(int);
 
                 ModeFunc                        g_modeTable[9] =
@@ -232,7 +232,7 @@ public:         // Logging
     &CKernel::modeAudioBb0,
     &CKernel::modeAudioBb1
 };
-*/
+
         const   uint8_t                         g_mapType[BLOCK_COUNT][4] =
                                                 {
                                                     { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },
