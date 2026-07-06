@@ -599,46 +599,6 @@ void            CKernel::wrapper_init_gl_usb        (   )
                                     GL_REPEAT);
 }
 
-void            CKernel::wrapper_modes              (   )
-{
-    /*
-                resetPickUpFlags();                              // we need to reset the threshold flags each loop - why again?!
-
-                switch (g_current_menu_layer)                           // use than the menulayer variable the 
-                    {
-                    case 0:
-                    // case zero is button b ( lower ) tab bpm
-                        break;            
-                    case 1:
-                        modeMenuAssignGroup(1,  0);     // CH0–CH3 parameters in our global array depending on the menulayer
-                        break;
-                    case 2:
-                        modeMenuAssignGroup(2,  4);     // CH4–CH7
-                        break;
-                    case 3:
-                        modeMenuAssignGroup(3,  8);     // LFO
-                        break;
-                    case 4:
-                        modeMenuAssignGroup(4, 12);     // sensitivity layer A..D
-                        break;
-
-                    default:
-                        break;
-                    }
-                    
-                setChannelMode(0);                               // than we apply the mapped modes for the 8 channels
-                setChannelMode(1);                               // other menulayer modes are handled in the background
-                setChannelMode(2);
-                setChannelMode(3);
-                setChannelMode(4);
-                setChannelMode(5);
-                setChannelMode(6);
-                setChannelMode(7);
-
-                apply_state_to_led();                                   // than we update the 4 leds depending on the modes - we have to write this function 
-*/
-}
-
 // instead of having life time long structs for my vcsm / mmal i declare pointer instead and provide wrappers to alloc and free the structs after use!
 // means also i have to call the wrapper here at the CKernel init phase ( presumably after the memory alloc ) and after the init phase of the vc04 
 
