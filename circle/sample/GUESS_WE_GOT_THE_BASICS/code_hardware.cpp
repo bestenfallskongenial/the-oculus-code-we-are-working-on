@@ -123,7 +123,7 @@ void            CKernel::buttonPingA                (   int             p_btn_id
                     g_buttons_states[p_btn_id][BTN_PRESS_START] = g_currentTime;
 
 
-                    if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 && (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) < g_double_click_time)
+                    if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 && (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) < DOUBLE_CLICK_TIME)
                         {
                         g_buttons_states[p_btn_id][BTN_DOUBLE] = 1;
                         }
@@ -140,7 +140,7 @@ void            CKernel::buttonPingA                (   int             p_btn_id
                     g_buttons_states[p_btn_id][BTN_PRESS_START] = 0;
                     g_buttons_states[p_btn_id][BTN_HOLD_TICK]   = 0;
                     }
-                if (g_buttons_states[p_btn_id][BTN_PRESS_START] != 0 && (g_currentTime - g_buttons_states[p_btn_id][BTN_PRESS_START]) >= g_long_click_time)
+                if (g_buttons_states[p_btn_id][BTN_PRESS_START] != 0 && (g_currentTime - g_buttons_states[p_btn_id][BTN_PRESS_START]) >= LONG_CLICK_TIME)
                     {
                     g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
                     }
@@ -159,7 +159,7 @@ void            CKernel::buttonPingB                (   int             p_btn_id
                     g_buttons_states[p_btn_id_A][BTN_PRESS_START] = g_currentTime;
 
 
-                    if (g_buttons_states[p_btn_id_A][BTN_RELEASE] > 0 && (g_currentTime - g_buttons_states[p_btn_id_A][BTN_RELEASE]) < g_double_click_time)
+                    if (g_buttons_states[p_btn_id_A][BTN_RELEASE] > 0 && (g_currentTime - g_buttons_states[p_btn_id_A][BTN_RELEASE]) < DOUBLE_CLICK_TIME)
                         {
                         g_buttons_states[p_btn_id_A][BTN_DOUBLE] = 1;
                         }
@@ -176,7 +176,7 @@ void            CKernel::buttonPingB                (   int             p_btn_id
                     g_buttons_states[p_btn_id_A][BTN_PRESS_START] = 0;
                     g_buttons_states[p_btn_id_A][BTN_HOLD_TICK]   = 0;
                     }
-                if (g_buttons_states[p_btn_id_A][BTN_PRESS_START] != 0 && (g_currentTime - g_buttons_states[p_btn_id_A][BTN_PRESS_START]) >= g_long_click_time)
+                if (g_buttons_states[p_btn_id_A][BTN_PRESS_START] != 0 && (g_currentTime - g_buttons_states[p_btn_id_A][BTN_PRESS_START]) >= LONG_CLICK_TIME)
                     {
                     g_buttons_states[p_btn_id_A][BTN_HOLD_TICK]++;
                     }
@@ -191,7 +191,7 @@ void            CKernel::buttonPingB                (   int             p_btn_id
                     g_buttons_states[p_btn_id_B][BTN_PRESS_START] = g_currentTime;
 
 
-                    if (g_buttons_states[p_btn_id_B][BTN_RELEASE] > 0 && (g_currentTime - g_buttons_states[p_btn_id_B][BTN_RELEASE]) < g_double_click_time)
+                    if (g_buttons_states[p_btn_id_B][BTN_RELEASE] > 0 && (g_currentTime - g_buttons_states[p_btn_id_B][BTN_RELEASE]) < DOUBLE_CLICK_TIME)
                         {
                         g_buttons_states[p_btn_id_B][BTN_DOUBLE] = 1;
                         }
@@ -208,7 +208,7 @@ void            CKernel::buttonPingB                (   int             p_btn_id
                     g_buttons_states[p_btn_id_B][BTN_PRESS_START] = 0;
                     g_buttons_states[p_btn_id_B][BTN_HOLD_TICK]   = 0;
                     }
-                if (g_buttons_states[p_btn_id_B][BTN_PRESS_START] != 0 && (g_currentTime - g_buttons_states[p_btn_id_B][BTN_PRESS_START]) >= g_long_click_time)
+                if (g_buttons_states[p_btn_id_B][BTN_PRESS_START] != 0 && (g_currentTime - g_buttons_states[p_btn_id_B][BTN_PRESS_START]) >= LONG_CLICK_TIME)
                     {
                     g_buttons_states[p_btn_id_B][BTN_HOLD_TICK]++;
                     }

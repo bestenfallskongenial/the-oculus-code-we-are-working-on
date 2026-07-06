@@ -451,7 +451,6 @@ void            CKernel::wrapper_load_usb           (   )
 
 void            CKernel::wrapper_parser_sd()
 {
-    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper parse sd start");     
                 BMPparser       (   &m_omt,                                         // the dedicated struct for the overlay texture
                                     m_bufferOmt,                                    // the actual mem-buffer where i have stored it
                                     g_ScnOmt,
@@ -466,12 +465,10 @@ void            CKernel::wrapper_parser_sd()
                                     filecounter[FT_TEX][FLD_SIZE],
                                     filecounter[FT_TEX][FLD_PREV],
                                     filecounter[FT_TEX][FLD_LOADED]); 
-    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper parse sd end");                                          
 }
 
 void            CKernel::wrapper_parser_usb()
 {
-    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper parse usb start");     
                 BMPparser       (   &m_tex,
                                     m_bufferTex,
                                     g_ScnTex,
@@ -499,12 +496,10 @@ void            CKernel::wrapper_parser_usb()
 
                                     MIN_VIDEO_LEVEL,
                                     MAX_VIDEO_LEVEL);        
-    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper parse usb end");                                     
 }
 
 void            CKernel::wrapper_init_gl_sd         (   )
 {
-    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper gl sd start");
                 initVbuffer     (   &m_ogl,
                                     &m_vtx );
                 initShader      (   &m_vtx,                                         // init vertex shader 
@@ -571,12 +566,10 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     filecounter[FT_TEX][FLD_VALID],                 // for the dense indexing after load and verify *
                                     GL_REPEAT,
                                     GL_REPEAT);
-    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper gl sd end");                                    
 }
 
 void            CKernel::wrapper_init_gl_usb        (   )
 {
-    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper gl usb start");    
                 initShader      (   &m_vtx,         // init fragment shader ( default )
                                     &m_fsh, 
                                     &m_tex,
@@ -604,7 +597,6 @@ void            CKernel::wrapper_init_gl_usb        (   )
                                     filecounter[FT_TEX][FLD_VALID],
                                     GL_REPEAT,
                                     GL_REPEAT);
-    storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "**********wrapper gl usb end");                                    
 }
 /*
 void            CKernel::wrapper_io                 (   )
@@ -665,13 +657,11 @@ void            CKernel::wrapper_modes              (   )
 */
 }
 
-
 // instead of having life time long structs for my vcsm / mmal i declare pointer instead and provide wrappers to alloc and free the structs after use!
 // means also i have to call the wrapper here at the CKernel init phase ( presumably after the memory alloc ) and after the init phase of the vc04 
 
 bool            CKernel::wrapperInitVCSMstruct      (   )
 {
-   
                 bool bOK = true;
 
                 if (bOK) { m_ServiceCreateVCSM          = new SERVICE_CREATION_T();           
@@ -826,7 +816,6 @@ bool            CKernel::wrapperInitMMALstruct      (   )
                     bOK = (m_PortInfoGetRx_Output_D    != nullptr); }
 
                 return bOK;
-                
 }
 
 void            CKernel::wrapperFreeVCSMstruct      (   ) // here i must check what structs are init/debug and what are runtime code!

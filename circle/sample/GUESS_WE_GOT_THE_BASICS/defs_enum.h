@@ -27,22 +27,22 @@ enum centralModeBuffer
     SEL_VID,
     SEL_FRM,
 // block 05
-    FLAG_TIME,
-    FLAG_TEX,
-    FLAG_EXT,
-    FLAG_VID,
+//  FLAG_TIME,
+//  FLAG_TEX,
+//  FLAG_EXT,
+//  FLAG_VID,
 // block 06
     FLAG_AUDIO_A,
     FLAG_AUDIO_B,
-    FLAG_DUMMY,
-
-    IS_STORED,
+    FLAG_DUMMY_A,
+    FLAG_DUMMY_B,
 // block 07
     SET_STORE,
     SET_LOAD,
     LOG_STORE,
     KLN_LOAD,
-
+// is stored
+    IS_STORED,    
     MODETABLE_COUNT
 };
 

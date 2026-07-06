@@ -13,7 +13,7 @@ private:        // circle system requirements
 
                 CBcmFrameBuffer                 gE_FrameBuffer;
 
-                CDMAChannel                     m_SMITxDMA;
+                CDMAChannel                     m_SMITxDMA;                                     // SMI
 
                 CEMMCDevice                     m_EMMC;
                 CUSBHCIDevice                   m_USBHCI;
@@ -25,7 +25,6 @@ private:        // circle system requirements
 
                 CScheduler                      m_Scheduler;
 public:
-            //  CBcmFrameBuffer                 gE_FrameBuffer;
                 CCharGenerator                  gE_CharGenerator;
 
                 u32*                            gE_PixelBuffer                                  = nullptr;      // frameBufferInit() & logScreenUpdate()
@@ -40,8 +39,6 @@ private:        // SMI / DMA / WS2812
                 uintptr                         m_SPIBaseAddress                                = 0;
                 bool                            m_SPIValid                                      = false;
 
-            //  CDMAChannel                     m_SMITxDMA;
-
                 unsigned                        m_SMIGpioPin                                    = 0;
                 unsigned                        m_SMISDMask                                     = 0;
                 unsigned                        m_LEDCount                                      = 0;
@@ -55,9 +52,9 @@ public:         // Logging
                 char                            m_logBuffer[1024*32]                            = {0};          //  pre-init buffer 
                 u32                             m_logBufferIndex                                = 0;
    
-                u32                             m_logScreenStartIndex                           = 0;    // logScreenUpdate()
-
-                olg_state                       m_ogl                                           = {};              // local copies of my graphics related structs
+                u32                             m_logScreenStartIndex                           = 0;            // logScreenUpdate()
+// local copies of my graphics related structs
+                olg_state                       m_ogl                                           = {};           
 
                 vtx_state                       m_vtx                                           = {};
 
@@ -96,11 +93,9 @@ public:         // Logging
                 GLint                           GLtime                                          = 0;
                 GLfloat                         g_opaque                                        = 0.5; 
 
-                int                             g_menu_mode_new;    // dummy - i assume this checks the layer of my menu!!
-                int                             g_menu_mode_old;
+ //             unsigned long                   DOUBLE_CLICK_TIME                             = 500000;
+ //             unsigned long                   LONG_CLICK_TIME                               = 1000000;
 
-                unsigned long                   g_double_click_time                             = 500000;
-                unsigned long                   g_long_click_time                               = 1000000;
                 unsigned                        g_currentTime;
 
                 int                             attenuation = 2;
@@ -221,7 +216,7 @@ public:         // Logging
                 int g_lastLayer         = 0;
                 int g_lastLayerLED      = 0;
                 unsigned g_extClockTime = 0;
-
+/*
         typedef void                            (CKernel::*ModeFunc)(int);
 
                 ModeFunc                        g_modeTable[9] =
@@ -237,46 +232,47 @@ public:         // Logging
     &CKernel::modeAudioBb0,
     &CKernel::modeAudioBb1
 };
-
+*/
         const   uint8_t                         g_mapType[BLOCK_COUNT][4] =
-{
-    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },
-    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },
+                                                {
+                                                    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },
+                                                    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },
 
-    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
-    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
-    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
-    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
-    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
-    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }
-};
+                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+                                                //  { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // i put the input-selection and the flag together, now is max + 1 off and < max on
+                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }
+                                                };
 
         const   uint8_t                         g_valueRoof[BLOCK_COUNT][4] =
-{
-    { 5,  5,  5,  5  },
-    { 5,  5,  5,  5  },
+                                                {
+                                                    { 5,  5,  5,  5  },
+                                                    { 5,  5,  5,  5  },
 
-    { 4,  4,  7,  7  },
-    { 64, 64, 64, 64 },
-    { 7,  7,  7,  7  },
-    { 2,  2,  2,  2  },
-    { 0,  0,  0,  2  },
-    { 2,  2,  2,  2  }
-};
+                                                    { 4,  4,  7,  7  },
+                                                    { 64, 64, 64, 64 },
+                                                    { 8,  8,  8,  8  },                         // means i need the max +1
+                                                //  { 7,  7,  7,  7  },                         // can remove the regular 7
+                                                //  { 2,  2,  2,  2  },                         // and also the flags here
+                                                    { 0,  0,  0,  2  },
+                                                    { 2,  2,  2,  2  }
+                                                };
 
         const   uint8_t                         g_groupLen[GROUP_COUNT] =
-{
-    5,
-    2,
-    2
-};
+                                                {
+                                                    5,
+                                                    2,
+                                                    2
+                                                };
 
         const   uint8_t                         g_groupModes[GROUP_COUNT][5] =
-{
-    { 0, 1, 2, 3, 4 },
-    { 5, 6, 0, 0, 0 },
-    { 7, 8, 0, 0, 0 }
-};
+                                                {
+                                                    { 0, 1, 2, 3, 4 },
+                                                    { 5, 6, 0, 0, 0 },
+                                                    { 7, 8, 0, 0, 0 }
+                                                };
 
                 uint8_t                         g_modeRoof[BLOCK_COUNT * 4];
                 uint8_t                         g_modeMap[BLOCK_COUNT * 4][9];
