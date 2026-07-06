@@ -24,12 +24,11 @@ void            CKernel::storeModes()
 
                 if (g_centralModeBuffer[g_gl_program_current][IS_STORED] && g_currentProgramBuffer != g_gl_program_current)
                     {
-                //  int stored = g_centralModeBuffer[g_gl_program_current][IS_STORED];
+                    int stored = g_centralModeBuffer[g_gl_program_current][IS_STORED];
 
-                //  memcpy(&g_centralModeBuffer[g_gl_program_current][0], &g_centralModeBuffer[DEFAULT_SLOT][0], sizeof(g_centralModeBuffer[g_gl_program_current]));
+                    memcpy(&g_centralModeBuffer[g_gl_program_current][0], &g_centralModeBuffer[DEFAULT_SLOT][0], sizeof(g_centralModeBuffer[g_gl_program_current]));
 
-                    memcpy(&g_centralModeBuffer[g_gl_program_current][0], &g_centralModeBuffer[DEFAULT_SLOT][0], CENTRAL_MODE_ROW_COPY_BYTES);
-                //  g_centralModeBuffer[g_gl_program_current][IS_STORED] = stored;
+                    g_centralModeBuffer[g_gl_program_current][IS_STORED] = stored;
                     g_currentProgramBuffer = g_gl_program_current;
                     }
                 else if (!g_centralModeBuffer[g_gl_program_current][IS_STORED] && g_currentProgramBuffer != DEFAULT_SLOT)
@@ -401,7 +400,7 @@ void            CKernel::modeAudioBb1               (   int p_channel)
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU3];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][AU3];
 }
-/*
+
 void            CKernel::applyTargetModes           (   )       // current!
 {
 //              if (g_menuLayer != 0)
@@ -453,20 +452,20 @@ void            CKernel::applyTargetModes           (   )       // current!
                     calculate1BPMnew(1, TB1, DB1, g_extClockTime);
                     }
 }
-*/
+
+/*
 #define MAX_CHANNELS 8
 
 void            CKernel::applyTargetModes           (   )       // current!
 {
-/*    
-                if (g_menuLayer != 0)
-                    {
-                    g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] ) ) >> 10;
-                    }
-*/
+//              if (g_menuLayer != 0)
+//                  {
+//                  g_gl_program_current = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] ) ) >> 10;
+//                  }
+
                 if (g_menuLayer == 0)
                     {
-                    g_selectedProgram = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] /*-1*/)) >> 10;
+                    g_selectedProgram = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] )) >> 10;
 
                     if (!g_selectedProgramFlag)
                         {
@@ -486,17 +485,15 @@ void            CKernel::applyTargetModes           (   )       // current!
                     m_activeTex = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX]][OUT];
                     }
 
-/*
-                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_VID] < MAX_CHANNELS)       // selected channel OUT controls active video
-                    {
-                    m_activeVideo = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_VID]][OUT];
-                    }
+//              if (g_centralModeBuffer[g_currentProgramBuffer][SEL_VID] < MAX_CHANNELS)       // selected channel OUT controls active video
+//                  {
+//                  m_activeVideo = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_VID]][OUT];
+//                  }
 
-                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_FRM] < MAX_CHANNELS)       // selected channel OUT controls active frame
-                    {
-                    m_activeFrame = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_FRM]][OUT];
-                    }
-*/
+//              if (g_centralModeBuffer[g_currentProgramBuffer][SEL_FRM] < MAX_CHANNELS)       // selected channel OUT controls active frame
+//                  {
+//                  m_activeFrame = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_FRM]][OUT];
+//                  }
 
                 if (g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME] < MAX_CHANNELS)      // selected channel OUT controls shader/program time
                     {
@@ -512,6 +509,7 @@ void            CKernel::applyTargetModes           (   )       // current!
                     calculate1BPMnew(1, TB1, DB1, g_extClockTime);
                     }
 }
+*/
 
 void            CKernel::updateLED() // current!! <-having the block here is a problem we only have the layer avaieble, block is kinda internal knowledge!
 {

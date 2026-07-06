@@ -129,9 +129,6 @@
                                                                                     // 1 firmware / 32 user / 1 default slot
     #define         DEFAULT_SLOT                33                                  //  because 0 plus 34 = 33 ?? 
 
-    #define         CENTRAL_MODE_ROW_COPY_BYTES \
-                    ((MODETABLE_COUNT - 1) * sizeof(decltype(g_centralModeBuffer[0][0]))) // new! i want to restructure the mode-enum 
-
     #define         AUDIO_THRESHOLD             160
     #define         AUDIO_BUFFER_COUNT          64
     #define         AUDIO_HOLD_TIMEOUT          3000

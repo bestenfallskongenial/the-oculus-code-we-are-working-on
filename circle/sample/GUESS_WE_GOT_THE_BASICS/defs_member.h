@@ -241,7 +241,7 @@ public:         // Logging
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
-                                                //  { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // i put the input-selection and the flag together, now is max + 1 off and < max on
+                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // i put the input-selection and the flag together, now is max + 1 off and < max on
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }
                                                 };
@@ -253,9 +253,9 @@ public:         // Logging
 
                                                     { 4,  4,  7,  7  },
                                                     { 64, 64, 64, 64 },
-                                                    { 8,  8,  8,  8  },                         // means i need the max +1
-                                                //  { 7,  7,  7,  7  },                         // can remove the regular 7
-                                                //  { 2,  2,  2,  2  },                         // and also the flags here
+                                                //  { 8,  8,  8,  8  },                         // means i need the max +1
+                                                    { 7,  7,  7,  7  },                         // can remove the regular 7
+                                                    { 2,  2,  2,  2  },                         // and also the flags here
                                                     { 0,  0,  0,  2  },
                                                     { 2,  2,  2,  2  }
                                                 };
