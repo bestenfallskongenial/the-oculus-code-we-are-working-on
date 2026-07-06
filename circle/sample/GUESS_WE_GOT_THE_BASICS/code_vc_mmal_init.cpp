@@ -25,13 +25,14 @@ bool            CKernel::initTexturesMMAL         (   )
                 if( f_count != 0)
                     { 
 #ifdef __LOG_MMAL__ 
-                    storeLog( MY_BUFFER, MY_INDEX, "Texture Creation    FAILED");
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "Texture Creation    FAILED");
 #endif                   
                     return false;
                     }
 #ifdef __LOG_MMAL__             
-            //  nextline( MY_BUFFER, MY_INDEX );
-                storeLog( MY_BUFFER, MY_INDEX, "Texture Creation    SUCCESS");
+                storeLog(   MY_BUFFER, MY_INDEX, 
+                            "Texture Creation    SUCCESS");
 #endif               
                 return true;
 }
@@ -52,7 +53,9 @@ bool            CKernel::createComponent            (   u32& ComponentHandle,   
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __LOG_MMAL__
-                    storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "MMALsendAndWait FAILED - MSG #", 
+                                tx.hdr.context );
 #endif 
                     return false;
                     }
@@ -78,7 +81,9 @@ bool            CKernel::getPortInfoMMAL            (   u32 port_type,
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __LOG_MMAL__
-                    storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "MMALsendAndWait FAILED - MSG #", 
+                                tx.hdr.context );
 #endif 
                     return false;
                     }
@@ -97,7 +102,9 @@ bool            CKernel::setPortInfoMMAL            (   MMAL_Port_Info_Set_Msg& 
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __LOG_MMAL__
-                    storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "MMALsendAndWait FAILED - MSG #", 
+                                tx.hdr.context );
 #endif 
                     return false;
                     }
@@ -118,7 +125,9 @@ bool            CKernel::enableComponentMMAL        (   MMAL_Component_Enable_Ms
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __LOG_MMAL__
-                    storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "MMALsendAndWait FAILED - MSG #", 
+                                tx.hdr.context );
 #endif 
                     return false;
                     }
@@ -158,7 +167,9 @@ bool            CKernel::setZeroCopyModeMMAL        (   u32                     
                                       &rx_len ))
                     {
 #ifdef __LOG_MMAL__
-                    storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "MMALsendAndWait FAILED - MSG #", 
+                                tx.hdr.context );
 #endif
                     return false;
                     }
@@ -183,7 +194,9 @@ bool            CKernel::enablePortMMAL             (   const MMAL_Port_Info_Get
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __LOG_MMAL__
-                    storeLog( MY_BUFFER, MY_INDEX, "MMALsendAndWait FAILED - MSG #", tx.hdr.context );
+                    storeLog(   MY_BUFFER, MY_INDEX, 
+                                "MMALsendAndWait FAILED - MSG #", 
+                                tx.hdr.context );
 #endif 
                     return false;
                     }
@@ -248,12 +261,12 @@ void            CKernel::primePortFormatInputMMAL   (   u32 bufferSize,
                 tx.msg.format.encoding          = MMAL_ENCODING_H264;
                 tx.msg.format.encoding_variant  = MMAL_ENCODING_VARIANT_H264_DEFAULT;
 
-                tx.msg.es.video.width           = m_ResolutionX;
-                tx.msg.es.video.height          = m_ResolutionY;
+                tx.msg.es.video.width           = MIN_VIDEO_HEIGHT; //m_ResolutionX;
+                tx.msg.es.video.height          = MAX_VIDEO_HEIGHT; //m_ResolutionY;
                 tx.msg.es.video.crop.x          = 0;
                 tx.msg.es.video.crop.y          = 0;
-                tx.msg.es.video.crop.width      = m_ResolutionX;
-                tx.msg.es.video.crop.height     = m_ResolutionY;
+                tx.msg.es.video.crop.width      = MIN_VIDEO_HEIGHT; //m_ResolutionX;
+                tx.msg.es.video.crop.height     = MAX_VIDEO_HEIGHT; //m_ResolutionY;
 }
 void            CKernel::primePortFormatOutputMMAL  (   u32 bufferSize, 
                                                         const MMAL_Port_Info_Get_Reply& src, 
@@ -274,10 +287,10 @@ void            CKernel::primePortFormatOutputMMAL  (   u32 bufferSize,
 
                 tx.msg.format.encoding          = MMAL_ENCODING_I420;
 
-                tx.msg.es.video.width           = m_ResolutionX;
-                tx.msg.es.video.height          = m_ResolutionY;
+                tx.msg.es.video.width           = MIN_VIDEO_HEIGHT; //m_ResolutionX;
+                tx.msg.es.video.height          = MAX_VIDEO_HEIGHT; //m_ResolutionY;
                 tx.msg.es.video.crop.x          = 0;
                 tx.msg.es.video.crop.y          = 0;
-                tx.msg.es.video.crop.width      = m_ResolutionX;
-                tx.msg.es.video.crop.height     = m_ResolutionY;
+                tx.msg.es.video.crop.width      = MIN_VIDEO_HEIGHT; //m_ResolutionX;
+                tx.msg.es.video.crop.height     = MAX_VIDEO_HEIGHT; //m_ResolutionY;
 }

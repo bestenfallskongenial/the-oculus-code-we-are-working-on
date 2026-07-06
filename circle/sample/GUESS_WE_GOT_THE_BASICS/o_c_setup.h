@@ -28,12 +28,12 @@
 //  #define         __FIRST_FRAME__
 //  #define         __H264_DEBUG_TEX__      // H264 debug texture path
 
-//  #define         HEAP_DEBUG              // heap dump / CMemorySystem::DumpStatus()
+    #define         HEAP_DEBUG              // heap dump / CMemorySystem::DumpStatus()
 
 //  #define         LOG_GL  0
 //  #define         LOG_BMP 8
 
-    // to prepare filecounter[FT_COUNT][FLD_COUNT]
+// to prepare filecounter[FT_COUNT][FLD_COUNT]
     #define         VSH_SD             		    1	// max number of u_vertex shader on sd
     #define         OMF_SD             		    1	// max number of fragment shader on sd
     #define         FSH_SD             		    1	// max number of fragment shader on sd
@@ -92,7 +92,7 @@
 
     #define         FRM_SIZ                     (1024*1024)         // 1mb
 
-    #define         LOG_SIZ                     (1024*128)          // 256kb
+    #define         LOG_SIZ                     (1024*128)          // 128kb
 
     // #define LOG_SIZ 262144
 
@@ -132,14 +132,15 @@
     #define         CENTRAL_MODE_ROW_COPY_BYTES \
                     ((MODETABLE_COUNT - 1) * sizeof(decltype(g_centralModeBuffer[0][0]))) // new! i want to restructure the mode-enum 
 
-    #define         AUDIO_THRESHOLD             160
+
     #define         AUDIO_BUFFER_COUNT          64
+    #define         AUDIO_THRESHOLD             160
     #define         AUDIO_HOLD_TIMEOUT          3000
 
     #define 		CHUNK_SIZE				    1024                                // for the file load 
 
     #define			TIMEOUT					    10                                  // for my watchdog         
-    // WS2812 pin
+// WS2812 pin
     #define         LED_PIN		           	    19		                            // led ( must be between 8 .. 23 )
     #define         LED_COUNT		       	    4		                            // number of LEDs on the stripes   
 //  buttons
@@ -170,11 +171,9 @@
     #define         MIN_VIDEO_LEVEL             30
     #define         MAX_VIDEO_LEVEL             52      // misconception, the parser has only one value,  not a range! was 51
 
-    #define SCREEN_LOG_BUFFER_SIZE  (1024 * 8)
+//  #define SCREEN_LOG_BUFFER_SIZE  (1024 * 8)
 
     #define SCROLLSPEED 5 // in 1000/1th
-
-    #define HEAP_DEBUG
 
     #define DOUBLE_CLICK_TIME 500000
     #define LONG_CLICK_TIME 1000000

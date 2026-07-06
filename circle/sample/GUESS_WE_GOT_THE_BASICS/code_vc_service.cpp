@@ -84,7 +84,8 @@ bool            CKernel::checkGLerrorMMAL           (   )
                         default:                                        error_str = "UNKNOWN_ERROR"; break;
                         }
 #ifdef __LOG_VC04__  
-                    storeLog ( MY_BUFFER, MY_INDEX, error_str);
+                    storeLog (  MY_BUFFER, MY_INDEX, 
+                                error_str);
 #endif 
                     return false;
                     }
@@ -129,7 +130,8 @@ bool            CKernel::sendAndWaitVCHI            (           VCHI_SERVICE_HAN
                 storeLog(   MY_BUFFER, MY_INDEX, 
                             "TX MSG",           (u32)msg_size);
                 storeMsg(   MY_BUFFER, MY_INDEX, 
-                            "Raw TX",           msg, msg_size);
+                            "Raw TX",           msg, 
+                            msg_size);
 #endif 
 
                 if (vchi_msg_queue(ServiceHandle, msg, msg_size, VCHI_FLAGS_BLOCK_UNTIL_QUEUED, NULL) != 0)
@@ -175,7 +177,6 @@ bool            CKernel::openServiceVCHI(               SERVICE_CREATION_T&     
                                                         void*                   cb_param, 
                                                         VCHI_INSTANCE_T         VCHIInstance, 
                                                         VCHI_SERVICE_HANDLE_T&  ServiceHandle )
-
 {
             //  SERVICE_CREATION_T tx = {}; // why not here?!
                 tx.version.version          = serviceVersion;

@@ -18,13 +18,13 @@ private:        // circle system requirements
                 CEMMCDevice                     m_EMMC;
                 CUSBHCIDevice                   m_USBHCI;
                 CVCHIQDevice                    m_VCHIQ;
-
-                volatile bool                   m_bStorageAttached                              = false;
+// ????
+    volatile    bool                            m_bStorageAttached                              = false;
                 CFATFileSystem*                 m_pFileSystem;                                  // where to put the *?
                 bool                            m_resetFlag                                     = false;
 
                 CScheduler                      m_Scheduler;
-public:
+// public:
                 CCharGenerator                  gE_CharGenerator;
 
                 u32*                            gE_PixelBuffer                                  = nullptr;      // frameBufferInit() & logScreenUpdate()
@@ -70,6 +70,7 @@ public:         // Logging
                 int                             m_activeTex                                     = 0;
                 int                             m_activeVideo                                   = 0;
                 int                             m_activeFrame                                   = 0;  
+                int                             g_selectedProgram                               = 0;
 
 // missing globals / shared state / dummies for now
             //  bool                            m_resetFlag                                     = false;
@@ -80,15 +81,15 @@ public:         // Logging
 
                 bool                            g_selectedProgramFlag                           = false;
 
-                int                             g_selectedProgram                               = 0;
-                int                             g_gl_program_current                            = 0;
-                int                             g_gl_program_last                               = 0;
+
+                int                             g_gl_program_current                            = 0;        // storeModes() - exposed 
+                int                             g_gl_program_last                               = 0;        // storeModes() - local temp 
 
                 int                             g_activeBpmChannel                              = 0;   // <- is telling the lfo what bpm is source!
 
-                int                             m_current_gl_program                            = 0;
-                int                             m_current_tex                                   = 0;
-                int                             m_validTextureCount                             = 0;
+ //             int                             m_current_gl_program                            = 0;
+ //             int                             m_current_tex                                   = 0;
+ //             int                             m_validTextureCount                             = 0;
                 
                 GLint                           GLtime                                          = 0;
                 GLfloat                         g_opaque                                        = 0.5; 
@@ -98,20 +99,20 @@ public:         // Logging
 
                 unsigned                        g_currentTime;
 
-                int                             attenuation = 2;
-                bool                            m_audio_mode_activated                          = true;
+                int                             attenuation                                     = 2;
+                bool                            m_audio_mode_activated                          = true; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-                bool                            is_audio[2];
+                bool                            is_audio[2]                                     = { 0 };
 
                 unsigned                        g_inOutMatrixInt[CHANNEL][IO_TYPE_COUNT]        = { 0 };           // the integer in/out matrix
                 float                           g_inOutMatrixFlt[CHANNEL][IO_TYPE_COUNT]        = { 0.0f };           // the float in/out matrix
-                bool                            g_menuPickUpFlag[MODETABLE_COUNT]            = { 0 };                     // the flags for the pickup mechanism  
+                bool                            g_menuPickUpFlag[MODETABLE_COUNT]               = { 0 };                     // the flags for the pickup mechanism  
                 unsigned                        g_buttons_states[BUTTON_COUNT][BTN_INDEX_COUNT] = { 0 };      // the button state machine
                 unsigned                        g_centralModeBuffer[SLOTS][MODETABLE_COUNT]     = { 0 };         // the general user settings, storable per program 
                 unsigned                        g_lfoMultiplier[LFO_MULTIPLIERS_COUNT]          = { 64, 32, 16, 8, 4, 2, 1 };
 
                 unsigned long                   g_lfoBpmMatrix[4][LFO_BPM_COUNT]                = { 0 }; // was unsigned !
-                int                             g_audioIreg[4] = { 0 };
+                int                             g_audioIreg[4]                                  = { 0 };
 // datamanagement.cpp
                 unsigned                        g_hFile;
 
@@ -438,14 +439,12 @@ public:
                 bool                            f_firstFrameQueued                              = false;
 
 // placeholder until i solved this!
-                u32                             m_ResolutionX                                   = 480;  // should be VIDEO_WIDTH      and is needed by bufferReadyMMAL, primePortFormatInputMMAL, primePortFormatOutputMMAL
-                u32                             m_ResolutionY                                   = 640;  // should be VIDEO_HEIGHT     and needed by bufferReadyMMAL, primePortFormatInputMMAL, primePortFormatOutputMMAL
+            //  u32                             m_ResolutionX                                   = 480;  // should be VIDEO_WIDTH      and is needed by bufferReadyMMAL, primePortFormatInputMMAL, primePortFormatOutputMMAL
+            //  u32                             m_ResolutionY                                   = 640;  // should be VIDEO_HEIGHT     and needed by bufferReadyMMAL, primePortFormatInputMMAL, primePortFormatOutputMMAL
 
                 EGLDisplay                      m_eglDisplay;      // is stored in the olg_state struct -> display     and needed by bufferReadyMMAL
                 EGLContext                      m_eglContext;      // is stored in the olg_state struct -> context     and needed by bufferReadyMMAL
                 EGLImageKHR                     m_EGLimage;        // is stored in the tex_state struct -> m_EGLimage  and needed by bufferReadyMMAL
                 GLuint                          m_Texture;         // is stored in the tex_state struct -> gl_tex_vid  and needed by bufferReadyMMAL               
-
-
-                // dummy!
-            int m_activePrg = 0;
+// dummy!
+            //  int                             m_activePrg                                     = 0;

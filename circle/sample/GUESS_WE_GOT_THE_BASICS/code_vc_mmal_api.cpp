@@ -132,8 +132,8 @@ bool            CKernel::bufferReadyMMAL            (   u32 handle)
                     }
                 egl_image_brcm_vcsm_info info =                                 // Describe the finished VCSM buffer
                     {
-                    .width       = m_ResolutionX,
-                    .height      = m_ResolutionY,
+                    .width       = MIN_VIDEO_HEIGHT, //m_ResolutionX,
+                    .height      = MAX_VIDEO_HEIGHT, //m_ResolutionY,
                     .vcsm_handle = handle
                     };
                 m_EGLimage = eglCreateImageKHR( m_eglDisplay, m_eglContext, EGL_IMAGE_BRCM_VCSM, (EGLClientBuffer)&info, nullptr ); // Create new EGLImage viewing this buffer

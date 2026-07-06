@@ -220,42 +220,9 @@ public:
                 void        bufferScreenGetGrid         (               unsigned&                       cols,           // +++
                                                                         unsigned&                       rows );
 // code_menu.cpp                !! NEED FINALLY TO CREATE THE BUTTON CONSUMER / MENU-LAYER CODE DONE !!
-/*
-                void        prepParameters              ();
-                void        resetPickUpFlags            ();                                                                 // **** okay, i have multiple flags that may or may not be reset ! maybe i will do it centralized here???
-                void        chooseIndex                 (               int                             p_channel, 
-                                                                        int&                            p_activeIndex, 
-                                                                        int                             p_maxCount, 
-                                                                        bool*                           flags);
-                void        chooseIndexD                (               int                             p_channel, 
-                                                                        int&                            p_activeIndex, 
-                                                                        int                             p_maxCount);
-                void        storeModes                  ();
-                void        button_consumer             (               int                             p_btn_id);
-                void        set_mode_length             (               uint8_t                         base);              // the "base" of "channels" to process, groups of 4!
-                void        mapMenuGroup                (               uint8_t                         menu_id,            // for comparison / exit condition **** here we use a parameter to compair against a global member... nononogo, we can rely only on "m_current_menu" vs "m_last_menu" right? !!! 
-                                                                        uint8_t                         base);              // the "base" of "channels" to process, groups of 4!
-                void        getChannelModeA             (               int                             p_channel);         // channel to process
-                void        getChannelModeB             (               int                             p_channel);         // channel to process 
-                void        modeADC                     (               int                             p_channel);         // channel passed by caller
-                void        modeTRG                     (               int                             p_channel);         // channel passed by caller
-                void        modeBPM                     (               int                             p_channel);         // channel passed by caller
-                void        modeLF1                     (               int                             p_channel);         // channel passed by caller
-                void        modeLF2                     (               int                             p_channel);         // channel passed by caller
-                void        modeSelectTex               (               int                             p_channel);
-                void        modeSelectVideo             (               int                             p_channel);
-                void        modeSelectFrame             (               int                             p_channel);
-                void        modeAudioAb0                (               int                             p_channel);         // channel passed by caller
-                void        modeAudioAb1                (               int                             p_channel);         // channel passed by caller
-                void        modeAudioBb0                (               int                             p_channel);         // channel passed by caller
-                void        modeAudioBb1                (               int                             p_channel);         // channel passed by caller  
-                void        updateOvlState              (               olg_state*                      o,                  // because we are concerned with the overlay menu here!
-                                                                        glsl_state*                     s, 
-                                                                        tex_state*                      t);      
-*/         
                 void        resetMenuPickUpFlags        ();
                 void        storeModes                  ();
-            //  void        button_consumer             ( int buttonA, int buttonB  );
+
                 void        setLayer                    (               int buttonA, int buttonB);
                 void        dispatchLayer               ();
                 void        set_mode_roof_map           (               uint8_t                         block   );
@@ -444,9 +411,6 @@ public:
                 void        wrapper_parser_usb          ();                
                 void        wrapper_init_gl_sd          ();             // parse/init vertex/default shader and overlay texture                 
                 void        wrapper_init_gl_usb         ();             // parse/init user shader/texture/video 
-                void        wrapper_io                  ();             // hardware io ( led/adc/ctrl_pin/button )
-                void        wrapper_menu                ();             // the true gui, menulayer
-                void        wrapper_modes               ();             // the hardware->gui->glsl pipeline 
                 bool        wrapperInitVCSMstruct       ();             // for the dynamical vcsm structs allocation
                 bool        wrapperInitMMALstruct       ();             // for the dynamical mmal structs allocation
                 void        wrapperFreeVCSMstruct       ();             // for the cleanup of the vcsm structs

@@ -69,7 +69,7 @@ bool            CKernel::importMemoryVCSM           (   void*                   
                     return false;
 
                 if (rx.body.res_handle != 0)
-                {
+                    {
                     vcsm_handle         = rx.body.res_handle; //   like this ?                    
 #ifdef __LOG_VCSM__
                     storeLog(   MY_BUFFER, MY_INDEX, 
@@ -80,7 +80,7 @@ bool            CKernel::importMemoryVCSM           (   void*                   
                     nextline(   MY_BUFFER, MY_INDEX );
 #endif                     
                     return true;
-                }
+                    }
                 return false;
 }
 
@@ -133,8 +133,6 @@ bool            CKernel::freeMemoryVCSM             (   u32&                    
 
                 if (rx.body.success == 0)
                 {
-                /*  m_vc_handle[slot]   = 0; */
-                /*  m_vc_pointer[slot]  = 0; */
                     vcsm_handle         = 0; 
                     vcsm_pointer        = 0;
 #ifdef __LOG_VCSM__
