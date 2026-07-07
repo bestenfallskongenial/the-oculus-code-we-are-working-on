@@ -14,6 +14,9 @@ bool            CKernel::Mount                      (   const   char*       p_de
                     m_pFileSystem = 0;
                     return false;
                     }
+
+                m_pFileSystem->RegisterCallback (this, &CKernel::FATCallback);
+
                 return true;
 }
 
