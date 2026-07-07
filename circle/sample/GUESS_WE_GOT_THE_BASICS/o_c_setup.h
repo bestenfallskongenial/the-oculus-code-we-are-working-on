@@ -104,11 +104,12 @@
     #define			TIMEOUT					    10                                  // for my watchdog         
 // LED & WS2812 pin
     #define         LED_PIN		           	    19		                            // led ( must be between 8 .. 23 )
-    #define         LED_COUNT		       	    4		                            // number of LEDs on the stripes   
-    #define         LED_A                       0
+    #define         LED_COUNT		       	    4		                            // number of LEDs on the stripes
+    
+    #define         LED_A                       2
     #define         LED_B                       1
-    #define         LED_C                       2
-    #define         LED_D                       4
+    #define         LED_C                       3
+    #define         LED_D                       0
 //  buttons
     #define         BUTTON_COUNT                2                                   // was addon/sensors/buttons.h is now buttonPing()  no class required 
     #define         SW_PIN_A	           	    13                                  // button A ( lower )
