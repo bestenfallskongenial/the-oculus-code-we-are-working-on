@@ -49,6 +49,9 @@ struct TFile
 // oculus mendax addition start	
 
 // 	typedef void (*TFATCallback) (void *pContext);
+
+	class CKernel;
+	
 	typedef void (CKernel::*TFATCallback) (void);
 
 // oculus mendax addition end
