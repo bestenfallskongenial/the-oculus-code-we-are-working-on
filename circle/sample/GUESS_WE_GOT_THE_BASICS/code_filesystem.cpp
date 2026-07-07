@@ -9,11 +9,11 @@ bool            CKernel::Mount                      (   const   char*       p_de
                 m_pFileSystem = new CFATFileSystem;
 
                 if (f_partitionName == 0 || m_pFileSystem == 0 || !m_pFileSystem->Mount(f_partitionName))
-                {
+                    {
                     delete m_pFileSystem;
                     m_pFileSystem = 0;
                     return false;
-                }
+                    }
                 return true;
 }
 
@@ -50,7 +50,7 @@ unsigned        CKernel::loadToBuffer               (           char*       p_bu
 
                     if (f_bytesRead == FS_ERROR) return 0;
 
-                    if (f_bytesRead == 0)return f_totalBytesRead;
+                    if (f_bytesRead == 0) return f_totalBytesRead;
 
                     f_totalBytesRead += f_bytesRead;
                     }
@@ -214,7 +214,7 @@ bool            CKernel::scanRoot                   (           char**      p_fi
                                                                 unsigned    p_extentionCount,
                                                                 unsigned&   p_scannedFiles,
                                                                 unsigned    p_maxFiles,
-                                                                unsigned    p_prevFiles )                 // *** CHANGED
+                                                                unsigned    p_prevFiles )                   // *** CHANGED
 {
                 p_scannedFiles = 0;
 
@@ -234,9 +234,9 @@ bool            CKernel::scanRoot                   (           char**      p_fi
                             {
                             if (IsValidFile(f_directoryEntry.chTitle, p_fileExtArray[i])) 
                                 {
-                                unsigned dst = p_prevFiles + p_scannedFiles;             // *** CHANGED
-                                p_fileNameArray[dst] = new char[strlen(f_directoryEntry.chTitle) + 1]; // *** CHANGED
-                                strcpy(p_fileNameArray[dst], f_directoryEntry.chTitle);  // *** CHANGED
+                                unsigned dst = p_prevFiles + p_scannedFiles;                                // *** CHANGED
+                                p_fileNameArray[dst] = new char[strlen(f_directoryEntry.chTitle) + 1];      // *** CHANGED
+                                strcpy(p_fileNameArray[dst], f_directoryEntry.chTitle);                     // *** CHANGED
                                 p_scannedFiles++;
                                 break;
                                 }

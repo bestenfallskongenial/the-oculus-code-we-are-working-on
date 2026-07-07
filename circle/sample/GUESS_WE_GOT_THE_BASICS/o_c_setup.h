@@ -18,8 +18,7 @@
     #define         __LOG_VCSM__                                                // VCSM alloc/import/lock logging
     #define         __LOG_INIT__                                                // kernel initialization step logging
 //  #define         __LOG_GLSL__                                                // shader/program/uniform/gfx_check OpenGL logging
-    #define         __DEBUG_CHECK__                                             // GL/EGL runtime check() calls
-    #define         __DEBUG_OGL__                                               // older assert/check based OGL init debug
+    #define         __DEBUG_GL__                                             // GL/EGL runtime check() calls
 //  #define         __DUMP_GLSL__                                               // dump shader source from GL
 //  #define         __DUMP_FRAMES__                                             // dump the parsed per frame data from per video
 //  #define         __DUMP_VC04__                                               // detailed VC/VCHI message dump

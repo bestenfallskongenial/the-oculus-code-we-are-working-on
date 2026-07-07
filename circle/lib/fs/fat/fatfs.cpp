@@ -26,6 +26,13 @@ CFATFileSystem::CFATFileSystem (void)
 :	m_FATInfo (&m_Cache),
 	m_FAT (&m_Cache, &m_FATInfo),
 	m_Root (&m_Cache, &m_FATInfo, &m_FAT)
+
+// oculus mendax addition start
+
+	m_pCallback (0),
+	m_pCallbackContext (0)
+
+// oculus mendax addition end
 {
 	memset (&m_Files, 0, sizeof m_Files);
 }
@@ -260,6 +267,12 @@ unsigned CFATFileSystem::FileRead (unsigned hFile, void *pBuffer, unsigned ulByt
 
 	while (ulBytes > 0)
 	{
+// oculus mendax addition start
+
+		Callback ();
+
+// oculus mendax addition end
+
 		unsigned ulBlockOffset;
 		unsigned ulBytesLeft;
 		unsigned ulCopyBytes;
@@ -360,6 +373,12 @@ unsigned CFATFileSystem::FileWrite (unsigned hFile, const void *pBuffer, unsigne
 
 	while (ulBytes > 0)
 	{
+// oculus mendax addition start
+
+		Callback ();
+
+// oculus mendax addition end
+		
 		unsigned ulBlockOffset;
 		unsigned ulBytesLeft;
 		unsigned ulCopyBytes;
@@ -477,3 +496,21 @@ int CFATFileSystem::FileDelete (const char *pTitle)
 
 	return 1;
 }
+
+// oculus mendax addition start
+
+void CFATFileSystem::RegisterCallback (TFATCallback pCallback, void *pContext)
+{
+	m_pCallback = pCallback;
+	m_pCallbackContext = pContext;
+}
+
+void CFATFileSystem::Callback (void)
+{
+	if (m_pCallback != 0)
+	{
+		(*m_pCallback) (m_pCallbackContext);
+	}
+}
+
+// oculus mendax addition end

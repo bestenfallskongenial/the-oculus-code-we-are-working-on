@@ -42,7 +42,15 @@ struct TFile
 	boolean		 bWrite;		/* open for write */
 };
 
+
+
 #define FILE(handle)	m_Files[handle-1]
+
+// oculus mendax addition start	
+
+typedef void (*TFATCallback) (void *pContext);
+
+// oculus mendax addition end
 
 class CFATFileSystem
 {
@@ -154,6 +162,12 @@ public:
 	*/
 	int FileDelete (const char *pTitle);
 
+// oculus mendax addition start
+
+	void RegisterCallback (TFATCallback pCallback, void *pContext);
+
+// oculus mendax addition end	
+
 private:
 	CFATCache	m_Cache;
 	CFATInfo	m_FATInfo;
@@ -162,6 +176,16 @@ private:
 	TFile		m_Files[FAT_FILES];
 
 	CGenericLock m_FileTableLock;
+
+// oculus mendax addition start
+
+private:
+	TFATCallback	m_pCallback;
+	void	       *m_pCallbackContext;
+
+	void Callback (void);
+
+// oculus mendax addition end	
 };
 
 #endif
