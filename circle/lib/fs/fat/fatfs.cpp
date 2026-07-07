@@ -25,7 +25,7 @@
 CFATFileSystem::CFATFileSystem (void)
 :	m_FATInfo (&m_Cache),
 	m_FAT (&m_Cache, &m_FATInfo),
-	m_Root (&m_Cache, &m_FATInfo, &m_FAT)
+	m_Root (&m_Cache, &m_FATInfo, &m_FAT),
 
 // oculus mendax addition start
 
@@ -378,7 +378,7 @@ unsigned CFATFileSystem::FileWrite (unsigned hFile, const void *pBuffer, unsigne
 		Callback ();
 
 // oculus mendax addition end
-		
+
 		unsigned ulBlockOffset;
 		unsigned ulBytesLeft;
 		unsigned ulCopyBytes;
