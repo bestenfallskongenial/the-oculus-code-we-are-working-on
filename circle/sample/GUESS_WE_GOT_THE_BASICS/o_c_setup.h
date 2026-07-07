@@ -1,37 +1,34 @@
+/*
+        this file contains the system relevant macros that defines functionality
+
+
+
+*/        
     #define 		LOGLEVEL				    4	                            // 0: only panic 
                                                                                 // 1: also errors 
                                                                                 // 2: also warnings 
                                                                                 // 3: also notices 
                                                                                 // 4: also debug output (default))
-    
-    #define         __DEBUG_LOG__           // generic debug log blocks
+    #define         __DEBUG_LOG__                                               // generic debug log blocks
+//  #define         __LOG_ALLOC__                                               // allocation / buffer allocation logging
+//  #define         __LOG_FILE__                                                // filesystem / file load-store logging
+    #define         __LOG_PARSER__                                              // parser / file parser logging
+    #define         __LOG_MMAL__                                                // MMAL init/wrapper/message logging
+    #define         __LOG_VC04__                                                // VC/VCHI service logging
+    #define         __LOG_VCSM__                                                // VCSM alloc/import/lock logging
+    #define         __LOG_INIT__                                                // kernel initialization step logging
+//  #define         __LOG_GLSL__                                                // shader/program/uniform/gfx_check OpenGL logging
+    #define         __DEBUG_CHECK__                                             // GL/EGL runtime check() calls
+    #define         __DEBUG_OGL__                                               // older assert/check based OGL init debug
+//  #define         __DUMP_GLSL__                                               // dump shader source from GL
+//  #define         __DUMP_FRAMES__                                             // dump the parsed per frame data from per video
+//  #define         __DUMP_VC04__                                               // detailed VC/VCHI message dump
+    #define         __LOG_TO_SCREEN__                                           // shows the log on the screen
+//  #define         __SCROLLING__                                               // animated/intermediate log-screen scrolling frames
+//  #define         __FIRST_FRAME__                                             // logs the fist frame vpu messaging - later useful
+//  #define         __H264_DEBUG_TEX__                                          // H264 debug texture path
 
-//  #define         __LOG_ALLOC__           // allocation / buffer allocation logging
-//  #define         __LOG_FILE__            // filesystem / file load-store logging
-    #define         __LOG_PARSER__          // parser / file parser logging
-    #define         __LOG_MMAL__            // MMAL init/wrapper/message logging
-    #define         __LOG_VC04__            // VC/VCHI service logging
-
-    #define         __LOG_VCSM__            // VCSM alloc/import/lock logging
-    #define         __LOG_INIT__            // kernel initialization step logging
-//  #define         __LOG_GLSL__            // shader/program/uniform/gfx_check OpenGL logging
-
-    #define         __DEBUG_CHECK__         // GL/EGL runtime check() calls
-    #define         __DEBUG_OGL__           // older assert/check based OGL init debug
-
-//  #define         __DUMP_GLSL__           // dump shader source from GL
-//  #define         __DUMP_FRAMES__         
-//  #define         __DUMP_VC04__           // detailed VC/VCHI message dump
-
-    #define         __LOG_TO_SCREEN__
-//  #define         __SCROLLING__           // animated/intermediate log-screen scrolling frames
-//  #define         __FIRST_FRAME__
-//  #define         __H264_DEBUG_TEX__      // H264 debug texture path
-
-    #define         HEAP_DEBUG              // heap dump / CMemorySystem::DumpStatus()
-
-//  #define         LOG_GL  0
-//  #define         LOG_BMP 8
+    #define         HEAP_DEBUG                                                  // heap dump / CMemorySystem::DumpStatus() - is already set!
 
 // to prepare filecounter[FT_COUNT][FLD_COUNT]
     #define         VSH_SD             		    1	// max number of u_vertex shader on sd
@@ -40,98 +37,64 @@
     #define         OMT_SD             		    1	// max number of fragment shader on sd
     #define         TEX_SD             		    1	// max number of textures on sd
     #define         VID_SD             		    0	// max number of videos on sd
-    #define         KLN_SD                      1
-
+    #define         KLN_SD                      1   // max number of kernel.img on sd ( is loaded for the restore function in case of failed FW update )
     #define         FRM_SD                      1   // i put them here because if my mem/dma allocation
     #define         LOG_SD                      16  // here is the trick:
-
                                                     //  #define MY_BUFFER   m_bufferLog
                                                     //  #define MY_INDEX    m_bufferLogIndex
-
                                                     //  for (int i = 0; i < loadedVideos; i++)
                                                     //      {
                                                     //      storeLog( MY_BUFFER[i], MY_INDEX[i], ... );
                                                     //      }
-
-                                                    // m_bufferLog[0 - 7]   - video parser
-                                                    // m_bufferLog[8]       - log boot/init
-                                                    // m_bufferLog[9]       - glsl compile
-                                                    // m_bufferLog[10]      - gfx init
-                                                    // m_bufferLog[11]      - gfx runtime
-                                                    // m_bufferLog[12]      - vc_sm init
-                                                    // m_bufferLog[13]      - mmal init
-                                                    // m_bufferLog[14]      - mmal runtime                                                
-                                                    // m_bufferLog[15]      - texture parser
-
     #define         VSH_USB                     0	// max number of u_vertex shader on sd
     #define         OMF_USB            		    0	// max number of fragment shader on sd
     #define         FSH_USB            		    32	// max number of fragment shader on sd
     #define         OMT_USB            		    0	// max number of fragment shader on sd
     #define         TEX_USB            		    7	// max number of textures on sd
     #define         VID_USB            		    8	// max number of videos on sd
-    #define         KLN_USB                     1
-
-    #define         FRM_USB                     0   // i put them here because if my mem/dma allocation
-    #define         LOG_USB                     0
-
-    #define         VSH_EXT                     1
+    #define         KLN_USB                     1   // max number of kernel.img ( loaded if present for update ) 
+    #define         FRM_USB                     0   // no additional frm "files"
+    #define         LOG_USB                     0   // no additional log "files"
+    #define         VSH_EXT                     1   // the file extensions 
     #define         OMF_EXT                     1
     #define         FSH_EXT                     1
     #define         OMT_EXT                     1
     #define         TEX_EXT                     1
     #define         VID_EXT                     1
     #define         KLN_EXT                     1
-
     #define         VSH_SIZ                     (1024*32)           // 32kb
-    #define         OMF_SIZ                     (1024*32)
-    #define         FSH_SIZ                     (1024*32)
+    #define         OMF_SIZ                     (1024*32)           // 32kb
+    #define         FSH_SIZ                     (1024*32)           // 32kb
     #define         OMT_SIZ                     (1024*1024*4)       // 4mb
-    #define         TEX_SIZ                     (1024*1024*4)
+    #define         TEX_SIZ                     (1024*1024*4)       // 4mb
     #define         VID_SIZ                     (1024*1024*8)       // 8mb
     #define         KLN_SIZ                     (1024*1024*2)       // 2mb
-
     #define         FRM_SIZ                     (1024*1024)         // 1mb
-
     #define         LOG_SIZ                     (1024*128)          // 128kb
-
-    // #define LOG_SIZ 262144
 
     #define         ADC_SELECT_PRG              7   // we will map this modes to input channels later
 
     #define         DEVICE_NAME_SD              "emmc1"
     #define         DEVICE_NAME_USB             "umsd1"
-
     #define         PARTITION_NAME_SD	        "emmc1-1"	                         // name partition sd dont confuse with device type    
     #define         PARTITION_NAME_USB	        "umsd1-1"	
 
     #define 		FILENAME_KNL			    "kernel.img"                         // for logger
-
-    #define         Filename_SYS_LOG            "LOG-SYS.txt"
-    #define 		FILENAME_GL_LOG			    "LOG-GLES.txt"                       // names for my log files 
-    #define 		FILENAME_GLERROR		    "LOG-GLER.txt"
-    #define 		FILENAME_VCSM_LOG		    "LOG-VCSM.txt"
-    #define 		FILENAME_MMAL_LOG		    "LOG-MMAL.txt"    
-
+// LFO
     #define         WAVEFORMS_COUNT             4		// number of lfo waves
     #define         WAVESAMPLES            	    256  	// number of samples per lfo waves
 
     #define         WAVE_SINE                   0
     
-    #define         LED_A                       0
-    #define         LED_B                       1
-    #define         LED_C                       2
-    #define         LED_D                       4
- 
     #define 		LFO_INSTANCES			    2
     #define			LFO_MULTIPLIERS_COUNT		7
 
-    #define         SLOTS                       34                                  // for the g_centralModeBuffer[SLOTS][MODETABLE_COUNT] array -  
+    #define         SLOTS                       FSH_SD + FSH_USB + 1                // for the g_centralModeBuffer[SLOTS][MODETABLE_COUNT] array -  
                                                                                     // 1 firmware / 32 user / 1 default slot
-    #define         DEFAULT_SLOT                33                                  //  because 0 plus 34 = 33 ?? 
+    #define         DEFAULT_SLOT                FSH_SD + FSH_USB                    //  because 0 plus 34 = 33 ?? 
 
     #define         CENTRAL_MODE_ROW_COPY_BYTES \
                     ((MODETABLE_COUNT - 1) * sizeof(decltype(g_centralModeBuffer[0][0]))) // new! i want to restructure the mode-enum 
-
 
     #define         AUDIO_BUFFER_COUNT          64
     #define         AUDIO_THRESHOLD             160
@@ -140,9 +103,13 @@
     #define 		CHUNK_SIZE				    1024                                // for the file load 
 
     #define			TIMEOUT					    10                                  // for my watchdog         
-// WS2812 pin
+// LED & WS2812 pin
     #define         LED_PIN		           	    19		                            // led ( must be between 8 .. 23 )
     #define         LED_COUNT		       	    4		                            // number of LEDs on the stripes   
+    #define         LED_A                       0
+    #define         LED_B                       1
+    #define         LED_C                       2
+    #define         LED_D                       4
 //  buttons
     #define         BUTTON_COUNT                2                                   // was addon/sensors/buttons.h is now buttonPing()  no class required 
     #define         SW_PIN_A	           	    13                                  // button A ( lower )
@@ -150,13 +117,13 @@
 // control / adc routing pin
     #define         CTRL_PIN                 	12                                  // for menu input selector!!!
 // media
-    #define         MAX_TEXTURE                 8
 
-    #define         MAX_SHADER                  33
+
+
     #define         MAX_OMF                     1
-
+    #define         MAX_SHADER                  33
     #define         MAX_VIDEOS                  8
-
+    #define         MAX_TEXTURE                 8
     #define         MAX_FRAMES                  2048
 
     #define         MIN_VIDEO_WIDTH             640

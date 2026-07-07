@@ -83,7 +83,9 @@ bool            CKernel::wrapperVCSM()
                     {
                     bOK = initEventsVCOS(m_EventSMEM, "SMEM");
 #ifdef __LOG_VCSM__
-                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS (m_EventSMEM, SMEM)      DONE");
+                    if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                        ">:", m_Timer.GetClockTicks(), 
+                        "initEventsVCOS (m_EventSMEM, SMEM)      DONE");
 #endif
                     }
                 if (bOK)
@@ -97,7 +99,9 @@ bool            CKernel::wrapperVCSM()
                                                 m_VCHIInstance,
                                                 m_ServiceHandleVCSM );
 #ifdef __LOG_VCSM__
-                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI ('S','M','E','M')       DONE");
+                    if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                        ">:", m_Timer.GetClockTicks(), 
+                                        "openServiceVCHI ('S','M','E','M')       DONE");
 #endif
                     }
                 if (bOK)
@@ -105,7 +109,9 @@ bool            CKernel::wrapperVCSM()
                     bOK = importMemoryVCSM  (   m_videoBlockBase, m_videoBlockSize, m_input_buffer_handle, *m_importTxVCSM_A, *m_importRxVCSM_A );
                     bOK = lockMemoryVCSM    (   m_input_buffer_handle, m_input_buffer_pointer, *m_lockTxVCSM, *m_lockRxVCSM ); 
 #ifdef __LOG_VCSM__
-                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Input allocation               DONE");
+                    if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                        ">:", m_Timer.GetClockTicks(), 
+                                        "SMEM-MEM Input allocation               DONE");
 #endif                                                                       
                     }
                 if (bOK)
@@ -113,7 +119,9 @@ bool            CKernel::wrapperVCSM()
                     bOK = importMemoryVCSM  (   m_frameBlockBaseA, m_frameBlockSizeA, m_output_buffer_handle_a, *m_importTxVCSM_B, *m_importRxVCSM_B );                    
                     bOK = lockMemoryVCSM    (   m_output_buffer_handle_a, m_output_buffer_pointer_a, *m_lockTxVCSM, *m_lockRxVCSM );
 #ifdef __LOG_VCSM__
-                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output A allocation            DONE");
+                    if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                        ">:", m_Timer.GetClockTicks(), 
+                                        "SMEM-MEM Output A allocation            DONE");
 #endif                                              
                     }
                 if (bOK)
@@ -121,7 +129,9 @@ bool            CKernel::wrapperVCSM()
                     bOK = importMemoryVCSM  (   m_frameBlockBaseB, m_frameBlockSizeB, m_output_buffer_handle_b, *m_importTxVCSM_C, *m_importRxVCSM_C );                    
                     bOK = lockMemoryVCSM    (   m_output_buffer_handle_b, m_output_buffer_pointer_b, *m_lockTxVCSM, *m_lockRxVCSM );   
 #ifdef __LOG_VCSM__
-                    if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "SMEM-MEM Output B allocation            DONE");
+                    if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                        ">:", m_Timer.GetClockTicks(), 
+                                        "SMEM-MEM Output B allocation            DONE");
 #endif                                                                           
                     }
                 return bOK;        
@@ -135,7 +145,9 @@ bool            CKernel::wrapperMMAL()
                         {
                         bOK = initEventsVCOS( m_EventMMAL, "MMAL" );
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "initEventsVCOS ( m_EventMMAL, MMAL )    DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "initEventsVCOS ( m_EventMMAL, MMAL )    DONE");
 #endif
                         }
                     if (bOK)
@@ -149,136 +161,170 @@ bool            CKernel::wrapperMMAL()
                                                     m_VCHIInstance,
                                                     m_ServiceHandleMMAL);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "openServiceVCHI ('m','m','a','l')       DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "openServiceVCHI ('m','m','a','l')       DONE");
 #endif
                         }
                     if (bOK)
                         {
                         bOK = createComponent( m_ComponentHandle, *m_ComponentCreateTx, *m_ComponentCreateRx);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "createComponent ()                      DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "createComponent ()                      DONE");
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, m_InputPortHandle, *m_PortInfoGetTx_Input_A, *m_PortInfoGetRx_Input_A);
+                        bOK = getPortInfoMMAL( MMAL_PORT_TYPE_INPUT, m_InputPortHandle, *m_PortInfoGetTx_Input_A, *m_PortInfoGetRx_Input_A);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input A )             DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "getPortInfoMMAL ( Input A )             DONE");
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, *m_PortInfoGetTx_Output_A, *m_PortInfoGetRx_Output_A);
+                        bOK = getPortInfoMMAL( MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, *m_PortInfoGetTx_Output_A, *m_PortInfoGetRx_Output_A);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output A )            DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "getPortInfoMMAL ( Output A )            DONE");
     
 #endif 
                         }          
-                    primePortFormatInputMMAL (      m_videoBlockSize, *m_PortInfoGetRx_Input_A, *m_PortInfoSetTx_Input);
+                    primePortFormatInputMMAL ( m_videoBlockSize, *m_PortInfoGetRx_Input_A, *m_PortInfoSetTx_Input);
 
-                    primePortFormatOutputMMAL(      m_frameBlockSizeA, *m_PortInfoGetRx_Output_A, *m_PortInfoSetTx_Output);                     
+                    primePortFormatOutputMMAL( m_frameBlockSizeA, *m_PortInfoGetRx_Output_A, *m_PortInfoSetTx_Output);                     
                     if (bOK)
                         {
-                        bOK = setPortInfoMMAL(      *m_PortInfoSetTx_Input, *m_PortInfoSetRx_Input);
+                        bOK = setPortInfoMMAL( *m_PortInfoSetTx_Input, *m_PortInfoSetRx_Input);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL ( Input )               DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "setPortInfoMMAL ( Input )               DONE");
     
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = setPortInfoMMAL(      *m_PortInfoSetTx_Output, *m_PortInfoSetRx_Output);
+                        bOK = setPortInfoMMAL( *m_PortInfoSetTx_Output, *m_PortInfoSetRx_Output);
 #ifdef __LOG_MMAL__                                                                                                                        
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setPortInfoMMAL ( Output )              DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "setPortInfoMMAL ( Output )              DONE");
     
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = enableComponentMMAL(  *m_ComponentEnableTx, *m_ComponentEnableRx);
+                        bOK = enableComponentMMAL( *m_ComponentEnableTx, *m_ComponentEnableRx);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enableComponentMMAL ()                  DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "enableComponentMMAL ()                  DONE");
     
 #endif 
                         }      
                     if (bOK)
                         {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, m_InputPortHandle, *m_PortInfoGetTx_Input_B, *m_PortInfoGetRx_Input_B);
+                        bOK = getPortInfoMMAL( MMAL_PORT_TYPE_INPUT, m_InputPortHandle, *m_PortInfoGetTx_Input_B, *m_PortInfoGetRx_Input_B);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input B )             DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "getPortInfoMMAL ( Input B )             DONE");
     
 #endif 
                         }
                        
                     if (bOK)
                         {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, *m_PortInfoGetTx_Output_B, *m_PortInfoGetRx_Output_B);
+                        bOK = getPortInfoMMAL( MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, *m_PortInfoGetTx_Output_B, *m_PortInfoGetRx_Output_B);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output B )            DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "getPortInfoMMAL ( Output B )            DONE");
     
 #endif
                         }
                     if (bOK)
                         {
-                        bOK = setZeroCopyModeMMAL(  m_InputPortHandle, *m_PortParamTx_Input, *m_PortParamRx_Input);
+                        bOK = setZeroCopyModeMMAL( m_InputPortHandle, *m_PortParamTx_Input, *m_PortParamRx_Input);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL ( Input )           DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "setZeroCopyModeMMAL ( Input )           DONE");
     
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = setZeroCopyModeMMAL(  m_OutputPortHandle, *m_PortParamTx_Output, *m_PortParamRx_Output);
+                        bOK = setZeroCopyModeMMAL( m_OutputPortHandle, *m_PortParamTx_Output, *m_PortParamRx_Output);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "setZeroCopyModeMMAL ( Output )          DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "setZeroCopyModeMMAL ( Output )          DONE");
     
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, m_InputPortHandle, *m_PortInfoGetTx_Input_C, *m_PortInfoGetRx_Input_C);
+                        bOK = getPortInfoMMAL( MMAL_PORT_TYPE_INPUT, m_InputPortHandle, *m_PortInfoGetTx_Input_C, *m_PortInfoGetRx_Input_C);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input C )             DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "getPortInfoMMAL ( Input C )             DONE");
     
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, *m_PortInfoGetTx_Output_C, *m_PortInfoGetRx_Output_C);
+                        bOK = getPortInfoMMAL( MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, *m_PortInfoGetTx_Output_C, *m_PortInfoGetRx_Output_C);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output C )            DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "getPortInfoMMAL ( Output C )            DONE");
     
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = enablePortMMAL(       *m_PortInfoGetRx_Input_C, *m_PortActionTx_Input, *m_PortActionRx_Input);
+                        bOK = enablePortMMAL( *m_PortInfoGetRx_Input_C, *m_PortActionTx_Input, *m_PortActionRx_Input);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enablePortMMAL ( Input )                DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "enablePortMMAL ( Input )                DONE");
     
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = enablePortMMAL(      * m_PortInfoGetRx_Output_C, *m_PortActionTx_Output, *m_PortActionRx_Output);
+                        bOK = enablePortMMAL( *m_PortInfoGetRx_Output_C, *m_PortActionTx_Output, *m_PortActionRx_Output);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "enablePortMMAL ( Output )               DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "enablePortMMAL ( Output )               DONE");
     
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_INPUT, m_InputPortHandle, *m_PortInfoGetTx_Input_D, *m_PortInfoGetRx_Input_D);
+                        bOK = getPortInfoMMAL( MMAL_PORT_TYPE_INPUT, m_InputPortHandle, *m_PortInfoGetTx_Input_D, *m_PortInfoGetRx_Input_D);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Input D )             DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "getPortInfoMMAL ( Input D )             DONE");
     
 #endif 
                         }
                     if (bOK)
                         {
-                        bOK = getPortInfoMMAL(      MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, *m_PortInfoGetTx_Output_D, *m_PortInfoGetRx_Output_D);
+                        bOK = getPortInfoMMAL( MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, *m_PortInfoGetTx_Output_D, *m_PortInfoGetRx_Output_D);
 #ifdef __LOG_MMAL__
-                        if (bOK) storeLog( MY_BUFFER, MY_INDEX, ">:", m_Timer.GetClockTicks(), "getPortInfoMMAL ( Output D )            DONE");
+                        if (bOK) storeLog(  MY_BUFFER, MY_INDEX, 
+                                            ">:", m_Timer.GetClockTicks(), 
+                                            "getPortInfoMMAL ( Output D )            DONE");
 #endif // __LOG_MMAL__
                         }
                     return bOK;
@@ -530,7 +576,6 @@ void            CKernel::wrapper_init_gl_sd         (   )
                                     filecounter[FT_FSH][FLD_PREV],                  // for the continuous loading between devices - lower bound
                                     filecounter[FT_FSH][FLD_LOADED],                // for the continuous loading between devices - upper bound
                                     filecounter[FT_FSH][FLD_VALID]);                // for the dense indexing after load and verify
-
                 initProgram     (   &m_vtx,                                         // overlay fragment shader 
                                     &m_vsh,
                                     &m_osh,
@@ -608,152 +653,106 @@ bool            CKernel::wrapperInitVCSMstruct      (   )
 
                 if (bOK) { m_ServiceCreateVCSM          = new SERVICE_CREATION_T();           
                     bOK = (m_ServiceCreateVCSM         != nullptr); }
-
                 if (bOK) { m_importTxVCSM_A             = new VCSM_Import_MEM_Msg();          
                     bOK = (m_importTxVCSM_A            != nullptr); }
-
                 if (bOK) { m_importRxVCSM_A             = new VCSM_Import_MEM_Reply();        
                     bOK = (m_importRxVCSM_A            != nullptr); }
-
                 if (bOK) { m_importTxVCSM_B             = new VCSM_Import_MEM_Msg();          
                     bOK = (m_importTxVCSM_B            != nullptr); }
-
                 if (bOK) { m_importRxVCSM_B             = new VCSM_Import_MEM_Reply();        
                     bOK = (m_importRxVCSM_B            != nullptr); }
-
                 if (bOK) { m_importTxVCSM_C             = new VCSM_Import_MEM_Msg();          
                     bOK = (m_importTxVCSM_C            != nullptr); }
-
                 if (bOK) { m_importRxVCSM_C             = new VCSM_Import_MEM_Reply();        
                     bOK = (m_importRxVCSM_C            != nullptr); }
-
                 if (bOK) { m_lockTxVCSM                 = new VCSM_Lock_MEM_Msg();            
                     bOK = (m_lockTxVCSM                != nullptr); }
-
                 if (bOK) { m_lockRxVCSM                 = new VCSM_Lock_MEM_Reply();          
                     bOK = (m_lockRxVCSM                != nullptr); }
-
                 if (bOK) { m_freeTxVCSM                 = new VCSM_Free_MEM_Msg();            
                     bOK = (m_freeTxVCSM                != nullptr); }
-
                 if (bOK) { m_freeRxVCSM                 = new VCSM_Free_MEM_Reply();          
                     bOK = (m_freeRxVCSM                != nullptr); }
-      
+
                 return bOK;               
 }
 
 bool            CKernel::wrapperInitMMALstruct      (   )
 {
-                bool bOK = true;    
+                bool bOK = true;
 
                 if (bOK) { m_ServiceCreateMMAL          = new SERVICE_CREATION_T();              
                     bOK = (m_ServiceCreateMMAL         != nullptr); }
-
                 if (bOK) { m_ComponentCreateTx          = new MMAL_Component_Create_Msg();       
                     bOK = (m_ComponentCreateTx         != nullptr); }
-
                 if (bOK) { m_ComponentCreateRx          = new MMAL_Component_Create_Reply();     
                     bOK = (m_ComponentCreateRx         != nullptr); }
-
                 if (bOK) { m_PortInfoGetTx_Input_A      = new MMAL_Port_Info_Get_Msg();         
                     bOK = (m_PortInfoGetTx_Input_A     != nullptr); }
-
                 if (bOK) { m_PortInfoGetRx_Input_A      = new MMAL_Port_Info_Get_Reply();       
                     bOK = (m_PortInfoGetRx_Input_A     != nullptr); }
-
                 if (bOK) { m_PortInfoGetTx_Output_A     = new MMAL_Port_Info_Get_Msg();         
                     bOK = (m_PortInfoGetTx_Output_A    != nullptr); }
-
                 if (bOK) { m_PortInfoGetRx_Output_A     = new MMAL_Port_Info_Get_Reply();       
                     bOK = (m_PortInfoGetRx_Output_A    != nullptr); }
-
                 if (bOK) { m_PortInfoSetTx_Input        = new MMAL_Port_Info_Set_Msg();         
                     bOK = (m_PortInfoSetTx_Input       != nullptr); }
-
                 if (bOK) { m_PortInfoSetTx_Output       = new MMAL_Port_Info_Set_Msg();         
                     bOK = (m_PortInfoSetTx_Output      != nullptr); }
-
                 if (bOK) { m_PortInfoSetRx_Input        = new MMAL_Port_Info_Set_Reply();       
                     bOK = (m_PortInfoSetRx_Input       != nullptr); }
-
                 if (bOK) { m_PortInfoSetRx_Output       = new MMAL_Port_Info_Set_Reply();       
                     bOK = (m_PortInfoSetRx_Output      != nullptr); }
-
                 if (bOK) { m_ComponentEnableTx          = new MMAL_Component_Enable_Msg();      
                     bOK = (m_ComponentEnableTx         != nullptr); }
-
                 if (bOK) { m_ComponentEnableRx          = new MMAL_Component_Enable_Reply();    
                     bOK = (m_ComponentEnableRx         != nullptr); }
-
                 if (bOK) { m_PortInfoGetTx_Input_B      = new MMAL_Port_Info_Get_Msg();         
                     bOK = (m_PortInfoGetTx_Input_B     != nullptr); }
-
                 if (bOK) { m_PortInfoGetRx_Input_B      = new MMAL_Port_Info_Get_Reply();       
                     bOK = (m_PortInfoGetRx_Input_B     != nullptr); }
-
                 if (bOK) { m_PortInfoGetTx_Output_B     = new MMAL_Port_Info_Get_Msg();         
                     bOK = (m_PortInfoGetTx_Output_B    != nullptr); }
-
                 if (bOK) { m_PortInfoGetRx_Output_B     = new MMAL_Port_Info_Get_Reply();       
                     bOK = (m_PortInfoGetRx_Output_B    != nullptr); }
-
                 if (bOK) { m_PortParamTx_Input          = new MMAL_Port_Parameter_Set_Msg();    
                     bOK = (m_PortParamTx_Input         != nullptr); }
-
                 if (bOK) { m_PortParamRx_Input          = new MMAL_Port_Parameter_Set_Reply();  
                     bOK = (m_PortParamRx_Input         != nullptr); }
-
                 if (bOK) { m_PortParamTx_Output         = new MMAL_Port_Parameter_Set_Msg();    
                     bOK = (m_PortParamTx_Output        != nullptr); }
-
                 if (bOK) { m_PortParamRx_Output         = new MMAL_Port_Parameter_Set_Reply();  
                     bOK = (m_PortParamRx_Output        != nullptr); }
-
                 if (bOK) { m_PortInfoGetTx_Input_C      = new MMAL_Port_Info_Get_Msg();         
                     bOK = (m_PortInfoGetTx_Input_C     != nullptr); }
-
                 if (bOK) { m_PortInfoGetRx_Input_C      = new MMAL_Port_Info_Get_Reply();       
                     bOK = (m_PortInfoGetRx_Input_C     != nullptr); }
-
                 if (bOK) { m_PortInfoGetTx_Output_C     = new MMAL_Port_Info_Get_Msg();         
                     bOK = (m_PortInfoGetTx_Output_C    != nullptr); }
-
                 if (bOK) { m_PortInfoGetRx_Output_C     = new MMAL_Port_Info_Get_Reply();       
                     bOK = (m_PortInfoGetRx_Output_C    != nullptr); }
-
                 if (bOK) { m_PortActionTx_Input         = new MMAL_Port_Action_Msg();           
                     bOK = (m_PortActionTx_Input        != nullptr); }
-
                 if (bOK) { m_PortActionRx_Input         = new MMAL_Port_Action_Reply_Msg();    
                     bOK = (m_PortActionRx_Input        != nullptr); }
-
                 if (bOK) { m_PortActionTx_Output        = new MMAL_Port_Action_Msg();           
                     bOK = (m_PortActionTx_Output       != nullptr); }
-
                 if (bOK) { m_PortActionRx_Output        = new MMAL_Port_Action_Reply_Msg();     
                     bOK = (m_PortActionRx_Output       != nullptr); }
-
                 if (bOK) { m_BufferFromHostTx_Input     = new MMAL_Buffer_From_Host_Msg();      
                     bOK = (m_BufferFromHostTx_Input    != nullptr); }
-
                 if (bOK) { m_BufferFromHostRx_Input     = new MMAL_Buffer_From_Host_Msg();      
                     bOK = (m_BufferFromHostRx_Input    != nullptr); }
-
                 if (bOK) { m_BufferFromHostTx_Output    = new MMAL_Buffer_From_Host_Msg();     
                     bOK = (m_BufferFromHostTx_Output   != nullptr); }
-
                 if (bOK) { m_BufferFromHostRx_Output    = new MMAL_Buffer_From_Host_Msg();     
                     bOK = (m_BufferFromHostRx_Output   != nullptr); }
-
                 if (bOK) { m_PortInfoGetTx_Input_D      = new MMAL_Port_Info_Get_Msg();         
                     bOK = (m_PortInfoGetTx_Input_D     != nullptr); }
-
                 if (bOK) { m_PortInfoGetRx_Input_D      = new MMAL_Port_Info_Get_Reply();       
                     bOK = (m_PortInfoGetRx_Input_D     != nullptr); }
-
                 if (bOK) { m_PortInfoGetTx_Output_D     = new MMAL_Port_Info_Get_Msg();         
                     bOK = (m_PortInfoGetTx_Output_D    != nullptr); }
-
                 if (bOK) { m_PortInfoGetRx_Output_D     = new MMAL_Port_Info_Get_Reply();       
                     bOK = (m_PortInfoGetRx_Output_D    != nullptr); }
 
@@ -764,34 +763,24 @@ void            CKernel::wrapperFreeVCSMstruct      (   ) // here i must check w
 {
                 delete  m_ServiceCreateVCSM;     
                         m_ServiceCreateVCSM             = nullptr;
-
                 delete  m_importTxVCSM_A;        
                         m_importTxVCSM_A                = nullptr;
-                
                 delete  m_importRxVCSM_A;        
                         m_importRxVCSM_A                = nullptr;
-
                 delete  m_importTxVCSM_B;        
                         m_importTxVCSM_B                = nullptr;
-                
                 delete  m_importRxVCSM_B;    
                         m_importRxVCSM_B                = nullptr;
-
                 delete  m_importTxVCSM_C;    
                         m_importTxVCSM_C                = nullptr;
-                
                 delete  m_importRxVCSM_C;    
                         m_importRxVCSM_C                = nullptr;
-
                 delete  m_lockTxVCSM;        
                         m_lockTxVCSM                    = nullptr;
-                
                 delete  m_lockRxVCSM;        
                         m_lockRxVCSM                    = nullptr;
-
                 delete  m_freeTxVCSM;        
                         m_freeTxVCSM                    = nullptr;
-
                 delete  m_freeRxVCSM;        
                         m_freeRxVCSM                    = nullptr;
 }
@@ -800,112 +789,76 @@ void            CKernel::wrapperFreeMMALstruct      (   ) // here i must check w
 {
                 delete  m_ServiceCreateMMAL;       
                         m_ServiceCreateMMAL             = nullptr;
-
                 delete  m_ComponentCreateTx;       
                         m_ComponentCreateTx             = nullptr;
-
                 delete  m_ComponentCreateRx;       
                         m_ComponentCreateRx             = nullptr;
-
                 delete  m_PortInfoGetTx_Input_A;   
                         m_PortInfoGetTx_Input_A         = nullptr;
-
                 delete  m_PortInfoGetRx_Input_A;   
                         m_PortInfoGetRx_Input_A         = nullptr;
-
                 delete  m_PortInfoGetTx_Output_A;  
                         m_PortInfoGetTx_Output_A        = nullptr;
-
                 delete  m_PortInfoGetRx_Output_A;  
                         m_PortInfoGetRx_Output_A        = nullptr;
-
                 delete  m_PortInfoSetTx_Input;     
                         m_PortInfoSetTx_Input           = nullptr;
-
                 delete  m_PortInfoSetTx_Output;    
                         m_PortInfoSetTx_Output          = nullptr;
-
                 delete  m_PortInfoSetRx_Input;     
                         m_PortInfoSetRx_Input           = nullptr;
-
                 delete  m_PortInfoSetRx_Output;   
                         m_PortInfoSetRx_Output          = nullptr;
-
                 delete  m_ComponentEnableTx;       
                         m_ComponentEnableTx             = nullptr;
-
                 delete  m_ComponentEnableRx;       
                         m_ComponentEnableRx             = nullptr;
-
                 delete  m_PortInfoGetTx_Input_B;   
                         m_PortInfoGetTx_Input_B         = nullptr;
-
                 delete  m_PortInfoGetRx_Input_B;   
                         m_PortInfoGetRx_Input_B         = nullptr;
-
                 delete  m_PortInfoGetTx_Output_B;  
                         m_PortInfoGetTx_Output_B        = nullptr;
-
                 delete  m_PortInfoGetRx_Output_B;  
                         m_PortInfoGetRx_Output_B        = nullptr;
-
                 delete  m_PortParamTx_Input;       
                         m_PortParamTx_Input             = nullptr;
-
                 delete  m_PortParamRx_Input;       
                         m_PortParamRx_Input             = nullptr;
-
                 delete  m_PortParamTx_Output;      
                         m_PortParamTx_Output            = nullptr;
-
                 delete  m_PortParamRx_Output;      
                         m_PortParamRx_Output            = nullptr;
-
                 delete  m_PortInfoGetTx_Input_C;   
                         m_PortInfoGetTx_Input_C         = nullptr;
-
                 delete  m_PortInfoGetRx_Input_C;   
                         m_PortInfoGetRx_Input_C         = nullptr;
-
                 delete  m_PortInfoGetTx_Output_C;  
                         m_PortInfoGetTx_Output_C        = nullptr;
-
                 delete  m_PortInfoGetRx_Output_C;  
                         m_PortInfoGetRx_Output_C        = nullptr;
-
                 delete  m_PortActionTx_Input;      
                         m_PortActionTx_Input            = nullptr;
-
                 delete  m_PortActionRx_Input;      
                         m_PortActionRx_Input            = nullptr;
-
                 delete  m_PortActionTx_Output;     
                         m_PortActionTx_Output           = nullptr;
-
                 delete  m_PortActionRx_Output;     
                         m_PortActionRx_Output           = nullptr;
-
                 delete  m_BufferFromHostTx_Input;  
                         m_BufferFromHostTx_Input        = nullptr;
-
                 delete  m_BufferFromHostRx_Input;  
                         m_BufferFromHostRx_Input        = nullptr;
-
                 delete  m_BufferFromHostTx_Output; 
                         m_BufferFromHostTx_Output       = nullptr;
-
                 delete  m_BufferFromHostRx_Output; 
                         m_BufferFromHostRx_Output       = nullptr;
-
                 delete  m_PortInfoGetTx_Input_D;   
                         m_PortInfoGetTx_Input_D         = nullptr;
-
                 delete  m_PortInfoGetRx_Input_D;  
                         m_PortInfoGetRx_Input_D         = nullptr;
-
                 delete  m_PortInfoGetTx_Output_D;  
                         m_PortInfoGetTx_Output_D        = nullptr;
-
                 delete  m_PortInfoGetRx_Output_D;  
                         m_PortInfoGetRx_Output_D        = nullptr;
 }
