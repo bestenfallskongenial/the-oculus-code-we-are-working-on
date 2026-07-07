@@ -48,7 +48,8 @@ struct TFile
 
 // oculus mendax addition start	
 
-typedef void (*TFATCallback) (void *pContext);
+// 	typedef void (*TFATCallback) (void *pContext);
+	typedef void (CKernel::*TFATCallback) (void);
 
 // oculus mendax addition end
 
@@ -164,7 +165,8 @@ public:
 
 // oculus mendax addition start
 
-	void RegisterCallback (TFATCallback pCallback, void *pContext);
+//  void RegisterCallback (TFATCallback pCallback, void *pContext);
+	void RegisterCallback (CKernel *pKernel, TFATCallback pCallback);
 
 // oculus mendax addition end	
 
@@ -180,10 +182,10 @@ private:
 // oculus mendax addition start
 
 private:
+//  TFATCallback	m_pCallback;
+//	void	       *m_pCallbackContext;
+	CKernel	       *m_pCallbackKernel;
 	TFATCallback	m_pCallback;
-	void	       *m_pCallbackContext;
-
-	void Callback (void);
 
 // oculus mendax addition end	
 };

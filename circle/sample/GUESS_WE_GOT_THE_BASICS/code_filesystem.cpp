@@ -303,3 +303,8 @@ void            CKernel::removeUSB                  (           CDevice*    pDev
 	            assert (pThis != 0); // ???
 	            pThis->m_bStorageAttached = FALSE;
 }
+
+void            CKernel::FATCallback                (           void )
+{
+	            // your direct callback work here
+}

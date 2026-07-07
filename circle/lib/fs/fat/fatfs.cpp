@@ -29,8 +29,10 @@ CFATFileSystem::CFATFileSystem (void)
 
 // oculus mendax addition start
 
-	m_pCallback (0),
-	m_pCallbackContext (0)
+//	m_pCallback (0),
+//	m_pCallbackContext (0)
+	m_pCallbackKernel (0),
+	m_pCallback (0)
 
 // oculus mendax addition end
 {
@@ -268,8 +270,16 @@ unsigned CFATFileSystem::FileRead (unsigned hFile, void *pBuffer, unsigned ulByt
 	while (ulBytes > 0)
 	{
 // oculus mendax addition start
-
-		Callback ();
+/*
+	if (m_pCallback != 0)
+	{
+		(*m_pCallback) (m_pCallbackContext);
+	}
+*/
+	if (m_pCallbackKernel != 0 && m_pCallback != 0)
+	{
+		(m_pCallbackKernel->*m_pCallback) ();
+	}
 
 // oculus mendax addition end
 
@@ -374,9 +384,17 @@ unsigned CFATFileSystem::FileWrite (unsigned hFile, const void *pBuffer, unsigne
 	while (ulBytes > 0)
 	{
 // oculus mendax addition start
-
-		Callback ();
-
+/*
+	if (m_pCallback != 0)
+	{
+		(*m_pCallback) (m_pCallbackContext);
+	}
+*/
+	if (m_pCallbackKernel != 0 && m_pCallback != 0)
+	{
+		(m_pCallbackKernel->*m_pCallback) ();
+	}
+	
 // oculus mendax addition end
 
 		unsigned ulBlockOffset;
@@ -498,19 +516,21 @@ int CFATFileSystem::FileDelete (const char *pTitle)
 }
 
 // oculus mendax addition start
-
+/*
 void CFATFileSystem::RegisterCallback (TFATCallback pCallback, void *pContext)
 {
 	m_pCallback = pCallback;
 	m_pCallbackContext = pContext;
 }
-
-void CFATFileSystem::Callback (void)
+*/
+void CFATFileSystem::RegisterCallback
+(
+	CKernel *pKernel,
+	TFATCallback pCallback
+)
 {
-	if (m_pCallback != 0)
-	{
-		(*m_pCallback) (m_pCallbackContext);
-	}
+	m_pCallbackKernel = pKernel;
+	m_pCallback = pCallback;
 }
 
 // oculus mendax addition end

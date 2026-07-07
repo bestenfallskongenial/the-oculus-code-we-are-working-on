@@ -416,6 +416,8 @@ public:
                 void        wrapperFreeVCSMstruct       ();             // for the cleanup of the vcsm structs
                 void        wrapperFreeMMALstruct       ();             // for the cleanup of the mmal structs
 
+                void        FATCallback                 (               void );
+
 #include "defs_member.h"
 
 #include "table_lfo.cpp"
