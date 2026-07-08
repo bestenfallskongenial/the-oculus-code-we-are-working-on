@@ -401,7 +401,7 @@ bool            CKernel::startupScreen          (   void )
 
                 storeLogHex(   MY_BUFFER, MY_INDEX,
                             "Clock UART  MHz", convertDecToBCD(uartClock),
-                            "DMA Channels    ", dmaChannel)
+                            "DMA Channels    ", dmaChannel);
 
                 storeLogHex(   MY_BUFFER, MY_INDEX,                            
                             "USB Delay      ", usbDelay,
