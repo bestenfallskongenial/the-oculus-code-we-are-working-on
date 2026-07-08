@@ -38,7 +38,7 @@ public:
                 void        clearBufferDMA              (               char**                          buffers,                // +++ buffer pointer table returned by allocBufferDMA()
                                                                         char*                           rawBlock);              // original raw allocation pointer to delete
 // code_debug.cpp               !! TESTED AND APPROVED !!
-                void        storeLogHex                    (               char*                           p_bufferArray,                    // +++
+                void        storeLogHex                 (               char*                           p_buffer,                    // +++
                                                                         u32&                            index,
                                                                 const   char*                           p_string0, 
                                                                         u32                             p_value0    = EMPTYLOG,
@@ -48,7 +48,7 @@ public:
                                                                         u32                             p_value2    = EMPTYLOG,
                                                                 const   char*                           p_string3   = EMPTYSTR, 
                                                                         u32                             p_value3    = EMPTYLOG);
-                void        storeLogU32                    (               char*                           p_bufferArray,                    // +++
+                void        storeLogU32                 (               char*                           p_buffer,                    // +++
                                                                         u32&                            index,
                                                                 const   char*                           p_string0, 
                                                                         u32                             p_value0    = EMPTYLOG,
