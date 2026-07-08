@@ -10,14 +10,10 @@ void            CKernel::logButtonStatesRuntime(void)
 
                 f_logBuffer[0] = '\0';
 
-                storeLog(   f_logBuffer, f_logIndex,
-                            "BTN PRESS_START   DOUBLE        RELEASE       SINGLE",
-                            EMPTYLOG,
-                            EMPTYSTR, EMPTYLOG,
-                            EMPTYSTR, EMPTYLOG,
-                            EMPTYSTR, EMPTYLOG );
+                storeLogHex(   f_logBuffer, f_logIndex,
+                            "BTN PRESS_START   DOUBLE        RELEASE       SINGLE", EMPTYLOG );
 
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "A  ",
                             (u32)g_buttons_states[0][BTN_PRESS_START],
                             EMPTYSTR,
@@ -27,14 +23,11 @@ void            CKernel::logButtonStatesRuntime(void)
                             EMPTYSTR,
                             (u32)g_buttons_states[0][BTN_SINGLE] );
 
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "A   HOLD_TICK",
-                            (u32)g_buttons_states[0][BTN_HOLD_TICK],
-                            EMPTYSTR, EMPTYLOG,
-                            EMPTYSTR, EMPTYLOG,
-                            EMPTYSTR, EMPTYLOG );
+                            (u32)g_buttons_states[0][BTN_HOLD_TICK] );
 
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "B  ",
                             (u32)g_buttons_states[1][BTN_PRESS_START],
                             EMPTYSTR,
@@ -44,14 +37,14 @@ void            CKernel::logButtonStatesRuntime(void)
                             EMPTYSTR,
                             (u32)g_buttons_states[1][BTN_SINGLE] );
 
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "B   HOLD_TICK",
                             (u32)g_buttons_states[1][BTN_HOLD_TICK],
                             EMPTYSTR, EMPTYLOG,
                             EMPTYSTR, EMPTYLOG,
                             EMPTYSTR, EMPTYLOG );
             /*
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "g_menuLayer",
                             g_menuLayer,
                             "CTRL_PIN",
@@ -61,25 +54,25 @@ void            CKernel::logButtonStatesRuntime(void)
                             "bpm 1",
                             g_lfoBpmMatrix[1][BPM]);
                             
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "g_gl_program_current",
                             g_gl_program_current,
                             "g_currentProgramBuffer",
                             g_currentProgramBuffer);
 
-                storeLog(   f_logBuffer, f_logIndex,                
+                storeLogHex(   f_logBuffer, f_logIndex,                
                             "filecounter[FT_FSH][FLD_LOADED]",
                             filecounter[FT_FSH][FLD_LOADED],
                             "filecounter[FT_FSH][FLD_VALID]",
                             filecounter[FT_FSH][FLD_VALID]);
 
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "mapping",
                             ((g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID]  ) ) >> 10) // (filecounter[FT_FSH][FLD_VALID] -1 )
                             );
             */
             /*
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "out0",
                             g_inOutMatrixInt[0][OUT],
                             "out1",
@@ -89,7 +82,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             "out3",
                             g_inOutMatrixInt[3][OUT]);                                                            
 
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "out4",
                             g_inOutMatrixInt[4][OUT],
                             "out5",
@@ -99,7 +92,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             "out7",
                             g_inOutMatrixInt[7][OUT]);
             */
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "MODES      00-03",
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][0],
                             EMPTYSTR,
@@ -109,7 +102,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             EMPTYSTR,
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][3] );
 
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "MODES      04-07",
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][4],
                             EMPTYSTR,
@@ -119,7 +112,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             EMPTYSTR,
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][7] );
 
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "LFOs       08-11",
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][8],
                             EMPTYSTR,
@@ -129,7 +122,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             EMPTYSTR,
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][11] );
 
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "AUDIO      12-15",
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][12],
                             EMPTYSTR,
@@ -139,7 +132,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             EMPTYSTR,
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][15] );
 
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "SELECTOR   16-19",
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][16],
                             EMPTYSTR,
@@ -149,7 +142,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             EMPTYSTR,
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][19] );
 
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "FLAGS      20-23",
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][20],
                             EMPTYSTR,
@@ -159,7 +152,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             EMPTYSTR,
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][23] );
 
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "SYSTEM     28-31",
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][28],
                             EMPTYSTR,
@@ -169,7 +162,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             EMPTYSTR,
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][31] );                
             /*
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "Flags 00-03",
                             g_menuPickUpFlag[0],
                             EMPTYSTR,
@@ -179,7 +172,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             EMPTYSTR,
                             g_menuPickUpFlag[3]);    
                             
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "Flags 04-07",
                             g_menuPickUpFlag[4],
                             EMPTYSTR,
@@ -189,7 +182,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             EMPTYSTR,
                             g_menuPickUpFlag[7]); 
                             
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "Flags 08-11",
                             g_menuPickUpFlag[8],
                             EMPTYSTR,
@@ -199,7 +192,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             EMPTYSTR,
                             g_menuPickUpFlag[11]); 
                             
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "Flags 12-15",
                             g_menuPickUpFlag[12],
                             EMPTYSTR,
@@ -209,7 +202,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             EMPTYSTR,
                             g_menuPickUpFlag[15]);   
 
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "Flags 16-19",
                             g_menuPickUpFlag[16],
                             EMPTYSTR,
@@ -219,7 +212,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             EMPTYSTR,
                             g_menuPickUpFlag[19]); 
 
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "Flags 20-23",
                             g_menuPickUpFlag[20],
                             EMPTYSTR,
@@ -229,7 +222,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             EMPTYSTR,
                             g_menuPickUpFlag[23]);                                           
 
-                storeLog(   f_logBuffer, f_logIndex,
+                storeLogHex(   f_logBuffer, f_logIndex,
                             "Flags 28-31",
                             g_menuPickUpFlag[28],
                             EMPTYSTR,
@@ -252,12 +245,12 @@ void CKernel::ADCDebug()
     char f_logBuffer[512];
     u32  f_logIndex = 0;
 
-    storeLog(   f_logBuffer, f_logIndex,
+    storeLogHex(   f_logBuffer, f_logIndex,
                 "0 RAW", (u32)g_inOutMatrixInt[0][RAW],
                 "1 RAW", (u32)g_inOutMatrixInt[1][RAW],
                 "2 RAW", (u32)g_inOutMatrixInt[2][RAW],
                 "3 RAW", (u32)g_inOutMatrixInt[3][RAW] );
-    storeLog(   f_logBuffer, f_logIndex,
+    storeLogHex(   f_logBuffer, f_logIndex,
                 "4 RAW", (u32)g_inOutMatrixInt[4][RAW],
                 "5 RAW", (u32)g_inOutMatrixInt[5][RAW],
                 "6 RAW", (u32)g_inOutMatrixInt[6][RAW],
@@ -277,77 +270,69 @@ void CKernel::logInOutRuntime(void)
 
     f_logBuffer[0] = '\0';
 
-    storeLog(   f_logBuffer, f_logIndex,
+    storeLogHex(   f_logBuffer, f_logIndex,
                 "0 RAW",
                 (u32)g_inOutMatrixInt[0][RAW],
                 "VAL",
                 (u32)g_inOutMatrixInt[0][VAL],
                 "RND",
-                (u32)g_inOutMatrixInt[0][RND],
-                EMPTYSTR, EMPTYLOG );
+                (u32)g_inOutMatrixInt[0][RND] );
 
-    storeLog(   f_logBuffer, f_logIndex,
+    storeLogHex(   f_logBuffer, f_logIndex,
                 "1 RAW",
                 (u32)g_inOutMatrixInt[1][RAW],
                 "VAL",
                 (u32)g_inOutMatrixInt[1][VAL],
                 "RND",
-                (u32)g_inOutMatrixInt[1][RND],
-                EMPTYSTR, EMPTYLOG );
+                (u32)g_inOutMatrixInt[1][RND] );
 
-    storeLog(   f_logBuffer, f_logIndex,
+    storeLogHex(   f_logBuffer, f_logIndex,
                 "2 RAW",
                 (u32)g_inOutMatrixInt[2][RAW],
                 "VAL",
                 (u32)g_inOutMatrixInt[2][VAL],
                 "RND",
-                (u32)g_inOutMatrixInt[2][RND],
-                EMPTYSTR, EMPTYLOG );
+                (u32)g_inOutMatrixInt[2][RND] );
 
-    storeLog(   f_logBuffer, f_logIndex,
+    storeLogHex(   f_logBuffer, f_logIndex,
                 "3 RAW",
                 (u32)g_inOutMatrixInt[3][RAW],
                 "VAL",
                 (u32)g_inOutMatrixInt[3][VAL],
                 "RND",
-                (u32)g_inOutMatrixInt[3][RND],
-                EMPTYSTR, EMPTYLOG );
+                (u32)g_inOutMatrixInt[3][RND] );
 
-    storeLog(   f_logBuffer, f_logIndex,
+    storeLogHex(   f_logBuffer, f_logIndex,
                 "4 RAW",
                 (u32)g_inOutMatrixInt[4][RAW],
                 "VAL",
                 (u32)g_inOutMatrixInt[4][VAL],
                 "RND",
-                (u32)g_inOutMatrixInt[4][RND],
-                EMPTYSTR, EMPTYLOG );
+                (u32)g_inOutMatrixInt[4][RND] );
 
-    storeLog(   f_logBuffer, f_logIndex,
+    storeLogHex(   f_logBuffer, f_logIndex,
                 "5 RAW",
                 (u32)g_inOutMatrixInt[5][RAW],
                 "VAL",
                 (u32)g_inOutMatrixInt[5][VAL],
                 "RND",
-                (u32)g_inOutMatrixInt[5][RND],
-                EMPTYSTR, EMPTYLOG );
+                (u32)g_inOutMatrixInt[5][RND] );
 
-    storeLog(   f_logBuffer, f_logIndex,
+    storeLogHex(   f_logBuffer, f_logIndex,
                 "6 RAW",
                 (u32)g_inOutMatrixInt[6][RAW],
                 "VAL",
                 (u32)g_inOutMatrixInt[6][VAL],
                 "RND",
-                (u32)g_inOutMatrixInt[6][RND],
-                EMPTYSTR, EMPTYLOG );
+                (u32)g_inOutMatrixInt[6][RND] );
 
-    storeLog(   f_logBuffer, f_logIndex,
+    storeLogHex(   f_logBuffer, f_logIndex,
                 "7 RAW",
                 (u32)g_inOutMatrixInt[7][RAW],
                 "VAL",
                 (u32)g_inOutMatrixInt[7][VAL],
                 "RND",
-                (u32)g_inOutMatrixInt[7][RND],
-                EMPTYSTR, EMPTYLOG );
+                (u32)g_inOutMatrixInt[7][RND] );
 
     bufferScreenDraw(  f_logBuffer,
                        0,
@@ -356,8 +341,6 @@ void CKernel::logInOutRuntime(void)
                        0,
                        0xFFFFFFFF );
 }
-
-
 
 bool            CKernel::startupScreen          (   void )
 {
@@ -384,60 +367,53 @@ bool            CKernel::startupScreen          (   void )
                 unsigned usbDelay       =  m_Options.GetUSBPowerDelay();
                 unsigned usbSpeed       =  m_Options.GetUSBFullSpeed();
 
-                unsigned conWidth       =  m_Options.GetWidth();
-                unsigned conHeight      =  m_Options.GetHeight();
-
                 unsigned fbWidth        =  gE_FrameBuffer.GetWidth();
                 unsigned fbHeight       =  gE_FrameBuffer.GetHeight();
                 
                 nextline(   MY_BUFFER, MY_INDEX);
 
-                storeLog(   MY_BUFFER, MY_INDEX, 
-                            "Machine Model  ", EMPTYLOG, 
+                storeLogHex(   MY_BUFFER, MY_INDEX, 
                             machineName, EMPTYLOG );
 
                 nextline(   MY_BUFFER, MY_INDEX);    
 
-                storeLog(   MY_BUFFER, MY_INDEX, 
-                            "SoC Name       ", EMPTYLOG, 
+                storeLogHex(   MY_BUFFER, MY_INDEX, 
                             socName          , EMPTYLOG, 
-                            "Model Major    ", modelMajor,
-                            "Model Revision ", modelRevision);
+                            "V", modelMajor,
+                            ".", modelRevision);
 
                 nextline(   MY_BUFFER, MY_INDEX);
 
-                storeLog(   MY_BUFFER, MY_INDEX, 
-                            "RAM Size     MB", ramSize,
+                storeLogHex(   MY_BUFFER, MY_INDEX, 
+                            "RAM Size     MB", convertDecToBCD(ramSize),
                             "CPU Speed Mode ", cpuSpeedMode,
-                            "SoC Max Temp   ", socMaxTemp);    
+                            "SoC Max Temp   ", convertDecToBCD(socMaxTemp));    
 
                 nextline(   MY_BUFFER, MY_INDEX);
 
-                storeLog(   MY_BUFFER, MY_INDEX, 
-                            "Clock CORE  MHz", coreClock,
-                            "Clock ARM   MHz", armClock,
-                            "Clock EMMC  MHz", emmcClock,
-                            "Clock EMMC2 MHz", emmc2Clock);  
+                storeLogHex(   MY_BUFFER, MY_INDEX, 
+                            "Clock CORE MHz", convertDecToBCD(coreClock),
+                            "ARM  ", convertDecToBCD(armClock),
+                            "EMMC ", convertDecToBCD(emmcClock),
+                            "EMMC2", convertDecToBCD(emmc2Clock));  
 
                 nextline(   MY_BUFFER, MY_INDEX);
 
-                storeLog(   MY_BUFFER, MY_INDEX,
-                            "Clock UART  MHz", uartClock,
-                            "DMA Channel    ", dmaChannel,
+                storeLogHex(   MY_BUFFER, MY_INDEX,
+                            "Clock UART  MHz", convertDecToBCD(uartClock),
+                            "DMA Channels    ", dmaChannel)
+
+                storeLogHex(   MY_BUFFER, MY_INDEX,                            
                             "USB Delay      ", usbDelay,
                             "USB FullSpeed  ", usbSpeed);      
 
                 nextline(   MY_BUFFER, MY_INDEX);
 
-                storeLog(   MY_BUFFER, MY_INDEX, 
-                            "CF Screen X    ", conWidth,
-                            "CF Screen Y    ", conHeight);  
-
-                storeLog(   MY_BUFFER, MY_INDEX, 
+                storeLogHex(   MY_BUFFER, MY_INDEX, 
                             "FB Screen X    ", fbWidth,
                             "/ Y "           , fbHeight,
-                            "gE Screen X    ", gE_ScreenWidth,
-                            " / Y "          , gE_ScreenHeight);                            
+                            "gE Screen X    ", convertDecToBCD(gE_ScreenWidth),
+                            " / Y "          , convertDecToBCD(gE_ScreenHeight));                            
 
                 nextline(   MY_BUFFER, MY_INDEX);                            
 

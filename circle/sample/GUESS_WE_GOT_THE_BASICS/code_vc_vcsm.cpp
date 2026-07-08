@@ -35,7 +35,7 @@ bool            CKernel::allocMemoryVCSM            (   size_t                  
                     vcsm_handle = rx.body.res_handle;
 
 #ifdef __LOG_VCSM__
-                    storeLog(   MY_BUFFER, MY_INDEX, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX, 
                                 "ALLOC   - VCSM Handle",    rx.body.res_handle, 
                                 "VCSM Pointer",             rx.body.res_mem, 
                                 "Base Size",                rx.body.res_base_size, 
@@ -72,7 +72,7 @@ bool            CKernel::importMemoryVCSM           (   void*                   
                     {
                     vcsm_handle         = rx.body.res_handle; //   like this ?                    
 #ifdef __LOG_VCSM__
-                    storeLog(   MY_BUFFER, MY_INDEX, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX, 
                                 "IMPORT  - ARM Address",    (u32)(uintptr)p_bufferBlockbase, 
                                 "GPU  Address",             tx.body.addr, 
                                 "Size",                     size, 
@@ -105,7 +105,7 @@ bool            CKernel::lockMemoryVCSM             (   u32&                    
                     {
                     vcsm_pointer        = rx.body.res_mem;
 #ifdef __LOG_VCSM__
-                        storeLog(   MY_BUFFER, MY_INDEX, 
+                        storeLogHex(   MY_BUFFER, MY_INDEX, 
                                     "LOCK    - VCSM Handle",    rx.body.res_handle, 
                                     "VCSM Pointer",             rx.body.res_mem);
                         nextline(   MY_BUFFER, MY_INDEX );
@@ -137,7 +137,7 @@ bool            CKernel::freeMemoryVCSM             (   u32&                    
                     vcsm_pointer        = 0;
 #ifdef __LOG_VCSM__
 
-                        storeLog(   MY_BUFFER, MY_INDEX, 
+                        storeLogHex(   MY_BUFFER, MY_INDEX, 
                                     "FREE    - VCSM Handle",    vcsm_handle, 
                                     "VCSM Pointer",             vcsm_pointer);  
 #endif        

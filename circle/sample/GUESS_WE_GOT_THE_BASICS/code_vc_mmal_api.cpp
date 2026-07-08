@@ -11,12 +11,12 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
                     if (!queueInputBufferMMAL(*m_BufferFromHostTx_Input, nal_block_offset, nal_block_length))
                         {
 #ifdef __LOG_MMAL__
-                        storeLog( MY_BUFFER, MY_INDEX, "very first frame queue ERROR!", EMPTYLOG, "Frame offset", nal_block_offset, "length", nal_block_length);
+                        storeLogHex( MY_BUFFER, MY_INDEX, "very first frame queue ERROR!", EMPTYLOG, "Frame offset", nal_block_offset, "length", nal_block_length);
 #endif
                         return false;
                         }
 #ifdef __LOG_MMAL__
-                    storeLog( MY_BUFFER, MY_INDEX, "very first frame queue SUCCESS", EMPTYLOG, "Frame offset", nal_block_offset, "length", nal_block_length);
+                    storeLogHex( MY_BUFFER, MY_INDEX, "very first frame queue SUCCESS", EMPTYLOG, "Frame offset", nal_block_offset, "length", nal_block_length);
 #endif
                     getPortInfoMMAL(MMAL_PORT_TYPE_INPUT,  m_InputPortHandle,  *m_PortInfoGetTx_Input_D, *m_PortInfoGetRx_Input_D);
                     getPortInfoMMAL(MMAL_PORT_TYPE_OUTPUT, m_OutputPortHandle, *m_PortInfoGetTx_Output_D, *m_PortInfoGetRx_Output_D);
@@ -43,7 +43,7 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
                                     {
                                     u32 m_CurrentHandle = m_BufferFromHostTx_Output->msg.buffer_header.data;  // Payload layout reused: buffer_from_host
 #ifdef __LOG_MMAL__   
-                                    storeLog( MY_BUFFER, MY_INDEX, "frame offset", nal_block_offset, "length", nal_block_length, "status", m_BufferFromHostTx_Output->hdr.status, "handle", m_CurrentHandle);
+                                    storeLogHex( MY_BUFFER, MY_INDEX, "frame offset", nal_block_offset, "length", nal_block_length, "status", m_BufferFromHostTx_Output->hdr.status, "handle", m_CurrentHandle);
 #endif 
                                     if (m_CurrentHandle != m_output_buffer_handle_a && m_CurrentHandle != m_output_buffer_handle_b)
                                         {
@@ -66,7 +66,7 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
                                         return false;
 #ifdef __LOG_MMAL__   
                                     message = "MMAL_MSG_STATUS_SUCCESS      - All is Fine";
-                                    storeLog( MY_BUFFER, MY_INDEX, message, EMPTYLOG, "frame offset", nal_block_offset, "length", nal_block_length);
+                                    storeLogHex( MY_BUFFER, MY_INDEX, message, EMPTYLOG, "frame offset", nal_block_offset, "length", nal_block_length);
 #endif                       
                                     return true;
                                     }
@@ -91,7 +91,7 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
                                 }
 #ifdef __LOG_MMAL__   
                         //  nextline( MY_BUFFER, MY_INDEX );
-                            storeLog( MY_BUFFER, MY_INDEX, message, EMPTYLOG, "Frame offset", nal_block_offset, "length", nal_block_length);
+                            storeLogHex( MY_BUFFER, MY_INDEX, message, EMPTYLOG, "Frame offset", nal_block_offset, "length", nal_block_length);
                             storeMsg( MY_BUFFER, MY_INDEX, "Poller ERROR (BUFFER_TO_HOST)", &m_BufferFromHostTx_Output, msg_len);
 #endif               
                             return false;
@@ -102,7 +102,7 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
                             message = "UNEXPECTED MESSAGE";
 #ifdef __LOG_MMAL__    
                         //  nextline( MY_BUFFER, MY_INDEX );
-                            storeLog( MY_BUFFER, MY_INDEX, message,  EMPTYLOG, "Frame offset", nal_block_offset, "Type",  m_BufferFromHostTx_Output->hdr.type, "Status", m_BufferFromHostTx_Output->hdr.status);
+                            storeLogHex( MY_BUFFER, MY_INDEX, message,  EMPTYLOG, "Frame offset", nal_block_offset, "Type",  m_BufferFromHostTx_Output->hdr.type, "Status", m_BufferFromHostTx_Output->hdr.status);
                             storeMsg( MY_BUFFER, MY_INDEX, "Poller ERROR (UNEXPECTED MESSAGE)", &m_BufferFromHostTx_Output, msg_len);
 #endif 
                             break;
@@ -110,13 +110,13 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
                         }
 #ifdef __LOG_MMAL__ 
                 //  nextline( MY_BUFFER, MY_INDEX );
-                    storeLog( MY_BUFFER, MY_INDEX, "Unexpected Reply", EMPTYLOG, "Frame offset", nal_block_offset, "length", nal_block_length);
+                    storeLogHex( MY_BUFFER, MY_INDEX, "Unexpected Reply", EMPTYLOG, "Frame offset", nal_block_offset, "length", nal_block_length);
                     storeMsg( MY_BUFFER, MY_INDEX, "Unexpected Reply", &m_BufferFromHostTx_Output, msg_len);
 #endif       
                     }
 #ifdef __LOG_MMAL__   
             //  nextline( MY_BUFFER, MY_INDEX );
-                storeLog( MY_BUFFER, MY_INDEX, "Nothing in the Pipeline", EMPTYLOG, "Frame offset", nal_block_offset, "length", nal_block_length);    // Nothing relevant received
+                storeLogHex( MY_BUFFER, MY_INDEX, "Nothing in the Pipeline", EMPTYLOG, "Frame offset", nal_block_offset, "length", nal_block_length);    // Nothing relevant received
 #endif 
                 return true;
 }
@@ -140,7 +140,7 @@ bool            CKernel::bufferReadyMMAL            (   u32 handle)
                 if (m_EGLimage == EGL_NO_IMAGE_KHR)
                     {
 #ifdef __LOG_MMAL__        
-                    storeLog( MY_BUFFER, MY_INDEX, "EGLImage creation FAILED", handle);
+                    storeLogHex( MY_BUFFER, MY_INDEX, "EGLImage creation FAILED", handle);
 #endif 
                     return false;
                     }
@@ -166,7 +166,7 @@ bool            CKernel::queueOutputBufferMMAL      (   MMAL_Buffer_From_Host_Ms
                 tx.msg.buffer_header.flags                         = 0;
 
 #ifdef __LOG_MMAL__
-                storeLog( MY_BUFFER, MY_INDEX, "BUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
+                storeLogHex( MY_BUFFER, MY_INDEX, "BUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
                 storeMsg( MY_BUFFER, MY_INDEX, "QueueOutputBuffer", &tx, (u32)sizeof(tx));
 #endif 
                 return (vchi_msg_queue(m_ServiceHandleMMAL, &tx, (u32)sizeof(tx), VCHI_FLAGS_BLOCK_UNTIL_QUEUED, nullptr) == 0);
@@ -186,7 +186,7 @@ bool            CKernel::queueInputBufferMMAL       (   MMAL_Buffer_From_Host_Ms
                 u32 flags                                           = MMAL_BUFFER_HEADER_FLAG_FRAME | MMAL_BUFFER_HEADER_FLAG_KEYFRAME;
                 tx.msg.buffer_header.flags                         = flags;
 #ifdef __LOG_MMAL__
-                storeLog( MY_BUFFER, MY_INDEX, "BUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
+                storeLogHex( MY_BUFFER, MY_INDEX, "BUFFER FROM HOST MSG", (u32)sizeof(tx));     /* expected: sizeof(hdr)+268 */
                 storeMsg( MY_BUFFER, MY_INDEX, "QueueInputBuffer", &tx, (u32)sizeof(tx));
 #endif 
                 return (vchi_msg_queue(m_ServiceHandleMMAL, &tx, (u32)sizeof(tx), VCHI_FLAGS_BLOCK_UNTIL_QUEUED, nullptr) == 0);

@@ -43,7 +43,7 @@
                                                     //  #define MY_INDEX    m_bufferLogIndex
                                                     //  for (int i = 0; i < loadedVideos; i++)
                                                     //      {
-                                                    //      storeLog( MY_BUFFER[i], MY_INDEX[i], ... );
+                                                    //      storeLogHex( MY_BUFFER[i], MY_INDEX[i], ... );
                                                     //      }
     #define         VSH_USB                     0	// max number of u_vertex shader on sd
     #define         OMF_USB            		    0	// max number of fragment shader on sd

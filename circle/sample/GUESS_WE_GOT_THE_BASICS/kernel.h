@@ -19,8 +19,8 @@ enum TShutdownMode
 class CKernel
 {
 public:
-                                CKernel                 (               void );
-                               ~CKernel                 (               void );
+                            CKernel                     (               void );
+                           ~CKernel                     (               void );
 #include "defs_enum.h"
 #include "defs_struct.h"
                 boolean         Initialize              (               void );
@@ -38,7 +38,7 @@ public:
                 void        clearBufferDMA              (               char**                          buffers,                // +++ buffer pointer table returned by allocBufferDMA()
                                                                         char*                           rawBlock);              // original raw allocation pointer to delete
 // code_debug.cpp               !! TESTED AND APPROVED !!
-                void        storeLog                    (               char*                           p_bufferArray,                    // +++
+                void        storeLogHex                    (               char*                           p_bufferArray,                    // +++
                                                                         u32&                            index,
                                                                 const   char*                           p_string0, 
                                                                         u32                             p_value0    = EMPTYLOG,
@@ -47,7 +47,18 @@ public:
                                                                 const   char*                           p_string2   = EMPTYSTR, 
                                                                         u32                             p_value2    = EMPTYLOG,
                                                                 const   char*                           p_string3   = EMPTYSTR, 
-                                                                        u32                             p_value3    = EMPTYLOG);                                                              
+                                                                        u32                             p_value3    = EMPTYLOG);
+                void        storeLogU32                    (               char*                           p_bufferArray,                    // +++
+                                                                        u32&                            index,
+                                                                const   char*                           p_string0, 
+                                                                        u32                             p_value0    = EMPTYLOG,
+                                                                const   char*                           p_string1   = EMPTYSTR, 
+                                                                        u32                             p_value1    = EMPTYLOG,
+                                                                const   char*                           p_string2   = EMPTYSTR, 
+                                                                        u32                             p_value2    = EMPTYLOG,
+                                                                const   char*                           p_string3   = EMPTYSTR, 
+                                                                        u32                             p_value3    = EMPTYLOG);                                                
+                                                                        
                 void        storeMsg                   (                char*                           p_buffer,
                                                                         u32&                            index,
                                                                 const   char*                           label,
@@ -55,6 +66,7 @@ public:
                                                                         u32                             total_size);
                 void        nextline                    (               char*                           p_buffer,                       // +++
                                                                         u32&                            index);
+                u32         convertDecToBCD     (                       u32                             value );
                 void        logButtonStatesRuntime      (               void    ); // +++
                 void        ADCDebug                    ();
                 void        logInOutRuntime             (               void );      // +++

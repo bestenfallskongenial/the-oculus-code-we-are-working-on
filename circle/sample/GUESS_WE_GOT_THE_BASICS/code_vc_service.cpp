@@ -29,7 +29,7 @@ void            CKernel::getStateVCHI               (   )
 {
                 vc_host_get_vchi_state(&m_VCHIInstance, &m_Connection);
 #ifdef __LOG_VC04__
-                storeLog (  MY_BUFFER, MY_INDEX, 
+                storeLogHex (  MY_BUFFER, MY_INDEX, 
                             "VCHI State Instance",      (u32)m_VCHIInstance, 
                             "VCHI State Connection",    (u32)m_Connection);   
 #endif             
@@ -41,7 +41,7 @@ bool            CKernel::initEventsVCOS             (   VCOS_EVENT_T&           
                 if (vcos_event_create(&event, name) != VCOS_SUCCESS)
                     {
 #ifdef __LOG_VC04__
-                    storeLog (  MY_BUFFER, MY_INDEX, 
+                    storeLogHex (  MY_BUFFER, MY_INDEX, 
                                 "VCOS Event Init Failed!",  (u32)&event);  
 #endif               
                     return false;
@@ -56,7 +56,7 @@ u32             CKernel::convertAddress             (   void*                   
                 u32 vcsm_addr = (bus_addr & ~0xC0000000) | 0xC0000000;
 #ifdef __LOG_VC04__
                 nextline(   MY_BUFFER, MY_INDEX );
-                storeLog (  MY_BUFFER, MY_INDEX, 
+                storeLogHex (  MY_BUFFER, MY_INDEX, 
                             "Buffer BUS",       (u32)p_busAddress, 
                             "Buffer ARM",       (u32)bus_addr, 
                             "Buffer VPU",       (u32)vcsm_addr); 
@@ -84,7 +84,7 @@ bool            CKernel::checkGLerrorMMAL           (   )
                         default:                                        error_str = "UNKNOWN_ERROR"; break;
                         }
 #ifdef __LOG_VC04__  
-                    storeLog (  MY_BUFFER, MY_INDEX, 
+                    storeLogHex (  MY_BUFFER, MY_INDEX, 
                                 error_str);
 #endif 
                     return false;
@@ -127,7 +127,7 @@ bool            CKernel::sendAndWaitVCHI            (           VCHI_SERVICE_HAN
                                                                 size_t*                 actual_reply_len )
 {
 #ifdef __DUMP_VC04__
-                storeLog(   MY_BUFFER, MY_INDEX, 
+                storeLogHex(   MY_BUFFER, MY_INDEX, 
                             "TX MSG",           (u32)msg_size);
                 storeMsg(   MY_BUFFER, MY_INDEX, 
                             "Raw TX",           msg, 
@@ -143,7 +143,7 @@ bool            CKernel::sendAndWaitVCHI            (           VCHI_SERVICE_HAN
                     if (vchi_msg_dequeue(ServiceHandle, rx_msg, max_reply_len, &ReplyLength, VCHI_FLAGS_NONE) == 0)
                         {
 #ifdef __DUMP_VC04__
-                        storeLog(   MY_BUFFER, MY_INDEX, 
+                        storeLogHex(   MY_BUFFER, MY_INDEX, 
                                     "RX MSG",               ReplyLength);
                         storeMsg(   MY_BUFFER, MY_INDEX, 
                                     "Raw RX",               rx_msg,       
@@ -161,7 +161,7 @@ bool            CKernel::sendAndWaitVCHI            (           VCHI_SERVICE_HAN
                 if (ReplyLength != max_reply_len)
                     {
 #ifdef __LOG_VC04__
-                    storeLog(   MY_BUFFER, MY_INDEX, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX, 
                                 "FALSE ANSWER LENGTH - MSG #" );
 #endif 
                     return false;

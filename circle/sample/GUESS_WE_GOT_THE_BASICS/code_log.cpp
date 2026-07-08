@@ -5,7 +5,7 @@
 
 static const char FromKernel[] = "kernel";
 
-void            CKernel::storeLog                   (   char*       p_buffer,
+void            CKernel::storeLogHex               (   char*       p_buffer,
                                                         u32&        index,
                                                         const char* p_string0, u32 p_value0,
                                                         const char* p_string1, u32 p_value1,
@@ -91,6 +91,137 @@ void            CKernel::storeLog                   (   char*       p_buffer,
 #endif                
 }
 
+void            CKernel::storeLogU32                (   char*       p_buffer,
+                                                        u32&        index,
+                                                        const char* p_string0, u32 p_value0,
+                                                        const char* p_string1, u32 p_value1,
+                                                        const char* p_string2, u32 p_value2,
+                                                        const char* p_string3, u32 p_value3)
+{
+                for (const char* p = p_string0; *p; ++p)
+                    {
+                    p_buffer[index++] = *p;
+                    }
+
+                if (p_value0 != EMPTYLOG)
+                    {
+                    p_buffer[index++] = ' ';
+
+                    char digits[10];
+                    u32  count = 0;
+                    u32  value = p_value0;
+
+                    do
+                        {
+                        digits[count++] = '0' + (value % 10);
+                        value /= 10;
+                        }
+                    while (value != 0);
+
+                    while (count > 0)
+                        {
+                        p_buffer[index++] = digits[--count];
+                        }
+                    }
+
+                if (p_string1 != EMPTYSTR)
+                    {
+                    p_buffer[index++] = ' ';
+                    for (const char* p = p_string1; *p; ++p)
+                        {
+                        p_buffer[index++] = *p;
+                        }
+                    }
+
+                if (p_value1 != EMPTYLOG)
+                    {
+                    p_buffer[index++] = ' ';
+
+                    char digits[10];
+                    u32  count = 0;
+                    u32  value = p_value1;
+
+                    do
+                        {
+                        digits[count++] = '0' + (value % 10);
+                        value /= 10;
+                        }
+                    while (value != 0);
+
+                    while (count > 0)
+                        {
+                        p_buffer[index++] = digits[--count];
+                        }
+                    }
+
+                if (p_string2 != EMPTYSTR)
+                    {
+                    p_buffer[index++] = ' ';
+                    for (const char* p = p_string2; *p; ++p)
+                        {
+                        p_buffer[index++] = *p;
+                        }
+                    }
+
+                if (p_value2 != EMPTYLOG)
+                    {
+                    p_buffer[index++] = ' ';
+
+                    char digits[10];
+                    u32  count = 0;
+                    u32  value = p_value2;
+
+                    do
+                        {
+                        digits[count++] = '0' + (value % 10);
+                        value /= 10;
+                        }
+                    while (value != 0);
+
+                    while (count > 0)
+                        {
+                        p_buffer[index++] = digits[--count];
+                        }
+                    }
+
+                if (p_string3 != EMPTYSTR)
+                    {
+                    p_buffer[index++] = ' ';
+                    for (const char* p = p_string3; *p; ++p)
+                        {
+                        p_buffer[index++] = *p;
+                        }
+                    }
+
+                if (p_value3 != EMPTYLOG)
+                    {
+                    p_buffer[index++] = ' ';
+
+                    char digits[10];
+                    u32  count = 0;
+                    u32  value = p_value3;
+
+                    do
+                        {
+                        digits[count++] = '0' + (value % 10);
+                        value /= 10;
+                        }
+                    while (value != 0);
+
+                    while (count > 0)
+                        {
+                        p_buffer[index++] = digits[--count];
+                        }
+                    }
+
+                p_buffer[index++] = '\n';
+                p_buffer[index] = '\0';
+
+#ifdef __LOG_TO_SCREEN__
+                logScreenUpdate();
+#endif
+}
+
 void            CKernel::storeMsg                   (   char*       p_buffer,
                                                         u32&        index,
                                                         const char* label,
@@ -137,6 +268,22 @@ void            CKernel::nextline                   (   char*       p_buffer,
 #ifdef __LOG_TO_SCREEN__
                 logScreenUpdate();
 #endif                
+}
+
+u32             CKernel::convertDecToBCD     (   u32         value)
+{
+                u32 result = 0;
+                u32 shift  = 0;
+
+                do
+                    {
+                    result |= (value % 10) << shift;
+                    value  /= 10;
+                    shift  += 4;
+                    }
+                while (value != 0 && shift < 32);
+
+                return result;
 }
 
 #ifdef __LOG_TO_SCREEN__
@@ -255,27 +402,17 @@ bool            CKernel::memoryDebugCheckpoint      (   const char* p_Label,
 #ifdef __DEBUG_LOG__
                 nextline( MY_BUFFER, MY_INDEX );
 
-                storeLog(   MY_BUFFER,
-                            MY_INDEX,
-                            "MEM",
-                            EMPTYLOG,
-                            p_Label,
-                            EMPTYLOG,
-                            "TOTAL",
-                            (u32)total,
-                            "LOW",
-                            (u32)low );
+                storeLogHex(   MY_BUFFER, MY_INDEX,
+                            "MEM", EMPTYLOG,
+                            p_Label, EMPTYLOG,
+                            "TOTAL", (u32)total,
+                            "LOW", (u32)low );
 
-                storeLog(   MY_BUFFER,
-                            MY_INDEX,
-                            "MEM",
-                            EMPTYLOG,
-                            p_Label,
-                            EMPTYLOG,
-                            "HIGH",
-                            (u32)high,
-                            "ANY",
-                            (u32)any );
+                storeLogHex(   MY_BUFFER, MY_INDEX,
+                            "MEM", EMPTYLOG,
+                            p_Label, EMPTYLOG,
+                            "HIGH", (u32)high,
+                            "ANY", (u32)any );
 #endif
 #ifdef HEAP_DEBUG
                 if (p_DumpStatus)

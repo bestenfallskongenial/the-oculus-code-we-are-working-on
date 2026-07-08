@@ -42,25 +42,25 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                     t->size[i]      = size_array[i];
 
 #ifdef __LOG_PARSER__
-                    storeLog(   MY_BUFFER, MY_INDEX,    "File         [", (u32)i, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX,    "File         [", (u32)i, 
                                                         "] buffer      ", (u32)p_buffer_array[i] );
                     storeMsg(   MY_BUFFER, MY_INDEX,    "Header Dump   ", data, headerSize );
-                    storeLog(   MY_BUFFER, MY_INDEX, t->tex_valid[i] ? 
+                    storeLogHex(   MY_BUFFER, MY_INDEX, t->tex_valid[i] ? 
                                                         "header   VALID" : 
                                                         "header  FAILED", EMPTYLOG, 
                                                         " Name         ", EMPTYLOG, 
                                                         filename_array[i], EMPTYLOG );
-                    storeLog(   MY_BUFFER, MY_INDEX,    "exp. Filesize ", (u32)fileSize, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX,    "exp. Filesize ", (u32)fileSize, 
                                                         "act. Filesize ", (u32)size_array[i], 
                                                         "max. FileSize ", (u32)t->max_tex_size );
-                    storeLog(   MY_BUFFER, MY_INDEX,    "Header offset ", (u32)dataOffset, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX,    "Header offset ", (u32)dataOffset, 
                                                         "Header size   ", (u32)headerSize);
-                    storeLog(   MY_BUFFER, MY_INDEX,    "Bitmap Width  ", (u32)width, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX,    "Bitmap Width  ", (u32)width, 
                                                         "Bitmap Height ", (u32)height, 
                                                         "BitsPerPixel  ", (u32)bpp );
-                    storeLog(   MY_BUFFER, MY_INDEX,    "Bitmap-Planes ", (u32)planes, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX,    "Bitmap-Planes ", (u32)planes, 
                                                         "Compression   ", (u32)compression );
-                    storeLog(   MY_BUFFER, MY_INDEX,    "exp. Bmpsize  ", (u32)(width * height * 3), 
+                    storeLogHex(   MY_BUFFER, MY_INDEX,    "exp. Bmpsize  ", (u32)(width * height * 3), 
                                                         "act. Bmpsize  ", (u32)imgSize );
                     nextline(   MY_BUFFER, MY_INDEX);                       
 #endif
@@ -125,7 +125,7 @@ bool            CKernel::parse264                  (   h264_state* h,
                 /*  size_t size = size_array[i]; */
                     size_t i = 0;
 #ifdef __LOG_PARSER__
-                    storeLog(   MY_BUFFER, MY_INDEX, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX, 
                                 "Videofile    [", file_index, 
                                 "] FileSize    ", (u32)size_array[file_index],
                                 "Bufferaddress ", (u32)p_buffer_array[file_index],
@@ -177,12 +177,12 @@ bool            CKernel::parse264                  (   h264_state* h,
 
                         /* CHANGED: h->idr_offset[file_index] = idr_off[file_index][idx] - sps_off[file_index][idx]; - REPLACED BY: h->frame_offset[file_index][idx], because the old value was per-file and overwritten each idx */
 #ifdef __DUMP_FRAMES__
-                        storeLog(   MY_BUFFER, MY_INDEX,
+                        storeLogHex(   MY_BUFFER, MY_INDEX,
                                     "67+68+65", EMPTYLOG,
                                     "address ", (u32)h->nal_block_address[dst][idx], // * changed !! *
                                     "length  ", (u32)h->nal_block_length[dst][idx], // * changed !! *
                                     "offset  ", (u32)h->nal_block_offset[dst][idx]); // * changed !! *
-                        storeLog(   MY_BUFFER, MY_INDEX,                                                                          /* ADDED: log startcode+IDR runtime packet */
+                        storeLogHex(   MY_BUFFER, MY_INDEX,                                                                          /* ADDED: log startcode+IDR runtime packet */
                                     "65      ", EMPTYLOG,
                                     "address ", (u32)h->frame_address[dst][idx], // * changed !! *
                                     "length  ", (u32)h->frame_length[dst][idx], // * changed !! *
@@ -246,27 +246,27 @@ bool            CKernel::parse264                  (   h264_state* h,
                     if (h->vid_valid[dst]) valid_count++; // * changed !! *
 #ifdef __LOG_PARSER__
                     nextline(   MY_BUFFER, MY_INDEX ); 
-                    storeLog(   MY_BUFFER, MY_INDEX,
+                    storeLogHex(   MY_BUFFER, MY_INDEX,
                                 "min.  Width   ",          (u32)h->min_width,
                                 "min.  Height  ",          (u32)h->min_height,
                                 "min.  Profile ",          (u32)h->min_profile, 
                                 "min.  Level   ",          (u32)h->min_level );                    
-                    storeLog(   MY_BUFFER, MY_INDEX,
+                    storeLogHex(   MY_BUFFER, MY_INDEX,
                                 "max.  Width   ",          (u32)h->max_width,
                                 "max.  Height  ",          (u32)h->max_height,
                                 "max.  Profile ",          (u32)h->max_profile,
                                 "max.  Level   ",          (u32)h->max_level );
                     nextline(   MY_BUFFER, MY_INDEX );    
-                    storeLog(   MY_BUFFER, MY_INDEX,
+                    storeLogHex(   MY_BUFFER, MY_INDEX,
                                 "Video Width   ",          (u32)h->video_width[dst], // * changed !! *
                                 "Video Height  ",          (u32)h->video_height[dst], // * changed !! *
                                 "Video Profile ",          (u32)h->vid_profile[dst], // * changed !! *
                                 "Video Level   ",          (u32)h->vid_level[dst] ); // * changed !! *
                     nextline(   MY_BUFFER, MY_INDEX );
-                    storeLog(   MY_BUFFER, MY_INDEX,
+                    storeLogHex(   MY_BUFFER, MY_INDEX,
                                 "Parsed Frames ", h->frame_count[dst]); // * changed !! *
                     nextline(   MY_BUFFER, MY_INDEX );
-                    storeLog(   MY_BUFFER, MY_INDEX,
+                    storeLogHex(   MY_BUFFER, MY_INDEX,
                                 "idr_sc_len  ",             EMPTYLOG,
                                 (h->idr_sc_len[dst] == 3) ?  // * changed !! *
                                 "    00 00 01" : 

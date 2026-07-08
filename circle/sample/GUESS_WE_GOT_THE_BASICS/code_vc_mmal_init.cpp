@@ -25,13 +25,13 @@ bool            CKernel::initTexturesMMAL         (   )
                 if( f_count != 0)
                     { 
 #ifdef __LOG_MMAL__ 
-                    storeLog(   MY_BUFFER, MY_INDEX, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX, 
                                 "Texture Creation    FAILED");
 #endif                   
                     return false;
                     }
 #ifdef __LOG_MMAL__             
-                storeLog(   MY_BUFFER, MY_INDEX, 
+                storeLogHex(   MY_BUFFER, MY_INDEX, 
                             "Texture Creation    SUCCESS");
 #endif               
                 return true;
@@ -53,7 +53,7 @@ bool            CKernel::createComponent            (   u32& ComponentHandle,   
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __LOG_MMAL__
-                    storeLog(   MY_BUFFER, MY_INDEX, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX, 
                                 "MMALsendAndWait FAILED - MSG #", 
                                 tx.hdr.context );
 #endif 
@@ -81,7 +81,7 @@ bool            CKernel::getPortInfoMMAL            (   u32 port_type,
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __LOG_MMAL__
-                    storeLog(   MY_BUFFER, MY_INDEX, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX, 
                                 "MMALsendAndWait FAILED - MSG #", 
                                 tx.hdr.context );
 #endif 
@@ -102,7 +102,7 @@ bool            CKernel::setPortInfoMMAL            (   MMAL_Port_Info_Set_Msg& 
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __LOG_MMAL__
-                    storeLog(   MY_BUFFER, MY_INDEX, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX, 
                                 "MMALsendAndWait FAILED - MSG #", 
                                 tx.hdr.context );
 #endif 
@@ -125,7 +125,7 @@ bool            CKernel::enableComponentMMAL        (   MMAL_Component_Enable_Ms
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __LOG_MMAL__
-                    storeLog(   MY_BUFFER, MY_INDEX, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX, 
                                 "MMALsendAndWait FAILED - MSG #", 
                                 tx.hdr.context );
 #endif 
@@ -167,7 +167,7 @@ bool            CKernel::setZeroCopyModeMMAL        (   u32                     
                                       &rx_len ))
                     {
 #ifdef __LOG_MMAL__
-                    storeLog(   MY_BUFFER, MY_INDEX, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX, 
                                 "MMALsendAndWait FAILED - MSG #", 
                                 tx.hdr.context );
 #endif
@@ -194,7 +194,7 @@ bool            CKernel::enablePortMMAL             (   const MMAL_Port_Info_Get
                 if (!sendAndWaitVCHI( m_ServiceHandleMMAL, m_EventMMAL, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len))
                     {
 #ifdef __LOG_MMAL__
-                    storeLog(   MY_BUFFER, MY_INDEX, 
+                    storeLogHex(   MY_BUFFER, MY_INDEX, 
                                 "MMALsendAndWait FAILED - MSG #", 
                                 tx.hdr.context );
 #endif 
