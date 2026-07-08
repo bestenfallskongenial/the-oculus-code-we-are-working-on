@@ -385,22 +385,22 @@ bool            CKernel::startupScreen          (   void )
                 nextline(   MY_BUFFER, MY_INDEX);
 
                 storeLogU32(   MY_BUFFER, MY_INDEX, 
-                            "RAM Size     MB", convertDecToBCD(ramSize),
+                            "RAM Size     MB", ramSize,
                             "CPU Speed Mode ", cpuSpeedMode,
-                            "SoC Max Temp   ", convertDecToBCD(socMaxTemp));    
+                            "SoC Max Temp   ", socMaxTemp);    
 
                 nextline(   MY_BUFFER, MY_INDEX);
 
                 storeLogU32(   MY_BUFFER, MY_INDEX, 
-                            "Clock CORE MHz", convertDecToBCD(coreClock),
-                            "ARM  ", convertDecToBCD(armClock),
-                            "EMMC ", convertDecToBCD(emmcClock),
-                            "EMMC2", convertDecToBCD(emmc2Clock));  
+                            "Clock CORE MHz", coreClock,
+                            "ARM  ", armClock,
+                            "EMMC ", emmcClock,
+                            "EMMC2", emmc2Clock);  
 
                 nextline(   MY_BUFFER, MY_INDEX);
 
                 storeLogU32(   MY_BUFFER, MY_INDEX,
-                            "Clock UART  MHz", convertDecToBCD(uartClock),
+                            "Clock UART  MHz", uartClock,
                             "DMA Channels    ", dmaChannel);
 
                 storeLogU32(   MY_BUFFER, MY_INDEX,                            
@@ -412,8 +412,8 @@ bool            CKernel::startupScreen          (   void )
                 storeLogU32(   MY_BUFFER, MY_INDEX, 
                             "FB Screen X    ", fbWidth,
                             "/ Y "           , fbHeight,
-                            "gE Screen X    ", convertDecToBCD(gE_ScreenWidth),
-                            " / Y "          , convertDecToBCD(gE_ScreenHeight));                            
+                            "gE Screen X    ", gE_ScreenWidth,
+                            " / Y "          , gE_ScreenHeight);                            
 
                 nextline(   MY_BUFFER, MY_INDEX);                            
 
