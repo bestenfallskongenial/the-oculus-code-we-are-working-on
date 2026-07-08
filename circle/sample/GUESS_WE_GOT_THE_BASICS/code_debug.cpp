@@ -372,26 +372,26 @@ bool            CKernel::startupScreen          (   void )
                 
                 nextline(   MY_BUFFER, MY_INDEX);
 
-                storeLogHex(   MY_BUFFER, MY_INDEX, 
+                storeLogU32(   MY_BUFFER, MY_INDEX, 
                             machineName, EMPTYLOG );
 
                 nextline(   MY_BUFFER, MY_INDEX);    
 
-                storeLogHex(   MY_BUFFER, MY_INDEX, 
+                storeLogU32(   MY_BUFFER, MY_INDEX, 
                             socName          , EMPTYLOG, 
                             "V", modelMajor,
                             ".", modelRevision);
 
                 nextline(   MY_BUFFER, MY_INDEX);
 
-                storeLogHex(   MY_BUFFER, MY_INDEX, 
+                storeLogU32(   MY_BUFFER, MY_INDEX, 
                             "RAM Size     MB", convertDecToBCD(ramSize),
                             "CPU Speed Mode ", cpuSpeedMode,
                             "SoC Max Temp   ", convertDecToBCD(socMaxTemp));    
 
                 nextline(   MY_BUFFER, MY_INDEX);
 
-                storeLogHex(   MY_BUFFER, MY_INDEX, 
+                storeLogU32(   MY_BUFFER, MY_INDEX, 
                             "Clock CORE MHz", convertDecToBCD(coreClock),
                             "ARM  ", convertDecToBCD(armClock),
                             "EMMC ", convertDecToBCD(emmcClock),
@@ -399,17 +399,17 @@ bool            CKernel::startupScreen          (   void )
 
                 nextline(   MY_BUFFER, MY_INDEX);
 
-                storeLogHex(   MY_BUFFER, MY_INDEX,
+                storeLogU32(   MY_BUFFER, MY_INDEX,
                             "Clock UART  MHz", convertDecToBCD(uartClock),
                             "DMA Channels    ", dmaChannel);
 
-                storeLogHex(   MY_BUFFER, MY_INDEX,                            
+                storeLogU32(   MY_BUFFER, MY_INDEX,                            
                             "USB Delay      ", usbDelay,
                             "USB FullSpeed  ", usbSpeed);      
 
                 nextline(   MY_BUFFER, MY_INDEX);
 
-                storeLogHex(   MY_BUFFER, MY_INDEX, 
+                storeLogU32(   MY_BUFFER, MY_INDEX, 
                             "FB Screen X    ", fbWidth,
                             "/ Y "           , fbHeight,
                             "gE Screen X    ", convertDecToBCD(gE_ScreenWidth),
