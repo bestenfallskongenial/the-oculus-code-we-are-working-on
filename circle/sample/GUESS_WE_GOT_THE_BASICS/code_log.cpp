@@ -394,12 +394,12 @@ bool            CKernel::memoryDebugCheckpoint      (   const char* p_Label,
                     {
                     return FALSE;
                     }
+#ifdef __LOG_MEMORY__                    
                 size_t total = pMem->GetMemSize();
                 size_t low   = pMem->GetHeapFreeSpace(HEAP_LOW);
                 size_t high  = pMem->GetHeapFreeSpace(HEAP_HIGH);
                 size_t any   = pMem->GetHeapFreeSpace(HEAP_ANY);
 
-#ifdef __LOG_MEMORY__
                 nextline( MY_BUFFER, MY_INDEX );
 
                 storeLogHex(   MY_BUFFER, MY_INDEX,
