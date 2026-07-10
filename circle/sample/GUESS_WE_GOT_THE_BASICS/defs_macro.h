@@ -1,4 +1,4 @@
-#define             EMPTYSTR                                            s0 // ""                                                 // for the logger
+#define             EMPTYSTR                                            0 // ""                                                 // for the logger
 #define             EMPTYLOG                                            255                                                // for the logger
 
 #define             LAYER                                               6
