@@ -267,7 +267,7 @@
     // event messages //
     #define         MMAL_WORKER_EVENT_SPACE                             256
     
-    #define         MMAL_FOURCC                                         (a, b, c, d) ((a) | (b << 8) | (c << 16) | (d << 24))    // Four CC's for events //
+    #define         MMAL_FOURCC(a, b, c, d) ((a) | (b << 8) | (c << 16) | (d << 24))    // Four CC's for events //
 
     #define         MMAL_EVENT_ERROR		                            MMAL_FOURCC('E', 'R', 'R', 'O')
     #define         MMAL_EVENT_EOS			                            MMAL_FOURCC('E', 'E', 'O', 'S')
