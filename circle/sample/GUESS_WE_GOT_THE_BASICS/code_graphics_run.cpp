@@ -1,6 +1,6 @@
 #include "kernel.h"
 
-    #define MY_BUFFER   m_logBuffer
+    #define MY_BUFFER   m_logBuffer                 // means the log goes into the pre-init buffer 
     #define MY_INDEX    m_logBufferIndex
 
 void            CKernel::frmBufferSet               (   vtx_state* v)

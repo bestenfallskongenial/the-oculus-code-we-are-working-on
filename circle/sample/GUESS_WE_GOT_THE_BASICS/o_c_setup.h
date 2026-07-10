@@ -9,22 +9,27 @@
                                                                                 // 2: also warnings 
                                                                                 // 3: also notices 
                                                                                 // 4: also debug output (default))
-    #define         __DEBUG_LOG__                                               // generic debug log blocks
+
 //  #define         __LOG_ALLOC__                                               // allocation / buffer allocation logging
 //  #define         __LOG_FILE__                                                // filesystem / file load-store logging
+//  #define         __LOG_MEMORY__                                              // logs the memory map, only used ones
     #define         __LOG_PARSER__                                              // parser / file parser logging
     #define         __LOG_MMAL__                                                // MMAL init/wrapper/message logging
     #define         __LOG_VC04__                                                // VC/VCHI service logging
     #define         __LOG_VCSM__                                                // VCSM alloc/import/lock logging
     #define         __LOG_INIT__                                                // kernel initialization step logging
-//  #define         __LOG_GLSL__                                                // shader/program/uniform/gfx_check OpenGL logging
-    #define         __DEBUG_GL__                                             // GL/EGL runtime check() calls
+    #define         __LOG_RUNTIME__
+    #define         __LOG_GLSL__                                                // shader/program/uniform/gfx_check OpenGL logging
+//  #define         __LOG_FIRST_FRAME__                                         // logs the fist frame vpu messaging - later useful
+    #define         __LOG_TO_SCREEN__                                           // shows the log on the screen
+
+    #define         __DEBUG_GL__                                                // GL/EGL runtime check() calls
+
 //  #define         __DUMP_GLSL__                                               // dump shader source from GL
 //  #define         __DUMP_FRAMES__                                             // dump the parsed per frame data from per video
 //  #define         __DUMP_VC04__                                               // detailed VC/VCHI message dump
-    #define         __LOG_TO_SCREEN__                                           // shows the log on the screen
+
 //  #define         __SCROLLING__                                               // animated/intermediate log-screen scrolling frames
-//  #define         __FIRST_FRAME__                                             // logs the fist frame vpu messaging - later useful
 //  #define         __H264_DEBUG_TEX__                                          // H264 debug texture path
 
     #define         HEAP_DEBUG                                                  // heap dump / CMemorySystem::DumpStatus() - is already set!
@@ -117,9 +122,6 @@
 // control / adc routing pin
     #define         CTRL_PIN                 	12                                  // for menu input selector!!!
 // media
-
-
-
     #define         MAX_OMF                     1
     #define         MAX_SHADER                  33
     #define         MAX_VIDEOS                  8
@@ -140,7 +142,7 @@
 
 //  #define SCREEN_LOG_BUFFER_SIZE  (1024 * 8)
 
-    #define SCROLLSPEED 5 // in 1000/1th
+    #define SCROLLSPEED                         5 // in 1000/1th
 
-    #define DOUBLE_CLICK_TIME 500000
-    #define LONG_CLICK_TIME 1000000
+    #define DOUBLE_CLICK_TIME                   500000
+    #define LONG_CLICK_TIME                     1000000

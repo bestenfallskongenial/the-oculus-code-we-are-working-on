@@ -1,8 +1,8 @@
 
 #include "kernel.h"
 
-    #define MY_BUFFER   m_bufferLog                 // not used here
-    #define MY_INDEX    m_bufferLogIndex
+    #define MY_BUFFER   m_logBuffer                 // means the log goes into the pre-init buffer 
+    #define MY_INDEX    m_logBufferIndex
     
 void            CKernel::usDelay(unsigned us)
 {

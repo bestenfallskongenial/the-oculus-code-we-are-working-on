@@ -1,7 +1,7 @@
 #include "kernel.h"
 
-    #define MY_BUFFER   m_bufferLog[2]     
-    #define MY_INDEX    m_bufferLogIndex[2]   
+    #define MY_BUFFER   m_logBuffer                 // means the log goes into the pre-init buffer 
+    #define MY_INDEX    m_logBufferIndex 
 
 bool            CKernel::allocMemoryVCSM            (   size_t                  size,
                                                         u32                     base_unit,

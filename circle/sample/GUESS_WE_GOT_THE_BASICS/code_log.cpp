@@ -1,7 +1,7 @@
 #include "kernel.h"
 
-    #define MY_BUFFER   m_logBuffer     
-    #define MY_INDEX    m_logBufferIndex    
+    #define MY_BUFFER   m_logBuffer                 // means the log goes into the pre-init buffer 
+    #define MY_INDEX    m_logBufferIndex
 
 static const char FromKernel[] = "kernel";
 
@@ -399,7 +399,7 @@ bool            CKernel::memoryDebugCheckpoint      (   const char* p_Label,
                 size_t high  = pMem->GetHeapFreeSpace(HEAP_HIGH);
                 size_t any   = pMem->GetHeapFreeSpace(HEAP_ANY);
 
-#ifdef __DEBUG_LOG__
+#ifdef __LOG_MEMORY__
                 nextline( MY_BUFFER, MY_INDEX );
 
                 storeLogHex(   MY_BUFFER, MY_INDEX,
@@ -413,7 +413,7 @@ bool            CKernel::memoryDebugCheckpoint      (   const char* p_Label,
                             p_Label, EMPTYLOG,
                             "HIGH", (u32)high,
                             "ANY", (u32)any );
-#endif
+
 #ifdef HEAP_DEBUG
                 if (p_DumpStatus)
                     {
@@ -421,7 +421,7 @@ bool            CKernel::memoryDebugCheckpoint      (   const char* p_Label,
                     }
 #endif
                 nextline( MY_BUFFER, MY_INDEX );
-                
+#endif            
                 return TRUE;
 }
 

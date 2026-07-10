@@ -369,18 +369,14 @@ bool            CKernel::startupScreen          (   void )
 
                 unsigned fbWidth        =  gE_FrameBuffer.GetWidth();
                 unsigned fbHeight       =  gE_FrameBuffer.GetHeight();
-                
-                nextline(   MY_BUFFER, MY_INDEX);
-
-                storeLogU32(   MY_BUFFER, MY_INDEX, 
-                            machineName, EMPTYLOG );
 
                 nextline(   MY_BUFFER, MY_INDEX);    
 
-                storeLogU32(   MY_BUFFER, MY_INDEX, 
-                            socName          , EMPTYLOG, 
-                            "V", modelMajor,
-                            ".", modelRevision);
+                storeLogU32(    MY_BUFFER, MY_INDEX, 
+                                machineName,        EMPTYLOG 
+                                socName,            EMPTYLOG, 
+                                "V",                modelMajor,
+                                ".",                modelRevision);
 
                 nextline(   MY_BUFFER, MY_INDEX);
 

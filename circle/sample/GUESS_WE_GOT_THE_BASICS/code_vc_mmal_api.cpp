@@ -1,11 +1,11 @@
 #include "kernel.h"
 
-    #define MY_BUFFER   m_logBuffer                 // not used here 
+    #define MY_BUFFER   m_logBuffer                 // means the log goes into the pre-init buffer 
     #define MY_INDEX    m_logBufferIndex
 
 bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u32 nal_block_length)
 {
-#ifdef __FIRST_FRAME__
+#ifdef __LOG_FIRST_FRAME__
                 if (!f_firstFrameQueued)
                     {
                     if (!queueInputBufferMMAL(*m_BufferFromHostTx_Input, nal_block_offset, nal_block_length))

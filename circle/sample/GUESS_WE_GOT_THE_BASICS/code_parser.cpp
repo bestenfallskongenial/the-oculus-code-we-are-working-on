@@ -1,7 +1,7 @@
 #include "kernel.h"
 
-    #define MY_BUFFER   m_bufferLog[0]      //m_logBuffer
-    #define MY_INDEX    m_bufferLogIndex[0] //m_logBufferIndex
+    #define MY_BUFFER   m_logBuffer                 // means the log goes into the pre-init buffer 
+    #define MY_INDEX    m_logBufferIndex
 
 bool            CKernel::BMPparser                  (   tex_state*  t,
                                                         char*       p_buffer_array[],

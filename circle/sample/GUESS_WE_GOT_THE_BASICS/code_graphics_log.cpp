@@ -1,7 +1,7 @@
 #include "kernel.h"
 
-    #define MY_BUFFER   m_logBuffer     
-    #define MY_INDEX    m_logBufferIndex    
+    #define MY_BUFFER   m_logBuffer                 // means the log goes into the pre-init buffer 
+    #define MY_INDEX    m_logBufferIndex
 
 bool            CKernel::shaderLog                  (   GLint       shader,
                                                         int         shaderIndex )
@@ -27,24 +27,24 @@ bool            CKernel::shaderLog                  (   GLint       shader,
 #endif
 
 #ifdef __LOG_GLSL__
-                storeLogHex(   MY_BUFFER, MY_INDEX,
-                            g_ScnFsh[shaderIndex],  EMPTYLOG,
-                            "buffer       [",       (u32)shaderIndex,
-                            "] handle      ",       (u32)shader );
+                storeLogHex(    MY_BUFFER, MY_INDEX,
+                                g_ScnFsh[shaderIndex],  EMPTYLOG,
+                                "buffer       [",       (u32)shaderIndex,
+                                "] handle      ",       (u32)shader );
 
-                storeLogHex(   MY_BUFFER, MY_INDEX,
-                            (shaderType == 0x00008B31) ? 
-                            "Vertex       " : 
-                            "Fragment     ",        EMPTYLOG,
-                            "Source Length ",       (u32)sourceLength, 
-                            "[Buffer] + '0'" );
+                storeLogHex(    MY_BUFFER, MY_INDEX,
+                                (shaderType == 0x00008B31) ? 
+                                "Vertex       " : 
+                                "Fragment     ",        EMPTYLOG,
+                                "Source Length ",       (u32)sourceLength, 
+                                "[Buffer] + '0'" );
 
-                storeLogHex(   MY_BUFFER, MY_INDEX,
-                            "Status ->    ",        EMPTYLOG,
-                            (success == GL_TRUE) ? 
-                            "SUCCESS      " : 
-                            "FAILED       ",        EMPTYLOG,
-                            log,                    EMPTYLOG );
+                storeLogHex(    MY_BUFFER, MY_INDEX,
+                                "Status ->    ",        EMPTYLOG,
+                                (success == GL_TRUE) ? 
+                                "SUCCESS      " : 
+                                "FAILED       ",        EMPTYLOG,
+                                log,                    EMPTYLOG );
 
 #ifdef __DUMP_GLSL__
                 nextline(   MY_BUFFER, MY_INDEX );
@@ -66,23 +66,25 @@ bool            CKernel::programLog                 (   GLint       program,
                 GLint success;
                 glGetProgramiv(program, GL_LINK_STATUS, &success);
 #ifdef __LOG_GLSL__
-                storeLogHex(   MY_BUFFER, MY_INDEX, 
-                            g_ScnFsh[program_index], EMPTYLOG, 
-                            "Status Prg.  [", (u32)program_index, 
-                            "] Size        ", (u32)g_bytFsh[program_index], 
-                            (success == GL_TRUE) ? 
-                            "Link SUCCESS  " : "Link FAILED   ", EMPTYLOG); 
+                storeLogHex(    MY_BUFFER, MY_INDEX, 
+                                g_ScnFsh[program_index], EMPTYLOG, 
+                                "Status Prg.  [", (u32)program_index, 
+                                "] Size        ", (u32)g_bytFsh[program_index], 
+                                (success == GL_TRUE) ? 
+                                "Link SUCCESS  " : "Link FAILED   ", EMPTYLOG); 
 #endif 
                 char log[1024];
+
                 GLsizei logLength = 0;
+
                 glGetProgramInfoLog(program, sizeof(log), &logLength, log);
 #ifdef __LOG_GLSL__                 
                 if (logLength > 0)
                     {
-                    storeLogHex(   MY_BUFFER, MY_INDEX, 
-                                "Prg. InfoLog  ", EMPTYLOG );
-                    storeLogHex(   MY_BUFFER, MY_INDEX,
-                                log, EMPTYLOG );
+                    storeLogHex(    MY_BUFFER, MY_INDEX, 
+                                    "Prg. InfoLog  ", EMPTYLOG );
+                    storeLogHex(    MY_BUFFER, MY_INDEX,
+                                    log, EMPTYLOG );
                     }
 #endif 
                 GLint numUniforms;
@@ -99,13 +101,13 @@ bool            CKernel::programLog                 (   GLint       program,
 #ifdef __LOG_GLSL__ 
                     GLint location = glGetUniformLocation(program, uname);
 
-                    storeLogHex(   MY_BUFFER, MY_INDEX, 
-                                "Uniform:      ", EMPTYLOG, uname );
-                    storeLogHex(   MY_BUFFER, MY_INDEX, 
-                                "Uniform idx   ", (u32)i, 
-                                "size          ", (u32)size, 
-                                "type          ", (u32)type, 
-                                "location      ", (u32)location);
+                    storeLogHex(    MY_BUFFER, MY_INDEX, 
+                                    "Uniform:      ", EMPTYLOG, uname );
+                    storeLogHex(    MY_BUFFER, MY_INDEX, 
+                                    "Uniform idx   ", (u32)i, 
+                                    "size          ", (u32)size, 
+                                    "type          ", (u32)type, 
+                                    "location      ", (u32)location);
 #endif                     
                     }
                 GLint numAttributes;
@@ -122,13 +124,13 @@ bool            CKernel::programLog                 (   GLint       program,
 #ifdef __LOG_GLSL__ 
                     GLint location = glGetAttribLocation(program, aname);
 
-                    storeLogHex(   MY_BUFFER, MY_INDEX, 
-                                "Attribute:    ", EMPTYLOG, aname );
-                    storeLogHex(   MY_BUFFER, MY_INDEX, 
-                                "Attribute:    ", (u32)i, 
-                                "size          ", (u32)size, 
-                                "type          ", (u32)type, 
-                                "location      ", (u32)location );
+                    storeLogHex(    MY_BUFFER, MY_INDEX, 
+                                    "Attribute:    ", EMPTYLOG, aname );
+                    storeLogHex(    MY_BUFFER, MY_INDEX, 
+                                    "Attribute:    ", (u32)i, 
+                                    "size          ", (u32)size, 
+                                    "type          ", (u32)type, 
+                                    "location      ", (u32)location );
 #endif                     
                     }
 #ifdef __LOG_GLSL__
@@ -249,27 +251,37 @@ void            CKernel::gfx_check                  (   const char* file,
                     CTimer* pTimer = CTimer::Get();
                     unsigned ticks = pTimer->GetTicks();
 
-                    storeLogHex(   MY_BUFFER, MY_INDEX, "*** Final System Status ticks", (u32)ticks, "/ Errorcount", (u32)error_count );
+                    storeLogHex(    MY_BUFFER, MY_INDEX, 
+                                    "*** Final System Status ticks", (u32)ticks, 
+                                    "/ Errorcount", (u32)error_count );
 #endif  
                     GLint value;
 
                     glGetIntegerv(GL_CURRENT_PROGRAM, &value);
 #ifdef __LOG_GLSL__                     
-                    storeLogHex(   MY_BUFFER, MY_INDEX, "Current Program", (u32)value);
+                    storeLogHex(    MY_BUFFER, MY_INDEX, 
+                                    "Current Program", (u32)value);
 #endif  
                     glGetIntegerv(GL_ACTIVE_TEXTURE, &value);
 #ifdef __LOG_GLSL__                     
-                    storeLogHex(   MY_BUFFER, MY_INDEX, "Active Texture Unit", (u32)value);
+                    storeLogHex(    MY_BUFFER, MY_INDEX, 
+                                    "Active Texture Unit", (u32)value);
 #endif  
                     GLint viewport[4];
                     glGetIntegerv(GL_VIEWPORT, viewport);
 #ifdef __LOG_GLSL__                     
-                    storeLogHex(   MY_BUFFER, MY_INDEX, "Viewport x/", (u32)viewport[0], "y", (u32)viewport[1], "w", (u32)viewport[2], "h", (u32)viewport[3] );
+                    storeLogHex(    MY_BUFFER, MY_INDEX, 
+                                    "Viewport x/", (u32)viewport[0], 
+                                    "y", (u32)viewport[1], 
+                                    "w", (u32)viewport[2], 
+                                    "h", (u32)viewport[3] );
 #endif  
                     GLint fb;
                     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fb);
 #ifdef __LOG_GLSL__                     
-                    storeLogHex(   MY_BUFFER, MY_INDEX, "Current Framebuffer", (u32)fb, "=== End Status Report ===" );
+                    storeLogHex(    MY_BUFFER, MY_INDEX, 
+                                    "Current Framebuffer", (u32)fb, 
+                                    "End Status Report ***" );
 #endif                      
                     return;
                     }
@@ -333,8 +345,14 @@ void            CKernel::gfx_check                  (   const char* file,
                             break;
                         }
 #ifdef __LOG_GLSL__ 
-                    storeLogHex(   MY_BUFFER, MY_INDEX, "OpenGL Error", (u32)error, "ticks", (u32)ticks, "line", (u32)line );
-                    storeLogHex(   MY_BUFFER, MY_INDEX, severity, EMPTYLOG, error_str, EMPTYLOG, file, EMPTYLOG );
+                    storeLogHex(    MY_BUFFER, MY_INDEX, 
+                                    "OpenGL Error", (u32)error, 
+                                    "ticks", (u32)ticks, 
+                                    "line", (u32)line );
+                    storeLogHex(    MY_BUFFER, MY_INDEX, 
+                                    severity, EMPTYLOG, 
+                                    error_str, EMPTYLOG, 
+                                    file, EMPTYLOG );
 #endif  
                     error_count++;
                     
