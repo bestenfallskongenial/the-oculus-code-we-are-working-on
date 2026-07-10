@@ -102,12 +102,13 @@ bool            CKernel::programLog                 (   GLint       program,
                     GLint location = glGetUniformLocation(program, uname);
 
                     storeLogHex(    MY_BUFFER, MY_INDEX, 
-                                    "Uniform:      ", EMPTYLOG, uname );
+                                    "Uniform:  ", EMPTYLOG, 
+                                    uname );
                     storeLogHex(    MY_BUFFER, MY_INDEX, 
-                                    "Uniform idx   ", (u32)i, 
-                                    "size          ", (u32)size, 
-                                    "type          ", (u32)type, 
-                                    "location      ", (u32)location);
+                                    "index     ", (u32)i, 
+                                    "size      ", (u32)size, 
+                                    "type      ", (u32)type, 
+                                    "location  ", (u32)location);
 #endif                     
                     }
                 GLint numAttributes;
@@ -125,12 +126,13 @@ bool            CKernel::programLog                 (   GLint       program,
                     GLint location = glGetAttribLocation(program, aname);
 
                     storeLogHex(    MY_BUFFER, MY_INDEX, 
-                                    "Attribute:    ", EMPTYLOG, aname );
+                                    "Attribute:", EMPTYLOG, 
+                                    aname );
                     storeLogHex(    MY_BUFFER, MY_INDEX, 
-                                    "Attribute:    ", (u32)i, 
-                                    "size          ", (u32)size, 
-                                    "type          ", (u32)type, 
-                                    "location      ", (u32)location );
+                                    "index     ", (u32)i, 
+                                    "size      ", (u32)size, 
+                                    "type      ", (u32)type, 
+                                    "location  ", (u32)location );
 #endif                     
                     }
 #ifdef __LOG_GLSL__

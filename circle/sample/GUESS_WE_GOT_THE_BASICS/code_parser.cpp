@@ -44,7 +44,9 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
 #ifdef __LOG_PARSER__
                     storeLogHex(   MY_BUFFER, MY_INDEX,    "File         [", (u32)i, 
                                                         "] buffer      ", (u32)p_buffer_array[i] );
+#ifdef __DUMP_HEADER__                                                        
                     storeMsg(   MY_BUFFER, MY_INDEX,    "Header Dump   ", data, headerSize );
+#endif                    
                     storeLogHex(   MY_BUFFER, MY_INDEX, t->tex_valid[i] ? 
                                                         "header   VALID" : 
                                                         "header  FAILED", EMPTYLOG, 

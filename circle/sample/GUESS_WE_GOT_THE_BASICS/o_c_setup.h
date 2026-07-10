@@ -25,6 +25,7 @@
 
     #define         __DEBUG_GL__                                                // GL/EGL runtime check() calls
 
+//  #define         __DUMP_HEADER__    
 //  #define         __DUMP_GLSL__                                               // dump shader source from GL
 //  #define         __DUMP_FRAMES__                                             // dump the parsed per frame data from per video
 //  #define         __DUMP_VC04__                                               // detailed VC/VCHI message dump
