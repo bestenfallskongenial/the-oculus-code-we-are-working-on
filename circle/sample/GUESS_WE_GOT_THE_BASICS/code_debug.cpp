@@ -373,7 +373,7 @@ bool            CKernel::startupScreen          (   void )
                 nextline(   MY_BUFFER, MY_INDEX);    
 
                 storeLogU32(    MY_BUFFER, MY_INDEX, 
-                                machineName,        EMPTYLOG 
+                                machineName,        EMPTYLOG, 
                                 socName,            EMPTYLOG, 
                                 "V",                modelMajor,
                                 ".",                modelRevision);
