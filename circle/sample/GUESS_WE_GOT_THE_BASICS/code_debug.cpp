@@ -38,25 +38,20 @@ void            CKernel::logButtonStatesRuntime( int row )
 
                 storeLogHex(   f_logBuffer, f_logIndex,
                             "B   HOLD_TICK", (u32)g_buttons_states[1][BTN_HOLD_TICK] );
-            /*
-                storeLogHex(   f_logBuffer, f_logIndex,
-                            "g_menuLayer", g_menuLayer,
-                            "CTRL_PIN", GPIO_Read(CTRL_PIN),
-                            "bpm 0",  g_lfoBpmMatrix[0][BPM],
-                            "bpm 1", g_lfoBpmMatrix[1][BPM]);
-                            
-                storeLogHex(   f_logBuffer, f_logIndex,
-                            "g_gl_program_current", g_gl_program_current,
-                            "g_currentProgramBuffer", g_currentProgramBuffer);
+                bufferScreenDraw(   f_logBuffer,
+                                    0,
+                                    f_logIndex,
+                                    0,
+                                    row,
+                                    0xFFFFFFFF );
+}
 
-                storeLogHex(   f_logBuffer, f_logIndex,                
-                            "filecounter[FT_FSH][FLD_LOADED]", filecounter[FT_FSH][FLD_LOADED],
-                            "filecounter[FT_FSH][FLD_VALID]", filecounter[FT_FSH][FLD_VALID]);
+void            CKernel::logModesRuntime( int row )
+{
+                char f_logBuffer[512];
+                u32  f_logIndex = 0;
 
-                storeLogHex(   f_logBuffer, f_logIndex,
-                            "mapping", ((g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID]  ) ) >> 10) // (filecounter[FT_FSH][FLD_VALID] -1 )
-                            );
-            */
+                f_logBuffer[0] = '\0';
 
                 storeLogHex(   f_logBuffer, f_logIndex,
                             "MODES      00-03",
@@ -117,17 +112,7 @@ void            CKernel::logButtonStatesRuntime( int row )
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][22],
                             EMPTYSTR,
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][23] );
-/*
-                storeLogHex(   f_logBuffer, f_logIndex,
-                            "SYSTEM     28-31",
-                            (u32)g_centralModeBuffer[g_currentProgramBuffer][28],
-                            EMPTYSTR,
-                            (u32)g_centralModeBuffer[g_currentProgramBuffer][29],
-                            EMPTYSTR,
-                            (u32)g_centralModeBuffer[g_currentProgramBuffer][30],
-                            EMPTYSTR,
-                            (u32)g_centralModeBuffer[g_currentProgramBuffer][31] );                
-*/
+
                 bufferScreenDraw(   f_logBuffer,
                                     0,
                                     f_logIndex,
@@ -136,7 +121,7 @@ void            CKernel::logButtonStatesRuntime( int row )
                                     0xFFFFFFFF );
 }
 
-void CKernel::logPickUpFlags( int row)
+void            CKernel::logPickUpFlags( int row)
 {
                 char f_logBuffer[512];
                 u32  f_logIndex = 0;
@@ -201,17 +186,7 @@ void CKernel::logPickUpFlags( int row)
                                 g_menuPickUpFlag[22],
                                 EMPTYSTR,
                                 g_menuPickUpFlag[23]);                                           
-/*
-                storeLogHex(    f_logBuffer, f_logIndex,
-                                "Flags 28-31",
-                                g_menuPickUpFlag[28],
-                                EMPTYSTR,
-                                g_menuPickUpFlag[29],
-                                EMPTYSTR,
-                                g_menuPickUpFlag[30],
-                                EMPTYSTR,
-                                g_menuPickUpFlag[31]); 
-*/
+
                 bufferScreenDraw(   f_logBuffer,
                                     0,
                                     f_logIndex,
@@ -219,6 +194,7 @@ void CKernel::logPickUpFlags( int row)
                                     row,
                                     0xFFFFFFFF );
 }
+
 void            CKernel::logInOutRuntime(int row)
 {
                 char f_logBuffer[512];
@@ -282,7 +258,40 @@ void            CKernel::logInOutRuntime(int row)
                                     0xFFFFFFFF );
 }
 
-bool            CKernel::startupScreen          (   void )
+void            CKernel::logInfosRuntime( int row )
+{
+                char f_logBuffer[512];
+                u32  f_logIndex = 0;
+
+                f_logBuffer[0] = '\0';
+
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "g_menuLayer", g_menuLayer,
+                                "CTRL_PIN", GPIO_Read(CTRL_PIN),
+                                "bpm 0",  g_lfoBpmMatrix[0][BPM],
+                                "bpm 1", g_lfoBpmMatrix[1][BPM]);
+                                
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "g_gl_program_current", g_gl_program_current,
+                                "g_currentProgramBuffer", g_currentProgramBuffer);
+
+                storeLogHex(    f_logBuffer, f_logIndex,                
+                                "filecounter[FT_FSH][FLD_LOADED]", filecounter[FT_FSH][FLD_LOADED],
+                                "filecounter[FT_FSH][FLD_VALID]", filecounter[FT_FSH][FLD_VALID]);
+
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "mapping", ((g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID]  ) ) >> 10) ); // (filecounter[FT_FSH][FLD_VALID] -1 )
+                            
+                            
+                bufferScreenDraw(   f_logBuffer,
+                                    0,
+                                    f_logIndex,
+                                    0,
+                                    row,
+                                    0xFFFFFFFF );                
+}
+
+bool            CKernel::startupScreen( void )
 {
                 const char* machineName =  m_MachineInfo.GetMachineName();
                 const char* socName     =  m_MachineInfo.GetSoCName();

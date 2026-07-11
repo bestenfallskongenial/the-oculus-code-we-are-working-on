@@ -37,46 +37,16 @@ public:
                                                                         size_t                          p_count);               // number of buffers in the table
                 void        clearBufferDMA              (               char**                          buffers,                // +++ buffer pointer table returned by allocBufferDMA()
                                                                         char*                           rawBlock);              // original raw allocation pointer to delete
+
+
 // code_debug.cpp               !! TESTED AND APPROVED !!
-                void        storeLogHex                 (               char*                           p_buffer,                    // +++
-                                                                        u32&                            index,
-                                                                const   char*                           p_string0, 
-                                                                        u32                             p_value0    = EMPTYLOG,
-                                                                const   char*                           p_string1   = EMPTYSTR, 
-                                                                        u32                             p_value1    = EMPTYLOG,
-                                                                const   char*                           p_string2   = EMPTYSTR, 
-                                                                        u32                             p_value2    = EMPTYLOG,
-                                                                const   char*                           p_string3   = EMPTYSTR, 
-                                                                        u32                             p_value3    = EMPTYLOG);
-                void        storeLogU32                 (               char*                           p_buffer,                    // +++
-                                                                        u32&                            index,
-                                                                const   char*                           p_string0, 
-                                                                        u32                             p_value0    = EMPTYLOG,
-                                                                const   char*                           p_string1   = EMPTYSTR, 
-                                                                        u32                             p_value1    = EMPTYLOG,
-                                                                const   char*                           p_string2   = EMPTYSTR, 
-                                                                        u32                             p_value2    = EMPTYLOG,
-                                                                const   char*                           p_string3   = EMPTYSTR, 
-                                                                        u32                             p_value3    = EMPTYLOG);                                                
-                                                                        
-                void        storeMsg                   (                char*                           p_buffer,
-                                                                        u32&                            index,
-                                                                const   char*                           label,
-                                                                const   void*                           tx_msg,
-                                                                        u32                             total_size);
-                void        nextline                    (               char*                           p_buffer,                       // +++
-                                                                        u32&                            index);
-                u32         convertDecToBCD     (                       u32                             value );
                 void        logButtonStatesRuntime      (               int                             row ); // +++
+                void        logModesRuntime             (               int                             row );
                 void        logPickUpFlags              (               int                             row );
                 void        logInOutRuntime             (               int                             row );      // +++
+                void        logInfosRuntime             (               int                             row );
                 void        logScreenUpdate             (               void );
-                bool        memoryDebugCheckpoint       (       const   char*                           p_Label,
-                                                                        bool                            p_DumpStatus = false );
-                bool        startupScreen               (               void ); /// +++                                     
-        static  void        LoggerSink                 (                void*                           pContext,
-                                                                const   char*                           pText,
-                                                                        unsigned                        nLength );      // +++                                                        
+                bool        startupScreen               (               void ); /// +++                           
 // code_filesystem.cpp          !! TESTED AND APPROVED !!
                 bool        Mount                       (       const   char*                           p_deviceName);          // +++ "emmc1-1" cd ( root ), "umsd1-1" usb returns success
                 bool        UnMount                     ();                                                                     // +++ returns success
@@ -231,6 +201,42 @@ public:
                                                                         u32                             fgColor );
                 void        bufferScreenGetGrid         (               unsigned&                       cols,           // +++
                                                                         unsigned&                       rows );
+// code_log.cpp:
+                void        storeLogHex                 (               char*                           p_buffer,                    // +++
+                                                                        u32&                            index,
+                                                                const   char*                           p_string0, 
+                                                                        u32                             p_value0    = EMPTYLOG,
+                                                                const   char*                           p_string1   = EMPTYSTR, 
+                                                                        u32                             p_value1    = EMPTYLOG,
+                                                                const   char*                           p_string2   = EMPTYSTR, 
+                                                                        u32                             p_value2    = EMPTYLOG,
+                                                                const   char*                           p_string3   = EMPTYSTR, 
+                                                                        u32                             p_value3    = EMPTYLOG);
+                void        storeLogU32                 (               char*                           p_buffer,                    // +++
+                                                                        u32&                            index,
+                                                                const   char*                           p_string0, 
+                                                                        u32                             p_value0    = EMPTYLOG,
+                                                                const   char*                           p_string1   = EMPTYSTR, 
+                                                                        u32                             p_value1    = EMPTYLOG,
+                                                                const   char*                           p_string2   = EMPTYSTR, 
+                                                                        u32                             p_value2    = EMPTYLOG,
+                                                                const   char*                           p_string3   = EMPTYSTR, 
+                                                                        u32                             p_value3    = EMPTYLOG);                                                
+                                                                        
+                void        storeMsg                   (                char*                           p_buffer,
+                                                                        u32&                            index,
+                                                                const   char*                           label,
+                                                                const   void*                           tx_msg,
+                                                                        u32                             total_size);
+                void        nextline                    (               char*                           p_buffer,                       // +++
+                                                                        u32&                            index);
+                u32         convertDecToBCD     (                       u32                             value );
+                bool        memoryDebugCheckpoint       (       const   char*                           p_Label,
+                                                                        bool                            p_DumpStatus = false );
+          
+        static  void        LoggerSink                 (                void*                           pContext,
+                                                                const   char*                           pText,
+                                                                        unsigned                        nLength );      // +++ 
 // code_menu.cpp                !! NEED FINALLY TO CREATE THE BUTTON CONSUMER / MENU-LAYER CODE DONE !!
                 void        resetMenuPickUpFlags        ();
                 void        storeModes                  ();
