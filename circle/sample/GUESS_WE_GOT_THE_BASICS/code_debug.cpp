@@ -117,7 +117,7 @@ void            CKernel::logButtonStatesRuntime( int row )
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][22],
                             EMPTYSTR,
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][23] );
-
+/*
                 storeLogHex(   f_logBuffer, f_logIndex,
                             "SYSTEM     28-31",
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][28],
@@ -127,6 +127,7 @@ void            CKernel::logButtonStatesRuntime( int row )
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][30],
                             EMPTYSTR,
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][31] );                
+*/
                 bufferScreenDraw(   f_logBuffer,
                                     0,
                                     f_logIndex,
