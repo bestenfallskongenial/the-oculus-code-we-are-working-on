@@ -101,11 +101,11 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
 #endif   
 
 #endif   
-
+/*
 #ifndef __H264_DEBUG_TEX__
-                switch(g_centralModeBuffer[g_currentProgramBuffer][FLAG_TEX])
+                switch(g_centralModeBuffer[g_currentProgramBuffer][FLAG_TEX]) 
                     {
-                    case false:
+                    case false:                                                     // off
                         for (unsigned i = 0; i < p_validTextureCount; i++)
                             {
                             glActiveTexture(GL_TEXTURE0+i);
@@ -118,7 +118,7 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
                             }
                     break;
 
-                    case true:
+                    case true:                                                      // on
                         switch(p_validTextureCount)
                             {
                             case 0:
@@ -153,6 +153,59 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
                             break;
                             }
                     break;
+                    }
+#endif   
+}
+*/
+#ifndef __H264_DEBUG_TEX__
+                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX] >= MAX_CHANNELS)
+                    {
+                    for (unsigned i = 0; i < p_validTextureCount; i++)
+                        {
+                        glActiveTexture(GL_TEXTURE0+i);
+                        glBindTexture(GL_TEXTURE_2D, t->gl_tex_id[i]);
+
+                        if (t->u_tex_id[g_gl_program_current][i] != -1) glUniform1i(t->u_tex_id[g_gl_program_current][i], i);
+#ifdef __DEBUG_GL__
+                        check();
+#endif   
+                        }
+                    }
+                else
+                    {
+                    switch(p_validTextureCount)
+                        {
+                        case 0:
+
+                        break;
+
+                        case 1:
+                            glActiveTexture(GL_TEXTURE0);
+                            glBindTexture(GL_TEXTURE_2D, t->gl_tex_id[gl_current_tex]);
+
+                            if (t->u_tex_id[g_gl_program_current][0] != -1) glUniform1i(t->u_tex_id[g_gl_program_current][0], 0);
+#ifdef __DEBUG_GL__
+                            check();
+#endif   
+                        break;
+
+                        default:
+                            glActiveTexture(GL_TEXTURE0);
+                            glBindTexture(GL_TEXTURE_2D, t->gl_tex_id[gl_current_tex]);
+
+                            if (t->u_tex_id[g_gl_program_current][0] != -1) glUniform1i(t->u_tex_id[g_gl_program_current][0], 0);
+#ifdef __DEBUG_GL__
+                            check();
+#endif   
+                            glActiveTexture(GL_TEXTURE1);
+                            glBindTexture(GL_TEXTURE_2D, t->gl_tex_id[gl_current_tex + 1]);
+
+                            if (t->u_tex_id[g_gl_program_current][1] != -1) glUniform1i(t->u_tex_id[g_gl_program_current][1], 1);
+#ifdef __DEBUG_GL__
+                            check();
+#endif   
+                        break;
+                        }
                     }
 #endif   
 }
