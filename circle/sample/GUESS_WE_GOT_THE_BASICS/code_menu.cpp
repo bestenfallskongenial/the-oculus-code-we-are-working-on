@@ -498,10 +498,10 @@ void            CKernel::applyTargetModes           (   )       // current!
                     GLtime = g_currentTime / 1000000.0f;
                     }
 
-                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] < FLAG_THRESHOLD)       // external BPM clock
-                    {
-                    calculate1BPMnew(1, TB1, DB1, g_extClockTime);
-                    }
+            // if (g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] < FLAG_THRESHOLD)       // external BPM clock
+            //      {
+                    calculate1BPMnew(1, TB1, DB1, g_extClockTime);                              // automatized?
+            //      }
 }
 
 void            CKernel::updateLED() // current!! <-having the block here is a problem we only have the layer avaieble, block is kinda internal knowledge!
