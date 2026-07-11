@@ -143,7 +143,7 @@ void CKernel::logPickUpFlags( int row)
 
                 f_logBuffer[0] = '\0';
                 storeLogHex(    f_logBuffer, f_logIndex,
-                                "Flags 00-03",
+                                "Flags mode     00-03",
                                 g_menuPickUpFlag[0],
                                 EMPTYSTR,
                                 g_menuPickUpFlag[1],
@@ -153,7 +153,7 @@ void CKernel::logPickUpFlags( int row)
                                 g_menuPickUpFlag[3]);    
                             
                 storeLogHex(    f_logBuffer, f_logIndex,
-                                "Flags 04-07",
+                                "Flags mode     04-07",
                                 g_menuPickUpFlag[4],
                                 EMPTYSTR,
                                 g_menuPickUpFlag[5],
@@ -163,7 +163,7 @@ void CKernel::logPickUpFlags( int row)
                                 g_menuPickUpFlag[7]); 
                             
                 storeLogHex(    f_logBuffer, f_logIndex,
-                                "Flags 08-11",
+                                "Flags lfo      08-11",
                                 g_menuPickUpFlag[8],
                                 EMPTYSTR,
                                 g_menuPickUpFlag[9],
@@ -173,7 +173,7 @@ void CKernel::logPickUpFlags( int row)
                                 g_menuPickUpFlag[11]); 
                             
                 storeLogHex(    f_logBuffer, f_logIndex,
-                                "Flags 12-15",
+                                "Flags sens     12-15",
                                 g_menuPickUpFlag[12],
                                 EMPTYSTR,
                                 g_menuPickUpFlag[13],
@@ -183,7 +183,7 @@ void CKernel::logPickUpFlags( int row)
                                 g_menuPickUpFlag[15]);   
 
                 storeLogHex(    f_logBuffer, f_logIndex,
-                                "Flags 16-19",
+                                "Flags selector 16-19",
                                 g_menuPickUpFlag[16],
                                 EMPTYSTR,
                                 g_menuPickUpFlag[17],
@@ -193,7 +193,7 @@ void CKernel::logPickUpFlags( int row)
                                 g_menuPickUpFlag[19]); 
 
                 storeLogHex(    f_logBuffer, f_logIndex,
-                                "Flags 20-23",
+                                "Flags hidden   20-23",
                                 g_menuPickUpFlag[20],
                                 EMPTYSTR,
                                 g_menuPickUpFlag[21],
@@ -201,7 +201,7 @@ void CKernel::logPickUpFlags( int row)
                                 g_menuPickUpFlag[22],
                                 EMPTYSTR,
                                 g_menuPickUpFlag[23]);                                           
-
+/*
                 storeLogHex(    f_logBuffer, f_logIndex,
                                 "Flags 28-31",
                                 g_menuPickUpFlag[28],
@@ -211,7 +211,7 @@ void CKernel::logPickUpFlags( int row)
                                 g_menuPickUpFlag[30],
                                 EMPTYSTR,
                                 g_menuPickUpFlag[31]); 
-
+*/
                 bufferScreenDraw(   f_logBuffer,
                                     0,
                                     f_logIndex,
