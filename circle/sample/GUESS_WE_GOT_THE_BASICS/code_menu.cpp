@@ -38,7 +38,7 @@ void            CKernel::storeModes()
 }
 
 
-void            CKernel::setLayer(int buttonA, int buttonB)
+void            CKernel::buttonConsumer(int buttonA, int buttonB)
 {
                 static int stepLayer = 2;
                 
@@ -104,6 +104,9 @@ void            CKernel::dispatchLayer()
 {
                 switch (g_menuLayer)
                 {
+                    case 0:
+                        break;
+
                     case 1:                         // mode 0-3
                         set_mode_roof_map(0);
                         mapMenuGroup(0);

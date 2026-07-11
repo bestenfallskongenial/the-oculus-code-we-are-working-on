@@ -113,6 +113,16 @@ void            CKernel::logModesRuntime( int row )
                             EMPTYSTR,
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][23] );
 
+                storeLogHex(   f_logBuffer, f_logIndex,
+                            "Hidden      24-27",
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][24],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][25],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][26],
+                            EMPTYSTR,
+                            (u32)g_centralModeBuffer[g_currentProgramBuffer][27] );                            
+
                 bufferScreenDraw(   f_logBuffer,
                                     0,
                                     f_logIndex,
@@ -178,14 +188,24 @@ void            CKernel::logPickUpFlags( int row)
                                 g_menuPickUpFlag[19]); 
 
                 storeLogHex(    f_logBuffer, f_logIndex,
-                                "Flags hidden   20-23",
+                                "Flags system   20-23",
                                 g_menuPickUpFlag[20],
                                 EMPTYSTR,
                                 g_menuPickUpFlag[21],
                                 EMPTYSTR,
                                 g_menuPickUpFlag[22],
                                 EMPTYSTR,
-                                g_menuPickUpFlag[23]);                                           
+                                g_menuPickUpFlag[23]);
+
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "Flags hidden   24-27",
+                                g_menuPickUpFlag[24],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[25],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[26],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[27]);    
 
                 bufferScreenDraw(   f_logBuffer,
                                     0,

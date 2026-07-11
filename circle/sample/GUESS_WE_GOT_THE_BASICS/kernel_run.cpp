@@ -16,6 +16,9 @@ TShutdownMode CKernel::Run(void)
                         wrapper_parser_sd();
                         wrapper_init_gl_sd();
 
+                        m_logBufferIndex = 0;
+                        bufferScreenClear();
+
                         m_SD_has_load = true;
                         }
                       
@@ -25,9 +28,12 @@ TShutdownMode CKernel::Run(void)
                         wrapper_parser_usb();
                         wrapper_init_gl_usb();
 
+                        m_logBufferIndex = 0;
+                        bufferScreenClear();
+
                         m_USB_has_load = true;
                         }
-                        
+              
                     if( m_SD_has_load && m_USB_has_load )
                         {
                         m_logBufferIndex = 0;
@@ -50,17 +56,12 @@ TShutdownMode CKernel::Run(void)
 
                     buttonPingB( 0, SW_PIN_A, 1, SW_PIN_B );                        // 
 
-                    setLayer(0,1);                                              //  here goes the button consumer and menu code
+                    buttonConsumer(0,1);                                              //  here goes the button consumer and menu code
 
                     dispatchLayer();
 
                     applyTargetModes();  // <- correct place here?
-              
-                //  getChannelModeA( 0 );
-                //  getChannelModeA( 1 );                    
 
-                //  getChannelModeB();
-                    
                     getChannelModeA(0);
                     getChannelModeA(1);
                     getChannelModeA(2);
@@ -79,6 +80,12 @@ TShutdownMode CKernel::Run(void)
                     sample1WaveTable( 1, LF2_WAVE, LF2 );
 
                 //  logButtonStatesRuntime();
+
+                    logModesRuntime( 1 );
+
+                    logPickUpFlags( 10 );
+
+                    logInfosRuntime( 20 );
 
                     setUniPrg(&m_ogl,
                             &m_fsh,

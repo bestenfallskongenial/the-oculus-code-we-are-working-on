@@ -241,7 +241,7 @@ public:
                 void        resetMenuPickUpFlags        ();
                 void        storeModes                  ();
 
-                void        setLayer                    (               int buttonA, int buttonB);
+                void        buttonConsumer                    (               int buttonA, int buttonB);
                 void        dispatchLayer               ();
                 void        set_mode_roof_map           (               uint8_t                         block   );
                 void        mapMenuGroup                (               uint8_t                         block   );
