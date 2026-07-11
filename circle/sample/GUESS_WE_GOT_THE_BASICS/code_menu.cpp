@@ -86,7 +86,7 @@ void            CKernel::setLayer(int buttonA, int buttonB)
                         {
                         stepLayer++;
 
-                        if (stepLayer > 7)
+                        if (stepLayer > 5)  // was 7
                             {
                             stepLayer = 3;
                             }
@@ -104,41 +104,41 @@ void            CKernel::dispatchLayer()
 {
                 switch (g_menuLayer)
                 {
-                    case 1:
+                    case 1:                         // mode 0-3
                         set_mode_roof_map(0);
                         mapMenuGroup(0);
                         break;
 
-                    case 2:
+                    case 2:                         // mode 4-7
                         set_mode_roof_map(1);
                         mapMenuGroup(1);
                         break;
 
-                    case 3:
+                    case 3:                         // waveform / mult
                         set_mode_roof_map(2);
                         mapMenuGroup(2);
                         break;
 
-                    case 4:
+                    case 4:                         // audio sensitivity
                         set_mode_roof_map(3);
                         mapMenuGroup(3);
                         break;
 
-                    case 5:
+                    case 5:                         // target selector
                         set_mode_roof_map(4);
                         mapMenuGroup(4);
                         break;
 
-                    case 6:
+                    case 6:                         // firmware / file operations
                         set_mode_roof_map(5);
                         mapMenuGroup(5);
                         break;
-
+/*
                     case 7:
                         set_mode_roof_map(7);
                         mapMenuGroup(7);
                         break;
-
+*/
                     default:
                         break;
                 }
@@ -454,8 +454,6 @@ void            CKernel::applyTargetModes           (   )       // current!
 }
 */
 
-#define MAX_CHANNELS 8
-
 void            CKernel::applyTargetModes           (   )       // current!
 {
                 if (g_menuLayer == 0)
@@ -476,22 +474,22 @@ void            CKernel::applyTargetModes           (   )       // current!
                         }
                     }
 
-                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX] < MAX_CHANNELS)       // selected channel OUT controls active texture
+                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX] < FLAG_THRESHOLD)       // selected channel OUT controls active texture
                     {
                     m_activeTex = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX]][OUT];
                     }
 
-                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_VID] < MAX_CHANNELS)       // selected channel OUT controls active video
+                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_VID] < FLAG_THRESHOLD)       // selected channel OUT controls active video
                     {
                     m_activeVideo = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_VID]][OUT];
                     }
 
-                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_VID] < MAX_CHANNELS)       // selected channel OUT controls active frame
+                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_VID] < FLAG_THRESHOLD)       // selected channel OUT controls active frame
                     {
                     m_activeFrame = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_FRM]][OUT];
                     }
 
-                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME] < MAX_CHANNELS)      // selected channel OUT controls shader/program time
+                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME] < FLAG_THRESHOLD)      // selected channel OUT controls shader/program time
                     {
                     GLtime = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME]][OUT];
                     }
@@ -500,7 +498,7 @@ void            CKernel::applyTargetModes           (   )       // current!
                     GLtime = g_currentTime / 1000000.0f;
                     }
 
-                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] < MAX_CHANNELS)       // external BPM clock
+                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] < FLAG_THRESHOLD)       // external BPM clock
                     {
                     calculate1BPMnew(1, TB1, DB1, g_extClockTime);
                     }
@@ -510,7 +508,7 @@ void            CKernel::updateLED() // current!! <-having the block here is a p
 {
                 int     offset = 33; // just a value to have a quantitation for the color shown
 
-                static const uint8_t layerToBlock[8] =
+                static const uint8_t layerToBlock[7] =
                     {
                     0,  // layer 0
                     0,  // layer 1
@@ -519,7 +517,7 @@ void            CKernel::updateLED() // current!! <-having the block here is a p
                     3,  // layer 4
                     4,  // layer 5
                     5,  // layer 6
-                    7   // layer 7
+                //  7   // layer 7
                     };
 
                 uint8_t base;

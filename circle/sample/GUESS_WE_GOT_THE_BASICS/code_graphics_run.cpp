@@ -158,7 +158,7 @@ void            CKernel::setTexPrg                  (   olg_state*  o,
 }
 */
 #ifndef __H264_DEBUG_TEX__
-                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX] >= MAX_CHANNELS)
+                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX] >= FLAG_THRESHOLD)
                     {
                     for (unsigned i = 0; i < p_validTextureCount; i++)
                         {

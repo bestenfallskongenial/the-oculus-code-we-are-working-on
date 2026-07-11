@@ -27,20 +27,20 @@ enum centralModeBuffer
     SEL_VID,
     SEL_FRM,
 // block 05
-//  FLAG_TIME,              // the suggested change makes this obsolete 
-//  FLAG_TEX,
-//  FLAG_EXT,
-//  FLAG_VID,
-// block 06
-    FLAG_AUDIO_A,           // for internal use only! 
-    FLAG_AUDIO_B,
-    FLAG_DUMMY_A,           // what is about the clk detection ( TRG mode )? can we automize it too?
-    FLAG_DUMMY_B,           // or i autodetect the last correct bpm because the bpm function is autodetecting ...
-// block 07
     SET_STORE,
     SET_LOAD,
     LOG_STORE,
     KLN_LOAD,
+// block 06
+//  FLAG_TIME,              // the suggested change makes this obsolete 
+//  FLAG_TEX,
+//  FLAG_EXT,
+//  FLAG_VID,
+// block 07
+    FLAG_AUDIO_A,           // for internal use only! 
+    FLAG_AUDIO_B,
+    FLAG_DUMMY_A,           // what is about the clk detection ( TRG mode )? can we automize it too?
+    FLAG_DUMMY_B,           // or i autodetect the last correct bpm because the bpm function is autodetecting ...
 // is stored
     SEL_PRG,                // instead of an additional "allow prg changes" global flag - what if this will never be released again!?!
     IS_STORED,
