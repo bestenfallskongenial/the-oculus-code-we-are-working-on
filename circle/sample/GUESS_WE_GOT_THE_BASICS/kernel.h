@@ -67,9 +67,9 @@ public:
                 void        nextline                    (               char*                           p_buffer,                       // +++
                                                                         u32&                            index);
                 u32         convertDecToBCD     (                       u32                             value );
-                void        logButtonStatesRuntime      (               void    ); // +++
-                void        ADCDebug                    ();
-                void        logInOutRuntime             (               void );      // +++
+                void        logButtonStatesRuntime      (               int                             row ); // +++
+                void        logPickUpFlags              (               int                             row );
+                void        logInOutRuntime             (               int                             row );      // +++
                 void        logScreenUpdate             (               void );
                 bool        memoryDebugCheckpoint       (       const   char*                           p_Label,
                                                                         bool                            p_DumpStatus = false );

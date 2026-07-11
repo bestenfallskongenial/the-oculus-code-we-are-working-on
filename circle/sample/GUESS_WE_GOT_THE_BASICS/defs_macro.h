@@ -1,6 +1,11 @@
 #define             EMPTYSTR                                            0 // ""                                                 // for the logger
 #define             EMPTYLOG                                            255                                                // for the logger
 
+
+#define             BPM_NUM                                             9
+#define             BPM_DEN                                             8   // 1.25  = 5/4   -> *4 < *5
+                                                                            // 1.2   = 6/5   -> *5 < *6
+                                                                            // 1.125 = 9/8   -> *8 < *9
 #define             LAYER                                               6
 #define             BLOCK_COUNT                                         8
 

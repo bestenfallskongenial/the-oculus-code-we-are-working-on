@@ -843,12 +843,12 @@ void            CKernel::bufferScreenClear        (   void)
                 memset(gE_PixelBuffer, 0, gE_PitchBytes * gE_ScreenHeight);
 }
 
-void            CKernel::bufferScreenDraw   (   const char* pSourceBuffer,
-                                                        u32         startIndex,
-                                                        u32         endIndex,
-                                                        unsigned    startCol,
-                                                        unsigned    startRow,
-                                                        u32         fgColor )
+void            CKernel::bufferScreenDraw   (   const   char*       pSourceBuffer,      // from where 
+                                                        u32         startIndex,         // in buffer start 
+                                                        u32         endIndex,           // in buffer end
+                                                        unsigned    startCol,           // screen pos x
+                                                        unsigned    startRow,           // screen pos y
+                                                        u32         fgColor )           // char col
 {
                 if (startCol >= gE_Cols || startRow >= gE_Rows || pSourceBuffer == 0 || startIndex >= endIndex ) return;
 

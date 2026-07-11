@@ -134,9 +134,9 @@ void            CKernel::calculate1BPMnew           (   int             p_source
                     g_lfoBpmMatrix[1][p_deltaBuffer]       =   g_lfoBpmMatrix[f_index2][p_timeBuffer] - g_lfoBpmMatrix[f_index1][p_timeBuffer];
                     g_lfoBpmMatrix[2][p_deltaBuffer]       =   g_lfoBpmMatrix[f_index3][p_timeBuffer] - g_lfoBpmMatrix[f_index2][p_timeBuffer];
 
-                    if( g_lfoBpmMatrix[1][p_deltaBuffer]  <   g_lfoBpmMatrix[0][p_deltaBuffer] * 1.25f &&
-                        g_lfoBpmMatrix[2][p_deltaBuffer]  <   g_lfoBpmMatrix[0][p_deltaBuffer] * 1.25f &&
-                        g_lfoBpmMatrix[0][p_deltaBuffer]  <   g_lfoBpmMatrix[2][p_deltaBuffer] * 1.25f )
+                    if( g_lfoBpmMatrix[1][p_deltaBuffer] *BPM_DEN <   g_lfoBpmMatrix[0][p_deltaBuffer] * BPM_NUM &&  // 1.25 - 4/5, 1.2 - 5/6, 1.125 - 8/9
+                        g_lfoBpmMatrix[2][p_deltaBuffer] *BPM_DEN <   g_lfoBpmMatrix[0][p_deltaBuffer] * BPM_NUM &&
+                        g_lfoBpmMatrix[0][p_deltaBuffer] *BPM_DEN <   g_lfoBpmMatrix[2][p_deltaBuffer] * BPM_NUM )
                         {
                         f_intervalAverage                 = (   g_lfoBpmMatrix[0][p_deltaBuffer] +
                                                                 g_lfoBpmMatrix[1][p_deltaBuffer] +

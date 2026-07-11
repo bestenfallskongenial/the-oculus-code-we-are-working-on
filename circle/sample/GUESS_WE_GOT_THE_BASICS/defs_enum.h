@@ -22,26 +22,27 @@ enum centralModeBuffer
     SENS_C,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB0
     SENS_D,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB1
 // block 04
-    SEL_TIME,
+    SEL_TIME,               // SEL_TIME & FLAG_TIME should be unified by count any SEL_TIME < MAX as true
     SEL_TEX,
     SEL_VID,
     SEL_FRM,
 // block 05
-    FLAG_TIME,
-    FLAG_TEX,
-    FLAG_EXT,
-    FLAG_VID,
+//  FLAG_TIME,              // the suggested change makes this obsolete 
+//  FLAG_TEX,
+//  FLAG_EXT,
+//  FLAG_VID,
 // block 06
-    FLAG_AUDIO_A,
+    FLAG_AUDIO_A,           // for internal use only! 
     FLAG_AUDIO_B,
-    FLAG_DUMMY_A,
-    FLAG_DUMMY_B,
+    FLAG_DUMMY_A,           // what is about the clk detection ( TRG mode )? can we automize it too?
+    FLAG_DUMMY_B,           // or i autodetect the last correct bpm because the bpm function is autodetecting ...
 // block 07
     SET_STORE,
     SET_LOAD,
     LOG_STORE,
     KLN_LOAD,
 // is stored
+    SEL_PRG,                // instead of an additional "allow prg changes" global flag - what if this will never be released again!?!
     IS_STORED,
      
     MODETABLE_COUNT

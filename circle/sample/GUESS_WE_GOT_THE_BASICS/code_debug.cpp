@@ -3,9 +3,9 @@
     #define MY_BUFFER   m_logBuffer     
     #define MY_INDEX    m_logBufferIndex    
 
-void            CKernel::logButtonStatesRuntime(void)
+void            CKernel::logButtonStatesRuntime( int row )
 {
-                char f_logBuffer[2048];
+                char f_logBuffer[512];
                 u32  f_logIndex = 0;
 
                 f_logBuffer[0] = '\0';
@@ -24,8 +24,7 @@ void            CKernel::logButtonStatesRuntime(void)
                             (u32)g_buttons_states[0][BTN_SINGLE] );
 
                 storeLogHex(   f_logBuffer, f_logIndex,
-                            "A   HOLD_TICK",
-                            (u32)g_buttons_states[0][BTN_HOLD_TICK] );
+                            "A   HOLD_TICK", (u32)g_buttons_states[0][BTN_HOLD_TICK] );
 
                 storeLogHex(   f_logBuffer, f_logIndex,
                             "B  ",
@@ -38,60 +37,27 @@ void            CKernel::logButtonStatesRuntime(void)
                             (u32)g_buttons_states[1][BTN_SINGLE] );
 
                 storeLogHex(   f_logBuffer, f_logIndex,
-                            "B   HOLD_TICK",
-                            (u32)g_buttons_states[1][BTN_HOLD_TICK],
-                            EMPTYSTR, EMPTYLOG,
-                            EMPTYSTR, EMPTYLOG,
-                            EMPTYSTR, EMPTYLOG );
+                            "B   HOLD_TICK", (u32)g_buttons_states[1][BTN_HOLD_TICK] );
             /*
                 storeLogHex(   f_logBuffer, f_logIndex,
-                            "g_menuLayer",
-                            g_menuLayer,
-                            "CTRL_PIN",
-                            GPIO_Read(CTRL_PIN),
-                            "bpm 0", 
-                            g_lfoBpmMatrix[0][BPM],
-                            "bpm 1",
-                            g_lfoBpmMatrix[1][BPM]);
+                            "g_menuLayer", g_menuLayer,
+                            "CTRL_PIN", GPIO_Read(CTRL_PIN),
+                            "bpm 0",  g_lfoBpmMatrix[0][BPM],
+                            "bpm 1", g_lfoBpmMatrix[1][BPM]);
                             
                 storeLogHex(   f_logBuffer, f_logIndex,
-                            "g_gl_program_current",
-                            g_gl_program_current,
-                            "g_currentProgramBuffer",
-                            g_currentProgramBuffer);
+                            "g_gl_program_current", g_gl_program_current,
+                            "g_currentProgramBuffer", g_currentProgramBuffer);
 
                 storeLogHex(   f_logBuffer, f_logIndex,                
-                            "filecounter[FT_FSH][FLD_LOADED]",
-                            filecounter[FT_FSH][FLD_LOADED],
-                            "filecounter[FT_FSH][FLD_VALID]",
-                            filecounter[FT_FSH][FLD_VALID]);
+                            "filecounter[FT_FSH][FLD_LOADED]", filecounter[FT_FSH][FLD_LOADED],
+                            "filecounter[FT_FSH][FLD_VALID]", filecounter[FT_FSH][FLD_VALID]);
 
                 storeLogHex(   f_logBuffer, f_logIndex,
-                            "mapping",
-                            ((g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID]  ) ) >> 10) // (filecounter[FT_FSH][FLD_VALID] -1 )
+                            "mapping", ((g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID]  ) ) >> 10) // (filecounter[FT_FSH][FLD_VALID] -1 )
                             );
             */
-            /*
-                storeLogHex(   f_logBuffer, f_logIndex,
-                            "out0",
-                            g_inOutMatrixInt[0][OUT],
-                            "out1",
-                            g_inOutMatrixInt[1][OUT],
-                            "out2",
-                            g_inOutMatrixInt[2][OUT],
-                            "out3",
-                            g_inOutMatrixInt[3][OUT]);                                                            
 
-                storeLogHex(   f_logBuffer, f_logIndex,
-                            "out4",
-                            g_inOutMatrixInt[4][OUT],
-                            "out5",
-                            g_inOutMatrixInt[5][OUT],
-                            "out6",
-                            g_inOutMatrixInt[6][OUT],
-                            "out7",
-                            g_inOutMatrixInt[7][OUT]);
-            */
                 storeLogHex(   f_logBuffer, f_logIndex,
                             "MODES      00-03",
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][0],
@@ -161,185 +127,158 @@ void            CKernel::logButtonStatesRuntime(void)
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][30],
                             EMPTYSTR,
                             (u32)g_centralModeBuffer[g_currentProgramBuffer][31] );                
-            /*
-                storeLogHex(   f_logBuffer, f_logIndex,
-                            "Flags 00-03",
-                            g_menuPickUpFlag[0],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[1],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[2],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[3]);    
-                            
-                storeLogHex(   f_logBuffer, f_logIndex,
-                            "Flags 04-07",
-                            g_menuPickUpFlag[4],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[5],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[6],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[7]); 
-                            
-                storeLogHex(   f_logBuffer, f_logIndex,
-                            "Flags 08-11",
-                            g_menuPickUpFlag[8],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[9],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[10],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[11]); 
-                            
-                storeLogHex(   f_logBuffer, f_logIndex,
-                            "Flags 12-15",
-                            g_menuPickUpFlag[12],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[13],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[14],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[15]);   
-
-                storeLogHex(   f_logBuffer, f_logIndex,
-                            "Flags 16-19",
-                            g_menuPickUpFlag[16],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[17],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[18],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[19]); 
-
-                storeLogHex(   f_logBuffer, f_logIndex,
-                            "Flags 20-23",
-                            g_menuPickUpFlag[20],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[21],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[22],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[23]);                                           
-
-                storeLogHex(   f_logBuffer, f_logIndex,
-                            "Flags 28-31",
-                            g_menuPickUpFlag[28],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[29],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[30],
-                            EMPTYSTR,
-                            g_menuPickUpFlag[31]); 
-            */
-                bufferScreenDraw(  f_logBuffer,
-                                0,
-                                f_logIndex,
-                                0,
-                                3,
-                                0xFFFFFFFF );
+                bufferScreenDraw(   f_logBuffer,
+                                    0,
+                                    f_logIndex,
+                                    0,
+                                    row,
+                                    0xFFFFFFFF );
 }
 
-void CKernel::ADCDebug()
+void CKernel::logPickUpFlags( int row)
 {
-    char f_logBuffer[512];
-    u32  f_logIndex = 0;
+                char f_logBuffer[512];
+                u32  f_logIndex = 0;
 
-    storeLogHex(   f_logBuffer, f_logIndex,
-                "0 RAW", (u32)g_inOutMatrixInt[0][RAW],
-                "1 RAW", (u32)g_inOutMatrixInt[1][RAW],
-                "2 RAW", (u32)g_inOutMatrixInt[2][RAW],
-                "3 RAW", (u32)g_inOutMatrixInt[3][RAW] );
-    storeLogHex(   f_logBuffer, f_logIndex,
-                "4 RAW", (u32)g_inOutMatrixInt[4][RAW],
-                "5 RAW", (u32)g_inOutMatrixInt[5][RAW],
-                "6 RAW", (u32)g_inOutMatrixInt[6][RAW],
-                "7 RAW", (u32)g_inOutMatrixInt[7][RAW] );
+                f_logBuffer[0] = '\0';
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "Flags 00-03",
+                                g_menuPickUpFlag[0],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[1],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[2],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[3]);    
+                            
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "Flags 04-07",
+                                g_menuPickUpFlag[4],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[5],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[6],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[7]); 
+                            
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "Flags 08-11",
+                                g_menuPickUpFlag[8],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[9],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[10],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[11]); 
+                            
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "Flags 12-15",
+                                g_menuPickUpFlag[12],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[13],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[14],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[15]);   
 
-    bufferScreenDraw(  f_logBuffer,
-                       0,
-                       f_logIndex,
-                       0,
-                       0,
-                       0xFFFFFFFF );                
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "Flags 16-19",
+                                g_menuPickUpFlag[16],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[17],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[18],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[19]); 
+
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "Flags 20-23",
+                                g_menuPickUpFlag[20],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[21],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[22],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[23]);                                           
+
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "Flags 28-31",
+                                g_menuPickUpFlag[28],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[29],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[30],
+                                EMPTYSTR,
+                                g_menuPickUpFlag[31]); 
+
+                bufferScreenDraw(   f_logBuffer,
+                                    0,
+                                    f_logIndex,
+                                    0,
+                                    row,
+                                    0xFFFFFFFF );
 }
-void CKernel::logInOutRuntime(void)
+void            CKernel::logInOutRuntime(int row)
 {
-    char f_logBuffer[512];
-    u32  f_logIndex = 0;
+                char f_logBuffer[512];
+                u32  f_logIndex = 0;
 
-    f_logBuffer[0] = '\0';
+                f_logBuffer[0] = '\0';
 
-    storeLogHex(   f_logBuffer, f_logIndex,
-                "0 RAW",
-                (u32)g_inOutMatrixInt[0][RAW],
-                "VAL",
-                (u32)g_inOutMatrixInt[0][VAL],
-                "RND",
-                (u32)g_inOutMatrixInt[0][RND] );
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "0 RAW", (u32)g_inOutMatrixInt[0][RAW],
+                                "VAL", (u32)g_inOutMatrixInt[0][VAL],
+                                "RND", (u32)g_inOutMatrixInt[0][RND],
+                                "OUT", (u32)g_inOutMatrixInt[0][OUT] );
 
-    storeLogHex(   f_logBuffer, f_logIndex,
-                "1 RAW",
-                (u32)g_inOutMatrixInt[1][RAW],
-                "VAL",
-                (u32)g_inOutMatrixInt[1][VAL],
-                "RND",
-                (u32)g_inOutMatrixInt[1][RND] );
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "1 RAW", (u32)g_inOutMatrixInt[1][RAW],
+                                "VAL", (u32)g_inOutMatrixInt[1][VAL],
+                                "RND", (u32)g_inOutMatrixInt[1][RND],
+                                "OUT", (u32)g_inOutMatrixInt[1][OUT] );
 
-    storeLogHex(   f_logBuffer, f_logIndex,
-                "2 RAW",
-                (u32)g_inOutMatrixInt[2][RAW],
-                "VAL",
-                (u32)g_inOutMatrixInt[2][VAL],
-                "RND",
-                (u32)g_inOutMatrixInt[2][RND] );
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "2 RAW", (u32)g_inOutMatrixInt[2][RAW],
+                                "VAL", (u32)g_inOutMatrixInt[2][VAL],
+                                "RND", (u32)g_inOutMatrixInt[2][RND],
+                                "OUT", (u32)g_inOutMatrixInt[2][OUT] );
 
-    storeLogHex(   f_logBuffer, f_logIndex,
-                "3 RAW",
-                (u32)g_inOutMatrixInt[3][RAW],
-                "VAL",
-                (u32)g_inOutMatrixInt[3][VAL],
-                "RND",
-                (u32)g_inOutMatrixInt[3][RND] );
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "3 RAW", (u32)g_inOutMatrixInt[3][RAW],
+                                "VAL", (u32)g_inOutMatrixInt[3][VAL],
+                                "RND", (u32)g_inOutMatrixInt[3][RND],
+                                "OUT", (u32)g_inOutMatrixInt[3][OUT] );
 
-    storeLogHex(   f_logBuffer, f_logIndex,
-                "4 RAW",
-                (u32)g_inOutMatrixInt[4][RAW],
-                "VAL",
-                (u32)g_inOutMatrixInt[4][VAL],
-                "RND",
-                (u32)g_inOutMatrixInt[4][RND] );
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "4 RAW", (u32)g_inOutMatrixInt[4][RAW],
+                                "VAL", (u32)g_inOutMatrixInt[4][VAL],
+                                "RND", (u32)g_inOutMatrixInt[4][RND],
+                                "OUT", (u32)g_inOutMatrixInt[4][OUT] );
 
-    storeLogHex(   f_logBuffer, f_logIndex,
-                "5 RAW",
-                (u32)g_inOutMatrixInt[5][RAW],
-                "VAL",
-                (u32)g_inOutMatrixInt[5][VAL],
-                "RND",
-                (u32)g_inOutMatrixInt[5][RND] );
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "5 RAW", (u32)g_inOutMatrixInt[5][RAW],
+                                "VAL", (u32)g_inOutMatrixInt[5][VAL],
+                                "RND", (u32)g_inOutMatrixInt[5][RND],
+                                "OUT", (u32)g_inOutMatrixInt[5][OUT] );
 
-    storeLogHex(   f_logBuffer, f_logIndex,
-                "6 RAW",
-                (u32)g_inOutMatrixInt[6][RAW],
-                "VAL",
-                (u32)g_inOutMatrixInt[6][VAL],
-                "RND",
-                (u32)g_inOutMatrixInt[6][RND] );
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "6 RAW", (u32)g_inOutMatrixInt[6][RAW],
+                                "VAL", (u32)g_inOutMatrixInt[6][VAL],
+                                "RND", (u32)g_inOutMatrixInt[6][RND],
+                                "OUT", (u32)g_inOutMatrixInt[6][OUT] );
 
-    storeLogHex(   f_logBuffer, f_logIndex,
-                "7 RAW",
-                (u32)g_inOutMatrixInt[7][RAW],
-                "VAL",
-                (u32)g_inOutMatrixInt[7][VAL],
-                "RND",
-                (u32)g_inOutMatrixInt[7][RND] );
+                storeLogHex(    f_logBuffer, f_logIndex,
+                                "7 RAW", (u32)g_inOutMatrixInt[7][RAW],
+                                "VAL", (u32)g_inOutMatrixInt[7][VAL],
+                                "RND", (u32)g_inOutMatrixInt[7][RND],
+                                "OUT", (u32)g_inOutMatrixInt[7][OUT] );
 
-    bufferScreenDraw(  f_logBuffer,
-                       0,
-                       f_logIndex,
-                       0,
-                       0,
-                       0xFFFFFFFF );
+                bufferScreenDraw(   f_logBuffer,
+                                    0,
+                                    f_logIndex,
+                                    0,
+                                    row,
+                                    0xFFFFFFFF );
 }
 
 bool            CKernel::startupScreen          (   void )
@@ -377,41 +316,31 @@ bool            CKernel::startupScreen          (   void )
                                 socName,            EMPTYLOG, 
                                 "V",                modelMajor,
                                 ".",                modelRevision);
-
-                nextline(   MY_BUFFER, MY_INDEX);
-
-                storeLogU32(   MY_BUFFER, MY_INDEX, 
-                            "RAM Size     MB", ramSize,
-                            "CPU Speed Mode ", cpuSpeedMode,
-                            "SoC Max Temp   ", socMaxTemp);    
-
-                nextline(   MY_BUFFER, MY_INDEX);
-
-                storeLogU32(   MY_BUFFER, MY_INDEX, 
-                            "Clock CORE MHz", coreClock,
-                            "ARM  ", armClock,
-                            "EMMC ", emmcClock,
-                            "EMMC2", emmc2Clock);  
-
-                nextline(   MY_BUFFER, MY_INDEX);
-
-                storeLogU32(   MY_BUFFER, MY_INDEX,
-                            "Clock UART  MHz", uartClock,
-                            "DMA Channels    ", dmaChannel);
-
-                storeLogU32(   MY_BUFFER, MY_INDEX,                            
-                            "USB Delay      ", usbDelay,
-                            "USB FullSpeed  ", usbSpeed);      
-
-                nextline(   MY_BUFFER, MY_INDEX);
-
-                storeLogU32(   MY_BUFFER, MY_INDEX, 
-                            "FB Screen X    ", fbWidth,
-                            "/ Y "           , fbHeight,
-                            "gE Screen X    ", gE_ScreenWidth,
-                            " / Y "          , gE_ScreenHeight);                            
-
-                nextline(   MY_BUFFER, MY_INDEX);                            
+                nextline(       MY_BUFFER, MY_INDEX);
+                storeLogU32(    MY_BUFFER, MY_INDEX, 
+                                "RAM Size ", ramSize,
+                                "MB / CPU Speed Mode ", cpuSpeedMode,
+                                "SoC Max Temp ", socMaxTemp);    
+                nextline(       MY_BUFFER, MY_INDEX);
+                storeLogU32(    MY_BUFFER, MY_INDEX, 
+                                "Clock CORE MHz", coreClock,
+                                "ARM  ", armClock,
+                                "EMMC ", emmcClock,
+                                "EMMC2", emmc2Clock);  
+                nextline(       MY_BUFFER, MY_INDEX);
+                storeLogU32(    MY_BUFFER, MY_INDEX,
+                                "Clock UART  MHz", uartClock,
+                                "DMA Channels    ", dmaChannel);
+                storeLogU32(    MY_BUFFER, MY_INDEX,                            
+                                "USB Delay     ", usbDelay,
+                                "USB FullSpeed ", usbSpeed);      
+                nextline(       MY_BUFFER, MY_INDEX);
+                storeLogU32(    MY_BUFFER, MY_INDEX, 
+                                "FB Screen X ", fbWidth,
+                                "/ Y "        , fbHeight,
+                                "gE Screen X ", gE_ScreenWidth,
+                                " / Y "       , gE_ScreenHeight);                            
+                nextline(       MY_BUFFER, MY_INDEX);                            
 
                 return TRUE;
 }
