@@ -86,7 +86,7 @@ void            CKernel::buttonConsumer(int buttonA, int buttonB)
                         {
                         stepLayer++;
 
-                        if (stepLayer > 5)  // was 7
+                        if (stepLayer > 6)  // was 7
                             {
                             stepLayer = 3;
                             }
