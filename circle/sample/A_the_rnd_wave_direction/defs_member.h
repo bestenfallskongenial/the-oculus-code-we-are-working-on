@@ -216,7 +216,7 @@ public:         // Logging
                 int g_menuLayer         = 0;
                 int g_lastLayer         = 0;
                 int g_lastLayerLED      = 0;
-                unsigned g_extClockTime = 0;
+                unsigned g_extClockTime[8] = 0; // number of my adc channels!
 
         typedef void                            (CKernel::*ModeFunc)(int);
 
