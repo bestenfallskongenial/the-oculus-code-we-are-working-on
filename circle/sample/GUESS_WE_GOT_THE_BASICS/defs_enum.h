@@ -2,12 +2,12 @@
 enum centralModeBuffer
 {
 // block 00 
-    MODE_CH0 = 0,           // store the mode ( from g_modeTable[] ) for cannel 0
+    MODE_CH0 = 0,           // store the mode ( from g_modeTable[] ) for cannel 0 - choose between mode 0 to 8 
     MODE_CH1,				// store the mode ( from g_modeTable[] ) for cannel 1
     MODE_CH2,               // store the mode ( from g_modeTable[] ) for cannel 2
     MODE_CH3,               // store the mode ( from g_modeTable[] ) for cannel 3
 // block 01
-    MODE_CH4,               // store the mode ( from g_modeTable[] ) for cannel 4
+    MODE_CH4,               // store the mode ( from g_modeTable[] ) for cannel 4 - choose between wave 0 to 3 - how can i get mode bpm to the waves, its a random wave at the end!
     MODE_CH5,               // store the mode ( from g_modeTable[] ) for cannel 5
     MODE_CH6,               // store the mode ( from g_modeTable[] ) for cannel 6
     MODE_CH7,               // store the mode ( from g_modeTable[] ) for cannel 7

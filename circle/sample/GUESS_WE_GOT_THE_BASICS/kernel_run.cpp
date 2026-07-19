@@ -16,6 +16,7 @@ TShutdownMode CKernel::Run(void)
                         wrapper_parser_sd();
                         wrapper_init_gl_sd();
 
+                        msDelay(3000);
                         m_logBufferIndex = 0;
                         bufferScreenClear();
 
@@ -28,6 +29,7 @@ TShutdownMode CKernel::Run(void)
                         wrapper_parser_usb();
                         wrapper_init_gl_usb();
 
+                        msDelay(3000);
                         m_logBufferIndex = 0;
                         bufferScreenClear();
 

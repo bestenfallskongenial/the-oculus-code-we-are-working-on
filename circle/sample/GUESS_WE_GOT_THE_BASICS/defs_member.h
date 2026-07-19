@@ -246,7 +246,7 @@ public:         // Logging
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }
                                                 };
-
+/*
         const   uint8_t                         g_valueRoof[BLOCK_COUNT][4] =
                                                 {
                                                     { 5,  5,  5,  5  },
@@ -261,19 +261,50 @@ public:         // Logging
                                                 //  { 0,  0,  0,  2  },
                                                     { 2,  2,  2,  2  }
                                                 };
+*/
+        const   uint8_t                         g_valueRoof[BLOCK_COUNT][4] =
+                                                {
+                                                    { 4,  4,  4,  4  },
+                                                    { 4,  4,  4,  4  },                                                    
+                                                //  { 5,  5,  5,  5  },     // i did this because i think modeBPM is rather an lfo and not a mode
+                                                //  { 5,  5,  5,  5  },
 
+                                                    { 4,  4,  7,  7  },
+                                                    { 64, 64, 64, 64 },
+
+                                                    { 8,  8,  8,  8  },                         // means i need the max +1
+                                                //  { 7,  7,  7,  7  },                         // can remove the regular 7
+                                                //  { 2,  2,  2,  2  },                         // and also the flags here
+                                                //  { 0,  0,  0,  2  },
+                                                    { 2,  2,  2,  2  }
+                                                };
+/*
         const   uint8_t                         g_groupLen[GROUP_COUNT] =
                                                 {
                                                     5,
                                                     2,
                                                     2
                                                 };
-
+*/
+        const   uint8_t                         g_groupLen[GROUP_COUNT] =
+                                                {
+                                                    4,
+                                                    2,
+                                                    2
+                                                };
+/*
         const   uint8_t                         g_groupModes[GROUP_COUNT][5] =
                                                 {
                                                     { 0, 1, 2, 3, 4 },
                                                     { 5, 6, 0, 0, 0 },
                                                     { 7, 8, 0, 0, 0 }
+                                                };
+*/
+        const   uint8_t                         g_groupModes[GROUP_COUNT][4] =
+                                                {
+                                                    { 0, 1, 2, 3 },
+                                                    { 4, 5, 0, 0 },
+                                                    { 6, 7, 0, 0 }
                                                 };
 
                 uint8_t                         g_modeRoof[BLOCK_COUNT * 4];

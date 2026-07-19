@@ -4,11 +4,6 @@
     height="1024"
     viewBox="0 0 1024 1024">
 
-    <rect
-        id="edit_background"
-        width="1024"
-        height="1024"
-        fill="white"/>
 
     <defs>
         <symbol id="GLYPH_0" viewBox="344 401 18 21" preserveAspectRatio="xMidYMid meet">

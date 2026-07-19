@@ -304,32 +304,32 @@ void            CKernel::getChannelModeA(int p_channel)
                     case 1:
                         modeTRG(p_channel);
                     break;
-
+/*
                     case 2:
                         modeBPM(p_channel);
                     break;
-
-                    case 3:
+*/
+                    case 2:
                         modeLF1(p_channel);
                     break;
 
-                    case 4:
+                    case 3:
                         modeLF2(p_channel);
                     break;
 
-                    case 5:
+                    case 4:
                         modeAudioAb0(p_channel);
                     break;
 
-                    case 6:
+                    case 5:
                         modeAudioAb1(p_channel);
                     break;
 
-                    case 7:
+                    case 6:
                         modeAudioBb0(p_channel);
                     break;
 
-                    case 8:
+                    case 7:
                         modeAudioBb1(p_channel);
                     break;
                     }
@@ -349,7 +349,7 @@ void            CKernel::modeTRG                    (   int p_channel) // curren
                     g_inOutMatrixFlt[p_channel][OUT]    = g_inOutMatrixFlt[p_channel][RND];
                     g_inOutMatrixInt[p_channel][OUT]    = g_inOutMatrixInt[p_channel][RND];
 
-                    g_extClockTime                      = g_currentTime;
+                    g_extClockTime[p_channel]           = g_currentTime;
 
                     g_inOutMatrixInt[p_channel][TRF]    = true;
                     }
@@ -358,7 +358,7 @@ void            CKernel::modeTRG                    (   int p_channel) // curren
                     g_inOutMatrixInt[p_channel][TRF] = false;
                     }
 }
-
+/*
 void            CKernel::modeBPM                    (   int p_channel)
 { 
                 if ( g_currentTime >= g_lfoBpmMatrix[p_channel][NBT] )
@@ -367,7 +367,7 @@ void            CKernel::modeBPM                    (   int p_channel)
                     g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[p_channel][RND];
                     }
 }
-
+*/
 void            CKernel::modeLF1                    (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][LF1];
@@ -500,11 +500,12 @@ void            CKernel::applyTargetModes           (   )       // current!
                     {
                     GLtime = g_currentTime / 1000000.0f;
                     }
-
-            // if (g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] < FLAG_THRESHOLD)       // external BPM clock
-            //      {
-                    calculate1BPMnew(1, TB1, DB1, g_extClockTime);                              // automatized?
-            //      }
+/*
+                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] < FLAG_THRESHOLD)       // external BPM clock
+                    {
+                    calculate1BPMnew(1, TB1, DB1, g_extClockTime[SEL_EXT]);                              // automatized?
+                    }
+*/
 }
 
 void            CKernel::updateLED() // current!! <-having the block here is a problem we only have the layer avaieble, block is kinda internal knowledge!
