@@ -83,11 +83,13 @@ TShutdownMode CKernel::Run(void)
 
                 //  logButtonStatesRuntime();
 
-                    logModesRuntime( 1 );
+                    logModesRuntime( 0 );
 
-                    logPickUpFlags( 10 );
+                    logPickUpFlags( 9 );
 
-                    logInfosRuntime( 20 );
+                    logInOutRuntime( 18 );
+
+                    logInfosRuntime( 26 );
 
                     setUniPrg(&m_ogl,
                             &m_fsh,
