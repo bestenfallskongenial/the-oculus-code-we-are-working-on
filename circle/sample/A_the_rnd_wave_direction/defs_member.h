@@ -254,7 +254,7 @@ public:         // Logging
                                                 //  { 5,  5,  5,  5  },     // i did this because i think modeBPM is rather an lfo and not a mode
                                                 //  { 5,  5,  5,  5  },
 
-                                                    { 4,  4,  7,  7  },
+                                                    { 5,  5,  7,  7  },
                                                     { 64, 64, 64, 64 },
 
                                                     { 8,  8,  8,  8  },                         // means i need the max +1
