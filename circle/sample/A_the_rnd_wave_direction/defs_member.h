@@ -285,8 +285,8 @@ public:         // Logging
                                                     { 6, 7, 0, 0 }
                                                 };
 
-                uint8_t                         g_modeRoof[BLOCK_COUNT * 4];
-                uint8_t                         g_modeMap[BLOCK_COUNT * 4][9];
+                uint8_t                         g_modeRoof[BLOCK_COUNT * 4]     = { 0 };
+                uint8_t                         g_modeMap[BLOCK_COUNT * 4][9]   = { 0 };
 
                 uint8_t                         g_blockColor[BLOCK_COUNT][3] =
 {
