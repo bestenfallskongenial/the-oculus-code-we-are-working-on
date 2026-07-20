@@ -202,7 +202,7 @@ void            CKernel::sample1WaveTable           (   int             p_source
 {
                 unsigned long currentTime               =   m_Timer.GetClockTicks();    // ? ****
 
-                if (g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn] > WAVEFORMS_COUNT)
+                if (g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn] >= WAVEFORMS_COUNT)
                     {
                     if ( g_currentTime >= g_lfoBpmMatrix[p_source][NBT] )
                         {
