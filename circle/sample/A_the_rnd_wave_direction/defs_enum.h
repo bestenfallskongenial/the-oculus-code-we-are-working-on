@@ -90,6 +90,7 @@ enum lfo_bpm_types
    	NCB,            								// nextCircleBuffer
     LBC,            								// lastBpmCalculation
     LBCT,           								// lastBpmCalculationTMP
+    LLCB,           // remembered last LCB per source
     LMT,            								// lfoMultiplierTMP - lfoMultiplierCurrent
     NLMT,                                           // last - lfoMultiplierTMP
     ELP,            								// elapsedMicroseconds

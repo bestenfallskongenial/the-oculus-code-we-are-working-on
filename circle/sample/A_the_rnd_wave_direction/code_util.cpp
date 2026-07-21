@@ -230,13 +230,24 @@ void            CKernel::sample1WaveTable           (   int             p_source
                                                         int             p_lfoOut )
 {
                 unsigned long currentTime               =   m_Timer.GetClockTicks();    // ? ****
-
+/*
                 if (g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn] >= WAVEFORMS_COUNT) // FIX?
                     {
                     if ( g_currentTime >= g_lfoBpmMatrix[p_source][NBT] )
                         {
                         g_inOutMatrixFlt[0][p_lfoOut]    =   g_inOutMatrixFlt[p_source][RND];
                         g_inOutMatrixInt[0][p_lfoOut]    =   g_inOutMatrixInt[p_source][RND];
+                        }
+                    return;
+                    }
+*/
+                if (g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn] >= WAVEFORMS_COUNT)
+                    {
+                    if (g_lfoBpmMatrix[p_source][LCB] != g_lfoBpmMatrix[p_source][LLCB]) // CHANGED: detect new circle by comparing current LCB with last latched LCB
+                        {
+                        g_lfoBpmMatrix[p_source][LLCB]      =   g_lfoBpmMatrix[p_source][LCB]; // CHANGED: remember this circle start
+                        g_inOutMatrixFlt[0][p_lfoOut]       =   g_inOutMatrixFlt[p_source][RND];
+                        g_inOutMatrixInt[0][p_lfoOut]       =   g_inOutMatrixInt[p_source][RND];
                         }
                     return;
                     }
