@@ -160,11 +160,11 @@ void            CKernel::predict1Beat               (   int             p_source
 
                 g_lfoBpmMatrix[p_source][NLMT]          =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]]; // v1: cache requested mult/div
 
-                if (currentTime >= g_lfoBpmMatrix[p_source][NBT])
+                if (/*currentTime*/g_currentTime >= g_lfoBpmMatrix[p_source][NBT])
                     {
                     g_lfoBpmMatrix[p_source][NBT]      +=  g_lfoBpmMatrix[p_source][INTV];
                     }
-                if (currentTime >= g_lfoBpmMatrix[p_source][NCB]) 
+                if (/*currentTime*/g_currentTime >= g_lfoBpmMatrix[p_source][NCB]) 
                     {
                     g_lfoBpmMatrix[p_source][LCB]       =   g_lfoBpmMatrix[p_source][NCB];
                     g_lfoBpmMatrix[p_source][NCB]       =   g_lfoBpmMatrix[p_source][NCB] + (g_lfoBpmMatrix[g_activeBpmChannel][INTV] * g_lfoBpmMatrix[p_source][LMT]); // v1: normal circle advance with current active mult/div
