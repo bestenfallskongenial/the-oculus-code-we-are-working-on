@@ -153,6 +153,7 @@ void            CKernel::calculate1BPMnew           (   int             p_source
                     g_lfoBpmMatrix[p_source][TIDX]        =   (g_lfoBpmMatrix[p_source][TIDX] + 1) % 4;
                     }
 }
+/*
 void            CKernel::predict1Beat               (   int             p_source, 
                                                         int             p_lfoMultIn )
 {
@@ -160,11 +161,11 @@ void            CKernel::predict1Beat               (   int             p_source
 
                 g_lfoBpmMatrix[p_source][NLMT]          =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]]; // v1: cache requested mult/div
 
-                if (/*currentTime*/g_currentTime >= g_lfoBpmMatrix[p_source][NBT])
+                if (currentTime >= g_lfoBpmMatrix[p_source][NBT])
                     {
                     g_lfoBpmMatrix[p_source][NBT]      +=  g_lfoBpmMatrix[p_source][INTV];
                     }
-                while (/*currentTime*/g_currentTime >= g_lfoBpmMatrix[p_source][NCB]) 
+                if (currentTime >= g_lfoBpmMatrix[p_source][NCB]) 
                     {
                     g_lfoBpmMatrix[p_source][LCB]       =   g_lfoBpmMatrix[p_source][NCB];
                     g_lfoBpmMatrix[p_source][NCB]       =   g_lfoBpmMatrix[p_source][NCB] + (g_lfoBpmMatrix[g_activeBpmChannel][INTV] * g_lfoBpmMatrix[p_source][LMT]); // v1: normal circle advance with current active mult/div
@@ -181,17 +182,17 @@ void            CKernel::predict1Beat               (   int             p_source
                     g_lfoBpmMatrix[p_source][NCB]       =   g_lfoBpmMatrix[g_activeBpmChannel][LBC] + (g_lfoBpmMatrix[g_activeBpmChannel][INTV] * g_lfoBpmMatrix[p_source][LMT]); // v1: rebuild circle immediately from bpm anchor
                     }
 }
-/*
+*/
 void            CKernel::predict1Beat               (   int             p_source, 
                                                         int             p_lfoMultIn )
 {
-                unsigned long currentTime               =   m_Timer.GetClockTicks();
+            //  unsigned long currentTime               =   m_Timer.GetClockTicks();
 
-                if (currentTime >= g_lfoBpmMatrix[p_source][NBT])
+                if (/*currentTime*/g_currentTime  >= g_lfoBpmMatrix[p_source][NBT])
                     {
                     g_lfoBpmMatrix[p_source][NBT]      +=  g_lfoBpmMatrix[p_source][INTV];
                     }
-                if (currentTime >= g_lfoBpmMatrix[p_source][NCB]) 
+                if (/*currentTime*/g_currentTime >= g_lfoBpmMatrix[p_source][NCB]) 
                     {
                     g_lfoBpmMatrix[p_source][LCB]       =   g_lfoBpmMatrix[p_source][NCB];
                     g_lfoBpmMatrix[p_source][NCB]       =   g_lfoBpmMatrix[p_source][NCB] + (g_lfoBpmMatrix[g_activeBpmChannel][INTV] * g_lfoBpmMatrix[p_source][LMT]); // why again g_lfoMultiplierTMP? isnt it stored already, do we need to back it up?
@@ -209,7 +210,7 @@ void            CKernel::predict1Beat               (   int             p_source
                     g_lfoBpmMatrix[p_source][LMT]       =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]];
                     }
 }
-*/
+
 /*
 void            CKernel::sample1WaveTable           (   int             p_source, 
                                                         int             p_lfoIn, 
