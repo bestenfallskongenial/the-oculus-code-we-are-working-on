@@ -647,7 +647,7 @@ bool            CKernel::readChannel                (   const char* p_token,
 
                 return false;
 }
-
+/*
 bool            CKernel::readFlag                   (   const char* p_token,
                                                         u32&        p_field)
 {
@@ -658,7 +658,7 @@ bool            CKernel::readFlag                   (   const char* p_token,
 
                 return false;
 }
-
+*/
 bool            CKernel::readChannelCommand         (   const char* p_token,
                                                         u32&        p_field)
 {
