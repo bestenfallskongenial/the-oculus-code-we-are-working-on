@@ -237,7 +237,7 @@ void            CKernel::mapMenuGroup               (uint8_t block)
                     g_centralModeBuffer[g_currentProgramBuffer][base + 3] = v;
                     }
 }
-
+/*
 void            CKernel::getChannelModeB             ()
 {
                 uint8_t mode; 
@@ -292,7 +292,7 @@ void            CKernel::getChannelModeB             ()
 
                 if (fn) (this->*fn)(7);                
 }
-
+*/
 void            CKernel::getChannelModeA(int p_channel)
 {
                 switch (g_centralModeBuffer[g_currentProgramBuffer][p_channel])
