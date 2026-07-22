@@ -218,8 +218,8 @@ public:         // Logging
                 int g_lastLayerLED      = 0;
                 unsigned g_extClockTime[8] = {0}; // number of my adc channels!
 
-        typedef void                            (CKernel::*ModeFunc)(int);
-
+//      typedef void                            (CKernel::*ModeFunc)(int);
+/*
                 ModeFunc                        g_modeTable[/*9*/8] =
 {
     &CKernel::modeADC,
@@ -233,7 +233,7 @@ public:         // Logging
     &CKernel::modeAudioBb0,
     &CKernel::modeAudioBb1
 };
-
+*/
         const   uint8_t                         g_mapType[BLOCK_COUNT][4] =
                                                 {
                                                     { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },
