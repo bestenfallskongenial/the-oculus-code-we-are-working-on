@@ -50,15 +50,16 @@ enum centralModeBuffer
 
 enum modeNames
 {
-    IN_MODE_ADC
-    IN_MODE_TRG
-//  IN_MODE_BMP
-    IN_MODE_LF1
-    IN_MODE_LF2
-    MODE_BAND_L0
-    MODE_BAND_H0
-    MODE_BAND_L1
+    IN_MODE_ADC,
+    IN_MODE_TRG,
+//  IN_MODE_BMP,
+    IN_MODE_LF1,
+    IN_MODE_LF2,
+    MODE_BAND_L0,
+    MODE_BAND_H0,
+    MODE_BAND_L1,
     MODE_BAND_H1
+    MODE_NAME_COUNT
 };
 
 enum MapType
