@@ -58,7 +58,7 @@ enum modeNames
     MODE_BAND_L0,
     MODE_BAND_H0,
     MODE_BAND_L1,
-    MODE_BAND_H1
+    MODE_BAND_H1,
     MODE_NAME_COUNT
 };
 
