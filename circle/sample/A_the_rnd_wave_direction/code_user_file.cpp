@@ -1,3 +1,8 @@
+#include "kernel.h"
+
+    #define MY_BUFFER   m_logBuffer                 // means the log goes into the pre-init buffer 
+    #define MY_INDEX    m_logBufferIndex
+
 const char*     CKernel::bufferSourceModeName       (   u32         p_value)
 {
                 switch (p_value)

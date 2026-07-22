@@ -306,7 +306,7 @@ public:
                 void parse_buffer_file();
 
 
-                const char* bufferSourceModeName(u32 value);
+                const char* bufferSourceModeName(u32 value); 
                 const char* bufferWaveName(u32 value);
                 const char* bufferChannelName(u32 value);
                 u32         bufferMultValue(u32 index);
