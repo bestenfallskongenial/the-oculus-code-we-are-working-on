@@ -51,6 +51,8 @@ public:         // Logging
 
                 char                            m_logBuffer[1024*32]                            = {0};          //  pre-init buffer 
                 u32                             m_logBufferIndex                                = 0;
+
+                u32                             m_ModeBuffer                                    = {0};
    
                 u32                             m_logScreenStartIndex                           = 0;            // logScreenUpdate()
 // local copies of my graphics related structs
@@ -109,6 +111,7 @@ public:         // Logging
                 bool                            g_menuPickUpFlag[MODETABLE_COUNT]               = { 0 };                     // the flags for the pickup mechanism  
                 unsigned                        g_buttons_states[BUTTON_COUNT][BTN_INDEX_COUNT] = { 0 };      // the button state machine
                 unsigned                        g_centralModeBuffer[SLOTS][MODETABLE_COUNT]     = { 0 };         // the general user settings, storable per program 
+                unsigned                        g_centralModeBufferTemp[SLOTS][MODETABLE_COUNT] = { 0 };
                 unsigned                        g_lfoMultiplier[LFO_MULTIPLIERS_COUNT]          = { 64, 32, 16, 8, 4, 2, 1 };
 
                 unsigned long                   g_lfoBpmMatrix[4][LFO_BPM_COUNT]                = { 0 }; // was unsigned !

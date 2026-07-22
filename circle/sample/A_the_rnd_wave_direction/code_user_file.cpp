@@ -586,7 +586,7 @@ bool            CKernel::readSourceMode             (   const char* p_token,
 {
                 if (sameText(p_token, "ADC"))   { p_value = IN_MODE_ADC;  return true; }
                 if (sameText(p_token, "TRG"))   { p_value = IN_MODE_TRG;  return true; }
-                if (sameText(p_token, "BMP"))   { p_value = IN_MODE_BMP;  return true; }
+            //  if (sameText(p_token, "BMP"))   { p_value = IN_MODE_BMP;  return true; }
                 if (sameText(p_token, "LF1"))   { p_value = IN_MODE_LF1;  return true; }
                 if (sameText(p_token, "LF2"))   { p_value = IN_MODE_LF2;  return true; }
                 if (sameText(p_token, "LOW0"))  { p_value = MODE_BAND_L0; return true; }
