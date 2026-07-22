@@ -59,7 +59,7 @@ enum modeNames
     MODE_BAND_H0
     MODE_BAND_L1
     MODE_BAND_H1
-}
+};
 
 enum MapType
 {
