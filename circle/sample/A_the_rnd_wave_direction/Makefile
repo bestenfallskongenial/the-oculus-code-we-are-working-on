@@ -19,6 +19,7 @@ OBJS  = main.o \
         code_log.o \
         code_menu.o \
         code_parser.o \
+        code_user_file.cpp \
         code_util.o \
         code_vc_service.o \
         code_vc_mmal_api.o \

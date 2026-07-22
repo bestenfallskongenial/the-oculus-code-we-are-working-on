@@ -299,6 +299,32 @@ public:
                                                                         size_t                          size) const;
                 u32         ReadExpGolomb               (               u8*                             data, 
                                                                         size_t*                         bit_offset) const;
+// code_user_file.cpp
+
+
+                void create_buffer_file();
+                void parse_buffer_file();
+
+
+                const char* bufferSourceModeName(u32 value);
+                const char* bufferWaveName(u32 value);
+                const char* bufferChannelName(u32 value);
+                u32         bufferMultValue(u32 index);
+                u32         hexToDec(u32 value);
+
+                bool sameText(const char* a, const char* b);
+                bool tokenEnd(char value);
+                void skipBufferLine(const char*& read);
+                bool readBufferToken(const char*& read, char* token, u32 size);
+                bool readBufferDec(const char* token, u32& value);
+                bool readSourceMode(const char* token, u32& value);
+                bool readWave(const char* token, u32& value);
+                bool readMultiplier(const char* token, u32& value);
+                bool readChannel(const char* token, u32& value);
+                bool readFlag(const char* token, u32& field);
+                bool readChannelCommand(const char* token, u32& field);
+
+
 // code_util.cpp
 
                 bool        checkUpdate                 ();
