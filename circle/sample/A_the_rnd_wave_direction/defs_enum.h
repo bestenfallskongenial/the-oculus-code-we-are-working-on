@@ -48,6 +48,19 @@ enum centralModeBuffer
     MODETABLE_COUNT
 };
 
+enum modeNames
+{
+    IN_MODE_ADC
+    IN_MODE_TRG
+//  IN_MODE_BMP
+    IN_MODE_LF1
+    IN_MODE_LF2
+    MODE_BAND_L0
+    MODE_BAND_H0
+    MODE_BAND_L1
+    MODE_BAND_H1
+}
+
 enum MapType
 {
     MAP_MODE = 0,
