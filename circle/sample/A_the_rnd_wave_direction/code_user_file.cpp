@@ -71,7 +71,7 @@ void            CKernel::create_buffer_file         (   )
 
                 m_ModeBuffer[index] = '\0';
 
-                storeLog(m_ModeBuffer, index,
+                storeLogHex(m_ModeBuffer, index,
                          "# central mode buffer", EMPTYLOG,
                          EMPTYSTR, EMPTYLOG,
                          EMPTYSTR, EMPTYLOG,
@@ -86,7 +86,7 @@ void            CKernel::create_buffer_file         (   )
                         continue;
                         }
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "program", hexToDec(program),
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
@@ -94,7 +94,7 @@ void            CKernel::create_buffer_file         (   )
 
                     if (g_ScnFsh[program])
                         {
-                        storeLog(m_ModeBuffer, index,
+                        storeLogHex(m_ModeBuffer, index,
                                  "file", EMPTYLOG,
                                  g_ScnFsh[program], EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG,
@@ -103,49 +103,49 @@ void            CKernel::create_buffer_file         (   )
 
                     nextline(m_ModeBuffer, index);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch0", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH0]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch1", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH1]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch2", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH2]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch3", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH3]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch4", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH4]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch5", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH5]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch6", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH6]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch7", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH7]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
@@ -153,25 +153,25 @@ void            CKernel::create_buffer_file         (   )
 
                     nextline(m_ModeBuffer, index);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "lfo1", EMPTYLOG,
                              bufferWaveName(g_centralModeBuffer[program][LF1_WAVE]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "mult1", hexToDec(bufferMultValue(g_centralModeBuffer[program][LF1_MULT])),
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "lfo2", EMPTYLOG,
                              bufferWaveName(g_centralModeBuffer[program][LF2_WAVE]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "mult2", hexToDec(bufferMultValue(g_centralModeBuffer[program][LF2_MULT])),
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
@@ -179,25 +179,25 @@ void            CKernel::create_buffer_file         (   )
 
                     nextline(m_ModeBuffer, index);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "audioA", hexToDec(g_centralModeBuffer[program][SENS_A]),
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "audioB", hexToDec(g_centralModeBuffer[program][SENS_B]),
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "audioC", hexToDec(g_centralModeBuffer[program][SENS_C]),
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "audioD", hexToDec(g_centralModeBuffer[program][SENS_D]),
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
@@ -207,13 +207,13 @@ void            CKernel::create_buffer_file         (   )
 
                     if (g_centralModeBuffer[program][FLAG_TIME])
                         {
-                        storeLog(m_ModeBuffer, index,
+                        storeLogHex(m_ModeBuffer, index,
                                  "set", EMPTYLOG,
                                  "TIME", EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG);
 
-                        storeLog(m_ModeBuffer, index,
+                        storeLogHex(m_ModeBuffer, index,
                                  "time", EMPTYLOG,
                                  bufferChannelName(g_centralModeBuffer[program][SEL_TIME]), EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG,
@@ -222,13 +222,13 @@ void            CKernel::create_buffer_file         (   )
 
                     if (g_centralModeBuffer[program][FLAG_TEX])
                         {
-                        storeLog(m_ModeBuffer, index,
+                        storeLogHex(m_ModeBuffer, index,
                                  "set", EMPTYLOG,
                                  "TEX", EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG);
 
-                        storeLog(m_ModeBuffer, index,
+                        storeLogHex(m_ModeBuffer, index,
                                  "tex", EMPTYLOG,
                                  bufferChannelName(g_centralModeBuffer[program][SEL_TEX]), EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG,
@@ -237,7 +237,7 @@ void            CKernel::create_buffer_file         (   )
 
                     if (g_centralModeBuffer[program][FLAG_EXT])
                         {
-                        storeLog(m_ModeBuffer, index,
+                        storeLogHex(m_ModeBuffer, index,
                                  "set", EMPTYLOG,
                                  "EXT", EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG,
@@ -246,19 +246,19 @@ void            CKernel::create_buffer_file         (   )
 
                     if (g_centralModeBuffer[program][FLAG_VID])
                         {
-                        storeLog(m_ModeBuffer, index,
+                        storeLogHex(m_ModeBuffer, index,
                                  "set", EMPTYLOG,
                                  "VID", EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG);
 
-                        storeLog(m_ModeBuffer, index,
+                        storeLogHex(m_ModeBuffer, index,
                                  "vid", EMPTYLOG,
                                  bufferChannelName(g_centralModeBuffer[program][SEL_VID]), EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG);
 
-                        storeLog(m_ModeBuffer, index,
+                        storeLogHex(m_ModeBuffer, index,
                                  "frm", EMPTYLOG,
                                  bufferChannelName(g_centralModeBuffer[program][SEL_FRM]), EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG,
@@ -275,7 +275,7 @@ void            CKernel::create_buffer_file         (   )
 
                 m_ModeBuffer[index] = '\0';
 
-                storeLog(m_ModeBuffer, index,
+                storeLogHex(m_ModeBuffer, index,
                          "# central mode buffer", EMPTYLOG,
                          EMPTYSTR, EMPTYLOG,
                          EMPTYSTR, EMPTYLOG,
@@ -290,7 +290,7 @@ void            CKernel::create_buffer_file         (   )
                         continue;
                         }
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "program", hexToDec(program),
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
@@ -298,7 +298,7 @@ void            CKernel::create_buffer_file         (   )
 
                     if (g_ScnFsh[program])
                         {
-                        storeLog(m_ModeBuffer, index,
+                        storeLogHex(m_ModeBuffer, index,
                                  "file", EMPTYLOG,
                                  g_ScnFsh[program], EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG,
@@ -307,49 +307,49 @@ void            CKernel::create_buffer_file         (   )
 
                     nextline(m_ModeBuffer, index);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch0", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH0]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch1", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH1]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch2", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH2]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch3", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH3]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch4", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH4]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch5", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH5]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch6", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH6]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "ch7", EMPTYLOG,
                              bufferSourceModeName(g_centralModeBuffer[program][MODE_CH7]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
@@ -357,25 +357,25 @@ void            CKernel::create_buffer_file         (   )
 
                     nextline(m_ModeBuffer, index);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "lfo1", EMPTYLOG,
                              bufferWaveName(g_centralModeBuffer[program][LF1_WAVE]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "mult1", hexToDec(bufferMultValue(g_centralModeBuffer[program][LF1_MULT])),
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "lfo2", EMPTYLOG,
                              bufferWaveName(g_centralModeBuffer[program][LF2_WAVE]), EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "mult2", hexToDec(bufferMultValue(g_centralModeBuffer[program][LF2_MULT])),
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
@@ -383,25 +383,25 @@ void            CKernel::create_buffer_file         (   )
 
                     nextline(m_ModeBuffer, index);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "audioA", hexToDec(g_centralModeBuffer[program][SENS_A]),
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "audioB", hexToDec(g_centralModeBuffer[program][SENS_B]),
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "audioC", hexToDec(g_centralModeBuffer[program][SENS_C]),
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG);
 
-                    storeLog(m_ModeBuffer, index,
+                    storeLogHex(m_ModeBuffer, index,
                              "audioD", hexToDec(g_centralModeBuffer[program][SENS_D]),
                              EMPTYSTR, EMPTYLOG,
                              EMPTYSTR, EMPTYLOG,
@@ -411,7 +411,7 @@ void            CKernel::create_buffer_file         (   )
 
                     if (g_centralModeBuffer[program][SEL_TIME] < FLAG_THRESHOLD)
                         {
-                        storeLog(m_ModeBuffer, index,
+                        storeLogHex(m_ModeBuffer, index,
                                  "time", EMPTYLOG,
                                  bufferChannelName(g_centralModeBuffer[program][SEL_TIME]), EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG,
@@ -420,7 +420,7 @@ void            CKernel::create_buffer_file         (   )
 
                     if (g_centralModeBuffer[program][SEL_TEX] < FLAG_THRESHOLD)
                         {
-                        storeLog(m_ModeBuffer, index,
+                        storeLogHex(m_ModeBuffer, index,
                                  "tex", EMPTYLOG,
                                  bufferChannelName(g_centralModeBuffer[program][SEL_TEX]), EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG,
@@ -429,13 +429,13 @@ void            CKernel::create_buffer_file         (   )
 
                     if (g_centralModeBuffer[program][SEL_VID] < FLAG_THRESHOLD)
                         {
-                        storeLog(m_ModeBuffer, index,
+                        storeLogHex(m_ModeBuffer, index,
                                  "vid", EMPTYLOG,
                                  bufferChannelName(g_centralModeBuffer[program][SEL_VID]), EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG);
 
-                        storeLog(m_ModeBuffer, index,
+                        storeLogHex(m_ModeBuffer, index,
                                  "frm", EMPTYLOG,
                                  bufferChannelName(g_centralModeBuffer[program][SEL_FRM]), EMPTYLOG,
                                  EMPTYSTR, EMPTYLOG,
