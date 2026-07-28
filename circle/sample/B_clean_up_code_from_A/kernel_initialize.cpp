@@ -182,7 +182,7 @@ boolean			CKernel::Initialize						(	void )
                     }
                 if (bOK)
                     {
-                    bOK = setSystemVariables()         
+                    bOK = setSystemVariables();         
 #ifdef __LOG_INIT__
                     if (bOK) storeLogHex( MY_BFR, MY_IDX, ">:", m_Timer.GetClockTicks(), "System Variables Setup                  DONE");
 #endif
