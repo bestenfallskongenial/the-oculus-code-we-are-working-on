@@ -80,7 +80,7 @@ bool            CKernel::programLog                 (   GLint       program,
                     GLint location = glGetUniformLocation(program, uname);
 
                     storeLogHex(    MY_BFR, MY_IDX, "Uniform:  ", X_VAL, uname );
-                    storeLogHex(    MY_BFR, MY_IDX, "index     ", (u32)i, "size      ", (u32)size, "type      ", (u32)type "location  ", (u32)location);
+                    storeLogHex(    MY_BFR, MY_IDX, "index     ", (u32)i, "size      ", (u32)size, "type      ", (u32)type, "location  ", (u32)location);
 #endif                     
                     }
                 GLint numAttributes;
