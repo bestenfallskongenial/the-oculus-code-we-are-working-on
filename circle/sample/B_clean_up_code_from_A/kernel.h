@@ -325,7 +325,7 @@ public:
                 bool        readChannelCommand          (       const   char*                           token, 
                                                                         u32&                            field);
 // code_util.cpp
-
+                bool        setSystemVariables          ();                
                 bool        checkUpdate                 ();
                 void        get_gl_time                 (               unsigned                        sys_time );                
 
