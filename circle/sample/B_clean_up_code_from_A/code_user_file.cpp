@@ -97,7 +97,7 @@ void            CKernel::create_buffer_file         (   )
 
                     storeLogHex(m_ModeBuffer, index, "ch2", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH2]) );
 
-                    storeLogHex(m_ModeBuffer, index, "ch3", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH3]) ;
+                    storeLogHex(m_ModeBuffer, index, "ch3", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH3]) );
 
                     storeLogHex(m_ModeBuffer, index, "ch4", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH4]) );
 
