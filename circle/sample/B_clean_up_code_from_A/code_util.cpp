@@ -3,7 +3,7 @@
     #define MY_BFR   m_logBuffer                 // means the log goes into the pre-init buffer 
     #define MY_IDX    m_logBufferIndex
 
-bool            CKernel:setSystemVariables()
+bool            CKernel::setSystemVariables()
 {
                 g_inOutMatrixInt[0][TRL] = 128;
                 g_inOutMatrixInt[1][TRL] = 128;    
