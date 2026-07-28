@@ -139,7 +139,7 @@
     #define         MAX_VID_P           66		// Baseline
 
     #define         MIN_VID_L             30
-    #define         MAX_VIDEO_LEVEL             52      // misconception, the parser has only one value,  not a range! was 51
+    #define         MAX_VID_L             52      // misconception, the parser has only one value,  not a range! was 51
 
 //  #define SCREEN_LOG_BUFFER_SIZE  (1024 * 8)
 
