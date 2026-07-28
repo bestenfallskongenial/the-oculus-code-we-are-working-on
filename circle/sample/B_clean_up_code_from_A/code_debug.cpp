@@ -62,7 +62,7 @@ void            CKernel::logInOutRuntime(int row)
 
                 f_logBuffer[0] = '\0';
 
-                storeLogHex(    f_logBuffer, f_logIndex "0 RAW", (u32)g_inOutMatrixInt[0][RAW], "VAL", (u32)g_inOutMatrixInt[0][VAL], "RND", (u32)g_inOutMatrixInt[0][RND], "OUT", (u32)g_inOutMatrixInt[0][OUT] );
+                storeLogHex(    f_logBuffer, f_logIndex, "0 RAW", (u32)g_inOutMatrixInt[0][RAW], "VAL", (u32)g_inOutMatrixInt[0][VAL], "RND", (u32)g_inOutMatrixInt[0][RND], "OUT", (u32)g_inOutMatrixInt[0][OUT] );
                 storeLogHex(    f_logBuffer, f_logIndex, "1 RAW", (u32)g_inOutMatrixInt[1][RAW], "VAL", (u32)g_inOutMatrixInt[1][VAL], "RND", (u32)g_inOutMatrixInt[1][RND], "OUT", (u32)g_inOutMatrixInt[1][OUT] );
                 storeLogHex(    f_logBuffer, f_logIndex, "2 RAW", (u32)g_inOutMatrixInt[2][RAW], "VAL", (u32)g_inOutMatrixInt[2][VAL], "RND", (u32)g_inOutMatrixInt[2][RND], "OUT", (u32)g_inOutMatrixInt[2][OUT] );
                 storeLogHex(    f_logBuffer, f_logIndex, "3 RAW", (u32)g_inOutMatrixInt[3][RAW], "VAL", (u32)g_inOutMatrixInt[3][VAL], "RND", (u32)g_inOutMatrixInt[3][RND], "OUT", (u32)g_inOutMatrixInt[3][OUT] );
