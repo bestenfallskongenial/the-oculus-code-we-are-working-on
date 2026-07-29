@@ -251,10 +251,10 @@ public:
 //              void        modeBPM                     (               int                             p_channel);         // channel passed by caller
                 void        modeLF1                     (               int                             p_channel);         // channel passed by caller
                 void        modeLF2                     (               int                             p_channel);         // channel passed by caller
-                void        modeAudioAb0                (               int                             p_channel);         // channel passed by caller
-                void        modeAudioAb1                (               int                             p_channel);         // channel passed by caller
-                void        modeAudioBb0                (               int                             p_channel);         // channel passed by caller
-                void        modeAudioBb1                (               int                             p_channel);         // channel passed by caller  
+                void        modeAudioAbL                (               int                             p_channel);         // channel passed by caller
+                void        modeAudioAbH                (               int                             p_channel);         // channel passed by caller
+                void        modeAudioBbL                (               int                             p_channel);         // channel passed by caller
+                void        modeAudioBbH                (               int                             p_channel);         // channel passed by caller  
                 void        applyTargetModes            ();
                 void        updateLED                   (); // current!!
                 void        checkSystemFlags            ();

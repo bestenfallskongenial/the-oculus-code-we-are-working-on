@@ -55,10 +55,10 @@ enum modeNames
 //  IN_MODE_BMP,
     IN_MODE_LF1,
     IN_MODE_LF2,
-    MODE_BAND_L0,
-    MODE_BAND_H0,
-    MODE_BAND_L1,
-    MODE_BAND_H1,
+    MODE_AU_AL,
+    MODE_AU_AH,
+    MODE_AU_BL,
+    MODE_AU_BH,
     MODE_NAME_COUNT
 };
 

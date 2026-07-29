@@ -12,10 +12,10 @@ const char*     CKernel::bufferSourceModeName       (   u32         p_value)
                 //  case IN_MODE_BMP:    return "BMP";
                     case IN_MODE_LF1:    return "LF1";
                     case IN_MODE_LF2:    return "LF2";
-                    case MODE_BAND_L0:   return "LOW0";
-                    case MODE_BAND_H0:   return "HIGH0";
-                    case MODE_BAND_L1:   return "LOW1";
-                    case MODE_BAND_H1:   return "HIGH1";
+                    case MODE_AU_AL:   return "LOW0";
+                    case MODE_AU_AH:   return "HIGH0";
+                    case MODE_AU_BL:   return "LOW1";
+                    case MODE_AU_BH:   return "HIGH1";
                     default:             return "ADC";
                     }
 }
@@ -293,10 +293,10 @@ bool            CKernel::readSourceMode             (   const char* p_token,
             //  if (sameText(p_token, "BMP"))   { p_value = IN_MODE_BMP;  return true; }
                 if (sameText(p_token, "LF1"))   { p_value = IN_MODE_LF1;  return true; }
                 if (sameText(p_token, "LF2"))   { p_value = IN_MODE_LF2;  return true; }
-                if (sameText(p_token, "LOW0"))  { p_value = MODE_BAND_L0; return true; }
-                if (sameText(p_token, "HIGH0")) { p_value = MODE_BAND_H0; return true; }
-                if (sameText(p_token, "LOW1"))  { p_value = MODE_BAND_L1; return true; }
-                if (sameText(p_token, "HIGH1")) { p_value = MODE_BAND_H1; return true; }
+                if (sameText(p_token, "LOW0"))  { p_value = MODE_AU_AL; return true; }
+                if (sameText(p_token, "HIGH0")) { p_value = MODE_AU_AH; return true; }
+                if (sameText(p_token, "LOW1"))  { p_value = MODE_AU_BL; return true; }
+                if (sameText(p_token, "HIGH1")) { p_value = MODE_AU_BH; return true; }
 
                 return false;
 }

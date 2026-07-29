@@ -231,19 +231,28 @@ public:         // Logging
     &CKernel::modeLF1,
     &CKernel::modeLF2,
 
-    &CKernel::modeAudioAb0,
-    &CKernel::modeAudioAb1,
-    &CKernel::modeAudioBb0,
-    &CKernel::modeAudioBb1
+    &CKernel::modeAudioAbL,
+    &CKernel::modeAudioAbH,
+    &CKernel::modeAudioBbL,
+    &CKernel::modeAudioBbH
 };
 */
+        const   int                             layerModeMap[7][4] =
+                                                {
+                                                    {           -1,             -1,         -1,         -1 }, // layer 0
+                                                    {           -1,             -1,         -1,         -1 }, // layer 1
+                                                    {           -1,             -1,         -1,         -1 }, // layer 2
+                                                    {  IN_MODE_LF1,    IN_MODE_LF2,         -1,         -1 }, // layer 3
+                                                    {   MODE_AU_AL,     MODE_AU_AH, MODE_AU_BL, MODE_AU_BH }, // layer 4
+                                                    {           -1,             -1,         -1,         -1 }, // layer 5
+                                                    {           -1,             -1,         -1,         -1 }  // layer 6
+                                                };
+
         const   uint8_t                         g_mapType[BLOCK_COUNT][4] =
                                                 {
                                                     { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },
                                                     { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },
 
-                                                //  { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
-                                                //  { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // i put the input-selection and the flag together, now is max + 1 off and < max on
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
@@ -254,16 +263,9 @@ public:         // Logging
                                                 {
                                                     { 4,  4,  4,  4  },
                                                     { 4,  4,  4,  4  },                                                    
-                                                //  { 5,  5,  5,  5  },     // i did this because i think modeBPM is rather an lfo and not a mode
-                                                //  { 5,  5,  5,  5  },
-
                                                     { 5,  5,  7,  7  },
                                                     { 64, 64, 64, 64 },
-
                                                     { 8,  8,  8,  8  },                         // means i need the max +1
-                                                //  { 7,  7,  7,  7  },                         // can remove the regular 7
-                                                //  { 2,  2,  2,  2  },                         // and also the flags here
-                                                //  { 0,  0,  0,  2  },
                                                     { 2,  2,  2,  2  }
                                                 };
 
@@ -273,14 +275,7 @@ public:         // Logging
                                                     2,
                                                     2
                                                 };
-/*
-        const   uint8_t                         g_groupModes[GROUP_COUNT][5] =
-                                                {
-                                                    { 0, 1, 2, 3, 4 },
-                                                    { 5, 6, 0, 0, 0 },
-                                                    { 7, 8, 0, 0, 0 }
-                                                };
-*/
+
         const   uint8_t                         g_groupModes[GROUP_COUNT][4] =
                                                 {
                                                     { 0, 1, 2, 3 },
@@ -302,31 +297,7 @@ public:         // Logging
     {  0,   0,   0},   // block 6 - invisible
     {150, 115,  45}    // block 7 - muted gold
 };
-/*
-uint8_t g_blockColor[BLOCK_COUNT][3] =
-{
-    {170,  50,  40},   // block 0 - muted crimson
-    { 70, 150,  70},   // block 1 - moss green
-    { 65,  95, 175},   // block 2 - calm blue
-    {180, 120,  50},   // block 3 - ochre
-    { 50, 145, 135},   // block 4 - sea green
-    {115,  85, 165},   // block 5 - muted purple
-    {  0,   0,   0},   // block 6 - invisible
-    {155, 100,  55}    // block 7 - bronze
-};
 
-uint8_t g_blockColor[BLOCK_COUNT][3] =
-{
-    {185,  55,  45},   // block 0 - brick red
-    { 60, 160,  85},   // block 1 - leaf green
-    { 55, 100, 185},   // block 2 - steel blue
-    {190, 115,  45},   // block 3 - amber
-    { 45, 150, 150},   // block 4 - teal
-    {105,  85, 175},   // block 5 - violet
-    {  0,   0,   0},   // block 6 - invisible
-    {170,  90,  45}    // block 7 - copper
-};
-*/
 private:
                 VCHI_INSTANCE_T                 m_VCHIInstance                                  = 0;
                 VCHI_CONNECTION_T*              m_Connection                                    = 0;

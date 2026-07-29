@@ -104,17 +104,6 @@ void CKernel::buttonConsumer(int buttonA, int buttonB)
 {
                 static int stepLayer = 2;
 
-                static const int layerModeMap[7][4] =
-                {
-                    { -1,           -1,           -1,           -1           }, // layer 0
-                    { -1,           -1,           -1,           -1           }, // layer 1
-                    { -1,           -1,           -1,           -1           }, // layer 2
-                    { IN_MODE_LF1,  IN_MODE_LF2,  -1,           -1           }, // layer 3
-                    { MODE_BAND_L0, MODE_BAND_H0, MODE_BAND_L1, MODE_BAND_H1 }, // layer 4
-                    { -1,           -1,           -1,           -1           }, // layer 5
-                    { -1,           -1,           -1,           -1           }  // layer 6
-                };
-
                 if (!g_buttons_states[buttonA][BTN_HOLD_TICK] && !g_buttons_states[buttonB][BTN_HOLD_TICK])
                     {
                     stepLayer       = 2;
@@ -361,19 +350,19 @@ void            CKernel::getChannelModeA(int p_channel)
                     break;
 
                     case 4:
-                        modeAudioAb0(p_channel);
+                        modeAudioAbL(p_channel);
                     break;
 
                     case 5:
-                        modeAudioAb1(p_channel);
+                        modeAudioAbH(p_channel);
                     break;
 
                     case 6:
-                        modeAudioBb0(p_channel);
+                        modeAudioBbL(p_channel);
                     break;
 
                     case 7:
-                        modeAudioBb1(p_channel);
+                        modeAudioBbH(p_channel);
                     break;
                     }
 }
@@ -413,25 +402,25 @@ void            CKernel::modeLF2                    (   int p_channel)
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][LF2]; 
 }
 
-void            CKernel::modeAudioAb0               (   int p_channel)
+void            CKernel::modeAudioAbL               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU0];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][AU0];
 }
 
-void            CKernel::modeAudioAb1               (   int p_channel)
+void            CKernel::modeAudioAbH               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU1];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][AU1];
 }
 
-void            CKernel::modeAudioBb0               (   int p_channel)
+void            CKernel::modeAudioBbL               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU2];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][AU2];
 }
 
-void            CKernel::modeAudioBb1               (   int p_channel)
+void            CKernel::modeAudioBbH               (   int p_channel)
 {
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[0][AU3];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][AU3];
