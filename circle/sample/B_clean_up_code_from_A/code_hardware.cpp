@@ -478,7 +478,7 @@ int             CKernel::ReadMCP3008Raw             (   unsigned    channel)
 
 void            CKernel::readAndConvertADC         (   void    )
 {
-                const int f_scale = m_scaleFactors[attenuation];
+                const int f_scale = /*m_scaleFactors[attenuation]*/ g_centralModeBuffer[g_gl_program_current][ATTENUATION];
 
                 m_adc_ring[0][m_adc_index] = ReadMCP3008Raw(0);
                 g_inOutMatrixInt[0][RAW] = (m_adc_ring[0][0] + m_adc_ring[0][1] + m_adc_ring[0][2] + m_adc_ring[0][3]) >> 2;

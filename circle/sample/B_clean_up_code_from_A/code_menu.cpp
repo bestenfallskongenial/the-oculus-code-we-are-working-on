@@ -375,7 +375,7 @@ void            CKernel::modeADC                    (   int p_channel)
 
 void            CKernel::modeTRG                    (   int p_channel) // current
 {
-                if (  g_inOutMatrixInt[p_channel][VAL] >= g_inOutMatrixInt[p_channel][TRH] && !g_inOutMatrixInt[p_channel][TRF] )
+                if (  g_inOutMatrixInt[p_channel][VAL] >= /*g_inOutMatrixInt[p_channel][TRH]*/ g_centralModeBuffer[g_currentProgramBuffer][THRESHOLD_H] && !g_inOutMatrixInt[p_channel][TRF] )
                     {
                     g_inOutMatrixFlt[p_channel][OUT]    = g_inOutMatrixFlt[p_channel][RND];
                     g_inOutMatrixInt[p_channel][OUT]    = g_inOutMatrixInt[p_channel][RND];
@@ -384,7 +384,7 @@ void            CKernel::modeTRG                    (   int p_channel) // curren
 
                     g_inOutMatrixInt[p_channel][TRF]    = true;
                     }
-                else if ( g_inOutMatrixInt[p_channel][VAL] <= g_inOutMatrixInt[p_channel][TRL])
+                else if ( g_inOutMatrixInt[p_channel][VAL] <= /*g_inOutMatrixInt[p_channel][TRL]*/ g_centralModeBuffer[g_currentProgramBuffer][THRESHOLD_L])
                     {
                     g_inOutMatrixInt[p_channel][TRF] = false;
                     }

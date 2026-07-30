@@ -17,35 +17,36 @@ enum centralModeBuffer
     LF1_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
     LF2_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
 // block 03
+    THRESHOLD_L,
+    THRESHOLD_H,
+    EFFECT,
+    ATTENUATION,
+// block 04
     SENS_A,                 // stores the sensitivity for the audio mode ( available if enabled ) bandA0
     SENS_B,                 // stores the sensitivity for the audio mode ( available if enabled ) bandA1
     SENS_C,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB0
     SENS_D,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB1
-// block 04
+// block 05
     SEL_TIME,               // SEL_TIME & FLAG_TIME should be unified by count any SEL_TIME < MAX as true
     SEL_TEX,
     SEL_VID,
     SEL_FRM,
-// block 05
+// block 06
     SET_STORE,
     SET_LOAD,
     LOG_STORE,
     KLN_LOAD,
-// block 06
-//  FLAG_TIME,              // the suggested change makes this obsolete 
-//  FLAG_TEX,
-//  FLAG_EXT,
-//  FLAG_VID,
 // block 07
     FLAG_AUDIO_A,           // for internal use only! 
     FLAG_AUDIO_B,
     FLAG_DUMMY_A,           // what is about the clk detection ( TRG mode )? can we automize it too?
     FLAG_DUMMY_B,           // or i autodetect the last correct bpm because the bpm function is autodetecting ...
-// is stored
+// block 08
     SEL_PRG,                // instead of an additional "allow prg changes" global flag - what if this will never be released again!?!
     IS_STORED,
-     
-    MODETABLE_COUNT
+    FLAG_DUMMY_C,
+    FLAG_DUMMY_D,
+    MODETABLE_COUNT         // theoretical i can now define BLOCK_COUNT as MODETABLE_COUNT / 4 correct????
 };
 
 enum modeNames

@@ -101,7 +101,7 @@ public:         // Logging
 
                 unsigned                        g_currentTime;
 
-                int                             attenuation                                     = 2;
+//             int                             attenuation                                     = 2;
                 bool                            m_audio_mode_activated                          = true; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
                 bool                            is_audio[2]                                     = { 0 };
@@ -237,12 +237,13 @@ public:         // Logging
     &CKernel::modeAudioBbH
 };
 */
-        const   int                             layerModeMap[7][4] =
+        const   int                             layerModeMap[8][4] =
                                                 {
                                                     {           -1,             -1,         -1,         -1 }, // layer 0
                                                     {           -1,             -1,         -1,         -1 }, // layer 1
                                                     {           -1,             -1,         -1,         -1 }, // layer 2
                                                     {  IN_MODE_LF1,    IN_MODE_LF2,         -1,         -1 }, // layer 3
+                                                    {  IN_MODE_TRG,             -1,         -1,         -1 },
                                                     {   MODE_AU_AL,     MODE_AU_AH, MODE_AU_BL, MODE_AU_BH }, // layer 4
                                                     {           -1,             -1,         -1,         -1 }, // layer 5
                                                     {           -1,             -1,         -1,         -1 }  // layer 6
@@ -250,23 +251,26 @@ public:         // Logging
 
         const   uint8_t                         g_mapType[BLOCK_COUNT][4] =
                                                 {
-                                                    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },
-                                                    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  },
+                                                    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  }, // mode channel 0-3 
+                                                    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  }, // mode channel 4-7
 
-                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
-                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // i put the input-selection and the flag together, now is max + 1 off and < max on
+                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // 
+                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // 
+                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // 
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }
                                                 };
 
         const   uint8_t                         g_valueRoof[BLOCK_COUNT][4] =
                                                 {
-                                                    { 4,  4,  4,  4  },
-                                                    { 4,  4,  4,  4  },                                                    
-                                                    { 5,  5,  7,  7  },
-                                                    { 64, 64, 64, 64 },
-                                                    { 8,  8,  8,  8  },                         // means i need the max +1
-                                                    { 2,  2,  2,  2  }
+                                                    {    4,    4,    4,    4  },                                      // channel 0-3 four modes ( before roof mapping )
+                                                    {    4,    4,    4,    4  },                                      // channel 4-7 four modes ( before roof mapping )
+                                                    {    5,    5,    7,    7  },                                      // LF0 wave, LF0 mult, LF1 wave, LF1 mult
+                                                    { 1023, 1023,    3,    0  },                                      // threshold, effect, attenuation, none/dummy
+                                                    {   64,   64,   64,   64  },                                      // sensitivity Aud0_L, Aud0_H, Aud1_L, Aud1_H
+
+                                                    {    8,    8,    8,    8  },                         // means i need the max +1
+                                                    {    2,    2,    2,    2  }
                                                 };
 
         const   uint8_t                         g_groupLen[GROUP_COUNT] =
