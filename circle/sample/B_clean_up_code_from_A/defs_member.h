@@ -327,10 +327,10 @@ public:         // Logging
                                                     { 6, 7, 0, 0 }
                                                 };
 
-                uint8_t                         g_modeRoof[MODETABLE_COUNT]     = { 0 };
-                uint8_t                         g_modeMap[MODETABLE_COUNT][9]   = { 0 };
+                int                          g_modeRoof[MODETABLE_COUNT]     = { 0 };
+                int                         g_modeMap[MODETABLE_COUNT][9]   = { 0 };
 
-                uint8_t                         g_blockColor[BLOCK_COUNT][3] =
+                int                         g_blockColor[BLOCK_COUNT][3] =
 {
     {190,  60,  50},   // block 0 - warm red
     { 55, 155,  95},   // block 1 - jade green
