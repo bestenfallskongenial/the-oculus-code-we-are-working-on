@@ -249,7 +249,7 @@ void CKernel::buttonConsumer(int buttonA, int buttonB)
 
             layerAvailable =
             (
-                layerModeMap[stepLayer]
+                layerModeMap[stepLayer -1]
                 &
                 (
                     modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][0]] |
@@ -276,6 +276,16 @@ void CKernel::buttonConsumer(int buttonA, int buttonB)
 
 void            CKernel::dispatchLayer()
 {
+    if (g_menuLayer == 0)
+    {
+        return;
+    }
+
+    const uint8_t block = g_menuLayer - 1;
+
+    set_mode_roof_map(block);
+    mapMenuGroup(block);
+/*
                 switch (g_menuLayer)
                 {
                     case 0:
@@ -292,27 +302,26 @@ void            CKernel::dispatchLayer()
                         set_mode_roof_map(2);
                         mapMenuGroup(2);
                         break;
-                    case 4:                         // audio sensitivity
+                    case 4:                         // Threshold / attenuation
                         set_mode_roof_map(3);
                         mapMenuGroup(3);
                         break;
-                    case 5:                         // target selector
+                    case 5:                         // audio sensitivity 
                         set_mode_roof_map(4);
                         mapMenuGroup(4);
                         break;
-                    case 6:                         // firmware / file operations
+                    case 6:                         // target selector 
                         set_mode_roof_map(5);
                         mapMenuGroup(5);
                         break;
-/*
-                    case 7:
+                    case 7:                         // firmware / file operations
                         set_mode_roof_map(7);
                         mapMenuGroup(7);
                         break;
-*/
                     default:
                         break;
                 }
+*/
 }
 
 void            CKernel::set_mode_roof_map          (uint8_t block)

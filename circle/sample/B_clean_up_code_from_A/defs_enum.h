@@ -1,47 +1,47 @@
 //------------------------------------------------- // for the array unsigned g_centralModeBuffer[SLOTS][MODETABLE_COUNT]
 enum centralModeBuffer
 {
-// block 00 
+// block 00 / layer 1 - 00
     MODE_CH0 = 0,           // store the mode ( from g_modeTable[] ) for cannel 0
     MODE_CH1,				// store the mode ( from g_modeTable[] ) for cannel 1
     MODE_CH2,               // store the mode ( from g_modeTable[] ) for cannel 2
     MODE_CH3,               // store the mode ( from g_modeTable[] ) for cannel 3
-// block 01
+// block 01 / layer 2 - 04
     MODE_CH4,               // store the mode ( from g_modeTable[] ) for cannel 4
     MODE_CH5,               // store the mode ( from g_modeTable[] ) for cannel 5
     MODE_CH6,               // store the mode ( from g_modeTable[] ) for cannel 6
     MODE_CH7,               // store the mode ( from g_modeTable[] ) for cannel 7
-// block 02
+// block 02 / layer 3 - 08
     LF1_WAVE,               // stores waveform for lfo1 ( from g_waveTable[WAVEFORMS_COUNT][WAVESAMPLES] ) 
     LF2_WAVE,               // stores waveform for lfo2 ( from g_waveTable[WAVEFORMS_COUNT][WAVESAMPLES] )
     LF1_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
     LF2_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
-// block 03
+// block 03 / layer 4 - 12
     THRESHOLD_L,            // NEW - the threshold low for IN_MODE_TRG
     THRESHOLD_H,            // NEW - the threshold heigh for IN_MODE_TRG
     EFFECT,                 // NEW - hypothetical "strength" for the randomizer - not implemented
     ATTENUATION,            // New - attenuation for the readAndConvertADC() 
-// block 04
+// block 04 / layer 5 - 16
     SENS_A,                 // stores the sensitivity for the audio mode ( available if enabled ) bandA0
     SENS_B,                 // stores the sensitivity for the audio mode ( available if enabled ) bandA1
     SENS_C,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB0
     SENS_D,                 // stores the sensitivity for the audio mode ( available if enabled ) bandB1
-// block 05
+// block 05 / layer 6 - 20
     SEL_TIME,               // SEL_TIME & FLAG_TIME should be unified by count any SEL_TIME < MAX as true
     SEL_TEX,
     SEL_VID,
     SEL_FRM,
-// block 06
+// block 06 / layer 7 - 24
     SET_STORE,
     SET_LOAD,
     LOG_STORE,
     KLN_LOAD,
-// block 07 - "mute" block
+// block 07 / layer 8 - "mute" block
     FLAG_AUDIO_A,           // for internal use only! 
     FLAG_AUDIO_B,
     FLAG_DUMMY_A,           // what is about the clk detection ( TRG mode )? can we automize it too?
     FLAG_DUMMY_B,           // or i autodetect the last correct bpm because the bpm function is autodetecting ...
-// block 08 - "mute" block
+// block 08 / layer 9 - "mute" block
     SEL_PRG,                // instead of an additional "allow prg changes" global flag - what if this will never be released again!?!
     IS_STORED,
     FLAG_DUMMY_C,
