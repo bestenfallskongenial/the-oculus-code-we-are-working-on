@@ -123,9 +123,9 @@ public:         // Logging
 
                 char                            m_83FileName[MAX_FILE_NAME_LENGTH];
 // util
-        const   int                             m_scaleFactors[3]                               = { 2047,       // 2.5V max (1023 * 2)
+        const   int                             m_scaleFactors[3]                               = { 1023,       // 5.0V max (1023 * 1)
                                                                                                     1551,       // 3.3V max (1023 * 1.515555...)
-                                                                                                    1023    };  // 5.0V max     
+                                                                                                    2047 };     // 2.5V max (1023 * 2)     
 
                 int                             m_adc_ring[ADC_CHANNELS][ADC_BUFFER_COUNT] = { 0 };
                 int                             m_adc_index = 0;
@@ -280,7 +280,7 @@ public:         // Logging
                                                     0b11111111, // layer 6: every mode
                                                     0b11111111, // layer 7: every mode
                                                     0b11111111  // layer 8: every mode
-                                                //  0b11111111, // layer 9: every mode - who give a fuck other than retarded ai´s - its just  a filler !
+                                                //  0b11111111, // layer 9: every mode - who give a fuck other than retarded ai´s - its just a filler !
                                                 };
 
         const   int                         g_mapType[BLOCK_COUNT][4] =
