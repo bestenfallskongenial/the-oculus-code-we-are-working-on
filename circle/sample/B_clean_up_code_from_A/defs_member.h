@@ -269,7 +269,6 @@ public:         // Logging
 
         const   uint8_t                     layerModeMap[BLOCK_COUNT] =
                                                 {
-                                                    0b11111111, // layer 0: every mode
                                                     0b11111111, // layer 1: every mode
                                                     0b11111111, // layer 2: every mode
 
