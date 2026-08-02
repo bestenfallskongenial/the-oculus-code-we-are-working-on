@@ -26,13 +26,13 @@ void            CKernel::logModesRuntime( int row )
 
                 f_logBuffer[0] = '\0';
 
-                storeLogHex(   f_logBuffer, f_logIndex, "MODES      00-03", (u32)g_centralModeBuffer[g_currentProgramBuffer][0], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][1], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][2], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][3] );
-                storeLogHex(   f_logBuffer, f_logIndex, "MODES      04-07", (u32)g_centralModeBuffer[g_currentProgramBuffer][4], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][5], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][6], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][7] );
-                storeLogHex(   f_logBuffer, f_logIndex, "LFOs       08-11", (u32)g_centralModeBuffer[g_currentProgramBuffer][8], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][9], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][10], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][11] );
-                storeLogHex(   f_logBuffer, f_logIndex, "AUDIO      12-15", (u32)g_centralModeBuffer[g_currentProgramBuffer][12], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][13], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][14], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][15] );
-                storeLogHex(   f_logBuffer, f_logIndex, "SELECTOR   16-19", (u32)g_centralModeBuffer[g_currentProgramBuffer][16], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][17], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][18], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][19] );
-                storeLogHex(   f_logBuffer, f_logIndex, "FLAGS      20-23", (u32)g_centralModeBuffer[g_currentProgramBuffer][20], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][21], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][22], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][23] );
-                storeLogHex(   f_logBuffer, f_logIndex, "Hidden      24-27", (u32)g_centralModeBuffer[g_currentProgramBuffer][24], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][25], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][26], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][27] );                            
+                storeLogHex(   f_logBuffer, f_logIndex, "MODES  00-03", (u32)g_centralModeBuffer[g_currentProgramBuffer][0], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][1], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][2], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][3] );
+                storeLogHex(   f_logBuffer, f_logIndex, "MODES  04-07", (u32)g_centralModeBuffer[g_currentProgramBuffer][4], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][5], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][6], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][7] );
+                storeLogHex(   f_logBuffer, f_logIndex, "LFOs   08-11", (u32)g_centralModeBuffer[g_currentProgramBuffer][8], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][9], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][10], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][11] );
+                storeLogHex(   f_logBuffer, f_logIndex, "THRESH 12-15", (u32)g_centralModeBuffer[g_currentProgramBuffer][12], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][13], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][14], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][15] );
+                storeLogHex(   f_logBuffer, f_logIndex, "SENS   16-19", (u32)g_centralModeBuffer[g_currentProgramBuffer][16], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][17], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][18], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][19] );
+                storeLogHex(   f_logBuffer, f_logIndex, "INPUT  20-23", (u32)g_centralModeBuffer[g_currentProgramBuffer][20], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][21], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][22], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][23] );
+                storeLogHex(   f_logBuffer, f_logIndex, "SYSTEM 24-27", (u32)g_centralModeBuffer[g_currentProgramBuffer][24], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][25], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][26], X_STR, (u32)g_centralModeBuffer[g_currentProgramBuffer][27] );
 
                 bufferScreenDraw(   f_logBuffer, 0, f_logIndex, 0, row, 0xFFFFFFFF );
 }
@@ -47,10 +47,10 @@ void            CKernel::logPickUpFlags( int row)
                 storeLogHex(    f_logBuffer, f_logIndex, "Flags mode     00-03", g_menuPickUpFlag[0], X_STR, g_menuPickUpFlag[1], X_STR, g_menuPickUpFlag[2], X_STR, g_menuPickUpFlag[3]);    
                 storeLogHex(    f_logBuffer, f_logIndex, "Flags mode     04-07", g_menuPickUpFlag[4], X_STR, g_menuPickUpFlag[5], X_STR, g_menuPickUpFlag[6], X_STR, g_menuPickUpFlag[7]); 
                 storeLogHex(    f_logBuffer, f_logIndex, "Flags lfo      08-11", g_menuPickUpFlag[8], X_STR, g_menuPickUpFlag[9], X_STR,  g_menuPickUpFlag[10], X_STR, g_menuPickUpFlag[11]); 
-                storeLogHex(    f_logBuffer, f_logIndex, "Flags sens     12-15", g_menuPickUpFlag[12], X_STR, g_menuPickUpFlag[13], X_STR, g_menuPickUpFlag[14], X_STR, g_menuPickUpFlag[15]);   
-                storeLogHex(    f_logBuffer, f_logIndex, "Flags selector 16-19", g_menuPickUpFlag[16], X_STR, g_menuPickUpFlag[17], X_STR, g_menuPickUpFlag[18], X_STR, g_menuPickUpFlag[19]); 
-                storeLogHex(    f_logBuffer, f_logIndex, "Flags system   20-23", g_menuPickUpFlag[20], X_STR, g_menuPickUpFlag[21], X_STR, g_menuPickUpFlag[22], X_STR, g_menuPickUpFlag[23]);
-                storeLogHex(    f_logBuffer, f_logIndex, "Flags hidden   24-27", g_menuPickUpFlag[24], X_STR, g_menuPickUpFlag[25], X_STR, g_menuPickUpFlag[26], X_STR, g_menuPickUpFlag[27]);    
+                storeLogHex(    f_logBuffer, f_logIndex, "Flags thresh   12-15", g_menuPickUpFlag[12], X_STR, g_menuPickUpFlag[13], X_STR, g_menuPickUpFlag[14], X_STR, g_menuPickUpFlag[15]);   
+                storeLogHex(    f_logBuffer, f_logIndex, "Flags snes     16-19", g_menuPickUpFlag[16], X_STR, g_menuPickUpFlag[17], X_STR, g_menuPickUpFlag[18], X_STR, g_menuPickUpFlag[19]); 
+                storeLogHex(    f_logBuffer, f_logIndex, "Flags input    20-23", g_menuPickUpFlag[20], X_STR, g_menuPickUpFlag[21], X_STR, g_menuPickUpFlag[22], X_STR, g_menuPickUpFlag[23]);
+                storeLogHex(    f_logBuffer, f_logIndex, "Flags system   24-27", g_menuPickUpFlag[24], X_STR, g_menuPickUpFlag[25], X_STR, g_menuPickUpFlag[26], X_STR, g_menuPickUpFlag[27]);    
 
                 bufferScreenDraw(   f_logBuffer, 0, f_logIndex, 0, row, 0xFFFFFFFF );
 }
