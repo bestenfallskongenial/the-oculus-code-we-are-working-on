@@ -269,6 +269,7 @@ public:         // Logging
 
         const   uint8_t                     layerModeMap[BLOCK_COUNT] =
                                                 {
+                                                    0b11111111, // layer 0: dummy row
                                                     0b11111111, // layer 1: every mode
                                                     0b11111111, // layer 2: every mode
 
@@ -278,8 +279,8 @@ public:         // Logging
 
                                                     0b11111111, // layer 6: every mode
                                                     0b11111111, // layer 7: every mode
-                                                    0b11111111, // layer 8: every mode
-                                                    0b11111111  // layer 9: every mode
+                                                    0b11111111  // layer 8: every mode
+                                                //  0b11111111, // layer 9: every mode - who give a fuck other than retarded ai´s - its just  a filler !
                                                 };
 
         const   int                         g_mapType[BLOCK_COUNT][4] =

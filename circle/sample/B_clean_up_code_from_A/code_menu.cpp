@@ -249,7 +249,7 @@ void CKernel::buttonConsumer(int buttonA, int buttonB)
 
             layerAvailable =
             (
-                layerModeMap[stepLayer -1]
+                layerModeMap[stepLayer]
                 &
                 (
                     modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][0]] |
