@@ -6,9 +6,13 @@
 #define             BPM_DEN                                             8   // 1.25  = 5/4   -> *4 < *5
                                                                             // 1.2   = 6/5   -> *5 < *6
                                                                             // 1.125 = 9/8   -> *8 < *9
-#define             LAYER                                               6
-#define             BLOCK_COUNT                                         8  // <---- ****** confusion?!?! i need to be this as single source of trueh or derived from g_centralModeBuffer
+// #define             LAYER                                               6
 
+// #define             BLOCK_COUNT                                         8  // <---- ****** confusion?!?! i need to be this as single source of trueh or derived from g_centralModeBuffer
+
+    #define BLOCK_WIDTH                         4
+    #define BLOCK_COUNT                         (MODETABLE_COUNT / BLOCK_WIDTH)
+    #define ACCESSIBLE_LAYER 7
 
 #define             check() 				                            gfx_check(__FILE__, __LINE__) 	// my own assertiion implimentation
 

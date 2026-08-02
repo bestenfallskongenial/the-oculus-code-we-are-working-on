@@ -101,7 +101,7 @@ public:         // Logging
 
                 unsigned                        g_currentTime;
 
-//             int                             attenuation                                     = 2;
+//              int                             attenuation                                     = 2;
                 bool                            m_audio_mode_activated                          = true; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
                 bool                            is_audio[2]                                     = { 0 };
@@ -237,19 +237,53 @@ public:         // Logging
     &CKernel::modeAudioBbH
 };
 */
-        const   int                             layerModeMap[8][4] =
+
+/*
+        const   int                             layerModeMap[BLOCK_COUNT][4] =
                                                 {
                                                     {           -1,             -1,         -1,         -1 }, // layer 0
                                                     {           -1,             -1,         -1,         -1 }, // layer 1
+
                                                     {           -1,             -1,         -1,         -1 }, // layer 2
                                                     {  IN_MODE_LF1,    IN_MODE_LF2,         -1,         -1 }, // layer 3
                                                     {  IN_MODE_TRG,             -1,         -1,         -1 },
                                                     {   MODE_AU_AL,     MODE_AU_AH, MODE_AU_BL, MODE_AU_BH }, // layer 4
                                                     {           -1,             -1,         -1,         -1 }, // layer 5
-                                                    {           -1,             -1,         -1,         -1 }  // layer 6
+                                                    {           -1,             -1,         -1,         -1 }, // layer 6
+
+                                                    {           -1,             -1,         -1,         -1 }, // layer 7
+                                                    {           -1,             -1,         -1,         -1 }  // layer 8
+                                                };
+*/
+        const   uint8_t                     modeMaskByValue[8] =
+                                                {
+                                                    0b00000001, // mode 0
+                                                    0b00000010, // mode 1
+                                                    0b00000100, // mode 2
+                                                    0b00001000, // mode 3
+                                                    0b00010000, // mode 4
+                                                    0b00100000, // mode 5
+                                                    0b01000000, // mode 6
+                                                    0b10000000  // mode 7
                                                 };
 
-        const   uint8_t                         g_mapType[BLOCK_COUNT][4] =
+        const   uint8_t                     layerModeMap[BLOCK_COUNT] =
+                                                {
+                                                    0b11111111, // layer 0: every mode
+                                                    0b11111111, // layer 1: every mode
+                                                    0b11111111, // layer 2: every mode
+
+                                                    0b00001100, // layer 3: modes 2 or 3
+                                                    0b00000010, // layer 4: mode 1
+                                                    0b11110000, // layer 5: modes 4, 5, 6 or 7
+
+                                                    0b11111111, // layer 6: every mode
+                                                    0b11111111, // layer 7: every mode
+                                                    0b11111111, // layer 8: every mode
+                                                    0b11111111  // layer 9: every mode
+                                                };
+
+        const   int                         g_mapType[BLOCK_COUNT][4] =
                                                 {
                                                     { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  }, // mode channel 0-3 
                                                     { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  }, // mode channel 4-7
@@ -258,37 +292,43 @@ public:         // Logging
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // 
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // 
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+
+                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },                                                    
                                                     { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }
                                                 };
 
-        const   uint8_t                         g_valueRoof[BLOCK_COUNT][4] =
+        const   int                         g_valueRoof[BLOCK_COUNT][4] =
                                                 {
                                                     {    4,    4,    4,    4  },                                      // channel 0-3 four modes ( before roof mapping )
                                                     {    4,    4,    4,    4  },                                      // channel 4-7 four modes ( before roof mapping )
-                                                    {    5,    5,    7,    7  },                                      // LF0 wave, LF0 mult, LF1 wave, LF1 mult
-                                                    { 1023, 1023,    3,    0  },                                      // threshold, effect, attenuation, none/dummy
-                                                    {   64,   64,   64,   64  },                                      // sensitivity Aud0_L, Aud0_H, Aud1_L, Aud1_H
 
+                                                    {    5,    5,    7,    7  },                                      // LF0 wave, LF0 mult, LF1 wave, LF1 mult
+                                                    { 1024, 1024,    0,    3  },                                      // threshold, effect, attenuation, none/dummy
+                                                    {   64,   64,   64,   64  },                                      // sensitivity Aud0_L, Aud0_H, Aud1_L, Aud1_H
                                                     {    8,    8,    8,    8  },                         // means i need the max +1
-                                                    {    2,    2,    2,    2  }
+                                                    {    2,    2,    2,    2  },
+
+                                                    {    0,    0,    0,    0  },
+                                                    {    0,    0,    0,    0  }                                                    
                                                 };
 
-        const   uint8_t                         g_groupLen[GROUP_COUNT] =
+        const   int                         g_groupLen[GROUP_COUNT] =
                                                 {
                                                     4,
                                                     2,
                                                     2
                                                 };
 
-        const   uint8_t                         g_groupModes[GROUP_COUNT][4] =
+        const   int                         g_groupModes[GROUP_COUNT][4] =
                                                 {
                                                     { 0, 1, 2, 3 },
                                                     { 4, 5, 0, 0 },
                                                     { 6, 7, 0, 0 }
                                                 };
 
-                uint8_t                         g_modeRoof[BLOCK_COUNT * 4]     = { 0 };
-                uint8_t                         g_modeMap[BLOCK_COUNT * 4][9]   = { 0 };
+                uint8_t                         g_modeRoof[MODETABLE_COUNT]     = { 0 };
+                uint8_t                         g_modeMap[MODETABLE_COUNT][9]   = { 0 };
 
                 uint8_t                         g_blockColor[BLOCK_COUNT][3] =
 {

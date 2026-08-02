@@ -2,12 +2,12 @@
 enum centralModeBuffer
 {
 // block 00 
-    MODE_CH0 = 0,           // store the mode ( from g_modeTable[] ) for cannel 0 - choose between mode 0 to 8 
+    MODE_CH0 = 0,           // store the mode ( from g_modeTable[] ) for cannel 0
     MODE_CH1,				// store the mode ( from g_modeTable[] ) for cannel 1
     MODE_CH2,               // store the mode ( from g_modeTable[] ) for cannel 2
     MODE_CH3,               // store the mode ( from g_modeTable[] ) for cannel 3
 // block 01
-    MODE_CH4,               // store the mode ( from g_modeTable[] ) for cannel 4 - choose between wave 0 to 3 - how can i get mode bpm to the waves, its a random wave at the end!
+    MODE_CH4,               // store the mode ( from g_modeTable[] ) for cannel 4
     MODE_CH5,               // store the mode ( from g_modeTable[] ) for cannel 5
     MODE_CH6,               // store the mode ( from g_modeTable[] ) for cannel 6
     MODE_CH7,               // store the mode ( from g_modeTable[] ) for cannel 7
@@ -17,10 +17,10 @@ enum centralModeBuffer
     LF1_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
     LF2_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
 // block 03
-    THRESHOLD_L,
-    THRESHOLD_H,
-    EFFECT,
-    ATTENUATION,
+    THRESHOLD_L,            // NEW - the threshold low for IN_MODE_TRG
+    THRESHOLD_H,            // NEW - the threshold heigh for IN_MODE_TRG
+    EFFECT,                 // NEW - hypothetical "strength" for the randomizer - not implemented
+    ATTENUATION,            // New - attenuation for the readAndConvertADC() 
 // block 04
     SENS_A,                 // stores the sensitivity for the audio mode ( available if enabled ) bandA0
     SENS_B,                 // stores the sensitivity for the audio mode ( available if enabled ) bandA1
@@ -36,12 +36,12 @@ enum centralModeBuffer
     SET_LOAD,
     LOG_STORE,
     KLN_LOAD,
-// block 07
+// block 07 - "mute" block
     FLAG_AUDIO_A,           // for internal use only! 
     FLAG_AUDIO_B,
     FLAG_DUMMY_A,           // what is about the clk detection ( TRG mode )? can we automize it too?
     FLAG_DUMMY_B,           // or i autodetect the last correct bpm because the bpm function is autodetecting ...
-// block 08
+// block 08 - "mute" block
     SEL_PRG,                // instead of an additional "allow prg changes" global flag - what if this will never be released again!?!
     IS_STORED,
     FLAG_DUMMY_C,
