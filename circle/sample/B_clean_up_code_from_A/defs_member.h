@@ -47,27 +47,27 @@ private:        // SMI / DMA / WS2812
 
                 bool                            m_SMIValid                                      = false;
 public:         // Logging
-                u32                             m_bufferLogIndex[LOG_SD+LOG_USB]                = {0};          // for the new model where we use the char* m_bufferLog[LOG_SD+LOG_USB] 
+                u32                             m_bufferLogIndex[LOG_SD+LOG_USB]                =       {0};          // for the new model where we use the char* m_bufferLog[LOG_SD+LOG_USB] 
 
-                char                            m_logBuffer[1024*32]                            = {0};          //  pre-init buffer 
+                char                            m_logBuffer[1024*32]                            =       {0};          //  pre-init buffer 
                 u32                             m_logBufferIndex                                = 0;
 
-                char                             m_ModeBuffer[1024*32]                          = {0};
+                char                             m_ModeBuffer[1024*32]                          =       {0};
    
                 u32                             m_logScreenStartIndex                           = 0;            // logScreenUpdate()
 // local copies of my graphics related structs
-                olg_state                       m_ogl                                           = {};           
+                olg_state                       m_ogl                                           =       {};           
 
-                vtx_state                       m_vtx                                           = {};
+                vtx_state                       m_vtx                                           =       {};
 
-                glsl_state                      m_vsh                                           = {};
-                glsl_state                      m_fsh                                           = {};
-                glsl_state                      m_osh                                           = {};
+                glsl_state                      m_vsh                                           =       {};
+                glsl_state                      m_fsh                                           =       {};
+                glsl_state                      m_osh                                           =       {};
 
-                tex_state                       m_tex                                           = {};
-                tex_state                       m_omt                                           = {};
+                tex_state                       m_tex                                           =       {};
+                tex_state                       m_omt                                           =       {};
 
-                h264_state                      m_vid                                           = {};    
+                h264_state                      m_vid                                           =       {};    
 
                 int                             m_activeTex                                     = 0;
                 int                             m_activeVideo                                   = 0;
@@ -96,26 +96,26 @@ public:         // Logging
                 GLint                           GLtime                                          = 0;
                 GLfloat                         g_opaque                                        = 0.5; 
 
- //             unsigned long                   DOUBLE_CLICK_TIME                             = 500000;
- //             unsigned long                   LONG_CLICK_TIME                               = 1000000;
+ //             unsigned long                   DOUBLE_CLICK_TIME                               = 500000;
+ //             unsigned long                   LONG_CLICK_TIME                                 = 1000000;
 
                 unsigned                        g_currentTime;
 
 //              int                             attenuation                                     = 2;
                 bool                            m_audio_mode_activated                          = true; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-                bool                            is_audio[2]                                     = { 0 };
+                bool                            is_audio[2]                                     =           { 0 };
 
-                unsigned                        g_inOutMatrixInt[CHANNEL][IO_TYPE_COUNT]        = { 0 };           // the integer in/out matrix
-                float                           g_inOutMatrixFlt[CHANNEL][IO_TYPE_COUNT]        = { 0.0f };           // the float in/out matrix
-                bool                            g_menuPickUpFlag[MODETABLE_COUNT]               = { 0 };                     // the flags for the pickup mechanism  
-                unsigned                        g_buttons_states[BUTTON_COUNT][BTN_INDEX_COUNT] = { 0 };      // the button state machine
-                unsigned                        g_centralModeBuffer[SLOTS][MODETABLE_COUNT]     = { 0 };         // the general user settings, storable per program 
-                unsigned                        g_centralModeBufferTemp[SLOTS][MODETABLE_COUNT] = { 0 };
-                unsigned                        g_lfoMultiplier[LFO_MULTIPLIERS_COUNT]          = { 64, 32, 16, 8, 4, 2, 1 };
+                unsigned                        g_inOutMatrixInt[CHANNEL][IO_TYPE_COUNT]        =           { 0 };           // the integer in/out matrix
+                float                           g_inOutMatrixFlt[CHANNEL][IO_TYPE_COUNT]        =           { 0.0f };           // the float in/out matrix
+                bool                            g_menuPickUpFlag[MODETABLE_COUNT]               =           { 0 };                     // the flags for the pickup mechanism  
+                unsigned                        g_buttons_states[BUTTON_COUNT][BTN_INDEX_COUNT] =           { 0 };      // the button state machine
+                unsigned                        g_centralModeBuffer[SLOTS][MODETABLE_COUNT]     =           { 0 };         // the general user settings, storable per program 
+                unsigned                        g_centralModeBufferTemp[SLOTS][MODETABLE_COUNT] =           { 0 };
+                unsigned                        g_lfoMultiplier[LFO_MULTIPLIERS_COUNT]          =           { 64, 32, 16, 8, 4, 2, 1 };
 
-                unsigned long                   g_lfoBpmMatrix[4][LFO_BPM_COUNT]                = { 0 }; // was unsigned !
-                int                             g_audioIreg[4]                                  = { 0 };
+                unsigned long                   g_lfoBpmMatrix[4][LFO_BPM_COUNT]                =           { 0 }; // was unsigned !
+                int                             g_audioIreg[4]                                  =           { 0 };
 // datamanagement.cpp
                 unsigned                        g_hFile;
 
@@ -123,16 +123,14 @@ public:         // Logging
 
                 char                            m_83FileName[MAX_FILE_NAME_LENGTH];
 // util
-        const   int                             m_scaleFactors[3]                               = { 1023,       // 5.0V max (1023 * 1)
-                                                                                                    1551,       // 3.3V max (1023 * 1.515555...)
-                                                                                                    2047 };     // 2.5V max (1023 * 2)     
+        const   int                             m_scaleFactors[3]                               =           { 1023, 1551, 2047 };      // 5.0V max (1023 * 1) / 3.3V max (1023 * 1.515555...) / 2.5V max (1023 * 2)
 
-                int                             m_adc_ring[ADC_CHANNELS][ADC_BUFFER_COUNT] = { 0 };
+                int                             m_adc_ring[ADC_CHANNELS][ADC_BUFFER_COUNT]      =           { 0 };
                 int                             m_adc_index = 0;
 
-                int                             m_band[4][AUDIO_BUFFER_COUNT]                   = { 0 };
+                int                             m_band[4][AUDIO_BUFFER_COUNT]                   =           { 0 };
 
-                int                             m_sum[4]                                        = { 0 };  
+                int                             m_sum[4]                                        =           { 0 };  
 
                 uint8_t                         m_idx0;
                 uint8_t                         m_idx1;
@@ -216,10 +214,10 @@ public:         // Logging
                 unsigned                        g_bytVid[VID_SD + VID_USB]                      =           { 0 };
                 unsigned                        g_bytKln[KLN_SD + KLN_USB]                      =           { 0 };
 // CODE_MENU.CPP
-                int g_menuLayer         = 0;
-                int g_lastLayer         = 0;
-                int g_lastLayerLED      = 0;
-                unsigned g_extClockTime[8] = {0}; // number of my adc channels!
+                int                             g_menuLayer                                     = 0;
+                int                             g_lastLayer                                     = 0;
+                int                             g_lastLayerLED                                  = 0;
+                unsigned                        g_extClockTime[8]                               =           { 0 }; // number of my adc channels!
 
 //      typedef void                            (CKernel::*ModeFunc)(int);
 /*
@@ -255,99 +253,75 @@ public:         // Logging
                                                     {           -1,             -1,         -1,         -1 }  // layer 8
                                                 };
 */
-        const   uint8_t                     modeMaskByValue[8] =
-                                                {
-                                                    0b00000001, // mode 0
-                                                    0b00000010, // mode 1
-                                                    0b00000100, // mode 2
-                                                    0b00001000, // mode 3
-                                                    0b00010000, // mode 4
-                                                    0b00100000, // mode 5
-                                                    0b01000000, // mode 6
-                                                    0b10000000  // mode 7
-                                                };
+        const   uint8_t                     modeMaskByValue[8]                                  =       {   0b00000001,     // mode 0
+                                                                                                            0b00000010,     // mode 1
+                                                                                                            0b00000100,     // mode 2
+                                                                                                            0b00001000,     // mode 3
+                                                                                                            0b00010000,     // mode 4
+                                                                                                            0b00100000,     // mode 5
+                                                                                                            0b01000000,     // mode 6
+                                                                                                            0b10000000 };   // mode 7 
 
-        const   uint8_t                     layerModeMap[BLOCK_COUNT] =
-                                                {
-                                                    0b11111111, // layer 0: dummy row
-                                                    0b11111111, // layer 1: every mode
-                                                    0b11111111, // layer 2: every mode
+        const   uint8_t                     layerModeMap[BLOCK_COUNT]                           =       {   0b11111111,     // layer 0: dummy row
+                                                                                                            0b11111111,     // layer 1: every mode
+                                                                                                            0b11111111,     // layer 2: every mode
 
-                                                    0b00001100, // layer 3: modes 2 or 3
-                                                    0b00000010, // layer 4: mode 1
-                                                    0b11110000, // layer 5: modes 4, 5, 6 or 7
+                                                                                                            0b00001100,     // layer 3: modes 2 or 3
+                                                                                                            0b00000010,     // layer 4: mode 1
+                                                                                                            0b11110000,     // layer 5: modes 4, 5, 6 or 7
 
-                                                    0b11111111, // layer 6: every mode
-                                                    0b11111111, // layer 7: every mode
-                                                    0b11111111  // layer 8: every mode
-                                                //  0b11111111, // layer 9: every mode - who give a fuck other than retarded ai´s - its just a filler !
-                                                };
+                                                                                                            0b11111111,     // layer 6: every mode
+                                                                                                            0b11111111,     // layer 7: every mode
+                                                                                                            0b11111111 };   // filler to get BLOCK_COUNT
 
-        const   int                         g_mapType[BLOCK_COUNT][4] =
-                                                {
-                                                    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  }, // mode channel 0-3 
-                                                    { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  }, // mode channel 4-7
+        const   int                         g_mapType[BLOCK_COUNT][4]                           =       {   { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  }, // mode channel 0-3 
+                                                                                                            { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  }, // mode channel 4-7
 
-                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // 
-                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // 
-                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // 
-                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
-                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+                                                                                                            { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // 
+                                                                                                            { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // 
+                                                                                                            { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // 
+                                                                                                            { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
+                                                                                                            { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
 
-                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },                                                    
-                                                    { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }
-                                                };
+                                                                                                            { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },                                                    
+                                                                                                            { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE } };
 
-        const   int                         g_valueRoof[BLOCK_COUNT][4] =
-                                                {
-                                                    {    4,    4,    4,    4  },                                      // channel 0-3 four modes ( before roof mapping )
-                                                    {    4,    4,    4,    4  },                                      // channel 4-7 four modes ( before roof mapping )
+        const   int                         g_valueRoof[BLOCK_COUNT][4]                         =       {   {    4,    4,    4,    4  },                                      // channel 0-3 four modes ( before roof mapping )
+                                                                                                            {    4,    4,    4,    4  },                                      // channel 4-7 four modes ( before roof mapping )
 
-                                                    {    5,    5,    7,    7  },                                      // LF0 wave, LF0 mult, LF1 wave, LF1 mult
-                                                    { 1024, 1024,    0,    3  },                                      // threshold, effect, attenuation, none/dummy
-                                                    {   64,   64,   64,   64  },                                      // sensitivity Aud0_L, Aud0_H, Aud1_L, Aud1_H
-                                                    {    8,    8,    8,    8  },                         // means i need the max +1
-                                                    {    2,    2,    2,    2  },
+                                                                                                            {    5,    5,    7,    7  },                                      // LF0 wave, LF0 mult, LF1 wave, LF1 mult
+                                                                                                            { 1024, 1024,    0,    3  },                                      // threshold, effect, attenuation, none/dummy
+                                                                                                            {   64,   64,   64,   64  },                                      // sensitivity Aud0_L, Aud0_H, Aud1_L, Aud1_H
+                                                                                                            {    8,    8,    8,    8  },                         // means i need the max +1
+                                                                                                            {    2,    2,    2,    2  },
 
-                                                    {    0,    0,    0,    0  },
-                                                    {    0,    0,    0,    0  }                                                    
-                                                };
+                                                                                                            {    0,    0,    0,    0  },
+                                                                                                            {    0,    0,    0,    0  } };
 
-        const   int                         g_groupLen[GROUP_COUNT] =
-                                                {
-                                                    4,
-                                                    2,
-                                                    2
-                                                };
+        const   int                         g_groupLen[GROUP_COUNT]                             =           { 4, 2, 2 };
 
-        const   int                         g_groupModes[GROUP_COUNT][4] =
-                                                {
-                                                    { 0, 1, 2, 3 },
-                                                    { 4, 5, 0, 0 },
-                                                    { 6, 7, 0, 0 }
-                                                };
+        const   int                         g_groupModes[GROUP_COUNT][4]                        =       {   { 0, 1, 2, 3 },
+                                                                                                            { 4, 5, 0, 0 },
+                                                                                                            { 6, 7, 0, 0 } };
 
-                int                          g_modeRoof[MODETABLE_COUNT]     = { 0 };
-                int                         g_modeMap[MODETABLE_COUNT][9]   = { 0 };
+                int                         g_modeRoof[MODETABLE_COUNT]                         =           { 0 };
+                int                         g_modeMap[MODETABLE_COUNT][9]                       =           { 0 };
 
-                int                         g_blockColor[BLOCK_COUNT][3] =
-{
-    {190,  60,  50},   // block 0 - warm red
-    { 55, 155,  95},   // block 1 - jade green
-    { 60, 105, 180},   // block 2 - medium blue
-    {185, 105,  40},   // block 3 - burnt orange
-    { 45, 140, 160},   // block 4 - blue teal
-    { 95,  90, 170},   // block 5 - indigo violet
-    {  0,   0,   0},   // block 6 - invisible
-    {150, 115,  45}    // block 7 - muted gold
-};
+                int                         g_blockColor[BLOCK_COUNT][3]                        =       {   {190,  60,  50},   // block 0 - warm red
+                                                                                                            { 55, 155,  95},   // block 1 - jade green
+                                                                                                            { 60, 105, 180},   // block 2 - medium blue
+                                                                                                            {185, 105,  40},   // block 3 - burnt orange
+                                                                                                            { 45, 140, 160},   // block 4 - blue teal
+                                                                                                            { 95,  90, 170},   // block 5 - indigo violet
+                                                                                                            {  0,   0,   0},   // block 6 - invisible
+                                                                                                            {150, 115,  45} }; // block 7 - muted gold
 
 private:
                 VCHI_INSTANCE_T                 m_VCHIInstance                                  = 0;
                 VCHI_CONNECTION_T*              m_Connection                                    = 0;
 
-                VCOS_EVENT_T                    m_EventSMEM                                     = {};
-                VCOS_EVENT_T                    m_EventMMAL                                     = {};
+                VCOS_EVENT_T                    m_EventSMEM                                     =           {};
+                VCOS_EVENT_T                    m_EventMMAL                                     =           {};
 
                 VCHI_SERVICE_HANDLE_T           m_ServiceHandleVCSM                             = 0;
                 VCHI_SERVICE_HANDLE_T           m_ServiceHandleMMAL                             = 0;
@@ -373,22 +347,22 @@ private:
                 u32                             m_InputPortHandle                               = 0;    // mmal needs it!
                 u32                             m_OutputPortHandle                              = 0;    // mmal needs it!
 
-        const   char*                           m_debug_table[16]                               = {     "MMAL_MSG_STATUS_SUCCESS", 							    // Success //
-                                                                                                        "MMAL_MSG_STATUS_ENOMEM",      							// Out of memory //
-                                                                                                        "MMAL_MSG_STATUS_ENOSPC",      							// Out of resources other than memory //
-                                                                                                        "MMAL_MSG_STATUS_EINVAL",      							// Argument is invalid //
-                                                                                                        "MMAL_MSG_STATUS_ENOSYS",      							// Function not implemented //
-                                                                                                        "MMAL_MSG_STATUS_ENOENT",      							// No such file or directory //
-                                                                                                        "MMAL_MSG_STATUS_ENXIO",       							// No such device or address //
-                                                                                                        "MMAL_MSG_STATUS_EIO",         							// I/O error //
-                                                                                                        "MMAL_MSG_STATUS_ESPIPE",      							// Illegal seek //
-                                                                                                        "MMAL_MSG_STATUS_ECORRUPT",    							// Data is corrupt \attention //
-                                                                                                        "MMAL_MSG_STATUS_ENOTREADY",   							// Component is not ready //
-                                                                                                        "MMAL_MSG_STATUS_ECONFIG",     							// Component is not configured //
-                                                                                                        "MMAL_MSG_STATUS_EISCONN",     							// Port is already connected //
-                                                                                                        "MMAL_MSG_STATUS_ENOTCONN",    							// Port is disconnected //
-                                                                                                        "MMAL_MSG_STATUS_EAGAIN",      							// Resource temporarily unavailable. //
-                                                                                                        "MMAL_MSG_STATUS_EFAULT" };   							// Bad address //
+        const   char*                           m_debug_table[16]                               =       {   "MMAL_MSG_STATUS_SUCCESS", 							    // Success //
+                                                                                                            "MMAL_MSG_STATUS_ENOMEM",      							// Out of memory //
+                                                                                                            "MMAL_MSG_STATUS_ENOSPC",      							// Out of resources other than memory //
+                                                                                                            "MMAL_MSG_STATUS_EINVAL",      							// Argument is invalid //
+                                                                                                            "MMAL_MSG_STATUS_ENOSYS",      							// Function not implemented //
+                                                                                                            "MMAL_MSG_STATUS_ENOENT",      							// No such file or directory //
+                                                                                                            "MMAL_MSG_STATUS_ENXIO",       							// No such device or address //
+                                                                                                            "MMAL_MSG_STATUS_EIO",         							// I/O error //
+                                                                                                            "MMAL_MSG_STATUS_ESPIPE",      							// Illegal seek //
+                                                                                                            "MMAL_MSG_STATUS_ECORRUPT",    							// Data is corrupt \attention //
+                                                                                                            "MMAL_MSG_STATUS_ENOTREADY",   							// Component is not ready //
+                                                                                                            "MMAL_MSG_STATUS_ECONFIG",     							// Component is not configured //
+                                                                                                            "MMAL_MSG_STATUS_EISCONN",     							// Port is already connected //
+                                                                                                            "MMAL_MSG_STATUS_ENOTCONN",    							// Port is disconnected //
+                                                                                                            "MMAL_MSG_STATUS_EAGAIN",      							// Resource temporarily unavailable. //
+                                                                                                            "MMAL_MSG_STATUS_EFAULT" };   							// Bad address //
 // VCSM predefined messages as public member
 public:
                 SERVICE_CREATION_T*             m_ServiceCreateVCSM                             = nullptr;
