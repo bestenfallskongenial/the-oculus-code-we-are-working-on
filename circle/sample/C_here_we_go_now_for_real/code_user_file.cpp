@@ -1,7 +1,7 @@
 #include "kernel.h"
 
-    #define MY_BFR   m_logBuffer                 // means the log goes into the pre-init buffer 
-    #define MY_IDX    m_logBufferIndex
+    #define MY_BFR  m_bufferLog[8]                 // means the log goes into the pre-init buffer 
+    #define MY_IDX  m_bufferLogIndex[8]
 
 const char*     CKernel::bufferSourceModeName       (   u32         p_value)
 {
@@ -67,13 +67,11 @@ u32             CKernel::bufferMultValue            (   u32         p_index)
 
 void            CKernel::create_buffer_file         (   )
 {
-                u32 index = 0;
+                MY_BFR[MY_IDX] = '\0';
 
-                m_ModeBuffer[index] = '\0';
+                storeLogHex(MY_BFR, MY_IDX, "# central mode buffer", X_VAL );
 
-                storeLogHex(m_ModeBuffer, index, "# central mode buffer", X_VAL );
-
-                nextline(m_ModeBuffer, index);
+                nextline(MY_BFR, MY_IDX);
 
                 for (u32 program = 0; program < filecounter[FT_FSH][FLD_VALID]; ++program)
                     {
@@ -82,71 +80,51 @@ void            CKernel::create_buffer_file         (   )
                         continue;
                         }
 
-                    storeLogHex(m_ModeBuffer, index, "program", hexToDec(program) );
+                    storeLogHex(MY_BFR, MY_IDX, "program", hexToDec(program) );
 
                     if (g_ScnFsh[program])
                         {
-                        storeLogHex(m_ModeBuffer, index, "file", X_VAL, g_ScnFsh[program] );
+                        storeLogHex(MY_BFR, MY_IDX, "file", X_VAL, g_ScnFsh[program] );
                         }
 
-                    nextline(m_ModeBuffer, index);
-
-                    storeLogHex(m_ModeBuffer, index, "ch0", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH0]) );
-
-                    storeLogHex(m_ModeBuffer, index, "ch1", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH1]) );
-
-                    storeLogHex(m_ModeBuffer, index, "ch2", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH2]) );
-
-                    storeLogHex(m_ModeBuffer, index, "ch3", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH3]) );
-
-                    storeLogHex(m_ModeBuffer, index, "ch4", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH4]) );
-
-                    storeLogHex(m_ModeBuffer, index, "ch5", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH5]) );
-
-                    storeLogHex(m_ModeBuffer, index, "ch6", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH6]) );
-
-                    storeLogHex(m_ModeBuffer, index, "ch7", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH7]) );
-
-                    nextline(m_ModeBuffer, index);
-
-                    storeLogHex(m_ModeBuffer, index, "lfo1", X_VAL, bufferWaveName(g_centralModeBuffer[program][LF1_WAVE]) );
-
-                    storeLogHex(m_ModeBuffer, index, "mult1", hexToDec(bufferMultValue(g_centralModeBuffer[program][LF1_MULT])) );
-
-                    storeLogHex(m_ModeBuffer, index, "lfo2", X_VAL, bufferWaveName(g_centralModeBuffer[program][LF2_WAVE]) );
-
-                    storeLogHex(m_ModeBuffer, index, "mult2", hexToDec(bufferMultValue(g_centralModeBuffer[program][LF2_MULT])) );
-
-                    nextline(m_ModeBuffer, index);
-
-                    storeLogHex(m_ModeBuffer, index, "audioA", hexToDec(g_centralModeBuffer[program][SENS_A]) );
-
-                    storeLogHex(m_ModeBuffer, index, "audioB", hexToDec(g_centralModeBuffer[program][SENS_B]) );
-
-                    storeLogHex(m_ModeBuffer, index, "audioC", hexToDec(g_centralModeBuffer[program][SENS_C]) );
-
-                    storeLogHex(m_ModeBuffer, index, "audioD", hexToDec(g_centralModeBuffer[program][SENS_D]) );
-
-                    nextline(m_ModeBuffer, index);
+                    nextline(MY_BFR, MY_IDX);
+                    storeLogHex(MY_BFR, MY_IDX, "ch0", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH0]) );
+                    storeLogHex(MY_BFR, MY_IDX, "ch1", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH1]) );
+                    storeLogHex(MY_BFR, MY_IDX, "ch2", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH2]) );
+                    storeLogHex(MY_BFR, MY_IDX, "ch3", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH3]) );
+                    storeLogHex(MY_BFR, MY_IDX, "ch4", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH4]) );
+                    storeLogHex(MY_BFR, MY_IDX, "ch5", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH5]) );
+                    storeLogHex(MY_BFR, MY_IDX, "ch6", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH6]) );
+                    storeLogHex(MY_BFR, MY_IDX, "ch7", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH7]) );
+                    nextline(MY_BFR, MY_IDX);
+                    storeLogHex(MY_BFR, MY_IDX, "lfo1", X_VAL, bufferWaveName(g_centralModeBuffer[program][LF1_WAVE]) );
+                    storeLogHex(MY_BFR, MY_IDX, "mult1", hexToDec(bufferMultValue(g_centralModeBuffer[program][LF1_MULT])) );
+                    storeLogHex(MY_BFR, MY_IDX, "lfo2", X_VAL, bufferWaveName(g_centralModeBuffer[program][LF2_WAVE]) );
+                    storeLogHex(MY_BFR, MY_IDX, "mult2", hexToDec(bufferMultValue(g_centralModeBuffer[program][LF2_MULT])) );
+                    nextline(MY_BFR, MY_IDX);
+                    storeLogHex(MY_BFR, MY_IDX, "audioA", hexToDec(g_centralModeBuffer[program][SENS_A]) );
+                    storeLogHex(MY_BFR, MY_IDX, "audioB", hexToDec(g_centralModeBuffer[program][SENS_B]) );
+                    storeLogHex(MY_BFR, MY_IDX, "audioC", hexToDec(g_centralModeBuffer[program][SENS_C]) );
+                    storeLogHex(MY_BFR, MY_IDX, "audioD", hexToDec(g_centralModeBuffer[program][SENS_D]) );
+                    nextline(MY_BFR, MY_IDX);
 
                     if (g_centralModeBuffer[program][SEL_TIME] < FLAG_THRESHOLD)
                         {
-                        storeLogHex(m_ModeBuffer, index, "time", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_TIME]) );
+                        storeLogHex(MY_BFR, MY_IDX, "time", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_TIME]) );
                         }
 
                     if (g_centralModeBuffer[program][SEL_TEX] < FLAG_THRESHOLD)
                         {
-                        storeLogHex(m_ModeBuffer, index, "tex", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_TEX]) );
+                        storeLogHex(MY_BFR, MY_IDX, "tex", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_TEX]) );
                         }
 
                     if (g_centralModeBuffer[program][SEL_VID] < FLAG_THRESHOLD)
                         {
-                        storeLogHex(m_ModeBuffer, index, "vid", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_VID]) );
-
-                        storeLogHex(m_ModeBuffer, index, "frm", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_FRM]) );
+                        storeLogHex(MY_BFR, MY_IDX, "vid", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_VID]) );
+                        storeLogHex(MY_BFR, MY_IDX, "frm", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_FRM]) );
                         }
 
-                    nextline(m_ModeBuffer, index);
+                    nextline(MY_BFR, MY_IDX);
                     }
 }
 
@@ -235,14 +213,14 @@ bool            CKernel::readBufferToken            (   const char*& p_read,
                     return false;
                     }
 
-                u32  index = 0;
+                u32  MY_IDX = 0;
                 bool valid = true;
 
                 while (!tokenEnd(*p_read))
                     {
-                    if (index < p_size - 1)
+                    if (MY_IDX < p_size - 1)
                         {
-                        p_token[index++] = *p_read;
+                        p_token[MY_IDX++] = *p_read;
                         }
                     else
                         {
@@ -252,9 +230,9 @@ bool            CKernel::readBufferToken            (   const char*& p_read,
                     ++p_read;
                     }
 
-                p_token[index] = '\0';
+                p_token[MY_IDX] = '\0';
 
-                return valid && index;
+                return valid && MY_IDX;
 }
 
 bool            CKernel::readBufferDec              (   const char* p_token,
@@ -371,7 +349,7 @@ void            CKernel::parse_buffer_file          (   )
 {
                 memset(g_centralModeBufferTemp, 0, sizeof(g_centralModeBufferTemp));
 
-                const char* read    = m_ModeBuffer;
+                const char* read    = MY_BFR;
                 u32         program = 0xFFFFFFFF;
 
                 char        command[32];
@@ -389,10 +367,7 @@ void            CKernel::parse_buffer_file          (   )
                         {
                         u32 parsedProgram;
 
-                        if (readBufferToken(read, value, sizeof(value))
-                         && readBufferDec(value, parsedProgram)
-                         && parsedProgram < filecounter[FT_FSH][FLD_VALID]
-                         && parsedProgram != DEFAULT_SLOT)
+                        if (readBufferToken(read, value, sizeof(value)) && readBufferDec(value, parsedProgram) && parsedProgram < filecounter[FT_FSH][FLD_VALID] && parsedProgram != DEFAULT_SLOT)
                             {
                             program = parsedProgram;
                             }
@@ -422,104 +397,87 @@ void            CKernel::parse_buffer_file          (   )
 
                     if (readChannelCommand(command, field))
                         {
-                        if (readBufferToken(read, value, sizeof(value))
-                         && readSourceMode(value, parsedValue))
+                        if (readBufferToken(read, value, sizeof(value)) && readSourceMode(value, parsedValue))
                             {
                             g_centralModeBufferTemp[program][field] = parsedValue;
                             }
-
                         skipBufferLine(read);
                         continue;
                         }
 
                     if (sameText(command, "lfo1"))
                         {
-                        if (readBufferToken(read, value, sizeof(value))
-                         && readWave(value, parsedValue))
+                        if (readBufferToken(read, value, sizeof(value)) && readWave(value, parsedValue))
                             {
                             g_centralModeBufferTemp[program][LF1_WAVE] = parsedValue;
                             }
-
                         skipBufferLine(read);
                         continue;
                         }
 
                     if (sameText(command, "lfo2"))
                         {
-                        if (readBufferToken(read, value, sizeof(value))
-                         && readWave(value, parsedValue))
+                        if (readBufferToken(read, value, sizeof(value)) && readWave(value, parsedValue))
                             {
                             g_centralModeBufferTemp[program][LF2_WAVE] = parsedValue;
                             }
-
                         skipBufferLine(read);
                         continue;
                         }
 
                     if (sameText(command, "mult1"))
                         {
-                        if (readBufferToken(read, value, sizeof(value))
-                         && readMultiplier(value, parsedValue))
+                        if (readBufferToken(read, value, sizeof(value)) && readMultiplier(value, parsedValue))
                             {
                             g_centralModeBufferTemp[program][LF1_MULT] = parsedValue;
                             }
-
                         skipBufferLine(read);
                         continue;
                         }
 
                     if (sameText(command, "mult2"))
                         {
-                        if (readBufferToken(read, value, sizeof(value))
-                         && readMultiplier(value, parsedValue))
+                        if (readBufferToken(read, value, sizeof(value)) && readMultiplier(value, parsedValue))
                             {
                             g_centralModeBufferTemp[program][LF2_MULT] = parsedValue;
                             }
-
                         skipBufferLine(read);
                         continue;
                         }
 
                     if (sameText(command, "audioA"))
                         {
-                        if (readBufferToken(read, value, sizeof(value))
-                         && readBufferDec(value, parsedValue))
+                        if (readBufferToken(read, value, sizeof(value)) && readBufferDec(value, parsedValue))
                             {
                             g_centralModeBufferTemp[program][SENS_A] = parsedValue;
                             }
-
                         skipBufferLine(read);
                         continue;
                         }
 
                     if (sameText(command, "audioB"))
                         {
-                        if (readBufferToken(read, value, sizeof(value))
-                         && readBufferDec(value, parsedValue))
+                        if (readBufferToken(read, value, sizeof(value)) && readBufferDec(value, parsedValue))
                             {
                             g_centralModeBufferTemp[program][SENS_B] = parsedValue;
                             }
-
                         skipBufferLine(read);
                         continue;
                         }
 
                     if (sameText(command, "audioC"))
                         {
-                        if (readBufferToken(read, value, sizeof(value))
-                         && readBufferDec(value, parsedValue))
+                        if (readBufferToken(read, value, sizeof(value)) && readBufferDec(value, parsedValue))
                             {
                             g_centralModeBufferTemp[program][SENS_C] = parsedValue;
                             }
-
                         skipBufferLine(read);
                         continue;
                         }
 
                     if (sameText(command, "audioD"))
                         {
-                        if (readBufferToken(read, value, sizeof(value))
-                         && readBufferDec(value, parsedValue))
+                        if (readBufferToken(read, value, sizeof(value)) && readBufferDec(value, parsedValue))
                             {
                             g_centralModeBufferTemp[program][SENS_D] = parsedValue;
                             }
@@ -530,52 +488,43 @@ void            CKernel::parse_buffer_file          (   )
 
                     if (sameText(command, "time"))
                         {
-                        if (readBufferToken(read, value, sizeof(value))
-                         && readChannel(value, parsedValue))
+                        if (readBufferToken(read, value, sizeof(value)) && readChannel(value, parsedValue))
                             {
                             g_centralModeBufferTemp[program][SEL_TIME] = parsedValue;
                             }
-
                         skipBufferLine(read);
                         continue;
                         }
 
                     if (sameText(command, "tex"))
                         {
-                        if (readBufferToken(read, value, sizeof(value))
-                         && readChannel(value, parsedValue))
+                        if (readBufferToken(read, value, sizeof(value)) && readChannel(value, parsedValue))
                             {
                             g_centralModeBufferTemp[program][SEL_TEX] = parsedValue;
                             }
-
                         skipBufferLine(read);
                         continue;
                         }
 
                     if (sameText(command, "vid"))
                         {
-                        if (readBufferToken(read, value, sizeof(value))
-                         && readChannel(value, parsedValue))
+                        if (readBufferToken(read, value, sizeof(value)) && readChannel(value, parsedValue))
                             {
                             g_centralModeBufferTemp[program][SEL_VID] = parsedValue;
                             }
-
                         skipBufferLine(read);
                         continue;
                         }
 
                     if (sameText(command, "frm"))
                         {
-                        if (readBufferToken(read, value, sizeof(value))
-                         && readChannel(value, parsedValue))
+                        if (readBufferToken(read, value, sizeof(value)) && readChannel(value, parsedValue))
                             {
                             g_centralModeBufferTemp[program][SEL_FRM] = parsedValue;
                             }
-
                         skipBufferLine(read);
                         continue;
                         }
-
                     skipBufferLine(read);
                     }
 }
