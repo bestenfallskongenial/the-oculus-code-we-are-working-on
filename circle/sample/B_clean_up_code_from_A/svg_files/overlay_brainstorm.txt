@@ -42,3 +42,4 @@ some are easy to map
 
 the modes ( layer 1 and 2 ) for example are tile 0 to 7, so chronological 
 the lfos are chronological too, like the dividers 
+harder is the 
