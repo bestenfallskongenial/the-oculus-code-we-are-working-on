@@ -22,3 +22,23 @@ what we need to store in the layout table?
 24  - 31    - lfo-mults     ( the first 7 ) - 1/64 1/32 1/16 1/8 1/4 1/2 1/1 ( or position 09 to 0f)
 32  - 39    - numbers       ( the first 10) - 0 1 2 3 4 5 6 7 8 9 
 40  - 47    -
+
+
+
+
+okay i need one or more table that stores 
+
+- PRIMARY: layer ( o to BLOCK_COUNT )
+- enable/disable 
+- x position ( the position on screen )
+- x position
+- what tile of the texture atlas
+
+the runtime code will read g_centralModeBuffer[SLOTS][MODETABLE_COUNT] depending on g_menuLayer
+we will do it max of 12/16 times for each possible position for each possible layer
+the plan is to have different menus displayed based on the modes / settings selected.
+
+some are easy to map 
+
+the modes ( layer 1 and 2 ) for example are tile 0 to 7, so chronological 
+the lfos are chronological too, like the dividers 
