@@ -72,8 +72,9 @@ bool            CKernel::checkGLerrorMMAL           (   )
                 GLenum error = glGetError();
                 if (error != GL_NO_ERROR)
                     {
+#ifdef __LOG_VC04__         
                     const char* error_str;
-                    
+#endif
                     switch(error) 
                         {
                         case        GL_INVALID_ENUM:                    error_str = "GL_INVALID_ENUM"; break;

@@ -24,8 +24,10 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
                     f_firstFrameQueued = true;
                     return true;
                     }
-#endif 
+#endif
+#ifdef __LOG_MMAL__
                 const char*  message = "";
+#endif
                 uint32_t msg_len = 0;
 
 
