@@ -125,7 +125,7 @@ bool            CKernel::startupScreen( void )
                 nextline(       MY_BFR, MY_IDX);
                 storeLogU32(    MY_BFR, MY_IDX, "RAM Size", ramSize, "MB" ); 
             //  storeLogU32(    MY_BFR, MY_IDX, "CPU Speed Mode", cpuSpeedMode );
-                storeLogU32(    MY_BFR, MY_IDX, "CPU Speed Mode ", X_VAL cpuSpeedMode ? "FAST" : "NORMAL" );
+                storeLogU32(    MY_BFR, MY_IDX, "CPU Speed Mode ", X_VAL, cpuSpeedMode ? "FAST" : "NORMAL" );
                 storeLogU32(    MY_BFR, MY_IDX, "SoC Max Temp", socMaxTemp, "Celsius" )
                 nextline(       MY_BFR, MY_IDX);
                 storeLogU32(    MY_BFR, MY_IDX, "Clock CORE", coreClock, "MHz /ARM", armClock, "MHz" );
