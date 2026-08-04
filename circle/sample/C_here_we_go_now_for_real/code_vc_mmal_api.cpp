@@ -88,8 +88,9 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
                                 case MMAL_MSG_STATUS_ENOTCONN:   message = "MMAL_MSG_STATUS_ENOTCONN     - Port is disconnected               "; break;
                                 case MMAL_MSG_STATUS_EAGAIN:     message = "MMAL_MSG_STATUS_EAGAIN       - Resource temporarily unavailable   "; break;
                                 case MMAL_MSG_STATUS_EFAULT:     message = "MMAL_MSG_STATUS_EFAULT       - Bad address                        "; break;
-#endif                   
+                  
                                 default:                         message = "Unknown MMAL status          - WTF!!!                             "; break;
+#endif                                 
                                 }
 #ifdef __LOG_MMAL__   
                         //  nextline( MY_BFR, MY_IDX );
@@ -101,8 +102,9 @@ bool            CKernel::framePollerMMAL            (   u32 nal_block_offset, u3
 
                         default: 
                             {
+#ifdef __LOG_MMAL__                                  
                             message = "UNEXPECTED MESSAGE";
-#ifdef __LOG_MMAL__    
+  
                         //  nextline( MY_BFR, MY_IDX );
                             storeLogHex( MY_BFR, MY_IDX, message,  X_VAL, "Frame offset", nal_block_offset, "Type",  m_BufferFromHostTx_Output->hdr.type, "Status", m_BufferFromHostTx_Output->hdr.status);
                             storeMsg( MY_BFR, MY_IDX, "Poller ERROR (UNEXPECTED MESSAGE)", &m_BufferFromHostTx_Output, msg_len);
