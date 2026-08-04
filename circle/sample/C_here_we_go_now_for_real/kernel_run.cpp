@@ -9,6 +9,8 @@ TShutdownMode CKernel::Run(void)
 
                 while (/*m_resetFlag == false*/ 1)
                     {
+
+                    m_CPUThrottle.Update(); // NEW!!!
                        
                     if (!m_SD_has_load)                                             // first load block - get the system files from sd
                         {

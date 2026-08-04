@@ -4,6 +4,7 @@
     #include <stdint.h>   // uintptr_t
 
     #include <circle/actled.h>
+    #include <circle/cputhrottle.h> // NEW!!!
     #include <circle/koptions.h>
     #include <circle/machineinfo.h>
     #include <circle/devicenameservice.h>

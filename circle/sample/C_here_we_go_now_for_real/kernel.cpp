@@ -4,6 +4,7 @@
 				:	m_Interrupt         (),
                     m_Timer             (   &m_Interrupt ),
                     m_Logger            (   LOGLEVEL, &m_Timer ),
+                    m_CPUThrottle       (   CPUSpeedMaximum),            // NEW!!!
                     gE_FrameBuffer      (   m_Options.GetWidth(), 
                                             m_Options.GetHeight(), 
                                             32, 
