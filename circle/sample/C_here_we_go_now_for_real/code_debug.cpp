@@ -98,7 +98,10 @@ bool            CKernel::startupScreen( void )
                 unsigned modelRevision  =  m_MachineInfo.GetModelRevision();
                 unsigned ramSize        =  m_MachineInfo.GetRAMSize();
 
-                unsigned cpuSpeedMode   = (m_Options.GetCPUSpeed() == CPUSpeedMaximum) ? 1 : 0;
+            //  unsigned cpuSpeedMode   = (m_Options.GetCPUSpeed() == CPUSpeedMaximum) ? 1 : 0;
+
+                unsigned cpuSpeedMode   = m_CPUThrottle.GetClockRate() == m_CPUThrottle.GetMaxClockRate();
+
                 unsigned socMaxTemp     =  m_Options.GetSoCMaxTemp();
 
                 unsigned coreClock      =  m_MachineInfo.GetClockRate(CLOCK_ID_CORE)  / 1000000;
