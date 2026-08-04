@@ -74,7 +74,7 @@ bool            CKernel::checkGLerrorMMAL           (   )
                     {
 #ifdef __LOG_VC04__         
                     const char* error_str;
-#endif
+
                     switch(error) 
                         {
                         case        GL_INVALID_ENUM:                    error_str = "GL_INVALID_ENUM"; break;
@@ -84,7 +84,7 @@ bool            CKernel::checkGLerrorMMAL           (   )
                         case        GL_INVALID_FRAMEBUFFER_OPERATION:   error_str = "GL_INVALID_FRAMEBUFFER_OPERATION"; break;
                         default:                                        error_str = "UNKNOWN_ERROR"; break;
                         }
-#ifdef __LOG_VC04__  
+
                     storeLogHex (  MY_BFR, MY_IDX, 
                                 error_str);
 #endif 
