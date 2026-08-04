@@ -5,24 +5,8 @@
 
 bool            CKernel::setSystemVariables()
 {
-                g_inOutMatrixInt[0][TRL] = 128;
-                g_inOutMatrixInt[1][TRL] = 128;    
-                g_inOutMatrixInt[2][TRL] = 128;
-                g_inOutMatrixInt[3][TRL] = 128;
-                g_inOutMatrixInt[4][TRL] = 128;
-                g_inOutMatrixInt[5][TRL] = 128;
-                g_inOutMatrixInt[6][TRL] = 128;
-                g_inOutMatrixInt[7][TRL] = 128;
-
-                g_inOutMatrixInt[0][TRH] = 320;
-                g_inOutMatrixInt[1][TRH] = 320;
-                g_inOutMatrixInt[2][TRH] = 320;
-                g_inOutMatrixInt[3][TRH] = 320;
-                g_inOutMatrixInt[4][TRH] = 320;
-                g_inOutMatrixInt[5][TRH] = 320;
-                g_inOutMatrixInt[6][TRH] = 320;
-                g_inOutMatrixInt[7][TRH] = 320;
-
+            //  FOR NOW A DUMMY!!!
+            
                 return true;
 }   
 
@@ -95,9 +79,7 @@ void            CKernel::calculate1BPMnew           (   int             p_source
                         g_lfoBpmMatrix[2][p_deltaBuffer] *BPM_DEN < g_lfoBpmMatrix[0][p_deltaBuffer] * BPM_NUM &&
                         g_lfoBpmMatrix[0][p_deltaBuffer] *BPM_DEN < g_lfoBpmMatrix[2][p_deltaBuffer] * BPM_NUM )
                         {
-                        f_intervalAverage                 = (   g_lfoBpmMatrix[0][p_deltaBuffer] +
-                                                                g_lfoBpmMatrix[1][p_deltaBuffer] +
-                                                                g_lfoBpmMatrix[2][p_deltaBuffer]) / 3;
+                        f_intervalAverage                 = ( g_lfoBpmMatrix[0][p_deltaBuffer] + g_lfoBpmMatrix[1][p_deltaBuffer] + g_lfoBpmMatrix[2][p_deltaBuffer] ) / 3;
 
                         g_lfoBpmMatrix[p_source][BPM]     =   60000000 / f_intervalAverage;
                         g_lfoBpmMatrix[p_source][INTV]    =   f_intervalAverage;

@@ -12,10 +12,10 @@ const char*     CKernel::bufferSourceModeName       (   u32         p_value)
                 //  case IN_MODE_BMP:    return "BMP";
                     case IN_MODE_LF1:    return "LF1";
                     case IN_MODE_LF2:    return "LF2";
-                    case MODE_AU_AL:   return "LOW0";
-                    case MODE_AU_AH:   return "HIGH0";
-                    case MODE_AU_BL:   return "LOW1";
-                    case MODE_AU_BH:   return "HIGH1";
+                    case MODE_AU_AL:     return "LOW0";
+                    case MODE_AU_AH:     return "HIGH0";
+                    case MODE_AU_BL:     return "LOW1";
+                    case MODE_AU_BH:     return "HIGH1";
                     default:             return "ADC";
                     }
 }
@@ -87,7 +87,7 @@ void            CKernel::create_buffer_file         (   )
                         storeLogHex(MY_BFR, MY_IDX, "file", X_VAL, g_ScnFsh[program] );
                         }
 
-                    nextline(MY_BFR, MY_IDX);
+                    nextline   (MY_BFR, MY_IDX);
                     storeLogHex(MY_BFR, MY_IDX, "ch0", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH0]) );
                     storeLogHex(MY_BFR, MY_IDX, "ch1", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH1]) );
                     storeLogHex(MY_BFR, MY_IDX, "ch2", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH2]) );
@@ -96,33 +96,22 @@ void            CKernel::create_buffer_file         (   )
                     storeLogHex(MY_BFR, MY_IDX, "ch5", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH5]) );
                     storeLogHex(MY_BFR, MY_IDX, "ch6", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH6]) );
                     storeLogHex(MY_BFR, MY_IDX, "ch7", X_VAL, bufferSourceModeName(g_centralModeBuffer[program][MODE_CH7]) );
-                    nextline(MY_BFR, MY_IDX);
+                    nextline   (MY_BFR, MY_IDX);
                     storeLogHex(MY_BFR, MY_IDX, "lfo1", X_VAL, bufferWaveName(g_centralModeBuffer[program][LF1_WAVE]) );
                     storeLogHex(MY_BFR, MY_IDX, "mult1", hexToDec(bufferMultValue(g_centralModeBuffer[program][LF1_MULT])) );
                     storeLogHex(MY_BFR, MY_IDX, "lfo2", X_VAL, bufferWaveName(g_centralModeBuffer[program][LF2_WAVE]) );
                     storeLogHex(MY_BFR, MY_IDX, "mult2", hexToDec(bufferMultValue(g_centralModeBuffer[program][LF2_MULT])) );
-                    nextline(MY_BFR, MY_IDX);
+                    nextline   (MY_BFR, MY_IDX);
                     storeLogHex(MY_BFR, MY_IDX, "audioA", hexToDec(g_centralModeBuffer[program][SENS_A]) );
                     storeLogHex(MY_BFR, MY_IDX, "audioB", hexToDec(g_centralModeBuffer[program][SENS_B]) );
                     storeLogHex(MY_BFR, MY_IDX, "audioC", hexToDec(g_centralModeBuffer[program][SENS_C]) );
                     storeLogHex(MY_BFR, MY_IDX, "audioD", hexToDec(g_centralModeBuffer[program][SENS_D]) );
-                    nextline(MY_BFR, MY_IDX);
+                    nextline   (MY_BFR, MY_IDX);
 
-                    if (g_centralModeBuffer[program][SEL_TIME] < FLAG_THRESHOLD)
-                        {
-                        storeLogHex(MY_BFR, MY_IDX, "time", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_TIME]) );
-                        }
-
-                    if (g_centralModeBuffer[program][SEL_TEX] < FLAG_THRESHOLD)
-                        {
-                        storeLogHex(MY_BFR, MY_IDX, "tex", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_TEX]) );
-                        }
-
-                    if (g_centralModeBuffer[program][SEL_VID] < FLAG_THRESHOLD)
-                        {
-                        storeLogHex(MY_BFR, MY_IDX, "vid", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_VID]) );
-                        storeLogHex(MY_BFR, MY_IDX, "frm", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_FRM]) );
-                        }
+                    if (g_centralModeBuffer[program][SEL_TIME] < FLAG_THRESHOLD) storeLogHex(MY_BFR, MY_IDX, "time", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_TIME]) );
+                    if (g_centralModeBuffer[program][SEL_TEX] < FLAG_THRESHOLD) storeLogHex(MY_BFR, MY_IDX, "tex", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_TEX]) );
+                    if (g_centralModeBuffer[program][SEL_VID] < FLAG_THRESHOLD) storeLogHex(MY_BFR, MY_IDX, "vid", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_VID]) );
+                    if (g_centralModeBuffer[program][SEL_VID] < FLAG_THRESHOLD) storeLogHex(MY_BFR, MY_IDX, "frm", X_VAL, bufferChannelName(g_centralModeBuffer[program][SEL_FRM]) );
 
                     nextline(MY_BFR, MY_IDX);
                     }
@@ -133,10 +122,7 @@ u32             CKernel::hexToDec                   (   u32         p_value)
                 u32 result = 0;
                 u32 shift  = 0;
 
-                if (p_value == 0)
-                    {
-                    return 0;
-                    }
+                if (p_value == 0) return 0;
 
                 while (p_value && shift < 32)
                     {
@@ -154,10 +140,7 @@ bool            CKernel::sameText                   (   const char* p_a,
 {
                 while (*p_a && *p_b)
                     {
-                    if (*p_a != *p_b)
-                        {
-                        return false;
-                        }
+                    if (*p_a != *p_b) return false;
 
                     ++p_a;
                     ++p_b;
@@ -193,10 +176,7 @@ bool            CKernel::readBufferToken            (   const char*& p_read,
                                                         char*       p_token,
                                                         u32         p_size)
 {
-                if (!p_size)
-                    {
-                    return false;
-                    }
+                if (!p_size) return false;
 
                 p_token[0] = '\0';
 
@@ -205,13 +185,7 @@ bool            CKernel::readBufferToken            (   const char*& p_read,
                     ++p_read;
                     }
 
-                if (*p_read == '\0'
-                 || *p_read == '\n'
-                 || *p_read == '\r'
-                 || *p_read == '#')
-                    {
-                    return false;
-                    }
+                if (*p_read == '\0' || *p_read == '\n' || *p_read == '\r' || *p_read == '#') return false;
 
                 MY_IDX = 0;
                 

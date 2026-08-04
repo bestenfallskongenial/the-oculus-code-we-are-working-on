@@ -120,6 +120,7 @@ bool            CKernel::startupScreen( void )
                 unsigned fbWidth        =  gE_FrameBuffer.GetWidth();
                 unsigned fbHeight       =  gE_FrameBuffer.GetHeight();
 
+                storeLogU32(    MY_BFR, MY_IDX, "--------------------------------------------------", X_VAL);
                 nextline(       MY_BFR, MY_IDX);    
                 storeLogU32(    MY_BFR, MY_IDX, machineName, X_VAL, socName, X_VAL, "V", modelMajor, ".", modelRevision);
                 nextline(       MY_BFR, MY_IDX);
@@ -129,12 +130,14 @@ bool            CKernel::startupScreen( void )
                 storeLogU32(    MY_BFR, MY_IDX, "Clock CORE", coreClock, "MHz /ARM", armClock, "MHz" );
                 storeLogU32(    MY_BFR, MY_IDX, "EMMC", emmcClock, "MHz /EMMC2", emmc2Clock, "Mhz" );
                 nextline(       MY_BFR, MY_IDX);
-                storeLogU32(    MY_BFR, MY_IDX, "Clock UART MHz", uartClock, "DMA Channels", dmaChannel);
+                storeLogU32(    MY_BFR, MY_IDX, "Clock UART MHz", uartClock );
+                storeLogU32(    MY_BFR, MY_IDX, "DMA Channels", dmaChannel );
                 storeLogU32(    MY_BFR, MY_IDX, "USB Delay     ", usbDelay, "USB FullSpeed ", usbSpeed);      
                 nextline(       MY_BFR, MY_IDX);
                 storeLogU32(    MY_BFR, MY_IDX, "FB Screen", fbWidth, "to", fbHeight, " X/Y" );  
                 nextline(       MY_BFR, MY_IDX);
                 storeLogU32(    MY_BFR, MY_IDX, "OCULUS MENDAX Firmware", OS_VERSION, ".", OS_REVISION ); 
+                storeLogU32(    MY_BFR, MY_IDX, "--------------------------------------------------", X_VAL);
                 nextline(       MY_BFR, MY_IDX);                            
 
                 return TRUE;
