@@ -553,7 +553,7 @@ void            CKernel::applyTargetModes           (   )       // current!
 
                 if (g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME] < FLAG_THRESHOLD)      // selected channel OUT controls shader/program time
                     {
-                    GLtime = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME]][OUT];
+                    GLtime = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME]][OUT]/36.0f;
                     }
                 else                                                                            // time is a product of system time
                     {

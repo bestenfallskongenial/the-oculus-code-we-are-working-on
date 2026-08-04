@@ -94,7 +94,7 @@ public:         // Logging
  //             int                             m_current_tex                                   = 0;
  //             int                             m_validTextureCount                             = 0;
                 
-                GLint                           GLtime                                          = 0;
+                GLfloat                         GLtime                                          = 0;
                 GLfloat                         g_opaque                                        = 0.5; 
 
  //             unsigned long                   DOUBLE_CLICK_TIME                               = 500000;
