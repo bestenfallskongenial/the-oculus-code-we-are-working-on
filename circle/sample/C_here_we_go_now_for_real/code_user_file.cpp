@@ -214,6 +214,7 @@ bool            CKernel::readBufferToken            (   const char*& p_read,
                     }
 
                 MY_IDX = 0;
+                
                 bool valid = true;
 
                 while (!tokenEnd(*p_read))

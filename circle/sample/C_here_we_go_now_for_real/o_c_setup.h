@@ -4,7 +4,7 @@
 
 
 */        
-    #define 		LOGLEVEL				    4	                            // 0: only panic 
+    #define 		LOGLEVEL				    2	                            // 0: only panic 
                                                                                 // 1: also errors 
                                                                                 // 2: also warnings 
                                                                                 // 3: also notices 
