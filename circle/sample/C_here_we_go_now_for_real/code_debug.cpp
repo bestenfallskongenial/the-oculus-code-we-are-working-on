@@ -120,17 +120,21 @@ bool            CKernel::startupScreen( void )
                 unsigned fbWidth        =  gE_FrameBuffer.GetWidth();
                 unsigned fbHeight       =  gE_FrameBuffer.GetHeight();
 
-                nextline(   MY_BFR, MY_IDX);    
+                nextline(       MY_BFR, MY_IDX);    
                 storeLogU32(    MY_BFR, MY_IDX, machineName, X_VAL, socName, X_VAL, "V", modelMajor, ".", modelRevision);
                 nextline(       MY_BFR, MY_IDX);
-                storeLogU32(    MY_BFR, MY_IDX, "RAM Size ", ramSize, "MB / CPU Speed Mode ", cpuSpeedMode, "SoC Max Temp ", socMaxTemp);    
+                storeLogU32(    MY_BFR, MY_IDX, "RAM Size ", ramSize, "MB" ); 
+                storeLogU32(    MY_BFR, MY_IDX, "CPU Speed Mode", cpuSpeedMode, "SoC Max Temp", socMaxTemp );
                 nextline(       MY_BFR, MY_IDX);
-                storeLogU32(    MY_BFR, MY_IDX, "Clock CORE MHz", coreClock, "ARM  ", armClock, "EMMC ", emmcClock, "EMMC2", emmc2Clock);  
+                storeLogU32(    MY_BFR, MY_IDX, "Clock CORE", coreClock, "MHz /ARM", armClock, "MHz" );
+                storeLogU32(    MY_BFR, MY_IDX, "EMMC", emmcClock, "MHz /EMMC2", emmc2Clock, "Mhz" );
                 nextline(       MY_BFR, MY_IDX);
                 storeLogU32(    MY_BFR, MY_IDX, "Clock UART  MHz", uartClock, "DMA Channels    ", dmaChannel);
                 storeLogU32(    MY_BFR, MY_IDX, "USB Delay     ", usbDelay, "USB FullSpeed ", usbSpeed);      
                 nextline(       MY_BFR, MY_IDX);
-                storeLogU32(    MY_BFR, MY_IDX, "FB Screen X ", fbWidth, "/ Y ", fbHeight, "gE Screen X ", gE_ScreenWidth, " / Y ", gE_ScreenHeight);                            
+                storeLogU32(    MY_BFR, MY_IDX, "FB Screen X ", fbWidth, "/ Y ", fbHeight, "gE Screen X ", gE_ScreenWidth, " / Y ", gE_ScreenHeight);  
+                nextline(       MY_BFR, MY_IDX);
+                storeLogU32(    MY_BFR, MY_IDX, "OCULUS MENDAX Firmware", OS_VERSION, ".", OS_REVISION ); 
                 nextline(       MY_BFR, MY_IDX);                            
 
                 return TRUE;

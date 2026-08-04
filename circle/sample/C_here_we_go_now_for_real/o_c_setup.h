@@ -4,6 +4,9 @@
 
 
 */        
+    #define         OS_VERSION                  2
+    #define         OS_REVISION                 1
+
     #define 		LOGLEVEL				    2	                            // 0: only panic 
                                                                                 // 1: also errors 
                                                                                 // 2: also warnings 
