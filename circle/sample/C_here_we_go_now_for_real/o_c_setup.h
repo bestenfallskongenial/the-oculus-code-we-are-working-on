@@ -13,13 +13,13 @@
 //  #define         __LOG_ALLOC__                                               // allocation / buffer allocation logging
 //  #define         __LOG_FILE__                                                // filesystem / file load-store logging
 //  #define         __LOG_MEMORY__                                              // logs the memory map, only used ones
-    #define         __LOG_PARSER__                                              // parser / file parser logging
-    #define         __LOG_MMAL__                                                // MMAL init/wrapper/message logging
-    #define         __LOG_VC04__                                                // VC/VCHI service logging
-    #define         __LOG_VCSM__                                                // VCSM alloc/import/lock logging
-    #define         __LOG_INIT__                                                // kernel initialization step logging
-    #define         __LOG_RUNTIME__
-    #define         __LOG_GLSL__                                                // shader/program/uniform/gfx_check OpenGL logging
+//  #define         __LOG_PARSER__                                              // parser / file parser logging
+//  #define         __LOG_MMAL__                                                // MMAL init/wrapper/message logging
+//  #define         __LOG_VC04__                                                // VC/VCHI service logging
+//  #define         __LOG_VCSM__                                                // VCSM alloc/import/lock logging
+//  #define         __LOG_INIT__                                                // kernel initialization step logging
+//  #define         __LOG_RUNTIME__
+//  #define         __LOG_GLSL__                                                // shader/program/uniform/gfx_check OpenGL logging
 //  #define         __LOG_FIRST_FRAME__                                         // logs the fist frame vpu messaging - later useful
     #define         __LOG_TO_SCREEN__                                           // shows the log on the screen
 
