@@ -1,7 +1,7 @@
 private:        // circle system requirements
                 CActLED                         m_ActLED;
-                CCPUThrottle                    m_CPUThrottle;  // NEW!!!
                 CKernelOptions                  m_Options;
+                CCPUThrottle                    m_CPUThrottle;  // NEW!!!                
                 CMachineInfo                    m_MachineInfo;
                 CDeviceNameService              m_DeviceNameService;
                 CExceptionHandler               m_ExceptionHandler;
