@@ -213,7 +213,7 @@ bool            CKernel::readBufferToken            (   const char*& p_read,
                     return false;
                     }
 
-                u32  MY_IDX = 0;
+                MY_IDX = 0;
                 bool valid = true;
 
                 while (!tokenEnd(*p_read))
