@@ -1,7 +1,7 @@
 #include "kernel.h"
 
-    #define MY_BFR   m_logBuffer                 // means the log goes into the pre-init buffer 
-    #define MY_IDX    m_logBufferIndex 
+    #define MY_BFR   m_logKernel                 // means the log goes into the pre-init buffer 
+    #define MY_IDX    m_logKernelIndex 
 
 bool            CKernel::allocMemoryVCSM            (   size_t                  size,
                                                         u32                     base_unit,
@@ -27,19 +27,14 @@ bool            CKernel::allocMemoryVCSM            (   size_t                  
 
                 size_t rx_len = 0;
 
-                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len ))
-                    return false;
+                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len )) return false;
 
                 if (rx.body.res_handle != 0)
                     {
                     vcsm_handle = rx.body.res_handle;
 
 #ifdef __LOG_VCSM__
-                    storeLogHex(   MY_BFR, MY_IDX, 
-                                "ALLOC   - VCSM Handle",    rx.body.res_handle, 
-                                "VCSM Pointer",             rx.body.res_mem, 
-                                "Base Size",                rx.body.res_base_size, 
-                                "Num",                      rx.body.res_num );
+                    storeLogHex(   MY_BFR, MY_IDX, "ALLOC   - VCSM Handle", rx.body.res_handle, "VCSM Pointer", rx.body.res_mem, "Base Size", rx.body.res_base_size, rx.body.res_num );
 #endif
                     return true;
                     }
@@ -65,18 +60,13 @@ bool            CKernel::importMemoryVCSM           (   void*                   
 
                 size_t rx_len = 0;
 
-                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len ))
-                    return false;
+                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len )) return false;
 
                 if (rx.body.res_handle != 0)
                     {
                     vcsm_handle         = rx.body.res_handle; //   like this ?                    
 #ifdef __LOG_VCSM__
-                    storeLogHex(   MY_BFR, MY_IDX, 
-                                "IMPORT  - ARM Address",    (u32)(uintptr)p_bufferBlockbase, 
-                                "GPU  Address",             tx.body.addr, 
-                                "Size",                     size, 
-                                "VCSM Handle",              rx.body.res_handle);
+                    storeLogHex( MY_BFR, MY_IDX, "IMPORT  - ARM Address", (u32)(uintptr)p_bufferBlockbase,  "GPU  Address", "Size", size, "VCSM Handle", rx.body.res_handle);
                     nextline(   MY_BFR, MY_IDX );
 #endif                     
                     return true;
@@ -98,16 +88,13 @@ bool            CKernel::lockMemoryVCSM             (   u32&                    
 
                 size_t rx_len = 0;
 
-                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len) )
-                    return false;
+                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len) ) return false;
 
                 if (rx.body.res_mem != 0)
                     {
                     vcsm_pointer        = rx.body.res_mem;
 #ifdef __LOG_VCSM__
-                        storeLogHex(   MY_BFR, MY_IDX, 
-                                    "LOCK    - VCSM Handle",    rx.body.res_handle, 
-                                    "VCSM Pointer",             rx.body.res_mem);
+                        storeLogHex(   MY_BFR, MY_IDX, "LOCK    - VCSM Handle", rx.body.res_handle, "VCSM Pointer", rx.body.res_mem);
                         nextline(   MY_BFR, MY_IDX );
 #endif         
                     return true;
@@ -128,8 +115,7 @@ bool            CKernel::freeMemoryVCSM             (   u32&                    
 
                 size_t rx_len = 0;
 
-                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len) )
-                    return false;
+                if (!sendAndWaitVCHI( m_ServiceHandleVCSM, m_EventSMEM, &tx, sizeof(tx), &rx, sizeof(rx), &rx_len) ) return false;
 
                 if (rx.body.success == 0)
                 {
@@ -137,9 +123,7 @@ bool            CKernel::freeMemoryVCSM             (   u32&                    
                     vcsm_pointer        = 0;
 #ifdef __LOG_VCSM__
 
-                        storeLogHex(   MY_BFR, MY_IDX, 
-                                    "FREE    - VCSM Handle",    vcsm_handle, 
-                                    "VCSM Pointer",             vcsm_pointer);  
+                        storeLogHex(   MY_BFR, MY_IDX, "FREE    - VCSM Handle", vcsm_handle, "VCSM Pointer", vcsm_pointer);  
 #endif        
                     return true;
                 }

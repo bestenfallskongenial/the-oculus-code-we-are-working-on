@@ -1,7 +1,7 @@
 #include "kernel.h"
 
-    #define MY_BFR   m_logBuffer                 // means the log goes into the pre-init buffer 
-    #define MY_IDX    m_logBufferIndex
+    #define MY_BFR   m_logKernel                 // means the log goes into the pre-init buffer 
+    #define MY_IDX    m_logKernelIndex
 
 static const char FromKernel[] = "kernel";
 
@@ -433,7 +433,7 @@ void 			CKernel::LoggerSink						(	        void* 			    pContext,
 
                 for (unsigned i = 0; i < nLength; i++)
                     {
-                    if (pThis->m_logBufferIndex >= LOG_SIZ - 1)
+                    if (pThis->m_logKernelIndex >= LOG_KERNEL_SIZE - 1)
                         {
                         break;
                         }
@@ -445,10 +445,10 @@ void 			CKernel::LoggerSink						(	        void* 			    pContext,
                         continue;
                         }
 
-                    pThis->m_logBuffer[pThis->m_logBufferIndex++] = ch; // means the log goes into the pre-init buffer 
+                    pThis->m_logKernel[pThis->m_logKernelIndex++] = ch; // means the log goes into the pre-init buffer 
                     }
-            //  pThis->m_logBuffer[pThis->m_logBufferIndex++] = '\n';
-                pThis->m_logBuffer[pThis->m_logBufferIndex] = '\0'; // means the log goes into the pre-init buffer 
+            //  pThis->m_logKernel[pThis->m_logKernelIndex++] = '\n';
+                pThis->m_logKernel[pThis->m_logKernelIndex] = '\0'; // means the log goes into the pre-init buffer 
 #ifdef __LOG_TO_SCREEN__
                 pThis->logScreenUpdate();
 #endif                

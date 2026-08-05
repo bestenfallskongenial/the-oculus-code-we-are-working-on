@@ -117,7 +117,7 @@ table_lfo.cpp                       // table for the lfo´s
                 buttonPing(0, SW_PIN_A);
                 buttonPing(1, SW_PIN_B);
 
-the next big thing after i fixed the m_bufferLog / m_logBuffer issues!!! 
+the next big thing after i fixed the m_bufferLog / m_logKernel issues!!! 
 
 void            CKernel::button_consumer            (   int                 p_btn_id ) // this is where the magic happens: we need to set the states of menu layer, menu, we need to use one button for bpm input and so on 
 {

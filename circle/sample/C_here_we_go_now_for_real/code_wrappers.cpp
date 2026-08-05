@@ -1,7 +1,7 @@
 #include "kernel.h"
 
-    #define MY_BFR   m_logBuffer                 // means the log goes into the pre-init buffer 
-    #define MY_IDX    m_logBufferIndex
+    #define MY_BFR   m_logKernel                 // means the log goes into the pre-init buffer 
+    #define MY_IDX    m_logKernelIndex
 
 bool            CKernel::wrapperInitDMA             (   )
 {
@@ -19,11 +19,11 @@ bool            CKernel::wrapperInitMEM             (   )
 {
                 bool bOK = true;
 
-                if (bOK) { bOK = (m_bufferKnl = allocBufferMEM(    filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], filecounter[FT_KLN][FLD_SIZE])); }
-                if (bOK) { bOK = (m_bufferLog = allocBufferMEM(    filecounter[FT_LOG][FLD_MAXSD]+filecounter[FT_LOG][FLD_MAXUSB], filecounter[FT_LOG][FLD_SIZE])); }                   
-                if (bOK) { bOK = (m_bufferVsh = allocBufferMEM(    filecounter[FT_VSH][FLD_MAXSD]+filecounter[FT_VSH][FLD_MAXUSB], filecounter[FT_VSH][FLD_SIZE])); }
-                if (bOK) { bOK = (m_bufferOmf = allocBufferMEM(    filecounter[FT_OMF][FLD_MAXSD]+filecounter[FT_OMF][FLD_MAXUSB], filecounter[FT_OMF][FLD_SIZE])); }
-                if (bOK) { bOK = (m_bufferFsh = allocBufferMEM(    filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB], filecounter[FT_FSH][FLD_SIZE])); }
+                if (bOK) { bOK = (m_bufferKnl = allocBufferMEM( filecounter[FT_KLN][FLD_MAXSD]+filecounter[FT_KLN][FLD_MAXUSB], filecounter[FT_KLN][FLD_SIZE])); }
+                if (bOK) { bOK = (m_bufferLog = allocBufferMEM( filecounter[FT_LOG][FLD_MAXSD]+filecounter[FT_LOG][FLD_MAXUSB], filecounter[FT_LOG][FLD_SIZE])); }                   
+                if (bOK) { bOK = (m_bufferVsh = allocBufferMEM( filecounter[FT_VSH][FLD_MAXSD]+filecounter[FT_VSH][FLD_MAXUSB], filecounter[FT_VSH][FLD_SIZE])); }
+                if (bOK) { bOK = (m_bufferOmf = allocBufferMEM( filecounter[FT_OMF][FLD_MAXSD]+filecounter[FT_OMF][FLD_MAXUSB], filecounter[FT_OMF][FLD_SIZE])); }
+                if (bOK) { bOK = (m_bufferFsh = allocBufferMEM( filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB], filecounter[FT_FSH][FLD_SIZE])); }
                 return bOK;
 }
 
@@ -325,17 +325,17 @@ bool            CKernel::wrapperInitVCSMstruct      (   )
 {
                 bool bOK = true;
 
-                if (bOK) { m_ServiceCreateVCSM          = new SERVICE_CREATION_T();             bOK = (m_ServiceCreateVCSM         != nullptr); }
-                if (bOK) { m_importTxVCSM_A             = new VCSM_Import_MEM_Msg();            bOK = (m_importTxVCSM_A            != nullptr); }
-                if (bOK) { m_importRxVCSM_A             = new VCSM_Import_MEM_Reply();          bOK = (m_importRxVCSM_A            != nullptr); }
-                if (bOK) { m_importTxVCSM_B             = new VCSM_Import_MEM_Msg();            bOK = (m_importTxVCSM_B            != nullptr); }
-                if (bOK) { m_importRxVCSM_B             = new VCSM_Import_MEM_Reply();          bOK = (m_importRxVCSM_B            != nullptr); }
-                if (bOK) { m_importTxVCSM_C             = new VCSM_Import_MEM_Msg();            bOK = (m_importTxVCSM_C            != nullptr); }
-                if (bOK) { m_importRxVCSM_C             = new VCSM_Import_MEM_Reply();          bOK = (m_importRxVCSM_C            != nullptr); }
-                if (bOK) { m_lockTxVCSM                 = new VCSM_Lock_MEM_Msg();              bOK = (m_lockTxVCSM                != nullptr); }
-                if (bOK) { m_lockRxVCSM                 = new VCSM_Lock_MEM_Reply();            bOK = (m_lockRxVCSM                != nullptr); }
-                if (bOK) { m_freeTxVCSM                 = new VCSM_Free_MEM_Msg();              bOK = (m_freeTxVCSM                != nullptr); }
-                if (bOK) { m_freeRxVCSM                 = new VCSM_Free_MEM_Reply();            bOK = (m_freeRxVCSM                != nullptr); }
+                if (bOK) { m_ServiceCreateVCSM  = new SERVICE_CREATION_T();     bOK = (m_ServiceCreateVCSM  != nullptr); }
+                if (bOK) { m_importTxVCSM_A     = new VCSM_Import_MEM_Msg();    bOK = (m_importTxVCSM_A     != nullptr); }
+                if (bOK) { m_importRxVCSM_A     = new VCSM_Import_MEM_Reply();  bOK = (m_importRxVCSM_A     != nullptr); }
+                if (bOK) { m_importTxVCSM_B     = new VCSM_Import_MEM_Msg();    bOK = (m_importTxVCSM_B     != nullptr); }
+                if (bOK) { m_importRxVCSM_B     = new VCSM_Import_MEM_Reply();  bOK = (m_importRxVCSM_B     != nullptr); }
+                if (bOK) { m_importTxVCSM_C     = new VCSM_Import_MEM_Msg();    bOK = (m_importTxVCSM_C     != nullptr); }
+                if (bOK) { m_importRxVCSM_C     = new VCSM_Import_MEM_Reply();  bOK = (m_importRxVCSM_C     != nullptr); }
+                if (bOK) { m_lockTxVCSM         = new VCSM_Lock_MEM_Msg();      bOK = (m_lockTxVCSM         != nullptr); }
+                if (bOK) { m_lockRxVCSM         = new VCSM_Lock_MEM_Reply();    bOK = (m_lockRxVCSM         != nullptr); }
+                if (bOK) { m_freeTxVCSM         = new VCSM_Free_MEM_Msg();      bOK = (m_freeTxVCSM         != nullptr); }
+                if (bOK) { m_freeRxVCSM         = new VCSM_Free_MEM_Reply();    bOK = (m_freeRxVCSM         != nullptr); }
 
                 return bOK;               
 }

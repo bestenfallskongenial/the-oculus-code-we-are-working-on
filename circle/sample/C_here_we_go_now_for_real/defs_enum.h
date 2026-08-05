@@ -43,9 +43,9 @@ enum centralModeBuffer
     FLAG_DUMMY_B,           // or i autodetect the last correct bpm because the bpm function is autodetecting ...
 // block 08 / layer 9 - "mute" block
     SEL_PRG,                // instead of an additional "allow prg changes" global flag - what if this will never be released again!?!
-    IS_STORED,
     FLAG_DUMMY_C,
     FLAG_DUMMY_D,
+    IS_STORED,              // needs to be the last position as far as i remember
     MODETABLE_COUNT         // theoretical i can now define BLOCK_COUNT as MODETABLE_COUNT / 4 correct????
 };
 

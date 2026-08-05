@@ -1,7 +1,7 @@
 #include "kernel.h"
 
-    #define MY_BFR   m_logBuffer                 // means the log goes into the pre-init buffer 
-    #define MY_IDX    m_logBufferIndex
+    #define MY_BFR   m_logKernel                 // means the log goes into the pre-init buffer 
+    #define MY_IDX    m_logKernelIndex
 
 void            CKernel::callbackVCSM               (   void*                   callback_param,         // static ??
                                                         VCHI_CALLBACK_REASON_T  reason, 
@@ -29,9 +29,7 @@ void            CKernel::getStateVCHI               (   )
 {
                 vc_host_get_vchi_state(&m_VCHIInstance, &m_Connection);
 #ifdef __LOG_VC04__
-                storeLogHex (  MY_BFR, MY_IDX, 
-                            "VCHI State Instance",      (u32)m_VCHIInstance, 
-                            "VCHI State Connection",    (u32)m_Connection);   
+                storeLogHex (  MY_BFR, MY_IDX, "VCHI State Instance", (u32)m_VCHIInstance, "VCHI State Connection", (u32)m_Connection);   
 #endif             
 }
 
@@ -56,10 +54,7 @@ u32             CKernel::convertAddress             (   void*                   
                 u32 vcsm_addr = (bus_addr & ~0xC0000000) | 0xC0000000;
 #ifdef __LOG_VC04__
                 nextline(   MY_BFR, MY_IDX );
-                storeLogHex (  MY_BFR, MY_IDX, 
-                            "Buffer BUS",       (u32)p_busAddress, 
-                            "Buffer ARM",       (u32)bus_addr, 
-                            "Buffer VPU",       (u32)vcsm_addr); 
+                storeLogHex (  MY_BFR, MY_IDX, "Buffer BUS", (u32)p_busAddress, "Buffer ARM", (u32)bus_addr, "Buffer VPU", (u32)vcsm_addr); 
                 nextline(   MY_BFR, MY_IDX );                
 #endif 
                 CleanAndInvalidateDataCacheRange((uintptr_t)(p_busAddress), p_size);
@@ -85,8 +80,7 @@ bool            CKernel::checkGLerrorMMAL           (   )
                         default:                                        error_str = "UNKNOWN_ERROR"; break;
                         }
 
-                    storeLogHex (  MY_BFR, MY_IDX, 
-                                error_str);
+                    storeLogHex (  MY_BFR, MY_IDX, error_str);
 #endif 
                     return false;
                     }
@@ -128,11 +122,8 @@ bool            CKernel::sendAndWaitVCHI            (           VCHI_SERVICE_HAN
                                                                 size_t*                 actual_reply_len )
 {
 #ifdef __DUMP_VC04__
-                storeLogHex(   MY_BFR, MY_IDX, 
-                            "TX MSG",           (u32)msg_size);
-                storeMsg(   MY_BFR, MY_IDX, 
-                            "Raw TX",           msg, 
-                            msg_size);
+                storeLogHex(   MY_BFR, MY_IDX, "TX MSG", (u32)msg_size);
+                storeMsg(   MY_BFR, MY_IDX, "Raw TX", msg, msg_size);
 #endif 
 
                 if (vchi_msg_queue(ServiceHandle, msg, msg_size, VCHI_FLAGS_BLOCK_UNTIL_QUEUED, NULL) != 0)
@@ -144,11 +135,8 @@ bool            CKernel::sendAndWaitVCHI            (           VCHI_SERVICE_HAN
                     if (vchi_msg_dequeue(ServiceHandle, rx_msg, max_reply_len, &ReplyLength, VCHI_FLAGS_NONE) == 0)
                         {
 #ifdef __DUMP_VC04__
-                        storeLogHex(   MY_BFR, MY_IDX, 
-                                    "RX MSG",               ReplyLength);
-                        storeMsg(   MY_BFR, MY_IDX, 
-                                    "Raw RX",               rx_msg,       
-                                    ReplyLength);
+                        storeLogHex(   MY_BFR, MY_IDX, "RX MSG", ReplyLength);
+                        storeMsg(   MY_BFR, MY_IDX, "Raw RX", rx_msg, ReplyLength);
 #endif 
                         break;
                         }

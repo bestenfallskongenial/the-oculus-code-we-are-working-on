@@ -19,13 +19,13 @@ private:        // circle system requirements
                 CEMMCDevice                     m_EMMC;
                 CUSBHCIDevice                   m_USBHCI;
                 CVCHIQDevice                    m_VCHIQ;
-// ????
+
     volatile    bool                            m_bStorageAttached                              = false;
                 CFATFileSystem*                 m_pFileSystem;                                  // where to put the *?
                 bool                            m_resetFlag                                     = false;
 
                 CScheduler                      m_Scheduler;
-// public:
+
                 CCharGenerator                  gE_CharGenerator;
 
                 u32*                            gE_PixelBuffer                                  = nullptr;      // frameBufferInit() & logScreenUpdate()
@@ -36,7 +36,7 @@ private:        // circle system requirements
                 unsigned                        gE_CharHeight                                   = 0;
                 unsigned                        gE_Cols                                         = 0;
                 unsigned                        gE_Rows                                         = 0;
-private:        // SMI / DMA / WS2812
+// SMI / DMA / WS2812
                 uintptr                         m_SPIBaseAddress                                = 0;
                 bool                            m_SPIValid                                      = false;
 
@@ -50,59 +50,43 @@ private:        // SMI / DMA / WS2812
 public:         // Logging
                 u32                             m_bufferLogIndex[LOG_SD+LOG_USB]                =       {0};          // for the new model where we use the char* m_bufferLog[LOG_SD+LOG_USB] 
 
-                char                            m_logBuffer[1024*32]                            =       {0};          //  pre-init buffer 
-                u32                             m_logBufferIndex                                = 0;
+                char                            m_logKernel[LOG_KERNEL_SIZE]                    =       {0};          //  pre-init buffer 
+                u32                             m_logKernelIndex                                = 0;
 
-                char                             m_ModeBuffer[1024*32]                          =       {0};
-   
                 u32                             m_logScreenStartIndex                           = 0;            // logScreenUpdate()
 // local copies of my graphics related structs
                 olg_state                       m_ogl                                           =       {};           
-
                 vtx_state                       m_vtx                                           =       {};
-
                 glsl_state                      m_vsh                                           =       {};
                 glsl_state                      m_fsh                                           =       {};
                 glsl_state                      m_osh                                           =       {};
-
                 tex_state                       m_tex                                           =       {};
                 tex_state                       m_omt                                           =       {};
-
                 h264_state                      m_vid                                           =       {};    
 
                 int                             m_activeTex                                     = 0;
                 int                             m_activeVideo                                   = 0;
                 int                             m_activeFrame                                   = 0;  
-                int                             g_selectedProgram                               = 0;
-
+                int                             g_activeProgram                                 = 0;
+                int                             g_activeProgramTemp                             = 0;
 // missing globals / shared state / dummies for now
-            //  bool                            m_resetFlag                                     = false;
                 bool                            m_SD_has_load                                   = false;
                 bool                            m_USB_has_load                                  = false;
 
                 int                             g_currentProgramBuffer                          = 0;
 
-                bool                            g_selectedProgramFlag                           = false;
-
+                bool                            g_activeProgramFlag                             = false;
 
                 int                             g_gl_program_current                            = 0;        // storeModes() - exposed 
                 int                             g_gl_program_last                               = 0;        // storeModes() - local temp 
 
                 int                             g_activeBpmChannel                              = 0;   // <- is telling the lfo what bpm is source!
 
- //             int                             m_current_gl_program                            = 0;
- //             int                             m_current_tex                                   = 0;
- //             int                             m_validTextureCount                             = 0;
-                
                 GLfloat                         GLtime                                          = 0;
                 GLfloat                         g_opaque                                        = 0.5; 
 
- //             unsigned long                   DOUBLE_CLICK_TIME                               = 500000;
- //             unsigned long                   LONG_CLICK_TIME                                 = 1000000;
-
                 unsigned                        g_currentTime;
 
-//              int                             attenuation                                     = 2;
                 bool                            m_audio_mode_activated                          = true; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
                 bool                            is_audio[2]                                     =           { 0 };
@@ -119,8 +103,6 @@ public:         // Logging
                 int                             g_audioIreg[4]                                  =           { 0 };
 // datamanagement.cpp
                 unsigned                        g_hFile;
-
-            //  volatile    bool	            m_bStorageAttached      = false;
 
                 char                            m_83FileName[MAX_FILE_NAME_LENGTH];
 // util
@@ -141,45 +123,44 @@ public:         // Logging
                 uint32_t                        m_audio_hold_A;
                 uint32_t                        m_audio_hold_B;
 
-                                              
-                char** 				            m_bufferVid                                     = nullptr;      // thats the pointer to my "array-like" buffer allocation
-                char* 				            m_videoBlockBase                                = nullptr;      // returns the aligned DMA base pointer
-                char* 				            m_videoRawBlock                                 = nullptr;      // returns the original pointer from new[]
-                size_t 				            m_videoBlockSize                                = 0;            // size of each individual buffer - complete size, not only blocks?
+                char** 				m_bufferVid                                     = nullptr;      // thats the pointer to my "array-like" buffer allocation
+                char* 				m_videoBlockBase                                = nullptr;      // returns the aligned DMA base pointer
+                char* 				m_videoRawBlock                                 = nullptr;      // returns the original pointer from new[]
+                size_t 				m_videoBlockSize                                = 0;            // size of each individual buffer - complete size, not only blocks?
 
-                char**				            m_bufferFrA                                     = nullptr;      // i created a struct for it but that means i must 
-                char* 				            m_frameBlockBaseA                               = nullptr;      // rewrite the wrappers and initialize the stucts properly
-                char* 				            m_frameRawBlockA                                = nullptr;      // and that is actually not really progress
-                size_t 				            m_frameBlockSizeA                               = 0;
+                char**				m_bufferFrA                                     = nullptr;      // i created a struct for it but that means i must 
+                char* 			        m_frameBlockBaseA                               = nullptr;      // rewrite the wrappers and initialize the stucts properly
+                char* 				m_frameRawBlockA                                = nullptr;      // and that is actually not really progress
+                size_t 				m_frameBlockSizeA                               = 0;
 
-                char**				            m_bufferFrB                                     = nullptr;
-                char* 				            m_frameBlockBaseB                               = nullptr;
-                char* 				            m_frameRawBlockB                                = nullptr;
-                size_t 				            m_frameBlockSizeB                               = 0;	
+                char**				m_bufferFrB                                     = nullptr;
+                char* 				m_frameBlockBaseB                               = nullptr;
+                char* 				m_frameRawBlockB                                = nullptr;
+                size_t 				m_frameBlockSizeB                               = 0;	
 
-                char** 				            m_bufferOmt                                     = nullptr;
-                char* 				            m_overlyBlockBase                               = nullptr;
-                char* 				            m_overlayRawBlock                               = nullptr;
-                size_t 				            m_overlyBlockSize                               = 0;
+                char** 				m_bufferOmt                                     = nullptr;
+                char* 				m_overlyBlockBase                               = nullptr;
+                char* 				m_overlayRawBlock                               = nullptr;
+                size_t 				m_overlyBlockSize                               = 0;
 
-                char** 				            m_bufferTex                                     = nullptr;
-                char* 				            m_textureBlockBase                              = nullptr;
-                char* 				            m_textureRawBlock                               = nullptr;
-                size_t 				            m_textureBlockSize                              = 0;
+                char** 				m_bufferTex                                     = nullptr;
+                char* 				m_textureBlockBase                              = nullptr;
+                char* 				m_textureRawBlock                               = nullptr;
+                size_t 				m_textureBlockSize                              = 0;
 
-                char**				            m_bufferKnl                                     = nullptr;
+                char**				m_bufferKnl                                     = nullptr;
                 char*                           m_kernelBlockBase                               = nullptr;
                 char*                           m_kernelRawBlock                                = nullptr;
                 size_t                          m_kernelBlockSize                               = 0;
 
-                char**				            m_bufferLog                                     = nullptr;
+                char**				m_bufferLog                                     = nullptr;
                 char*                           m_loggerBlockBase                               = nullptr;
                 char*                           m_loggerRawBlock                                = nullptr;
                 size_t                          m_loggerBlockSize                               = 0;
 
-                char** 				            m_bufferVsh                                     = nullptr;
-                char** 				            m_bufferOmf                                     = nullptr;                
-                char** 				            m_bufferFsh                                     = nullptr; 
+                char** 				m_bufferVsh                                     = nullptr;
+                char** 				m_bufferOmf                                     = nullptr;                
+                char** 				m_bufferFsh                                     = nullptr; 
 // the populated filecounter array - source and truth and hub for init and load                                MAXSD   MAXUSB    EXTCNT     SCANNED   LOADED  PREV    V_CNT    SIZE  
                 unsigned                        filecounter[FT_COUNT][FLD_COUNT]                =       {   { VSH_SD, VSH_USB,  VSH_EXT,    0,        0,      0,      0,       VSH_SIZ },  // VSH vertex shader
                                                                                                             { OMF_SD, OMF_USB,  OMF_EXT,    0,        0,      0,      0,       OMF_SIZ },  // OMF overlay fragment shader
@@ -191,18 +172,18 @@ public:         // Logging
                                                                                                             { FRM_SD, FRM_USB,        0,    0,        0,      0,      0,       FRM_SIZ },  // FRM decoded frames A & B
                                                                                                             { LOG_SD, LOG_USB,        0,    0,        0,      0,      0,       LOG_SIZ }}; // LOG logging buffers
 // lists of extensions possible in my scanroot directory function per filetype 
-        const   char*                           g_SufVsh[VSH_EXT]			                    =           { "vsh" };    // vertex shaders
-        const   char*                           g_SufOmf[OMF_EXT]			                    =           { "omf" };	// is a fsh file but used for the overlay atlas
-        const   char*                           g_SufFsh[FSH_EXT]			                    =           { "fsh" };    // fragment shaders 
-        const   char*                           g_SufOmt[OMT_EXT]			                    =           { "omt" };    // is a bpm file but used for the overlay atlas
-        const   char*                           g_SufTex[TEX_EXT]			                    =           { "bmp" };    // for textures 24bit rgb
-        const   char*                           g_SufVid[VID_EXT]			                    =           { "264" };    // video in raw h264 annex b encoded 
-        const   char*                           g_SufKln[KLN_EXT]			                    =           { "img" };    // kernel.img for the update mechanism
+        const   char*                           g_SufVsh[VSH_EXT]			        =           { "vsh" };    // vertex shaders
+        const   char*                           g_SufOmf[OMF_EXT]			        =           { "omf" };	// is a fsh file but used for the overlay atlas
+        const   char*                           g_SufFsh[FSH_EXT]			        =           { "fsh" };    // fragment shaders 
+        const   char*                           g_SufOmt[OMT_EXT]			        =           { "omt" };    // is a bpm file but used for the overlay atlas
+        const   char*                           g_SufTex[TEX_EXT]			        =           { "bmp" };    // for textures 24bit rgb
+        const   char*                           g_SufVid[VID_EXT]			        =           { "264" };    // video in raw h264 annex b encoded 
+        const   char*                           g_SufKln[KLN_EXT]			        =           { "img" };    // kernel.img for the update mechanism
 // array to store the scanned filenames
                 char*                           g_ScnVsh[VSH_SD + VSH_USB]     	                =           { 0 };    
-        		char*				            g_ScnOmf[OMF_SD + OMF_USB] 		                =           { 0 };
+        	char*				g_ScnOmf[OMF_SD + OMF_USB] 		        =           { 0 };
                 char*                           g_ScnFsh[FSH_SD + FSH_USB]     	                =           { 0 };
-        		char*				            g_ScnOmt[OMT_SD + OMT_USB] 		                =           { 0 };
+        	char*				g_ScnOmt[OMT_SD + OMT_USB] 		        =           { 0 };
                 char*                           g_ScnTex[TEX_SD + TEX_USB]     	                =           { 0 };
                 char*                           g_ScnVid[VID_SD + VID_USB]     	                =           { 0 };
                 char*                           g_ScnKln[KLN_SD + KLN_USB]     	                =           { 0 };
@@ -220,40 +201,6 @@ public:         // Logging
                 int                             g_lastLayerLED                                  = 0;
                 unsigned                        g_extClockTime[8]                               =           { 0 }; // number of my adc channels!
 
-//      typedef void                            (CKernel::*ModeFunc)(int);
-/*
-                ModeFunc                        g_modeTable[8] =
-{
-    &CKernel::modeADC,
-    &CKernel::modeTRG,
-//  &CKernel::modeBPM,
-    &CKernel::modeLF1,
-    &CKernel::modeLF2,
-
-    &CKernel::modeAudioAbL,
-    &CKernel::modeAudioAbH,
-    &CKernel::modeAudioBbL,
-    &CKernel::modeAudioBbH
-};
-*/
-
-/*
-        const   int                             layerModeMap[BLOCK_COUNT][4] =
-                                                {
-                                                    {           -1,             -1,         -1,         -1 }, // layer 0
-                                                    {           -1,             -1,         -1,         -1 }, // layer 1
-
-                                                    {           -1,             -1,         -1,         -1 }, // layer 2
-                                                    {  IN_MODE_LF1,    IN_MODE_LF2,         -1,         -1 }, // layer 3
-                                                    {  IN_MODE_TRG,             -1,         -1,         -1 },
-                                                    {   MODE_AU_AL,     MODE_AU_AH, MODE_AU_BL, MODE_AU_BH }, // layer 4
-                                                    {           -1,             -1,         -1,         -1 }, // layer 5
-                                                    {           -1,             -1,         -1,         -1 }, // layer 6
-
-                                                    {           -1,             -1,         -1,         -1 }, // layer 7
-                                                    {           -1,             -1,         -1,         -1 }  // layer 8
-                                                };
-*/
         const   uint8_t                     modeMaskByValue[8]                                  =       {   0b00000001,     // mode 0
                                                                                                             0b00000010,     // mode 1
                                                                                                             0b00000100,     // mode 2
@@ -262,7 +209,6 @@ public:         // Logging
                                                                                                             0b00100000,     // mode 5
                                                                                                             0b01000000,     // mode 6
                                                                                                             0b10000000 };   // mode 7 
-
         const   uint8_t                     layerModeMap[BLOCK_COUNT]                           =       {   0b11111111,     // layer 0: dummy row
                                                                                                             0b11111111,     // layer 1: every mode
                                                                                                             0b11111111,     // layer 2: every mode
@@ -274,7 +220,6 @@ public:         // Logging
                                                                                                             0b11111111,     // layer 6: every mode
                                                                                                             0b11111111,     // layer 7: every mode
                                                                                                             0b11111111 };   // filler to get BLOCK_COUNT
-
         const   int                         g_mapType[BLOCK_COUNT][4]                           =       {   { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  }, // mode channel 0-3 
                                                                                                             { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  }, // mode channel 4-7
 
@@ -286,7 +231,6 @@ public:         // Logging
 
                                                                                                             { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },                                                    
                                                                                                             { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE } };
-
         const   int                         g_valueRoof[BLOCK_COUNT][4]                         =       {   {    4,    4,    4,    4  },                                      // channel 0-3 four modes ( before roof mapping )
                                                                                                             {    4,    4,    4,    4  },                                      // channel 4-7 four modes ( before roof mapping )
 
@@ -298,16 +242,12 @@ public:         // Logging
 
                                                                                                             {    0,    0,    0,    0  },
                                                                                                             {    0,    0,    0,    0  } };
-
         const   int                         g_groupLen[GROUP_COUNT]                             =           { 4, 2, 2 };
-
         const   int                         g_groupModes[GROUP_COUNT][4]                        =       {   { 0, 1, 2, 3 },
                                                                                                             { 4, 5, 0, 0 },
                                                                                                             { 6, 7, 0, 0 } };
-
                 int                         g_modeRoof[MODETABLE_COUNT]                         =           { 0 };
                 int                         g_modeMap[MODETABLE_COUNT][9]                       =           { 0 };
-
                 int                         g_blockColor[BLOCK_COUNT][3]                        =       {   {190,  60,  50},   // block 0 - warm red
                                                                                                             { 55, 155,  95},   // block 1 - jade green
                                                                                                             { 60, 105, 180},   // block 2 - medium blue
@@ -320,30 +260,21 @@ public:         // Logging
 private:
                 VCHI_INSTANCE_T                 m_VCHIInstance                                  = 0;
                 VCHI_CONNECTION_T*              m_Connection                                    = 0;
-
                 VCOS_EVENT_T                    m_EventSMEM                                     =           {};
                 VCOS_EVENT_T                    m_EventMMAL                                     =           {};
-
                 VCHI_SERVICE_HANDLE_T           m_ServiceHandleVCSM                             = 0;
                 VCHI_SERVICE_HANDLE_T           m_ServiceHandleMMAL                             = 0;
-
                 u32                             m_TransactionId                                 = 0;
                 // returned from vcsm        
                 u32                             m_input_buffer_handle                           = 0;        // comes from VCSM
                 u32                             m_input_buffer_pointer                          = 0;        // comes from VCSM
-
                 u32                             m_InputBufferSize                               = 0;    // MMAL from alloc aka m_videoBlockSize
-
                 u32                             m_output_buffer_handle_a                        = 0;        // comes from VCSM
                 u32                             m_output_buffer_pointer_a                       = 0;        // comes from VCSM
-
                 u32                             m_OutputBufferSizeA                             = 0;    // MMAL ask for this but means  m_frameBlockSizeA
-
                 u32                             m_output_buffer_handle_b                        = 0;        // comes from VCSM
                 u32                             m_output_buffer_pointer_b                       = 0;        // comes from VCSM
-
                 u32                             m_OutputBufferSizeB                             = 0;    // MMAL ask for this but means m_frameBlockSizeB          
-                    
                 u32                             m_ComponentHandle                               = 0;    // used in mmal_init either direct ( inside the functions ) or rather by reference ( & ) 
                 u32                             m_InputPortHandle                               = 0;    // mmal needs it!
                 u32                             m_OutputPortHandle                              = 0;    // mmal needs it!
@@ -367,87 +298,60 @@ private:
 // VCSM predefined messages as public member
 public:
                 SERVICE_CREATION_T*             m_ServiceCreateVCSM                             = nullptr;
-
                 VCSM_Import_MEM_Msg*            m_importTxVCSM_A                                = nullptr;
                 VCSM_Import_MEM_Reply*          m_importRxVCSM_A                                = nullptr;
-
                 VCSM_Import_MEM_Msg*            m_importTxVCSM_B                                = nullptr;
                 VCSM_Import_MEM_Reply*          m_importRxVCSM_B                                = nullptr;
-
                 VCSM_Import_MEM_Msg*            m_importTxVCSM_C                                = nullptr;
                 VCSM_Import_MEM_Reply*          m_importRxVCSM_C                                = nullptr;
-
                 VCSM_Lock_MEM_Msg*              m_lockTxVCSM                                    = nullptr;
                 VCSM_Lock_MEM_Reply*            m_lockRxVCSM                                    = nullptr;
-
                 VCSM_Free_MEM_Msg*              m_freeTxVCSM                                    = nullptr;
                 VCSM_Free_MEM_Reply*            m_freeRxVCSM                                    = nullptr;
 // MMAL predefined messages as public member
                 SERVICE_CREATION_T*             m_ServiceCreateMMAL                             = nullptr;
-
                 MMAL_Component_Create_Msg*      m_ComponentCreateTx                             = nullptr;
                 MMAL_Component_Create_Reply*    m_ComponentCreateRx                             = nullptr;
-
                 MMAL_Port_Info_Get_Msg*         m_PortInfoGetTx_Input_A                         = nullptr;
                 MMAL_Port_Info_Get_Reply*       m_PortInfoGetRx_Input_A                         = nullptr;
-
                 MMAL_Port_Info_Get_Msg*         m_PortInfoGetTx_Output_A                        = nullptr; 
                 MMAL_Port_Info_Get_Reply*       m_PortInfoGetRx_Output_A                        = nullptr;
-
                 MMAL_Port_Info_Set_Msg*         m_PortInfoSetTx_Input                           = nullptr;
                 MMAL_Port_Info_Set_Msg*         m_PortInfoSetTx_Output                          = nullptr;
-
                 MMAL_Port_Info_Set_Reply*       m_PortInfoSetRx_Input                           = nullptr;
                 MMAL_Port_Info_Set_Reply*       m_PortInfoSetRx_Output                          = nullptr;
-
                 MMAL_Component_Enable_Msg*      m_ComponentEnableTx                             = nullptr;
                 MMAL_Component_Enable_Reply*    m_ComponentEnableRx                             = nullptr;
-
                 MMAL_Port_Info_Get_Msg*         m_PortInfoGetTx_Input_B                         = nullptr;
                 MMAL_Port_Info_Get_Reply*       m_PortInfoGetRx_Input_B                         = nullptr;
-
                 MMAL_Port_Info_Get_Msg*         m_PortInfoGetTx_Output_B                        = nullptr;
                 MMAL_Port_Info_Get_Reply*       m_PortInfoGetRx_Output_B                        = nullptr;
-
                 MMAL_Port_Parameter_Set_Msg*    m_PortParamTx_Input                             = nullptr;
                 MMAL_Port_Parameter_Set_Reply*  m_PortParamRx_Input                             = nullptr;
-
                 MMAL_Port_Parameter_Set_Msg*    m_PortParamTx_Output                            = nullptr;
                 MMAL_Port_Parameter_Set_Reply*  m_PortParamRx_Output                            = nullptr;
-
                 MMAL_Port_Info_Get_Msg*         m_PortInfoGetTx_Input_C                         = nullptr;
                 MMAL_Port_Info_Get_Reply*       m_PortInfoGetRx_Input_C                         = nullptr;
-
                 MMAL_Port_Info_Get_Msg*         m_PortInfoGetTx_Output_C                        = nullptr;
                 MMAL_Port_Info_Get_Reply*       m_PortInfoGetRx_Output_C                        = nullptr;
-
                 MMAL_Port_Action_Msg*           m_PortActionTx_Input                            = nullptr;
                 MMAL_Port_Action_Reply_Msg*     m_PortActionRx_Input                            = nullptr;
-
                 MMAL_Port_Action_Msg*           m_PortActionTx_Output                           = nullptr;
                 MMAL_Port_Action_Reply_Msg*     m_PortActionRx_Output                           = nullptr;
-
                 MMAL_Buffer_From_Host_Msg*      m_BufferFromHostTx_Input                        = nullptr;
                 MMAL_Buffer_From_Host_Msg*      m_BufferFromHostRx_Input                        = nullptr;
-
                 MMAL_Buffer_From_Host_Msg*      m_BufferFromHostTx_Output                       = nullptr;
                 MMAL_Buffer_From_Host_Msg*      m_BufferFromHostRx_Output                       = nullptr;
-
                 MMAL_Port_Info_Get_Msg*         m_PortInfoGetTx_Input_D                         = nullptr;
                 MMAL_Port_Info_Get_Reply*       m_PortInfoGetRx_Input_D                         = nullptr;
-
                 MMAL_Port_Info_Get_Msg*         m_PortInfoGetTx_Output_D                        = nullptr;
                 MMAL_Port_Info_Get_Reply*       m_PortInfoGetRx_Output_D                        = nullptr;
 
                 bool                            f_firstFrameQueued                              = false;
 
 // placeholder until i solved this!
-            //  u32                             m_ResolutionX                                   = 480;  // should be VIDEO_WIDTH      and is needed by bufferReadyMMAL, primePortFormatInputMMAL, primePortFormatOutputMMAL
-            //  u32                             m_ResolutionY                                   = 640;  // should be VIDEO_HEIGHT     and needed by bufferReadyMMAL, primePortFormatInputMMAL, primePortFormatOutputMMAL
 
                 EGLDisplay                      m_eglDisplay;      // is stored in the olg_state struct -> display     and needed by bufferReadyMMAL
                 EGLContext                      m_eglContext;      // is stored in the olg_state struct -> context     and needed by bufferReadyMMAL
                 EGLImageKHR                     m_EGLimage;        // is stored in the tex_state struct -> m_EGLimage  and needed by bufferReadyMMAL
                 GLuint                          m_Texture;         // is stored in the tex_state struct -> gl_tex_vid  and needed by bufferReadyMMAL               
-// dummy!
-            //  int                             m_activePrg                                     = 0;

@@ -1,7 +1,7 @@
 #include "kernel.h"
 
-    #define MY_BFR   m_logBuffer                 // means the log goes into the pre-init buffer 
-    #define MY_IDX    m_logBufferIndex
+    #define MY_BFR   m_logKernel                 // means the log goes into the pre-init buffer 
+    #define MY_IDX    m_logKernelIndex
 
 bool            CKernel::BMPparser                  (   tex_state*  t,
                                                         char*       p_buffer_array[],
@@ -42,28 +42,16 @@ bool            CKernel::BMPparser                  (   tex_state*  t,
                     t->size[i]      = size_array[i];
 
 #ifdef __LOG_PARSER__
-                    storeLogHex(   MY_BFR, MY_IDX,    "File         [", (u32)i, 
-                                                        "] buffer      ", (u32)p_buffer_array[i] );
+                    storeLogHex(   MY_BFR, MY_IDX,    "File         [", (u32)i, "] buffer      ", (u32)p_buffer_array[i] );
 #ifdef __DUMP_HEADER__                                                        
                     storeMsg(   MY_BFR, MY_IDX,    "Header Dump   ", data, headerSize );
 #endif                    
-                    storeLogHex(   MY_BFR, MY_IDX, t->tex_valid[i] ? 
-                                                        "header   VALID" : 
-                                                        "header  FAILED", X_VAL, 
-                                                        " Name         ", X_VAL, 
-                                                        filename_array[i], X_VAL );
-                    storeLogHex(   MY_BFR, MY_IDX,    "exp. Filesize ", (u32)fileSize, 
-                                                        "act. Filesize ", (u32)size_array[i], 
-                                                        "max. FileSize ", (u32)t->max_tex_size );
-                    storeLogHex(   MY_BFR, MY_IDX,    "Header offset ", (u32)dataOffset, 
-                                                        "Header size   ", (u32)headerSize);
-                    storeLogHex(   MY_BFR, MY_IDX,    "Bitmap Width  ", (u32)width, 
-                                                        "Bitmap Height ", (u32)height, 
-                                                        "BitsPerPixel  ", (u32)bpp );
-                    storeLogHex(   MY_BFR, MY_IDX,    "Bitmap-Planes ", (u32)planes, 
-                                                        "Compression   ", (u32)compression );
-                    storeLogHex(   MY_BFR, MY_IDX,    "exp. Bmpsize  ", (u32)(width * height * 3), 
-                                                        "act. Bmpsize  ", (u32)imgSize );
+                    storeLogHex(   MY_BFR, MY_IDX, t->tex_valid[i] ? "header   VALID" : "header  FAILED", X_VAL, " Name         ", X_VAL, filename_array[i], X_VAL );
+                    storeLogHex(   MY_BFR, MY_IDX,    "exp. Filesize ", (u32)fileSize, "act. Filesize ", (u32)size_array[i], "max. FileSize ", (u32)t->max_tex_size );
+                    storeLogHex(   MY_BFR, MY_IDX,    "Header offset ", (u32)dataOffset, "Header size   ", (u32)headerSize);
+                    storeLogHex(   MY_BFR, MY_IDX,    "Bitmap Width  ", (u32)width, "Bitmap Height ", (u32)height, "BitsPerPixel  ", (u32)bpp );
+                    storeLogHex(   MY_BFR, MY_IDX,    "Bitmap-Planes ", (u32)planes, "Compression   ", (u32)compression );
+                    storeLogHex(   MY_BFR, MY_IDX,    "exp. Bmpsize  ", (u32)(width * height * 3), "act. Bmpsize  ", (u32)imgSize );
                     nextline(   MY_BFR, MY_IDX);                       
 #endif
                     }

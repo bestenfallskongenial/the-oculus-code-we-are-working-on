@@ -1,12 +1,12 @@
 #include "kernel.h"
 
-    #define MY_BFR   m_logBuffer                 // means the log goes into the pre-init buffer 
-    #define MY_IDX    m_logBufferIndex
+    #define MY_BFR   m_logKernel                 // means the log goes into the pre-init buffer 
+    #define MY_IDX    m_logKernelIndex
 
 bool            CKernel::setSystemVariables()
 {
             //  FOR NOW A DUMMY!!!
-            
+            g_centralModeBuffer[g_currentProgramBuffer][SEL_PRG] = 7;
                 return true;
 }   
 

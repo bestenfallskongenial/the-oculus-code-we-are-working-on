@@ -1,7 +1,7 @@
 #include "kernel.h"
 
-    #define MY_BFR   m_logBuffer                 // means the log goes into the pre-init buffer 
-    #define MY_IDX    m_logBufferIndex
+    #define MY_BFR   m_logKernel                 // means the log goes into the pre-init buffer 
+    #define MY_IDX    m_logKernelIndex
 
 TShutdownMode CKernel::Run(void)
 {
@@ -19,7 +19,7 @@ TShutdownMode CKernel::Run(void)
                         wrapper_init_gl_sd();
 
                         msDelay(3000);
-                        m_logBufferIndex = 0;
+                        m_logKernelIndex = 0;
                         bufferScreenClear();
 
                         m_SD_has_load = true;
@@ -31,14 +31,14 @@ TShutdownMode CKernel::Run(void)
                         wrapper_init_gl_usb();
 
                         msDelay(3000);
-                        m_logBufferIndex = 0;
+                        m_logKernelIndex = 0;
                         bufferScreenClear();
 
                         m_USB_has_load = true;
                         }
                     if( m_SD_has_load && m_USB_has_load )
                         {
-                        m_logBufferIndex = 0;
+                        m_logKernelIndex = 0;
                         bufferScreenClear();
                         } 
 
