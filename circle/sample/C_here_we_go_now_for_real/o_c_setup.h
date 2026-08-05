@@ -1,27 +1,20 @@
 /*
         this file contains the system relevant macros that defines functionality
-
-
-
 */        
     #define         OS_VERSION                  2
     #define         OS_REVISION                 1
 
-    #define 		LOGLEVEL				    2	                            // 0: only panic 
-                                                                                // 1: also errors 
-                                                                                // 2: also warnings 
-                                                                                // 3: also notices 
-                                                                                // 4: also debug output (default))
+    #define 		LOGLEVEL				    2	                            // 0: only panic / 1: also errors / 2: also warnings / 3: also notices / 4: also debug output (default))
 
-//  #define         __LOG_ALLOC__                                               // allocation / buffer allocation logging
-//  #define         __LOG_FILE__                                                // filesystem / file load-store logging
-//  #define         __LOG_MEMORY__                                              // logs the memory map, only used ones
-//  #define         __LOG_PARSER__                                              // parser / file parser logging
-//  #define         __LOG_MMAL__                                                // MMAL init/wrapper/message logging
-//  #define         __LOG_VC04__                                                // VC/VCHI service logging
-//  #define         __LOG_VCSM__                                                // VCSM alloc/import/lock logging
-//  #define         __LOG_INIT__                                                // kernel initialization step logging
-//  #define         __LOG_RUNTIME__
+    #define         __LOG_ALLOC__                                               // allocation / buffer allocation logging
+    #define         __LOG_FILE__                                                // filesystem / file load-store logging
+    #define         __LOG_MEMORY__                                              // logs the memory map, only used ones
+    #define         __LOG_PARSER__                                              // parser / file parser logging
+    #define         __LOG_MMAL__                                                // MMAL init/wrapper/message logging
+    #define         __LOG_VC04__                                                // VC/VCHI service logging
+    #define         __LOG_VCSM__                                                // VCSM alloc/import/lock logging
+    #define         __LOG_INIT__                                                // kernel initialization step logging
+    #define         __LOG_RUNTIME__         // maybe i should rename it...
 //  #define         __LOG_GLSL__                                                // shader/program/uniform/gfx_check OpenGL logging
 //  #define         __LOG_FIRST_FRAME__                                         // logs the fist frame vpu messaging - later useful
     #define         __LOG_TO_SCREEN__                                           // shows the log on the screen
@@ -48,12 +41,27 @@
     #define         KLN_SD                      1   // max number of kernel.img on sd ( is loaded for the restore function in case of failed FW update )
     #define         FRM_SD                      1   // i put them here because if my mem/dma allocation
     #define         LOG_SD                      16  // here is the trick:
-                                                    //  #define MY_BFR   m_bufferLog
-                                                    //  #define MY_IDX    m_bufferLogIndex
-                                                    //  for (int i = 0; i < loadedVideos; i++)
-                                                    //      {
-                                                    //      storeLogHex( MY_BFR[i], MY_IDX[i], ... );
-                                                    //      }
+
+    #define             LOG_SYS_0               0   // m_bufferLog[] slot for INIT, ALLOC, FILE, MEMORY 
+    #define             LOG_DUMMY_0             1
+    #define             LOG_DUMMY_1             2
+    #define             LOG_USERFILE            3
+
+    #define             LOG_GLSL_0              4   // m_bufferLog[] slot for GLSL - shader / texture init
+    #define             LOG_VCSM_0              5   // m_bufferLog[] slot for VCSM
+    #define             LOG_MMAL_0              6   // m_bufferLog[] slot for MMAL / Framedata
+    #define             LOG_TEX_0               7   // m_bufferLog[] slot for TEXTURES - parser
+
+    #define             LOG_VID_0               8   // m_bufferLog[] slot for video 0 - parser  
+    #define             LOG_VID_1               9
+    #define             LOG_VID_2               10
+    #define             LOG_VID_3               11
+
+    #define             LOG_VID_4               12
+    #define             LOG_VID_5               13
+    #define             LOG_VID_6               14
+    #define             LOG_VID_7               15
+
     #define         VSH_USB                     0	// max number of u_vertex shader on sd
     #define         OMF_USB            		    0	// max number of fragment shader on sd
     #define         FSH_USB            		    32	// max number of fragment shader on sd
