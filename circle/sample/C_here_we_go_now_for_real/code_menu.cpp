@@ -39,93 +39,74 @@ void            CKernel::storeModes()
                     }
 }
 
-void CKernel::buttonConsumer(int buttonA, int buttonB)
+void            CKernel::buttonConsumer(int buttonA, int buttonB)
 {
-    static int stepLayer = 2;
+                static int stepLayer = 2;
 
-    if (!g_buttons_states[buttonA][BTN_HOLD_TICK] &&
-        !g_buttons_states[buttonB][BTN_HOLD_TICK])
-    {
-        stepLayer      = 2;
-        g_menuLayer    = 0;
-        g_lastLayerLED = 0;
+                if (!g_buttons_states[buttonA][BTN_HOLD_TICK] && !g_buttons_states[buttonB][BTN_HOLD_TICK])
+                    {
+                    stepLayer      = 2;
+                    g_menuLayer    = 0;
+                    g_lastLayerLED = 0;
 
-        if (g_buttons_states[buttonA][BTN_SINGLE])
-        {
-            calculate1BPMnew(0, TB0, DB0, g_currentTime);
-            g_buttons_states[buttonA][BTN_SINGLE] = 0;
-        }
+                    if (g_buttons_states[buttonA][BTN_SINGLE])
+                        {
+                        calculate1BPMnew(0, TB0, DB0, g_currentTime);
+                        g_buttons_states[buttonA][BTN_SINGLE] = 0;
+                        }
+                    if (g_buttons_states[buttonB][BTN_DOUBLE])
+                        {
+                        g_centralModeBuffer[g_gl_program_current][IS_STORED] = !g_centralModeBuffer[g_gl_program_current][IS_STORED];
 
-        if (g_buttons_states[buttonB][BTN_DOUBLE])
-        {
-            g_centralModeBuffer[g_gl_program_current][IS_STORED] =
-                !g_centralModeBuffer[g_gl_program_current][IS_STORED];
+                        g_buttons_states[buttonB][BTN_DOUBLE] = 0;
+                        }
+                    return;
+                    }
 
-            g_buttons_states[buttonB][BTN_DOUBLE] = 0;
-        }
+                if (g_buttons_states[buttonA][BTN_HOLD_TICK] && !g_buttons_states[buttonB][BTN_HOLD_TICK])
+                    {
+                    stepLayer      = 2;
+                    g_menuLayer    = 1;
+                    g_lastLayerLED = 1;
 
-        return;
-    }
+                    return;
+                    }
 
-    if (g_buttons_states[buttonA][BTN_HOLD_TICK] &&
-        !g_buttons_states[buttonB][BTN_HOLD_TICK])
-    {
-        stepLayer      = 2;
-        g_menuLayer    = 1;
-        g_lastLayerLED = 1;
+                if (g_buttons_states[buttonB][BTN_HOLD_TICK] && !g_buttons_states[buttonA][BTN_HOLD_TICK] && !g_buttons_states[buttonA][BTN_SINGLE])
+                    {
+                    g_menuLayer    = stepLayer;
+                    g_lastLayerLED = stepLayer;
 
-        return;
-    }
+                    return;
+                    }
 
-    if (g_buttons_states[buttonB][BTN_HOLD_TICK] &&
-        !g_buttons_states[buttonA][BTN_HOLD_TICK] &&
-        !g_buttons_states[buttonA][BTN_SINGLE])
-    {
-        g_menuLayer    = stepLayer;
-        g_lastLayerLED = stepLayer;
+                if (g_buttons_states[buttonB][BTN_HOLD_TICK] && g_buttons_states[buttonA][BTN_SINGLE])
+                    {
+                    bool layerAvailable = false;
 
-        return;
-    }
+                    do  {
+                        ++stepLayer;
 
-    if (g_buttons_states[buttonB][BTN_HOLD_TICK] &&
-        g_buttons_states[buttonA][BTN_SINGLE])
-    {
-        bool layerAvailable = false;
+                        if (stepLayer > ACCESSIBLE_LAYER) stepLayer = 3;
 
-        do
-        {
-            ++stepLayer;
+                        layerAvailable =    (   layerModeMap[stepLayer] &   (   modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][0]] | 
+                                                                                modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][1]] |
+                                                                                modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][2]] | 
+                                                                                modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][3]] |
+                                                                                modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][4]] | 
+                                                                                modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][5]] |
+                                                                                modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][6]] | 
+                                                                                modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][7]]   ) ) != 0;
+                        }
+                    while (!layerAvailable);
 
-            if (stepLayer > ACCESSIBLE_LAYER)
-            {
-                stepLayer = 3;
-            }
+                    g_menuLayer    = stepLayer;
+                    g_lastLayerLED = stepLayer;
 
-            layerAvailable =
-            (
-                layerModeMap[stepLayer]
-                &
-                (
-                    modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][0]] |
-                    modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][1]] |
-                    modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][2]] |
-                    modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][3]] |
-                    modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][4]] |
-                    modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][5]] |
-                    modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][6]] |
-                    modeMaskByValue[g_centralModeBuffer[g_currentProgramBuffer][7]]
-                )
-            ) != 0;
-        }
-        while (!layerAvailable);
+                    g_buttons_states[buttonA][BTN_SINGLE] = 0;
 
-        g_menuLayer    = stepLayer;
-        g_lastLayerLED = stepLayer;
-
-        g_buttons_states[buttonA][BTN_SINGLE] = 0;
-
-        return;
-    }
+                    return;
+                    }
 }
 
 void            CKernel::dispatchLayer()
@@ -339,11 +320,10 @@ void            CKernel::applyTargetModes           (   )       // current!
                     {
                     g_activeProgram = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] )) >> 10;
 
-                    if (/*!g_activeProgramFlag*/ g_centralModeBuffer[g_currentProgramBuffer][SEL_PRG] == 0)                                 
+                    if (g_centralModeBuffer[g_currentProgramBuffer][SEL_PRG] == 0)                                 
                         {
                         if (g_activeProgram == g_gl_program_current)
                             {
-                        //  g_activeProgramFlag = true;
                             g_centralModeBuffer[g_currentProgramBuffer][SEL_PRG] = 1;
                             }
                         }

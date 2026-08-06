@@ -102,7 +102,7 @@ TShutdownMode CKernel::Run(void)
                     setTexPrg(&m_ogl,
                             &m_fsh,
                             &m_tex,
-                            0,
+                            m_activeTex,
                             filecounter[FT_TEX][FLD_VALID]);                            
 
                     drawGLsPrg();
