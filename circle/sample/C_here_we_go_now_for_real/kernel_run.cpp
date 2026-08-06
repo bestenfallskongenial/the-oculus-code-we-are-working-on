@@ -90,9 +90,9 @@ TShutdownMode CKernel::Run(void)
 
                 //  logPickUpFlags( 9 );
 
-                    logInOutRuntime( 10 );
+                //  logInOutRuntime( 10 );
 
-                    logInfosRuntime( 20 );
+                    logInfosRuntime( 10 );
 
                     setUniPrg(&m_ogl,
                             &m_fsh,
