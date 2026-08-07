@@ -325,6 +325,8 @@
 
   <!--  INPUT MODES -->
 
+subtract:
+
 <svg id="MODE_TRG"
      data-cell="0,0"
      width="128"
@@ -332,20 +334,24 @@
      viewBox="0 0 128 128"
      overflow="hidden">
 
-  <g transform="translate(64 64)">
-    <g transform="translate(-64 -64)">
+  <defs>
+    <mask id="MASK_MODE_TRG"
+          maskUnits="userSpaceOnUse"
+          x="0" y="0"
+          width="128" height="128">
 
-      <circle id="TRG"
-              cx="64"
+      <!-- Visible circle -->
+      <circle cx="64"
               cy="64"
               r="44"
-              fill="#000000"
-              stroke="none"
-              stroke-width="1"/>
-      <polyline id="mode_TRG_polyline"
-                fill="none"
-                stroke="#ffffff"
+              fill="white"/>
+
+      <!-- Transparent cutout -->
+      <polyline fill="none"
+                stroke="black"
                 stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
                 points="
                   16,64
                   40,64
@@ -358,8 +364,14 @@
                   98,64
                   112,64
                 "/>
-    </g>
-  </g>
+    </mask>
+  </defs>
+
+  <circle cx="64"
+          cy="64"
+          r="44"
+          fill="#000000"
+          mask="url(#MASK_MODE_TRG)"/>
 </svg>
 
 <svg id="MODE_TRG_HOLD"
@@ -369,49 +381,56 @@
      viewBox="0 0 128 128"
      overflow="hidden">
 
-  <g transform="translate(64 64)">
-    <g transform="translate(-64 -64)">
+  <defs>
+    <mask id="MASK_MODE_TRG_HOLD"
+          maskUnits="userSpaceOnUse"
+          x="0" y="0"
+          width="128" height="128">
 
-      <circle id="TRG"
-              cx="64"
+      <circle cx="64"
               cy="64"
               r="44"
-              fill="#000000"
-              stroke="none"
+              fill="white"/>
+
+      <g fill="none"
+         stroke="black"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+
+        <polyline stroke-width="2"
+                  points="
+                    16,64
+                    40,64
+                    44,40
+                    60,40
+                    68,88
+                    80,88
+                    80,48
+                    96,51
+                    98,64
+                    112,64
+                  "/>
+
+        <line x1="30"
+              y1="88"
+              x2="98"
+              y2="88"
               stroke-width="1"/>
 
-      <polyline id="mode_TRG_polyline"
-                fill="none"
-                stroke="#ffffff"
-                stroke-width="2"
-                points="
-                  16,64
-                  40,64
-                  44,40
-                  60,40
-                  68,88
-                  80,88
-                  80,48
-                  96,51
-                  98,64
-                  112,64
-                "/>
+        <line x1="30"
+              y1="40"
+              x2="98"
+              y2="40"
+              stroke-width="1"/>
+      </g>
+    </mask>
+  </defs>
 
-      <line x1="30"
-            y1="88"
-            x2="98"
-            y2="88"
-            stroke="#ffffff"
-            stroke-width="1"/>
-
-      <line x1="30"
-            y1="40"
-            x2="98"
-            y2="40"
-            stroke="#ffffff"
-            stroke-width="1"/>
-    </g>
-  </g>
+  <circle cx="64"
+          cy="64"
+          r="44"
+          fill="#000000"
+          mask="url(#MASK_MODE_TRG_HOLD)"/>
 </svg>
 
 <svg id="MODE_GLOBAL_LFO_0"
@@ -429,11 +448,64 @@
           width="128"
           height="128">
 
-      <rect x="0"
-            y="0"
-            width="128"
-            height="128"
-            fill="white"/>
+      <!-- visible area -->
+      <circle cx="64"
+              cy="64"
+              r="44"
+              fill="white"/>
+
+      <!-- transparent filled window:
+           translate = position
+           scale     = size -->
+      <g transform="translate(44 72) scale(0.25)">
+        <g transform="translate(-64 -45.5)">
+
+          <!-- waveform box size plus 2px margin on every side -->
+          <rect x="-3"
+                y="-3"
+                width="134"
+                height="100"
+                rx="32"
+                ry="32"
+                fill="black"/>
+
+        </g>
+      </g>
+
+      <!-- transparent cutouts -->
+      <g fill="none"
+         stroke="black"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+
+        <line x1="24"
+              y1="50"
+              x2="24"
+              y2="78"
+              stroke-width="1"/>
+
+        <line x1="64"
+              y1="50"
+              x2="64"
+              y2="78"
+              stroke-width="1"/>
+
+        <line x1="104"
+              y1="50"
+              x2="104"
+              y2="78"
+              stroke-width="1"/>
+
+        <path stroke-width="2"
+              d="
+                M24 64
+                C30.7 54.7 36.2 48 44 48
+                C51.8 48 57.3 54.7 64 64
+                C70.7 73.3 76.2 80 84 80
+                C91.8 80 97.3 73.3 104 64
+              "/>
+
+      </g>
 
       <!-- transparent glyph 0 -->
       <g transform="translate(84 56) scale(0.25)">
@@ -453,70 +525,11 @@
     </mask>
   </defs>
 
-  <g mask="url(#MASK_MODE_GLOBAL_LFO_0)">
-
-    <g transform="translate(64 64)">
-      <g transform="translate(-64 -64)">
-
-        <circle id="LFO_0"
-                cx="64"
-                cy="64"
-                r="44"
-                fill="#000000"
-                stroke="none"
-                stroke-width="1"/>
-
-        <line x1="24"
-              y1="50"
-              x2="24"
-              y2="78"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-        <line x1="64"
-              y1="50"
-              x2="64"
-              y2="78"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-        <line x1="104"
-              y1="50"
-              x2="104"
-              y2="78"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-        <path id="mode_LFO_0_sine"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="
-                M24 64
-
-                C30.7 54.7
-                 36.2 48
-                 44 48
-
-                C51.8 48
-                 57.3 54.7
-                 64 64
-
-                C70.7 73.3
-                 76.2 80
-                 84 80
-
-                C91.8 80
-                 97.3 73.3
-                 104 64
-              "/>
-
-      </g>
-    </g>
-
-  </g>
+  <circle cx="64"
+          cy="64"
+          r="44"
+          fill="#000000"
+          mask="url(#MASK_MODE_GLOBAL_LFO_0)"/>
 
 </svg>
 
@@ -535,11 +548,64 @@
           width="128"
           height="128">
 
-      <rect x="0"
-            y="0"
-            width="128"
-            height="128"
-            fill="white"/>
+      <!-- visible area -->
+      <circle cx="64"
+              cy="64"
+              r="44"
+              fill="white"/>
+
+      <!-- transparent filled window:
+           translate = position
+           scale     = size -->
+      <g transform="translate(44 72) scale(0.25)">
+        <g transform="translate(-64 -45.5)">
+
+          <!-- waveform box size plus 2px margin on every side -->
+          <rect x="-3"
+                y="-3"
+                width="134"
+                height="100"
+                rx="32"
+                ry="32"
+                fill="black"/>
+
+        </g>
+      </g>
+
+      <!-- transparent cutouts -->
+      <g fill="none"
+         stroke="black"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+
+        <line x1="24"
+              y1="48"
+              x2="24"
+              y2="80"
+              stroke-width="1"/>
+
+        <line x1="64"
+              y1="48"
+              x2="64"
+              y2="80"
+              stroke-width="1"/>
+
+        <line x1="104"
+              y1="48"
+              x2="104"
+              y2="80"
+              stroke-width="1"/>
+
+        <path stroke-width="2"
+              d="
+                M24 64
+                C30.7 54.7 36.2 48 44 48
+                C51.8 48 57.3 54.7 64 64
+                C70.7 73.3 76.2 80 84 80
+                C91.8 80 97.3 73.3 104 64
+              "/>
+
+      </g>
 
       <!-- transparent glyph 1 -->
       <g transform="translate(84 56) scale(0.25)">
@@ -555,72 +621,15 @@
     </mask>
   </defs>
 
-  <g mask="url(#MASK_MODE_GLOBAL_LFO_1)">
-
-    <g transform="translate(64 64)">
-      <g transform="translate(-64 -64)">
-
-        <circle id="LFO_1"
-                cx="64"
-                cy="64"
-                r="44"
-                fill="#000000"
-                stroke="none"
-                stroke-width="1"/>
-
-        <line x1="24"
-              y1="48"
-              x2="24"
-              y2="80"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-        <line x1="64"
-              y1="48"
-              x2="64"
-              y2="80"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-        <line x1="104"
-              y1="48"
-              x2="104"
-              y2="80"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-        <path id="mode_LFO_1_sine"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="
-                M24 64
-
-                C30.7 54.7
-                 36.2 48
-                 44 48
-
-                C51.8 48
-                 57.3 54.7
-                 64 64
-
-                C70.7 73.3
-                 76.2 80
-                 84 80
-
-                C91.8 80
-                 97.3 73.3
-                 104 64
-              "/>
-
-      </g>
-    </g>
-
-  </g>
+  <circle cx="64"
+          cy="64"
+          r="44"
+          fill="#000000"
+          mask="url(#MASK_MODE_GLOBAL_LFO_1)"/>
 
 </svg>
+
+
 
 <svg id="MODE_GLOBAL_LFO_MULTI_0"
      data-cell="4,0"
@@ -642,6 +651,66 @@
             width="128"
             height="128"
             fill="white"/>
+
+      <!-- transparent lines and waveforms -->
+      <g fill="none"
+         stroke="black"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+
+        <line x1="24"
+              y1="50"
+              x2="24"
+              y2="78"
+              stroke-width="1"/>
+
+        <line x1="64"
+              y1="50"
+              x2="64"
+              y2="78"
+              stroke-width="1"/>
+
+        <line x1="104"
+              y1="50"
+              x2="104"
+              y2="78"
+              stroke-width="1"/>
+
+        <path stroke-width="2"
+              d="
+                M24 64
+
+                C30.7 54.7
+                 36.2 48
+                 44 48
+
+                C51.8 48
+                 57.3 54.7
+                 64 64
+              "/>
+
+        <path stroke-width="2"
+              d="
+                M24 64
+                C27.3 58.7 30.7 56 34 56
+                C37.3 56 40.7 58.7 44 64
+                C47.3 69.3 50.7 72 54 72
+                C57.3 72 60.7 69.3 64 64
+              "/>
+
+        <path stroke-width="1"
+              d="
+                M24 64
+                C26 60 28 58 30 58
+                C32 58 34 60 36 64
+                C38 68 40 70 42 70
+                C44 70 46 68 48 64
+                C50 60 52 58 54 58
+                C56 58 58 60 60 64
+                C62 68 64 70 66 70
+              "/>
+
+      </g>
 
       <!-- transparent glyph 0 -->
       <g transform="translate(84 56) scale(0.25)">
@@ -720,15 +789,12 @@
               stroke="#ffffff"
               stroke-width="1"/>
 
-         
-
         <line x1="104"
               y1="50"
               x2="104"
               y2="78"
               stroke="#ffffff"
               stroke-width="1"/>
-
 
         <path id="mode_LFO_MULTI_0_sine"
               fill="none"
@@ -778,12 +844,6 @@
                 C56 58 58 60 60 64
                 C62 68 64 70 66 70
               "/>
-        <line x1="66"
-              y1="50"
-              x2="66"
-              y2="78"
-              stroke="#000000"
-              stroke-width="3"/>     
 
       </g>
     </g>
@@ -812,6 +872,66 @@
             width="128"
             height="128"
             fill="white"/>
+
+      <!-- transparent lines and waveforms -->
+      <g fill="none"
+         stroke="black"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+
+        <line x1="24"
+              y1="50"
+              x2="24"
+              y2="78"
+              stroke-width="1"/>
+
+        <line x1="64"
+              y1="50"
+              x2="64"
+              y2="78"
+              stroke-width="1"/>
+
+        <line x1="104"
+              y1="50"
+              x2="104"
+              y2="78"
+              stroke-width="1"/>
+
+        <path stroke-width="2"
+              d="
+                M24 64
+
+                C30.7 54.7
+                 36.2 48
+                 44 48
+
+                C51.8 48
+                 57.3 54.7
+                 64 64
+              "/>
+
+        <path stroke-width="2"
+              d="
+                M24 64
+                C27.3 58.7 30.7 56 34 56
+                C37.3 56 40.7 58.7 44 64
+                C47.3 69.3 50.7 72 54 72
+                C57.3 72 60.7 69.3 64 64
+              "/>
+
+        <path stroke-width="1"
+              d="
+                M24 64
+                C26 60 28 58 30 58
+                C32 58 34 60 36 64
+                C38 68 40 70 42 70
+                C44 70 46 68 48 64
+                C50 60 52 58 54 58
+                C56 58 58 60 60 64
+                C62 68 64 70 66 70
+              "/>
+
+      </g>
 
       <!-- transparent glyph 1 -->
       <g transform="translate(84 72) scale(0.25)">
@@ -877,7 +997,7 @@
         <path id="mode_LFO_MULTI_1_sine"
               fill="none"
               stroke="#ffffff"
-              stroke-width="2"
+              stroke-width="3"
               stroke-linecap="round"
               stroke-linejoin="round"
               d="
@@ -950,6 +1070,72 @@
             width="128"
             height="128"
             fill="white"/>
+
+      <!-- transparent rotated lines and waveforms -->
+      <g transform="translate(64 64) rotate(180)">
+        <g transform="translate(-64 -64)">
+
+          <g fill="none"
+             stroke="black"
+             stroke-linecap="round"
+             stroke-linejoin="round">
+
+            <line x1="24"
+                  y1="50"
+                  x2="24"
+                  y2="78"
+                  stroke-width="1"/>
+
+            <line x1="64"
+                  y1="50"
+                  x2="64"
+                  y2="78"
+                  stroke-width="1"/>
+
+            <line x1="104"
+                  y1="50"
+                  x2="104"
+                  y2="78"
+                  stroke-width="1"/>
+
+            <path stroke-width="2"
+                  d="
+                    M24 64
+
+                    C30.7 54.7
+                     36.2 48
+                     44 48
+
+                    C51.8 48
+                     57.3 54.7
+                     64 64
+                  "/>
+
+            <path stroke-width="2"
+                  d="
+                    M24 64
+                    C27.3 58.7 30.7 56 34 56
+                    C37.3 56 40.7 58.7 44 64
+                    C47.3 69.3 50.7 72 54 72
+                    C57.3 72 60.7 69.3 64 64
+                  "/>
+
+            <path stroke-width="1"
+                  d="
+                    M24 64
+                    C26 60 28 58 30 58
+                    C32 58 34 60 36 64
+                    C38 68 40 70 42 70
+                    C44 70 46 68 48 64
+                    C50 60 52 58 54 58
+                    C56 58 58 60 60 64
+                    C62 68 64 70 66 70
+                  "/>
+
+          </g>
+
+        </g>
+      </g>
 
       <!-- transparent glyph 0, left of center -->
       <g transform="translate(44 56) scale(0.25)">
@@ -1112,6 +1298,72 @@
             width="128"
             height="128"
             fill="white"/>
+
+      <!-- transparent rotated lines and waveforms -->
+      <g transform="translate(64 64) rotate(180)">
+        <g transform="translate(-64 -64)">
+
+          <g fill="none"
+             stroke="black"
+             stroke-linecap="round"
+             stroke-linejoin="round">
+
+            <line x1="24"
+                  y1="50"
+                  x2="24"
+                  y2="78"
+                  stroke-width="1"/>
+
+            <line x1="64"
+                  y1="50"
+                  x2="64"
+                  y2="78"
+                  stroke-width="1"/>
+
+            <line x1="104"
+                  y1="50"
+                  x2="104"
+                  y2="78"
+                  stroke-width="1"/>
+
+            <path stroke-width="2"
+                  d="
+                    M24 64
+
+                    C30.7 54.7
+                     36.2 48
+                     44 48
+
+                    C51.8 48
+                     57.3 54.7
+                     64 64
+                  "/>
+
+            <path stroke-width="2"
+                  d="
+                    M24 64
+                    C27.3 58.7 30.7 56 34 56
+                    C37.3 56 40.7 58.7 44 64
+                    C47.3 69.3 50.7 72 54 72
+                    C57.3 72 60.7 69.3 64 64
+                  "/>
+
+            <path stroke-width="1"
+                  d="
+                    M24 64
+                    C26 60 28 58 30 58
+                    C32 58 34 60 36 64
+                    C38 68 40 70 42 70
+                    C44 70 46 68 48 64
+                    C50 60 52 58 54 58
+                    C56 58 58 60 60 64
+                    C62 68 64 70 66 70
+                  "/>
+
+          </g>
+
+        </g>
+      </g>
 
       <!-- transparent glyph 1, left of center -->
       <g transform="translate(44 72) scale(0.25)">
@@ -1852,7 +2104,7 @@
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-    <g transform="translate(64 64) scale (0.5)">
+    <g transform="translate(44 77) scale (0.25)">
       <g transform="translate(-64 -64) ">
         <path fill="black"
               fill-rule="evenodd"
@@ -1883,7 +2135,7 @@
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-    <g transform="translate(64 64) scale (0.5)">
+    <g transform="translate(44 77) scale (0.25)">
       <g transform="translate(-64 -64)">
         <path fill="black"
               fill-rule="evenodd"
@@ -1913,7 +2165,7 @@
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-    <g transform="translate(64 64) scale (0.5)">
+    <g transform="translate(44 77) scale (0.25)">
       <g transform="translate(-64 -64)">
         <path fill="black"
               fill-rule="evenodd"
@@ -1939,12 +2191,12 @@
   </svg>
 
   <svg id="wave_ramp_down"
-       data-cell="3,1"
+       data-cell="2,0"
        width="128"
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-    <g transform="translate(64 64) scale (0.5)">
+    <g transform="translate(44 77) scale (0.25)">
       <g transform="translate(-64 -64)">
         <path fill="black"
               fill-rule="evenodd"
@@ -1970,12 +2222,12 @@
   </svg>
 
   <svg id="wave_random"
-       data-cell="4,1"
+       data-cell="3,0"
        width="128"
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-    <g transform="translate(64 64) scale (0.5)">
+    <g transform="translate(44 77) scale (0.25)">
       <g transform="translate(-64 -64)">
         <path fill="black"
               fill-rule="evenodd"

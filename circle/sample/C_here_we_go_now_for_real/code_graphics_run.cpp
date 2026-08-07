@@ -215,7 +215,7 @@ void            CKernel::drawGLsOvl                 (   )
 {
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+            //  glBlendFunc(GL_ZERO, GL_SRC_COLOR);                 // shall fix the "no alfa in my 24bit bmp texture bitmap" issue
                 glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
                 glDisable(GL_BLEND);

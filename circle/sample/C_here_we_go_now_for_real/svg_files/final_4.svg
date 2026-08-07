@@ -4,30 +4,27 @@
      width="1024"
      height="1024"
      viewBox="0 0 1024 1024">
-
   <!--  128/128 RASTER -->
-
   <g>
-    <polyline fill="none" points="0,0 0,1024" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
-    <polyline fill="none" points="128,0 128,1024" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
-    <polyline fill="none" points="256,0 256,1024" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
-    <polyline fill="none" points="384,0 384,1024" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
-    <polyline fill="none" points="512,0 512,1024" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
-    <polyline fill="none" points="640,0 640,1024" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
-    <polyline fill="none" points="768,0 768,1024" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
-    <polyline fill="none" points="896,0 896,1024" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
-    <polyline fill="none" points="0,0 1024,0" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
-    <polyline fill="none" points="0,128 1024,128" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
-    <polyline fill="none" points="0,256 1024,256" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
-    <polyline fill="none" points="0,384 1024,384" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
-    <polyline fill="none" points="0,512 1024,512" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
-    <polyline fill="none" points="0,640 1024,640" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
-    <polyline fill="none" points="0,768 1024,768" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
-    <polyline fill="none" points="0,896 1024,896" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" />
+    
+    <polyline fill="none" points="0,0 0,1024" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <polyline fill="none" points="128,0 128,1024" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <polyline fill="none" points="256,0 256,1024" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <polyline fill="none" points="384,0 384,1024" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <polyline fill="none" points="512,0 512,1024" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <polyline fill="none" points="640,0 640,1024" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <polyline fill="none" points="768,0 768,1024" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <polyline fill="none" points="896,0 896,1024" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <polyline fill="none" points="0,0 1024,0" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <polyline fill="none" points="0,128 1024,128" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <polyline fill="none" points="0,256 1024,256" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <polyline fill="none" points="0,384 1024,384" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <polyline fill="none" points="0,512 1024,512" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <polyline fill="none" points="0,640 1024,640" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <polyline fill="none" points="0,768 1024,768" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    <polyline fill="none" points="0,896 1024,896" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
   </g>
-
   <!--  GLYPHS -->  
-
   <svg id="NUM_0"
        data-cell="0,4"
        width="128"
@@ -247,10 +244,8 @@
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
   <g transform="translate(64 64) scale(.5)">
     <g transform="translate(-64 -64)">
-
       <!-- L -->
       <path transform="translate(13 48.53125)
                        scale(0.9375)
@@ -263,7 +258,6 @@
                C104.59,232.231,103.695,231.336,102.591,231.336z"
             fill="#000000"
             fill-rule="evenodd"/>
-
       <!-- O -->
       <path transform="translate(47 46.5)
                        scale(1.6666667)
@@ -285,7 +279,6 @@
                c0.682-1.318,2.674-0.833,2.674,0.651l0,0V415.548z"
             fill="#000000"
             fill-rule="evenodd"/>
-
       <!-- G -->
       <path transform="translate(81 48.53125)
                        scale(0.9375)
@@ -317,35 +310,32 @@
                C320.664,197.454,321.533,198.324,321.533,199.396z"
             fill="#000000"
             fill-rule="evenodd"/>
-
     </g>
   </g>
 </svg>  
-
-
   <!--  INPUT MODES -->
-
 <svg id="MODE_TRG"
      data-cell="0,0"
      width="128"
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
-  <g transform="translate(64 64)">
-    <g transform="translate(-64 -64)">
-
-      <circle id="TRG"
-              cx="64"
+  <defs>
+    <mask id="MASK_MODE_TRG"
+          maskUnits="userSpaceOnUse"
+          x="0" y="0"
+          width="128" height="128">
+      <!-- Visible circle -->
+      <circle cx="64"
               cy="64"
               r="44"
-              fill="#000000"
-              stroke="none"
-              stroke-width="1"/>
-      <polyline id="mode_TRG_polyline"
-                fill="none"
-                stroke="#ffffff"
+              fill="white"/>
+      <!-- Transparent cutout -->
+      <polyline fill="none"
+                stroke="black"
                 stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
                 points="
                   16,64
                   40,64
@@ -358,8 +348,13 @@
                   98,64
                   112,64
                 "/>
-    </g>
-  </g>
+    </mask>
+  </defs>
+  <circle cx="64"
+          cy="64"
+          r="44"
+          fill="#000000"
+          mask="url(#MASK_MODE_TRG)"/>
 </svg>
 
 <svg id="MODE_TRG_HOLD"
@@ -368,50 +363,64 @@
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
-  <g transform="translate(64 64)">
-    <g transform="translate(-64 -64)">
-
-      <circle id="TRG"
-              cx="64"
+  <defs>
+    <mask id="MASK_MODE_TRG_HOLD"
+          maskUnits="userSpaceOnUse"
+          x="0" y="0"
+          width="128" height="128">
+      <circle cx="64"
               cy="64"
               r="44"
-              fill="#000000"
-              stroke="none"
+              fill="white"/>
+      <g fill="none"
+         stroke="black"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+        <polyline stroke-width="2"
+                  points="
+                    16,64
+                    40,64
+                    44,40
+                    60,40
+                    68,88
+                    80,88
+                    80,48
+                    96,51
+                    98,64
+                    112,64
+                  "/>
+        <line x1="30"
+              y1="88"
+              x2="98"
+              y2="88"
               stroke-width="1"/>
-
-      <polyline id="mode_TRG_polyline"
-                fill="none"
-                stroke="#ffffff"
-                stroke-width="2"
-                points="
-                  16,64
-                  40,64
-                  44,40
-                  60,40
-                  68,88
-                  80,88
-                  80,48
-                  96,51
-                  98,64
-                  112,64
-                "/>
-
-      <line x1="30"
-            y1="88"
-            x2="98"
-            y2="88"
-            stroke="#ffffff"
-            stroke-width="1"/>
-
-      <line x1="30"
-            y1="40"
-            x2="98"
-            y2="40"
-            stroke="#ffffff"
-            stroke-width="1"/>
-    </g>
-  </g>
+        <line x1="30"
+              y1="40"
+              x2="98"
+              y2="40"
+              stroke-width="1"/>
+        <rect x="32"
+              y="36"
+              width="12"
+              height="32"
+              rx="3"
+              ry="3"
+              fill="black"/>
+        <rect x="84"
+              y="58"
+              width="12"
+              height="32"
+              rx="3"
+              ry="3"
+              fill="black"/>
+      </g>
+    </mask>
+  </defs>
+  <circle cx="64"
+          cy="64"
+          r="44"
+          fill="#000000"
+          mask="url(#MASK_MODE_TRG_HOLD)"/>
 </svg>
 
 <svg id="MODE_GLOBAL_LFO_0"
@@ -420,7 +429,6 @@
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
   <defs>
     <mask id="MASK_MODE_GLOBAL_LFO_0"
           maskUnits="userSpaceOnUse"
@@ -428,96 +436,76 @@
           y="0"
           width="128"
           height="128">
-
-      <rect x="0"
-            y="0"
-            width="128"
-            height="128"
-            fill="white"/>
-
-      <!-- transparent glyph 0 -->
-      <g transform="translate(84 56) scale(0.25)">
-        <g transform="translate(-64 -64) translate(32 -486)">
-
-          <path d="M 56.7801 513.656L 27.7801 513.656L 5.78008 513.656C 2.65208 513.656 -0.219925 515.677 -0.219925 518.656L -0.219925 522.656L -0.219925 574.656L -0.219925 578.656C -0.219925 581.635 2.65208 584.656 5.78008 584.656L 27.7801 584.656L 56.7801 584.656L 60.7801 584.656C 63.9081 584.656 65.7801 581.635 65.7801 578.656L 65.7801 574.656L 65.7801 564.656L 65.7801 557.656L 65.7801 522.656L 65.7801 518.656C 65.7801 515.677 63.9081 513.656 60.7801 513.656C 60.7801 513.656 56.7801 513.656 56.7801 513.656 z
-
-                   M 48.7801 530.656L 38.7801 547.656C 36.0521 552.677 27.7801 551.31 27.7801 545.656L 27.7801 527.656C 27.7801 524.677 30.6521 522.656 33.7801 522.656L 43.7801 522.656C 48.0281 522.656 50.7321 527.063 48.7801 530.656 z
-
-                   M 56.7801 564.656L 56.7801 569.656C 56.7801 572.635 53.9081 574.656 50.7801 574.656L 44.7801 574.656C 40.5361 574.656 37.8281 571.245 39.7801 567.656L 45.7801 554.656C 48.5081 549.635 56.7801 552.003 56.7801 557.656L 56.7801 557.656C 56.7801 557.656 56.7801 564.656 56.7801 564.656 z"
-                fill="black"
-                fill-rule="evenodd"/>
-
+      <!-- visible area -->
+      <circle cx="64"
+              cy="64"
+              r="44"
+              fill="white"/>
+      <!-- transparent filled window: translate = position scale     = size -->
+      <g transform="translate(44 72) scale(0.25)">
+        <g transform="translate(-64 -45.5)">
+          <!-- waveform box size plus 2px margin on every side -->
+          <rect x="-3"
+                y="-3"
+                width="134"
+                height="100"
+                rx="32"
+                ry="32"
+                fill="black"/>
         </g>
       </g>
-
-    </mask>
-  </defs>
-
-  <g mask="url(#MASK_MODE_GLOBAL_LFO_0)">
-
-    <g transform="translate(64 64)">
-      <g transform="translate(-64 -64)">
-
-        <circle id="LFO_0"
-                cx="64"
-                cy="64"
-                r="44"
-                fill="#000000"
-                stroke="none"
-                stroke-width="1"/>
-
+      <!-- transparent cutouts -->
+      <g fill="none"
+         stroke="black"
+         stroke-linecap="round"
+         stroke-linejoin="round">
         <line x1="24"
               y1="50"
               x2="24"
               y2="78"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
+              stroke-width="2"/>
         <line x1="64"
               y1="50"
               x2="64"
               y2="78"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
+              stroke-width="2"/>
         <line x1="104"
               y1="50"
               x2="104"
               y2="78"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-        <path id="mode_LFO_0_sine"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              stroke-width="2"/>
+        <path stroke-width="2"
               d="
                 M24 64
-
-                C30.7 54.7
-                 36.2 48
-                 44 48
-
-                C51.8 48
-                 57.3 54.7
-                 64 64
-
-                C70.7 73.3
-                 76.2 80
-                 84 80
-
-                C91.8 80
-                 97.3 73.3
-                 104 64
+                C30.7 54.7 36.2 48 44 48
+                C51.8 48 57.3 54.7 64 64
+                C70.7 73.3 76.2 80 84 80
+                C91.8 80 97.3 73.3 104 64
               "/>
-
+  <circle cx="64"
+          cy="26"
+          r="14"
+          fill="#000000"
+          mask="url(#MASK_MODE_GLOBAL_LFO_0)"/>              
       </g>
-    </g>
+      <!-- transparent glyph 0 -->
 
-  </g>
-
+        </g>
+      </g>
+    </mask>
+  </defs>
+  <circle cx="64"
+          cy="64"
+          r="44"
+          fill="#000000"
+          mask="url(#MASK_MODE_GLOBAL_LFO_0)"/>
+      <g transform="translate(64 30) scale(0.20)">
+        <g transform="translate(-64 -64) translate(32 -486)">
+          <path d="M 56.7801 513.656L 27.7801 513.656L 5.78008 513.656C 2.65208 513.656 -0.219925 515.677 -0.219925 518.656L -0.219925 522.656L -0.219925 574.656L -0.219925 578.656C -0.219925 581.635 2.65208 584.656 5.78008 584.656L 27.7801 584.656L 56.7801 584.656L 60.7801 584.656C 63.9081 584.656 65.7801 581.635 65.7801 578.656L 65.7801 574.656L 65.7801 564.656L 65.7801 557.656L 65.7801 522.656L 65.7801 518.656C 65.7801 515.677 63.9081 513.656 60.7801 513.656C 60.7801 513.656 56.7801 513.656 56.7801 513.656 z
+                   M 48.7801 530.656L 38.7801 547.656C 36.0521 552.677 27.7801 551.31 27.7801 545.656L 27.7801 527.656C 27.7801 524.677 30.6521 522.656 33.7801 522.656L 43.7801 522.656C 48.0281 522.656 50.7321 527.063 48.7801 530.656 z
+                   M 56.7801 564.656L 56.7801 569.656C 56.7801 572.635 53.9081 574.656 50.7801 574.656L 44.7801 574.656C 40.5361 574.656 37.8281 571.245 39.7801 567.656L 45.7801 554.656C 48.5081 549.635 56.7801 552.003 56.7801 557.656L 56.7801 557.656C 56.7801 557.656 56.7801 564.656 56.7801 564.656 z"
+                fill="black"
+                fill-rule="evenodd"/>          
 </svg>
 
 <svg id="MODE_GLOBAL_LFO_1"
@@ -526,7 +514,6 @@
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
   <defs>
     <mask id="MASK_MODE_GLOBAL_LFO_1"
           maskUnits="userSpaceOnUse"
@@ -534,92 +521,81 @@
           y="0"
           width="128"
           height="128">
-
-      <rect x="0"
-            y="0"
-            width="128"
-            height="128"
-            fill="white"/>
-
-      <!-- transparent glyph 1 -->
-      <g transform="translate(84 56) scale(0.25)">
-        <g transform="translate(-64 -64) translate(-32 -486)">
-
-          <path d="M 84.7801 513.656L 79.7801 513.656C 76.7381 513.656 74.1601 514.93 72.7801 516.656L 69.7801 519.656C 67.0561 523.066 70.7561 526.656 76.7801 526.656L 76.7801 526.656C 81.2381 526.656 84.7801 529.822 84.7801 532.656L 84.7801 579.656C 84.7801 582.486 88.3161 584.656 92.7801 584.656L 118.78 584.656C 123.238 584.656 126.78 582.49 126.78 579.656L 126.78 518.656C 126.78 515.825 123.244 513.656 118.78 513.656L 96.7801 513.656L 84.7801 513.656C 84.7801 513.656 84.7801 513.656 84.7801 513.656 z"
-                fill="black"
-                fill-rule="evenodd"/>
-
+      <!-- visible area -->
+      <circle cx="64"
+              cy="64"
+              r="44"
+              fill="white"/>
+      <!-- transparent filled window: translate = position scale     = size -->
+      <g transform="translate(44 72) scale(0.25)">
+        <g transform="translate(-64 -45.5)">
+          <!-- waveform box size plus 2px margin on every side -->
+          <rect x="-3"
+                y="-3"
+                width="134"
+                height="100"
+                rx="32"
+                ry="32"
+                fill="black"/>
         </g>
       </g>
-
-    </mask>
-  </defs>
-
-  <g mask="url(#MASK_MODE_GLOBAL_LFO_1)">
-
-    <g transform="translate(64 64)">
-      <g transform="translate(-64 -64)">
-
-        <circle id="LFO_1"
-                cx="64"
-                cy="64"
-                r="44"
-                fill="#000000"
-                stroke="none"
-                stroke-width="1"/>
-
+      <!-- transparent cutouts -->
+      <g fill="none"
+         stroke="black"
+         stroke-linecap="round"
+         stroke-linejoin="round">
         <line x1="24"
-              y1="48"
+              y1="50"
               x2="24"
               y2="80"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
+              stroke-width="2"/>
         <line x1="64"
-              y1="48"
+              y1="50"
               x2="64"
               y2="80"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
+              stroke-width="2"/>
         <line x1="104"
-              y1="48"
+              y1="50"
               x2="104"
               y2="80"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-        <path id="mode_LFO_1_sine"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              stroke-width="2"/>
+        <path stroke-width="2"
               d="
                 M24 64
-
-                C30.7 54.7
-                 36.2 48
-                 44 48
-
-                C51.8 48
-                 57.3 54.7
-                 64 64
-
-                C70.7 73.3
-                 76.2 80
-                 84 80
-
-                C91.8 80
-                 97.3 73.3
-                 104 64
+                C30.7 54.7 36.2 48 44 48
+                C51.8 48 57.3 54.7 64 64
+                C70.7 73.3 76.2 80 84 80
+                C91.8 80 97.3 73.3 104 64
               "/>
-
       </g>
-    </g>
-
-  </g>
-
+      <!-- transparent glyph 1 -->
+      <g transform="translate(63 40) scale(0.20)">
+        <g transform="translate(-64 -64) translate(-32 -486)">
+          <path fill="black"
+                fill-rule="evenodd"
+                d="M 84.7801 513.656
+                   L 79.7801 513.656
+                   C 76.7381 513.656 74.1601 514.93 72.7801 516.656
+                   L 69.7801 519.656
+                   C 67.0561 523.066 70.7561 526.656 76.7801 526.656
+                   C 81.2381 526.656 84.7801 529.822 84.7801 532.656
+                   L 84.7801 579.656
+                   C 84.7801 582.486 88.3161 584.656 92.7801 584.656
+                   L 118.78 584.656
+                   C 123.238 584.656 126.78 582.49 126.78 579.656
+                   L 126.78 518.656
+                   C 126.78 515.825 123.244 513.656 118.78 513.656
+                   L 96.7801 513.656
+                   Z"/>
+        </g>
+      </g>
+    </mask>
+  </defs>
+  <circle cx="64"
+          cy="64"
+          r="44"
+          fill="#000000"
+          mask="url(#MASK_MODE_GLOBAL_LFO_1)"/>
 </svg>
 
 <svg id="MODE_GLOBAL_LFO_MULTI_0"
@@ -628,7 +604,6 @@
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
   <defs>
     <mask id="MASK_MODE_GLOBAL_LFO_MULTI_0"
           maskUnits="userSpaceOnUse"
@@ -636,17 +611,66 @@
           y="0"
           width="128"
           height="128">
-
       <rect x="0"
             y="0"
             width="128"
             height="128"
             fill="white"/>
+      <!-- transparent lines and waveforms -->
+      <g fill="none"
+         stroke="black"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+        <line x1="24"
+              y1="50"
+              x2="24"
+              y2="78"
+              stroke-width="2"/>
+        <line x1="64"
+              y1="50"
+              x2="64"
+              y2="78"
+              stroke-width="2"/>
+        <line x1="104"
+              y1="50"
+              x2="104"
+              y2="78"
+              stroke-width="2"/>
+        <path stroke-width="2"
+              d="
+                M24 64
 
+                C30.7 54.7
+                 36.2 48
+                 44 48
+
+                C51.8 48
+                 57.3 54.7
+                 64 64
+              "/>
+        <path stroke-width="2"
+              d="
+                M24 64
+                C27.3 58.7 30.7 56 34 56
+                C37.3 56 40.7 58.7 44 64
+                C47.3 69.3 50.7 72 54 72
+                C57.3 72 60.7 69.3 64 64
+              "/>
+        <path stroke-width="1"
+              d="
+                M24 64
+                C26 60 28 58 30 58
+                C32 58 34 60 36 64
+                C38 68 40 70 42 70
+                C44 70 46 68 48 64
+                C50 60 52 58 54 58
+                C56 58 58 60 60 64
+                C62 68 64 70 64 70
+              "/>
+      </g>
       <!-- transparent glyph 0 -->
-      <g transform="translate(84 56) scale(0.25)">
+      <g transform="translate(64 40) scale(0.20)">
         <g transform="translate(-64 -64) translate(32 -486)">
-
           <path fill="black"
                 fill-rule="evenodd"
                 d="M 56.7801 513.656
@@ -686,110 +710,23 @@
                    L 45.7801 554.656
                    C 48.5081 549.635 56.7801 552.003 56.7801 557.656
                    Z"/>
-
         </g>
       </g>
-
     </mask>
   </defs>
-
   <g mask="url(#MASK_MODE_GLOBAL_LFO_MULTI_0)">
-
     <g transform="translate(64 64)">
       <g transform="translate(-64 -64)">
-
         <circle id="LFO_MULTI_0"
                 cx="64"
                 cy="64"
                 r="44"
                 fill="#000000"
                 stroke="none"
-                stroke-width="1"/>
-
-        <line x1="24"
-              y1="50"
-              x2="24"
-              y2="78"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-        <line x1="64"
-              y1="50"
-              x2="64"
-              y2="78"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-         
-
-        <line x1="104"
-              y1="50"
-              x2="104"
-              y2="78"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-
-        <path id="mode_LFO_MULTI_0_sine"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="
-                M24 64
-
-                C30.7 54.7
-                 36.2 48
-                 44 48
-
-                C51.8 48
-                 57.3 54.7
-                 64 64
-              "/>
-
-        <path id="mode_LFO_MULTI_0_sine_1"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="
-                M24 64
-                C27.3 58.7 30.7 56 34 56
-                C37.3 56 40.7 58.7 44 64
-                C47.3 69.3 50.7 72 54 72
-                C57.3 72 60.7 69.3 64 64
-              "/>
-
-        <path id="mode_LFO_MULTI_0_sine_2"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="1"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="
-                M24 64
-                C26 60 28 58 30 58
-                C32 58 34 60 36 64
-                C38 68 40 70 42 70
-                C44 70 46 68 48 64
-                C50 60 52 58 54 58
-                C56 58 58 60 60 64
-                C62 68 64 70 66 70
-              "/>
-        <line x1="66"
-              y1="50"
-              x2="66"
-              y2="78"
-              stroke="#000000"
-              stroke-width="3"/>     
-
+                stroke-width="2"/>
       </g>
     </g>
-
   </g>
-
 </svg>
 
 <svg id="MODE_GLOBAL_LFO_MULTI_1"
@@ -798,7 +735,6 @@
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
   <defs>
     <mask id="MASK_MODE_GLOBAL_LFO_MULTI_1"
           maskUnits="userSpaceOnUse"
@@ -806,17 +742,66 @@
           y="0"
           width="128"
           height="128">
-
       <rect x="0"
             y="0"
             width="128"
             height="128"
             fill="white"/>
+      <!-- transparent lines and waveforms -->
+      <g fill="none"
+         stroke="black"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+        <line x1="24"
+              y1="50"
+              x2="24"
+              y2="78"
+              stroke-width="2"/>
+        <line x1="64"
+              y1="50"
+              x2="64"
+              y2="78"
+              stroke-width="2"/>
+        <line x1="104"
+              y1="50"
+              x2="104"
+              y2="78"
+              stroke-width="2"/>
+        <path stroke-width="2"
+              d="
+                M24 64
 
+                C30.7 54.7
+                 36.2 48
+                 44 48
+
+                C51.8 48
+                 57.3 54.7
+                 64 64
+              "/>
+        <path stroke-width="2"
+              d="
+                M24 64
+                C27.3 58.7 30.7 56 34 56
+                C37.3 56 40.7 58.7 44 64
+                C47.3 69.3 50.7 72 54 72
+                C57.3 72 60.7 69.3 64 64
+              "/>
+        <path stroke-width="1"
+              d="
+                M24 64
+                C26 60 28 58 30 58
+                C32 58 34 60 36 64
+                C38 68 40 70 42 70
+                C44 70 46 68 48 64
+                C50 60 52 58 54 58
+                C56 58 58 60 60 64
+                C62 68 64 70 64 70
+              "/>
+      </g>
       <!-- transparent glyph 1 -->
-      <g transform="translate(84 72) scale(0.25)">
+      <g transform="translate(63 40) scale(0.20)">
         <g transform="translate(-64 -64) translate(-32 -486)">
-
           <path fill="black"
                 fill-rule="evenodd"
                 d="M 84.7801 513.656
@@ -833,101 +818,24 @@
                    C 126.78 515.825 123.244 513.656 118.78 513.656
                    L 96.7801 513.656
                    Z"/>
-
         </g>
       </g>
-
     </mask>
   </defs>
 
   <g mask="url(#MASK_MODE_GLOBAL_LFO_MULTI_1)">
-
     <g transform="translate(64 64)">
       <g transform="translate(-64 -64)">
-
         <circle id="LFO_MULTI_1"
                 cx="64"
                 cy="64"
                 r="44"
                 fill="#000000"
                 stroke="none"
-                stroke-width="1"/>
-
-        <line x1="24"
-              y1="50"
-              x2="24"
-              y2="78"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-        <line x1="64"
-              y1="50"
-              x2="64"
-              y2="78"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-        <line x1="104"
-              y1="50"
-              x2="104"
-              y2="78"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-        <path id="mode_LFO_MULTI_1_sine"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="
-                M24 64
-
-                C30.7 54.7
-                 36.2 48
-                 44 48
-
-                C51.8 48
-                 57.3 54.7
-                 64 64
-              "/>
-
-        <path id="mode_LFO_MULTI_1_sine_1"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="
-                M24 64
-                C27.3 58.7 30.7 56 34 56
-                C37.3 56 40.7 58.7 44 64
-                C47.3 69.3 50.7 72 54 72
-                C57.3 72 60.7 69.3 64 64
-              "/>
-
-        <path id="mode_LFO_MULTI_1_sine_2"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="1"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="
-                M24 64
-                C26 60 28 58 30 58
-                C32 58 34 60 36 64
-                C38 68 40 70 42 70
-                C44 70 46 68 48 64
-                C50 60 52 58 54 58
-                C56 58 58 60 60 64
-                C62 68 64 70 66 70
-              "/>
-
+                stroke-width="2"/>
       </g>
     </g>
-
   </g>
-
 </svg>
 
 <svg id="MODE_GLOBAL_LFO_MULTI_REVERSE_0"
@@ -936,7 +844,6 @@
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
   <defs>
     <mask id="MASK_MODE_GLOBAL_LFO_MULTI_REVERSE_0"
           maskUnits="userSpaceOnUse"
@@ -944,17 +851,70 @@
           y="0"
           width="128"
           height="128">
-
       <rect x="0"
             y="0"
             width="128"
             height="128"
             fill="white"/>
+      <!-- transparent rotated lines and waveforms -->
+      <g transform="translate(64 64) rotate(180)">
+        <g transform="translate(-64 -64)">
+          <g fill="none"
+             stroke="black"
+             stroke-linecap="round"
+             stroke-linejoin="round">
+            <line x1="24"
+                  y1="50"
+                  x2="24"
+                  y2="78"
+                  stroke-width="2"/>
+            <line x1="64"
+                  y1="50"
+                  x2="64"
+                  y2="78"
+                  stroke-width="2"/>
+            <line x1="104"
+                  y1="50"
+                  x2="104"
+                  y2="78"
+                  stroke-width="2"/>
+            <path stroke-width="2"
+                  d="
+                    M24 64
 
+                    C30.7 54.7
+                     36.2 48
+                     44 48
+
+                    C51.8 48
+                     57.3 54.7
+                     64 64
+                  "/>
+            <path stroke-width="2"
+                  d="
+                    M24 64
+                    C27.3 58.7 30.7 56 34 56
+                    C37.3 56 40.7 58.7 44 64
+                    C47.3 69.3 50.7 72 54 72
+                    C57.3 72 60.7 69.3 64 64
+                  "/>
+            <path stroke-width="1"
+                  d="
+                    M24 64
+                    C26 60 28 58 30 58
+                    C32 58 34 60 36 64
+                    C38 68 40 70 42 70
+                    C44 70 46 68 48 64
+                    C50 60 52 58 54 58
+                    C56 58 58 60 60 64
+                    C62 68 64 70 64 70
+                  "/>
+          </g>
+        </g>
+      </g>
       <!-- transparent glyph 0, left of center -->
-      <g transform="translate(44 56) scale(0.25)">
+      <g transform="translate(64 40) scale(0.20)">
         <g transform="translate(-64 -64) translate(32 -486)">
-
           <path fill="black"
                 fill-rule="evenodd"
                 d="M 56.7801 513.656
@@ -994,103 +954,24 @@
                    L 45.7801 554.656
                    C 48.5081 549.635 56.7801 552.003 56.7801 557.656
                    Z"/>
-
         </g>
       </g>
-
     </mask>
   </defs>
-
   <g mask="url(#MASK_MODE_GLOBAL_LFO_MULTI_REVERSE_0)">
-
     <g transform="translate(64 64) rotate(180)">
       <g transform="translate(-64 -64)">
-
         <circle id="LFO_MULTI_REVERSE_0"
                 cx="64"
                 cy="64"
                 r="44"
                 fill="#000000"
                 stroke="none"
-                stroke-width="1"/>
-
-        <line x1="24"
-              y1="50"
-              x2="24"
-              y2="78"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-        <line x1="64"
-              y1="50"
-              x2="64"
-              y2="78"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-        <line x1="104"
-              y1="50"
-              x2="104"
-              y2="78"
-              stroke="#ffffff"
-              stroke-width="1"/>
-
-        <path id="mode_LFO_MULTI_REVERSE_0_sine"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="
-                M24 64
-
-                C30.7 54.7
-                 36.2 48
-                 44 48
-
-                C51.8 48
-                 57.3 54.7
-                 64 64
-              "/>
-
-        <path id="mode_LFO_MULTI_REVERSE_0_sine_1"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="
-                M24 64
-                C27.3 58.7 30.7 56 34 56
-                C37.3 56 40.7 58.7 44 64
-                C47.3 69.3 50.7 72 54 72
-                C57.3 72 60.7 69.3 64 64
-              "/>
-
-        <path id="mode_LFO_MULTI_REVERSE_0_sine_2"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="1"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="
-                M24 64
-                C26 60 28 58 30 58
-                C32 58 34 60 36 64
-                C38 68 40 70 42 70
-                C44 70 46 68 48 64
-                C50 60 52 58 54 58
-                C56 58 58 60 60 64
-                C62 68 64 70 66 70
-              "/>
-
+                stroke-width="2"/>
       </g>
     </g>
-
   </g>
-
 </svg>
-
 
 <svg id="MODE_GLOBAL_LFO_MULTI_REVERSE_1"
      data-cell="7,0"
@@ -1098,7 +979,6 @@
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
   <defs>
     <mask id="MASK_MODE_GLOBAL_LFO_MULTI_REVERSE_1"
           maskUnits="userSpaceOnUse"
@@ -1106,17 +986,70 @@
           y="0"
           width="128"
           height="128">
-
       <rect x="0"
             y="0"
             width="128"
             height="128"
             fill="white"/>
+      <!-- transparent rotated lines and waveforms -->
+      <g transform="translate(64 64) rotate(180)">
+        <g transform="translate(-64 -64)">
+          <g fill="none"
+             stroke="black"
+             stroke-linecap="round"
+             stroke-linejoin="round">
+            <line x1="24"
+                  y1="50"
+                  x2="24"
+                  y2="78"
+                  stroke-width="2"/>
+            <line x1="64"
+                  y1="50"
+                  x2="64"
+                  y2="78"
+                  stroke-width="2"/>
+            <line x1="104"
+                  y1="50"
+                  x2="104"
+                  y2="78"
+                  stroke-width="2"/>
+            <path stroke-width="2"
+                  d="
+                    M24 64
 
+                    C30.7 54.7
+                     36.2 48
+                     44 48
+
+                    C51.8 48
+                     57.3 54.7
+                     64 64
+                  "/>
+            <path stroke-width="2"
+                  d="
+                    M24 64
+                    C27.3 58.7 30.7 56 34 56
+                    C37.3 56 40.7 58.7 44 64
+                    C47.3 69.3 50.7 72 54 72
+                    C57.3 72 60.7 69.3 64 64
+                  "/>
+            <path stroke-width="2"
+                  d="
+                    M24 64
+                    C26 60 28 58 30 58
+                    C32 58 34 60 36 64
+                    C38 68 40 70 42 70
+                    C44 70 46 68 48 64
+                    C50 60 52 58 54 58
+                    C56 58 58 60 60 64
+                    C62 68 64 70 64 70
+                  "/>
+          </g>
+        </g>
+      </g>
       <!-- transparent glyph 1, left of center -->
-      <g transform="translate(44 72) scale(0.25)">
+      <g transform="translate(63 40) scale(0.20)">
         <g transform="translate(-64 -64) translate(-32 -486)">
-
           <path fill="black"
                 fill-rule="evenodd"
                 d="M 84.7801 513.656
@@ -1133,18 +1066,13 @@
                    C 126.78 515.825 123.244 513.656 118.78 513.656
                    L 96.7801 513.656
                    Z"/>
-
         </g>
       </g>
-
     </mask>
   </defs>
-
   <g mask="url(#MASK_MODE_GLOBAL_LFO_MULTI_REVERSE_1)">
-
     <g transform="translate(64 64) rotate(180)">
       <g transform="translate(-64 -64)">
-
         <circle id="LFO_MULTI_REVERSE_1"
                 cx="64"
                 cy="64"
@@ -1152,88 +1080,30 @@
                 fill="#000000"
                 stroke="none"
                 stroke-width="1"/>
-
         <line x1="24"
               y1="50"
               x2="24"
               y2="78"
               stroke="#ffffff"
               stroke-width="1"/>
-
         <line x1="64"
               y1="50"
               x2="64"
               y2="78"
               stroke="#ffffff"
               stroke-width="1"/>
-
         <line x1="104"
               y1="50"
               x2="104"
               y2="78"
               stroke="#ffffff"
               stroke-width="1"/>
-
-        <path id="mode_LFO_MULTI_REVERSE_1_sine"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="
-                M24 64
-
-                C30.7 54.7
-                 36.2 48
-                 44 48
-
-                C51.8 48
-                 57.3 54.7
-                 64 64
-              "/>
-
-        <path id="mode_LFO_MULTI_REVERSE_1_sine_1"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="
-                M24 64
-                C27.3 58.7 30.7 56 34 56
-                C37.3 56 40.7 58.7 44 64
-                C47.3 69.3 50.7 72 54 72
-                C57.3 72 60.7 69.3 64 64
-              "/>
-
-        <path id="mode_LFO_MULTI_REVERSE_1_sine_2"
-              fill="none"
-              stroke="#ffffff"
-              stroke-width="1"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="
-                M24 64
-                C26 60 28 58 30 58
-                C32 58 34 60 36 64
-                C38 68 40 70 42 70
-                C44 70 46 68 48 64
-                C50 60 52 58 54 58
-                C56 58 58 60 60 64
-                C62 68 64 70 66 70
-              "/>
-
       </g>
     </g>
-
   </g>
-
 </svg>
-
   <!--  STRINGS  -->
-
 <g id="string_icons">
-
   <!-- BPM: cell 0,7 -->
   <svg id="STR_BPM"
        data-cell="4,3"
@@ -1241,10 +1111,8 @@
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-
     <g transform="translate(64 64)">
       <g transform="translate(-64 -64)">
-
         <!-- B -->
         <path transform="translate(13 48.53125)
                          scale(0.9375)
@@ -1262,7 +1130,6 @@
                  C116.815,192.587,115.945,193.456,114.873,193.456z"
               fill="#000000"
               fill-rule="evenodd"/>
-
         <!-- P -->
         <path transform="translate(47 48.53125)
                          scale(0.9375)
@@ -1277,7 +1144,6 @@
                  C278.825,235.334,280.59,237.098,280.59,239.275z"
               fill="#000000"
               fill-rule="evenodd"/>
-
         <!-- M -->
         <path transform="translate(81 48.53125)
                          scale(0.9375)
@@ -1291,12 +1157,9 @@
                  v-25.728v-1.551c0-1.352-1.096-2.447-2.447-2.447h-13.776H135.573z"
               fill="#000000"
               fill-rule="evenodd"/>
-
       </g>
     </g>
   </svg>
-
-
   <!-- EXT: cell 1,7 -->
   <svg id="STR_EXT"
        data-cell="5,3"
@@ -1304,10 +1167,8 @@
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-
     <g transform="translate(64 64)">
       <g transform="translate(-64 -64)">
-
         <!-- E -->
         <path transform="translate(13 48.53125)
                          scale(0.9375)
@@ -1321,7 +1182,6 @@
                  v-0.114c0-1.073-0.869-1.942-1.942-1.942h-14.281H217.928z"
               fill="#000000"
               fill-rule="evenodd"/>
-
         <!-- X -->
         <path transform="translate(47 48.53125)
                          scale(0.9375)
@@ -1337,7 +1197,6 @@
                  c1.464,0,2.407-1.551,1.733-2.85l-2.609-5.033L278.429,308.904z"
               fill="#000000"
               fill-rule="evenodd"/>
-
         <!-- T -->
         <path transform="translate(81 48.53125)
                          scale(0.9375)
@@ -1362,10 +1221,8 @@
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
   <g transform="translate(64 64)">
     <g transform="translate(-64 -64)">
-
       <path transform="translate(47 48.53125)
                        scale(0.9375)
                        translate(-50 -173)"
@@ -1380,12 +1237,9 @@
                C75.871,192.561,74.976,193.456,73.872,193.456z"
             fill="#000000"
             fill-rule="evenodd"/>
-
     </g>
   </g>
-
 </svg>
-
 
 <svg id="GLYPH_B_STANDALONE"
      data-cell="7,3"
@@ -1393,10 +1247,8 @@
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
   <g transform="translate(64 64)">
     <g transform="translate(-64 -64)">
-
       <path transform="translate(47 48.53125)
                        scale(0.9375)
                        translate(-91 -173)"
@@ -1413,32 +1265,25 @@
                C116.815,192.587,115.945,193.456,114.873,193.456z"
             fill="#000000"
             fill-rule="evenodd"/>
-
     </g>
   </g>
-
 </svg>
-
   <!--  TARGET MODES  -->
-
 <svg id="TARGET_MODE_TL"
      data-cell="0,6"
      width="128"
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
   <defs>
     <mask id="picture_cutout">
       <!-- everything remains visible -->
       <rect width="128"
             height="128"
             fill="white"/>
-
       <!-- black shapes become transparent holes -->
       <g transform="rotate( -45 20 20) translate(20 20) scale(0.20)">
         <g transform="translate(-64 -64)">
-
           <path fill="black"
                 fill-rule="evenodd"
                 d="
@@ -1451,12 +1296,10 @@
                   A13 13 0 0 1 98 74H30
                   A13 13 0 0 1 17 61V30
                   A13 13 0 0 1 30 17Z"/>
-
           <circle cx="37"
                   cy="38"
                   r="9"
                   fill="black"/>
-
           <polyline points="24,66 48,48 60,58 88,35 104,50"
                     fill="none"
                     stroke="black"
@@ -1467,7 +1310,6 @@
       </g>
     </mask>
   </defs>
-
   <!-- filled box -->
   <path fill="black"
         fill-rule="evenodd"
@@ -1482,7 +1324,6 @@
            C3 14.757 4.686 10.687 7.686 7.686
            C10.687 4.686 14.757 3 19 3
            Z"/>
-
 </svg>
 
 <svg id="TARGET_MODE_TR_VIDEO_CUTOUT"
@@ -1491,7 +1332,6 @@
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
   <defs>
     <mask id="MASK_TARGET_MODE_TR_VIDEO"
           maskUnits="userSpaceOnUse"
@@ -1499,18 +1339,15 @@
           y="0"
           width="128"
           height="128">
-
       <!-- preserve the filled shape -->
       <rect x="0"
             y="0"
             width="128"
             height="128"
             fill="white"/>
-
       <!-- transparent video overlay -->
       <g transform="rotate( 45 108 20 ) translate(108 20) scale(0.20)">
         <g transform="translate(-64 -64)">
-
           <path fill="black"
                 fill-rule="evenodd"
                 d="
@@ -1523,7 +1360,6 @@
                   A13 13 0 0 1 98 74H30
                   A13 13 0 0 1 17 61V30
                   A13 13 0 0 1 30 17Z"/>
-
           <path fill="black"
                 d="M55 29
                    C53 30 52 32 52 35
@@ -1535,7 +1371,6 @@
                    C84 43 83 42 81 40
                    L61 29
                    C59 28 57 28 55 29Z"/>
-
           <rect x="1"
                 y="107"
                 width="20"
@@ -1543,12 +1378,10 @@
                 rx="8"
                 ry="8"
                 fill="black"/>
-
           <circle cx="43"
                   cy="115"
                   r="13"
                   fill="black"/>
-
           <rect x="64"
                 y="107"
                 width="63"
@@ -1560,10 +1393,8 @@
       </g>
     </mask>
   </defs>
-
   <!-- mask stays unrotated -->
   <g mask="url(#MASK_TARGET_MODE_TR_VIDEO)">
-
     <!-- only the filled box rotates -->
     <path fill="black"
           fill-rule="evenodd"
@@ -1587,7 +1418,6 @@
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
   <defs>
     <mask id="MASK_TARGET_MODE_BL_CLOCK"
           maskUnits="userSpaceOnUse"
@@ -1595,18 +1425,15 @@
           y="0"
           width="128"
           height="128">
-
       <!-- keep the filled shape visible -->
       <rect x="0"
             y="0"
             width="128"
             height="128"
             fill="white"/>
-
       <!-- transparent clock overlay -->
       <g transform="rotate( -135 20 108) translate(20 108) scale(0.20)">
         <g transform="translate(-64 -64)">
-
           <path fill="black"
                 fill-rule="evenodd"
                 d="
@@ -1619,14 +1446,12 @@
                   A13 13 0 0 1 98 74H30
                   A13 13 0 0 1 17 61V30
                   A13 13 0 0 1 30 17Z"/>
-
           <path d="M64 24 A21 21 0 1 0 85 45"
                 fill="none"
                 stroke="black"
                 stroke-width="8"
                 stroke-linecap="round"
                 stroke-linejoin="round"/>
-
           <line x1="64"
                 y1="45"
                 x2="75"
@@ -1634,7 +1459,6 @@
                 stroke="black"
                 stroke-width="8"
                 stroke-linecap="round"/>
-
           <line x1="64"
                 y1="45"
                 x2="64"
@@ -1649,7 +1473,6 @@
 
   <!-- mask remains in the unrotated cell coordinate system -->
   <g mask="url(#MASK_TARGET_MODE_BL_CLOCK)">
-
     <!-- filled bottom-left box -->
     <path fill="black"
           fill-rule="evenodd"
@@ -1664,9 +1487,7 @@
              C3 14.757 4.686 10.687 7.686 7.686
              C10.687 4.686 14.757 3 19 3
              Z"/>
-
   </g>
-
 </svg>
 
 <svg id="TARGET_MODE_BR_VIDEO_CUTOUT"
@@ -1675,7 +1496,6 @@
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
   <defs>
     <mask id="MASK_TARGET_MODE_BR_VIDEO"
           maskUnits="userSpaceOnUse"
@@ -1683,18 +1503,15 @@
           y="0"
           width="128"
           height="128">
-
       <!-- keep filled shape visible -->
       <rect x="0"
             y="0"
             width="128"
             height="128"
             fill="white"/>
-
       <!-- transparent video overlay -->
       <g transform="rotate( 135 108 108 ) translate(108 108) scale(0.20)">
         <g transform="translate(-64 -64)">
-
           <path fill="black"
                 fill-rule="evenodd"
                 d="
@@ -1707,7 +1524,6 @@
                   A13 13 0 0 1 98 74H30
                   A13 13 0 0 1 17 61V30
                   A13 13 0 0 1 30 17Z"/>
-
           <path fill="black"
                 d="M55 29
                    C53 30 52 32 52 35
@@ -1726,7 +1542,6 @@
 
   <!-- mask stays unrotated -->
   <g mask="url(#MASK_TARGET_MODE_BR_VIDEO)">
-
     <!-- filled bottom-right box -->
     <path fill="black"
           fill-rule="evenodd"
@@ -1750,7 +1565,6 @@
      height="128"
      viewBox="0 0 128 128"
      overflow="hidden">
-
   <defs>
     <mask id="MASK_TARGET_MODE_BR_GL"
           maskUnits="userSpaceOnUse"
@@ -1758,18 +1572,15 @@
           y="0"
           width="128"
           height="128">
-
       <!-- keep the filled box visible -->
       <rect x="0"
             y="0"
             width="128"
             height="128"
             fill="white"/>
-
       <!-- GL transparent cutout -->
-      <g transform="rotate( 45 108 108 ) translate(108 108) scale(0.25)">
+      <g transform="rotate( 45 108 108 ) translate(110 108) scale(0.40)">
         <g transform="translate(-64 -64)">
-
           <!-- G -->
           <path transform="translate(30 48.53125)
                            scale(0.9375)
@@ -1801,7 +1612,6 @@
                    C320.664,197.454,321.533,198.324,321.533,199.396z"
                 fill="black"
                 fill-rule="evenodd"/>
-
           <!-- L -->
           <path transform="translate(64 48.53125)
                            scale(0.9375)
@@ -1824,10 +1634,8 @@
       </g>
     </mask>
   </defs>
-
   <!-- filled bottom-right box with transparent GL -->
   <g mask="url(#MASK_TARGET_MODE_BR_GL)">
-
     <path fill="black"
           fill-rule="evenodd"
           stroke="none"
@@ -1843,16 +1651,14 @@
              Z"/>
   </g>
 </svg>
-
   <!--  WAVEFORMS  -->
-
   <svg id="wave_sine"
        data-cell="0,1"
        width="128"
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-    <g transform="translate(64 64) scale (0.5)">
+    <g transform="translate(44 77) scale (0.25)">
       <g transform="translate(-64 -64) ">
         <path fill="black"
               fill-rule="evenodd"
@@ -1883,7 +1689,7 @@
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-    <g transform="translate(64 64) scale (0.5)">
+    <g transform="translate(44 77) scale (0.25)">
       <g transform="translate(-64 -64)">
         <path fill="black"
               fill-rule="evenodd"
@@ -1913,7 +1719,7 @@
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-    <g transform="translate(64 64) scale (0.5)">
+    <g transform="translate(44 77) scale (0.25)">
       <g transform="translate(-64 -64)">
         <path fill="black"
               fill-rule="evenodd"
@@ -1939,12 +1745,12 @@
   </svg>
 
   <svg id="wave_ramp_down"
-       data-cell="3,1"
+       data-cell="2,0"
        width="128"
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-    <g transform="translate(64 64) scale (0.5)">
+    <g transform="translate(44 77) scale (0.25)">
       <g transform="translate(-64 -64)">
         <path fill="black"
               fill-rule="evenodd"
@@ -1970,12 +1776,12 @@
   </svg>
 
   <svg id="wave_random"
-       data-cell="4,1"
+       data-cell="3,0"
        width="128"
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-    <g transform="translate(64 64) scale (0.5)">
+    <g transform="translate(44 77) scale (0.25)">
       <g transform="translate(-64 -64)">
         <path fill="black"
               fill-rule="evenodd"
@@ -1998,13 +1804,8 @@
       </g>
     </g>
   </svg>
-
-
-
   <!--  FRACTIONS  -->
-
 <g id="fraction_icons">
-
   <!-- 1/64 -->
   <svg id="FRAC_1_64"
        data-cell="0,2"
@@ -2012,13 +1813,11 @@
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-
     <!-- numerator: 1 -->
-    <path transform="translate(0 0) scale(0.25) translate(-32 -486)"
+    <path transform="translate(0 0) scale(0.20) translate(-32 -486)"
           d="M 84.7801 513.656L 79.7801 513.656C 76.7381 513.656 74.1601 514.93 72.7801 516.656L 69.7801 519.656C 67.0561 523.066 70.7561 526.656 76.7801 526.656L 76.7801 526.656C 81.2381 526.656 84.7801 529.822 84.7801 532.656L 84.7801 579.656C 84.7801 582.486 88.3161 584.656 92.7801 584.656L 118.78 584.656C 123.238 584.656 126.78 582.49 126.78 579.656L 126.78 518.656C 126.78 515.825 123.244 513.656 118.78 513.656L 96.7801 513.656L 84.7801 513.656Z"
           fill="black"
           fill-rule="evenodd"/>
-
     <line x1="88"
           y1="96"
           x2="74"
@@ -2026,21 +1825,17 @@
           stroke="black"
           stroke-width="6"
           stroke-linecap="round"/>
-
     <!-- denominator: 6 -->
-    <path transform="translate(84 102) scale(0.25) translate(-352 -486)"
+    <path transform="translate(84 102) scale(0.20) translate(-352 -486)"
           d="M 410.78 513.656L 387.78 513.656C 385.468 513.656 383.78 515.332 383.78 517.656L 383.78 522.656L 383.78 557.656L 383.78 566.656L 383.78 574.656L 383.78 579.656C 383.78 581.98 385.468 583.656 387.78 583.656L 410.78 583.656L 437.78 583.656L 442.78 583.656C 445.091 583.656 446.78 581.98 446.78 579.656L 446.78 574.656L 446.78 566.656L 446.78 561.656C 446.78 559.332 445.091 557.656 442.78 557.656L 437.78 557.656L 414.78 557.656C 412.468 557.656 410.78 555.979 410.78 553.656L 410.78 526.656C 410.78 524.332 412.468 522.656 414.78 522.656L 433.78 522.656C 436.092 522.656 437.78 524.332 437.78 526.656L 437.78 535.656C 437.78 537.979 439.468 539.656 441.78 539.656L 442.78 539.656C 445.091 539.656 446.78 537.979 446.78 535.656L 446.78 522.656L 446.78 517.656C 446.78 515.332 445.091 513.656 442.78 513.656L 437.78 513.656L 410.78 513.656Z M 437.78 570.656C 437.78 572.98 436.092 574.656 433.78 574.656L 414.78 574.656C 412.469 574.656 410.78 572.98 410.78 570.656C 410.78 568.332 412.469 566.656 414.78 566.656L 433.78 566.656C 436.092 566.656 437.78 568.332 437.78 570.656Z"
           fill="black"
           fill-rule="evenodd"/>
-
     <!-- denominator: 4 -->
-    <path transform="translate(102 102) scale(0.25) translate(-224 -486)"
+    <path transform="translate(102 102) scale(0.20) translate(-224 -486)"
           d="M 304.78 557.656L 286.78 557.656C 284.286 557.656 281.78 556.163 281.78 553.656L 281.78 518.656C 281.78 516.149 280.274 513.656 277.78 513.656L 259.78 513.656C 257.286 513.656 255.78 516.149 255.78 518.656L 255.78 557.656L 255.78 562.656C 255.78 565.163 257.286 567.656 259.78 567.656L 281.78 567.656L 304.78 567.656C 307.273 567.656 308.78 569.15 308.78 571.656L 308.78 579.656C 308.78 582.162 311.287 584.656 313.78 584.656C 316.274 584.656 317.78 582.162 317.78 579.656L 317.78 567.656L 317.78 557.656L 317.78 518.656C 317.78 516.149 316.274 513.656 313.78 513.656C 311.287 513.656 308.78 516.149 308.78 518.656L 308.78 553.656C 308.78 556.163 307.269 557.656 304.78 557.656Z"
           fill="black"
           fill-rule="evenodd"/>
   </svg>
-
-
   <!-- 1/32 -->
   <svg id="FRAC_1_32"
        data-cell="1,2"
@@ -2048,13 +1843,11 @@
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-
     <!-- numerator: 1 -->
-    <path transform="translate(0 0) scale(0.25) translate(-32 -486)"
+    <path transform="translate(0 0) scale(0.20) translate(-32 -486)"
           d="M 84.7801 513.656L 79.7801 513.656C 76.7381 513.656 74.1601 514.93 72.7801 516.656L 69.7801 519.656C 67.0561 523.066 70.7561 526.656 76.7801 526.656C 81.2381 526.656 84.7801 529.822 84.7801 532.656L 84.7801 579.656C 84.7801 582.486 88.3161 584.656 92.7801 584.656L 118.78 584.656C 123.238 584.656 126.78 582.49 126.78 579.656L 126.78 518.656C 126.78 515.825 123.244 513.656 118.78 513.656L 84.7801 513.656Z"
           fill="black"
           fill-rule="evenodd"/>
-
     <line x1="88"
           y1="96"
           x2="74"
@@ -2062,21 +1855,17 @@
           stroke="black"
           stroke-width="6"
           stroke-linecap="round"/>
-
     <!-- denominator: 3 -->
-    <path transform="translate(84 102) scale(0.25) translate(-160 -486)"
+    <path transform="translate(84 102) scale(0.20) translate(-160 -486)"
           d="M 218.78 513.656L 195.78 513.656C 193.468 513.656 191.78 515.332 191.78 517.656L 191.78 535.656C 191.78 537.979 193.468 540.656 195.78 540.656L 213.78 540.656C 216.092 540.656 218.78 537.979 218.78 535.656L 218.78 526.656C 218.78 524.332 220.468 522.656 222.78 522.656L 241.78 522.656C 244.091 522.656 245.78 524.332 245.78 526.656L 245.78 553.656C 245.78 555.979 244.091 557.656 241.78 557.656L 195.78 557.656C 193.468 557.656 191.78 559.332 191.78 561.656L 191.78 562.656C 191.78 564.979 193.468 566.656 195.78 566.656L 241.78 566.656C 244.091 566.656 245.78 569.332 245.78 571.656C 245.78 573.979 244.091 575.656 241.78 575.656L 195.78 575.656C 193.468 575.656 191.78 577.332 191.78 579.656L 191.78 580.656C 191.78 582.98 193.468 584.656 195.78 584.656L 250.78 584.656C 253.092 584.656 254.78 582.98 254.78 580.656L 254.78 517.656C 254.78 515.332 253.092 513.656 250.78 513.656Z"
           fill="black"
           fill-rule="evenodd"/>
-
     <!-- denominator: 2 -->
-    <path transform="translate(102 102) scale(0.25) translate(-96 -486)"
+    <path transform="translate(102 102) scale(0.20) translate(-96 -486)"
           d="M 154.78 513.656L 134.78 513.656C 131.203 513.656 127.78 516.06 127.78 519.656L 127.78 535.656C 127.78 537.98 129.468 539.656 131.78 539.656L 150.78 539.656C 153.091 539.656 154.78 537.98 154.78 535.656L 154.78 526.656C 154.78 524.332 156.468 522.656 158.78 522.656L 177.78 522.656C 180.092 522.656 181.78 524.332 181.78 526.656L 181.78 553.656C 181.78 555.98 180.092 557.656 177.78 557.656L 132.78 557.656C 130.469 557.656 128.78 559.333 128.78 561.656L 128.78 579.656C 128.78 581.98 130.469 584.656 132.78 584.656L 186.78 584.656C 189.092 584.656 191.78 581.98 191.78 579.656C 191.78 577.332 189.092 575.656 186.78 575.656L 159.78 575.656C 157.468 575.656 154.78 572.98 154.78 570.656C 154.78 568.332 157.468 566.656 159.78 566.656L 186.78 566.656C 189.091 566.656 191.78 564.98 191.78 562.656L 191.78 517.656C 191.78 515.332 189.091 513.656 186.78 513.656Z"
           fill="black"
           fill-rule="evenodd"/>
   </svg>
-
-
   <!-- 1/16 -->
   <svg id="FRAC_1_16"
        data-cell="2,2"
@@ -2084,13 +1873,11 @@
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-
     <!-- numerator: 1 -->
-    <path transform="translate(0 0) scale(0.25) translate(-32 -486)"
+    <path transform="translate(0 0) scale(0.20) translate(-32 -486)"
           d="M 84.7801 513.656L 79.7801 513.656C 76.7381 513.656 74.1601 514.93 72.7801 516.656L 69.7801 519.656C 67.0561 523.066 70.7561 526.656 76.7801 526.656C 81.2381 526.656 84.7801 529.822 84.7801 532.656L 84.7801 579.656C 84.7801 582.486 88.3161 584.656 92.7801 584.656L 118.78 584.656C 123.238 584.656 126.78 582.49 126.78 579.656L 126.78 518.656C 126.78 515.825 123.244 513.656 118.78 513.656L 84.7801 513.656Z"
           fill="black"
           fill-rule="evenodd"/>
-
     <line x1="88"
           y1="96"
           x2="74"
@@ -2098,21 +1885,17 @@
           stroke="black"
           stroke-width="6"
           stroke-linecap="round"/>
-
     <!-- denominator: 1 -->
-    <path transform="translate(84 102) scale(0.25) translate(-32 -486)"
+    <path transform="translate(84 102) scale(0.20) translate(-32 -486)"
           d="M 84.7801 513.656L 79.7801 513.656C 76.7381 513.656 74.1601 514.93 72.7801 516.656L 69.7801 519.656C 67.0561 523.066 70.7561 526.656 76.7801 526.656C 81.2381 526.656 84.7801 529.822 84.7801 532.656L 84.7801 579.656C 84.7801 582.486 88.3161 584.656 92.7801 584.656L 118.78 584.656C 123.238 584.656 126.78 582.49 126.78 579.656L 126.78 518.656C 126.78 515.825 123.244 513.656 118.78 513.656L 84.7801 513.656Z"
           fill="black"
           fill-rule="evenodd"/>
-
     <!-- denominator: 6 -->
-    <path transform="translate(102 102) scale(0.25) translate(-352 -486)"
+    <path transform="translate(102 102) scale(0.20) translate(-352 -486)"
           d="M 410.78 513.656L 387.78 513.656C 385.468 513.656 383.78 515.332 383.78 517.656L 383.78 579.656C 383.78 581.98 385.468 583.656 387.78 583.656L 442.78 583.656C 445.091 583.656 446.78 581.98 446.78 579.656L 446.78 561.656C 446.78 559.332 445.091 557.656 442.78 557.656L 414.78 557.656C 412.468 557.656 410.78 555.979 410.78 553.656L 410.78 526.656C 410.78 524.332 412.468 522.656 414.78 522.656L 433.78 522.656C 436.092 522.656 437.78 524.332 437.78 526.656L 437.78 535.656C 437.78 537.979 439.468 539.656 441.78 539.656L 442.78 539.656C 445.091 539.656 446.78 537.979 446.78 535.656L 446.78 517.656C 446.78 515.332 445.091 513.656 442.78 513.656L 410.78 513.656Z M 437.78 570.656C 437.78 572.98 436.092 574.656 433.78 574.656L 414.78 574.656C 412.469 574.656 410.78 572.98 410.78 570.656C 410.78 568.332 412.469 566.656 414.78 566.656L 433.78 566.656C 436.092 566.656 437.78 568.332 437.78 570.656Z"
           fill="black"
           fill-rule="evenodd"/>
   </svg>
-
-
   <!-- 1/8 -->
   <svg id="FRAC_1_8"
        data-cell="3,2"
@@ -2120,13 +1903,11 @@
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-
     <!-- numerator: 1 -->
-    <path transform="translate(0 0) scale(0.25) translate(-32 -486)"
+    <path transform="translate(0 0) scale(0.20) translate(-32 -486)"
           d="M 84.7801 513.656L 79.7801 513.656C 76.7381 513.656 74.1601 514.93 72.7801 516.656L 69.7801 519.656C 67.0561 523.066 70.7561 526.656 76.7801 526.656C 81.2381 526.656 84.7801 529.822 84.7801 532.656L 84.7801 579.656C 84.7801 582.486 88.3161 584.656 92.7801 584.656L 118.78 584.656C 123.238 584.656 126.78 582.49 126.78 579.656L 126.78 518.656C 126.78 515.825 123.244 513.656 118.78 513.656L 84.7801 513.656Z"
           fill="black"
           fill-rule="evenodd"/>
-
     <line x1="88"
           y1="96"
           x2="74"
@@ -2134,15 +1915,12 @@
           stroke="black"
           stroke-width="6"
           stroke-linecap="round"/>
-
     <!-- denominator: 8 -->
-    <path transform="translate(84 102) scale(0.25) translate(-480 -486)"
+    <path transform="translate(84 102) scale(0.20) translate(-480 -486)"
           d="M 538.78 513.656L 515.78 513.656C 513.468 513.656 511.78 515.332 511.78 517.656L 511.78 579.656C 511.78 581.98 513.468 584.656 515.78 584.656L 570.78 584.656C 573.091 584.656 574.78 581.98 574.78 579.656L 574.78 517.656C 574.78 515.332 573.091 513.656 570.78 513.656L 538.78 513.656Z M 561.78 575.656L 542.78 575.656C 540.468 575.656 538.78 572.98 538.78 570.656C 538.78 568.332 540.468 566.656 542.78 566.656L 561.78 566.656C 564.092 566.656 565.78 568.332 565.78 570.656C 565.78 572.983 564.096 575.656 561.78 575.656Z M 561.78 557.656L 542.78 557.656C 540.468 557.656 538.78 555.979 538.78 553.656L 538.78 526.656C 538.78 524.332 540.468 522.656 542.78 522.656L 561.78 522.656C 564.092 522.656 565.78 524.332 565.78 526.656L 565.78 553.656C 565.78 555.983 564.096 557.656 561.78 557.656Z"
           fill="black"
           fill-rule="evenodd"/>
   </svg>
-
-
   <!-- 1/4 -->
   <svg id="FRAC_1_4"
        data-cell="4,2"
@@ -2150,13 +1928,11 @@
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-
     <!-- numerator: 1 -->
-    <path transform="translate(0 0) scale(0.25) translate(-32 -486)"
+    <path transform="translate(0 0) scale(0.20) translate(-32 -486)"
           d="M 84.7801 513.656L 79.7801 513.656C 76.7381 513.656 74.1601 514.93 72.7801 516.656L 69.7801 519.656C 67.0561 523.066 70.7561 526.656 76.7801 526.656C 81.2381 526.656 84.7801 529.822 84.7801 532.656L 84.7801 579.656C 84.7801 582.486 88.3161 584.656 92.7801 584.656L 118.78 584.656C 123.238 584.656 126.78 582.49 126.78 579.656L 126.78 518.656C 126.78 515.825 123.244 513.656 118.78 513.656L 84.7801 513.656Z"
           fill="black"
           fill-rule="evenodd"/>
-
     <line x1="88"
           y1="96"
           x2="74"
@@ -2164,15 +1940,12 @@
           stroke="black"
           stroke-width="6"
           stroke-linecap="round"/>
-
     <!-- denominator: 4 -->
-    <path transform="translate(84 102) scale(0.25) translate(-224 -486)"
+    <path transform="translate(84 102) scale(0.20) translate(-224 -486)"
           d="M 304.78 557.656L 286.78 557.656C 284.286 557.656 281.78 556.163 281.78 553.656L 281.78 518.656C 281.78 516.149 280.274 513.656 277.78 513.656L 259.78 513.656C 257.286 513.656 255.78 516.149 255.78 518.656L 255.78 562.656C 255.78 565.163 257.286 567.656 259.78 567.656L 304.78 567.656C 307.273 567.656 308.78 569.15 308.78 571.656L 308.78 579.656C 308.78 582.162 311.287 584.656 313.78 584.656C 316.274 584.656 317.78 582.162 317.78 579.656L 317.78 518.656C 317.78 516.149 316.274 513.656 313.78 513.656C 311.287 513.656 308.78 516.149 308.78 518.656L 308.78 553.656C 308.78 556.163 307.269 557.656 304.78 557.656Z"
           fill="black"
           fill-rule="evenodd"/>
   </svg>
-
-
   <!-- 1/2 -->
   <svg id="FRAC_1_2"
        data-cell="5,2"
@@ -2180,13 +1953,11 @@
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-
     <!-- numerator: 1 -->
-    <path transform="translate(0 0) scale(0.25) translate(-32 -486)"
+    <path transform="translate(0 0) scale(0.20) translate(-32 -486)"
           d="M 84.7801 513.656L 79.7801 513.656C 76.7381 513.656 74.1601 514.93 72.7801 516.656L 69.7801 519.656C 67.0561 523.066 70.7561 526.656 76.7801 526.656C 81.2381 526.656 84.7801 529.822 84.7801 532.656L 84.7801 579.656C 84.7801 582.486 88.3161 584.656 92.7801 584.656L 118.78 584.656C 123.238 584.656 126.78 582.49 126.78 579.656L 126.78 518.656C 126.78 515.825 123.244 513.656 118.78 513.656L 84.7801 513.656Z"
           fill="black"
           fill-rule="evenodd"/>
-
     <line x1="88"
           y1="96"
           x2="74"
@@ -2194,15 +1965,12 @@
           stroke="black"
           stroke-width="6"
           stroke-linecap="round"/>
-
     <!-- denominator: 2 -->
-    <path transform="translate(84 102) scale(0.25) translate(-96 -486)"
+    <path transform="translate(84 102) scale(0.20) translate(-96 -486)"
           d="M 154.78 513.656L 134.78 513.656C 131.203 513.656 127.78 516.06 127.78 519.656L 127.78 535.656C 127.78 537.98 129.468 539.656 131.78 539.656L 150.78 539.656C 153.091 539.656 154.78 537.98 154.78 535.656L 154.78 526.656C 154.78 524.332 156.468 522.656 158.78 522.656L 177.78 522.656C 180.092 522.656 181.78 524.332 181.78 526.656L 181.78 553.656C 181.78 555.98 180.092 557.656 177.78 557.656L 132.78 557.656C 130.469 557.656 128.78 559.333 128.78 561.656L 128.78 579.656C 128.78 581.98 130.469 584.656 132.78 584.656L 186.78 584.656C 189.092 584.656 191.78 581.98 191.78 579.656C 191.78 577.332 189.092 575.656 186.78 575.656L 159.78 575.656C 157.468 575.656 154.78 572.98 154.78 570.656C 154.78 568.332 157.468 566.656 159.78 566.656L 186.78 566.656C 189.091 566.656 191.78 564.98 191.78 562.656L 191.78 517.656C 191.78 515.332 189.091 513.656 186.78 513.656Z"
           fill="black"
           fill-rule="evenodd"/>
   </svg>
-
-
   <!-- 1/1 -->
   <svg id="FRAC_1_1"
        data-cell="6,2"
@@ -2210,25 +1978,19 @@
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-
     <!-- numerator: 1 -->
-    <path transform="translate(0 96) scale(0.25) translate(-32 -486)"
+    <path transform="translate(-8 96) scale(0.20) translate(-32 -486)"
           d="M 84.7801 513.656L 79.7801 513.656C 76.7381 513.656 74.1601 514.93 72.7801 516.656L 69.7801 519.656C 67.0561 523.066 70.7561 526.656 76.7801 526.656C 81.2381 526.656 84.7801 529.822 84.7801 532.656L 84.7801 579.656C 84.7801 582.486 88.3161 584.656 92.7801 584.656L 118.78 584.656C 123.238 584.656 126.78 582.49 126.78 579.656L 126.78 518.656C 126.78 515.825 123.244 513.656 118.78 513.656L 84.7801 513.656Z"
           fill="black"
           fill-rule="evenodd"/>
-
-    <path transform="translate(20 96) scale(0.25) translate(-96 -486)"
+    <path transform="translate(8 96) scale(0.20) translate(-96 -486)"
           d="M 154.78 513.656L 134.78 513.656C 131.203 513.656 127.78 516.06 127.78 519.656L 127.78 535.656C 127.78 537.98 129.468 539.656 131.78 539.656L 150.78 539.656C 153.091 539.656 154.78 537.98 154.78 535.656L 154.78 526.656C 154.78 524.332 156.468 522.656 158.78 522.656L 177.78 522.656C 180.092 522.656 181.78 524.332 181.78 526.656L 181.78 553.656C 181.78 555.98 180.092 557.656 177.78 557.656L 132.78 557.656C 130.469 557.656 128.78 559.333 128.78 561.656L 128.78 579.656C 128.78 581.98 130.469 584.656 132.78 584.656L 186.78 584.656C 189.092 584.656 191.78 581.98 191.78 579.656C 191.78 577.332 189.092 575.656 186.78 575.656L 159.78 575.656C 157.468 575.656 154.78 572.98 154.78 570.656C 154.78 568.332 157.468 566.656 159.78 566.656L 186.78 566.656C 189.091 566.656 191.78 564.98 191.78 562.656L 191.78 517.656C 191.78 515.332 189.091 513.656 186.78 513.656Z"
           fill="black"
           fill-rule="evenodd"/>
-
-    <path transform="translate(40 96) scale(0.25) translate(-480 -486)"
+    <path transform="translate(24 96) scale(0.20) translate(-480 -486)"
           d="M 538.78 513.656L 515.78 513.656C 513.468 513.656 511.78 515.332 511.78 517.656L 511.78 579.656C 511.78 581.98 513.468 584.656 515.78 584.656L 570.78 584.656C 573.091 584.656 574.78 581.98 574.78 579.656L 574.78 517.656C 574.78 515.332 573.091 513.656 570.78 513.656L 538.78 513.656Z M 561.78 575.656L 542.78 575.656C 540.468 575.656 538.78 572.98 538.78 570.656C 538.78 568.332 540.468 566.656 542.78 566.656L 561.78 566.656C 564.092 566.656 565.78 568.332 565.78 570.656C 565.78 572.983 564.096 575.656 561.78 575.656Z M 561.78 557.656L 542.78 557.656C 540.468 557.656 538.78 555.979 538.78 553.656L 538.78 526.656C 538.78 524.332 540.468 522.656 542.78 522.656L 561.78 522.656C 564.092 522.656 565.78 524.332 565.78 526.656L 565.78 553.656C 565.78 555.983 564.096 557.656 561.78 557.656Z"
           fill="black"
           fill-rule="evenodd"/>
-
-
-
     <line x1="88"
           y1="96"
           x2="74"
@@ -2236,9 +1998,8 @@
           stroke="black"
           stroke-width="6"
           stroke-linecap="round"/>
-
     <!-- denominator: 1 -->
-    <path transform="translate(84 102) scale(0.25) translate(-32 -486)"
+    <path transform="translate(84 102) scale(0.20) translate(-32 -486)"
           d="M 84.7801 513.656L 79.7801 513.656C 76.7381 513.656 74.1601 514.93 72.7801 516.656L 69.7801 519.656C 67.0561 523.066 70.7561 526.656 76.7801 526.656C 81.2381 526.656 84.7801 529.822 84.7801 532.656L 84.7801 579.656C 84.7801 582.486 88.3161 584.656 92.7801 584.656L 118.78 584.656C 123.238 584.656 126.78 582.49 126.78 579.656L 126.78 518.656C 126.78 515.825 123.244 513.656 118.78 513.656L 84.7801 513.656Z"
           fill="black"
           fill-rule="evenodd"/>
@@ -2250,13 +2011,11 @@
        height="128"
        viewBox="0 0 128 128"
        overflow="hidden">
-
     <!-- numerator: 1 -->
-    <path transform="translate(0 96) scale(0.25) translate(-32 -486)"
+    <path transform="translate(0 96) scale(0.20) translate(-32 -486)"
           d="M 84.7801 513.656L 79.7801 513.656C 76.7381 513.656 74.1601 514.93 72.7801 516.656L 69.7801 519.656C 67.0561 523.066 70.7561 526.656 76.7801 526.656L 76.7801 526.656C 81.2381 526.656 84.7801 529.822 84.7801 532.656L 84.7801 579.656C 84.7801 582.486 88.3161 584.656 92.7801 584.656L 118.78 584.656C 123.238 584.656 126.78 582.49 126.78 579.656L 126.78 518.656C 126.78 515.825 123.244 513.656 118.78 513.656L 96.7801 513.656L 84.7801 513.656C 84.7801 513.656 84.7801 513.656 84.7801 513.656 z"
           fill="black"
           fill-rule="evenodd"/>
-
     <line x1="30"
           y1="30"
           x2="40"
@@ -2266,6 +2025,39 @@
           stroke-linecap="round"/>
   </svg>
 </g>
+ <!-- 1/1 -->
+  <svg id="FRAC_1_1"
+       data-cell="7,7"
+       width="128"
+       height="128"
+       viewBox="0 0 128 128"
+       overflow="hidden">
+    <!-- numerator: 1 -->
+    <path transform="translate(-7 96) scale(0.20) translate(-32 -486)"
+          d="M 84.7801 513.656L 79.7801 513.656C 76.7381 513.656 74.1601 514.93 72.7801 516.656L 69.7801 519.656C 67.0561 523.066 70.7561 526.656 76.7801 526.656C 81.2381 526.656 84.7801 529.822 84.7801 532.656L 84.7801 579.656C 84.7801 582.486 88.3161 584.656 92.7801 584.656L 118.78 584.656C 123.238 584.656 126.78 582.49 126.78 579.656L 126.78 518.656C 126.78 515.825 123.244 513.656 118.78 513.656L 84.7801 513.656Z"
+          fill="black"
+          fill-rule="evenodd"/>
+    <path transform="translate(6 96) scale(0.20) translate(-96 -486)"
+          d="M 154.78 513.656L 134.78 513.656C 131.203 513.656 127.78 516.06 127.78 519.656L 127.78 535.656C 127.78 537.98 129.468 539.656 131.78 539.656L 150.78 539.656C 153.091 539.656 154.78 537.98 154.78 535.656L 154.78 526.656C 154.78 524.332 156.468 522.656 158.78 522.656L 177.78 522.656C 180.092 522.656 181.78 524.332 181.78 526.656L 181.78 553.656C 181.78 555.98 180.092 557.656 177.78 557.656L 132.78 557.656C 130.469 557.656 128.78 559.333 128.78 561.656L 128.78 579.656C 128.78 581.98 130.469 584.656 132.78 584.656L 186.78 584.656C 189.092 584.656 191.78 581.98 191.78 579.656C 191.78 577.332 189.092 575.656 186.78 575.656L 159.78 575.656C 157.468 575.656 154.78 572.98 154.78 570.656C 154.78 568.332 157.468 566.656 159.78 566.656L 186.78 566.656C 189.091 566.656 191.78 564.98 191.78 562.656L 191.78 517.656C 191.78 515.332 189.091 513.656 186.78 513.656Z"
+          fill="black"
+          fill-rule="evenodd"/>
+    <path transform="translate(20 96) scale(0.20) translate(-480 -486)"
+          d="M 538.78 513.656L 515.78 513.656C 513.468 513.656 511.78 515.332 511.78 517.656L 511.78 579.656C 511.78 581.98 513.468 584.656 515.78 584.656L 570.78 584.656C 573.091 584.656 574.78 581.98 574.78 579.656L 574.78 517.656C 574.78 515.332 573.091 513.656 570.78 513.656L 538.78 513.656Z M 561.78 575.656L 542.78 575.656C 540.468 575.656 538.78 572.98 538.78 570.656C 538.78 568.332 540.468 566.656 542.78 566.656L 561.78 566.656C 564.092 566.656 565.78 568.332 565.78 570.656C 565.78 572.983 564.096 575.656 561.78 575.656Z M 561.78 557.656L 542.78 557.656C 540.468 557.656 538.78 555.979 538.78 553.656L 538.78 526.656C 538.78 524.332 540.468 522.656 542.78 522.656L 561.78 522.656C 564.092 522.656 565.78 524.332 565.78 526.656L 565.78 553.656C 565.78 555.983 564.096 557.656 561.78 557.656Z"
+          fill="black"
+          fill-rule="evenodd"/>
+        <line x1="0"
+              y1="64"
+              x2="0"
+              y2="127"
+              stroke="#ffffff"
+              stroke-width="1"/>
+        <line x1="40"
+              y1="64"
+              x2="40"
+              y2="127"
+              stroke="#ffffff"
+              stroke-width="1"/>
+  </svg>
 
   <script><![CDATA[
     (() => {
