@@ -324,9 +324,6 @@
 
 
   <!--  INPUT MODES -->
-
-subtract:
-
 <svg id="MODE_TRG"
      data-cell="0,0"
      width="128"
