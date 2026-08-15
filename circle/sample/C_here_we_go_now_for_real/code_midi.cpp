@@ -1,6 +1,6 @@
 #include "kernel.h"
-
-void CKernel::updateMIDI()
+/*
+void            CKernel::updateMIDI()
 {
                 m_USBHCI.UpdatePlugAndPlay();
 
@@ -16,8 +16,29 @@ void CKernel::updateMIDI()
 
                 g_centralModeBuffer[g_currentProgramBuffer][FLAG_MIDI] = g_midiConnected;
 }
+*/
+bool            CKernel::updateMIDI()
+{
+                if (!m_USBHCI.UpdatePlugAndPlay()) return false;
 
-void CKernel::removeMIDI(CDevice* pDevice, void* pContext)
+                CUSBMIDIDevice* pMIDI = (CUSBMIDIDevice*)m_DeviceNameService.GetDevice("umidi1", TRUE);
+
+                if (pMIDI == nullptr) return false;
+
+                if (!g_midiConnected)
+                    {
+                    pMIDI->RegisterPacketHandler(MIDIPacketHandler, this);
+                    pMIDI->RegisterRemovedHandler(removeMIDI, this);
+
+                    g_midiConnected = true;
+
+                    g_centralModeBuffer[g_currentProgramBuffer][FLAG_MIDI] = g_midiConnected; // aka true aka 1
+                    }
+
+                return true;
+}
+
+void            CKernel::removeMIDI(CDevice* pDevice, void* pContext)
 {
                 (void)pDevice;
 
@@ -26,11 +47,11 @@ void CKernel::removeMIDI(CDevice* pDevice, void* pContext)
                 if (pThis == 0) return;
 
                 pThis->g_midiConnected = false;
-                pThis->g_centralModeBuffer[pThis->g_currentProgramBuffer][FLAG_MIDI] = 0;
+                pThis->g_centralModeBuffer[pThis->g_currentProgramBuffer][FLAG_MIDI] = pThis->g_midiConnected // aka false aka 0;
                 memset(pThis->g_midiHeld, 0, sizeof(pThis->g_midiHeld));
 }
 
-void CKernel::MIDIPacketHandler(unsigned nCable,
+void            CKernel::MIDIPacketHandler(unsigned nCable,
                                 u8* pPacket,
                                 unsigned nLength,
                                 unsigned nDevice,
