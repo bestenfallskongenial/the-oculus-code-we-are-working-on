@@ -47,7 +47,7 @@ void            CKernel::removeMIDI(CDevice* pDevice, void* pContext)
                 if (pThis == 0) return;
 
                 pThis->g_midiConnected = false;
-                pThis->g_centralModeBuffer[pThis->g_currentProgramBuffer][FLAG_MIDI] = pThis->g_midiConnected // aka false aka 0;
+                pThis->g_centralModeBuffer[pThis->g_currentProgramBuffer][FLAG_MIDI] = pThis->g_midiConnected; // aka false aka 0;
                 memset(pThis->g_midiHeld, 0, sizeof(pThis->g_midiHeld));
 }
 
