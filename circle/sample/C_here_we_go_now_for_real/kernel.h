@@ -266,7 +266,7 @@ public:
                 void        checkSystemFlags            ();
 
 // code_midi.cpp
-                void        updateMIDI                  ();
+                bool        updateMIDI                  ();
         static  void        removeMIDI                  (               CDevice*                        pDevice,
                                                                         void*                           pContext);
         static  void        MIDIPacketHandler           (               unsigned                        nCable,
