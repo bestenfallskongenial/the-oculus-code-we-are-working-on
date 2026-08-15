@@ -273,7 +273,7 @@ public:         // Logging
         const   int                         g_groupLen[GROUP_COUNT]                             =           { 4, 2, 2, 3 };
         const   int                         g_groupModes[GROUP_COUNT][4]                        =       {   { 0, 1, 2, 3 },
                                                                                                             { 4, 5, 0, 0 },
-                                                                                                            { 6, 7, 0, 0 } 
+                                                                                                            { 6, 7, 0, 0 }, 
                                                                                                             { 8, 9,10, 0 } };           // new for midi
                 int                         g_modeRoof[MODETABLE_COUNT]                         =           { 0 };
                 int                         g_modeMap[MODETABLE_COUNT][MODE_NAME_COUNT]         =           { 0 };
