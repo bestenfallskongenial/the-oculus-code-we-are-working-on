@@ -1,4 +1,5 @@
 #include "kernel.h"
+#ifdef USE_MIDI
 /*
 void            CKernel::updateMIDI()
 {
@@ -106,3 +107,4 @@ void            CKernel::MIDIPacketHandler(unsigned nCable,
                         }
                     }
 }
+#endif 

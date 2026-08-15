@@ -1,44 +1,47 @@
-#define             X_STR                                            0 // ""                                                 // for the logger
-#define             X_VAL                                            255                                                // for the logger
+    #define             X_STR                                               0 // ""                                                 // for the logger
+    #define             X_VAL                                               255                                                // for the logger
 
 
-#define             BPM_NUM                                             9
-#define             BPM_DEN                                             8   // 1.25  = 5/4   -> *4 < *5
-                                                                            // 1.2   = 6/5   -> *5 < *6
-                                                                            // 1.125 = 9/8   -> *8 < *9
-// #define             LAYER                                               6
+    #define             BPM_NUM                                             9
+    #define             BPM_DEN                                             8   // 1.25  = 5/4   -> *4 < *5
+                                                                                // 1.2   = 6/5   -> *5 < *6
+                                                                                // 1.125 = 9/8   -> *8 < *9
+// #define             LAYER                                                6
 
-// #define             BLOCK_COUNT                                         8  // <---- ****** confusion?!?! i need to be this as single source of trueh or derived from g_centralModeBuffer
+// #define             BLOCK_COUNT                                          8  // <---- ****** confusion?!?! i need to be this as single source of trueh or derived from g_centralModeBuffer
 
-    #define BLOCK_WIDTH                         4
-    #define BLOCK_COUNT                         (MODETABLE_COUNT / BLOCK_WIDTH)
-    #define ACCESSIBLE_LAYER 8 // 7
+    #define BLOCK_WIDTH                                                     4
+    #define BLOCK_COUNT                                                     (MODETABLE_COUNT / BLOCK_WIDTH)
+#ifdef USE_MIDI    
+    #define ACCESSIBLE_LAYER                                                8
+#else
+    #define ACCESSIBLE_LAYER                                                7
+#endif
+    #define             check() 				                            gfx_check(__FILE__, __LINE__) 	// my own assertiion implimentation
 
-#define             check() 				                            gfx_check(__FILE__, __LINE__) 	// my own assertiion implimentation
+    #define             MAX_WATCHDOG_SEC                                    15
 
-#define             MAX_WATCHDOG_SEC                                    15
+    #define             MAX_FILE_NAME_LENGTH                                13
 
-#define             MAX_FILE_NAME_LENGTH                                13
+    #define             BTN_PRESSED                                         0
 
-#define             BTN_PRESSED                                         0
+    #define             CHANNEL                                             8
 
-#define             CHANNEL                                             8
+    #define             MAX_TILES                                           16
+    #define             MENU_GPU_TILE_COUNT                                 16
 
-#define             MAX_TILES                                           16
-#define             MENU_GPU_TILE_COUNT                                 16
+    #define             ADC_CHANNELS         	                            8                                   // number of adc input channels ( dependency <sensor/mcp300x.h>	)
+    #define             VREF			 		                            5.0f
 
-#define             ADC_CHANNELS         	                            8                                   // number of adc input channels ( dependency <sensor/mcp300x.h>	)
-#define             VREF			 		                            5.0f
+    #define 		    ADC_BUFFER_COUNT		                            4	
 
-#define 		    ADC_BUFFER_COUNT		                            4	
+    #define             NAL_TYPE_SLICE                                      1                                // NAL unit types
+    #define             NAL_TYPE_IDR                                        5
+    #define             NAL_TYPE_SEI                                        6
+    #define             NAL_TYPE_SPS                                        7
+    #define             NAL_TYPE_PPS                                        8
 
-#define             NAL_TYPE_SLICE                                      1                                // NAL unit types
-#define             NAL_TYPE_IDR                                        5
-#define             NAL_TYPE_SEI                                        6
-#define             NAL_TYPE_SPS                                        7
-#define             NAL_TYPE_PPS                                        8
-
-#define             MMAL_FORMAT_EXTRADATA_MAX_SIZE                      128              // Maximum size of the format extradata. //
+    #define             MMAL_FORMAT_EXTRADATA_MAX_SIZE                      128              // Maximum size of the format extradata. //
 
 
 // SPI

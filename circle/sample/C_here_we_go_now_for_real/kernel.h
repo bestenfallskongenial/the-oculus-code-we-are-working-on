@@ -266,6 +266,7 @@ public:
                 void        checkSystemFlags            ();
 
 // code_midi.cpp
+#ifdef USE_MIDI
                 bool        updateMIDI                  ();
         static  void        removeMIDI                  (               CDevice*                        pDevice,
                                                                         void*                           pContext);
@@ -278,7 +279,7 @@ public:
                 void        modeMidiNote                (               int                             p_channel);
                 void        modeMidiCC0                 (               int                             p_channel);
                 void        modeMidiCC1                 (               int                             p_channel);
-
+#endif
 // code_parser.cpp              !! TESTED AND APPROVED !!
                 bool        BMPparser                   (               tex_state*                      t,
                                                                         char*                           p_buffer_array[],
