@@ -44,7 +44,7 @@ enum centralModeBuffer
 // block 07 / layer 8 - "mute" block
     FLAG_AUDIO_A,           // for internal use only! 
     FLAG_AUDIO_B,
-    LAG_MIDI,
+    FLAG_MIDI,
     FLAG_DUMMY_B,           // or i autodetect the last correct bpm because the bpm function is autodetecting ...
 // block 08 / layer 9 - "mute" block
     SEL_PRG,                // instead of an additional "allow prg changes" global flag - what if this will never be released again!?!

@@ -12,7 +12,7 @@
 
     #define BLOCK_WIDTH                         4
     #define BLOCK_COUNT                         (MODETABLE_COUNT / BLOCK_WIDTH)
-    #define ACCESSIBLE_LAYER 7
+    #define ACCESSIBLE_LAYER 8 // 7
 
 #define             check() 				                            gfx_check(__FILE__, __LINE__) 	// my own assertiion implimentation
 
