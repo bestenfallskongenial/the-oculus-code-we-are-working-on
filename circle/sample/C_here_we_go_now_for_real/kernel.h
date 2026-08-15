@@ -137,6 +137,10 @@ public:
                                                                         glsl_state*                     s, 
                                                                         tex_state*                      t);
                 void        drawGLsOvl                  ();                  
+
+                void        fpsBegin                    ();
+                void        fpsBreak                    ();
+                void        fpsEnd                      ();
 // code_hardware.cpp            !! TESTED AND APPROVED - as far as i can tell !! 
                 void        usDelay                     (               unsigned us);
                 void        msDelay                     (               unsigned ms);                                           // ++
