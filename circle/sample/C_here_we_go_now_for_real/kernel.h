@@ -45,7 +45,8 @@ public:
                 void        logInOutRuntime             (               int                             row );      // +++
                 void        logInfosRuntime             (               int                             row );
                 void        logScreenUpdate             (               void );
-                bool        startupScreen               (               void ); /// +++                           
+                bool        startupScreen               (               void ); /// +++      
+                void        logInfoFrameRate            (               float                           value );                     
 // code_filesystem.cpp          !! TESTED AND APPROVED !!
                 bool        Mount                       (       const   char*                           p_deviceName);          // +++ "emmc1-1" cd ( root ), "umsd1-1" usb returns success
                 bool        UnMount                     ();                                                                     // +++ returns success
