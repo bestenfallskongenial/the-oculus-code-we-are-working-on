@@ -314,6 +314,40 @@ void            CKernel::modeAudioBbH               (   int p_channel)
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][AU3];
 }
 
+void    CKernel::modeMidiNote(int p_channel)
+{
+                unsigned low;
+                unsigned high;
+
+                switch (g_centralModeBuffer[g_currentProgramBuffer][MIDI_RANGE])
+                    {
+                    case 0: low = 36; high = 47; break;
+                    case 1: low = 36; high = 59; break;
+                    case 2: low = 36; high = 71; break;
+                    default: low = 12; high = 72; break;
+                    }
+
+                unsigned note = g_midiNote;
+
+                if (note < low) note = low;
+                if (note > high) note = high;
+
+                g_inOutMatrixInt[p_channel][OUT] = ((note - low) * 1023) / (high - low);
+                g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixInt[p_channel][OUT] / 1024.0f;
+}
+
+void CKernel::modeMidiCC0(int p_channel)
+{
+                g_inOutMatrixInt[p_channel][OUT] = g_midiCC0Int;
+                g_inOutMatrixFlt[p_channel][OUT] = g_midiCC0Flt;
+}
+
+void CKernel::modeMidiCC1(int p_channel)
+{
+                g_inOutMatrixInt[p_channel][OUT] = g_midiCC1Int;
+                g_inOutMatrixFlt[p_channel][OUT] = g_midiCC1Flt;
+}
+
 void            CKernel::applyTargetModes           (   )       // current!
 {
                 if (g_menuLayer == 0)
