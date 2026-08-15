@@ -36,10 +36,15 @@ enum centralModeBuffer
     SET_LOAD,
     LOG_STORE,
     KLN_LOAD,
+// block 07 / layer 8 - 28      - !!!! NEW! STILL UNSURE ABOUT THE LOCATION HERE !!!!
+    MIDI_CHANNEL,
+    MIDI_CC0,
+    MIDI_CC1,
+    MIDI_RANGE,
 // block 07 / layer 8 - "mute" block
     FLAG_AUDIO_A,           // for internal use only! 
     FLAG_AUDIO_B,
-    FLAG_DUMMY_A,           // what is about the clk detection ( TRG mode )? can we automize it too?
+    LAG_MIDI,
     FLAG_DUMMY_B,           // or i autodetect the last correct bpm because the bpm function is autodetecting ...
 // block 08 / layer 9 - "mute" block
     SEL_PRG,                // instead of an additional "allow prg changes" global flag - what if this will never be released again!?!
@@ -56,10 +61,16 @@ enum modeNames
 //  IN_MODE_BMP,
     IN_MODE_LF1,
     IN_MODE_LF2,
+
     MODE_AU_AL,
     MODE_AU_AH,
     MODE_AU_BL,
     MODE_AU_BH,
+
+    IN_MODE_MIDI_NOTE,
+    IN_MODE_MIDI_CC0,
+    IN_MODE_MIDI_CC1,
+
     MODE_NAME_COUNT
 };
 
@@ -74,7 +85,8 @@ enum ModeFlags
     GROUP_BASE  = 0,
     GROUP_FLAG1 = 1,
     GROUP_FLAG2 = 2,
-    GROUP_COUNT = 3
+    GROUP_FLAG3 = 3,    
+    GROUP_COUNT = 4
 };
 //------------------------------------------------- // for the array unsigned/float g_inOutMatrix*[CHANNEL][IO_TYPE_COUNT]
 enum io_types                               

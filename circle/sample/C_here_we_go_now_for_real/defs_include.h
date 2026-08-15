@@ -25,6 +25,7 @@
     #include "/home/bestenfalls/circle/addon/SDCard/emmc.h"
 
     #include <circle/usb/usbhcidevice.h>
+    #include <circle/usb/usbmidi.h>    
     #include <circle/fs/fat/fatfs.h>
 
     #include "bcm_host.h"

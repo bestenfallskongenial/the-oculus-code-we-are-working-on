@@ -200,7 +200,7 @@ public:         // Logging
                 int                             g_lastLayer                                     = 0;
                 int                             g_lastLayerLED                                  = 0;
                 unsigned                        g_extClockTime[8]                               =           { 0 }; // number of my adc channels!
-
+/*
         const   uint8_t                     modeMaskByValue[8]                                  =       {   0b00000001,     // mode 0
                                                                                                             0b00000010,     // mode 1
                                                                                                             0b00000100,     // mode 2
@@ -220,6 +220,32 @@ public:         // Logging
                                                                                                             0b11111111,     // layer 6: every mode
                                                                                                             0b11111111,     // layer 7: every mode
                                                                                                             0b11111111 };   // filler to get BLOCK_COUNT
+*/
+        const   uint16_t                    modeMaskByValue[MODE_NAME_COUNT]                    =       {   0b00000000001,     // mode 0
+                                                                                                            0b00000000010,     // mode 1
+                                                                                                            0b00000000100,     // mode 2
+                                                                                                            0b00000001000,     // mode 3
+                                                                                                            0b00000010000,     // mode 4
+                                                                                                            0b00000100000,     // mode 5
+                                                                                                            0b00001000000,     // mode 6
+                                                                                                            0b00010000000,     // mode 7
+                                                                                                            0b00100000000,     // mode 8
+                                                                                                            0b01000000000,     // mode 9
+                                                                                                            0b10000000000 };   // mode 10
+
+        const   uint16_t                    layerModeMap[BLOCK_COUNT]                           =       {   0b11111111111,     // layer 0: dummy row
+                                                                                                            0b11111111111,     // layer 1: every mode
+                                                                                                            0b11111111111,     // layer 2: every mode
+
+                                                                                                            0b00000001100,     // layer 3: modes 2 or 3
+                                                                                                            0b00000000010,     // layer 4: mode 1
+                                                                                                            0b00011110000,     // layer 5: modes 4, 5, 6 or 7
+
+                                                                                                            0b11111111111,     // layer 6: every mode
+                                                                                                            0b11111111111,     // layer 7: every mode
+                                                                                                            0b11100000000,     // layer 8: modes 8, 9 or 10 - midi 
+                                                                                                            0b11111111111 };   // filler to get BLOCK_COUNT
+
         const   int                         g_mapType[BLOCK_COUNT][4]                           =       {   { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  }, // mode channel 0-3 
                                                                                                             { MAP_MODE,  MAP_MODE,  MAP_MODE,  MAP_MODE  }, // mode channel 4-7
 
@@ -229,8 +255,10 @@ public:         // Logging
                                                                                                             { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
                                                                                                             { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },
 
+                                                                                                            { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // new for midi
                                                                                                             { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },                                                    
                                                                                                             { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE } };
+                                                                                                            
         const   int                         g_valueRoof[BLOCK_COUNT][4]                         =       {   {    4,    4,    4,    4  },                                      // channel 0-3 four modes ( before roof mapping )
                                                                                                             {    4,    4,    4,    4  },                                      // channel 4-7 four modes ( before roof mapping )
 
@@ -239,15 +267,16 @@ public:         // Logging
                                                                                                             {   64,   64,   64,   64  },                                      // sensitivity Aud0_L, Aud0_H, Aud1_L, Aud1_H
                                                                                                             {    8,    8,    8,    8  },                         // means i need the max +1
                                                                                                             {    2,    2,    2,    2  },
-
+                                                                                                            {   16,  128,  128,    4  }, // new for midi
                                                                                                             {    0,    0,    0,    0  },
                                                                                                             {    0,    0,    0,    0  } };
-        const   int                         g_groupLen[GROUP_COUNT]                             =           { 4, 2, 2 };
+        const   int                         g_groupLen[GROUP_COUNT]                             =           { 4, 2, 2, 3 };
         const   int                         g_groupModes[GROUP_COUNT][4]                        =       {   { 0, 1, 2, 3 },
                                                                                                             { 4, 5, 0, 0 },
-                                                                                                            { 6, 7, 0, 0 } };
+                                                                                                            { 6, 7, 0, 0 } 
+                                                                                                            { 8, 9,10, 0 } };           // new for midi
                 int                         g_modeRoof[MODETABLE_COUNT]                         =           { 0 };
-                int                         g_modeMap[MODETABLE_COUNT][9]                       =           { 0 };
+                int                         g_modeMap[MODETABLE_COUNT][MODE_NAME_COUNT]         =           { 0 };
                 int                         g_blockColor[BLOCK_COUNT][3]                        =       {   {190,  60,  50},   // block 0 - warm red
                                                                                                             { 55, 155,  95},   // block 1 - jade green
                                                                                                             { 60, 105, 180},   // block 2 - medium blue
@@ -357,7 +386,7 @@ public:
                 GLuint                          m_Texture;         // is stored in the tex_state struct -> gl_tex_vid  and needed by bufferReadyMMAL               
 
 
-                // lets try the fps break here:
+// lets try the fps break here:
 
 #define TARGET_FPS 40
 
@@ -372,3 +401,12 @@ float g_currentFPS       = 0.0f;
 
 bool  g_limitFPS         = true;
 
+// and the midi code:
+
+                bool                            g_midiConnected                                 = false;
+                bool                            g_midiHeld[128]                                 = { 0 };
+                unsigned                        g_midiNote                                      = 36;
+                unsigned                        g_midiCC0Int                                    = 0;            // gets into my io matrix, right?!
+                unsigned                        g_midiCC1Int                                    = 0;
+                float                           g_midiCC0Flt                                    = 0.0f;
+                float                           g_midiCC1Flt                                    = 0.0f;

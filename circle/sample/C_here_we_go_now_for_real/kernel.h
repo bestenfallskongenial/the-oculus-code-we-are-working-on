@@ -264,6 +264,21 @@ public:
                 void        applyTargetModes            ();
                 void        updateLED                   (); // current!!
                 void        checkSystemFlags            ();
+
+// code_midi.cpp
+                void        updateMIDI                  ();
+        static  void        removeMIDI                  (               CDevice*                        pDevice,
+                                                                        void*                           pContext);
+        static  void        MIDIPacketHandler           (               unsigned                        nCable,
+                                                                        u8*                             pPacket,
+                                                                        unsigned                        nLength,
+                                                                        unsigned                        nDevice,
+                                                                        void*                           pParam);
+// relocated to code_menu.cpp!                                                                        
+                void        modeMidiNote                (               int                             p_channel);
+                void        modeMidiCC0                 (               int                             p_channel);
+                void        modeMidiCC1                 (               int                             p_channel);
+
 // code_parser.cpp              !! TESTED AND APPROVED !!
                 bool        BMPparser                   (               tex_state*                      t,
                                                                         char*                           p_buffer_array[],
