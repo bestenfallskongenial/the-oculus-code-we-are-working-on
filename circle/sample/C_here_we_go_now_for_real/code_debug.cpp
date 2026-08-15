@@ -150,24 +150,31 @@ bool            CKernel::startupScreen( void )
                 return TRUE;
 }
 
-void CKernel::logInfoFrameRate(float value)
+void            CKernel::logInfoFrameRate(int row, float value)
 {
-    u32 value1000 = (u32)(value * 1000.0f + 0.5f);
+                char f_logBuffer[32];
+                u32  f_logIndex = 0;
 
-    u32 whole = value1000 / 1000;
-    u32 frac  = value1000 % 1000;
+                f_logBuffer[0] = '\0';
 
-    char fracStr[5];
+                u32 value1000 = (u32)(value * 1000.0f + 0.5f);
 
-    fracStr[0] = '.';
-    fracStr[1] = '0' + ((frac / 100) % 10);
-    fracStr[2] = '0' + ((frac / 10)  % 10);
-    fracStr[3] = '0' + ( frac        % 10);
-    fracStr[4] = '\0';
+                u32 whole = value1000 / 1000;
+                u32 frac  = value1000 % 1000;
 
-    storeLogU32(buffer, index,
-                "value", whole,
-                fracStr, X_VAL,
-                X_STR,   X_VAL,
-                X_STR,   X_VAL);
+                char fracStr[5];
+
+                fracStr[0] = '.';
+                fracStr[1] = '0' + ((frac / 100) % 10);
+                fracStr[2] = '0' + ((frac / 10)  % 10);
+                fracStr[3] = '0' + ( frac        % 10);
+                fracStr[4] = '\0';
+
+                storeLogU32(f_logBuffer, f_logIndex,
+                            "value", whole,
+                            fracStr, X_VAL,
+                            X_STR,   X_VAL,
+                            X_STR,   X_VAL);
+
+                bufferScreenDraw(   f_logBuffer, 0, f_logIndex, 0, row, 0xFFFFFFFF );                               
 }
