@@ -314,7 +314,7 @@ void            CKernel::modeAudioBbH               (   int p_channel)
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[0][AU3];
 }
 
-void    CKernel::modeMidiNote(int p_channel)
+void            CKernel::modeMidiNote(int p_channel)
 {
                 unsigned low;
                 unsigned high;
@@ -336,13 +336,13 @@ void    CKernel::modeMidiNote(int p_channel)
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixInt[p_channel][OUT] / 1024.0f;
 }
 
-void CKernel::modeMidiCC0(int p_channel)
+void            CKernel::modeMidiCC0(int p_channel)
 {
                 g_inOutMatrixInt[p_channel][OUT] = g_midiCC0Int;
                 g_inOutMatrixFlt[p_channel][OUT] = g_midiCC0Flt;
 }
 
-void CKernel::modeMidiCC1(int p_channel)
+void            CKernel::modeMidiCC1(int p_channel)
 {
                 g_inOutMatrixInt[p_channel][OUT] = g_midiCC1Int;
                 g_inOutMatrixFlt[p_channel][OUT] = g_midiCC1Flt;
