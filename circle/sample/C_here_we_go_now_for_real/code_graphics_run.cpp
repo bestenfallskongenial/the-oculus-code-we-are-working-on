@@ -223,4 +223,41 @@ void            CKernel::drawGLsOvl                 (   )
                 check();
 #endif
 }
+
+// lets try the fps break here:
+
+void CKernel::fpsBegin()
+{
+    g_frameStart = m_Timer.GetClockTicks();
+}
+
+void CKernel::fpsBreak()
+{
+    glFlush();
+
+    g_frameCurrent = m_Timer.GetClockTicks();
+    g_frameTarget  = g_frameStart + (1000000 / TARGET_FPS);
+
+    if (g_limitFPS && g_frameTarget > g_frameCurrent + g_lastSwapDuration)
+    {
+        g_frameDelay = g_frameTarget - (g_frameCurrent + g_lastSwapDuration);
+
+        usDelay(g_frameDelay);
+    }
+
+    g_frameCurrent = m_Timer.GetClockTicks();
+}
+
+void CKernel::fpsEnd()
+{
+    const u32 frameEnd = m_Timer.GetClockTicks();
+
+    g_lastSwapDuration = frameEnd - g_frameCurrent;
+    g_frameTime        = frameEnd - g_frameStart;
+
+    if (g_frameTime) g_currentFPS = 1000000.0f / g_frameTime;
+}
+
 // END OF FILE
+
+

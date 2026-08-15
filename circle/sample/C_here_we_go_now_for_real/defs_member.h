@@ -355,3 +355,20 @@ public:
                 EGLContext                      m_eglContext;      // is stored in the olg_state struct -> context     and needed by bufferReadyMMAL
                 EGLImageKHR                     m_EGLimage;        // is stored in the tex_state struct -> m_EGLimage  and needed by bufferReadyMMAL
                 GLuint                          m_Texture;         // is stored in the tex_state struct -> gl_tex_vid  and needed by bufferReadyMMAL               
+
+
+                // lets try the fps break here:
+
+#define TARGET_FPS 40
+
+u32   g_frameStart       = 0;
+u32   g_frameCurrent     = 0;
+u32   g_frameTarget      = 0;
+u32   g_frameDelay       = 0;
+u32   g_frameTime        = 0;
+u32   g_lastSwapDuration = 0;
+
+float g_currentFPS       = 0.0f;
+
+bool  g_limitFPS         = true;
+

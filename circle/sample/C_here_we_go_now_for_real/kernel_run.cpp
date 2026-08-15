@@ -42,6 +42,8 @@ TShutdownMode CKernel::Run(void)
                         bufferScreenClear();
                         } 
 
+            fpsBegin();
+
                     g_currentTime = m_Timer.GetClockTicks();                        // here starts the actual runtimeloop
 
                     resetMenuPickUpFlags();
@@ -107,11 +109,15 @@ TShutdownMode CKernel::Run(void)
 
                     drawGLsPrg();
 
-                    frmRateBreak(false);
+                //  frmRateBreak(false);
+
+            fpsBreak();
 
                     frmBufferSwap(&m_ogl); 
 
-                    msDelay(25);
+            fpsEnd();
+
+                //  msDelay(25);
                     }
                 return ShutdownHalt;                    
 }
