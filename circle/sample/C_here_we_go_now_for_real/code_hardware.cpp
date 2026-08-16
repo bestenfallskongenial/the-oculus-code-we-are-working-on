@@ -120,10 +120,10 @@ void            CKernel::buttonPingA                (   int             p_btn_id
                     g_buttons_states[p_btn_id][BTN_SINGLE] = 0;
                     g_buttons_states[p_btn_id][BTN_DOUBLE] = 0;
 
-                    g_buttons_states[p_btn_id][BTN_PRESS_START] = g_currentTime;
+                    g_buttons_states[p_btn_id][BTN_PRESS_START] = g_frameStart;
 
 
-                    if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 && (g_currentTime - g_buttons_states[p_btn_id][BTN_RELEASE]) < DOUBLE_CLICK_TIME)
+                    if (g_buttons_states[p_btn_id][BTN_RELEASE] > 0 && (g_frameStart - g_buttons_states[p_btn_id][BTN_RELEASE]) < DOUBLE_CLICK_TIME)
                         {
                         g_buttons_states[p_btn_id][BTN_DOUBLE] = 1;
                         }
@@ -136,11 +136,11 @@ void            CKernel::buttonPingA                (   int             p_btn_id
 
                 if (GPIO_Read(p_pin) != BTN_PRESSED && g_buttons_states[p_btn_id][BTN_PRESS_START] != 0)                
                     {
-                    g_buttons_states[p_btn_id][BTN_RELEASE]     = g_currentTime;
+                    g_buttons_states[p_btn_id][BTN_RELEASE]     = g_frameStart;
                     g_buttons_states[p_btn_id][BTN_PRESS_START] = 0;
                     g_buttons_states[p_btn_id][BTN_HOLD_TICK]   = 0;
                     }
-                if (g_buttons_states[p_btn_id][BTN_PRESS_START] != 0 && (g_currentTime - g_buttons_states[p_btn_id][BTN_PRESS_START]) >= LONG_CLICK_TIME)
+                if (g_buttons_states[p_btn_id][BTN_PRESS_START] != 0 && (g_frameStart - g_buttons_states[p_btn_id][BTN_PRESS_START]) >= LONG_CLICK_TIME)
                     {
                     g_buttons_states[p_btn_id][BTN_HOLD_TICK]++;
                     }
@@ -156,10 +156,10 @@ void            CKernel::buttonPingB                (   int             p_btn_id
                     g_buttons_states[p_btn_id_A][BTN_SINGLE] = 0;
                     g_buttons_states[p_btn_id_A][BTN_DOUBLE] = 0;
 
-                    g_buttons_states[p_btn_id_A][BTN_PRESS_START] = g_currentTime;
+                    g_buttons_states[p_btn_id_A][BTN_PRESS_START] = g_frameStart;
 
 
-                    if (g_buttons_states[p_btn_id_A][BTN_RELEASE] > 0 && (g_currentTime - g_buttons_states[p_btn_id_A][BTN_RELEASE]) < DOUBLE_CLICK_TIME)
+                    if (g_buttons_states[p_btn_id_A][BTN_RELEASE] > 0 && (g_frameStart - g_buttons_states[p_btn_id_A][BTN_RELEASE]) < DOUBLE_CLICK_TIME)
                         {
                         g_buttons_states[p_btn_id_A][BTN_DOUBLE] = 1;
                         }
@@ -172,11 +172,11 @@ void            CKernel::buttonPingB                (   int             p_btn_id
 
                 if (GPIO_Read(p_pin_A) != BTN_PRESSED && g_buttons_states[p_btn_id_A][BTN_PRESS_START] != 0)                
                     {
-                    g_buttons_states[p_btn_id_A][BTN_RELEASE]     = g_currentTime;
+                    g_buttons_states[p_btn_id_A][BTN_RELEASE]     = g_frameStart;
                     g_buttons_states[p_btn_id_A][BTN_PRESS_START] = 0;
                     g_buttons_states[p_btn_id_A][BTN_HOLD_TICK]   = 0;
                     }
-                if (g_buttons_states[p_btn_id_A][BTN_PRESS_START] != 0 && (g_currentTime - g_buttons_states[p_btn_id_A][BTN_PRESS_START]) >= LONG_CLICK_TIME)
+                if (g_buttons_states[p_btn_id_A][BTN_PRESS_START] != 0 && (g_frameStart - g_buttons_states[p_btn_id_A][BTN_PRESS_START]) >= LONG_CLICK_TIME)
                     {
                     g_buttons_states[p_btn_id_A][BTN_HOLD_TICK]++;
                     }
@@ -188,10 +188,10 @@ void            CKernel::buttonPingB                (   int             p_btn_id
                     g_buttons_states[p_btn_id_B][BTN_SINGLE] = 0;
                     g_buttons_states[p_btn_id_B][BTN_DOUBLE] = 0;
 
-                    g_buttons_states[p_btn_id_B][BTN_PRESS_START] = g_currentTime;
+                    g_buttons_states[p_btn_id_B][BTN_PRESS_START] = g_frameStart;
 
 
-                    if (g_buttons_states[p_btn_id_B][BTN_RELEASE] > 0 && (g_currentTime - g_buttons_states[p_btn_id_B][BTN_RELEASE]) < DOUBLE_CLICK_TIME)
+                    if (g_buttons_states[p_btn_id_B][BTN_RELEASE] > 0 && (g_frameStart - g_buttons_states[p_btn_id_B][BTN_RELEASE]) < DOUBLE_CLICK_TIME)
                         {
                         g_buttons_states[p_btn_id_B][BTN_DOUBLE] = 1;
                         }
@@ -204,11 +204,11 @@ void            CKernel::buttonPingB                (   int             p_btn_id
 
                 if (GPIO_Read(p_pin_B) != BTN_PRESSED && g_buttons_states[p_btn_id_B][BTN_PRESS_START] != 0)                
                     {
-                    g_buttons_states[p_btn_id_B][BTN_RELEASE]     = g_currentTime;
+                    g_buttons_states[p_btn_id_B][BTN_RELEASE]     = g_frameStart;
                     g_buttons_states[p_btn_id_B][BTN_PRESS_START] = 0;
                     g_buttons_states[p_btn_id_B][BTN_HOLD_TICK]   = 0;
                     }
-                if (g_buttons_states[p_btn_id_B][BTN_PRESS_START] != 0 && (g_currentTime - g_buttons_states[p_btn_id_B][BTN_PRESS_START]) >= LONG_CLICK_TIME)
+                if (g_buttons_states[p_btn_id_B][BTN_PRESS_START] != 0 && (g_frameStart - g_buttons_states[p_btn_id_B][BTN_PRESS_START]) >= LONG_CLICK_TIME)
                     {
                     g_buttons_states[p_btn_id_B][BTN_HOLD_TICK]++;
                     }

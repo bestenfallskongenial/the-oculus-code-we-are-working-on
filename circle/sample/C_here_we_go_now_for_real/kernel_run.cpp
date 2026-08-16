@@ -5,8 +5,6 @@
 
 TShutdownMode CKernel::Run(void)
 {
-            //  g_centralModeBuffer[g_gl_program_current][FLAG_TEX] = 0;            // start values for the glsl code
-
                 while (/*m_resetFlag == false*/ 1)
                     {
 
@@ -42,9 +40,9 @@ TShutdownMode CKernel::Run(void)
                         bufferScreenClear();
                         } 
 
-            fpsBegin();
+            fpsBegin();                                                             // here starts the actual runtimeloop
 
-                    g_currentTime = m_Timer.GetClockTicks();                        // here starts the actual runtimeloop
+
 #ifdef USE_MIDI
                     updateMIDI();
 #endif                    
@@ -58,7 +56,7 @@ TShutdownMode CKernel::Run(void)
                     adc_ProcessAudio();
                     adc_AdvanceIndex();
 
-                    randomVec8(g_currentTime);
+                    randomVec8(g_frameStart);
 
                     buttonPingB( 0, SW_PIN_A, 1, SW_PIN_B );                        // 
 

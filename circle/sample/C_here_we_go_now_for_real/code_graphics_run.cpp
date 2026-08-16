@@ -166,7 +166,7 @@ void            CKernel::drawGLsPrg                 (   )
 #endif
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
-
+/*
 void            CKernel::frmRateBreak               (   bool noTargetFPS )
 {
                 glFlush();
@@ -179,7 +179,7 @@ void            CKernel::frmRateBreak               (   bool noTargetFPS )
 #endif
                     }
 }
-
+*/
 void            CKernel::setUniOvl                  (   olg_state*  o, 
                                                         glsl_state* s, 
                                                         tex_state*  t )
@@ -226,36 +226,38 @@ void            CKernel::drawGLsOvl                 (   )
 
 // lets try the fps break here:
 
-void CKernel::fpsBegin()
+void            CKernel::fpsBegin()
 {
-    g_frameStart = m_Timer.GetClockTicks();
+                g_frameStart = m_Timer.GetClockTicks();
 }
 
-void CKernel::fpsBreak()
+void            CKernel::fpsBreak()
 {
-    glFlush();
+                glFlush();
+#ifdef __DEBUG_GL__
+                check();
+#endif
+                g_frameCurrent = m_Timer.GetClockTicks();
+                g_frameTarget  = g_frameStart + (1000000 / TARGET_FPS);
 
-    g_frameCurrent = m_Timer.GetClockTicks();
-    g_frameTarget  = g_frameStart + (1000000 / TARGET_FPS);
+                if (g_limitFPS && g_frameTarget > g_frameCurrent + g_lastSwapDuration)
+                    {
+                    g_frameDelay = g_frameTarget - (g_frameCurrent + g_lastSwapDuration);
 
-    if (g_limitFPS && g_frameTarget > g_frameCurrent + g_lastSwapDuration)
-    {
-        g_frameDelay = g_frameTarget - (g_frameCurrent + g_lastSwapDuration);
+                    usDelay(g_frameDelay);
+                    }
 
-        usDelay(g_frameDelay);
-    }
-
-    g_frameCurrent = m_Timer.GetClockTicks();
+                g_frameCurrent = m_Timer.GetClockTicks();
 }
 
-void CKernel::fpsEnd()
+void            CKernel::fpsEnd()
 {
-    const u32 frameEnd = m_Timer.GetClockTicks();
+                const u32 frameEnd = m_Timer.GetClockTicks();
 
-    g_lastSwapDuration = frameEnd - g_frameCurrent;
-    g_frameTime        = frameEnd - g_frameStart;
+                g_lastSwapDuration = frameEnd - g_frameCurrent;
+                g_frameTime        = frameEnd - g_frameStart;
 
-    if (g_frameTime) g_currentFPS = 1000000.0f / g_frameTime;
+                if (g_frameTime) g_currentFPS = 1000000.0f / g_frameTime;
 }
 
 // END OF FILE

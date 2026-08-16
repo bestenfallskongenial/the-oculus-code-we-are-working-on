@@ -4,6 +4,8 @@
     #define         OS_VERSION                  2
     #define         OS_REVISION                 1
 
+    #define         TARGET_FPS                  24
+
     #define 		LOGLEVEL				    2	                            // 0: only panic / 1: also errors / 2: also warnings / 3: also notices / 4: also debug output (default))
 
     #define         __LOG_ALLOC__                                               // allocation / buffer allocation logging

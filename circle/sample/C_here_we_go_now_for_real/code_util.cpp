@@ -93,22 +93,22 @@ void            CKernel::calculate1BPMnew           (   int             p_source
 void            CKernel::predict1Beat               (   int             p_source, 
                                                         int             p_lfoMultIn )
 {
-                if (/*currentTime*/g_currentTime       >= g_lfoBpmMatrix[p_source][NBT])
+                if (g_frameStart                       >=   g_lfoBpmMatrix[p_source][NBT])
                     {
-                    g_lfoBpmMatrix[p_source][NBT]      +=  g_lfoBpmMatrix[p_source][INTV];
+                    g_lfoBpmMatrix[p_source][NBT]      +=   g_lfoBpmMatrix[p_source][INTV];
                     }
-                if (/*currentTime*/g_currentTime       >= g_lfoBpmMatrix[p_source][NCB]) 
+                if (g_frameStart                       >=   g_lfoBpmMatrix[p_source][NCB]) 
                     {
                     g_lfoBpmMatrix[p_source][LCB]       =   g_lfoBpmMatrix[p_source][NCB];
                     g_lfoBpmMatrix[p_source][NCB]       =   g_lfoBpmMatrix[p_source][NCB] + (g_lfoBpmMatrix[g_activeBpmChannel][INTV] * g_lfoBpmMatrix[p_source][LMT]); // why again g_lfoMultiplierTMP? isnt it stored already, do we need to back it up?
                     g_lfoBpmMatrix[p_source][LMT]       =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]];
                     }
-                if ((g_lfoBpmMatrix[p_source][LBCT]    !=  g_lfoBpmMatrix[p_source][LBC]))
+                if ((g_lfoBpmMatrix[p_source][LBCT]    !=   g_lfoBpmMatrix[p_source][LBC]))
                     {
                     g_lfoBpmMatrix[p_source][NBT]       =   g_lfoBpmMatrix[p_source][LBC];
                     g_lfoBpmMatrix[p_source][LBCT]      =   g_lfoBpmMatrix[p_source][LBC];
                     }
-                if (g_lfoBpmMatrix[p_source][LMT]      !=  g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]])
+                if (g_lfoBpmMatrix[p_source][LMT]      !=   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]])
                     {
                     g_lfoBpmMatrix[p_source][LCB]       =   g_lfoBpmMatrix[g_activeBpmChannel][LBC];
                     g_lfoBpmMatrix[p_source][NCB]       =   g_lfoBpmMatrix[g_activeBpmChannel][LBC] + (g_lfoBpmMatrix[g_activeBpmChannel][INTV] * g_lfoBpmMatrix[p_source][LMT]);

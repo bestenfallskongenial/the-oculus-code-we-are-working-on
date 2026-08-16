@@ -85,7 +85,7 @@ public:         // Logging
                 GLfloat                         GLtime                                          = 0;
                 GLfloat                         g_opaque                                        = 0.5; 
 
-                unsigned                        g_currentTime;
+        //      unsigned                        g_frameStart;                                   // !! has become g_frameStart !!
 
                 bool                            m_audio_mode_activated                          = true; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -422,7 +422,7 @@ public:
 
 // lets try the fps break here:
 
-#define TARGET_FPS 40
+
 
 u32   g_frameStart       = 0;
 u32   g_frameCurrent     = 0;

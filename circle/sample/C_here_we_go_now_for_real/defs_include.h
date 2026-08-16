@@ -47,5 +47,5 @@
     #include <GLES2/gl2ext.h>
 
     #include <circle/types.h>
-    #include <string.h>
+//  #include <string.h>
 

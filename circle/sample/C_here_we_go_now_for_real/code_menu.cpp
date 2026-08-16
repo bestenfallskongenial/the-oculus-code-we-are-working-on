@@ -51,7 +51,7 @@ void            CKernel::buttonConsumer(int buttonA, int buttonB)
 
                     if (g_buttons_states[buttonA][BTN_SINGLE])
                         {
-                        calculate1BPMnew(0, TB0, DB0, g_currentTime);
+                        calculate1BPMnew(0, TB0, DB0, g_frameStart);
                         g_buttons_states[buttonA][BTN_SINGLE] = 0;
                         }
                     if (g_buttons_states[buttonB][BTN_DOUBLE])
@@ -281,7 +281,7 @@ void            CKernel::modeTRG                    (   int p_channel) // curren
                     g_inOutMatrixFlt[p_channel][OUT]    = g_inOutMatrixFlt[p_channel][RND];
                     g_inOutMatrixInt[p_channel][OUT]    = g_inOutMatrixInt[p_channel][RND];
 
-                    g_extClockTime[p_channel]           = g_currentTime;
+                    g_extClockTime[p_channel]           = g_frameStart;
 
                     g_inOutMatrixInt[p_channel][TRF]    = true;
                     }
@@ -404,7 +404,7 @@ void            CKernel::applyTargetModes           (   )       // current!
                     }
                 else                                                                            // time is a product of system time
                     {
-                    GLtime = g_currentTime / 1000000.0f;
+                    GLtime = g_frameStart / 1000000.0f;
                     }
 /*
                 if (g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] < FLAG_THRESHOLD)       // external BPM clock

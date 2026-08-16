@@ -131,7 +131,7 @@ public:
                                                                         int                             gl_current_tex,
                                                                         unsigned                        p_validTextureCount);   // ?? UNTESTED ??
                 void        drawGLsPrg                  ();                                                                     // !! WORKS !!
-                void        frmRateBreak                (               bool                            noTargetFPS);
+        //      void        frmRateBreak                (               bool                            noTargetFPS);
                 void        setUniOvl                   (               olg_state*                      o, 
                                                                         glsl_state*                     s, 
                                                                         tex_state*                      t);                     
