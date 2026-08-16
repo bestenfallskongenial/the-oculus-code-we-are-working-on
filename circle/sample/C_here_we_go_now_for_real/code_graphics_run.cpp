@@ -258,10 +258,15 @@ void            CKernel::fpsBreak()
 
 void            CKernel::fpsEnd()
 {
-                const u32 frameEnd = m_Timer.GetClockTicks();
+                const u32 g_frameEnd = m_Timer.GetClockTicks();
 
-                g_lastSwapDuration = frameEnd - g_frameCurrent;
-                g_frameTime        = frameEnd - g_frameStart;
+                g_lastSwapDuration = g_frameEnd - g_frameCurrent;
+
+#ifdef __DEBUG_TIMING__
+                g_glDuration += g_lastSwapDuration;
+#endif
+
+                g_frameTime        = g_frameEnd - g_frameStart;
 
                 if (g_frameTime) g_currentFPS = 1000000.0f / g_frameTime;
 }

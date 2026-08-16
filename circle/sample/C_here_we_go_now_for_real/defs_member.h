@@ -425,6 +425,7 @@ public:
 
 
 u32   g_frameStart       = 0;
+u32   g_frameEnd         = 0;
 u32   g_frameCurrent     = 0;
 u32   g_frameTarget      = 0;
 u32   g_frameDelay       = 0;
