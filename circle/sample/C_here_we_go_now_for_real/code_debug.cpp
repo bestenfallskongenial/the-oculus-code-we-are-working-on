@@ -153,7 +153,7 @@ bool            CKernel::startupScreen( void )
 
                 return TRUE;
 }
-
+/*
 void            CKernel::logInfoFrameRate(int row, float value)
 {
                 char f_logBuffer[32];
@@ -181,4 +181,31 @@ void            CKernel::logInfoFrameRate(int row, float value)
                             X_STR,   X_VAL);
 
                 bufferScreenDraw(   f_logBuffer, 0, f_logIndex, 0, row, 0xFFFFFFFF );                               
+}
+*/
+void CKernel::logInfoFrameRate(int row)
+{
+                char f_logBuffer[64];
+                u32  f_logIndex = 0;
+
+                f_logBuffer[0] = '\0';
+
+                u32 value1000 = (u32)(g_currentFPS * 1000.0f + 0.5f);
+
+                u32 whole = value1000 / 1000;
+                u32 frac  = value1000 % 1000;
+
+                char fracStr[5];
+
+                fracStr[0] = '.';
+                fracStr[1] = '0' + ((frac / 100) % 10);
+                fracStr[2] = '0' + ((frac / 10)  % 10);
+                fracStr[3] = '0' + ( frac        % 10);
+                fracStr[4] = '\0';
+
+                storeLogU32(f_logBuffer, f_logIndex, "FPS", whole, fracStr );
+#ifdef __DEBUG_TIMING__
+                storeLogU32(f_logBuffer, f_logIndex, "runtime us", g_runtimeDuration );
+#endif
+                bufferScreenDraw(f_logBuffer, 0, f_logIndex, 0, row, 0xFFFFFFFF);
 }

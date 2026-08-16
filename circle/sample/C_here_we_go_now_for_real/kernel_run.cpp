@@ -96,7 +96,8 @@ TShutdownMode CKernel::Run(void)
 
                     logInfosRuntime( 10 );
 
-                    logInfoFrameRate( 20, g_currentFPS );
+                //  logInfoFrameRate( 20, g_currentFPS );
+                    logInfoFrameRate( 20 );
 
                     setUniPrg(&m_ogl,
                             &m_fsh,

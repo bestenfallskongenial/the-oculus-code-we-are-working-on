@@ -233,6 +233,9 @@ void            CKernel::fpsBegin()
 
 void            CKernel::fpsBreak()
 {
+#ifdef __DEBUG_TIMING__    
+                g_runtimeDuration = m_Timer.GetClockTicks() - g_frameStart;
+#endif                
                 glFlush();
 #ifdef __DEBUG_GL__
                 check();
