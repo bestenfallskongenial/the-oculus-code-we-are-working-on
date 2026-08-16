@@ -45,9 +45,9 @@ TShutdownMode CKernel::Run(void)
             fpsBegin();
 
                     g_currentTime = m_Timer.GetClockTicks();                        // here starts the actual runtimeloop
-
+#ifdef USE_MIDI
                     updateMIDI();
-                    
+#endif                    
                     resetMenuPickUpFlags();
                     storeModes();
 
