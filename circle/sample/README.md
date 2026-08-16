@@ -23,7 +23,9 @@ Level 7: production lifecycle is complete
 
 From the source alone, I can say with high confidence that levels **1–3 are substantially implemented**, and that much of **4–5 is written**.
 
-I cannot honestly certify level 4 or 5 as proven on hardware merely from static source inspection. More importantly, the current main loop does not call **`framePollerMMAL()`**, so level 6 is **not integrated into the shown runtime path**. The function exists, but its only references are its declaration and definition, plus calls between its internal helpers.
+I cannot honestly certify level 4 or 5 as proven on hardware merely from static source inspection. 
+More importantly, the current main loop does not call **`framePollerMMAL()`**, so level 6 is **not integrated into the shown runtime path**. 
+The function exists, but its only references are its declaration and definition, plus calls between its internal helpers.
 
 That distinction matters for the rating later.
 
@@ -129,7 +131,8 @@ That flag is currently commented out in **`o_c_setup.h`**.
 
 Inside that guarded block, the code queues the first input packet, snapshots the input/output port state, marks **`f_firstFrameQueued`**, and returns.
 
-This is unusual because the macro is named as logging, but it controls behavior, not only diagnostics. With it disabled, **`framePollerMMAL()`** immediately begins by draining the receive queue. If nothing has previously been queued, it reaches the “Nothing in the Pipeline” path and returns **`true`**.
+This is unusual because the macro is named as logging, but it controls behavior, not only diagnostics. With it disabled, **`framePollerMMAL()`** immediately begins by draining the receive queue. 
+If nothing has previously been queued, it reaches the “Nothing in the Pipeline” path and returns **`true`**.
 
 Therefore the current code contains two related open stages:
 
