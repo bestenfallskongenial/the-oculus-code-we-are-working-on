@@ -430,7 +430,9 @@ u32   g_frameTarget      = 0;
 u32   g_frameDelay       = 0;
 u32   g_frameTime        = 0;
 u32   g_lastSwapDuration = 0;
-
+#ifdef __DEBUG_TIMING__ 
+u32   g_runtimeDuration  = 0;
+#endif
 float g_currentFPS       = 0.0f;
 
 bool  g_limitFPS         = true;

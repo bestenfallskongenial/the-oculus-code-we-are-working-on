@@ -22,6 +22,8 @@
     #define         __LOG_TO_SCREEN__                                           // shows the log on the screen
 
     #define         __DEBUG_GL__                                                // GL/EGL runtime check() calls
+    
+    #define         __DEBUG_TIMING__
 
 //  #define         __DUMP_HEADER__    
 //  #define         __DUMP_GLSL__                                               // dump shader source from GL
