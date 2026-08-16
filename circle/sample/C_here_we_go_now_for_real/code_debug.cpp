@@ -205,7 +205,7 @@ void CKernel::logInfoFrameRate(int row)
 
                 storeLogU32(f_logBuffer, f_logIndex, "FPS", whole, fracStr );
 #ifdef __DEBUG_TIMING__
-                storeLogU32(f_logBuffer, f_logIndex, "runtime us", g_runtimeDuration );
+                storeLogU32(f_logBuffer, f_logIndex, "runtime us", g_runtimeDuration, "gl us", g_glDuration );
 #endif
                 bufferScreenDraw(f_logBuffer, 0, f_logIndex, 0, row, 0xFFFFFFFF);
 }
