@@ -16,10 +16,7 @@ CLogger::CLogger(unsigned nLogLevel, CTimer* pTimer, boolean bOverwriteOldest)
 
 CLogger::~CLogger(void)
 {
-                if (s_pThis == this)
-                    {
-                    s_pThis = 0;
-                    }
+                if (s_pThis == this) s_pThis = 0;
 }
 
 boolean CLogger::Initialize(CDevice* pTarget)
@@ -33,10 +30,7 @@ void CLogger::SetNewTarget(CDevice* pTarget)
 
 CLogger* CLogger::Get(void)
 {
-                if (s_pThis == 0)
-                    {
-                    new CLogger(LogPanic);
-                    }
+                if (s_pThis == 0) new CLogger(LogPanic);
 
                 return s_pThis;
 }
@@ -72,10 +66,7 @@ void CLogger::FormatChar(char* buf, size_t size, size_t& pos, char c)
 {
                 if (size == 0) return;
 
-                if (pos < size - 1)
-                    {
-                    buf[pos] = c;
-                    }
+                if (pos < size - 1) buf[pos] = c;
 
                 pos++;
 }
@@ -314,10 +305,7 @@ void CLogger::WriteV(const char* pSource,
                 WriteCString(Message); // prints without vsprintf conversion
                 WriteCString("\n");
 
-                if (Severity == LogPanic && m_pPanicHandler != 0)
-                    {
-                    (*m_pPanicHandler)();
-                    }
+                if (Severity == LogPanic && m_pPanicHandler != 0) (*m_pPanicHandler)();
 }
 
 void CLogger::WriteNoAlloc(const char* pSource,
@@ -331,42 +319,5 @@ void CLogger::WriteNoAlloc(const char* pSource,
                 WriteCString(pMessage);
                 WriteCString("\n");
 
-                if (Severity == LogPanic && m_pPanicHandler != 0)
-                    {
-                    (*m_pPanicHandler)();
-                    }
+                if (Severity == LogPanic && m_pPanicHandler != 0) (*m_pPanicHandler)();
 }
-
-/*
-With the formatter shown, you can use:
-
-%u   unsigned decimal
-%d   signed decimal
-%i   signed decimal
-%x   unsigned hex, lowercase
-%X   unsigned hex, uppercase
-%s   C string
-%c   character
-%%   literal percent sign
-
-Examples:
-
-m_Logger.Write(FromKernel, LogNotice, "tick %u", tick);
-m_Logger.Write(FromKernel, LogNotice, "value %d", signedValue);
-m_Logger.Write(FromKernel, LogNotice, "addr %X", address);
-m_Logger.Write(FromKernel, LogNotice, "name %s", name);
-m_Logger.Write(FromKernel, LogNotice, "char %c", ch);
-m_Logger.Write(FromKernel, LogNotice, "load %% done");
-
-Not supported by that minimal formatter:
-
-%p
-%lu
-%llu
-%zu
-%08X
-%.2f
-%f
-field width / padding / precision
-
-*/

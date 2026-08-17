@@ -1,6 +1,41 @@
 #ifndef _circle_logger_h
 #define _circle_logger_h
 
+/*
+
+custom CLogger With the formatter shown for:
+
+%u   unsigned decimal
+%d   signed decimal
+%i   signed decimal
+%x   unsigned hex, lowercase
+%X   unsigned hex, uppercase
+%s   C string
+%c   character
+%%   literal percent sign
+
+Examples:
+
+m_Logger.Write(FromKernel, LogNotice, "tick %u", tick);
+m_Logger.Write(FromKernel, LogNotice, "value %d", signedValue);
+m_Logger.Write(FromKernel, LogNotice, "addr %X", address);
+m_Logger.Write(FromKernel, LogNotice, "name %s", name);
+m_Logger.Write(FromKernel, LogNotice, "char %c", ch);
+m_Logger.Write(FromKernel, LogNotice, "load %% done");
+
+dont supported:
+
+%p
+%lu
+%llu
+%zu
+%08X
+%.2f
+%f
+field width / padding / precision
+
+*/
+
 #include <circle/types.h>
 #include <stdarg.h>
 #include <stddef.h>
