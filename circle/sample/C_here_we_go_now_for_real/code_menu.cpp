@@ -365,7 +365,7 @@ void            CKernel::applyTargetModes           (   )       // current!
 {
                 if (g_menuLayer == 0)
                     {
-                    g_activeProgram = (g_inOutMatrixInt[ADC_SELECT_PRG][RAW] * (filecounter[FT_FSH][FLD_VALID] )) >> 10;
+                    g_activeProgram = (g_inOutMatrixInt[ADC_SELECT_PRG][OUT] * (filecounter[FT_FSH][FLD_VALID] )) >> 10; // RAW or OUT?!?
 
                     if (g_centralModeBuffer[g_currentProgramBuffer][SEL_PRG] == 0)                                 
                         {
@@ -385,7 +385,7 @@ void            CKernel::applyTargetModes           (   )       // current!
                 //  m_activeTex = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX]][OUT];
                 //  m_activeTex = (g_inOutMatrixInt[SEL_TEX][RAW] * (filecounter[FT_TEX][FLD_VALID] )) >> 10;
 
-                    m_activeTex = (g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX]][RAW] * (filecounter[FT_TEX][FLD_VALID])) >> 10;
+                    m_activeTex = (g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX]][OUT] * (filecounter[FT_TEX][FLD_VALID])) >> 10; // must be rather OUT ( the product of the modes above ) 
                     }
 
                 if (g_centralModeBuffer[g_currentProgramBuffer][SEL_VID] < FLAG_THRESHOLD)       // selected channel OUT controls active video
