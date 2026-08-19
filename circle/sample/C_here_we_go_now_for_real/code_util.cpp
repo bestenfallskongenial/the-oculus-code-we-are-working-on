@@ -89,7 +89,7 @@ void            CKernel::calculate1BPMnew           (   int             p_source
                     g_lfoBpmMatrix[p_source][TIDX]        =   (g_lfoBpmMatrix[p_source][TIDX] + 1) % 4;
                     }
 }
-
+/*
 void            CKernel::predict1Beat               (   int             p_source, 
                                                         int             p_lfoMultIn )
 {
@@ -113,6 +113,34 @@ void            CKernel::predict1Beat               (   int             p_source
                     g_lfoBpmMatrix[p_source][LCB]       =   g_lfoBpmMatrix[g_activeBpmChannel][LBC];
                     g_lfoBpmMatrix[p_source][NCB]       =   g_lfoBpmMatrix[g_activeBpmChannel][LBC] + (g_lfoBpmMatrix[g_activeBpmChannel][INTV] * g_lfoBpmMatrix[p_source][LMT]);
                     g_lfoBpmMatrix[p_source][LMT]       =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]];
+                    }
+}
+*/
+void            CKernel::predict1Beat               (   int             p_source, 
+                                                        int             p_lfoMultIn )
+{
+                g_lfoBpmMatrix[p_source][NLMT]          =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]]; // v1: cache requested mult/div
+
+
+                if (g_frameStart                       >=   g_lfoBpmMatrix[p_source][NBT])
+                    {
+                    g_lfoBpmMatrix[p_source][NBT]      +=   g_lfoBpmMatrix[p_source][INTV];
+                    }
+                if (g_frameStart                       >=   g_lfoBpmMatrix[p_source][NCB]) 
+                    {
+                    g_lfoBpmMatrix[p_source][LCB]       =   g_lfoBpmMatrix[p_source][NCB];
+                    g_lfoBpmMatrix[p_source][NCB]       =   g_lfoBpmMatrix[p_source][NCB] + (g_lfoBpmMatrix[g_activeBpmChannel][INTV] * g_lfoBpmMatrix[p_source][LMT]); // v1: normal circle advance with current active mult/div
+                    }
+                if (g_lfoBpmMatrix[p_source][LBCT]     !=   g_lfoBpmMatrix[p_source][LBC])
+                    {
+                    g_lfoBpmMatrix[p_source][NBT]       =   g_lfoBpmMatrix[p_source][LBC];
+                    g_lfoBpmMatrix[p_source][LBCT]      =   g_lfoBpmMatrix[p_source][LBC];
+                    }
+                if (g_lfoBpmMatrix[p_source][LMT]      !=   g_lfoBpmMatrix[p_source][NLMT]) // v1: any change applies immediately
+                    {
+                    g_lfoBpmMatrix[p_source][LMT]       =   g_lfoBpmMatrix[p_source][NLMT]; // v1: activate new mult/div now
+                    g_lfoBpmMatrix[p_source][LCB]       =   g_lfoBpmMatrix[g_activeBpmChannel][LBC]; // v1: anchor to last valid bpm calculation
+                    g_lfoBpmMatrix[p_source][NCB]       =   g_lfoBpmMatrix[g_activeBpmChannel][LBC] + (g_lfoBpmMatrix[g_activeBpmChannel][INTV] * g_lfoBpmMatrix[p_source][LMT]); // v1: rebuild circle immediately from bpm anchor
                     }
 }
 

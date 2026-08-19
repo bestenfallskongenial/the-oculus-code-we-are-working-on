@@ -258,7 +258,7 @@ void            CKernel::fpsBreak()
 
 void            CKernel::fpsEnd()
 {
-                const u32 g_frameEnd = m_Timer.GetClockTicks();
+                g_frameEnd = m_Timer.GetClockTicks();
 
                 g_lastSwapDuration = g_frameEnd - g_frameCurrent;
 

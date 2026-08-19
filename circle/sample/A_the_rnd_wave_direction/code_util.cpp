@@ -188,15 +188,15 @@ void            CKernel::predict1Beat               (   int             p_source
 {
             //  unsigned long currentTime               =   m_Timer.GetClockTicks();
 
-                if (/*currentTime*/g_currentTime  >= g_lfoBpmMatrix[p_source][NBT])
+                if ( g_currentTime  >= g_lfoBpmMatrix[p_source][NBT])
                     {
                     g_lfoBpmMatrix[p_source][NBT]      +=  g_lfoBpmMatrix[p_source][INTV];
                     }
-                if (/*currentTime*/g_currentTime >= g_lfoBpmMatrix[p_source][NCB]) 
+                if ( g_currentTime >= g_lfoBpmMatrix[p_source][NCB]) 
                     {
                     g_lfoBpmMatrix[p_source][LCB]       =   g_lfoBpmMatrix[p_source][NCB];
                     g_lfoBpmMatrix[p_source][NCB]       =   g_lfoBpmMatrix[p_source][NCB] + (g_lfoBpmMatrix[g_activeBpmChannel][INTV] * g_lfoBpmMatrix[p_source][LMT]); // why again g_lfoMultiplierTMP? isnt it stored already, do we need to back it up?
-                    g_lfoBpmMatrix[p_source][LMT]        =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]];
+                    g_lfoBpmMatrix[p_source][LMT]       =   g_lfoMultiplier[g_centralModeBuffer[g_currentProgramBuffer][p_lfoMultIn]];
                     }
                 if ((g_lfoBpmMatrix[p_source][LBCT]    !=  g_lfoBpmMatrix[p_source][LBC]))
                     {
@@ -225,13 +225,13 @@ void            CKernel::sample1WaveTable           (   int             p_source
                 g_inOutMatrixFlt[0][p_lfoOut]           =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]][g_lfoBpmMatrix[p_source][SMP]] / 1023.0f;
                 g_inOutMatrixInt[0][p_lfoOut]           =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]][g_lfoBpmMatrix[p_source][SMP]];
 }
-*/
+
 void            CKernel::sample1WaveTable           (   int             p_source, 
                                                         int             p_lfoIn, 
                                                         int             p_lfoOut )
 {
                 unsigned long currentTime               =   m_Timer.GetClockTicks();    // ? ****
-/*
+
                 if (g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn] >= WAVEFORMS_COUNT) // FIX?
                     {
                     if ( g_currentTime >= g_lfoBpmMatrix[p_source][NBT] )
@@ -241,7 +241,22 @@ void            CKernel::sample1WaveTable           (   int             p_source
                         }
                     return;
                     }
+
+                g_lfoBpmMatrix[p_source][ELP]           =   currentTime - g_lfoBpmMatrix[p_source][LCB];
+                g_lfoBpmMatrix[p_source][CYL]           =   g_lfoBpmMatrix[p_source][NCB] - g_lfoBpmMatrix[p_source][LCB];
+                int f_indexA                            =  (g_lfoBpmMatrix[p_source][ELP] * 255) / g_lfoBpmMatrix[p_source][CYL];
+                g_lfoBpmMatrix[p_source][SMP]           =   f_indexA > 255 ? 255 : f_indexA;                                                                  // means i need a wraparound - on the other hand: i should have a clear calculation here that will never create a index >255! ****
+                g_inOutMatrixFlt[0][p_lfoOut]           =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]][g_lfoBpmMatrix[p_source][SMP]] / 1023.0f;
+                g_inOutMatrixInt[0][p_lfoOut]           =   g_waveTable[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]][g_lfoBpmMatrix[p_source][SMP]];
+}
 */
+
+void            CKernel::sample1WaveTable           (   int             p_source, 
+                                                        int             p_lfoIn, 
+                                                        int             p_lfoOut )
+{
+                unsigned long currentTime               =   m_Timer.GetClockTicks();    // ? ****
+
                 if (g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn] >= WAVEFORMS_COUNT)
                     {
                     if (g_lfoBpmMatrix[p_source][LCB] != g_lfoBpmMatrix[p_source][LLCB]) // CHANGED: detect new circle by comparing current LCB with last latched LCB
