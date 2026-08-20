@@ -310,7 +310,7 @@ public:         // Logging
                 int                         g_modeRoof[MODETABLE_COUNT]                         =           { 0 };
                 int                         g_modeMap[MODETABLE_COUNT][MODE_NAME_COUNT]         =           { 0 };
 
-
+/*
                 int                         g_blockColor[BLOCK_COUNT][3]                        =       {   {190,  60,  50},   // block 0 - warm red
                                                                                                             { 55, 155,  95},   // block 1 - jade green
                                                                                                             { 60, 105, 180},   // block 2 - medium blue
@@ -319,6 +319,23 @@ public:         // Logging
                                                                                                             { 95,  90, 170},   // block 5 - indigo violet
                                                                                                             {  0,   0,   0},   // block 6 - invisible
                                                                                                             {150, 115,  45} }; // block 7 - muted gold
+*/
+                int                         g_modeColor[MODE_NAME_COUNT][3]                     =       {   { 40, 180, 180},   // IN_MODE_ADC       - cyan
+                                                                                                            {210,  35,  35},   // IN_MODE_TRG       - red
+                                                                                                            { 55, 190,  55},   // IN_MODE_LF1       - green
+                                                                                                            { 45,  75, 210},   // IN_MODE_LF2       - blue
+
+                                                                                                            {220, 125,  25},   // MODE_AU_AL        - orange
+                                                                                                            {210,  45, 155},   // MODE_AU_AH        - magenta
+                                                                                                            { 30, 150, 105},   // MODE_AU_BL        - jade
+                                                                                                            {135,  55, 205}    // MODE_AU_BH        - violet
+#ifdef USE_MIDI
+                                                                                                           ,{220, 200,  25},   // IN_MODE_MIDI_NOTE - yellow
+                                                                                                            { 45, 125, 215},   // IN_MODE_MIDI_CC0  - azure
+                                                                                                            {205,  75,  35}    // IN_MODE_MIDI_CC1  - vermilion
+#endif
+                                                                                                        };
+
 
 private:
                 VCHI_INSTANCE_T                 m_VCHIInstance                                  = 0;
