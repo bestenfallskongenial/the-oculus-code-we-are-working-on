@@ -18,11 +18,14 @@
         to show the sensitivity, not as numbers but as bars 
       - the bpm will be shown when i tab in beats ( and vanish after some delay ), EFFECT´s may be repurposed to complete 
         the EXTERNAL_CLOCK mechanism here i can select as for the target modes represented by the x inn the bottom of the icons
-      - goal here to have the least possible number of tiles in the same time but also have a stable load for the second shader pass
-        and a intuitive menu representing the physical controls / io´s at the device:
-        2 blocks a 2 by 2 - means by the way that i need to change the target modes icons to match the input pots
-      - to realize it i hope for deterministic pre-composed arrays since the tiles are normalized, 
-        in relative position and finite possible positions on the screen ( mo movement, no shifting )
+
+        
+      goal here to have the least possible number of tiles in the same time but also have a stable load for the second shader pass
+      and a intuitive menu representing the physical controls / io´s at the device:
+      2 blocks a 2 by 2 - means by the way that i need to change the target modes icons to match the input pots
+
+      to realize it i hope for deterministic pre-composed arrays since the tiles are normalized, 
+      in relative position and finite possible positions on the screen ( mo movement, no shifting )
 -->
 
 <?xml version="1.0" encoding="UTF-8"?>
