@@ -249,7 +249,7 @@ public:         // Logging
                                                                                                             {    4,    4,    4,    4  },                                      // channel 4-7 four modes ( before roof mapping )
 
                                                                                                             {    5,    5,    7,    7  },                                      // LF0 wave, LF0 mult, LF1 wave, LF1 mult
-                                                                                                            { 1024, 1024,    0,    3  },                                      // threshold, effect, attenuation, none/dummy
+                                                                                                            { 1024, 1024,    8,    3  },                                      // threshold, effect, attenuation, none/dummy
                                                                                                             {   64,   64,   64,   64  },                                      // sensitivity Aud0_L, Aud0_H, Aud1_L, Aud1_H
                                                                                                             {    8,    8,    8,    8  },                         // means i need the max +1
                                                                                                             {    2,    2,    2,    2  },
@@ -296,7 +296,7 @@ public:         // Logging
                                                                                                             {    4,    4,    4,    4  },                                      // channel 4-7 four modes ( before roof mapping )
 
                                                                                                             {    5,    5,    7,    7  },                                      // LF0 wave, LF0 mult, LF1 wave, LF1 mult
-                                                                                                            { 1024, 1024,    0,    3  },                                      // threshold, effect, attenuation, none/dummy
+                                                                                                            { 1024, 1024,    8,    3  },                                      // threshold, effect, attenuation, none/dummy
                                                                                                             {   64,   64,   64,   64  },                                      // sensitivity Aud0_L, Aud0_H, Aud1_L, Aud1_H
                                                                                                             {    8,    8,    8,    8  },                         // means i need the max +1
                                                                                                             {    2,    2,    2,    2  },

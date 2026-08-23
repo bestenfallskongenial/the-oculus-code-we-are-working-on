@@ -273,10 +273,12 @@ void            CKernel::modeADC                    (   int p_channel)
                 g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[p_channel][VAL];
                 g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[p_channel][VAL];       
 }
-
+/*
 void            CKernel::modeTRG                    (   int p_channel) // current
 {
-                if (  g_inOutMatrixInt[p_channel][VAL] >= /*g_inOutMatrixInt[p_channel][TRH]*/ g_centralModeBuffer[g_currentProgramBuffer][THRESHOLD_H] && !g_inOutMatrixInt[p_channel][TRF] )
+                g_centralModeBuffer[g_currentProgramBuffer][FLAG_EXT] = true;
+
+                if (  g_inOutMatrixInt[p_channel][VAL] >=  g_centralModeBuffer[g_currentProgramBuffer][THRESHOLD_H] && !g_inOutMatrixInt[p_channel][TRF] )
                     {
                     g_inOutMatrixFlt[p_channel][OUT]    = g_inOutMatrixFlt[p_channel][RND];
                     g_inOutMatrixInt[p_channel][OUT]    = g_inOutMatrixInt[p_channel][RND];
@@ -285,7 +287,26 @@ void            CKernel::modeTRG                    (   int p_channel) // curren
 
                     g_inOutMatrixInt[p_channel][TRF]    = true;
                     }
-                else if ( g_inOutMatrixInt[p_channel][VAL] <= /*g_inOutMatrixInt[p_channel][TRL]*/ g_centralModeBuffer[g_currentProgramBuffer][THRESHOLD_L])
+                else if ( g_inOutMatrixInt[p_channel][VAL] <=  g_centralModeBuffer[g_currentProgramBuffer][THRESHOLD_L])
+                    {
+                    g_inOutMatrixInt[p_channel][TRF] = false;
+                    }
+}
+*/
+void            CKernel::modeTRG(int p_channel)
+{
+                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] == (unsigned)p_channel) g_centralModeBuffer[g_currentProgramBuffer][FLAG_EXT] = true;
+
+                if (g_inOutMatrixInt[p_channel][VAL] >=  g_centralModeBuffer[g_currentProgramBuffer][THRESHOLD_H] && !g_inOutMatrixInt[p_channel][TRF])
+                    {
+                    g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[p_channel][RND];
+                    g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[p_channel][RND];
+
+                    g_extClockTime[p_channel] = g_frameStart;
+
+                    g_inOutMatrixInt[p_channel][TRF] = true;
+                    }
+                else if (g_inOutMatrixInt[p_channel][VAL] <= g_centralModeBuffer[g_currentProgramBuffer][THRESHOLD_L])
                     {
                     g_inOutMatrixInt[p_channel][TRF] = false;
                     }
@@ -361,6 +382,7 @@ void            CKernel::modeMidiCC1(int p_channel)
                 g_inOutMatrixFlt[p_channel][OUT] = g_midiCC1Flt;
 }
 #endif
+/*
 void            CKernel::applyTargetModes           (   )       // current!
 {
                 if (g_menuLayer == 0)
@@ -406,12 +428,72 @@ void            CKernel::applyTargetModes           (   )       // current!
                     {
                     GLtime = g_frameStart / 1000000.0f;
                     }
-/*
-                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] < FLAG_THRESHOLD)       // external BPM clock
-                    {
-                    calculate1BPMnew(1, TB1, DB1, g_extClockTime[SEL_EXT]);                              // automatized?
-                    }
+                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_EXT]  && g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] < FLAG_THRESHOLD)
+                {
+                    calculate1BPMnew(
+                        1,
+                        TB1,
+                        DB1,
+                        g_extClockTime[ g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] ]
+                    );
+                }
+                g_centralModeBuffer[g_currentProgramBuffer][FLAG_EXT] = false;
+}
 */
+void            CKernel::applyTargetModes           (   )
+{
+                if (g_menuLayer == 0)
+                    {
+                    g_activeProgram = (g_inOutMatrixInt[ADC_SELECT_PRG][OUT] * (filecounter[FT_FSH][FLD_VALID])) >> 10;
+
+                    if (g_centralModeBuffer[g_currentProgramBuffer][SEL_PRG] == 0)
+                        {
+                        if (g_activeProgram == g_gl_program_current)
+                            {
+                            g_centralModeBuffer[g_currentProgramBuffer][SEL_PRG] = 1;
+                            }
+                        }
+                    else
+                        {
+                        g_gl_program_current = g_activeProgram;
+                        }
+                    }
+                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX] < FLAG_THRESHOLD)
+                    {
+                    m_activeTex =
+                        (g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX]][OUT] *
+                        (filecounter[FT_TEX][FLD_VALID])) >> 10;
+                    }
+                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_VID] < FLAG_THRESHOLD)
+                    {
+                    m_activeVideo = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_VID]][OUT];
+                    }
+                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_FRM] < FLAG_THRESHOLD)
+                    {
+                    m_activeFrame = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_FRM]][OUT];
+                    }
+
+
+                if (g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME] < FLAG_THRESHOLD)
+                    {
+                    GLtime = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME]][OUT] / 36.0f;
+                    }
+                else
+                    {
+                    GLtime = g_frameStart / 1000000.0f;
+                    }
+                if (g_centralModeBuffer[g_currentProgramBuffer][FLAG_EXT] && g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] < FLAG_THRESHOLD)
+                    {
+                    g_centralModeBuffer[g_currentProgramBuffer][LAST_EXT] = g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT];
+
+                    calculate1BPMnew( 1, TB1, DB1, g_extClockTime[g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT]]);
+                    }
+                else
+                    {
+                    g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] = g_centralModeBuffer[g_currentProgramBuffer][LAST_EXT];
+                    }
+
+                g_centralModeBuffer[g_currentProgramBuffer][FLAG_EXT] = false;
 }
 /*
 void            CKernel::updateLED() // current!! <-having the block here is a problem we only have the layer avaieble, block is kinda internal knowledge!

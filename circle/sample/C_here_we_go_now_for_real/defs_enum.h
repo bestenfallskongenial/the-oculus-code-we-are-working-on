@@ -19,7 +19,8 @@ enum centralModeBuffer
 // block 03 / layer 4 - 12
     THRESHOLD_L,            // NEW - the threshold low for IN_MODE_TRG
     THRESHOLD_H,            // NEW - the threshold heigh for IN_MODE_TRG
-    EFFECT,                 // NEW - hypothetical "strength" for the randomizer - not implemented
+    SEL_EXT,               // NEW - extern clock input
+//  EFFECT,                 // NEW - hypothetical "strength" for the randomizer - not implemented
     ATTENUATION,            // New - attenuation for the readAndConvertADC() 
 // block 04 / layer 5 - 16
     SENS_A,                 // stores the sensitivity for the audio mode ( available if enabled ) bandA0
@@ -54,8 +55,8 @@ enum centralModeBuffer
     FLAG_DUMMY_B,           // or i autodetect the last correct bpm because the bpm function is autodetecting ...
 // block 08 / layer 9 - "mute" block
     SEL_PRG,                // instead of an additional "allow prg changes" global flag - what if this will never be released again!?!
-    FLAG_DUMMY_C,
-    FLAG_DUMMY_D,
+    FLAG_EXT,
+    LAST_EXT,
     IS_STORED,              // needs to be the last position as far as i remember
     MODETABLE_COUNT         // theoretical i can now define BLOCK_COUNT as MODETABLE_COUNT / 4 correct????
 };
