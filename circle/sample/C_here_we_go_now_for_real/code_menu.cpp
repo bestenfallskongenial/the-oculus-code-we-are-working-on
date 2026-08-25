@@ -297,7 +297,7 @@ void            CKernel::modeTRG(int p_channel)
 {
                 if (g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] == (unsigned)p_channel) g_centralModeBuffer[g_currentProgramBuffer][FLAG_EXT] = true;
 
-                if (g_inOutMatrixInt[p_channel][VAL] >=  g_centralModeBuffer[g_currentProgramBuffer][THRESHOLD_H] && !g_inOutMatrixInt[p_channel][TRF])
+                if (g_inOutMatrixInt[p_channel][VAL] >=  g_centralModeBuffer[g_currentProgramBuffer][THRESHOLD_L] && !g_inOutMatrixInt[p_channel][TRF])
                     {
                     g_inOutMatrixFlt[p_channel][OUT] = g_inOutMatrixFlt[p_channel][RND];
                     g_inOutMatrixInt[p_channel][OUT] = g_inOutMatrixInt[p_channel][RND];
@@ -306,7 +306,8 @@ void            CKernel::modeTRG(int p_channel)
 
                     g_inOutMatrixInt[p_channel][TRF] = true;
                     }
-                else if (g_inOutMatrixInt[p_channel][VAL] <= g_centralModeBuffer[g_currentProgramBuffer][THRESHOLD_L])
+                else if (g_inOutMatrixInt[p_channel][VAL] <= g_centralModeBuffer[g_currentProgramBuffer][THRESHOLD_L] + 1
+                                                           + g_centralModeBuffer[g_currentProgramBuffer][THRESHOLD_H])
                     {
                     g_inOutMatrixInt[p_channel][TRF] = false;
                     }
@@ -460,9 +461,7 @@ void            CKernel::applyTargetModes           (   )
                     }
                 if (g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX] < FLAG_THRESHOLD)
                     {
-                    m_activeTex =
-                        (g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX]][OUT] *
-                        (filecounter[FT_TEX][FLD_VALID])) >> 10;
+                    m_activeTex = (g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TEX]][OUT] * (filecounter[FT_TEX][FLD_VALID])) >> 10;
                     }
                 if (g_centralModeBuffer[g_currentProgramBuffer][SEL_VID] < FLAG_THRESHOLD)
                     {
@@ -472,8 +471,6 @@ void            CKernel::applyTargetModes           (   )
                     {
                     m_activeFrame = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_FRM]][OUT];
                     }
-
-
                 if (g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME] < FLAG_THRESHOLD)
                     {
                     GLtime = g_inOutMatrixInt[g_centralModeBuffer[g_currentProgramBuffer][SEL_TIME]][OUT] / 36.0f;
@@ -488,11 +485,12 @@ void            CKernel::applyTargetModes           (   )
 
                     calculate1BPMnew( 1, TB1, DB1, g_extClockTime[g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT]]);
                     }
+/*
                 else
                     {
                     g_centralModeBuffer[g_currentProgramBuffer][SEL_EXT] = g_centralModeBuffer[g_currentProgramBuffer][LAST_EXT];
                     }
-
+*/
                 g_centralModeBuffer[g_currentProgramBuffer][FLAG_EXT] = false;
 }
 /*

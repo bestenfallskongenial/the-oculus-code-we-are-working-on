@@ -77,15 +77,12 @@ TShutdownMode CKernel::Run(void)
 
                     updateLED();
 
-                    sample1WaveTable( 0, LF1_WAVE, LF1 );
-                    sample1WaveTable( 1, LF2_WAVE, LF2 );
+                    sample1WaveTable( 0, LF1_WAVE, LF1, 255 );
+                    sample1WaveTable( 1, LF2_WAVE, LF2, 255 );
 
                     predict1Beat( 0, LF1_MULT );
                     predict1Beat( 1, LF2_MULT ); 
                                        
-                //  sample1WaveTable( 0, LF1_WAVE, LF1 );
-                //  sample1WaveTable( 1, LF2_WAVE, LF2 );
-
                 //  logButtonStatesRuntime();
 
                     logModesRuntime( 0 );

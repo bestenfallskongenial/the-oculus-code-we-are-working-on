@@ -245,13 +245,13 @@ public:         // Logging
                                                                                                             { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE }, // new for midi
                                                                                                             { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE },                                                    
                                                                                                             { MAP_VALUE, MAP_VALUE, MAP_VALUE, MAP_VALUE } };
-        const   int                         g_valueRoof[BLOCK_COUNT][4]                         =       {   {    4,    4,    4,    4  },                                      // channel 0-3 four modes ( before roof mapping )
-                                                                                                            {    4,    4,    4,    4  },                                      // channel 4-7 four modes ( before roof mapping )
+        const   int                         g_valueRoof[BLOCK_COUNT][4]                         =       {   {    4,    4,    4,    4  },                        // channel 0-3 four modes ( before roof mapping )
+                                                                                                            {    4,    4,    4,    4  },                        // channel 4-7 four modes ( before roof mapping )
 
-                                                                                                            {    5,    5,    7,    7  },                                      // LF0 wave, LF0 mult, LF1 wave, LF1 mult
-                                                                                                            { 1024, 1024,    8,    3  },                                      // threshold, effect, attenuation, none/dummy
-                                                                                                            {   64,   64,   64,   64  },                                      // sensitivity Aud0_L, Aud0_H, Aud1_L, Aud1_H
-                                                                                                            {    8,    8,    8,    8  },                         // means i need the max +1
+                                                                                                            {    5,    5,    7,    7  },                        // LF0 wave, LF0 mult, LF1 wave, LF1 mult
+                                                                                                            {  511,  511,    8,    3  },                        // HIGH = THRESHOLD_L + 1 + THRESHOLD_H was 1024 / 1024 and in the original code 128 and 320 ( middle-ground )                                    // threshold, effect, attenuation, none/dummy
+                                                                                                            {   64,   64,   64,   64  },                        // sensitivity Aud0_L, Aud0_H, Aud1_L, Aud1_H
+                                                                                                            {    8,    8,    8,    8  },                        // means i need the max +1
                                                                                                             {    2,    2,    2,    2  },
                                                                                                             {   16,  128,  128,    4  }, // new for midi
                                                                                                             {    0,    0,    0,    0  },
@@ -296,7 +296,7 @@ public:         // Logging
                                                                                                             {    4,    4,    4,    4  },                                      // channel 4-7 four modes ( before roof mapping )
 
                                                                                                             {    5,    5,    7,    7  },                                      // LF0 wave, LF0 mult, LF1 wave, LF1 mult
-                                                                                                            { 1024, 1024,    8,    3  },                                      // threshold, effect, attenuation, none/dummy
+                                                                                                            {  511,  511,    8,    3  },                                      // threshold, effect, attenuation, none/dummy - HIGH = THRESHOLD_L + 1 + THRESHOLD_H was 1024 / 1024 and in the original code 128 and 320 ( middle-ground )
                                                                                                             {   64,   64,   64,   64  },                                      // sensitivity Aud0_L, Aud0_H, Aud1_L, Aud1_H
                                                                                                             {    8,    8,    8,    8  },                         // means i need the max +1
                                                                                                             {    2,    2,    2,    2  },

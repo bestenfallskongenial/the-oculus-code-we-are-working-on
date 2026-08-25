@@ -131,7 +131,8 @@ enum lfo_bpm_types
     NLMT,                                           // last - lfoMultiplierTMP
     ELP,            								// elapsedMicroseconds
     CYL,            								// cycleLength
-    SMP,            								// sampleIndex
+    SMPA,            								// sampleIndex A
+    SMPB,                                           // samppleIndex B NEW for smoothing
     LTIME,          							    // lastTime
     TIDX,           							    // timeIndex
     TB0,             							    // timeBuffer bpm 0
