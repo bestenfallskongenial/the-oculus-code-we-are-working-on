@@ -65,7 +65,6 @@ enum modeNames
 {
     IN_MODE_ADC,
     IN_MODE_TRG,
-//  IN_MODE_BMP,
     IN_MODE_LF1,
     IN_MODE_LF2,
 
@@ -89,7 +88,7 @@ enum MapType
 
 enum ModeFlags
 {
-    GROUP_BASE,
+    GROUP_BASE, 
     GROUP_FLAG1,
     GROUP_FLAG2,
 #ifdef USE_MIDI       

@@ -51,9 +51,9 @@ TShutdownMode CKernel::Run(void)
                     m_audio_hold_B = AUDIO_HOLD_TIMEOUT;
                     
                     readAndConvertADC();
-#ifdef USE_AUDIO                    
+                
                     adc_ProcessAudio();
-#endif
+
                     adc_AdvanceIndex();
 
                     randomVec8(g_frameStart);

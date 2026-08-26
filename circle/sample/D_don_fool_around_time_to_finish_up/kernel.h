@@ -188,9 +188,9 @@ public:
                 void        WS2812_Update               (               void);                                                              // +++
                 int         ReadMCP3008Raw              (               unsigned                        channel);                           // +++ MPC 3008
                 void        readAndConvertADC           ();                                                                 // +++ can we extract the erraticness / audio engine and the mode_index_mod into separate functions?
-#ifdef USE_AUDIO
+
                 void        adc_ProcessAudio            (               void );
-#endif
+
                 void        adc_AdvanceIndex            ();                              
                 bool        frameBufferInit             (               void );                                                             // +++
                 void        bufferScreenPlot            (               unsigned                        x,                                  // +++
