@@ -118,8 +118,7 @@
 
     #define 		FILENAME_KNL			"kernel.img"                         // for logger
 // LFO
-//  #define         waveTableCount         4		// number of lfo waves
-    #define         WAVESAMPLES             1024 // 256  	// number of samples per lfo waves
+    #define         LFO_SAMPLES             1024 // 256  	// number of samples per lfo waves
     
     #define 		LFO_INSTANCES			2
     #define			LFO_MULTIPLIERS_COUNT	7

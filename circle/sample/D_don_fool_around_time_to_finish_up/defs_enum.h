@@ -12,8 +12,8 @@ enum centralModeBuffer
     MODE_CH6,               // store the mode ( from g_modeTable[] ) for cannel 6
     MODE_CH7,               // store the mode ( from g_modeTable[] ) for cannel 7
 // block 02 / layer 3 - 08
-    LF1_WAVE,               // stores waveform for lfo1 ( from g_waveTable[waveTableCount][WAVESAMPLES] ) 
-    LF2_WAVE,               // stores waveform for lfo2 ( from g_waveTable[waveTableCount][WAVESAMPLES] )
+    LF1_WAVE,               // stores waveform for lfo1 ( from g_waveTable[waveTableCount][LFO_SAMPLES] ) 
+    LF2_WAVE,               // stores waveform for lfo2 ( from g_waveTable[waveTableCount][LFO_SAMPLES] )
     LF1_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
     LF2_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
 // block 03 / layer 4 - 12
