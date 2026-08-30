@@ -1,3 +1,5 @@
+#include "kernel.h" 
+
 void CKernel::generateWaveSinus(char** p_buffer, int p_index, int p_count)
 {
     uint16_t* f_buffer = (uint16_t*)p_buffer[p_index];
