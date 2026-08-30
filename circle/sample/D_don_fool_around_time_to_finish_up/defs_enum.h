@@ -109,7 +109,7 @@ enum waveTableNames
     waveExponential,
 
     waveTableCount
-}
+};
 //------------------------------------------------- // for the array unsigned/float g_inOutMatrix*[CHANNEL][IO_TYPE_COUNT]
 enum io_types                               
 {
