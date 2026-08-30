@@ -124,6 +124,8 @@
     #define 		LFO_INSTANCES			2
     #define			LFO_MULTIPLIERS_COUNT	7
 
+    #define         LFO_AMPLITUDE           1024
+
     #define         SLOTS                   FSH_SD + FSH_USB + 1                // for the g_centralModeBuffer[SLOTS][MODETABLE_COUNT] array -  
                                                                                     // 1 firmware / 32 user / 1 default slot
     #define         DEFAULT_SLOT            FSH_SD + FSH_USB                    //  because 0 plus 34 = 33 ?? 

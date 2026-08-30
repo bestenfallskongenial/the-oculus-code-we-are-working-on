@@ -11,7 +11,7 @@ void CKernel::generateWaveSinus(char** p_buffer, int p_index, int p_count)
         float s = sinf(3.14159265358979323846f * t);
 
         f_buffer[i] =
-            (uint16_t)(s * s * (float)WAVE_MAX + 0.5f);
+            (uint16_t)(s * s * (float)LFO_AMPLITUDE + 0.5f);
     }
 }
 
@@ -27,7 +27,7 @@ void CKernel::generateWaveSinus(char** p_buffer, int p_index, int p_count)
                         float y = 1.0f - x * x;
 
                         f_buffer[i] =
-                            (uint16_t)(y * (float)WAVE_MAX + 0.5f);
+                            (uint16_t)(y * (float)LFO_AMPLITUDE + 0.5f);
                     }
                 }
 
@@ -43,7 +43,7 @@ void CKernel::generateWaveTriangle(char** p_buffer, int p_index, int p_count)
         float y = 1.0f - fabsf(2.0f * t - 1.0f);
 
         f_buffer[i] =
-            (uint16_t)(y * (float)WAVE_MAX + 0.5f);
+            (uint16_t)(y * (float)LFO_AMPLITUDE + 0.5f);
     }
 }
 
@@ -57,7 +57,7 @@ void CKernel::generateWaveRampUp(char** p_buffer, int p_index, int p_count)
         float t = (float)i / last;
 
         f_buffer[i] =
-            (uint16_t)(t * (float)WAVE_MAX + 0.5f);
+            (uint16_t)(t * (float)LFO_AMPLITUDE + 0.5f);
     }
 }
 
@@ -72,7 +72,7 @@ void CKernel::generateWaveRampDown(char** p_buffer, int p_index, int p_count)
         float y = 1.0f - t;
 
         f_buffer[i] =
-            (uint16_t)(y * (float)WAVE_MAX + 0.5f);
+            (uint16_t)(y * (float)LFO_AMPLITUDE + 0.5f);
     }
 }
 
@@ -94,7 +94,7 @@ void CKernel::generateWaveTrapezoid(char** p_buffer, int p_index, int p_count)
             y = (1.0f - t) * 4.0f;
 
         f_buffer[i] =
-            (uint16_t)(y * (float)WAVE_MAX + 0.5f);
+            (uint16_t)(y * (float)LFO_AMPLITUDE + 0.5f);
     }
 }
 
@@ -109,7 +109,7 @@ void CKernel::generateWaveSmoothUp(char** p_buffer, int p_index, int p_count)
         float y = t * t * (3.0f - 2.0f * t);
 
         f_buffer[i] =
-            (uint16_t)(y * (float)WAVE_MAX + 0.5f);
+            (uint16_t)(y * (float)LFO_AMPLITUDE + 0.5f);
     }
 }
 
@@ -124,7 +124,7 @@ void CKernel::generateWaveSmoothDown(char** p_buffer, int p_index, int p_count)
         float y = 1.0f - t * t * (3.0f - 2.0f * t);
 
         f_buffer[i] =
-            (uint16_t)(y * (float)WAVE_MAX + 0.5f);
+            (uint16_t)(y * (float)LFO_AMPLITUDE + 0.5f);
     }
 }
 
@@ -147,7 +147,7 @@ void CKernel::generateWaveSmoothDown(char** p_buffer, int p_index, int p_count)
                         float y = t * t * (3.0f - 2.0f * t);
 
                         f_buffer[i] =
-                            (uint16_t)(y * (float)WAVE_MAX + 0.5f);
+                            (uint16_t)(y * (float)LFO_AMPLITUDE + 0.5f);
                     }
                 }
 
@@ -180,7 +180,7 @@ void CKernel::generateWaveExpRiseSlowFastDecay(char** p_buffer, int p_index, int
         }
 
         f_buffer[i] =
-            (uint16_t)(y * (float)WAVE_MAX + 0.5f);
+            (uint16_t)(y * (float)LFO_AMPLITUDE + 0.5f);
     }
 }
 
@@ -201,7 +201,7 @@ void CKernel::generateWaveSinus(char** p_buffer, int p_index, int p_count)
         unsigned long long den = 5 * last2 - 4 * q;
 
         f_buffer[i] =
-            (uint16_t)(((unsigned long long)WAVE_MAX * num * num) /
+            (uint16_t)(((unsigned long long)LFO_AMPLITUDE * num * num) /
                        (den * den));
     }
 }
@@ -220,7 +220,7 @@ void CKernel::generateWaveCenterPeak(char** p_buffer, int p_index, int p_count)
         unsigned long long x = i;
 
         f_buffer[i] =
-            (uint16_t)(((unsigned long long)WAVE_MAX *
+            (uint16_t)(((unsigned long long)LFO_AMPLITUDE *
                         4 * x * (last - x)) /
                        last2);
     }
@@ -240,9 +240,9 @@ void CKernel::generateWaveTriangle(char** p_buffer, int p_index, int p_count)
         unsigned long long y;
 
         if ((x << 1) <= last)
-            y = ((unsigned long long)WAVE_MAX * (x << 1)) / last;
+            y = ((unsigned long long)LFO_AMPLITUDE * (x << 1)) / last;
         else
-            y = ((unsigned long long)WAVE_MAX *
+            y = ((unsigned long long)LFO_AMPLITUDE *
                  ((last - x) << 1)) / last;
 
         f_buffer[i] = (uint16_t)y;
@@ -259,7 +259,7 @@ void CKernel::generateWaveRampUp(char** p_buffer, int p_index, int p_count)
     for (int i = 0; i < p_count; ++i)
     {
         f_buffer[i] =
-            (uint16_t)(((unsigned long long)i * WAVE_MAX) / last);
+            (uint16_t)(((unsigned long long)i * LFO_AMPLITUDE) / last);
     }
 }
 
@@ -274,7 +274,7 @@ void CKernel::generateWaveRampDown(char** p_buffer, int p_index, int p_count)
     {
         f_buffer[i] =
             (uint16_t)(((last - i) *
-                        (unsigned long long)WAVE_MAX) / last);
+                        (unsigned long long)LFO_AMPLITUDE) / last);
     }
 }
 
@@ -292,16 +292,16 @@ void CKernel::generateWaveTrapezoid(char** p_buffer, int p_index, int p_count)
 
         if ((x << 2) < last)
         {
-            y = ((unsigned long long)WAVE_MAX *
+            y = ((unsigned long long)LFO_AMPLITUDE *
                  (x << 2)) / last;
         }
         else if ((x << 2) <= (3 * last))
         {
-            y = WAVE_MAX;
+            y = LFO_AMPLITUDE;
         }
         else
         {
-            y = ((unsigned long long)WAVE_MAX *
+            y = ((unsigned long long)LFO_AMPLITUDE *
                  ((last - x) << 2)) / last;
         }
 
@@ -322,7 +322,7 @@ void CKernel::generateWaveSmoothUp(char** p_buffer, int p_index, int p_count)
         unsigned long long x = i;
 
         unsigned long long y =
-            ((unsigned long long)WAVE_MAX *
+            ((unsigned long long)LFO_AMPLITUDE *
              x * x *
              ((3 * last) - (2 * x))) /
             last3;
@@ -344,12 +344,12 @@ void CKernel::generateWaveSmoothDown(char** p_buffer, int p_index, int p_count)
         unsigned long long x = i;
 
         unsigned long long y =
-            ((unsigned long long)WAVE_MAX *
+            ((unsigned long long)LFO_AMPLITUDE *
              x * x *
              ((3 * last) - (2 * x))) /
             last3;
 
-        f_buffer[i] = (uint16_t)(WAVE_MAX - y);
+        f_buffer[i] = (uint16_t)(LFO_AMPLITUDE - y);
     }
 }
 
@@ -371,7 +371,7 @@ void CKernel::generateWaveSmoothPeak(char** p_buffer, int p_index, int p_count)
             x = ((last - i) << 1);
 
         unsigned long long y =
-            ((unsigned long long)WAVE_MAX *
+            ((unsigned long long)LFO_AMPLITUDE *
              x * x *
              ((3 * last) - (2 * x))) /
             (last * last * last);
@@ -405,7 +405,7 @@ void CKernel::generateWaveExpRiseSlowFastDecay(char** p_buffer, int p_index, int
             unsigned long long span4 = span2 * span2;
 
             f_buffer[i] =
-                (uint16_t)(((unsigned long long)WAVE_MAX *
+                (uint16_t)(((unsigned long long)LFO_AMPLITUDE *
                             x4 * x) /
                            (span4 * span));
         }
@@ -421,12 +421,12 @@ void CKernel::generateWaveExpRiseSlowFastDecay(char** p_buffer, int p_index, int
             unsigned long long span4 = span2 * span2;
 
             unsigned long long decay =
-                ((unsigned long long)WAVE_MAX *
+                ((unsigned long long)LFO_AMPLITUDE *
                  x4 * x) /
                 (span4 * span);
 
             f_buffer[i] =
-                (uint16_t)(WAVE_MAX - decay);
+                (uint16_t)(LFO_AMPLITUDE - decay);
         }
     }
 }
