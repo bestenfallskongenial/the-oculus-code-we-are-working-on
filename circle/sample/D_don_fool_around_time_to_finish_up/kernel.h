@@ -510,8 +510,8 @@ public:
                                                                         int                             p_count);
 
 #include "defs_member.h"
-#include "table_lfo.cpp"
-#include "table_col.cpp"
+// #include "table_lfo.cpp"
+// #include "table_col.cpp"
 };
 
 #endif
