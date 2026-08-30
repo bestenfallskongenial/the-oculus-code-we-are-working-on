@@ -185,7 +185,8 @@ boolean			CKernel::Initialize						(	void )
                     bOK = wrapperGenerateWaveTables( m_bufferLfo, WAVESAMPLES);
 #ifdef __LOG_INIT__
                     if (bOK) storeLogHex(  MY_BFR, MY_IDX, ">:", m_Timer.GetClockTicks(), "wrapperGenerateWaveTables()            DONE");
-#endif                    
+#endif                 
+                    }         
                 if (bOK)
                     {
                     bOK = setSystemVariables();         

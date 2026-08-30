@@ -497,7 +497,7 @@ public:
 
                 void        FATCallback                 (               void );
 
-                void        wrapperGenerateWaveTables   (               char*                           p_buffer, 
+                void        wrapperGenerateWaveTables   (               char**                          p_buffer, 
                                                                         int                             p_count);
 
 #include "defs_member.h"
