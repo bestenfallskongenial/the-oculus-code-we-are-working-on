@@ -24,6 +24,8 @@ bool            CKernel::wrapperInitMEM             (   )
                 if (bOK) { bOK = (m_bufferVsh = allocBufferMEM( filecounter[FT_VSH][FLD_MAXSD]+filecounter[FT_VSH][FLD_MAXUSB], filecounter[FT_VSH][FLD_SIZE])); }
                 if (bOK) { bOK = (m_bufferOmf = allocBufferMEM( filecounter[FT_OMF][FLD_MAXSD]+filecounter[FT_OMF][FLD_MAXUSB], filecounter[FT_OMF][FLD_SIZE])); }
                 if (bOK) { bOK = (m_bufferFsh = allocBufferMEM( filecounter[FT_FSH][FLD_MAXSD]+filecounter[FT_FSH][FLD_MAXUSB], filecounter[FT_FSH][FLD_SIZE])); }
+
+                if (bOK) { bOK = (m_bufferLfo = allocBufferMEM( filecounter[FT_LFO][FLD_MAXSD]+filecounter[FT_LFO][FLD_MAXUSB], filecounter[FT_LFO][FLD_SIZE])); }
                 return bOK;
 }
 
@@ -439,4 +441,18 @@ void            CKernel::wrapperFreeMMALstruct      (   ) // here i must check w
                 delete  m_PortInfoGetRx_Input_D;        m_PortInfoGetRx_Input_D         = nullptr;
                 delete  m_PortInfoGetTx_Output_D;       m_PortInfoGetTx_Output_D        = nullptr;
                 delete  m_PortInfoGetRx_Output_D;       m_PortInfoGetRx_Output_D        = nullptr;
+}
+
+bool CKernel::wrapperGenerateWaveTables(char** p_buffer, int p_count)
+{
+    generateWaveSinus                (p_buffer, 0, p_count);
+    generateWaveTriangle             (p_buffer, 1, p_count);
+    generateWaveRampUp               (p_buffer, 2, p_count);
+    generateWaveRampDown             (p_buffer, 3, p_count);
+    generateWaveTrapezoid            (p_buffer, 4, p_count);
+    generateWaveSmoothUp             (p_buffer, 5, p_count);
+    generateWaveSmoothDown           (p_buffer, 6, p_count);
+    generateWaveExpRiseSlowFastDecay (p_buffer, 7, p_count);
+
+    return true;
 }

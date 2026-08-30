@@ -1,6 +1,6 @@
 #include "kernel.h"
 
-unsigned long           g_waveTable                               [WAVEFORMS_COUNT][WAVESAMPLES]    = 
+unsigned long           g_waveTable                               [waveTableCount][WAVESAMPLES]    = 
 {
                         {   
                         0,    0,    1,    1,    2,    4,    6,    8,   10,   12,   15,   19,   22,   26,   30,   34,

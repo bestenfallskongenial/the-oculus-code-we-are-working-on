@@ -98,7 +98,7 @@
   <rect     id="COMMON_FRAME_2" x="71" y="56" width="30" height="16" rx="6" ry="6" fill="none" stroke="#000000" stroke-width="1"/>
   <rect     id="COMMON_FRAME_1" x="-3" y="-3" width="134" height="100" rx="32" ry="32" fill="black"/>
     -->  
-  <path     id="WAVE_SINE" d="M24 85C36 85 40 44 64 44C88 44 92 85 104 85"/>
+  <path     id="WAVE_SINUS" d="M24 85C36 85 40 44 64 44C88 44 92 85 104 85"/>
   <path     id="COMMON_WAVE_PATH_1" d="M44 64 C50.7 54.7 56.2 48 64 48 C71.8 48 77.3 54.7 84 64"/>
   <path     id="COMMON_WAVE_PATH_2" d="M44 64 C47.3 58.7 50.7 56 54 56 C57.3 56 60.7 58.7 64 64 C67.3 69.3 70.7 72 74 72 C77.3 72 80.7 69.3 84 64"/>
   <path     id="COMMON_WAVE_PATH_3" d="M44 64 C46 60 48 58 50 58 C52 58 54 60 56 64 C58 68 60 70 62 70 C64 70 66 68 68 64 C70 60 72 58 74 58 C76 58 78 60 80 64 C82 68 84 70 84 70"/>
@@ -123,9 +123,18 @@
   <rect     id="TARGET_MODE_VIDEO_CONTROL_RIGHT" x="64" y="107" width="63" height="16" rx="8" ry="8"/>
   <rect     id="TARGET_MODE_VIDEO_CONTROL_LEFT" x="1" y="107" width="20" height="16" rx="8" ry="8"/>
 <!--  MASKS DATA -->
+  <mask     id="MASK_TARGET_MODE_BL_CLOCK" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128">
+            <rect width="128" height="128" fill="white"/>
+            <g transform="rotate(-135 20 108) translate(20 108) scale(0.18) translate(-64 -64)">
+              <use href="#TARGET_MODE_MEDIA_FRAME" fill="black"/>
+              <use href="#TARGET_MODE_CLOCK_ARC" fill="none" stroke="black" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+              <use href="#TARGET_MODE_CLOCK_HAND_HORIZONTAL" stroke="black" stroke-width="8" stroke-linecap="round"/>
+              <use href="#TARGET_MODE_CLOCK_HAND_VERTICAL" stroke="black" stroke-width="8" stroke-linecap="round"/>
+            </g>
+  </mask>
   <mask     id="MASK_TARGET_MODE_TL_PICTURE" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128">
             <rect width="128" height="128" fill="white"/>
-            <g transform="rotate(-45 20 20) translate(20 20) scale(0.20) translate(-64 -64)">
+            <g transform="rotate(-45 20 20) translate(20 20) scale(0.18) translate(-64 -64)">
               <use href="#TARGET_MODE_MEDIA_FRAME" fill="black"/>
               <use href="#TARGET_MODE_PICTURE_DOT" fill="black"/>
               <use href="#TARGET_MODE_PICTURE_LINE" fill="none" stroke="black" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -133,7 +142,7 @@
   </mask>
   <mask     id="MASK_TARGET_MODE_TR_VIDEO" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128">
             <rect width="128" height="128" fill="white"/>
-            <g transform="rotate(45 108 20) translate(108 20) scale(0.20) translate(-64 -64)">
+            <g transform="rotate(45 108 20) translate(108 20) scale(0.18) translate(-64 -64)">
               <use href="#TARGET_MODE_MEDIA_FRAME" fill="black"/>
               <use href="#TARGET_MODE_VIDEO_PLAY" fill="black"/>
               <use href="#TARGET_MODE_VIDEO_CONTROL_LEFT" fill="black"/>
@@ -141,18 +150,9 @@
               <use href="#TARGET_MODE_VIDEO_CONTROL_RIGHT" fill="black"/>
             </g>
   </mask>
-  <mask     id="MASK_TARGET_MODE_BL_CLOCK" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128">
-            <rect width="128" height="128" fill="white"/>
-            <g transform="rotate(-135 20 108) translate(20 108) scale(0.20) translate(-64 -64)">
-              <use href="#TARGET_MODE_MEDIA_FRAME" fill="black"/>
-              <use href="#TARGET_MODE_CLOCK_ARC" fill="none" stroke="black" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-              <use href="#TARGET_MODE_CLOCK_HAND_HORIZONTAL" stroke="black" stroke-width="8" stroke-linecap="round"/>
-              <use href="#TARGET_MODE_CLOCK_HAND_VERTICAL" stroke="black" stroke-width="8" stroke-linecap="round"/>
-            </g>
-  </mask>
   <mask     id="MASK_TARGET_MODE_BR_VIDEO" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128">
             <rect width="128" height="128" fill="white"/>
-            <g transform="rotate(135 108 108) translate(108 108) scale(0.20) translate(-64 -64)">
+            <g transform="rotate(135 108 108) translate(108 108) scale(0.18) translate(-64 -64)">
               <use href="#TARGET_MODE_MEDIA_FRAME" fill="black"/>
               <use href="#TARGET_MODE_VIDEO_PLAY" fill="black"/>
             </g>
@@ -173,34 +173,34 @@
             <use href="#COMMON_CIRCLE" fill="white"/>
             <circle cx="64" cy="26" r="14" fill="black"/>
             <circle cx="64" cy="102" r="14" fill="black"/>
-            <rect x="30" y="48" width="48" height="32" rx="6" ry="6" fill="black" stroke="none"/>
-            <rect x="82" y="48" width="16" height="32" rx="6" ry="6" fill="black" stroke="none"/>
+            <rect x="30" y="48" width="48" height="32" rx="6" ry="6" fill="black" stroke="none"/> <!-- WINDOW FOR THE LFO WAVEFORM ICON -->
+            <rect x="82" y="48" width="16" height="32" rx="6" ry="6" fill="black" stroke="none"/> <!-- WINDOW FOR THE LFO MULTIPLIER ICON -->
 
   </mask>
   <mask     id="COMMON_WAVE_MASK" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="0" y="0" width="128" height="128">
             <rect x="0" y="0" width="128" height="128" fill="white"/>
             <g fill="none" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-              <use href="#COMMON_WAVE_LINE" transform="translate(-40 0)"/>
-              <use href="#COMMON_WAVE_LINE"/>
+              <use href="#COMMON_WAVE_LINE" transform="translate(-36 0)"/>
+              <use href="#COMMON_WAVE_LINE" transform="translate( 4 0)"/>
               <rect x="82" y="64" width="16" height="16" rx="6" ry="6" fill="black" stroke="none"/>
               <rect x="72" y="48" width="16" height="16" rx="6" ry="6" fill="black" stroke="none"/>
         <!--  <use href="#COMMON_WAVE_LINE" transform="translate(40 0)"/> -->
-              <use href="#COMMON_WAVE_PATH_1" transform="translate(-20 0)"/>
-              <use href="#COMMON_WAVE_PATH_2" transform="translate(-20 0)"/>
-              <use href="#COMMON_WAVE_PATH_3" transform="translate(-20 0)"/>
+
+              <use href="#COMMON_WAVE_PATH_2" transform="translate(-16 0)"/>
+              <use href="#COMMON_WAVE_PATH_3" transform="translate(-16 0)"/>
             </g>
   </mask>
 </defs>
 <!--  POSITION DATA -->
-  <svg      id="LFO_WAVE_SINE" class="glyph-tile" data-cell="0,3">  <!-- LFO PLACEMENT -->
+  <svg      id="LFO_WAVE_SINUS" class="glyph-tile" data-cell="0,3">  <!-- LFO PLACEMENT -->
        <!-- <use href="#COMMON_FRAME" transform="translate(64 64) scale(0.5) translate(-64 -64)"/> -->
-            <use href="#WAVE_SINE" class="glyph-stroke-8" transform="translate(54 64) scale(0.5) translate(-64 -64)"/>
+            <use href="#WAVE_SIN" class="glyph-stroke-8" transform="translate(54 64) scale(0.5) translate(-64 -64)"/>
   </svg>
-  <svg      id="LFO_WAVE_TRIANGLE" class="glyph-tile" data-cell="2,0">  <!-- !ONLY FOR DEMO PURPOSES! -->
-       <!-- <use href="#COMMON_FRAME" transform="translate(64 64) scale(0.5) translate(-64 -64)"/> -->
-            <use href="#WAVE_TRIANGLE" class="glyph-stroke-8" transform="translate(54 64) scale(0.5) translate(-64 -64)"/>
-  </svg>
-  <svg      id="LFO_WAVE_TRIANGLE-ORG" class="glyph-tile" data-cell="1,3">
+            <svg      id="LFO_WAVE_DEMO" class="glyph-tile" data-cell="2,0">  <!-- !ONLY FOR DEMO PURPOSES! -->
+                <!-- <use href="#COMMON_FRAME" transform="translate(64 64) scale(0.5) translate(-64 -64)"/> -->
+                      <use href="#WAVE_TRIANGLE" class="glyph-stroke-8" transform="translate(54 64) scale(0.5) translate(-64 -64)"/>
+            </svg>
+  <svg      id="LFO_WAVE_TRIANGLE" class="glyph-tile" data-cell="1,3">
        <!-- <use href="#COMMON_FRAME" transform="translate(64 64) scale(0.5) translate(-64 -64)"/> -->
             <use href="#WAVE_TRIANGLE" class="glyph-stroke-8" transform="translate(54 64) scale(0.5) translate(-64 -64)"/>
   </svg>
@@ -319,13 +319,13 @@
             <use href="#GLYPH_O" transform="translate(64 64) scale(0.25) translate(-64 -64)"/>
             <use href="#GLYPH_G" transform="translate(84 64) scale(0.25) translate(-64 -64)"/>
   </svg>
-  <svg      id="FRAC_1_64" class="glyph-tile" data-cell="2,0">  <!-- !ONLY FOR DEMO PURPOSES! -->
-            <g transform="rotate(90 64 64)">
-          <!-- <use class="line" href="#DIVIDER"/> -->
-              <use href="#GLYPH_6" transform="translate(57 38) scale(0.15) translate(-64 -64)"/>
-              <use href="#GLYPH_4" transform="translate(70 38) scale(0.15) translate(-64 -64)"/>
-            </g>
-  </svg>
+          <svg      id="FRAC_DEMO" class="glyph-tile" data-cell="2,0">  <!-- !ONLY FOR DEMO PURPOSES! -->
+                    <g transform="rotate(90 64 64)">
+                  <!-- <use class="line" href="#DIVIDER"/> -->
+                      <use href="#GLYPH_6" transform="translate(57 38) scale(0.15) translate(-64 -64)"/>
+                      <use href="#GLYPH_4" transform="translate(70 38) scale(0.15) translate(-64 -64)"/>
+                    </g>
+          </svg>
   <svg      id="FRAC_1_64-ORG" class="glyph-tile" data-cell="0,4">
             <g transform="rotate(90 64 64)">
           <!-- <use class="line" href="#DIVIDER"/> -->
@@ -371,26 +371,51 @@
               <use href="#GLYPH_1" transform="translate(70 38) scale(0.15) translate(-64 -64)"/>
             </g>
   </svg>
-  <svg      id="TARGET_MODE_PICK_TEXTURE" class="glyph-tile" data-cell="0,5" width="128" height="128" viewBox="0 0 128 128" overflow="hidden">  <!-- TARGET MODES -->
-            <g mask="url(#MASK_TARGET_MODE_TL_PICTURE)">
-              <use href="#TARGET_MODE_CORNER" fill="black"/>
-            </g>
-  </svg>
-  <svg      id="TARGET_MODE_PICK_FRAME" class="glyph-tile" data-cell="1,5" width="128" height="128" viewBox="0 0 128 128" overflow="hidden">
-            <g mask="url(#MASK_TARGET_MODE_TR_VIDEO)">
-              <use href="#TARGET_MODE_CORNER" fill="black" transform="rotate(90 64 64)"/>
-            </g>
-  </svg>
-  <svg      id="TARGET_MODE_PICK_TIME" class="glyph-tile" data-cell="2,5" width="128" height="128" viewBox="0 0 128 128" overflow="hidden">
-            <g mask="url(#MASK_TARGET_MODE_BL_CLOCK)">
-              <use href="#TARGET_MODE_CORNER" fill="black" transform="rotate(270 64 64)"/>
-            </g>
-  </svg>
-  <svg      id="TARGET_MODE_PICK_VIDEO" class="glyph-tile" data-cell="3,5" width="128" height="128" viewBox="0 0 128 128" overflow="hidden">
-            <g mask="url(#MASK_TARGET_MODE_BR_VIDEO)">
-              <use href="#TARGET_MODE_CORNER" fill="black" transform="rotate(180 64 64)"/>
-            </g>
-  </svg>
+<svg id="TARGET_MODE_PICK_TEXTURE" class="glyph-tile" data-cell="1,5"
+     width="128" height="128" viewBox="0 0 128 128" overflow="hidden">
+  <!-- SEL_TEX: TL -> TR -->
+  <g transform="rotate(90 64 64)">
+    <g mask="url(#MASK_TARGET_MODE_TL_PICTURE)">
+      <use href="#TARGET_MODE_CORNER" fill="black"/>
+    </g>
+  </g>
+</svg>
+
+<svg id="TARGET_MODE_PICK_FRAME" class="glyph-tile" data-cell="3,5"
+     width="128" height="128" viewBox="0 0 128 128" overflow="hidden">
+  <!-- SEL_FRM: TR -> BR -->
+  <g transform="rotate(90 64 64)">
+    <g mask="url(#MASK_TARGET_MODE_TR_VIDEO)">
+      <use href="#TARGET_MODE_CORNER"
+           fill="black"
+           transform="rotate(90 64 64)"/>
+    </g>
+  </g>
+</svg>
+
+<svg id="TARGET_MODE_PICK_TIME" class="glyph-tile" data-cell="0,5"
+     width="128" height="128" viewBox="0 0 128 128" overflow="hidden">
+  <!-- SEL_TIME: BL -> TL -->
+  <g transform="rotate(90 64 64)">
+    <g mask="url(#MASK_TARGET_MODE_BL_CLOCK)">
+      <use href="#TARGET_MODE_CORNER"
+           fill="black"
+           transform="rotate(270 64 64)"/>
+    </g>
+  </g>
+</svg>
+
+<svg id="TARGET_MODE_PICK_VIDEO" class="glyph-tile" data-cell="2,5"
+     width="128" height="128" viewBox="0 0 128 128" overflow="hidden">
+  <!-- SEL_VID: BR -> BL -->
+  <g transform="rotate(90 64 64)">
+    <g mask="url(#MASK_TARGET_MODE_BR_VIDEO)">
+      <use href="#TARGET_MODE_CORNER"
+           fill="black"
+           transform="rotate(180 64 64)"/>
+    </g>
+  </g>
+</svg>
   <svg      id="TARGET_MODE_PICK_GL_PROGRAM" class="glyph-tile" data-cell="4,5" width="128" height="128" viewBox="0 0 128 128" overflow="hidden">
             <g mask="url(#MASK_TARGET_MODE_BR_GL)">
               <use href="#TARGET_MODE_CORNER" fill="black" transform="rotate(180 64 64)"/>

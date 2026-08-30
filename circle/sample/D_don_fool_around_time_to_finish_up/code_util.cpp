@@ -117,12 +117,12 @@ void            CKernel::predict1Beat               (   int             p_source
                     g_lfoBpmMatrix[p_source][NCB]       =   g_lfoBpmMatrix[g_activeBpmChannel][LBC] + (g_lfoBpmMatrix[g_activeBpmChannel][INTV] * g_lfoBpmMatrix[p_source][LMT]); // v1: rebuild circle immediately from bpm anchor
                     }
 }
-
+/*
 void CKernel::sample1WaveTable(int p_source, int p_lfoIn, int p_lfoOut, int p_samples)   // p_samples is the max sample -1 NEW VERSION WITH ADDITIONAL SMOOTHING
 {
     unsigned long currentTime = m_Timer.GetClockTicks();
 
-    if (g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn] >= WAVEFORMS_COUNT)
+    if (g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn] >= waveTableCount)
     {
         if (g_lfoBpmMatrix[p_source][LCB] != g_lfoBpmMatrix[p_source][LLCB])
             {
@@ -149,3 +149,38 @@ void CKernel::sample1WaveTable(int p_source, int p_lfoIn, int p_lfoOut, int p_sa
 
     g_inOutMatrixInt[0][p_lfoOut]                   = f_sample;
 }
+*/
+void CKernel::sample1WaveTable(char** p_buffer, int p_source, int p_lfoIn, int p_lfoOut, int p_samples)   // p_samples is the max sample -1 NEW VERSION WITH ADDITIONAL SMOOTHING
+{
+    unsigned long currentTime = m_Timer.GetClockTicks();
+
+    if (g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn] >= waveTableCount)
+    {
+        if (g_lfoBpmMatrix[p_source][LCB] != g_lfoBpmMatrix[p_source][LLCB])
+            {
+            g_lfoBpmMatrix[p_source][LLCB] = g_lfoBpmMatrix[p_source][LCB];
+            g_inOutMatrixFlt[0][p_lfoOut] = g_inOutMatrixFlt[p_source][RND];
+            g_inOutMatrixInt[0][p_lfoOut] = g_inOutMatrixInt[p_source][RND];
+            }
+        return;
+    }
+
+    g_lfoBpmMatrix[p_source][ELP]                   = currentTime - g_lfoBpmMatrix[p_source][LCB];
+
+    g_lfoBpmMatrix[p_source][CYL]                   = g_lfoBpmMatrix[p_source][NCB] - g_lfoBpmMatrix[p_source][LCB];
+
+    int f_index                                    = (g_lfoBpmMatrix[p_source][ELP] * p_samples) / g_lfoBpmMatrix[p_source][CYL];
+
+    g_lfoBpmMatrix[p_source][SMPA]                 = f_index+0 > p_samples ? p_samples : f_index+0;
+    g_lfoBpmMatrix[p_source][SMPB]                 = f_index+1 > p_samples ? p_samples : f_index+1;
+
+    // ADDED: average two neighbouring samples
+    int f_sample                                    = (((uint16_t*)p_buffer[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]])[g_lfoBpmMatrix[p_source][SMPA]] +
+                                                       ((uint16_t*)p_buffer[g_centralModeBuffer[g_currentProgramBuffer][p_lfoIn]])[g_lfoBpmMatrix[p_source][SMPB]]) >> 1;
+
+    g_inOutMatrixFlt[0][p_lfoOut]                   = f_sample / 1023.0f;
+
+    g_inOutMatrixInt[0][p_lfoOut]                   = f_sample;
+}
+
+//  sample1WaveTable(m_bufferLfo, p_source, p_lfoIn, p_lfoOut, 1023);

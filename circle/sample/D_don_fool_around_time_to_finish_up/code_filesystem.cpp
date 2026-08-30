@@ -275,7 +275,7 @@ void            CKernel::removeUSB                  (           CDevice*    pDev
 	            assert (pThis != 0); // ???
 	            pThis->m_bStorageAttached = FALSE;
 }
-
+/*
 void            CKernel::FATCallback                (           void )
 {
 	            // your direct callback work here
@@ -284,13 +284,36 @@ void            CKernel::FATCallback                (           void )
 //  {
                 static int counter = 0;
 
-                WS2812_SetLED(LED_A, (g_waveTable[WAVE_SINE][(1 * counter) % 255] >> 6), (g_waveTable[WAVE_SINE][(2 * counter) % 255] >> 6), (g_waveTable[WAVE_SINE][(3 * counter) % 255] >> 6));
+                WS2812_SetLED(LED_A, (g_waveTable[waveSinus][(1 * counter) % 255] >> 6), (g_waveTable[waveSinus][(2 * counter) % 255] >> 6), (g_waveTable[waveSinus][(3 * counter) % 255] >> 6));
 
-                WS2812_SetLED(LED_B, (g_waveTable[WAVE_SINE][(2 * counter) % 255] >> 6), (g_waveTable[WAVE_SINE][(3 * counter) % 255] >> 6), (g_waveTable[WAVE_SINE][(1 * counter) % 255] >> 6));
+                WS2812_SetLED(LED_B, (g_waveTable[waveSinus][(2 * counter) % 255] >> 6), (g_waveTable[waveSinus][(3 * counter) % 255] >> 6), (g_waveTable[waveSinus][(1 * counter) % 255] >> 6));
 
-                WS2812_SetLED(LED_C, (g_waveTable[WAVE_SINE][(3 * counter) % 255] >> 6), (g_waveTable[WAVE_SINE][(1 * counter) % 255] >> 6), (g_waveTable[WAVE_SINE][(2 * counter) % 255] >> 6));
+                WS2812_SetLED(LED_C, (g_waveTable[waveSinus][(3 * counter) % 255] >> 6), (g_waveTable[waveSinus][(1 * counter) % 255] >> 6), (g_waveTable[waveSinus][(2 * counter) % 255] >> 6));
 
-                WS2812_SetLED(LED_D, (g_waveTable[WAVE_SINE][(2 * counter) % 255] >> 6), (g_waveTable[WAVE_SINE][(1 * counter) % 255] >> 6), (g_waveTable[WAVE_SINE][(3 * counter) % 255] >> 6));
+                WS2812_SetLED(LED_D, (g_waveTable[waveSinus][(2 * counter) % 255] >> 6), (g_waveTable[waveSinus][(1 * counter) % 255] >> 6), (g_waveTable[waveSinus][(3 * counter) % 255] >> 6));
+
+                WS2812_Update();
+
+                counter++;
+//  }
+
+}
+*/
+void            CKernel::FATCallback                (           void )
+{
+	            // your direct callback work here
+
+//  void CKernel::LED_circle_color()        // simple display_debug / feedback function
+//  {
+                static int counter = 0;
+
+                WS2812_SetLED(LED_A, (((uint16_t*)m_bufferLfo[waveSinus])[(1 * counter) % 255] >> 6), (((uint16_t*)m_bufferLfo[waveSinus])[(2 * counter) % 255] >> 6), (((uint16_t*)m_bufferLfo[waveSinus])[(3 * counter) % 255] >> 6));
+
+                WS2812_SetLED(LED_B, (((uint16_t*)m_bufferLfo[waveSinus])[(2 * counter) % 255] >> 6), (((uint16_t*)m_bufferLfo[waveSinus])[(3 * counter) % 255] >> 6), (((uint16_t*)m_bufferLfo[waveSinus])[(1 * counter) % 255] >> 6));
+
+                WS2812_SetLED(LED_C, (((uint16_t*)m_bufferLfo[waveSinus])[(3 * counter) % 255] >> 6), (((uint16_t*)m_bufferLfo[waveSinus])[(1 * counter) % 255] >> 6), (((uint16_t*)m_bufferLfo[waveSinus])[(2 * counter) % 255] >> 6));
+
+                WS2812_SetLED(LED_D, (((uint16_t*)m_bufferLfo[waveSinus])[(2 * counter) % 255] >> 6), (((uint16_t*)m_bufferLfo[waveSinus])[(1 * counter) % 255] >> 6), (((uint16_t*)m_bufferLfo[waveSinus])[(3 * counter) % 255] >> 6));
 
                 WS2812_Update();
 

@@ -12,8 +12,8 @@ enum centralModeBuffer
     MODE_CH6,               // store the mode ( from g_modeTable[] ) for cannel 6
     MODE_CH7,               // store the mode ( from g_modeTable[] ) for cannel 7
 // block 02 / layer 3 - 08
-    LF1_WAVE,               // stores waveform for lfo1 ( from g_waveTable[WAVEFORMS_COUNT][WAVESAMPLES] ) 
-    LF2_WAVE,               // stores waveform for lfo2 ( from g_waveTable[WAVEFORMS_COUNT][WAVESAMPLES] )
+    LF1_WAVE,               // stores waveform for lfo1 ( from g_waveTable[waveTableCount][WAVESAMPLES] ) 
+    LF2_WAVE,               // stores waveform for lfo2 ( from g_waveTable[waveTableCount][WAVESAMPLES] )
     LF1_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
     LF2_MULT,               // stores the multiplier for lfo1 ( from g_lfoMultiplier[LFO_MULTIPLIERS_COUNT] )
 // block 03 / layer 4 - 12
@@ -96,6 +96,20 @@ enum ModeFlags
 #endif      
     GROUP_COUNT
 };
+
+enum waveTableNames
+{
+    waveSinus,
+    WaveTriagle,
+    waveRampUp,
+    waveRampDown,
+    waveTrapezoid,
+    waveSmoothUp,
+    waveSmoothDown,
+    waveExponential,
+
+    waveTableCount
+}
 //------------------------------------------------- // for the array unsigned/float g_inOutMatrix*[CHANNEL][IO_TYPE_COUNT]
 enum io_types                               
 {
@@ -157,6 +171,7 @@ enum FileType
     FT_VSH = 0,                                     // vertex shader 
     FT_OMF,                                         // overlay fragment shader 
     FT_FSH,                                         // user fragment shader
+    FT_LFO,                                         // new
     FT_OMT,                                         // overlay texture
     FT_TEX,                                         // user texture
     FT_VID,                                         		// user video 

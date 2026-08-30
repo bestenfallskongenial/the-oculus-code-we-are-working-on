@@ -43,6 +43,9 @@
     #define         VSH_SD             		1	// max number of u_vertex shader on sd
     #define         OMF_SD             		1	// max number of fragment shader on sd
     #define         FSH_SD             		1	// max number of fragment shader on sd
+
+    #define         LFO_SD                  16  // max number of wavetables on sd
+    
     #define         OMT_SD             		1	// max number of fragment shader on sd
     #define         TEX_SD             		1	// max number of textures on sd
     #define         VID_SD             		0	// max number of videos on sd
@@ -70,18 +73,25 @@
     #define         LOG_VID_6               14
     #define         LOG_VID_7               15
 
-    #define         VSH_USB                 0	// max number of u_vertex shader on sd
-    #define         OMF_USB            		0	// max number of fragment shader on sd
-    #define         FSH_USB            		32	// max number of fragment shader on sd
-    #define         OMT_USB            		0	// max number of fragment shader on sd
-    #define         TEX_USB            		7	// max number of textures on sd
-    #define         VID_USB            		8	// max number of videos on sd
+    #define         VSH_USB                 0	// max number of u_vertex shader on usb
+    #define         OMF_USB            		0	// max number of fragment shader on usb
+    #define         FSH_USB            		32	// max number of fragment shader on usb
+
+    #define         LFO_USB                 0  // max number of wavetables on usb
+
+    #define         OMT_USB            		0	// max number of fragment shader on usb
+    #define         TEX_USB            		7	// max number of textures on usb
+    #define         VID_USB            		8	// max number of videos on usb
     #define         KLN_USB                 1   // max number of kernel.img ( loaded if present for update ) 
     #define         FRM_USB                 0   // no additional frm "files"
     #define         LOG_USB                 0   // no additional log "files"
     #define         VSH_EXT                 1   // the file extensions 
+
     #define         OMF_EXT                 1
     #define         FSH_EXT                 1
+
+    #define         LFO_SIZ                 (1024*32)           // 32kb
+
     #define         OMT_EXT                 1
     #define         TEX_EXT                 1
     #define         VID_EXT                 1
@@ -96,6 +106,7 @@
     #define         FRM_SIZ                 (1024*1024)         // 1mb
     #define         LOG_SIZ                 (1024*128)          // 128kb
 
+
     #define         LOG_KERNEL_SIZE         (1024*32) // bigger will break my code!!
 
     #define         ADC_SELECT_PRG          7   // we will map this modes to input channels later
@@ -107,10 +118,8 @@
 
     #define 		FILENAME_KNL			"kernel.img"                         // for logger
 // LFO
-    #define         WAVEFORMS_COUNT         4		// number of lfo waves
-    #define         WAVESAMPLES             256  	// number of samples per lfo waves
-
-    #define         WAVE_SINE               0
+    #define         waveTableCount         4		// number of lfo waves
+    #define         WAVESAMPLES             1024 // 256  	// number of samples per lfo waves
     
     #define 		LFO_INSTANCES			2
     #define			LFO_MULTIPLIERS_COUNT	7
