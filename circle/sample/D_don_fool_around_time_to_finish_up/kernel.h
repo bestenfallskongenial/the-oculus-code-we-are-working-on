@@ -375,10 +375,18 @@ public:
                                                                         unsigned long                   p_triggerTimeClock );                                                                         
                 void        predict1Beat                (               int                             p_source, 
                                                                         int                             p_lfoMult);
+/*
                 void        sample1WaveTable            (               int                             p_source, 
                                                                         int                             p_lfoIn, 
                                                                         int                             p_lfoOut,
-                                                                        int                             p_samples);   // NEW p_samples is the max sample -1 
+                                                                        int                             p_samples);   // NEW p_samples is the max sample -1
+*/                                                                         
+                void        sample1WaveTable            (               char**                          p_buffer, 
+                                                                        int                             p_source, 
+                                                                        int                             p_lfoIn, 
+                                                                        int                             p_lfoOut, 
+                                                                        int                             p_samples);
+
 // code_vc_mmal_api.cpp 
                 bool        framePollerMMAL             (               u32                             nal_block_offset,               // comes from the pooler -> h264 struct 
                                                                         u32                             nal_block_length);              // same same
