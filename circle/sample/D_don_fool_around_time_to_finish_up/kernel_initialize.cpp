@@ -182,7 +182,7 @@ boolean			CKernel::Initialize						(	void )
                     }
                 if (bOK)
                     {
-                    bOK = m_Timer.wrapperGenerateWaveTables( m_bufferLfo, WAVESAMPLES);
+                    bOK = wrapperGenerateWaveTables( m_bufferLfo, WAVESAMPLES);
 #ifdef __LOG_INIT__
                     if (bOK) storeLogHex(  MY_BFR, MY_IDX, ">:", m_Timer.GetClockTicks(), "wrapperGenerateWaveTables()            DONE");
 #endif                    

@@ -245,6 +245,16 @@ public:
         static  void        LoggerSink                 (                void*                           pContext,
                                                                 const   char*                           pText,
                                                                         unsigned                        nLength );      // +++ 
+// code_lfo.cpp
+                void        generateWaveSinus(char** p_buffer, int p_index, int p_count);
+                void        generateWaveTriangle(char** p_buffer, int p_index, int p_count);
+                void        generateWaveRampUp(char** p_buffer, int p_index, int p_count);
+                void        generateWaveRampDown(char** p_buffer, int p_index, int p_count);
+                void        generateWaveTrapezoid(char** p_buffer, int p_index, int p_count);
+                void        generateWaveSmoothUp(char** p_buffer, int p_index, int p_count);
+                void        generateWaveSmoothDown(char** p_buffer, int p_index, int p_count);
+                void        generateWaveExpRiseSlowFastDecay(char** p_buffer, int p_index, int p_count);
+
 // code_menu.cpp                !! NEED FINALLY TO CREATE THE BUTTON CONSUMER / MENU-LAYER CODE DONE !!
                 void        resetMenuPickUpFlags        ();
                 void        storeModes                  ();
@@ -486,6 +496,9 @@ public:
                 void        wrapperFreeMMALstruct       ();             // for the cleanup of the mmal structs
 
                 void        FATCallback                 (               void );
+
+                void        wrapperGenerateWaveTables   (               char*                           p_buffer, 
+                                                                        int                             p_count);
 
 #include "defs_member.h"
 #include "table_lfo.cpp"
