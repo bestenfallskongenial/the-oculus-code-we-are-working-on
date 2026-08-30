@@ -724,7 +724,7 @@ void            CKernel::updateLED                  ( )
  */
                 else
                     {
-                    block = layerToBlock[g_menuLayer];
+                    block = g_menuLayer - 1;
                     base  = block << 2;
 
                     colorA = g_blockColor[block];
