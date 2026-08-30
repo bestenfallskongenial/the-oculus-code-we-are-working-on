@@ -161,10 +161,10 @@ void CKernel::logLFO(int row)
                 f_logBuffer[0] = '\0';
 
                 storeLogU32(f_logBuffer, f_logIndex, "LFO 0 Wave", g_centralModeBuffer[g_currentProgramBuffer][0],
-                                                     "sample", g_lfoBpmMatrix[0][SMPA],
-                                                     "LFO 0 Wave", g_centralModeBuffer[g_currentProgramBuffer][1],
+                                                     "sample", g_lfoBpmMatrix[0][SMPA]);
+                storeLogU32(f_logBuffer, f_logIndex, "LFO 1 Wave", g_centralModeBuffer[g_currentProgramBuffer][1],
                                                      "sample", g_lfoBpmMatrix[1][SMPA]);
-                                                     
+
                 bufferScreenDraw(f_logBuffer, 0, f_logIndex, 0, row, 0xFFFFFFFF);
 }       
 void CKernel::logInfoFrameRate(int row)
